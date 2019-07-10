@@ -1,0 +1,22 @@
+{
+    "object001":
+    {
+        "type":     "com.symphony.ps.pizzaMenu",
+        "version":  "1.0",
+        "id":
+        [
+            {
+                "type":     "com.symphony.ps.pizzaMenu.one",
+                "value":    "IBM"
+            },
+            {
+                "type":     "com.symphony.ps.pizzaMenu.two",
+                "value":    "US0378331005"
+            },
+            {
+                "type":     "com.symphony.ps.pizzaMenu.three",
+                "value":    "037833100"
+            }
+        ]
+    }
+}
