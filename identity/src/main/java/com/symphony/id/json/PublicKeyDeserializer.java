@@ -1,13 +1,13 @@
-package com.db.symphony.id.json;
+package com.symphony.id.json;
 
 import java.io.IOException;
 import java.security.PublicKey;
 
-import com.db.symphony.id.PemSymphonyIdentity;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.symphony.id.PemSymphonyIdentity;
 
 public class PublicKeyDeserializer extends StdDeserializer<PublicKey> {
 

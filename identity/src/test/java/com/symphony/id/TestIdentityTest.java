@@ -1,11 +1,12 @@
-package com.db.symphony.id;
+package com.symphony.id;
 
 import javax.net.ssl.X509KeyManager;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.db.symphony.id.testing.TestIdentityProvider;
+import com.symphony.id.SymphonyIdentity;
+import com.symphony.id.testing.TestIdentityProvider;
 
 public class TestIdentityTest {
 

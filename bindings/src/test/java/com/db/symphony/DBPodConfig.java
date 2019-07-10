@@ -3,14 +3,14 @@ package com.db.symphony;
 
 import javax.net.ssl.KeyManager;
 
-import com.db.symphony.id.SymphonyIdentity;
-import com.db.symphony.id.testing.TestIdentityProvider;
 import com.symphony.api.JWTHelper;
 import com.symphony.api.TokenManager;
 import com.symphony.api.authenticator.AuthenticationApi;
 import com.symphony.api.cxf.CXFApiBuilder;
 import com.symphony.api.jersey.JerseyApiBuilder;
 import com.symphony.api.model.AuthenticateRequest;
+import com.symphony.id.SymphonyIdentity;
+import com.symphony.id.testing.TestIdentityProvider;
 
 /**
  * Returns apis for use in the test cases.  In order to make this work (for DB internally only)

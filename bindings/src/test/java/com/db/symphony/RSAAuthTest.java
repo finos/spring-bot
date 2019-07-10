@@ -2,11 +2,11 @@ package com.db.symphony;
 
 import org.junit.experimental.theories.Theory;
 
-import com.db.symphony.id.SymphonyIdentity;
 import com.symphony.api.JWTHelper;
 import com.symphony.api.login.AuthenticationApi;
 import com.symphony.api.model.AuthenticateRequest;
 import com.symphony.api.model.Token;
+import com.symphony.id.SymphonyIdentity;
 
 public class RSAAuthTest extends AbstractTest{
 

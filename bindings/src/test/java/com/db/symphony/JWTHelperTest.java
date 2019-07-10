@@ -14,9 +14,9 @@ import java.util.Base64;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.db.symphony.id.SymphonyIdentity;
-import com.db.symphony.id.testing.TestIdentityProvider;
 import com.symphony.api.JWTHelper;
+import com.symphony.id.SymphonyIdentity;
+import com.symphony.id.testing.TestIdentityProvider;
 
 
 public class JWTHelperTest {

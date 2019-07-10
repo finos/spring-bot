@@ -1,8 +1,8 @@
 package com.db.symphony;
 
-import com.db.symphony.id.SymphonyIdentity;
 import com.symphony.api.TokenManager;
 import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.id.SymphonyIdentity;
 
 /**
  * Using a subclass of this will either give you Jersey or Apache CXF clients.

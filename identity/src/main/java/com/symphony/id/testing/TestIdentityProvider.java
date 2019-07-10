@@ -1,12 +1,12 @@
-package com.db.symphony.id.testing;
+package com.symphony.id.testing;
 
 import java.io.File;
 import java.io.FileInputStream;
 
-import com.db.symphony.id.IdentityConfigurationException;
-import com.db.symphony.id.SingleSymphonyIdentity;
-import com.db.symphony.id.SymphonyIdentity;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.symphony.id.IdentityConfigurationException;
+import com.symphony.id.SingleSymphonyIdentity;
+import com.symphony.id.SymphonyIdentity;
 
 /**
  * Provides a symphony identity either from a system property or a file on the

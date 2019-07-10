@@ -1,4 +1,4 @@
-package com.db.symphony.id;
+package com.symphony.id;
 
 import java.io.InputStream;
 import java.security.PrivateKey;
@@ -10,8 +10,9 @@ import java.util.Map;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.db.symphony.id.json.SymphonyIdentityModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.symphony.id.P12SymphonyIdentity;
+import com.symphony.id.json.SymphonyIdentityModule;
 
 public class SymphonyIdentityModuleTest {
 	

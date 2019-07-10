@@ -1,12 +1,14 @@
-package com.db.symphony.id;
+package com.symphony.id;
 
 import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.db.symphony.id.json.SymphonyIdentityModule;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.symphony.id.PemSymphonyIdentity;
+import com.symphony.id.SymphonyIdentity;
+import com.symphony.id.json.SymphonyIdentityModule;
 
 public class JSONTest {
 
