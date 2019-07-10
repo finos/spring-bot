@@ -1,4 +1,4 @@
-package com.db.symphony.id.json;
+package com.symphony.id.json;
 
 import java.io.IOException;
 import java.security.PublicKey;

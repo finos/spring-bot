@@ -1,4 +1,4 @@
-package com.db.symphony.id.json;
+package com.symphony.id.json;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;

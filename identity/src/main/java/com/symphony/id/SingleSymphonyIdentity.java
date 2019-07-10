@@ -1,4 +1,4 @@
-package com.db.symphony.id;
+package com.symphony.id;
 
 import java.net.Socket;
 import java.security.KeyFactory;
@@ -15,14 +15,14 @@ import javax.naming.ldap.Rdn;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.X509KeyManager;
 
-import com.db.symphony.id.json.CertificateDeserializer;
-import com.db.symphony.id.json.CertificateSerializer;
-import com.db.symphony.id.json.PrivateKeyDeserializer;
-import com.db.symphony.id.json.PrivateKeySerializer;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.symphony.id.json.CertificateDeserializer;
+import com.symphony.id.json.CertificateSerializer;
+import com.symphony.id.json.PrivateKeyDeserializer;
+import com.symphony.id.json.PrivateKeySerializer;
 
 /**
  * Holds a single symphony identity, using a single {@link KeyManager}.

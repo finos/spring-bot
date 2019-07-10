@@ -1,4 +1,4 @@
-package com.db.symphony.id;
+package com.symphony.id;
 
 
 import java.io.InputStream;

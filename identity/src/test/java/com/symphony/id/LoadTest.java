@@ -1,4 +1,4 @@
-package com.db.symphony.id;
+package com.symphony.id;
 
 import java.io.InputStream;
 import java.security.PublicKey;
@@ -6,6 +6,10 @@ import java.security.PublicKey;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.symphony.id.P12SymphonyIdentity;
+import com.symphony.id.PemSymphonyIdentity;
+import com.symphony.id.SymphonyIdentity;
 
 public class LoadTest {
 	public static final String EMAIL = "thing@thang.com";
