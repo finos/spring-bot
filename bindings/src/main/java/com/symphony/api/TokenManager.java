@@ -20,7 +20,7 @@ import com.symphony.api.model.Token;
  * 
  * @author Rob Moffat
  */
-public class TokenManager {
+public class TokenManager implements ApiWrapper {
 
 	public static final String SESSION_TOKEN = "sessionToken";
 	public static final String KEY_MANAGER_TOKEN = "keyManagerToken";
@@ -68,6 +68,7 @@ public class TokenManager {
 		return sessionToken.getToken();
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <X> X wrap(Class<X> c, X api) {
 		

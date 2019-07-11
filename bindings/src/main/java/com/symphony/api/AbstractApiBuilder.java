@@ -25,7 +25,7 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 	protected String user;
 	protected String password;
 	protected int port;
-	protected TokenManager tokenManager;
+	protected ApiWrapper[] wrappers = new ApiWrapper[0];
 	
 	@Override
 	public void setProxyDetails(String proxyHost, String user, String password, int port) {
@@ -35,16 +35,6 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 		this.password = password;
 	}
 
-	@Override
-	public TokenManager getTokenManager() {
-		return tokenManager;
-	}
-
-	@Override
-	public void setTokenManager(TokenManager tokenManager) {
-		this.tokenManager = tokenManager;
-	}
-	
 	@Override
 	public TrustManager[] getTrustManagers() {
 		return trustManagers;
@@ -68,4 +58,16 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
+	@Override
+	public void setWrappers(ApiWrapper[] wrappers) {
+		this.wrappers = wrappers;
+	}
+
+	@Override
+	public ApiWrapper[] getWrappers() {
+		return this.wrappers;
+	}
+	
+	
 }

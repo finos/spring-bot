@@ -3,6 +3,7 @@ package com.db.symphony;
 
 import javax.net.ssl.KeyManager;
 
+import com.symphony.api.ApiWrapper;
 import com.symphony.api.JWTHelper;
 import com.symphony.api.TokenManager;
 import com.symphony.api.authenticator.AuthenticationApi;
@@ -73,7 +74,7 @@ public class DBPodConfig {
 		@Override
 		public <X> X getPodApi(Class<X> api) throws Exception {
 			JerseyApiBuilder b = new JerseyApiBuilder(POD_URL);
-			b.setTokenManager(tm);
+			b.setWrappers(new ApiWrapper[] { tm });
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
 			return b.getApi(api);
 		}
@@ -92,7 +93,7 @@ public class DBPodConfig {
 		public <X> X getAgentApi(Class<X> api) throws Exception {
 			JerseyApiBuilder b = new JerseyApiBuilder(AGENT_URL);
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
-			b.setTokenManager(tm);
+			b.setWrappers(new ApiWrapper[] { tm });
 			return b.getApi(api);
 
 		}
@@ -138,7 +139,7 @@ public class DBPodConfig {
 		public <X> X getPodApi(Class<X> api) throws Exception {
 			CXFApiBuilder b = new CXFApiBuilder(POD_URL);
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
-			b.setTokenManager(tm);
+			b.setWrappers(new ApiWrapper[] { tm });
 			return b.getApi(api);
 		}
 		
@@ -156,7 +157,7 @@ public class DBPodConfig {
 		@Override
 		public <X> X getAgentApi(Class<X> api) throws Exception {
 			CXFApiBuilder b = new CXFApiBuilder(AGENT_URL);
-			b.setTokenManager(tm);
+			b.setWrappers(new ApiWrapper[] { tm });
 			return b.getApi(api);
 		}
 

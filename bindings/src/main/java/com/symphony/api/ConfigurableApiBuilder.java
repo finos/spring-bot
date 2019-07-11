@@ -7,11 +7,11 @@ public interface ConfigurableApiBuilder extends ApiBuilder {
 
 	void setUrl(String baseUrl);
 	void setProxyDetails(String proxyHost, String user, String password, int port);
-	void setTokenManager(TokenManager tokenManager);
+	void setWrappers(ApiWrapper[] wrappers);
 	void setTrustManagers(TrustManager[] trustManagers);
 	void setKeyManagers(KeyManager[] keyManagers);
 
-	TokenManager getTokenManager();
+	ApiWrapper[] getWrappers();
 	TrustManager[] getTrustManagers();
 	KeyManager[] getKeyManagers();
 
