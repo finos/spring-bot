@@ -77,8 +77,9 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 	
 	protected <X> X buildProxy(Class<X> c, WebClient wc) {
 		X out = JAXRSClientFactory.fromClient(wc, c);
-		if (tokenManager != null) {
-			out = tokenManager.wrap(c, out);
+		
+		for (int i = 0; i < wrappers.length; i++) {
+			out = wrappers[i].wrap(c, out);
 		}
 		
 		return out;
