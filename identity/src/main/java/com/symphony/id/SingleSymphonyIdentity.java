@@ -126,7 +126,7 @@ public class SingleSymphonyIdentity implements SymphonyIdentity {
 	public static String getCommonName(X509Certificate[] chain) {
 		try {
 			if (chain.length > 0) {
-				LdapName ldapName = new LdapName(chain[0].getIssuerX500Principal().getName());
+				LdapName ldapName = new LdapName(chain[0].getSubjectDN().getName());
 				for (Rdn rdn : ldapName.getRdns()) {
 					if (rdn.getType().equalsIgnoreCase("CN")) {
 						return (String) rdn.getValue();
