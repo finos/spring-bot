@@ -93,18 +93,19 @@ public class TokenManager implements ApiWrapper {
 
 			private void fillTokens(Method method, Object[] args, boolean refill) {
 				Annotation[][] anns = method.getParameterAnnotations();
-				for (int i = 0; i < args.length; i++) {
-					if ((args[i] == null) || (refill)) {
-						
-						if (hasHeaderParam(SESSION_TOKEN, anns[i])) {
-							args[i] = sessionToken();
-						}
-						
-						if (hasHeaderParam(KEY_MANAGER_TOKEN, anns[i])) {
-							args[i] = keyManagerToken();
+				if (args != null) {
+					for (int i = 0; i < args.length; i++) {
+						if ((args[i] == null) || (refill)) {
+							
+							if (hasHeaderParam(SESSION_TOKEN, anns[i])) {
+								args[i] = sessionToken();
+							}
+							
+							if (hasHeaderParam(KEY_MANAGER_TOKEN, anns[i])) {
+								args[i] = keyManagerToken();
+							}
 						}
 					}
-					
 				}
 			}
 
