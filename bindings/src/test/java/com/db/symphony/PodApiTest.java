@@ -36,7 +36,7 @@ public class PodApiTest extends AbstractTest {
 		criteria.setQuery("Demo");
 		criteria.setPrivate(true);
 		criteria.setActive(true);
-		criteria.setLabels(Collections.EMPTY_LIST);
+		criteria.setLabels(Collections.emptyList());
 		criteria.setSortOrder(SortOrderEnum.BASIC);
 		V3RoomSearchResults res = sApi.v3RoomSearchPost(criteria, null, 0, 100);
 		System.out.println(res);
