@@ -1,4 +1,4 @@
-package com.db.symphony;
+package com.symphony;
 
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
