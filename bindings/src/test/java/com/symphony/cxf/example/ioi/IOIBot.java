@@ -1,4 +1,4 @@
-package com.db.symphony.cxf.example.ioi;
+package com.symphony.cxf.example.ioi;
 
 import java.io.ByteArrayInputStream;
 
@@ -6,7 +6,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Element;
 
-import com.db.symphony.DBPodConfig;
+import com.symphony.DBPodConfig;
 import com.symphony.api.Streams;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;

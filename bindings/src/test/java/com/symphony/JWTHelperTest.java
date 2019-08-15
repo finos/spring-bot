@@ -1,4 +1,4 @@
-package com.db.symphony;
+package com.symphony;
 
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
