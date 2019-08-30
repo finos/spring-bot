@@ -13,6 +13,6 @@ public abstract class AbstractTest {
 //	public static TestClientStrategy cxf = DBPodConfig.CXF_CERT;
 //	
 	@DataPoint
-	public static TestClientStrategy jersey = DBPodConfig.JERSEY_RSA;
+	public static TestClientStrategy jersey = TestPodConfig.JERSEY_RSA;
 
 }
