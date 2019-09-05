@@ -1,4 +1,4 @@
-package com.db.symphony;
+package com.symphony;
 
 import java.io.File;
 
@@ -14,7 +14,7 @@ public class JerseyMultipartTest {
 
 	@Test
 	public void testMultipartWithTyping() throws Exception {
-		MessagesApi api = DBPodConfig.JERSEY_RSA.getAgentApi(MessagesApi.class);
+		MessagesApi api = TestPodConfig.JERSEY_RSA.getAgentApi(MessagesApi.class);
 	
 		String message = "<messageML>Hello Jersey Typed World!</messageML>";
 
