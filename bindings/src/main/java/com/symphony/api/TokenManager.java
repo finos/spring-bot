@@ -24,6 +24,7 @@ public class TokenManager implements ApiWrapper {
 
 	public static final String SESSION_TOKEN = "sessionToken";
 	public static final String KEY_MANAGER_TOKEN = "keyManagerToken";
+	public static final String OBO_PLACEHOLDER = "//obo//";
 
 	private Supplier<Token> sessionAuthApi;
 	private Supplier<Token> keyAuthApi;
@@ -104,6 +105,8 @@ public class TokenManager implements ApiWrapper {
 							if (hasHeaderParam(KEY_MANAGER_TOKEN, anns[i])) {
 								args[i] = keyManagerToken();
 							}
+						} else if (args[i] == OBO_PLACEHOLDER) {
+							args[i] = null;
 						}
 					}
 				}

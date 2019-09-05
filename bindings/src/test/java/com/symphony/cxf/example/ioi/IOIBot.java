@@ -1,4 +1,4 @@
-package com.db.symphony.cxf.example.ioi;
+package com.symphony.cxf.example.ioi;
 
 import java.io.ByteArrayInputStream;
 
@@ -6,7 +6,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Element;
 
-import com.db.symphony.DBPodConfig;
+import com.symphony.TestPodConfig;
 import com.symphony.api.Streams;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;
@@ -25,17 +25,17 @@ import com.symphony.api.pod.UsersApi;
 public class IOIBot {
 	
 	public static void main(String[] args) throws Exception {
-		DatafeedApi dfApi = DBPodConfig.CXF_CERT.getAgentApi(DatafeedApi.class);
+		DatafeedApi dfApi = TestPodConfig.CXF_CERT.getAgentApi(DatafeedApi.class);
 		Datafeed df = dfApi.v4DatafeedCreatePost(null, null);
 		IOIBot bot = new IOIBot(
-				DBPodConfig.CXF_CERT.getAgentApi(MessagesApi.class), 
-				DBPodConfig.CXF_CERT.getPodApi(UsersApi.class));
+				TestPodConfig.CXF_CERT.getAgentApi(MessagesApi.class), 
+				TestPodConfig.CXF_CERT.getPodApi(UsersApi.class));
 		
 		Streams.createWorker(() -> dfApi.v4DatafeedIdReadGet(df.getId(), null, null, 100), (e) -> e.printStackTrace())
 			.stream()
 			.filter(e -> e.getType().equals("MESSAGESENT"))
 			.map(e -> e.getPayload().getMessageSent().getMessage())
-			.filter(m -> !m.getUser().getEmail().equals(DBPodConfig.CXF_CERT.getIdentity().getEmail()))
+			.filter(m -> !m.getUser().getEmail().equals(TestPodConfig.CXF_CERT.getIdentity().getEmail()))
 			.forEach(m -> bot.onRoomMessage(m));
 	}
 
