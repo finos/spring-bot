@@ -1,4 +1,4 @@
-package com.db.symphony;
+package com.symphony;
 
 import com.symphony.api.TokenManager;
 import com.symphony.api.authenticator.AuthenticationApi;

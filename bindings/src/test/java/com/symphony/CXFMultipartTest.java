@@ -1,4 +1,4 @@
-package com.db.symphony;
+package com.symphony;
 
 import java.io.File;
 
@@ -17,7 +17,7 @@ public class CXFMultipartTest {
 
 	@Test
 	public void testAttachmentPosting() throws Exception  {
-		TestClientStrategy strategy = DBPodConfig.CXF_CERT;
+		TestClientStrategy strategy = TestPodConfig.CXF_CERT;
 		MessagesApi messagesApi = strategy.getAgentApi(MessagesApi.class);
 		
 		// pull some messages back
