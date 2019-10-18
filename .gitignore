@@ -3,3 +3,4 @@
 target/
 bindings/target
 identity/target
+.settings/
