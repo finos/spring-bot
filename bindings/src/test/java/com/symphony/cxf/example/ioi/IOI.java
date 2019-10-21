@@ -1,4 +1,4 @@
-package com.db.symphony.cxf.example.ioi;
+package com.symphony.cxf.example.ioi;
 
 public class IOI {
 

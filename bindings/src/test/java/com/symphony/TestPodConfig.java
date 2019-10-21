@@ -1,4 +1,4 @@
-package com.db.symphony;
+package com.symphony;
 
 
 import javax.net.ssl.KeyManager;
@@ -14,14 +14,14 @@ import com.symphony.id.SymphonyIdentity;
 import com.symphony.id.testing.TestIdentityProvider;
 
 /**
- * Returns apis for use in the test cases.  In order to make this work (for DB internally only)
+ * Returns apis for use in the test cases.  In order to make this work
  * system properties for symphony.certificate.password and symphony.certificate.file (pointing to a p12 file) 
  * must be supplied
  * 
  * @author Rob Moffat
  *
  */
-public class DBPodConfig {
+public class TestPodConfig {
 	
 	public static final SymphonyIdentity BOT2_ID = TestIdentityProvider.getIdentity("symphony-develop-bot2-identity");
 	public static final SymphonyIdentity BOT1_ID = TestIdentityProvider.getIdentity("symphony-develop-bot1-identity");
