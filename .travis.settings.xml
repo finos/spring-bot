@@ -8,25 +8,25 @@
      <properties>
        <symphony-develop-bot1-identity>
          {
-           "privateKey": "${env.bot1-private-key}",
+           "privateKey": "${env.BOT1PRIVATEKEY}",
            "email": "symphony.practice.bot1@list.db.com",
            "commonName": "symphony.practice.bot1"
          }
        </symphony-develop-bot1-identity>
        <symphony-develop-bot2-identity>
          {
-           "privateKey": "${env.bot2-private-key}",
+           "privateKey": "${env.BOT2PRIVATEKEY}",
            "email": "symphony.practice.bot2@list.db.com",
            "commonName": "symphony.practice.bot1",
-           "chain": [ "${env.bot2.certificate}" ]
+           "chain": [ "${env.BOT2CERTIFICTE}" ]
          }
        </symphony-develop-bot2-identity>
        <symphony-test-identity>
          {
-           "privateKey": "${env.bot1-private-key}",
+           "privateKey": "${env.BOT1PRIVATEKEY}",
            "email": "symphony.practice.bot1@list.db.com",
            "commonName": "symphony.practice.bot1"
-         }
+         }     
        </symphony-test-identity>
      </properties>
     </profile>
