@@ -1,3 +1,3 @@
 language: java
 
-script: mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Dsymphony-test-identity=$symphony-test-identity
+script: mvn install -Dmaven.javadoc.skip=true -B -V -Dsymphony-test-identity=$symphony-test-identity
