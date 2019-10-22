@@ -31,6 +31,6 @@
      </properties>
     </profile>
     <activeProfiles>
-     <activeProfile>develop-pod-profile</activeProfiles>
+     <activeProfile>develop-pod-profile</activeProfile>
     </activeProfiles>
 </settings>
