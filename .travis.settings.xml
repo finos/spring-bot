@@ -23,7 +23,7 @@
        </symphony-develop-bot2-identity>
        <symphony-test-identity>
          {
-           "privateKey": "${env.BOT1PRIVATEKEY}",
+           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT1PRIVATEKEY}\n-----END PRIVATE KEY-----",
            "email": "symphony.practice.bot1@list.db.com",
            "commonName": "symphony.practice.bot1"
          }     
