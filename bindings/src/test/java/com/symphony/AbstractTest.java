@@ -9,9 +9,9 @@ public abstract class AbstractTest {
 	
 	public static final String ROOM = "y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==";
 
-//	@DataPoint
-//	public static TestClientStrategy cxf = DBPodConfig.CXF_CERT;
-//	
+	@DataPoint
+	public static TestClientStrategy cxf = TestPodConfig.CXF_CERT;
+	
 	@DataPoint
 	public static TestClientStrategy jersey = TestPodConfig.JERSEY_RSA;
 
