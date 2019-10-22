@@ -30,7 +30,8 @@
        </symphony-test-identity>
      </properties>
     </profile>
-    <activeProfiles>
-     <activeProfile>develop-pod-profile</activeProfile>
-    </activeProfiles>
+  </profiles>
+  <activeProfiles>
+   <activeProfile>develop-pod-profile</activeProfile>
+  </activeProfiles>
 </settings>
