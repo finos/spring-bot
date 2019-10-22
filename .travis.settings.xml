@@ -18,7 +18,7 @@
            "privateKey": "${env.BOT2PRIVATEKEY}",
            "email": "symphony.practice.bot2@list.db.com",
            "commonName": "symphony.practice.bot1",
-           "chain": [ "${env.BOT2CERTIFICTE}" ]
+           "chain": [ "${env.BOT2CERTIFICATE}" ]
          }
        </symphony-develop-bot2-identity>
        <symphony-test-identity>
