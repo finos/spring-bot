@@ -1,0 +1,36 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <profiles>
+    <profile>
+     <id>develop-pod-profile</id>
+     <properties>
+       <symphony-develop-bot1-identity>
+         {
+           "privateKey": "${env.bot1-private-key}",
+           "email": "symphony.practice.bot1@list.db.com",
+           "commonName": "symphony.practice.bot1"
+         }
+       </symphony-develop-bot1-identity>
+       <symphony-develop-bot2-identity>
+         {
+           "privateKey": "${env.bot2-private-key}",
+           "email": "symphony.practice.bot1@list.db.com",
+           "commonName": "symphony.practice.bot1",
+           "chain": [ "${env.bot2.certificate}" ]
+         }
+       </symphony-develop-bot2-identity>
+       <symphony-test-identity>
+         {
+           "privateKey": "${env.bot1-private-key}",
+           "email": "symphony.practice.bot1@list.db.com",
+           "commonName": "symphony.practice.bot1"
+         }
+       </symphony-test-identity>
+     </properties>
+    </profile>
+    <activeProfiles>
+     <activeProfile>develop-pod-profile</activeProfiles>
+    </activeProfiles>
+</settings>
