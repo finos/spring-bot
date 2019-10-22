@@ -26,7 +26,7 @@
            "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT2PRIVATEKEY}\n-----END PRIVATE KEY-----",
            "email": "symphony.practice.bot2@list.db.com",
            "commonName": "symphony.practice.bot2",
-           "chain": [ "-----BEGIN CERTIFICATE-----${env.BOT2CERTIFICATE}-----END CERTIFICATE-----" ]
+           "chain": [ "-----BEGIN CERTIFICATE-----\n${env.BOT2CERTIFICATE}\n-----END CERTIFICATE-----" ]
          }
        </symphony-test-identity>
      </properties>
