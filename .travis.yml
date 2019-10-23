@@ -1,6 +1,6 @@
 language: java
 
-script: cp .travis.settings.xml $HOME/.m2/settings.xml && mvn install -Dmaven.javadoc.skip=true -B -V 
+script: cp .travis.settings.xml $HOME/.m2/settings.xml && mvn install cobertura:cobertura -B -V 
 
 after_success:
   - bash <(curl -s https://codecov.io/bash) -t uuid-repo-token
