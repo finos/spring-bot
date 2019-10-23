@@ -1,0 +1,38 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" 
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+  <profiles>
+    <profile>
+     <id>develop-pod-profile</id>
+     <properties>
+       <symphony-develop-bot1-identity>
+         {
+           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT1PRIVATEKEY}\n-----END PRIVATE KEY-----",
+           "email": "symphony.practice.bot1@list.db.com",
+           "commonName": "symphony.practice.bot1"
+         }
+       </symphony-develop-bot1-identity>
+       <symphony-develop-bot2-identity>
+         {
+           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT2PRIVATEKEY}\n-----END PRIVATE KEY-----",
+           "email": "symphony.practice.bot2@list.db.com",
+           "commonName": "symphony.practice.bot2",
+           "chain": [ "-----BEGIN CERTIFICATE-----\n${env.BOT2CERTIFICATE}\n-----END CERTIFICATE-----" ]
+         }
+       </symphony-develop-bot2-identity>
+       <symphony-test-identity>
+         {
+           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT2PRIVATEKEY}\n-----END PRIVATE KEY-----",
+           "email": "symphony.practice.bot2@list.db.com",
+           "commonName": "symphony.practice.bot2",
+           "chain": [ "-----BEGIN CERTIFICATE-----\n${env.BOT2CERTIFICATE}\n-----END CERTIFICATE-----" ]
+         }
+       </symphony-test-identity>
+     </properties>
+    </profile>
+  </profiles>
+  <activeProfiles>
+   <activeProfile>develop-pod-profile</activeProfile>
+  </activeProfiles>
+</settings>

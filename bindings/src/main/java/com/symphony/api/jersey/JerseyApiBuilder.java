@@ -78,7 +78,7 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 
 	protected ClientConfig createConfig() {
 		ClientConfig config = new ClientConfig();
-		if (this.proxyHost!= null) {
+		if ((this.proxyHost!= null) && (this.proxyHost.length() > 0)) {
 				config
 				.connectorProvider(new ApacheConnectorProvider())
 		    	.property(ClientProperties.PROXY_URI, "http://"+proxyHost+":"+port);
