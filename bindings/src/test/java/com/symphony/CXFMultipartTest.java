@@ -4,20 +4,18 @@ import java.io.File;
 
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageList;
 
-@Ignore
 public class CXFMultipartTest {
 	
 
 	@Test
 	public void testAttachmentPosting() throws Exception  {
-		TestClientStrategy strategy = TestPodConfig.CXF_CERT;
+		TestClientStrategy strategy = TestPodConfig.CXF_RSA;
 		MessagesApi messagesApi = strategy.getAgentApi(MessagesApi.class);
 		
 		// pull some messages back
