@@ -15,7 +15,7 @@ import java.util.Base64;
 /** 
  * Adds logic to allow identity to be loaded in PEM format.
  */
-public class PemSymphonyIdentity extends SingleSymphonyIdentity implements SymphonyIdentity {
+public class PemSymphonyIdentity extends SingleSymphonyIdentity {
 	
     // PKCS#8 format
     static final String PEM_PRIVATE_START = "-----BEGIN PRIVATE KEY-----";
