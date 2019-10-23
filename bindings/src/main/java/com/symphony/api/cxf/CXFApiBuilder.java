@@ -118,8 +118,10 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 	public void setProxy(WebClient wc) {
 		HTTPConduit conduit = WebClient.getConfig(wc).getHttpConduit();
 		HTTPClientPolicy policy = conduit.getClient();
-		policy.setProxyServer(proxyHost);
-		policy.setProxyServerPort(port);
+		if ((this.proxyHost!= null) && (this.proxyHost.length() > 0)) {
+			policy.setProxyServer(proxyHost);
+			policy.setProxyServerPort(port);
+		}
 	}
 
 
