@@ -2,11 +2,15 @@
 
  - Fixed all tests.
  - Created Travis Build, although this is using robmoffat fork.
- - Released to bintray.
+ - Released to bintray.  This involved creating the deutschebank organisation there.
  - Created codecov coverage, again using robmoffat fork.
+ - Applied for com.db.symphonyp namespace in sonatype staging repo (https://issues.sonatype.org/browse/OSSRH-52578) 
+ - As requested, renamed to com.github.deutschebank.symphony
+ - Have been granted com.github.deutschebank.  (not what I asked for...)
 
 ## Remaining Tasks
 
+ - Must add other db users to sonatype
  - Add links to chiclets (robmoffat for now)
  - Add maven central chiclet
  - Add spring boot components
