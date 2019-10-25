@@ -91,7 +91,7 @@ public final class MultipartWebResourceFactory implements InvocationHandler {
     /**
      * Creates a new client-side representation of a resource described by
      * the interface passed in the first argument.
-     * <p/>
+     *
      * Calling this method has the same effect as calling {@code WebResourceFactory.newResource(resourceInterface, rootTarget,
      *false)}.
      *
