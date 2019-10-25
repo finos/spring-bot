@@ -19,10 +19,10 @@ import com.symphony.api.AbstractApiBuilder;
 /**
  * Provides a basic Jersey client creation wrapper which includes:
  * <ul>
- *  <li>Setting up ssl context</li>
+ *  <li>Setting up ssl context
  *  <li>Setting proxy details (basic, override if needed)
  *  <li>Using the {@link MultipartWebResourceFactory}
- * </li>
+ * </ul>
  * @author Rob Moffat
  *
  */
