@@ -1,0 +1,18 @@
+{
+  "iss": "Symphony Communication Services LLC.",
+  "sub": 345315370604208,
+  "aud": "someAppId",
+  "user": {
+    "id": 345315370604208,
+    "emailAddress": "blardy-blah@example.com",
+    "firstName": "Robert",
+    "lastName": "Moffat",
+    "displayName": "Robert Moffat",
+    "company": "Blardy Bank",
+    "companyId": 9999,
+    "username": "blardy-blah@example.com",
+    "avatarUrl": "../avatars/static/150/default.png",
+    "avatarSmallUrl": "../avatars/static/50/default.png"
+  },
+  "exp": 1563205665
+}
