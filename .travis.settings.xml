@@ -25,7 +25,7 @@
          {
            "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT1PRIVATEKEY}\n-----END PRIVATE KEY-----",
            "email": "symphony.practice.bot1@list.db.com",
-           "commonName": "symphony.practice.bot1",
+           "commonName": "symphony.practice.bot1"
          }
        </symphony-test-identity>
      </properties>
