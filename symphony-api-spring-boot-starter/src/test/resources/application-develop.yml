@@ -4,9 +4,14 @@ symphony:
       pod:
         url: https://develop.symphony.com/pod
       sessionauth: 
-        url: https://develop.symphony.com/sessionauth
+        url: https://develop-api.symphony.com/sessionauth
       keyauth: 
-        url: https://develop.symphony.com/keyauth
+        url: https://develop-api.symphony.com/keyauth
       agent:
         url: https://develop.symphony.com/agent
+      relay: 
+        url: https://develop.symphony.com/relay
+      login: 
+        url: https://develop.symphony.com/login
+       
     

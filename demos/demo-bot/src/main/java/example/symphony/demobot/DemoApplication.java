@@ -8,12 +8,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 
-import com.symphony.api.Streams;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;
+import com.symphony.api.bindings.Streams;
+import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.Datafeed;
 import com.symphony.api.pod.StreamsApi;
-import com.symphony.id.SymphonyIdentity;
 
 @SpringBootApplication
 public class DemoApplication {
