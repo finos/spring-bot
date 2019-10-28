@@ -12,6 +12,12 @@ import com.github.deutschebank.symphony.spring.app.AbstractJsonController;
 import com.github.deutschebank.symphony.spring.app.SymphonyAppProperties;
 import com.symphony.api.id.SymphonyIdentity;
 
+/**
+ * Provides common functions for one of the two types of bundle files defined by Symphony.
+ * 
+ * @author robmoffat
+ *
+ */
 public abstract class AbstractBundleController extends AbstractJsonController {
 
 	public AbstractBundleController(SymphonyAppProperties p, View v, SymphonyIdentity appIdentity) {

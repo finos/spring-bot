@@ -11,6 +11,12 @@ import org.springframework.web.servlet.ModelAndView;
 import com.github.deutschebank.symphony.spring.app.AbstractController;
 import com.github.deutschebank.symphony.spring.app.SymphonyAppProperties;
 
+/**
+ * Controller pages in Symphony handled by thymeleaf templates.
+ * 
+ * @author robmoffat
+ *
+ */
 public class ThymeleafPageController extends AbstractController {
 	
 	private String path;

@@ -14,6 +14,7 @@ import java.util.Base64;
 
 /** 
  * Adds logic to allow identity to be loaded in PEM format.
+ * @author Rob Moffat
  */
 public class PemSymphonyIdentity extends SingleSymphonyIdentity {
 	

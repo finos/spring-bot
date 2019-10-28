@@ -14,6 +14,7 @@ import javax.net.ssl.X509KeyManager;
  * 
  * Although a p12 file could potentially store multiple identities, this will throw an 
  * {@link IdentityConfigurationException} when constructed with a p12 containing multiple aliases.
+ * @author Rob Moffat
  */
 public class P12SymphonyIdentity extends SingleSymphonyIdentity {
 
