@@ -1,0 +1,6 @@
+symphony.bot:
+  identity:
+    email: robski.moff@example.com
+    commonName: bob
+    password: abc123
+    location: classpath:/example.p12

@@ -1,0 +1,10 @@
+{
+	"appId" : "cert-app-auth-example",
+	"companyId" : "9999",
+	"eventType" : "appEnabled",
+	"payload" : {
+		"agentUrl" : "https://your.agent.domain:443/agent",
+		"podUrl" : "https://your.agent.domain:443/pod",
+		"sessionAuthUrl" : "https://your.pod.domain:8444/sessionauth"
+	}
+}
