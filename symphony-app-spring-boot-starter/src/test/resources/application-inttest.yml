@@ -1,0 +1,22 @@
+server.ssl:
+  key-store-type: PKCS12
+  key-store: classpath:keystore/myKeystore.p12
+  key-store-password: changeit
+  key-alias: selfsigned
+
+symphony: 
+  app: 
+    identity:
+      privateKey: tbc 
+      commonName: tbc
+      certificates: tbc
+  apis:
+    - id: dbtest  
+      pod:
+        url: https://develop.symphony.com/pod
+      sessionauth: 
+        url: https://develop-api.symphony.com:443/sessionauth
+      keyauth: 
+        url: https://.../keyauth
+      agent:
+        url: https://...4/agent
