@@ -15,7 +15,15 @@ import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.symphony.api.id.SymphonyIdentity;
 
+/**
+ * This supplies a Jackson module for serializing and deserializing {@link SymphonyIdentity} objects
+ * to/from JSON.
+ * 
+ * @author robmoffat
+ *
+ */
 public class SymphonyIdentityModule extends Module {
 
 	@Override

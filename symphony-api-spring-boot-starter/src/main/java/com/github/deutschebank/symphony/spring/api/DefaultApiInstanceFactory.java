@@ -35,6 +35,7 @@ import io.micrometer.core.instrument.Timer.Sample;
 
 /**
  * Creates ApiInstances, and also manages adding them to the health endpoint, if a {@link HealthIndicatorRegistry} is defined.
+ * @author Rob Moffat
  */
 public class DefaultApiInstanceFactory implements ApiInstanceFactory {
 

@@ -18,6 +18,7 @@ import com.symphony.api.id.SymphonyIdentity;
  * ?bundle=<url> to the symphony client in the browser.
  * 
  * Does not contain the app secret.
+ * @author rob moffat
  */
 public class UrlParamBundleController extends AbstractBundleController {
 	

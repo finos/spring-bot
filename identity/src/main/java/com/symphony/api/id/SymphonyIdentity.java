@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 /**
  * Stores enough details about a Symphony user in order they can log in to 
  * REST Apis.
+ * 
+ * @author Rob Moffat
  */
 @JsonDeserialize(as = SingleSymphonyIdentity.class)
 public interface SymphonyIdentity {

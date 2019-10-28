@@ -18,6 +18,7 @@ import com.symphony.api.id.SymphonyIdentity;
 
 /**
  * This endpoint is called by your front-end to validate that it has the correct symphony tokens.
+ * 
  * @author Rob Moffat
  *
  */
