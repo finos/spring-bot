@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${@appProperties.getName() + ' Controller'}">Test App Controller</title>
+</head>
+<body>
+    <script type="text/javascript" src="https://www.symphony.com/resources/api/v1.0/symphony-api.js" charset="utf-8"></script>
+  	<script type="text/javascript" th:src="${applicationRoot + @appProperties.getControllerJavascript()}"></script>     
+    <script type="text/javascript" th:inline="javascript">
+    	const id = /*[[${@appIdentity.getCommonName()}]]*/ 'testing-app-id';
+		const outServiceName = id+ ':controller';
+		const outService = SYMPHONY.services.register(outServiceName);
+    	const appName = /*[[${@appProperties.getName()}]]*/ 'My App Name';
+    	const inServices =  /*[[${@appProperties.getServices()}]]*/ [];
+    	var inModules = {};
+    	const tokens = {};
+    	
+    	SYMPHONY.remote.hello()
+    	.then(function (data) {
+    	  // get pod token here.	
+    	  return fetch('[(${podAuthUrl})]'+data.pod);
+    	})
+    	.then(function (response) {
+    		return response.json();
+    	})
+    	.then(function(appData) {
+    		tokens['appToken'] = appData.tokenA;
+    		if (appData.circleOfTrust == 'OFF') {
+        		return SYMPHONY.application.register(id, inServices, [ outServiceName ]);
+    		} else {
+        		return SYMPHONY.application.register(appData, inServices, [ outServiceName ]);
+    		}
+    	})
+    	.then(function (response) {
+    		tokens['podToken'] = response.tokenS;
+    		return fetch('[(${appAuthUrl})]'+'appToken='+encodeURI(tokens['appToken'])+'&podToken='+encodeURI(tokens['podToken']));
+    	})
+    	.then(function (response) {
+    		return response.json();
+    	})
+    	.then(function (response) {
+    		inServices.forEach(name => inModules[name] = SYMPHONY.services.subscribe(name));
+    		
+    		if (response.circleOfTrust == 'SNATCH_SERVER') {
+    			console.log("")	
+    		} else {
+                // defined in the included javascript file
+                init(inModules, outService);
+    		}
+    	})
+    	.then(function () {
+    		console.log(appName+" controller initialized")
+    	})
+    	.catch(function (err) {
+    		console.error(err);
+    		console.error("Couldn't complete app registration for: "+appName);
+    	});
+    
+    </script>
+  
+    
+</body>
+</html>
