@@ -19,6 +19,8 @@ import com.symphony.api.id.SymphonyIdentity;
 /**
  * Constructs the Symphony Bundle File for when you are supplying bundle=<url>
  * to the symphony client in the brows
+ * @author robmoffat
+ * 
  */
 public class MarketBundleController extends AbstractBundleController {
 

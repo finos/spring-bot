@@ -10,6 +10,13 @@ import com.symphony.api.agent.SystemApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.model.V2HealthCheckResponse;
 
+
+/**
+ * Provides a Health Indicator for any symphony APIs being used by the application.
+ * 
+ * @author robmoffat
+ *
+ */
 public class AgentHealthHelper implements HealthIndicator {
 
 	private SystemApi api;
