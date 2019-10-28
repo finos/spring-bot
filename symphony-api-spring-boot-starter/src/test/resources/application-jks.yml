@@ -1,0 +1,5 @@
+symphony:
+  trust-store:
+    location: classpath:/example-trust.jks
+    type: JKS
+    password: changeit
