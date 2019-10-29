@@ -1,5 +1,8 @@
 package com.github.deutschebank.symphony.spring.api;
 
+import com.github.deutschebank.symphony.spring.api.properties.PodProperties;
+import com.symphony.api.id.SymphonyIdentity;
+
 /**
  * An ApiInstance is a single {@link SymphonyIdentity} running on a single {@link PodProperties} (pod).
  * 
