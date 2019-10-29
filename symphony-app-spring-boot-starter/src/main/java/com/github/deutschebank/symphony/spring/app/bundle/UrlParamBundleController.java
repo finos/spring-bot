@@ -15,7 +15,7 @@ import com.symphony.api.id.SymphonyIdentity;
 
 /**
  * Constructs the Symphony Bundle File for when you are supplying
- * ?bundle=<url> to the symphony client in the browser.
+ * ?bundle=url to the symphony client in the browser.
  * 
  * Does not contain the app secret.
  * @author rob moffat
