@@ -33,7 +33,7 @@ public class SymphonyAppWebMvcConfigurer implements WebMvcConfigurer {
 	}
 
 	/**
-	 * @See https://stackoverflow.com/questions/40418441/spring-security-cors-filter
+	 * See https://stackoverflow.com/questions/40418441/spring-security-cors-filter
 	 */
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
