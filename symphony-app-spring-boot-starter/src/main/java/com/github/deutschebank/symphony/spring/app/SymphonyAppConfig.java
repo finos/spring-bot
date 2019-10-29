@@ -44,6 +44,7 @@ import com.github.deutschebank.symphony.spring.app.id.GeneratingAppIdentityProvi
 import com.github.deutschebank.symphony.spring.app.jwt.UserDetailsController;
 import com.github.deutschebank.symphony.spring.app.pods.info.DirectoryBasedPodInfoStore;
 import com.github.deutschebank.symphony.spring.app.pods.info.NoopPodInfoStore;
+import com.github.deutschebank.symphony.spring.app.pods.info.PodInfo;
 import com.github.deutschebank.symphony.spring.app.pods.info.PodInfoController;
 import com.github.deutschebank.symphony.spring.app.pods.info.PodInfoStore;
 import com.github.deutschebank.symphony.spring.app.tokens.app.AppTokenStrategy;
@@ -168,6 +169,7 @@ public class SymphonyAppConfig  {
 	
 	/**
 	 * Override this bean by setting up a {@link DirectoryBasedPodInfoStore} bean instead (or something else)
+	 * @return a pod store that does nothing (doesn't record {@link PodInfo} or return it.
 	 */
 	@Bean
 	@ConditionalOnMissingBean
@@ -177,6 +179,7 @@ public class SymphonyAppConfig  {
 	
 	/**
 	 * Provides a test page for the user so at least they know their app works (html part)
+	 * @return the default app page.
 	 */
 	@Bean(name="appPageHtml")
 	@ConditionalOnMissingBean(name="appPageHtml")
@@ -186,6 +189,7 @@ public class SymphonyAppConfig  {
 	
 	/**
 	 * Provides a test page for the user so at least they know their app works (html part)
+	 * @return controller javascript include
 	 */
 	@Bean(name="appControllerJs")
 	@ConditionalOnMissingBean(name="appControllerJs")

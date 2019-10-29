@@ -17,8 +17,9 @@ import com.github.deutschebank.symphony.spring.app.pods.info.PodInfoController;
 import com.symphony.api.id.SymphonyIdentity;
 
 /**
- * Constructs the Symphony Bundle File for when you are supplying bundle=<url>
- * to the symphony client in the brows
+ * Constructs the Symphony Bundle File for when you are supplying a bundle file to be uploaded into 
+ * the Symphony admin console and used in the Symphony Market.
+ * 
  * @author robmoffat
  * 
  */
