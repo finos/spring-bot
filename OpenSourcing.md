@@ -12,21 +12,20 @@
       - gpg --gen-key
       - gpg --keyserver hkp://pool.sks-keyservers.net --send-keys 1DE5955674C2DB6B
       - configured key in settings.xml
+ - Added links to shields 
+ - Added spring boot components
+ - Added tutorials
+ - Added Seed apps
 
 ## Remaining Tasks
 
+ - Get license team to review contributor licenses
+ - Move bintray deutschebank organisation to be owned by DB OSRC team members
  - Must add other db users to sonatype
- - Add links to chiclets (robmoffat for now)
  - Add maven central chiclet
- - Add spring boot components
- - Add tutorials
- - Add Seed apps
  - Get travis approved for DB organisation
  - Add cla-assistant approval for DB organisation
- - Move bintray deutschebank organisation to be owned by DB OSRC team members
  - Add review for master change on github project
- - Get license team to review contributor licenses
- - Change chiclet links
  - Remove self as admin on github
  - Remove self as admin on bitbucket
  - Get ramdas to review

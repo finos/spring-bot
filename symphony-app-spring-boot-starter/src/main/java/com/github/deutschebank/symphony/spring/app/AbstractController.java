@@ -41,7 +41,10 @@ public abstract class AbstractController implements SymphonyController {
 	/**
 	 * Figures out the application root from the request, or 
 	 * uses the app url if one is set (useful behind load balancers).
-	 * @throws URISyntaxException 
+	 * 
+	 * @param request servlet request that we are providing the root for
+	 * @throws URISyntaxException if the url cannot be created
+	 * @return path for the application
 	 */
 	protected String getApplicationRoot(HttpServletRequest request) throws URISyntaxException {
 		if (!StringUtils.isEmpty(p.getBaseUrl())) {
