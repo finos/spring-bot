@@ -27,7 +27,7 @@ import com.symphony.api.model.ExtensionAppTokens;
  * connecting to a given symphony pod, and getting back an authentication token (Ta) and generating
  * a token for the client (Ts).  
  * 
- * @see https://developers.symphony.com/extension/docs/application-authentication
+ * See: https://developers.symphony.com/extension/docs/application-authentication
  * 
  * @author Rob Moffat
  *

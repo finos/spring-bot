@@ -62,9 +62,6 @@ public class BasicAppIdentityProvider {
 		return IdentityProperties.instantiateIdentityFromDetails(loader, identity, om);
 	}
 
-	/**
-	 * Puts the file in the working directory.
-	 */
 	protected IdentityProperties getFileResourceLocation(String appId) {
 		IdentityProperties p = new IdentityProperties();
 		p.setType(Type.JSON);
