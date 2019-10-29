@@ -4,19 +4,14 @@ server.ssl:
   key-store-password: changeit
   key-alias: selfsigned
 
-symphony: 
-  app: 
-    identity:
-      privateKey: tbc 
-      commonName: tbc
-      certificates: tbc
+symphony:
   apis:
-    - id: dbtest  
+    - id: develop  
       pod:
-        url: https://develop.symphony.com/pod
+        url: http://localhost:9999/pod
       sessionauth: 
-        url: https://develop-api.symphony.com:443/sessionauth
+        url: http://localhost:9999/sessionauth
       keyauth: 
-        url: https://.../keyauth
+        url: http://localhost:9999/keyauth
       agent:
-        url: https://...4/agent
+        url: http://localhost:9999/agent

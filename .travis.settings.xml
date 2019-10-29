@@ -23,10 +23,9 @@
        </symphony-develop-bot2-identity>
        <symphony-test-identity>
          {
-           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT2PRIVATEKEY}\n-----END PRIVATE KEY-----",
-           "email": "symphony.practice.bot2@list.db.com",
-           "commonName": "symphony.practice.bot2",
-           "chain": [ "-----BEGIN CERTIFICATE-----\n${env.BOT2CERTIFICATE}\n-----END CERTIFICATE-----" ]
+           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT1PRIVATEKEY}\n-----END PRIVATE KEY-----",
+           "email": "symphony.practice.bot1@list.db.com",
+           "commonName": "symphony.practice.bot1"
          }
        </symphony-test-identity>
      </properties>
