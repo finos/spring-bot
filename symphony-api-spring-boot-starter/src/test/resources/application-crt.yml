@@ -1,0 +1,4 @@
+symphony:
+  trust-store:
+    location: classpath:/example-trust.crt
+    type: PEMS
