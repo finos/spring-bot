@@ -20,6 +20,6 @@ public class TestAgentEndpoint {
 
 	@Test
 	public void testAutowire() throws Exception {
-		api.v2HealthCheckGet(null, null);
+		api.v2HealthCheckGet(false, null, null);
 	}
 }
