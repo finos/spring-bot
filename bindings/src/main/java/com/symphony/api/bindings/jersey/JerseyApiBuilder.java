@@ -68,6 +68,7 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 
 	protected void registerFeatures(JerseyClientBuilder jcb) {
 		jcb.register(MultiPartFeature.class);
+		jcb.register(SymphonyExceptionFilter.class);
 	}
 
 	protected SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyManagementException {
