@@ -1,7 +1,6 @@
 package com.github.deutschebank.symphony.spring.api.properties;
 
 import javax.net.ssl.TrustManager;
-import javax.validation.constraints.NotNull;
 
 import com.symphony.api.bindings.ApiWrapper;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
@@ -15,11 +14,9 @@ import com.symphony.api.id.SymphonyIdentity;
  */
 public class EndpointProperties {
 
-	@NotNull private String url;
+	private String url;
 	
 	private ProxyProperties proxy;
-	
-
 	
 	public ProxyProperties getProxy() {
 		return proxy;
