@@ -53,7 +53,7 @@ public class SymphonyIdentityModule extends Module {
 		
 		context.addSerializers(new Serializers.Base() {
 			
-			@Override
+			//@Override
 			public JsonSerializer<?> findSerializer(SerializationConfig config, JavaType type,
 					BeanDescription beanDesc) {
 
