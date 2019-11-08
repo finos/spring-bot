@@ -10,4 +10,5 @@
    - Required minor changes to health / metrics tests
    - Simplified bindings dependencies to just annotations.
  - Releasing version: 4.55.1 
+ - Changed demo bot application.yml so that it starts on develop pod.
  

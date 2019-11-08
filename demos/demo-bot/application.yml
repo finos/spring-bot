@@ -1,4 +1,4 @@
-#set the room for the bot to post in
+#set the room for the bot to post in.  Bot (and you) should be members of this room
 room: y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==
 
 symphony:
