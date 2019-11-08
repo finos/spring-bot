@@ -1,9 +1,10 @@
-room: #set the room for the bot to post in
+#set the room for the bot to post in.  Bot (and you) should be members of this room
+room: y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==
 
 symphony:
   trust-store:
     location: classpath:/example-trust.crt
-    type: CRT
+    type: PEMS
   apis:
   - id: develop
     pod:
@@ -22,14 +23,7 @@ symphony:
     agent: 
       url: https://develop.symphony.com/agent
 #     proxy:  as above
-  bot:
-    identity:
-      email: robski.moff@example.com
-      commonName: 
-      # either specify as a p12...
-      password: changeit
-      location: file:./some.p12
-      # or insert pems into your application.yml
-      privateKey:  "-----BEGIN PRIVATE KEY-----\nMIIE...g3x6A==\n-----END PRIVATE KEY-----"
-      certificates:
-      - "-----BEGIN CERTIFICATE-----\nMIIC7z...xBXKt4=\n-----END CERTIFICATE-----"  
+    login: 
+      url: https://develop.symphony.com/login
+    relay:
+      url: https://develop.symphony.com/relay
