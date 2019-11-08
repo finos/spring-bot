@@ -29,7 +29,7 @@ public class AgentHealthHelper implements HealthIndicator {
 
 	@Override
 	public Health health() {
-		V2HealthCheckResponse resp = api.v2HealthCheckGet(null, null);
+		V2HealthCheckResponse resp = api.v2HealthCheckGet(false, null, null);
 		Health.Builder hb = (resp.isisAgentServiceUser() && resp.isisEncryptDecryptSuccess()
 				&& resp.isisKeyManagerConnectivity() && resp.isisPodConnectivity()) ? Health.up() : Health.down();
 				

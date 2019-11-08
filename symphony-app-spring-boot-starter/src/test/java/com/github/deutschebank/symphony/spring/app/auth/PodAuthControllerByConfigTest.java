@@ -31,7 +31,8 @@ import com.symphony.api.model.ExtensionAppTokens;
  */
 @TestPropertySource(properties={
 	"symphony.apis.0.id=666",
-	"symphony.apis.0.sessionauth.url=http://blah.com/sessionauth"	
+	"symphony.apis.0.sessionauth.url=http://blah.com/sessionauth",
+	"symphony.app.circleOfTrust=FULL"
 })
 public class PodAuthControllerByConfigTest extends AbstractTest {
 
