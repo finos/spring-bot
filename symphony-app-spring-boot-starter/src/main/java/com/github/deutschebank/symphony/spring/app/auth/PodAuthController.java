@@ -59,7 +59,7 @@ public class PodAuthController extends AbstractJsonController {
 		appData.put("circleOfTrust", circleOfTrust);
 		appData.put("appId", appIdentity.getCommonName());
 		
-		if (params.containsKey("podId")) {
+		if ((params.containsKey("podId")) && (this.circleOfTrust != CircleOfTrust.OFF)) {
 			
 			// do circle of trust if pod id is set.
 			String podId = params.get("podId");

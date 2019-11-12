@@ -72,6 +72,7 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 		List<Object> providers = new ArrayList<>();
 		providers.add(new JacksonJsonProvider());
 		providers.add(new ContentDispositionMultipartProvider());
+		providers.add(new SymphonyExceptionMapper());
 		return providers;
 	}
 	
@@ -89,7 +90,7 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 		List<Object> providers = getProviders();
 		WebClient wc = WebClient.create(url, providers);
 		setProxy(wc);
-		ClientConfiguration config = WebClient.getConfig(wc);	
+		ClientConfiguration config = WebClient.getConfig(wc);
 		setupClientConfiguration(config);
 		return wc;
 	}
