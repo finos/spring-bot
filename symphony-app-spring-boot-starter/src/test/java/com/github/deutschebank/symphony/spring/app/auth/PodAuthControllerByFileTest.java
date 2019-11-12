@@ -30,7 +30,8 @@ import com.symphony.api.model.ExtensionAppTokens;
  */
 @TestPropertySource(properties={
 		"symphony.app.store.location=src/test/resources/pods",
-		"symphony.app.proxy.host=myproxy.com"
+		"symphony.app.proxy.host=myproxy.com",
+		"symphony.app.circleOfTrust=FULL"
 })
 public class PodAuthControllerByFileTest extends AbstractTest {
 
