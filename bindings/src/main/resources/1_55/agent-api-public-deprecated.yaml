@@ -4753,23 +4753,6 @@ definitions:
       stream:
         # the stream holding the suppressed message
         $ref: '#/definitions/V4Stream'
-  V4SymphonyElementsAction:
-    type: object
-    properties:
-      actionStream:
-        $ref: '#/definitions/V4Stream'
-      formStream:
-        $ref: '#/definitions/V4Stream'
-      formMessageId:
-        type: string
-        description: Message ID
-      formId:
-        type: string
-        description: Form ID
-      formValues:
-        type: object
-        additionalProperties:
-          type: string
   V4Payload:
     type: object
     properties:
@@ -4801,8 +4784,6 @@ definitions:
         $ref: '#/definitions/V4ConnectionAccepted'
       messageSuppressed:
         $ref: '#/definitions/V4MessageSuppressed'
-      symphonyElementsAction:
-        $ref: '#/definitions/V4SymphonyElementsAction'
   V4Event:
     type: object
     properties:
@@ -4834,7 +4815,6 @@ definitions:
             - CONNECTIONREQUESTED
             - CONNECTIONACCEPTED
             - MESSAGESUPPRESSED
-            - SYMPHONYELEMENTSACTION
       diagnostic:
         type: string
         description: |
