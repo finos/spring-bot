@@ -30,6 +30,8 @@ of an original signed CCLA to the Operator at
 marked for the attention of the Project representative. Please keep a copy of the
 signed CCLA or your records.
 
+Alternatively please accept through CLA-Assistant on GitHub.
+
 For the purposes of this Project, the Project representatives are: 
 **Mark Mainwood and Robert Moffat**.
 
