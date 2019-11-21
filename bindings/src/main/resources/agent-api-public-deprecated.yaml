@@ -4769,7 +4769,6 @@ definitions:
       formValues:
         type: object
         additionalProperties:
-          type: string
   V4Payload:
     type: object
     properties:
