@@ -1,4 +1,7 @@
 
+## 21 November 2019
+
+ - Added Swagger Code for Symphony Elements
 
 ## 7/8 November 2019
 
