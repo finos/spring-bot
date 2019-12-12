@@ -1,0 +1,66 @@
+{
+  "mention123": {
+    "type": "com.symphony.user.mention",
+    "version": "1.0",
+    "id": [{
+      "type": "com.symphony.user.userId",
+      "value": "123456"
+    }]
+  },
+  "mention456": {
+    "type": "com.symphony.user.mention",
+    "version": "1.0",
+    "id": [{
+      "type": "com.symphony.user.userId",
+      "value": "654321"
+    }]
+  },
+  "hash789": {
+    "type": "org.symphonyoss.taxonomy",
+    "version": "1.0",
+    "id": [{
+      "type": "org.symphonyoss.taxonomy.hashtag",
+      "value": "#production"
+    }]
+  },
+  "jiraIssueCreated": {
+    "type": "com.symphony.integration.jira.event.created",
+    "version": "1.0",
+    "user": {
+      "type": "com.symphony.integration.user",
+      "version": "1.0",
+      "id": 123456,
+      "emailAddress": "bot.user01@symphony.com",
+      "username": "bot.user01",
+      "displayName": "Bot User01"
+    },
+    "issue": {
+      "type": "com.symphony.integration.jira.issue",
+      "version": "1.0",
+      "key": "SAM-25",
+      "url": "https://whiteam1.atlassian.net/browse/SAM-25/",
+      "subject": "Issue Test",
+      "description": "Only for testing",
+      "issueType": "Story",
+      "labels": [{
+        "type": "com.symphony.integration.jira.label",
+        "version": "1.0",
+        "text": "production"
+      }],
+      "priority": {
+        "type": "com.symphony.integration.jira.priority",
+        "version": "1.0",
+        "iconUrl": "https://whiteam1.atlassian.net/images/icons/priorities/highest.svg",
+        "name": "Highest"
+      },
+      "assignee": {
+        "type": "com.symphony.integration.user",
+        "version": "1.0",
+        "id": 654321,
+        "emailAddress": "bot.user02@symphony.com",
+        "username": "bot.user02",
+        "displayName": "Bot User02"
+      }
+    }
+  }
+}
