@@ -1,10 +1,14 @@
 package com.github.detuschebank.symphony.json;
 
 import java.io.IOException;
+import java.util.Collection;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.WritableTypeId;
+import com.fasterxml.jackson.core.type.WritableTypeId.Inclusion;
 import com.fasterxml.jackson.databind.DatabindContext;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
@@ -12,10 +16,14 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
+import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
@@ -34,6 +42,8 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 			this.version = version;
 		}
 	}
+	
+	
 	
 
 	public EntityJsonTypeResolverBuilder(TypeFactory typeFactory, VersionSpace... allowed) {
@@ -70,8 +80,11 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 
 			@Override
 			public String idFromValue(Object value) {
-				// TODO Auto-generated method stub
-				return super.idFromValue(value);
+				StringBuilder manipulated = new StringBuilder(value.getClass().getCanonicalName());
+				int idx = manipulated.lastIndexOf(".");
+				manipulated.setCharAt(idx+1, Character.toLowerCase(manipulated.charAt(idx+1)));
+				String id = manipulated.toString();
+				return id;
 			}
 
 			@Override
@@ -98,6 +111,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		this._typeProperty = "type";
 		this.allowed = allowed;
 
+		
 		
 	}
 	
@@ -141,4 +155,58 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		};
 	}
 
+	@Override
+	public boolean useForType(JavaType t) {
+		boolean out = super.useForType(t);
+		
+		if (!out) {
+			String className = t.getRawClass().getCanonicalName();
+			for (VersionSpace versionSpace : allowed) {
+				if (className.startsWith(versionSpace.packagePrefix)) {
+					return true;
+				}
+			}
+		}
+		
+		return out;
+	}
+
+	@Override
+	public TypeSerializer buildTypeSerializer(SerializationConfig config, JavaType baseType, Collection<NamedType> subtypes) {
+		
+		if (useForType(baseType)) {
+			return new AsPropertyTypeSerializer(_customIdResolver, null, _typeProperty) {
+
+				@Override
+				public WritableTypeId writeTypePrefix(JsonGenerator g, WritableTypeId idMetadata) throws IOException {
+					String version = null;
+					Class<? extends Object> class1 = idMetadata.forValue.getClass();
+					String className = class1.getCanonicalName();
+					for (VersionSpace versionSpace : allowed) {
+						if (className.startsWith(versionSpace.packagePrefix)) {
+							version= versionSpace.version;
+						}
+					}
+					
+					if ((version == null) && (class1.isAssignableFrom(EntityJson.class))){
+						idMetadata.include = Inclusion.PAYLOAD_PROPERTY;
+					}
+							
+					WritableTypeId out = super.writeTypePrefix(g, idMetadata);
+					
+					if (version != null) {
+						g.writeFieldName("version");
+						g.writeString(version);
+					}
+					
+					return out;
+				}
+			};
+		} else {
+			return null;
+		}
+	}
+
+	
+	
 }

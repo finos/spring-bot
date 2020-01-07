@@ -1,6 +1,8 @@
 package com.github.deutschebank.symphony.json;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,8 +21,10 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.Module.SetupContext;
@@ -46,6 +50,9 @@ public class TestSerialization {
 		
 		// specific to these crazy beans
 		om.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		
+		// indent output
+		om.enable(SerializationFeature.INDENT_OUTPUT);
 	}
 	
 	@Test
@@ -55,6 +62,18 @@ public class TestSerialization {
 		Assert.assertEquals("test@symphony.com", ((State) ej.get("jiraIssue")).issue.assignee.emailAddress);
 		Assert.assertEquals("production", ((State) ej.get("jiraIssue")).issue.labels.get(0).text);
 
+		// ok, convert back into json
+		String done = om.writeValueAsString(ej);
+		System.out.println(done);
+		FileWriter fw = new FileWriter("target/testJiraExample1.json");
+		fw.write(done);
+		fw.close();
+		
+		JsonNode t1 = om.readTree(json);
+		JsonNode t2 = om.readTree(done);
+		
+		Assert.assertEquals(t1, t2);
+		
 	}
 	
 	private String getExpected(String name) {
