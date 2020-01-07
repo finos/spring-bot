@@ -15,6 +15,7 @@ import org.junit.Test;
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -33,7 +34,9 @@ import com.github.detuschebank.symphony.json.EntityJson;
 import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder;
 import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import com.symphony.integration.jira.Issue;
+import com.symphony.integration.jira.event.Created;
 import com.symphony.integration.jira.event.v2.State;
+import com.symphony.user.Mention;
 
 
 public class TestSerialization {
@@ -44,7 +47,7 @@ public class TestSerialization {
 	public static void setupMapper() {
 		om = new ObjectMapper();
 		EntityJsonTypeResolverBuilder trb = new EntityJsonTypeResolverBuilder(om.getTypeFactory(), 
-				new VersionSpace("com.symphony", "1.0"), new VersionSpace("org.symphonyoss", "0.1"));
+				new VersionSpace("com.symphony", "1.0"), new VersionSpace("org.symphonyoss", "1.0"));
 		om.setDefaultTyping(trb);
 		om.addHandler(trb.getVersionHandler());
 		
@@ -63,9 +66,14 @@ public class TestSerialization {
 		Assert.assertEquals("production", ((State) ej.get("jiraIssue")).issue.labels.get(0).text);
 
 		// ok, convert back into json
+		convertBackAndCompare(json, ej, "target/testJiraExample1.json");
+		
+	}
+
+	private void convertBackAndCompare(String json, EntityJson ej, String file) throws JsonProcessingException, IOException, JsonMappingException {
 		String done = om.writeValueAsString(ej);
 		System.out.println(done);
-		FileWriter fw = new FileWriter("target/testJiraExample1.json");
+		FileWriter fw = new FileWriter(file);
 		fw.write(done);
 		fw.close();
 		
@@ -73,8 +81,28 @@ public class TestSerialization {
 		JsonNode t2 = om.readTree(done);
 		
 		Assert.assertEquals(t1, t2);
-		
 	}
+	
+	@Test
+	public void testJiraExample2() throws Exception {
+		String json = getExpected("jira-example-2.json");
+		EntityJson ej = om.readValue(json, EntityJson.class);
+		Assert.assertEquals("Issue Test", ((Created) ej.get("jiraIssueCreated")).issue.subject);
+		Assert.assertEquals("123456", ((Mention) ej.get("mention123")).id.get(0).value);
+
+		convertBackAndCompare(json, ej, "target/testJiraExample2.json");
+	}
+	
+	@Test
+	public void testJiraExample3() throws Exception {
+		String json = getExpected("jira-example-3.json");
+		EntityJson ej = om.readValue(json, EntityJson.class);
+		Assert.assertEquals("production", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.labels.get(0).text);
+		Assert.assertEquals("bot.user2", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.assignee.username);
+
+		convertBackAndCompare(json, ej, "target/testJiraExample3.json");
+	}
+	
 	
 	private String getExpected(String name) {
 		InputStream io = getClass().getResourceAsStream(name);
