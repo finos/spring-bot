@@ -5,10 +5,10 @@
 		"user": {
 			"type": "com.symphony.integration.user",
 			"version": "1.0",
-			"id": 7627861946597,
 			"emailAddress": "bot.user12@symphony.com",
 			"username": "bot.user1",
-			"displayName": "Bot User1"
+			"displayName": "Bot User1",
+			"id": "7627861946597"
 		},
 		"issue": {
 			"type": "com.symphony.integration.jira.issue",
@@ -17,27 +17,32 @@
 			"url": "https://whiteam1.atlassian.net/browse/SAM-25/",
 			"subject": "Issue Test",
 			"description": "Only &lt;br /&gt;for &lt;b&gt;test&lt;/b&gt; line break&lt;br/&gt; &lt;code&gt;test&lt;/code&gt;",
-			"issueType": "Story",
+			"issueType": {
+				"type": "com.symphony.integration.jira.issueType",
+				"version": "1.0",
+				"name": "Story",
+				"iconUrl": "https://jira.atlassian.com/secure/viewavatar?size=xsmall&amp;avatarId=51504&amp;avatarType=issuetype"
+			},
+			"priority": {
+				"type": "com.symphony.integration.jira.priority",
+				"version": "1.0",
+				"name": "Highest",
+				"iconUrl": "https://whiteam1.atlassian.net/images/icons/priorities/highest.svg"
+			},
+			"assignee": {
+				"type": "com.symphony.integration.user",
+				"version": "1.0",
+				"emailAddress": "bot.user2@symphony.com",
+				"username": "bot.user2",
+				"displayName": "Bot User2"
+			},
 			"labels": [
 				{
 					"type": "com.symphony.integration.jira.label",
 					"version": "1.0",
 					"text": "production"
 				}
-			],
-			"priority": {
-				"type": "com.symphony.integration.jira.priority",
-				"version": "1.0",
-				"iconUrl": "https://whiteam1.atlassian.net/images/icons/priorities/highest.svg",
-				"name": "Highest"
-			},
-			"assignee": {
-				"type": "com.symphony.integration.user",
-				"version": "1.0",
-				"displayName": "Bot User2",
-				"emailAddress": "bot.user2@symphony.com",
-				"username": "bot.user2"
-			}
+			]
 		}
 	}
 }
