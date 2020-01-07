@@ -185,6 +185,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 					for (VersionSpace versionSpace : allowed) {
 						if (className.startsWith(versionSpace.packagePrefix)) {
 							version= versionSpace.version;
+							break;
 						}
 					}
 					
@@ -194,7 +195,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 							
 					WritableTypeId out = super.writeTypePrefix(g, idMetadata);
 					
-					if (version != null) {
+					if ((version != null) && (version.trim().length() > 0)) {
 						g.writeFieldName("version");
 						g.writeString(version);
 					}
