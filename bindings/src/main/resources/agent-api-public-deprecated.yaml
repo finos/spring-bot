@@ -558,6 +558,8 @@ paths:
           Search messages according to the specified criteria.
       produces:
         - application/json
+      consumes:
+        - application/json
       parameters:
         - name: query
           description: |
