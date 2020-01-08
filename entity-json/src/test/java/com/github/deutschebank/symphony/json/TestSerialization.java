@@ -104,6 +104,18 @@ public class TestSerialization {
 		convertBackAndCompare(json, ej, "target/testSecuritiesExample.json");
 	}
 	
+	@Test
+	public void testVersionMatching() {
+		VersionSpace vs = new VersionSpace("", "2.0", "1.*");
+		Assert.assertTrue(vs.matches("1.1"));
+		Assert.assertTrue(vs.matches("1.5"));
+		Assert.assertTrue(vs.matches("2.0"));
+	
+		VersionSpace vs2 = new VersionSpace("", "2.0", "1.[0-4]");
+		Assert.assertTrue(vs2.matches("1.1"));
+		Assert.assertFalse(vs2.matches("1.5"));
+		Assert.assertTrue(vs2.matches("2.0"));
+	}
 	
 	private String getExpected(String name) {
 		InputStream io = getClass().getResourceAsStream(name);
