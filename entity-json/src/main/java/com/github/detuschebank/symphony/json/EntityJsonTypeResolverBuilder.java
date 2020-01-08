@@ -1,7 +1,10 @@
 package com.github.detuschebank.symphony.json;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -19,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.deser.DeserializationProblemHandler;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
@@ -27,25 +29,55 @@ import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 
+/**
+ * Contains configuration code to get Jackson to read/write in a Symphony-compatible JSON format.
+ * 
+ * @author Rob Moffat
+ *
+ */
 public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 	
 	private VersionSpace[] allowed;
 	
+	/**
+	 * This declares a package prefix, and the versions it supports for writing and reading.
+	 * 
+	 * This means we can correctly set the "version" : "xxx" part of the JSON format for any given class, 
+	 * and also makes sure that we can read the versions provided.
+	 * 
+	 * 
+	 * @author Rob Moffat
+	 *
+	 */
 	public static class VersionSpace {
 		
 		public final String packagePrefix;
-		public final String version;
+		public final String writeVersion;
+		private String[] readVersions;
 		
-		public VersionSpace(String packagePrefix, String version) {
+		public VersionSpace(String packagePrefix, String writeVersion, String... readVersions) {
 			super();
 			this.packagePrefix = packagePrefix;
-			this.version = version;
+			this.writeVersion = writeVersion;
+			this.readVersions = readVersions;
+		}
+		
+		public Predicate<String> toPattern(String version) {
+			String converted = version
+				.replace(".", "\\.")
+				.replace("*", "[0-9]+");
+			return Pattern.compile(converted).asPredicate();
+		}
+		
+		public boolean matches(String in) {
+			return writeVersion.equals(in) || Arrays.stream(readVersions).anyMatch(x -> toPattern(x).test(in));
+		}
+		
+		public String getVersions() {
+			return writeVersion+ ", "+Arrays.stream(readVersions).reduce("", (a, b) -> a+", "+b);
 		}
 	}
 	
-	
-	
-
 	public EntityJsonTypeResolverBuilder(TypeFactory typeFactory, VersionSpace... allowed) {
 		super(DefaultTyping.JAVA_LANG_OBJECT, new PolymorphicTypeValidator.Base() {
 
@@ -88,12 +120,6 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 			}
 
 			@Override
-			public String idFromValueAndType(Object value, Class<?> type) {
-				// TODO Auto-generated method stub
-				return super.idFromValueAndType(value, type);
-			}
-
-			@Override
 			public JavaType typeFromId(DatabindContext context, String id) throws IOException {
 				// upper-case the first letter after the last dot
 				StringBuilder manipulated = new StringBuilder(id);
@@ -129,7 +155,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 					for (VersionSpace versionSpace : allowed) {
 						if (className.startsWith(versionSpace.packagePrefix)) {
 							
-							if (versionSpace.version.equals(versionNumber)) {
+							if (versionSpace.matches(versionNumber)) {
 								// ok
 								return true;
 							} else {
@@ -137,7 +163,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 										"Version of object "+className+
 										" was "+versionNumber+
 										" but versionSpace "+versionSpace.packagePrefix+
-										" requires "+versionSpace.version);
+										" requires "+versionSpace.getVersions());
 							}
 						}
 					}
@@ -146,7 +172,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 				} else if ("type".equals(propertyName)) {
 					// sometimes types are provided even when our objects know what they are.
 					// in those cases, just ignore type.
-					String typeName = ctxt.readValue(p, String.class);
+					ctxt.readValue(p, String.class);
 					return true;
 				} else {
 					return super.handleUnknownProperty(ctxt, p, deserializer, beanOrClass, propertyName);
@@ -184,7 +210,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 					String className = class1.getCanonicalName();
 					for (VersionSpace versionSpace : allowed) {
 						if (className.startsWith(versionSpace.packagePrefix)) {
-							version= versionSpace.version;
+							version= versionSpace.writeVersion;
 							break;
 						}
 					}
