@@ -20,8 +20,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.detuschebank.symphony.json.EntityJson;
-import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder;
 import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import com.github.detuschebank.symphony.json.ObjectMapperFactory;
 import com.symphony.integration.jira.event.Created;
 import com.symphony.integration.jira.event.v2.State;
 import com.symphony.user.Mention;
@@ -33,14 +33,11 @@ public class TestSerialization {
 	
 	@BeforeClass
 	public static void setupMapper() {
-		om = new ObjectMapper();
-		EntityJsonTypeResolverBuilder trb = new EntityJsonTypeResolverBuilder(om.getTypeFactory(), 
+		om = ObjectMapperFactory.initialize(ObjectMapperFactory.extendedSymphonyVersionSpace(
 				new VersionSpace("com.symphony", "1.0"), 
 				new VersionSpace("org.symphonyoss.fin.security.id", ""),
 				new VersionSpace("org.symphonyoss.fin", "0.1"),
-				new VersionSpace("org.symphonyoss", "1.0"));
-		om.setDefaultTyping(trb);
-		om.addHandler(trb.getVersionHandler());
+				new VersionSpace("org.symphonyoss", "1.0")));
 		
 		// specific to these crazy beans
 		om.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
@@ -55,7 +52,9 @@ public class TestSerialization {
 		EntityJson ej = om.readValue(json, EntityJson.class);
 		Assert.assertEquals("test@symphony.com", ((State) ej.get("jiraIssue")).issue.assignee.emailAddress);
 		Assert.assertEquals("production", ((State) ej.get("jiraIssue")).issue.labels.get(0).text);
-
+		EntityJson ej2 = om.readValue(json, EntityJson.class);
+		Assert.assertEquals(ej, ej2);
+		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
 		// ok, convert back into json
 		convertBackAndCompare(json, ej, "target/testJiraExample1.json");
 		
@@ -79,7 +78,11 @@ public class TestSerialization {
 		String json = getExpected("jira-example-2.json");
 		EntityJson ej = om.readValue(json, EntityJson.class);
 		Assert.assertEquals("Issue Test", ((Created) ej.get("jiraIssueCreated")).issue.subject);
-		Assert.assertEquals("123456", ((Mention) ej.get("mention123")).id.get(0).value);
+		Assert.assertEquals("123456", ((Mention) ej.get("mention123")).getId().get(0).getValue());
+		
+		EntityJson ej2 = om.readValue(json, EntityJson.class);
+		Assert.assertEquals(ej, ej2);
+		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
 
 		convertBackAndCompare(json, ej, "target/testJiraExample2.json");
 	}
@@ -90,6 +93,9 @@ public class TestSerialization {
 		EntityJson ej = om.readValue(json, EntityJson.class);
 		Assert.assertEquals("production", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.labels.get(0).text);
 		Assert.assertEquals("bot.user2", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.assignee.username);
+		EntityJson ej2 = om.readValue(json, EntityJson.class);
+		Assert.assertEquals(ej, ej2);
+		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
 
 		convertBackAndCompare(json, ej, "target/testJiraExample3.json");
 	}
@@ -98,10 +104,20 @@ public class TestSerialization {
 	public void testSecuritiesExample() throws Exception {
 		String json = getExpected("securities.json");
 		EntityJson ej = om.readValue(json, EntityJson.class);
-		Assert.assertEquals("US0378331005", ((Security) ej.get("123")).id.get(0).value);
-		Assert.assertEquals("BBG00CSTXNX6", ((Security) ej.get("321")).id.get(0).value);
+		Assert.assertEquals("US0378331005", ((Security) ej.get("123")).getId().get(0).getValue());
+		Assert.assertEquals("BBG00CSTXNX6", ((Security) ej.get("321")).getId().get(0).getValue());
+		EntityJson ej2 = om.readValue(json, EntityJson.class);
+		Assert.assertEquals(ej, ej2);
+		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
 
 		convertBackAndCompare(json, ej, "target/testSecuritiesExample.json");
+	}
+	
+	@Test(expected=JsonMappingException.class)
+	public void testSecuritiesBrokenExample() throws Exception {
+		// bad version numbers
+		String json = getExpected("securities-wrong.json");
+		om.readValue(json, EntityJson.class);
 	}
 	
 	@Test
