@@ -77,6 +77,12 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		public String getVersions() {
 			return writeVersion+ ", "+Arrays.stream(readVersions).reduce("", (a, b) -> a+", "+b);
 		}
+
+		@Override
+		public String toString() {
+			return "VersionSpace [packagePrefix=" + packagePrefix + ", getVersions()=" + getVersions() + "]";
+		}
+		
 	}
 	
 	public EntityJsonTypeResolverBuilder(TypeFactory typeFactory, VersionSpace... allowed) {
