@@ -37,7 +37,7 @@ public class ObjectMapperFactory {
 	public static VersionSpace[] basicSymphonyVersionSpace() {
 		return new VersionSpace[] { 
 				new VersionSpace(Taxonomy.class.getCanonicalName(), "1.0"),
-				new VersionSpace(Security.class.getCanonicalName(), "0.1"),
+				new VersionSpace(Security.class.getCanonicalName(), "1.0", "0.*"),
 				new VersionSpace(Mention.class.getCanonicalName(), "1.0"), 
 				new VersionSpace(UserId.class.getCanonicalName(), "1.0"), 
 				new VersionSpace(Hashtag.class.getCanonicalName(), "1.0"), 

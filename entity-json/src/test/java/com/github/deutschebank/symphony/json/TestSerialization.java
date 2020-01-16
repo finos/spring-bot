@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.junit.Assert;
@@ -33,17 +34,20 @@ public class TestSerialization {
 	
 	@BeforeClass
 	public static void setupMapper() {
-		om = ObjectMapperFactory.initialize(ObjectMapperFactory.extendedSymphonyVersionSpace(
+		VersionSpace[] vs = ObjectMapperFactory.extendedSymphonyVersionSpace(
 				new VersionSpace("com.symphony", "1.0"), 
 				new VersionSpace("org.symphonyoss.fin.security.id", ""),
 				new VersionSpace("org.symphonyoss.fin", "0.1"),
-				new VersionSpace("org.symphonyoss", "1.0")));
+				new VersionSpace("org.symphonyoss", "1.0"));
+		om = ObjectMapperFactory.initialize(vs);
 		
 		// specific to these crazy beans
 		om.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 		
 		// indent output
 		om.enable(SerializationFeature.INDENT_OUTPUT);
+		
+		System.out.print(Arrays.asList(vs));
 	}
 	
 	@Test
@@ -102,15 +106,16 @@ public class TestSerialization {
 	
 	@Test
 	public void testSecuritiesExample() throws Exception {
-		String json = getExpected("securities.json");
-		EntityJson ej = om.readValue(json, EntityJson.class);
+		String jsonIn = getExpected("securities-in.json");
+		String jsonOut = getExpected("securities-out.json");
+		EntityJson ej = om.readValue(jsonIn, EntityJson.class);
 		Assert.assertEquals("US0378331005", ((Security) ej.get("123")).getId().get(0).getValue());
 		Assert.assertEquals("BBG00CSTXNX6", ((Security) ej.get("321")).getId().get(0).getValue());
-		EntityJson ej2 = om.readValue(json, EntityJson.class);
+		EntityJson ej2 = om.readValue(jsonIn, EntityJson.class);
 		Assert.assertEquals(ej, ej2);
 		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
 
-		convertBackAndCompare(json, ej, "target/testSecuritiesExample.json");
+		convertBackAndCompare(jsonOut, ej, "target/testSecuritiesExample.json");
 	}
 	
 	@Test(expected=JsonMappingException.class)
