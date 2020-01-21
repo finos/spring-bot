@@ -1,5 +1,5 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.symphony.spring.api.builders.JerseyApiBuilderConfig,\
-  com.symphony.spring.api.builders.CXFApiBuilderConfig,\
-  com.symphony.spring.api.SymphonyApiConfig
+  com.github.deutschebank.symphony.spring.api.builders.JerseyApiBuilderConfig,\
+  com.github.deutschebank.symphony.spring.api.builders.CXFApiBuilderConfig,\
+  com.github.deutschebank.symphony.spring.api.SymphonyApiConfig
