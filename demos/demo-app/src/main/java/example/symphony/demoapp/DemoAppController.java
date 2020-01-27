@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
-import com.symphony.spring.app.SymphonyAppProperties;
+
+import com.github.deutschebank.symphony.spring.app.SymphonyAppProperties;
 
 @Controller
 public class DemoAppController {

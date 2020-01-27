@@ -1,0 +1,9 @@
+language: java
+
+jdk:
+  - openjdk11
+
+script: cp .travis.settings.xml $HOME/.m2/settings.xml && mvn install -B -V 
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash) -t $CODECOV_TOKEN
