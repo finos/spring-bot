@@ -74,7 +74,7 @@ public class TokenManager implements ApiWrapper {
 	public <X> X wrap(Class<X> c, X api) {
 		
 		InvocationHandler internal = Proxy.getInvocationHandler(api);
-		ClassLoader cl = internal.getClass().getClassLoader();
+		ClassLoader cl = this.getClass().getClassLoader();
 		
 		return (X) Proxy.newProxyInstance(cl, new Class[] { c }, new InvocationHandler() {
 			

@@ -9,7 +9,7 @@ public abstract class AbstractTest {
 	
 	// A room on Symphony called "DB Symphony Practice Bots Integration Test"
 	// on the develop pod.
-	public static final String ROOM = "y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==";
+	public static final String ROOM = "y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==";
 
 //	certificates not working on develop pod.	
 //	@DataPoint
