@@ -29,11 +29,13 @@ public class TestPodConfig {
 		SymphonyIdentity id;
 		Producer<ConfigurableApiBuilder> pab;
 		TokenManager tm;
+		StreamHelp streamHelp;
 		
 		public AbstractTestClientStrategy(SymphonyIdentity id, Producer<ConfigurableApiBuilder> pab) {
 			this.id = id;
 			this.pab = pab;
 			this.tm = initializeTokenManager();
+			this.streamHelp = new StreamHelp();
 		}
 		
 		protected abstract TokenManager initializeTokenManager();
@@ -52,7 +54,7 @@ public class TestPodConfig {
 			ConfigurableApiBuilder b = pab.call();
 			b.setUrl(POD_URL);
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
-			b.setWrappers(new ApiWrapper[] { tm });
+			b.setWrappers(new ApiWrapper[] { tm, streamHelp });
 			return b.getApi(api);
 		}
 
@@ -75,7 +77,7 @@ public class TestPodConfig {
 			ConfigurableApiBuilder b = pab.call();
 			b.setUrl(AGENT_URL);
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
-			b.setWrappers(new ApiWrapper[] { tm });
+			b.setWrappers(new ApiWrapper[] { tm, streamHelp });
 			return b.getApi(api);
 		}
 
