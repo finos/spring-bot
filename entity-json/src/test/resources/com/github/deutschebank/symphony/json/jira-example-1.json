@@ -1,0 +1,61 @@
+{
+  "jiraIssue" : {
+    "type" : "com.symphony.integration.jira.event.v2.state",
+    "version" : "1.0",
+    "accent" : "green",
+    "baseUrl" : "https://jira.atlassian.com",
+    "tokenColor" : "blue",
+    "icon" : {
+      "type" : "com.symphony.integration.icon",
+      "version" : "1.0",
+      "url" : "https://renderer-tool.app.symphony.com/images/jira_icon.png"
+    },
+    "user" : {
+      "type" : "com.symphony.integration.user",
+      "version" : "1.0",
+      "id" : "123456",
+      "emailAddress" : "test@symphony.com",
+      "username" : "integrationuser",
+      "displayName" : "User 3"
+    },
+    "issue" : {
+      "type" : "com.symphony.integration.jira.issue",
+      "version" : "1.0",
+      "key" : "TICKET-25",
+      "url" : "https://jira.atlassian.com/browse/TICKET-25",
+      "subject" : "Ticket name",
+      "description" : "Description of a Jira Ticket",
+      "status" : "TO DO",
+      "action" : "Created",
+      "issueType" : {
+        "type" : "com.symphony.integration.jira.issueType",
+        "version" : "1.0",
+        "name" : "Story",
+        "iconUrl" : "https://jira.atlassian.com/secure/viewavatar?size=xsmall&amp;avatarId=51504&amp;avatarType=issuetype"
+      },
+      "priority" : {
+        "type" : "com.symphony.integration.jira.priority",
+        "version" : "1.0",
+        "iconUrl" : "https://jira.atlassian.com/images/icons/priorities/highest.svg",
+        "name" : "Highest"
+      },
+      "assignee" : {
+        "type" : "com.symphony.integration.user",
+        "version" : "1.0",
+        "id" : "123456",
+        "emailAddress" : "test@symphony.com",
+        "username" : "integrationuser",
+        "displayName" : "Mock user"
+      },
+      "labels" : [ {
+        "type" : "com.symphony.integration.jira.label",
+        "version" : "1.0",
+        "text" : "production"
+      }, {
+        "type" : "com.symphony.integration.jira.label",
+        "version" : "1.0",
+        "text" : "rc"
+      } ]
+    }
+  }
+}
