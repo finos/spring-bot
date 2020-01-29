@@ -21,3 +21,7 @@
  - Added FIX JSON and Entity JSON Support via Jackson Modules
  - Added StreamIDHelp class to make streamIDs URL-safe automatically
  - Allowed ApiWrappers to be configured in sympony-api-spring-boot-starter
+ 
+## 29 January 2020
+
+ - Fixed Security issue with Jackson reported by Github.
