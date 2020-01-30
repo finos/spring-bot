@@ -128,7 +128,7 @@ public class TestJacksonFixMessages {
 		
 		// let's go round again, and check they match
 		TypeReference<Map<String, IOI>> ref = new TypeReference<Map<String, IOI>>() {};
-		Map<String, Object> stage = om.readValue(out, ref);
+		Object stage = om.readValue(out, ref);
 		String out2 = om.writeValueAsString(stage);
 		Assert.assertEquals(out, out2);
 	}
