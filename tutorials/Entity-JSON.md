@@ -23,7 +23,7 @@ To bring some order to all of these different `data` payload use-cases, Symphony
 
 It looks like this:
 
-```json
+```
 
 {
   "thing1" : {
@@ -62,7 +62,7 @@ It'll get content in both the `message` payload and the `data` payload:
 
 ### Data Payload
 
-```json
+```
 {
   "0": {
     "type": "com.symphony.user.mention",
