@@ -29,13 +29,13 @@ public class TestPodConfig {
 		SymphonyIdentity id;
 		Producer<ConfigurableApiBuilder> pab;
 		TokenManager tm;
-		StreamHelp streamHelp;
+		StreamIDHelp streamHelp;
 		
 		public AbstractTestClientStrategy(SymphonyIdentity id, Producer<ConfigurableApiBuilder> pab) {
 			this.id = id;
 			this.pab = pab;
 			this.tm = initializeTokenManager();
-			this.streamHelp = new StreamHelp();
+			this.streamHelp = new StreamIDHelp();
 		}
 		
 		protected abstract TokenManager initializeTokenManager();
