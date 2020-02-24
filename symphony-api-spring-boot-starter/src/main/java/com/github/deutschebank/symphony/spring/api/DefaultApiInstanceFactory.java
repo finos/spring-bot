@@ -24,6 +24,7 @@ import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.ApiWrapper;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
 import com.symphony.api.bindings.JWTHelper;
+import com.symphony.api.bindings.StreamIDHelp;
 import com.symphony.api.bindings.TokenManager;
 import com.symphony.api.id.IdentityConfigurationException;
 import com.symphony.api.id.SymphonyIdentity;
@@ -35,6 +36,7 @@ import io.micrometer.core.instrument.Timer.Sample;
 
 /**
  * Creates ApiInstances, and also manages adding them to the health endpoint, if a {@link HealthIndicatorRegistry} is defined.
+ * 
  * @author Rob Moffat
  */
 public class DefaultApiInstanceFactory implements ApiInstanceFactory {
@@ -193,25 +195,30 @@ public class DefaultApiInstanceFactory implements ApiInstanceFactory {
 		return hasCerts;
 	}
 
-	private ConfigurableApiBuilder createApiBuilder(PodProperties pp, EndpointProperties ep, TokenManager tm, SymphonyIdentity id,
+	/**
+	 * Override this method to configure your own ApiBuilder implementation.
+	 */
+	protected ConfigurableApiBuilder createApiBuilder(PodProperties pp, EndpointProperties ep, TokenManager tm, SymphonyIdentity id,
 			TrustManager[] trustManagers) throws Exception {
 		ConfigurableApiBuilder ab = apiBuilderFactory.getObject();
-		ApiWrapper[] wrappers = { tm, new MetricsApiWrapper(pp, id, ep.getUrl()) };
+		ApiWrapper[] wrappers = { tm, new StreamIDHelp(), new MetricsApiWrapper(pp, id, ep.getUrl()) };
 		ep.configure(ab, wrappers, trustManagers);
 		return ab;
 	}
 
-	private ConfigurableApiBuilder createApiBuilder(PodProperties pp, EndpointProperties ep, SymphonyIdentity id,
-			TrustManager[] trustManagers, String apiName) throws Exception {
+	/**
+	 * Override this method to configure your own ApiBuilder implementation.
+	 */
+	protected ConfigurableApiBuilder createApiBuilder(PodProperties pp, EndpointProperties ep, SymphonyIdentity id, TrustManager[] trustManagers, String apiName) throws Exception {
 		if (ep == null) {
 			LOG.warn("symphony.apis[{}].{} not set: could cause NPE when doing get{}Api()", 
 					pp.getId(), apiName.toLowerCase(), StringUtils.capitalize(apiName));
 			return null;
 		}
 		
-		ApiWrapper[] wrapper = { new MetricsApiWrapper(pp, id, ep.getUrl()) };
+		ApiWrapper[] wrappers = { new StreamIDHelp(), new MetricsApiWrapper(pp, id, ep.getUrl()) };
 		ConfigurableApiBuilder ab = apiBuilderFactory.getObject();
-		ep.configure(ab, wrapper, id, trustManagers);
+		ep.configure(ab, wrappers, id, trustManagers);
 		return ab;
 	}
 
