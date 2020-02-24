@@ -35,10 +35,7 @@ public class TestSerialization {
 	@BeforeClass
 	public static void setupMapper() {
 		VersionSpace[] vs = ObjectMapperFactory.extendedSymphonyVersionSpace(
-				new VersionSpace("com.symphony", "1.0"), 
-				new VersionSpace("org.symphonyoss.fin.security.id", ""),
-				new VersionSpace("org.symphonyoss.fin", "0.1"),
-				new VersionSpace("org.symphonyoss", "1.0"));
+				new VersionSpace("com.symphony", "1.0"));
 		om = ObjectMapperFactory.initialize(vs);
 		
 		// specific to these crazy beans
