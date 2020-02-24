@@ -5,8 +5,6 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.PathParam;
 
 /**
@@ -14,7 +12,7 @@ import javax.ws.rs.PathParam;
  * @author Rob Moffat
  *
  */
-public class StreamHelp implements ApiWrapper {
+public class StreamIDHelp implements ApiWrapper {
 
 	public static String safeStreamId(String in) {
 		if (in == null) {
@@ -52,8 +50,8 @@ public class StreamHelp implements ApiWrapper {
 			private boolean isStreamParam(Annotation[] annotations) {
 				for (Annotation a : annotations) {
 					if (a.annotationType() == PathParam.class) {
-						HeaderParam hp = (HeaderParam) a;
-						return ("id".equals(hp.value()));
+						PathParam hp = (PathParam) a;
+						return ("id".equals(hp.value()) || "sid".equals(hp.value()));
 					}
 				}
 				

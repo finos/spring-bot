@@ -14,4 +14,14 @@
    - Simplified bindings dependencies to just annotations.
  - Releasing version: 4.55.1 
  - Changed demo bot application.yml so that it starts on develop pod.
+
+## 27 January 2020
+
+ - Rebuilt against Symphony 1.55.4 API
+ - Added FIX JSON and Entity JSON Support via Jackson Modules
+ - Added StreamIDHelp class to make streamIDs URL-safe automatically
+ - Allowed ApiWrappers to be configured in sympony-api-spring-boot-starter
  
+## 29 January 2020
+
+ - Fixed Security issue with Jackson reported by Github.
