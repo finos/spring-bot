@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.detuschebank.symphony.json.EntityJson;
 import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import com.github.detuschebank.symphony.json.ObjectMapperFactory;
+import com.github.deutschebank.symphony.json.test.ClassWithEnum;
 import com.symphony.integration.jira.event.Created;
 import com.symphony.integration.jira.event.v2.State;
 import com.symphony.user.Mention;
@@ -35,7 +36,8 @@ public class TestSerialization {
 	@BeforeClass
 	public static void setupMapper() {
 		VersionSpace[] vs = ObjectMapperFactory.extendedSymphonyVersionSpace(
-				new VersionSpace("com.symphony", "1.0"));
+				new VersionSpace("com.symphony", "1.0"),
+				new VersionSpace("com.github.deutschebank.symphony.json.test", "1.0"));
 		om = ObjectMapperFactory.initialize(vs);
 		
 		// specific to these crazy beans
@@ -45,6 +47,33 @@ public class TestSerialization {
 		om.enable(SerializationFeature.INDENT_OUTPUT);
 		
 		System.out.print(Arrays.asList(vs));
+	}
+	
+	@Test
+	public void testClassWithEnum() throws Exception {
+		ClassWithEnum cwe = new ClassWithEnum();
+		cwe.c = ClassWithEnum.Choice.B;
+		cwe.name = "Fred";
+		EntityJson ej = new EntityJson();
+		ej.put("cwe", cwe);
+		String json = om.writeValueAsString(ej);
+		System.out.println(json);
+		
+		EntityJson out = om.readValue(json, EntityJson.class);
+		
+		
+		Assert.assertEquals(ej, out);
+		
+//		String json = getExpected("jira-example-1.json");
+//		EntityJson ej = om.readValue(json, EntityJson.class);
+//		Assert.assertEquals("test@symphony.com", ((State) ej.get("jiraIssue")).issue.assignee.emailAddress);
+//		Assert.assertEquals("production", ((State) ej.get("jiraIssue")).issue.labels.get(0).text);
+//		EntityJson ej2 = om.readValue(json, EntityJson.class);
+//		Assert.assertEquals(ej, ej2);
+//		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
+//		// ok, convert back into json
+//		convertBackAndCompare(json, ej, "target/testJiraExample1.json");
+		
 	}
 	
 	@Test
