@@ -29,6 +29,7 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 	protected String password;
 	protected int port;
 	protected ApiWrapper[] wrappers = new ApiWrapper[0];
+	protected Long connectTimeout = null;
 	
 	@Override
 	public void setProxyDetails(String proxyHost, String user, String password, int port) {
@@ -72,11 +73,11 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 		return this.wrappers;
 	}
 	
-	public static EnumSet<Family> ACCEPTABLE_STATUSES = EnumSet.of(
-			Family.REDIRECTION, 
-			Family.SUCCESSFUL, 
-			Family.SERVER_ERROR,
-			Family.INFORMATIONAL,
-			Family.OTHER, 
-			Family.CLIENT_ERROR);
+	@Override
+	public void setConnectTimeout(long ct) {
+		this.connectTimeout = ct;
+	}
+	
+	
+	
 }
