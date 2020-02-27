@@ -16,5 +16,7 @@ public interface ConfigurableApiBuilder extends ApiBuilder {
 	KeyManager[] getKeyManagers();
 	
 	boolean testConnection(String url);
+	
+	void setConnectTimeout(long ct);
 
 }

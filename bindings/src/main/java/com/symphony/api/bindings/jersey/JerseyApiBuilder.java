@@ -92,6 +92,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 			    config.property(ClientProperties.PROXY_USERNAME,user);
 				config.property(ClientProperties.PROXY_PASSWORD,password);
 		}
+		
+		if (connectTimeout != null) {
+			config.property(ClientProperties.CONNECT_TIMEOUT, connectTimeout.intValue());
+		}
+		
 		return config;
 	}
 
@@ -107,7 +112,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 
 	@Override
 	public boolean testConnection(String url) {
-		Response response = newWebTarget(url).request().get();
-		return ACCEPTABLE_STATUSES.contains(response.getStatusInfo().getFamily());
+		try {
+			Response response = newWebTarget(url).request().get();
+			return response != null;	// any response from the server means we at least connected.
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }
