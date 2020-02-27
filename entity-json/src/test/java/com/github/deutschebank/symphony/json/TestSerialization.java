@@ -58,22 +58,9 @@ public class TestSerialization {
 		ej.put("cwe", cwe);
 		String json = om.writeValueAsString(ej);
 		System.out.println(json);
-		
 		EntityJson out = om.readValue(json, EntityJson.class);
-		
-		
 		Assert.assertEquals(ej, out);
-		
-//		String json = getExpected("jira-example-1.json");
-//		EntityJson ej = om.readValue(json, EntityJson.class);
-//		Assert.assertEquals("test@symphony.com", ((State) ej.get("jiraIssue")).issue.assignee.emailAddress);
-//		Assert.assertEquals("production", ((State) ej.get("jiraIssue")).issue.labels.get(0).text);
-//		EntityJson ej2 = om.readValue(json, EntityJson.class);
-//		Assert.assertEquals(ej, ej2);
-//		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
-//		// ok, convert back into json
-//		convertBackAndCompare(json, ej, "target/testJiraExample1.json");
-		
+	
 	}
 	
 	@Test
