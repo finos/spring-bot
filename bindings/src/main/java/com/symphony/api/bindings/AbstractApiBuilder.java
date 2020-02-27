@@ -78,6 +78,14 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 		this.connectTimeout = ct;
 	}
 	
+	/**
+	 * Should be overridden by specific implementations
+	 */
+	@Override
+	public boolean testConnection(String url) {
+		return true;
+	}
+	
 	
 	
 }
