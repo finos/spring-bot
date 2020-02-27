@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.KeyManager;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status.Family;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
@@ -86,13 +88,17 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 		return out;
 	}
 		
-	protected WebClient createWebClient() {	
+	protected WebClient createWebClient(String url) {	
 		List<Object> providers = getProviders();
 		WebClient wc = WebClient.create(url, providers);
 		setProxy(wc);
 		ClientConfiguration config = WebClient.getConfig(wc);
 		setupClientConfiguration(config);
 		return wc;
+	}
+	
+	protected WebClient createWebClient() {	
+		return createWebClient(this.url);
 	}
 
 	protected void setupClientConfiguration(ClientConfiguration config) {
@@ -123,6 +129,12 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 			policy.setProxyServer(proxyHost);
 			policy.setProxyServerPort(port);
 		}
+	}
+
+	@Override
+	public boolean testConnection(String url) {
+		Response response = createWebClient(url).get();
+		return ACCEPTABLE_STATUSES.contains(response.getStatusInfo().getFamily());
 	}
 
 
