@@ -1,7 +1,10 @@
 package com.symphony.api.bindings;
 
+import java.util.EnumSet;
+
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
+import javax.ws.rs.core.Response.Status.Family;
 
 public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 
@@ -69,5 +72,11 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 		return this.wrappers;
 	}
 	
-	
+	public static EnumSet<Family> ACCEPTABLE_STATUSES = EnumSet.of(
+			Family.REDIRECTION, 
+			Family.SUCCESSFUL, 
+			Family.SERVER_ERROR,
+			Family.INFORMATIONAL,
+			Family.OTHER, 
+			Family.CLIENT_ERROR);
 }
