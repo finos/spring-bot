@@ -25,3 +25,8 @@
 ## 29 January 2020
 
  - Fixed Security issue with Jackson reported by Github.
+
+## 28 February 2020
+ 
+ - Fixed Enum Bug in Entity Json 
+ - #30, allowed multiple proxies per connection

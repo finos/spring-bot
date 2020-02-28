@@ -21,4 +21,6 @@ public interface ConfigurableApiBuilder extends ApiBuilder {
 	 */
 	boolean testConnection(String url);
 
+	void setConnectTimeout(long ct);
+
 }
