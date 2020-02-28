@@ -54,7 +54,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		return buildProxy(c, wt);
 	}
 	
+<<<<<<< HEAD
 	private WebTarget newWebTarget(String url) {
+=======
+	protected WebTarget newWebTarget(String url) {
+>>>>>>> origin/fixing_master
 		try {
 			JerseyClientBuilder jcb = new JerseyClientBuilder();
 			jcb.sslContext(createSSLContext());
@@ -68,7 +72,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		}
 	}
 	
+<<<<<<< HEAD
 	public WebTarget newWebTarget() {
+=======
+	protected WebTarget newWebTarget() {
+>>>>>>> origin/fixing_master
 		return newWebTarget(this.url);
 	}
 
@@ -92,6 +100,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 			    config.property(ClientProperties.PROXY_USERNAME,user);
 				config.property(ClientProperties.PROXY_PASSWORD,password);
 		}
+		
+		if (connectTimeout != null) {
+			config.property(ClientProperties.CONNECT_TIMEOUT, connectTimeout.intValue());
+		}
+		
 		return config;
 	}
 
@@ -107,10 +120,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 
 	@Override
 	public boolean testConnection(String url) {
-		WebTarget wt = newWebTarget(url);
-		Response r = wt.request().buildGet().invoke();
-		return r.getStatusInfo().getFamily() == Family.SUCCESSFUL;
+		try {
+			Response response = newWebTarget(url).request().get();
+			return response != null;	// any response from the server means we at least connected.
+		} catch (Exception e) {
+			return false;
+		}
 	}
-
-
 }

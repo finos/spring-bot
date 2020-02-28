@@ -177,12 +177,12 @@ public class TestPodConfig {
 	private static final SymphonyIdentity BOT1_ID = TestIdentityProvider.getIdentity("symphony-develop-bot1-identity");
 	
 	private static final String CI_PROXY = System.getProperty("proxy");
-	private static final String SESSION_AUTH_URL = "https://develop-api.symphony.com/sessionauth";
-	private static final String KEY_AUTH_URL = "https://develop-api.symphony.com/keyauth";
-	private static final String AGENT_URL = "https://develop.symphony.com/agent";
-	private static final String POD_URL = "https://develop.symphony.com/pod";
-	private static final String LOGIN_URL = "https://develop.symphony.com/login";
-	private static final String RELAY_URL = "https://develop.symphony.com/relay";
+	public static final String SESSION_AUTH_URL = "https://develop-api.symphony.com/sessionauth";
+	public static final String KEY_AUTH_URL = "https://develop-api.symphony.com/keyauth";
+	public static final String AGENT_URL = "https://develop.symphony.com/agent";
+	public static final String POD_URL = "https://develop.symphony.com/pod";
+	public static final String LOGIN_URL = "https://develop.symphony.com/login";
+	public static final String RELAY_URL = "https://develop.symphony.com/relay";
 		
 	public static final TestClientStrategy JERSEY_RSA = new RSATestClientStrategy(BOT1_ID, () -> new JerseyApiBuilder());
 	
