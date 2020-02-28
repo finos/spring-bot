@@ -14,5 +14,9 @@ public interface ConfigurableApiBuilder extends ApiBuilder {
 	ApiWrapper[] getWrappers();
 	TrustManager[] getTrustManagers();
 	KeyManager[] getKeyManagers();
+	
+	boolean testConnection(String url);
+	
+	void setConnectTimeout(long ct);
 
 }
