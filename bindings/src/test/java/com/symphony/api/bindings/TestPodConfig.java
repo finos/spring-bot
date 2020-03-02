@@ -105,7 +105,7 @@ public class TestPodConfig {
 		}
 		
 		@Override
-		public ConfigurableApiBuilder getAPiBuilder() {
+		public ConfigurableApiBuilder getApiBuilder() {
 			return pab.call();
 		}
 	}
