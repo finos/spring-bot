@@ -192,6 +192,10 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 	public boolean useForType(JavaType t) {
 		boolean out = super.useForType(t);
 		
+		if (t.isEnumType()) {
+			return false;
+		}
+		
 		if (!out) {
 			if (t.isEnumType()) {
 				return false;

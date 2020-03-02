@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.KeyManager;
+<<<<<<< HEAD
+=======
+import javax.ws.rs.core.Response;
+>>>>>>> origin/fixing_master
+import javax.ws.rs.core.Response.Status.Family;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
@@ -18,15 +23,16 @@ import com.symphony.api.authenticator.AuthenticationApi;
 import com.symphony.api.bindings.AbstractApiBuilder;
 
 /**
- * You should write your own version of this, or modify the returned webclient if you want to make use of proxies,
- * or set different characteristics on the webclient.
+ * You should write your own version of this, or modify the returned webclient
+ * if you want to make use of proxies, or set different characteristics on the
+ * webclient.
  * 
  * The URL should be:
  * 
- * <ul> 
-	 <li>https://&lt;your-pod&gt;.symphony.com:443/sessionauth
-	 <li>https://&lt;your agent&gt;:8444/agent
-	 <li>https://&lt;your key manager&gt;:8444/keyauth
+ * <ul>
+ * <li>https://&lt;your-pod&gt;.symphony.com:443/sessionauth
+ * <li>https://&lt;your agent&gt;:8444/agent
+ * <li>https://&lt;your key manager&gt;:8444/keyauth
  * </ul>
  * 
  * 
@@ -35,12 +41,11 @@ import com.symphony.api.bindings.AbstractApiBuilder;
  */
 public class CXFApiBuilder extends AbstractApiBuilder {
 
-
 	public CXFApiBuilder() {
 	}
-	
+
 	/**
-	 * Call this class to create a basic xcf webclient.  
+	 * Call this class to create a basic xcf webclient.
 	 * 
 	 */
 	public CXFApiBuilder(String url) {
@@ -48,15 +53,17 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 	}
 
 	/**
-	 * Call this class to create a basic xcf webclient for authenticating using certificates.
+	 * Call this class to create a basic xcf webclient for authenticating using
+	 * certificates.
 	 */
 	public CXFApiBuilder(String url, KeyManager[] keyManagers) {
 		super(url, keyManagers);
 	}
-	
+
 	/**
-	 * Call this with an api, e.g.  {@link MessagesApi}.class if you have constructed with the /agent endpoint, 
-	 * or {@link AuthenticationApi} if you have constructed with keyauth or sessionauth endpoints.
+	 * Call this with an api, e.g. {@link MessagesApi}.class if you have constructed
+	 * with the /agent endpoint, or {@link AuthenticationApi} if you have
+	 * constructed with keyauth or sessionauth endpoints.
 	 */
 	@Override
 	public <X> X getApi(Class<X> c) {
@@ -65,7 +72,9 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 	}
 
 	/**
-	 * Sets the list of providers, by default will be {@link JacksonJsonProvider} and {@link ContentDispositionMultipartProvider}.
+	 * Sets the list of providers, by default will be {@link JacksonJsonProvider}
+	 * and {@link ContentDispositionMultipartProvider}.
+	 * 
 	 * @return
 	 */
 	protected List<Object> getProviders() {
@@ -75,18 +84,23 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 		providers.add(new SymphonyExceptionMapper());
 		return providers;
 	}
-	
+
 	protected <X> X buildProxy(Class<X> c, WebClient wc) {
 		X out = JAXRSClientFactory.fromClient(wc, c);
-		
+
 		for (int i = 0; i < wrappers.length; i++) {
 			out = wrappers[i].wrap(c, out);
 		}
-		
+
 		return out;
 	}
-		
-	protected WebClient createWebClient() {	
+<<<<<<< HEAD
+	
+	private WebClient createWebClient(String url) {
+=======
+
+	protected WebClient createWebClient(String url) {
+>>>>>>> origin/fixing_master
 		List<Object> providers = getProviders();
 		WebClient wc = WebClient.create(url, providers);
 		setProxy(wc);
@@ -94,15 +108,27 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 		setupClientConfiguration(config);
 		return wc;
 	}
+		
+	protected WebClient createWebClient() {	
+		return createWebClient(this.url);
+	}
+
+	protected WebClient createWebClient() {
+		return createWebClient(this.url);
+	}
 
 	protected void setupClientConfiguration(ClientConfiguration config) {
 		HTTPConduit conduit = config.getHttpConduit();
-	
+
 		TLSClientParameters params = conduit.getTlsClientParameters();
-		
+
 		if (params == null) {
 			params = new TLSClientParameters();
 			conduit.setTlsClientParameters(params);
+		}
+
+		if (connectTimeout != null) {
+			conduit.getClient().setConnectionTimeout(connectTimeout);
 		}
 		
 		setupTLSParameters(params);
@@ -110,21 +136,28 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 
 	protected void setupTLSParameters(TLSClientParameters params) {
 		params.setKeyManagers(keyManagers);
-		
+
 		if (trustManagers != null) {
 			params.setTrustManagers(trustManagers);
 		}
 	}
-	
+
 	public void setProxy(WebClient wc) {
 		HTTPConduit conduit = WebClient.getConfig(wc).getHttpConduit();
 		HTTPClientPolicy policy = conduit.getClient();
-		if ((this.proxyHost!= null) && (this.proxyHost.length() > 0)) {
+		if ((this.proxyHost != null) && (this.proxyHost.length() > 0)) {
 			policy.setProxyServer(proxyHost);
 			policy.setProxyServerPort(port);
 		}
 	}
 
-
-
+	@Override
+	public boolean testConnection(String url) {
+		try {
+			Response response = createWebClient(url).get();
+			return response != null;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }
