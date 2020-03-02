@@ -54,11 +54,7 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		return buildProxy(c, wt);
 	}
 	
-<<<<<<< HEAD
-	private WebTarget newWebTarget(String url) {
-=======
 	protected WebTarget newWebTarget(String url) {
->>>>>>> origin/fixing_master
 		try {
 			JerseyClientBuilder jcb = new JerseyClientBuilder();
 			jcb.sslContext(createSSLContext());
@@ -72,11 +68,7 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		}
 	}
 	
-<<<<<<< HEAD
-	public WebTarget newWebTarget() {
-=======
 	protected WebTarget newWebTarget() {
->>>>>>> origin/fixing_master
 		return newWebTarget(this.url);
 	}
 

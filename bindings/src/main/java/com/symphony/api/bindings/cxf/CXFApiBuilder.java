@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.KeyManager;
-<<<<<<< HEAD
-=======
 import javax.ws.rs.core.Response;
->>>>>>> origin/fixing_master
-import javax.ws.rs.core.Response.Status.Family;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
@@ -28,7 +24,7 @@ import com.symphony.api.bindings.AbstractApiBuilder;
  * webclient.
  * 
  * The URL should be:
- * 
+ * os
  * <ul>
  * <li>https://&lt;your-pod&gt;.symphony.com:443/sessionauth
  * <li>https://&lt;your agent&gt;:8444/agent
@@ -94,13 +90,8 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 
 		return out;
 	}
-<<<<<<< HEAD
 	
-	private WebClient createWebClient(String url) {
-=======
-
 	protected WebClient createWebClient(String url) {
->>>>>>> origin/fixing_master
 		List<Object> providers = getProviders();
 		WebClient wc = WebClient.create(url, providers);
 		setProxy(wc);
@@ -108,11 +99,7 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 		setupClientConfiguration(config);
 		return wc;
 	}
-		
-	protected WebClient createWebClient() {	
-		return createWebClient(this.url);
-	}
-
+	
 	protected WebClient createWebClient() {
 		return createWebClient(this.url);
 	}
