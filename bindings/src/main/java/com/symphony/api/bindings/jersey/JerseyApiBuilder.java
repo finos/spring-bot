@@ -7,6 +7,8 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status.Family;
 
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
@@ -52,18 +54,30 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		return buildProxy(c, wt);
 	}
 	
-	public WebTarget newWebTarget() {
+<<<<<<< HEAD
+	private WebTarget newWebTarget(String url) {
+=======
+	protected WebTarget newWebTarget(String url) {
+>>>>>>> origin/fixing_master
 		try {
 			JerseyClientBuilder jcb = new JerseyClientBuilder();
 			jcb.sslContext(createSSLContext());
 		    jcb = jcb.withConfig(createConfig());
 			registerFeatures(jcb);
 			Client client = jcb.build();
-			WebTarget webTarget = client.target(this.url);
+			WebTarget webTarget = client.target(url);
 			return webTarget;
 		} catch (Exception e) {
 			throw new UnsupportedOperationException("Couldn't create jersey client", e);
 		}
+	}
+	
+<<<<<<< HEAD
+	public WebTarget newWebTarget() {
+=======
+	protected WebTarget newWebTarget() {
+>>>>>>> origin/fixing_master
+		return newWebTarget(this.url);
 	}
 
 	protected void registerFeatures(JerseyClientBuilder jcb) {
@@ -86,6 +100,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 			    config.property(ClientProperties.PROXY_USERNAME,user);
 				config.property(ClientProperties.PROXY_PASSWORD,password);
 		}
+		
+		if (connectTimeout != null) {
+			config.property(ClientProperties.CONNECT_TIMEOUT, connectTimeout.intValue());
+		}
+		
 		return config;
 	}
 
@@ -99,5 +118,13 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		return out;
 	}
 
-
+	@Override
+	public boolean testConnection(String url) {
+		try {
+			Response response = newWebTarget(url).request().get();
+			return response != null;	// any response from the server means we at least connected.
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }

@@ -14,5 +14,13 @@ public interface ConfigurableApiBuilder extends ApiBuilder {
 	ApiWrapper[] getWrappers();
 	TrustManager[] getTrustManagers();
 	KeyManager[] getKeyManagers();
+	
+	/**
+	 * Attempts to make a connection with the given settings.  
+	 * This allows you to try out different alternative proxy options.
+	 */
+	boolean testConnection(String url);
+
+	void setConnectTimeout(long ct);
 
 }
