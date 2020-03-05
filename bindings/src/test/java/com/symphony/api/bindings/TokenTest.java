@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.experimental.theories.Theory;
 
 import com.symphony.api.agent.MessagesApi;
-import com.symphony.api.bindings.TokenManager;
 import com.symphony.api.model.V4MessageList;
 
 public class TokenTest extends AbstractTest {
