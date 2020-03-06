@@ -1,10 +1,7 @@
 package com.symphony.api.bindings;
 
-import java.util.EnumSet;
-
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
-import javax.ws.rs.core.Response.Status.Family;
 
 public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 

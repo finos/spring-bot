@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.net.ssl.KeyManager;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status.Family;
 
 import org.apache.cxf.configuration.jsse.TLSClientParameters;
 import org.apache.cxf.jaxrs.client.ClientConfiguration;
@@ -18,6 +17,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.authenticator.AuthenticationApi;
 import com.symphony.api.bindings.AbstractApiBuilder;
+import com.symphony.api.bindings.jackson.LenientJacksonJsonProvider;
 
 /**
  * You should write your own version of this, or modify the returned webclient
@@ -70,13 +70,13 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 
 	/**
 	 * Sets the list of providers, by default will be {@link JacksonJsonProvider}
-	 * and {@link ContentDispositionMultipartProvider}.
+	 * {@link ContentDispositionMultipartProvider} and {@link SymphonyExceptionMapper}.
 	 * 
 	 * @return
 	 */
 	protected List<Object> getProviders() {
 		List<Object> providers = new ArrayList<>();
-		providers.add(new JacksonJsonProvider());
+		providers.add(new LenientJacksonJsonProvider());
 		providers.add(new ContentDispositionMultipartProvider());
 		providers.add(new SymphonyExceptionMapper());
 		return providers;
