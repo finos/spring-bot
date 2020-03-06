@@ -4,10 +4,6 @@ package com.symphony.api.bindings;
 import org.glassfish.jersey.internal.util.Producer;
 
 import com.symphony.api.authenticator.AuthenticationApi;
-import com.symphony.api.bindings.ApiWrapper;
-import com.symphony.api.bindings.ConfigurableApiBuilder;
-import com.symphony.api.bindings.JWTHelper;
-import com.symphony.api.bindings.TokenManager;
 import com.symphony.api.bindings.cxf.CXFApiBuilder;
 import com.symphony.api.bindings.jersey.JerseyApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
