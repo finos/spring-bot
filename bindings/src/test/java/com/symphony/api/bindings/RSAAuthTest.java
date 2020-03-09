@@ -2,7 +2,6 @@ package com.symphony.api.bindings;
 
 import org.junit.experimental.theories.Theory;
 
-import com.symphony.api.bindings.JWTHelper;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.login.AuthenticationApi;
 import com.symphony.api.model.AuthenticateRequest;

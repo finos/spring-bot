@@ -12,12 +12,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.agent.SystemApi;
-import com.symphony.api.bindings.Streams;
 import com.symphony.api.bindings.Streams.Worker;
 import com.symphony.api.model.Datafeed;
 import com.symphony.api.model.V2HealthCheckResponse;
 import com.symphony.api.model.V4Event;
-import com.symphony.api.model.V4MessageList;
 
 /**
  * Tests of some Agent endpoints.
