@@ -15,8 +15,10 @@ import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.ServerErrorException;
 import org.slf4j.Logger;
+import static org.codehaus.plexus.util.StringUtils.isNotBlank;
 
 public class ProxyingWrapper {
+    private static final String DEFAULT_JKS_RESOURCE = "all_symphony_certs_truststore";
 
     private final List<String> proxyHosts;
 
@@ -34,7 +36,7 @@ public class ProxyingWrapper {
         builder.setKeyManagers(id.getKeyManagers());
         builder.setUrl(url);
 
-        InputStream is = new FileInputStream(jksFile);
+        InputStream is = readJks(jksFile);
 
         try {
             TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
@@ -79,5 +81,14 @@ public class ProxyingWrapper {
         }
 
         throw new RuntimeException("Exhausted all proxy options", last);
+    }
+
+    private InputStream readJks(String jksFile) throws IOException {
+        if (isNotBlank(jksFile)) {
+            return new FileInputStream(jksFile);
+        } else {
+            log.info("trust-store.jks was not specified, using default jks");
+            return this.getClass().getClassLoader().getResourceAsStream(DEFAULT_JKS_RESOURCE);
+        }
     }
 }
