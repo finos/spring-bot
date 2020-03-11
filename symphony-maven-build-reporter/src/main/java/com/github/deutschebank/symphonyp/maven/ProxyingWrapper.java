@@ -1,8 +1,8 @@
 package com.github.deutschebank.symphonyp.maven;
 
-import com.symphony.api.ApiBuilder;
-import com.symphony.api.jersey.JerseyApiBuilder;
-import com.symphony.id.SymphonyIdentity;
+import com.symphony.api.bindings.ApiBuilder;
+import com.symphony.api.bindings.jersey.JerseyApiBuilder;
+import com.symphony.api.id.SymphonyIdentity;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
