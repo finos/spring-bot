@@ -34,3 +34,7 @@
 ## 6 March 2020
 
  - Fixed #33, making JSON parsing lenient in the face of additions on Symphony's side.
+
+## 16th March 2020
+
+ - Continued fix of #33
