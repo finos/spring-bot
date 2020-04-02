@@ -2,6 +2,7 @@ package com.symphony.api.bindings;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
@@ -14,8 +15,10 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.agent.SystemApi;
 import com.symphony.api.bindings.Streams.Worker;
 import com.symphony.api.model.Datafeed;
+import com.symphony.api.model.MessageSearchQuery;
 import com.symphony.api.model.V2HealthCheckResponse;
 import com.symphony.api.model.V4Event;
+import com.symphony.api.model.V4MessageList;
 
 /**
  * Tests of some Agent endpoints.
@@ -66,8 +69,8 @@ public class AgentTest extends AbstractTest {
 		t.setDaemon(true);
 		t.start();
 
-		messageAPi.v4StreamSidMessageCreatePost(null, ROOM,
-				"<messageML>Trigger Listener.</messageML>", null, null, null, null, null);
+		String toSend = "Trigger Listener."+new Random().nextInt();
+		messageAPi.v4StreamSidMessageCreatePost(null, ROOM, "<messageML>"+toSend+"</messageML>", null, null, null, null, null);
 
 		// wait for roundtrip
 		while (count[0] == 0) {
