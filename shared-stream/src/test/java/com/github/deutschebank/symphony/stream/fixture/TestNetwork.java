@@ -7,12 +7,12 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.ClusterMember;
 import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 
 public class TestNetwork {
 	
@@ -26,7 +26,7 @@ public class TestNetwork {
 		this.maxDelay = maxDelay;
 	}
 
-	public void register(Participant p, TestingClusterMember tcm) {
+	public void register(Participant p, TestClusterMember tcm) {
 		members.put(p, tcm);
 	}
 

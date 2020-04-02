@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.stream.msg;
+package com.github.deutschebank.symphony.stream;
 
 import java.util.Objects;
 

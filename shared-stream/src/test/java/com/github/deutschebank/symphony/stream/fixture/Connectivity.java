@@ -3,7 +3,7 @@ package com.github.deutschebank.symphony.stream.fixture;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.github.deutschebank.symphony.stream.msg.Participant;
+import com.github.deutschebank.symphony.stream.Participant;
 
 /**
  * Allows us to model a network where various 

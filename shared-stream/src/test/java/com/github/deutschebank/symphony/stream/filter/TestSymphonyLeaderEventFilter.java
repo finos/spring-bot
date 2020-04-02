@@ -8,11 +8,11 @@ import java.util.stream.IntStream;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.StreamEventConsumer;
 import com.github.deutschebank.symphony.stream.log.LogMessage;
 import com.github.deutschebank.symphony.stream.log.LogMessageHandlerImpl;
 import com.github.deutschebank.symphony.stream.log.LogMessageType;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4Message;

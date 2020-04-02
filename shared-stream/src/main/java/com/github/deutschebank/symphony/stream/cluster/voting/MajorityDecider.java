@@ -2,8 +2,9 @@ package com.github.deutschebank.symphony.stream.cluster.voting;
 
 import java.util.function.Consumer;
 
+import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 
 /**
  * Invokes the "win" method on the client if a majority of votes arrive 
@@ -12,37 +13,58 @@ import com.github.deutschebank.symphony.stream.msg.Participant;
  * 
  * @author robmoffat
  */
-public abstract class MajorityDecider implements Consumer<VoteResponse> {
+public class MajorityDecider implements Decider {
 	
-	float votes;
-	float quorumSize;
-	Participant self;
-	boolean finished = false;
-
-	public MajorityDecider(int quorumSize, Participant self, float votes) {
-		this.votes = votes;
-		this.self = self;
+	private final float quorumSize;
+	private final Participant self;
+	
+	public MajorityDecider(float quorumSize, Participant self) {
+		super();
 		this.quorumSize = quorumSize;
-		checkWin();
+		this.self = self;
 	}
-	
-	@Override
-	public synchronized void accept(VoteResponse t) {
-		if (t.getCandidate().equals(self)) {
-			votes += t.getVotes();
+
+	class MajorityConsumer implements Consumer<VoteResponse> {
+		
+		int votes = 1;
+		boolean finished = false;
+		Runnable r;
+		
+		public MajorityConsumer(int votes, boolean finished, Runnable r) {
+			super();
+			this.votes = votes;
+			this.finished = finished;
+			this.r = r;
 			checkWin();
 		}
-	}
 
-	protected void checkWin() {
-		if (votes > (quorumSize / 2f)) {
-			if (!finished) {
-				finished = true;
-				win();
+		@Override
+		public void accept(VoteResponse t) {
+			if (t.getCandidate().equals(self)) {
+				votes += t.getVotes();
+				checkWin();
+			}
+		}
+		
+		protected void checkWin() {
+			if (votes > (quorumSize / 2f)) {
+				if (!finished) {
+					finished = true;
+					r.run();
+				}
 			}
 		}
 	}
+		
 	
-	protected abstract void win();
-	
+
+	@Override
+	public Consumer<VoteResponse> createDecider(Runnable r) {
+		return new MajorityConsumer(1, false, r);
+	}
+
+	@Override
+	public Participant voteFor(VoteRequest vr) {
+		return vr.getCandidate();
+	}
 }
