@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.stream.integration;
+package com.github.deutschebank.symphony.stream.log;
 
 import java.util.function.Supplier;
 
