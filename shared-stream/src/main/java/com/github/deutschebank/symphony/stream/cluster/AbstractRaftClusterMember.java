@@ -6,7 +6,7 @@ import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
-import com.github.deutschebank.symphony.stream.cluster.voting.VoteCounter;
+import com.github.deutschebank.symphony.stream.cluster.voting.MajorityDecider;
 import com.github.deutschebank.symphony.stream.msg.Participant;
 
 public abstract class AbstractRaftClusterMember implements ClusterMember {
@@ -124,7 +124,7 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 		electionNumber++;
 		votedFor = self;
 		System.out.println(self + " holding election " + electionNumber);
-		VoteCounter vc = new VoteCounter(getClusterSize(), self, getVotes()) {
+		MajorityDecider vc = new MajorityDecider(getClusterSize(), self, getVotes()) {
 
 			@Override
 			protected void win() {

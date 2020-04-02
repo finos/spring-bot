@@ -16,8 +16,6 @@ public class VoteResponse implements ClusterMessage {
 		this.votes = votes;
 	}
 	
-	
-	
 	public long getElectionNumber() {
 		return electionNumber;
 	}

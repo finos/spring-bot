@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.github.deutschebank.symphony.stream.log.SharedLog;
-import com.github.deutschebank.symphony.stream.log.SharedLogMessage;
-import com.github.deutschebank.symphony.stream.log.SharedLogMessageType;
+import com.github.deutschebank.symphony.stream.log.LogMessage;
+import com.github.deutschebank.symphony.stream.log.LogMessageType;
 import com.github.deutschebank.symphony.stream.msg.Participant;
 
 /**
@@ -19,7 +19,7 @@ import com.github.deutschebank.symphony.stream.msg.Participant;
 public class ListBackedSharedLog implements SharedLog {
 
 	private Connectivity conn;
-	private List<SharedLogMessage> messages = new ArrayList<>();
+	private List<LogMessage> messages = new ArrayList<>();
 
 	public ListBackedSharedLog(Connectivity conn) {
 		super();
@@ -30,7 +30,7 @@ public class ListBackedSharedLog implements SharedLog {
 	public void writeLeaderMessage(Participant p) {
 		checkIsolation(p);
 
-		SharedLogMessage message = new SharedLogMessage(p, SharedLogMessageType.LEADER);
+		LogMessage message = new LogMessage(p, LogMessageType.LEADER);
 		messages.add(message);
 		System.out.println(message);
 	}
@@ -43,7 +43,7 @@ public class ListBackedSharedLog implements SharedLog {
 	@Override
 	public void writeParticipantMessage(Participant p) {
 		checkIsolation(p);
-		SharedLogMessage message = new SharedLogMessage(p, SharedLogMessageType.PARTICIPANT);
+		LogMessage message = new LogMessage(p, LogMessageType.PARTICIPANT);
 		messages.add(message);
 		System.out.println(message);
 	}
@@ -58,7 +58,7 @@ public class ListBackedSharedLog implements SharedLog {
 	public Optional<Participant> getLeader(Participant me) {
 		checkIsolation(me);
 		return messages.stream()
-			.filter(m -> m.getMessageType() == SharedLogMessageType.LEADER)
+			.filter(m -> m.getMessageType() == LogMessageType.LEADER)
 			.map(m -> m.getParticipant())
 			.reduce((first, second) -> second);
 	}
