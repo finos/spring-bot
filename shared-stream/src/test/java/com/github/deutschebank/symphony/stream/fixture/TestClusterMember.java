@@ -2,17 +2,18 @@ package com.github.deutschebank.symphony.stream.fixture;
 
 import java.util.function.Consumer;
 
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.AbstractRaftClusterMember;
 import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
-import com.github.deutschebank.symphony.stream.msg.Participant;
+import com.github.deutschebank.symphony.stream.cluster.voting.MajorityDecider;
 
-public class TestingClusterMember extends AbstractRaftClusterMember {
+public class TestClusterMember extends AbstractRaftClusterMember {
 	
 	private TestNetwork n;
 	private int clusterSize;
 
-	public TestingClusterMember(String memberName, Participant self, long timeoutMs, TestNetwork n, int clusterSize) {
-		super(memberName, self, timeoutMs);
+	public TestClusterMember(String memberName, Participant self, long timeoutMs, TestNetwork n, int clusterSize) {
+		super(memberName, self, timeoutMs, new MajorityDecider(clusterSize, self));
 		this.n = n;
 		n.register(self, this);
 		this.clusterSize = clusterSize;

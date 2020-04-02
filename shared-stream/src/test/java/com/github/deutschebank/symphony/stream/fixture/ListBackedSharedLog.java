@@ -6,9 +6,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.github.deutschebank.symphony.stream.log.SharedLog;
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.log.LogMessage;
 import com.github.deutschebank.symphony.stream.log.LogMessageType;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 
 /**
  * Implementation of an untrustworthy log, mocking a symphony room.

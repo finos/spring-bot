@@ -7,16 +7,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.junit.Assert;
 import org.junit.experimental.theories.Theories;
 import org.junit.runner.RunWith;
 
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.ClusterMember.State;
 import com.github.deutschebank.symphony.stream.fixture.Connectivity;
-import com.github.deutschebank.symphony.stream.fixture.Event;
+import com.github.deutschebank.symphony.stream.fixture.TestClusterMember;
 import com.github.deutschebank.symphony.stream.fixture.TestNetwork;
-import com.github.deutschebank.symphony.stream.fixture.TestingClusterMember;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 
 /**
  * Builds various sizes / speeds of network so we can test the clustering algorithm.
@@ -77,7 +75,7 @@ public abstract class AbstractClusterTest {
 		return setup;
 	}
 
-	protected abstract TestingClusterMember createClusterMember(Participant p, Configuration c, Setup setup, Random r);
+	protected abstract TestClusterMember createClusterMember(Participant p, Configuration c, Setup setup, Random r);
 
 	protected long countLeaders(Setup s) {
 		return s.members.stream().filter(m -> m.getState() == State.LEADER).count();
@@ -90,8 +88,6 @@ public abstract class AbstractClusterTest {
 				.collect(Collectors.toSet());
 	}
 	
-
-
 	protected void waitForLeaderCount(Setup s, int c) throws InterruptedException {
 		Set<Participant> lastLeaders = null;
 		Set<Participant> newLeaders = null;
@@ -106,7 +102,4 @@ public abstract class AbstractClusterTest {
 		} while (true);
 	}
 
-	protected Event createEvent(int eventNumber) {
-		return new Event("event"+(eventNumber++));
-	}
 }

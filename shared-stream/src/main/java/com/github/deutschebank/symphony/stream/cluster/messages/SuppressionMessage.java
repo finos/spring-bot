@@ -2,7 +2,7 @@ package com.github.deutschebank.symphony.stream.cluster.messages;
 
 import java.util.Objects;
 
-import com.github.deutschebank.symphony.stream.msg.Participant;
+import com.github.deutschebank.symphony.stream.Participant;
 
 public class SuppressionMessage implements ClusterMessage {
 

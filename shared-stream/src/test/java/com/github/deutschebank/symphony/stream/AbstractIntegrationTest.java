@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.stream.log;
+package com.github.deutschebank.symphony.stream;
 
 import java.util.function.Supplier;
 
@@ -18,7 +18,7 @@ import com.symphony.api.model.AuthenticateRequest;
 import com.symphony.api.model.Token;
 import com.symphony.api.pod.StreamsApi;
 
-public class AbstractTest {
+public class AbstractIntegrationTest {
 
 	private static final String CI_PROXY = System.getProperty("proxy");
 	public static final String SESSION_AUTH_URL = "https://develop-api.symphony.com/sessionauth";

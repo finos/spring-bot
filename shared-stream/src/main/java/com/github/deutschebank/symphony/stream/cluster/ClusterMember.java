@@ -1,9 +1,9 @@
 package com.github.deutschebank.symphony.stream.cluster;
 
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 
 /**
  * A cluster implements a raft-style algorithm, in which an election is held.  A
