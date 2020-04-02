@@ -3,21 +3,21 @@ package com.github.deutschebank.symphony.stream.log;
 import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import com.github.deutschebank.symphony.stream.msg.Participant;
 
-public class SharedLogMessage {
+public class LogMessage {
 	
 	public static final VersionSpace VERSION_SPACE = 
-		new VersionSpace(SharedLogMessage.class.getPackage().getName(), "1.0", "1.0");
+		new VersionSpace(LogMessage.class.getPackage().getName(), "1.0", "1.0");
 
 	Participant participant;
-	SharedLogMessageType messageType;
+	LogMessageType messageType;
 
-	public SharedLogMessage(Participant p, SharedLogMessageType mt) {
+	public LogMessage(Participant p, LogMessageType mt) {
 		super();
 		this.participant = p;
 		this.messageType = mt;
 	}
 
-	public SharedLogMessage() {
+	public LogMessage() {
 		super();
 	}
 
@@ -34,11 +34,11 @@ public class SharedLogMessage {
 		this.participant = participant;
 	}
 
-	public SharedLogMessageType getMessageType() {
+	public LogMessageType getMessageType() {
 		return messageType;
 	}
 
-	public void setMessageType(SharedLogMessageType messageType) {
+	public void setMessageType(LogMessageType messageType) {
 		this.messageType = messageType;
 	}
 }

@@ -1,5 +1,5 @@
 package com.github.deutschebank.symphony.stream.log;
 
-public enum SharedLogMessageType {
+public enum LogMessageType {
 	PARTICIPANT, LEADER
 }

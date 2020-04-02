@@ -7,7 +7,7 @@ import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
-import com.github.deutschebank.symphony.stream.cluster.voting.VoteCounter;
+import com.github.deutschebank.symphony.stream.cluster.voting.MajorityDecider;
 import com.github.deutschebank.symphony.stream.log.SharedLog;
 import com.github.deutschebank.symphony.stream.msg.Participant;
 
@@ -112,7 +112,7 @@ public abstract class AbstractEventDrivenRaftClusterMember<ID> extends AbstractR
 		state = State.PROPOSING_ELECTION;
 		electionNumber ++;
 		votedFor = self;
-		VoteCounter vc = new VoteCounter(log.getRegisteredParticipants(self).size(), self, getVotes()) {
+		MajorityDecider vc = new MajorityDecider(log.getRegisteredParticipants(self).size(), self, getVotes()) {
 			
 			@Override
 			protected void win() {

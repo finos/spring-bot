@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.stream.integration;
+package com.github.deutschebank.symphony.stream.log;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.github.deutschebank.symphony.stream.log.SymphonyRoomSharedLog;
 import com.github.deutschebank.symphony.stream.msg.Participant;
 
-public class TestSymphonySharedLog extends AbstractTest {
+public class IntegrationTestSymphonySharedLog extends AbstractTest {
 
 	private String streamId = "y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==";
 	
@@ -23,7 +23,7 @@ public class TestSymphonySharedLog extends AbstractTest {
 		ssl.writeParticipantMessage(p1);
 		ssl.writeParticipantMessage(p2);
 		
-		List<Participant> returned = ssl.getRegisteredParticipants();
+		List<Participant> returned = ssl.getRegisteredParticipants(p1);
 		Assert.assertTrue(returned.contains(p1));
 		Assert.assertTrue(returned.contains(p2));
 	}
@@ -38,7 +38,7 @@ public class TestSymphonySharedLog extends AbstractTest {
 		ssl.writeLeaderMessage(p2);
 		for (int i = 0; i < 30; i++) {
 			// sometimes takes a few tries to get the thing back
-			Optional<Participant> returned = ssl.getLeader();
+			Optional<Participant> returned = ssl.getLeader(p1);
 			if (returned.isPresent()) {
 				Assert.assertEquals(p2, returned.get());
 				return;
