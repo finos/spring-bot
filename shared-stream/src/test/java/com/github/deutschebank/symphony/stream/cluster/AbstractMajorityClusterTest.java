@@ -6,8 +6,8 @@ import java.util.Random;
 
 import org.junit.experimental.theories.DataPoints;
 
-import com.github.deutschebank.symphony.stream.fixture.TestingClusterMember;
-import com.github.deutschebank.symphony.stream.msg.Participant;
+import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.fixture.TestClusterMember;
 
 public abstract class AbstractMajorityClusterTest extends AbstractClusterTest {
 
@@ -26,8 +26,8 @@ public abstract class AbstractMajorityClusterTest extends AbstractClusterTest {
 	}
 
 	@Override
-	protected TestingClusterMember createClusterMember(Participant p, Configuration c, Setup setup, Random r) {
-		return new TestingClusterMember(
+	protected TestClusterMember createClusterMember(Participant p, Configuration c, Setup setup, Random r) {
+		return new TestClusterMember(
 				"Member "+p.toString(), 
 				p, 
 				c.time + r.nextInt(c.time), 

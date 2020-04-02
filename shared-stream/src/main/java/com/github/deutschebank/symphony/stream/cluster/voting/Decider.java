@@ -2,9 +2,13 @@ package com.github.deutschebank.symphony.stream.cluster.voting;
 
 import java.util.function.Consumer;
 
+import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
 
-public interface Decider extends Consumer<VoteResponse> {
+public interface Decider {
 
-	public void win(); 
+	Consumer<VoteResponse> createDecider(Runnable r); 
+	
+	Participant voteFor(VoteRequest vr);
 }

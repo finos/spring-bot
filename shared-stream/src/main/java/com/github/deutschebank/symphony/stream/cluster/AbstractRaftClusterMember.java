@@ -2,12 +2,12 @@ package com.github.deutschebank.symphony.stream.cluster;
 
 import java.util.function.Consumer;
 
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
-import com.github.deutschebank.symphony.stream.cluster.voting.MajorityDecider;
-import com.github.deutschebank.symphony.stream.msg.Participant;
+import com.github.deutschebank.symphony.stream.cluster.voting.Decider;
 
 public abstract class AbstractRaftClusterMember implements ClusterMember {
 
@@ -35,13 +35,19 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 	 * Thread that times progress, and invokes actions when the timeouts occur.
 	 */
 	protected Thread timer;
+	
+	/**
+	 * Sets up the algorithm for choosing the election winner
+	 */
+	protected Decider decider;
 
-	public AbstractRaftClusterMember(String memberName, Participant self, long timeoutMs) {
+	public AbstractRaftClusterMember(String memberName, Participant self, long timeoutMs, Decider d) {
 		super();
 		this.self = self;
 		this.timeoutMs = timeoutMs;
 		this.state = State.STOPPED;
 		this.memberName = memberName;
+		this.decider = d;
 	}
 
 	@Override
@@ -124,15 +130,13 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 		electionNumber++;
 		votedFor = self;
 		System.out.println(self + " holding election " + electionNumber);
-		MajorityDecider vc = new MajorityDecider(getClusterSize(), self, getVotes()) {
-
-			@Override
-			protected void win() {
-				becomeLeader();
-				checkPing();
-			}
-
-		};
+		
+		Consumer<VoteResponse> vc = decider.createDecider(() -> {
+			becomeLeader();
+			checkPing();
+		});
+		
+	
 		sendAsyncMessage(new VoteRequest(electionNumber, self), vc);
 	}
 
@@ -144,7 +148,7 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 	public synchronized VoteResponse receiveVoteRequest(VoteRequest vr) {
 		if (electionNumber < vr.getElectionNumber()) {
 			electionNumber = vr.getElectionNumber();
-			votedFor = vr.getCandidate();
+			votedFor = decider.voteFor(vr);
 			lastPingTimeMs = System.currentTimeMillis();
 		}
 

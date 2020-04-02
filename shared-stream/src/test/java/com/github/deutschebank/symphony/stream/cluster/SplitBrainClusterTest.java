@@ -6,7 +6,7 @@ import java.util.Set;
 
 import org.junit.experimental.theories.Theory;
 
-import com.github.deutschebank.symphony.stream.msg.Participant;
+import com.github.deutschebank.symphony.stream.Participant;
 
 public class SplitBrainClusterTest extends AbstractMajorityClusterTest {
 

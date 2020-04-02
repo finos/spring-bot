@@ -7,10 +7,11 @@ import java.util.Random;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.github.deutschebank.symphony.stream.AbstractIntegrationTest;
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.log.SymphonyRoomSharedLog;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 
-public class IntegrationTestSymphonySharedLog extends AbstractTest {
+public class IntegrationTestSymphonySharedLog extends AbstractIntegrationTest {
 
 	private String streamId = "y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==";
 	

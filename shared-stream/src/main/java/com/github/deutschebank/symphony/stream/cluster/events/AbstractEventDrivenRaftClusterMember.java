@@ -1,15 +1,16 @@
-package com.github.deutschebank.symphony.stream.cluster;
+package com.github.deutschebank.symphony.stream.cluster.events;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.cluster.AbstractRaftClusterMember;
 import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
 import com.github.deutschebank.symphony.stream.cluster.voting.MajorityDecider;
 import com.github.deutschebank.symphony.stream.log.SharedLog;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 
 public abstract class AbstractEventDrivenRaftClusterMember<ID> extends AbstractRaftClusterMember<ID> {
 	

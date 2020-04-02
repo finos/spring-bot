@@ -2,12 +2,12 @@ package com.github.deutschebank.symphony.stream.filter;
 
 import java.util.Optional;
 
+import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.StreamEventConsumer;
 import com.github.deutschebank.symphony.stream.log.SharedLog;
 import com.github.deutschebank.symphony.stream.log.LogMessage;
 import com.github.deutschebank.symphony.stream.log.LogMessageHandler;
 import com.github.deutschebank.symphony.stream.log.LogMessageType;
-import com.github.deutschebank.symphony.stream.msg.Participant;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageSent;

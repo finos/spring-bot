@@ -3,7 +3,7 @@ package com.github.deutschebank.symphony.stream.log;
 import java.util.List;
 import java.util.Optional;
 
-import com.github.deutschebank.symphony.stream.msg.Participant;
+import com.github.deutschebank.symphony.stream.Participant;
 
 /**
  * The shared log is used for cluster coordination, and is expected to be implemented as a Symphony Room.
