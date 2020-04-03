@@ -1,9 +1,18 @@
 package com.symphony.api.bindings.cxf.example.ioi;
 
-import quickfix.Message;
-import quickfix.field.*;
-
 import java.util.UUID;
+
+import quickfix.Message;
+import quickfix.field.BeginString;
+import quickfix.field.IOIID;
+import quickfix.field.IOIShares;
+import quickfix.field.IOITransType;
+import quickfix.field.MsgType;
+import quickfix.field.SenderCompID;
+import quickfix.field.Side;
+import quickfix.field.Symbol;
+import quickfix.field.TargetCompID;
+import quickfix.field.Text;
 
 public class FixClient {
 
