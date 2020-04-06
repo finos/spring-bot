@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -171,7 +172,12 @@ public class SharedStreamConfig {
 	
 	@Bean
 	public ClusterMember clusterMember() {
-		return new RaftClusterMember(selfParticipant(), streamProperties.getTimeoutMs(), decider(), multicaster());
+		Random r = new Random();
+		long timeoutMs = streamProperties.getTimeoutMs();
+		long randComp = Math.abs(r.nextLong() % (timeoutMs / 4));
+		long totalTimeout = timeoutMs + randComp;
+		LOG.info("Cluster starting up. Timeout is: "+totalTimeout);
+		return new RaftClusterMember(selfParticipant(), totalTimeout, decider(), multicaster());
 	}
 	
 	@Bean

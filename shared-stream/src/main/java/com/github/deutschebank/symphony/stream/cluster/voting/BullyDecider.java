@@ -3,6 +3,7 @@ package com.github.deutschebank.symphony.stream.cluster.voting;
 import java.util.function.Consumer;
 
 import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
@@ -33,7 +34,7 @@ public class BullyDecider implements Decider {
 	}
 
 	@Override
-	public Consumer<VoteResponse> createDecider(Runnable r) {
+	public Consumer<ClusterMessage> createDecider(Runnable r) {
 		r.run();
 		return (vr) -> {};
 	}
