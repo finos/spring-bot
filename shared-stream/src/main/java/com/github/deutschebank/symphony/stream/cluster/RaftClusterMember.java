@@ -7,11 +7,11 @@ import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
+import com.github.deutschebank.symphony.stream.cluster.transport.Multicaster;
 import com.github.deutschebank.symphony.stream.cluster.voting.Decider;
 
-public abstract class AbstractRaftClusterMember implements ClusterMember {
+public class RaftClusterMember implements ClusterMember {
 
-	protected final String memberName;
 	protected final Participant self;
 	protected final long timeoutMs;
 
@@ -40,14 +40,19 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 	 * Sets up the algorithm for choosing the election winner
 	 */
 	protected Decider decider;
+	
+	/**
+	 * Used for commmunicating with the rest of the cluster.
+	 */
+	protected Multicaster multicaster;
 
-	public AbstractRaftClusterMember(String memberName, Participant self, long timeoutMs, Decider d) {
+	public RaftClusterMember(Participant self, long timeoutMs, Decider d, Multicaster multicaster) {
 		super();
 		this.self = self;
 		this.timeoutMs = timeoutMs;
 		this.state = State.STOPPED;
-		this.memberName = memberName;
 		this.decider = d;
+		this.multicaster = multicaster;
 	}
 
 	@Override
@@ -55,7 +60,7 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 		state = State.SUPRESSED;
 		timer = new Thread(() -> doListenOperation());
 		timer.setDaemon(true);
-		timer.setName("SymphonyClusterMember: " + memberName);
+		timer.setName("SymphonyClusterMemberTimer");
 		timer.start();
 	}
 
@@ -85,10 +90,11 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 				nextSleepTime = timeoutMs;
 			} else if (state == State.LEADER) {
 				checkPing();
-				nextSleepTime = timeoutMs / 2;
+				nextSleepTime = (timeoutMs / 2);
 			}
+
+			System.out.println(self+" sleeping for "+nextSleepTime);
 		}
-		System.out.println(self+" sleeping for "+timeoutMs);
 
 	}
 
@@ -104,20 +110,23 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 		}
 	}
 
-	@Override
 	public synchronized void receivePing(SuppressionMessage sm) {
 		if (state == State.STOPPED) {
 			return;
 		}
 			
 		if (sm.getElectionNumber() >= electionNumber) {
+			electionNumber = sm.getElectionNumber();
 			System.out.println(self + " received " + sm);
-			if (state == State.LEADER) {
-				System.out.println(self + " stepping down due to " + sm);
-			}
 			
-			lastPingTimeMs = System.currentTimeMillis();
-			state = State.SUPRESSED;
+			if (decider.canSuppressWith(sm)) {
+				if (state == State.LEADER) {
+					System.out.println(self + " stepping down due to " + sm);
+				}
+				
+				lastPingTimeMs = System.currentTimeMillis();
+				state = State.SUPRESSED;
+			}
 		}
 	}
 
@@ -136,15 +145,14 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 			checkPing();
 		});
 		
-	
-		sendAsyncMessage(new VoteRequest(electionNumber, self), vc);
+		if (vc != null) {
+		}
 	}
 
 	protected float getVotes() {
 		return 1;
 	}
 
-	@Override
 	public synchronized VoteResponse receiveVoteRequest(VoteRequest vr) {
 		if (electionNumber < vr.getElectionNumber()) {
 			electionNumber = vr.getElectionNumber();
@@ -167,15 +175,14 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 
 		if (elapsedSinceLastPing > timeoutMs / 2) {
 			lastPingTimeMs = timeNow;
-			sendAsyncMessage(new SuppressionMessage(self, electionNumber), c -> {
-			});
+			System.out.println(self+" sending ping");
+			multicaster.sendAsyncMessage(self, new SuppressionMessage(self, electionNumber), c -> {});
+		} else {
+			System.out.println(self+" omitting ping");
 		}
 	}
 
-	protected abstract <R extends ClusterMessage> void sendAsyncMessage(ClusterMessage cm,
-			Consumer<R> responsesConsumer);
-
-	protected abstract int getClusterSize();
+	
 
 	@Override
 	public synchronized void becomeLeader() {
@@ -190,6 +197,18 @@ public abstract class AbstractRaftClusterMember implements ClusterMember {
 	@Override
 	public State getState() {
 		return this.state;
+	}
+
+	@Override
+	public ClusterMessage receiveMessage(ClusterMessage cm) {
+		if (cm instanceof SuppressionMessage) {
+			receivePing((SuppressionMessage) cm);
+			return null;
+		} else if (cm instanceof VoteRequest) {
+			return receiveVoteRequest((VoteRequest) cm);
+		} else {
+			throw new UnsupportedOperationException("Unknown message type: "+cm.getClass());
+		}
 	}
 
 }

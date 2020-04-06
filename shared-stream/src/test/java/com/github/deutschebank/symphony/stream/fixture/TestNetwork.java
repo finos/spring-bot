@@ -10,11 +10,9 @@ import java.util.function.Consumer;
 import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.ClusterMember;
 import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
-import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
-import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
-import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
+import com.github.deutschebank.symphony.stream.cluster.transport.Multicaster;
 
-public class TestNetwork {
+public class TestNetwork implements Multicaster {
 	
 	private Map<Participant, ClusterMember> members = new HashMap<>();
 	private Connectivity c;
@@ -30,22 +28,22 @@ public class TestNetwork {
 		members.put(p, tcm);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <REQ extends ClusterMessage, RES extends ClusterMessage> void sendMessage(Participant from, Participant to, REQ r, Consumer<RES> consumer) {
+	public void sendMessage(Participant from, Participant to, ClusterMessage r, Consumer<ClusterMessage> consumer) {
 		if (members.containsKey(to)) {
 			ClusterMember tcm = members.get(to);
-			
+						
 			Thread nw = new Thread(() -> {
 				randomDelay();
 				
+				System.out.println("Attempting to send message from "+from+" to "+to);
+				
 				if (c.canTalkTo(from, to)) {
-					if (r instanceof VoteRequest) {
-						VoteResponse vr = tcm.receiveVoteRequest((VoteRequest) r);
-						randomDelay();
-						consumer.accept((RES) vr);
-					} else if (r instanceof SuppressionMessage) {
-						tcm.receivePing((SuppressionMessage) r);
-					}	
+					ClusterMessage vr = tcm.receiveMessage(r);
+					randomDelay();
+
+					System.out.println("Sent message from "+from+" to "+to);
+
+					consumer.accept(vr);
 				}
 				
 			});
@@ -69,6 +67,25 @@ public class TestNetwork {
 	
 	public Set<Participant> getParticipants() {
 		return members.keySet();
+	}
+
+	@Override
+	public void accept(Participant t) {
+		// nothing here.
+	}
+
+	@Override
+	public void sendAsyncMessage(Participant self, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
+		for (Participant p : members.keySet()) {
+			if (p != self) {
+				sendMessage(self, p, cm, responsesConsumer);
+			}
+		}
+	} 
+
+	@Override
+	public int getQuorumSize() {
+		return members.size();
 	}
 
 }
