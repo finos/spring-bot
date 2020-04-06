@@ -17,7 +17,7 @@ public class IntegrationTestSymphonySharedLog extends AbstractIntegrationTest {
 	
 	@Test
 	public void testParticipantWrite() {
-		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test");
+		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
 		
 		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
 		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());
@@ -31,7 +31,7 @@ public class IntegrationTestSymphonySharedLog extends AbstractIntegrationTest {
 	
 	@Test
 	public void testLeaderWrite() {
-		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test");
+		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
 		
 		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
 		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());

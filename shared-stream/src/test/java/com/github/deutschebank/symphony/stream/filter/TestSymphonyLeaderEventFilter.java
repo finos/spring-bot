@@ -70,7 +70,8 @@ public class TestSymphonyLeaderEventFilter {
 		
 		
 		List<SymphonyLeaderEventFilter> wrapped = consumers.stream()
-			.map(c -> new SymphonyLeaderEventFilter(c, false, c.p, lmh, m -> participantMessages.add(m.getParticipant())))
+			.map(c -> new SymphonyLeaderEventFilter(c, false, c.p, lmh, 
+				m -> participantMessages.add(m.getParticipant())))
 			.collect(Collectors.toList());
 
 
@@ -92,7 +93,8 @@ public class TestSymphonyLeaderEventFilter {
 		});
 		
 		// make sure we logged the participants correctly too
-		Assert.assertEquals(4, participantMessages.size());
+		// this will receive one message from each leader change, by 4 listeners.
+		Assert.assertEquals(4 * 8, participantMessages.size());
 	}
 
 
