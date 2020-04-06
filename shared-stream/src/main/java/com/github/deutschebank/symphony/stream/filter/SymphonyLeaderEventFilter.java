@@ -1,6 +1,7 @@
 package com.github.deutschebank.symphony.stream.filter;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.StreamEventConsumer;
@@ -28,12 +29,14 @@ public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 	SharedLog sl;
 	Participant self;
 	LogMessageHandler messageHandler;
+	Consumer<LogMessage> controlEventConsumer;
 
-	public SymphonyLeaderEventFilter(StreamEventConsumer next, boolean startAsLeader, Participant self, LogMessageHandler messageHandler) {
+	public SymphonyLeaderEventFilter(StreamEventConsumer next, boolean startAsLeader, Participant self, LogMessageHandler messageHandler, Consumer<LogMessage> consumer) {
 		this.next = next;
 		this.passing = startAsLeader;
 		this.messageHandler = messageHandler;
 		this.self = self;
+		this.controlEventConsumer = consumer;
 	}
 
 	@Override
@@ -43,9 +46,11 @@ public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 			V4Message m = ms.getMessage();
 			Optional<LogMessage> slm = messageHandler.readMessage(m);
 			if (slm.isPresent()) {
-				if (slm.get().getMessageType() == LogMessageType.LEADER) {
-					passing = self.equals(slm.get().getParticipant());
+				LogMessage logMessage = slm.get();
+				if (logMessage.getMessageType() == LogMessageType.LEADER) {
+					passing = self.equals(logMessage.getParticipant());
 				}
+				controlEventConsumer.accept(logMessage);
 			}
 		} else if (passing) {
 			next.accept(t);

@@ -1,9 +1,7 @@
 package com.github.deutschebank.symphony.stream.cluster;
 
 import com.github.deutschebank.symphony.stream.Participant;
-import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
-import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
-import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
+import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 
 /**
  * A cluster implements a raft-style algorithm, in which an election is held.  A
@@ -20,9 +18,7 @@ public interface ClusterMember {
 	
 	public void shutdown();
 	
-	public void receivePing(SuppressionMessage sm);
-	
-	public VoteResponse receiveVoteRequest(VoteRequest vr);
+	public ClusterMessage receiveMessage(ClusterMessage cm);
 	
 	//public void receiveEvent(ID id);
 	

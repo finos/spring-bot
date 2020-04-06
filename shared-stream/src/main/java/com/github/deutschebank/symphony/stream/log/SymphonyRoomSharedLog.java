@@ -17,8 +17,13 @@ import com.symphony.api.model.MessageSearchQuery;
  */
 public class SymphonyRoomSharedLog extends LogMessageHandlerImpl implements SharedLog  {
 	
-	public SymphonyRoomSharedLog(String streamId, MessagesApi messagesApi, String environmentSuffix) {
+	public static final long ONE_HOUR = 1000 * 60 * 60;
+	
+	private long participationIntervalMillis;
+	
+	public SymphonyRoomSharedLog(String streamId, MessagesApi messagesApi, String environmentSuffix, long participationIntervalMillis) {
 		super(streamId, messagesApi, environmentSuffix);
+		this.participationIntervalMillis = participationIntervalMillis;
 	}
 
 	@Override
@@ -39,11 +44,11 @@ public class SymphonyRoomSharedLog extends LogMessageHandlerImpl implements Shar
 	}
 
 	protected List<Participant> performQuery(LogMessageType messageType, int count) {
-		long last24Hours = System.currentTimeMillis() - (24*60*60*1000);
+		long since = System.currentTimeMillis() - participationIntervalMillis - ONE_HOUR;
 		MessageSearchQuery msq = new MessageSearchQuery()
 			.hashtag(getHashTagId(messageType))
 			.streamId(getStreamId())
-			.fromDate(last24Hours)
+			.fromDate(since)
 			.streamType("ROOM");
 		return messagesApi.v1MessageSearchPost(msq, null, null, 0, count, null, null).stream()
 			.map(m -> readMessage(m))

@@ -1,8 +1,10 @@
 package com.github.deutschebank.symphony.stream.cluster.voting;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
 
@@ -15,15 +17,15 @@ import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
  */
 public class MajorityDecider implements Decider {
 	
-	private final float quorumSize;
 	private final Participant self;
+	private final Supplier<Integer> quorumSize;
 	
-	public MajorityDecider(float quorumSize, Participant self) {
+	public MajorityDecider(Supplier<Integer> quorumSize, Participant self) {
 		super();
-		this.quorumSize = quorumSize;
 		this.self = self;
+		this.quorumSize = quorumSize;
 	}
-
+	
 	class MajorityConsumer implements Consumer<VoteResponse> {
 		
 		int votes = 1;
@@ -47,7 +49,7 @@ public class MajorityDecider implements Decider {
 		}
 		
 		protected void checkWin() {
-			if (votes > (quorumSize / 2f)) {
+			if (votes > (quorumSize.get() / 2f)) {
 				if (!finished) {
 					finished = true;
 					r.run();
@@ -66,5 +68,10 @@ public class MajorityDecider implements Decider {
 	@Override
 	public Participant voteFor(VoteRequest vr) {
 		return vr.getCandidate();
+	}
+
+	@Override
+	public boolean canSuppressWith(SuppressionMessage sm) {
+		return true;
 	}
 }

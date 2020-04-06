@@ -7,6 +7,7 @@ import java.util.Random;
 import org.junit.experimental.theories.DataPoints;
 
 import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.cluster.voting.MajorityDecider;
 import com.github.deutschebank.symphony.stream.fixture.TestClusterMember;
 
 public abstract class AbstractMajorityClusterTest extends AbstractClusterTest {
@@ -28,11 +29,10 @@ public abstract class AbstractMajorityClusterTest extends AbstractClusterTest {
 	@Override
 	protected TestClusterMember createClusterMember(Participant p, Configuration c, Setup setup, Random r) {
 		return new TestClusterMember(
-				"Member "+p.toString(), 
 				p, 
 				c.time + r.nextInt(c.time), 
 				setup.n, 
-				c.size);
+				new MajorityDecider(() -> c.size, p));
 	}
 
 	public AbstractMajorityClusterTest() {
