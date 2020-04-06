@@ -140,12 +140,13 @@ public class RaftClusterMember implements ClusterMember {
 		votedFor = self;
 		System.out.println(self + " holding election " + electionNumber);
 		
-		Consumer<VoteResponse> vc = decider.createDecider(() -> {
+		Consumer<ClusterMessage> vc = decider.createDecider(() -> {
 			becomeLeader();
 			checkPing();
 		});
 		
 		if (vc != null) {
+			multicaster.sendAsyncMessage(self, new VoteRequest(electionNumber, self), vc);
 		}
 	}
 

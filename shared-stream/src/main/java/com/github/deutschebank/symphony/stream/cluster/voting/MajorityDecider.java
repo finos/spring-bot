@@ -4,6 +4,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.github.deutschebank.symphony.stream.Participant;
+import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteRequest;
 import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
@@ -26,7 +27,7 @@ public class MajorityDecider implements Decider {
 		this.quorumSize = quorumSize;
 	}
 	
-	class MajorityConsumer implements Consumer<VoteResponse> {
+	class MajorityConsumer implements Consumer<ClusterMessage> {
 		
 		int votes = 1;
 		boolean finished = false;
@@ -41,9 +42,9 @@ public class MajorityDecider implements Decider {
 		}
 
 		@Override
-		public void accept(VoteResponse t) {
-			if (t.getCandidate().equals(self)) {
-				votes += t.getVotes();
+		public void accept(ClusterMessage t) {
+			if ((t instanceof VoteResponse) && (((VoteResponse) t).getCandidate().equals(self))) {
+				votes += ((VoteResponse) t).getVotes();
 				checkWin();
 			}
 		}
@@ -61,7 +62,7 @@ public class MajorityDecider implements Decider {
 	
 
 	@Override
-	public Consumer<VoteResponse> createDecider(Runnable r) {
+	public Consumer<ClusterMessage> createDecider(Runnable r) {
 		return new MajorityConsumer(1, false, r);
 	}
 

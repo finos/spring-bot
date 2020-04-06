@@ -17,6 +17,8 @@ public interface LogMessageHandler {
 	public void writeLogMessage(LogMessage slm);
 	
 	public boolean isLeaderMessage(V4Event e);
+
+	public boolean isParticipantMessage(V4Event e);
 	
 	/**
 	 * Converts the {@link V4Message} into a {@link LogMessage} if it is possible.

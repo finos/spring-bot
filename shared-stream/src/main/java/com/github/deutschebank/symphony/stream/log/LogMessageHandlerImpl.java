@@ -74,6 +74,18 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 		
 		return false;
 	}
+	
+	@Override
+	public boolean isParticipantMessage(V4Event e) {
+		V4MessageSent messageSent = e.getPayload().getMessageSent();
+		if (messageSent != null) {
+			V4Message m = messageSent.getMessage();
+			String messageML = m.getMessage();
+			return (messageML.contains(getHashTag(LogMessageType.PARTICIPANT)));
+		}
+		
+		return false;
+	}
 
 	@Override
 	public Optional<LogMessage> readMessage(V4Message e) {

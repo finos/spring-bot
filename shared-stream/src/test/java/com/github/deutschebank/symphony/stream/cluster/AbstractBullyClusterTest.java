@@ -10,7 +10,7 @@ import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.voting.BullyDecider;
 import com.github.deutschebank.symphony.stream.fixture.TestClusterMember;
 
-public class AbstractBullyClusterTest extends AbstractClusterTest {
+public abstract class AbstractBullyClusterTest extends AbstractClusterTest {
 
 	private static final int LONGEST_TIMEOUT = 250;
 

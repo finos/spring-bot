@@ -52,6 +52,13 @@ public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 				}
 				controlEventConsumer.accept(logMessage);
 			}
+		} else if (messageHandler.isParticipantMessage(t)) {
+			V4MessageSent ms = t.getPayload().getMessageSent();
+			V4Message m = ms.getMessage();
+			Optional<LogMessage> slm = messageHandler.readMessage(m);
+			if (slm.isPresent()) {
+				controlEventConsumer.accept(slm.get());
+			}
 		} else if (passing) {
 			next.accept(t);
 		}
