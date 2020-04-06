@@ -66,9 +66,11 @@ public class TestSymphonyLeaderEventFilter {
 		
 		ListBackedSharedLog lbsl = new ListBackedSharedLog(null);*/
 		
+		List<Participant> participantMessages = new ArrayList<Participant>(); 
+		
 		
 		List<SymphonyLeaderEventFilter> wrapped = consumers.stream()
-			.map(c -> new SymphonyLeaderEventFilter(c, false, c.p, lmh))
+			.map(c -> new SymphonyLeaderEventFilter(c, false, c.p, lmh, m -> participantMessages.add(m.getParticipant())))
 			.collect(Collectors.toList());
 
 
@@ -88,6 +90,9 @@ public class TestSymphonyLeaderEventFilter {
 		consumers.forEach(c -> {
 			Assert.assertEquals(50, c.collection.size());
 		});
+		
+		// make sure we logged the participants correctly too
+		Assert.assertEquals(4, participantMessages.size());
 	}
 
 
