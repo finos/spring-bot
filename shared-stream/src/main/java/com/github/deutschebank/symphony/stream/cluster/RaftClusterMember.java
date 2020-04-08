@@ -90,6 +90,7 @@ public class RaftClusterMember implements ClusterMember {
 				if (elapsedSinceLastPing > timeoutMs) {
 					// no recent pings - hold an election
 					holdElection();
+					nextSleepTime = timeoutMs;
 				} else {
 					nextSleepTime = timeoutMs - elapsedSinceLastPing;
 				}
