@@ -34,11 +34,11 @@ public class SymphonyStreamHandler {
 	 * Uses a daemon thread to start the process.  Use something else if you want
 	 */
 	public void start() {
-		if (running = false) {
+		if (running == false) {
 			running = true;
 			runThread = new Thread(() -> consumeLoop());
 			runThread.setDaemon(true);
-			runThread.setName("SymphonyStreamHandler");
+			runThread.setName("SymphonyStream");
 			runThread.start();
 		}
 	}

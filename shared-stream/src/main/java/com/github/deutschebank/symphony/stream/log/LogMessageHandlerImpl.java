@@ -69,7 +69,7 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 		if (messageSent != null) {
 			V4Message m = messageSent.getMessage();
 			String messageML = m.getMessage();
-			return (messageML.contains(getHashTag(LogMessageType.LEADER)));
+			return (messageML.contains(getHashTagId(LogMessageType.LEADER)));
 		}
 		
 		return false;
@@ -81,7 +81,7 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 		if (messageSent != null) {
 			V4Message m = messageSent.getMessage();
 			String messageML = m.getMessage();
-			return (messageML.contains(getHashTag(LogMessageType.PARTICIPANT)));
+			return (messageML.contains(getHashTagId(LogMessageType.PARTICIPANT)));
 		}
 		
 		return false;

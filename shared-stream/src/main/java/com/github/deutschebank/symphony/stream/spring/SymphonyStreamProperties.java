@@ -14,6 +14,7 @@ public class SymphonyStreamProperties {
 	private String endpointPath = "/symphony-api/cluster-communication";
 	private String internalHostUrl = null;
 	private long timeoutMs = 5000;
+	private boolean startImmediately = true;
 	
 
 	public String getCoordinationStreamId() {
@@ -70,5 +71,13 @@ public class SymphonyStreamProperties {
 
 	public void setTimeoutMs(long timeoutMs) {
 		this.timeoutMs = timeoutMs;
+	}
+
+	public boolean isStartImmediately() {
+		return startImmediately;
+	}
+
+	public void setStartImmediately(boolean startImmediately) {
+		this.startImmediately = startImmediately;
 	}
 }
