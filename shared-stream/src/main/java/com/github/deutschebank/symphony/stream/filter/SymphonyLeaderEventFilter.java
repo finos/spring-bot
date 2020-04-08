@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 
 import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.StreamEventConsumer;
-import com.github.deutschebank.symphony.stream.log.SharedLog;
 import com.github.deutschebank.symphony.stream.log.LogMessage;
 import com.github.deutschebank.symphony.stream.log.LogMessageHandler;
 import com.github.deutschebank.symphony.stream.log.LogMessageType;
@@ -24,16 +23,15 @@ import com.symphony.api.model.V4MessageSent;
  */
 public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 	
-	StreamEventConsumer next;
-	boolean passing;
-	SharedLog sl;
-	Participant self;
-	LogMessageHandler messageHandler;
-	Consumer<LogMessage> controlEventConsumer;
+	protected final StreamEventConsumer next;
+	protected boolean active;
+	protected final Participant self;
+	protected final LogMessageHandler messageHandler;
+	protected final Consumer<LogMessage> controlEventConsumer;
 
 	public SymphonyLeaderEventFilter(StreamEventConsumer next, boolean startAsLeader, Participant self, LogMessageHandler messageHandler, Consumer<LogMessage> consumer) {
 		this.next = next;
-		this.passing = startAsLeader;
+		this.active = startAsLeader;
 		this.messageHandler = messageHandler;
 		this.self = self;
 		this.controlEventConsumer = consumer;
@@ -48,7 +46,7 @@ public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 			if (slm.isPresent()) {
 				LogMessage logMessage = slm.get();
 				if (logMessage.getMessageType() == LogMessageType.LEADER) {
-					passing = self.equals(logMessage.getParticipant());
+					active = self.equals(logMessage.getParticipant());
 				}
 				controlEventConsumer.accept(logMessage);
 			}
@@ -59,8 +57,12 @@ public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 			if (slm.isPresent()) {
 				controlEventConsumer.accept(slm.get());
 			}
-		} else if (passing) {
+		} else if (active) {
 			next.accept(t);
 		}
+	}
+
+	public boolean isActive() {
+		return active;
 	}
 }

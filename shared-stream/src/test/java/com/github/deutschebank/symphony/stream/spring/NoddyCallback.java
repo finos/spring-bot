@@ -8,6 +8,11 @@ import org.springframework.stereotype.Component;
 import com.github.deutschebank.symphony.stream.StreamEventConsumer;
 import com.symphony.api.model.V4Event;
 
+/**
+ * This stands in for the functionality of the user's bot.
+ * 
+ * @author robmoffat
+ */
 @Component
 public class NoddyCallback implements StreamEventConsumer {
 

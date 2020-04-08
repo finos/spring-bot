@@ -2,6 +2,9 @@ package com.github.deutschebank.symphony.stream.cluster;
 
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.messages.ClusterMessage;
 import com.github.deutschebank.symphony.stream.cluster.messages.SuppressionMessage;
@@ -10,7 +13,14 @@ import com.github.deutschebank.symphony.stream.cluster.messages.VoteResponse;
 import com.github.deutschebank.symphony.stream.cluster.transport.Multicaster;
 import com.github.deutschebank.symphony.stream.cluster.voting.Decider;
 
+/**
+ * Minimal implementation of Raft's Cluster Member, where 
+ * @author robmoffat
+ *
+ */
 public class RaftClusterMember implements ClusterMember {
+	
+	public static Logger LOG = LoggerFactory.getLogger(RaftClusterMember.class);
 
 	protected final Participant self;
 	protected final long timeoutMs;
@@ -60,7 +70,7 @@ public class RaftClusterMember implements ClusterMember {
 		state = State.SUPRESSED;
 		timer = new Thread(() -> doListenOperation());
 		timer.setDaemon(true);
-		timer.setName("SymphonyClusterMemberTimer");
+		timer.setName("ClusterMember");
 		timer.start();
 	}
 
@@ -72,7 +82,7 @@ public class RaftClusterMember implements ClusterMember {
 			} catch (InterruptedException e) {
 			}
 
-			System.out.println(self + " waking");
+			LOG.debug("{} waking", self);
 
 			if (state == State.SUPRESSED) {
 				long timeNow = System.currentTimeMillis();
@@ -93,7 +103,7 @@ public class RaftClusterMember implements ClusterMember {
 				nextSleepTime = (timeoutMs / 2);
 			}
 
-			System.out.println(self+" sleeping for "+nextSleepTime);
+			LOG.debug("{} sleeping for {}ms", self, nextSleepTime);
 		}
 
 	}
@@ -117,11 +127,11 @@ public class RaftClusterMember implements ClusterMember {
 			
 		if (sm.getElectionNumber() >= electionNumber) {
 			electionNumber = sm.getElectionNumber();
-			System.out.println(self + " received " + sm);
+			LOG.debug("{} received {}", self, sm);
 			
 			if (decider.canSuppressWith(sm)) {
 				if (state == State.LEADER) {
-					System.out.println(self + " stepping down due to " + sm);
+					LOG.debug("{} stepping down due to {}", self, sm);
 				}
 				
 				lastPingTimeMs = System.currentTimeMillis();
@@ -138,7 +148,7 @@ public class RaftClusterMember implements ClusterMember {
 		state = State.PROPOSING_ELECTION;
 		electionNumber++;
 		votedFor = self;
-		System.out.println(self + " holding election " + electionNumber);
+		LOG.debug("{} holding election {} ", self, electionNumber);
 		
 		Consumer<ClusterMessage> vc = decider.createDecider(() -> {
 			becomeLeader();
@@ -161,7 +171,7 @@ public class RaftClusterMember implements ClusterMember {
 			lastPingTimeMs = System.currentTimeMillis();
 		}
 
-		System.out.println(self + " voting for " + votedFor + " in election " + electionNumber);
+		LOG.debug("{} voting for {} in election {}", self, votedFor, electionNumber);
 
 		return new VoteResponse(electionNumber, votedFor, getVotes());
 	}
@@ -176,10 +186,10 @@ public class RaftClusterMember implements ClusterMember {
 
 		if (elapsedSinceLastPing > timeoutMs / 2) {
 			lastPingTimeMs = timeNow;
-			System.out.println(self+" sending ping");
+			LOG.debug("{} sending ping", self);
 			multicaster.sendAsyncMessage(self, new SuppressionMessage(self, electionNumber), c -> {});
 		} else {
-			System.out.println(self+" omitting ping");
+			LOG.debug("{} omitting ping", self);
 		}
 	}
 

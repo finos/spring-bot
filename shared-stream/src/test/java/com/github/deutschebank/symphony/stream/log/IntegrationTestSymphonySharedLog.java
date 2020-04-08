@@ -6,14 +6,25 @@ import java.util.Random;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import com.github.deutschebank.symphony.stream.AbstractIntegrationTest;
 import com.github.deutschebank.symphony.stream.Participant;
-import com.github.deutschebank.symphony.stream.log.SymphonyRoomSharedLog;
+import com.github.deutschebank.symphony.stream.spring.TestApplication;
+import com.symphony.api.agent.MessagesApi;
 
-public class IntegrationTestSymphonySharedLog extends AbstractIntegrationTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes={TestApplication.class})
+@ActiveProfiles("develop")
+public class IntegrationTestSymphonySharedLog  {
 
 	private String streamId = "y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==";
+	
+	@Autowired
+	MessagesApi messagesApi;
 	
 	@Test
 	public void testParticipantWrite() {
