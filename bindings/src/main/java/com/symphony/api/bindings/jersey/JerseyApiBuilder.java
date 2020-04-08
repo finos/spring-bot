@@ -7,6 +7,7 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
@@ -15,6 +16,7 @@ import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import com.symphony.api.bindings.AbstractApiBuilder;
+import com.symphony.api.bindings.jackson.LenientJacksonJsonProvider;
 
 /**
  * Provides a basic Jersey client creation wrapper which includes:
@@ -52,23 +54,28 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		return buildProxy(c, wt);
 	}
 	
-	public WebTarget newWebTarget() {
+	protected WebTarget newWebTarget(String url) {
 		try {
 			JerseyClientBuilder jcb = new JerseyClientBuilder();
 			jcb.sslContext(createSSLContext());
 		    jcb = jcb.withConfig(createConfig());
 			registerFeatures(jcb);
 			Client client = jcb.build();
-			WebTarget webTarget = client.target(this.url);
+			WebTarget webTarget = client.target(url);
 			return webTarget;
 		} catch (Exception e) {
 			throw new UnsupportedOperationException("Couldn't create jersey client", e);
 		}
 	}
+	
+	protected WebTarget newWebTarget() {
+		return newWebTarget(this.url);
+	}
 
 	protected void registerFeatures(JerseyClientBuilder jcb) {
 		jcb.register(MultiPartFeature.class);
 		jcb.register(SymphonyExceptionFilter.class);
+		jcb.register(LenientJacksonJsonProvider.class);
 	}
 
 	protected SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyManagementException {
@@ -86,6 +93,11 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 			    config.property(ClientProperties.PROXY_USERNAME,user);
 				config.property(ClientProperties.PROXY_PASSWORD,password);
 		}
+		
+		if (connectTimeout != null) {
+			config.property(ClientProperties.CONNECT_TIMEOUT, connectTimeout.intValue());
+		}
+		
 		return config;
 	}
 
@@ -99,5 +111,13 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		return out;
 	}
 
-
+	@Override
+	public boolean testConnection(String url) {
+		try {
+			Response response = newWebTarget(url).request().get();
+			return response != null;	// any response from the server means we at least connected.
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }
