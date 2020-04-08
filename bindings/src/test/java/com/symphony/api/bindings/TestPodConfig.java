@@ -4,10 +4,6 @@ package com.symphony.api.bindings;
 import org.glassfish.jersey.internal.util.Producer;
 
 import com.symphony.api.authenticator.AuthenticationApi;
-import com.symphony.api.bindings.ApiWrapper;
-import com.symphony.api.bindings.ConfigurableApiBuilder;
-import com.symphony.api.bindings.JWTHelper;
-import com.symphony.api.bindings.TokenManager;
 import com.symphony.api.bindings.cxf.CXFApiBuilder;
 import com.symphony.api.bindings.jersey.JerseyApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
@@ -29,13 +25,13 @@ public class TestPodConfig {
 		SymphonyIdentity id;
 		Producer<ConfigurableApiBuilder> pab;
 		TokenManager tm;
-		StreamHelp streamHelp;
+		StreamIDHelp streamHelp;
 		
 		public AbstractTestClientStrategy(SymphonyIdentity id, Producer<ConfigurableApiBuilder> pab) {
 			this.id = id;
 			this.pab = pab;
 			this.tm = initializeTokenManager();
-			this.streamHelp = new StreamHelp();
+			this.streamHelp = new StreamIDHelp();
 		}
 		
 		protected abstract TokenManager initializeTokenManager();
@@ -102,6 +98,11 @@ public class TestPodConfig {
 			b.setKeyManagers(id.getKeyManagers());
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
 			return b.getApi(com.symphony.api.login.AuthenticationApi.class);
+		}
+		
+		@Override
+		public ConfigurableApiBuilder getApiBuilder() {
+			return pab.call();
 		}
 	}
 	
@@ -172,12 +173,12 @@ public class TestPodConfig {
 	private static final SymphonyIdentity BOT1_ID = TestIdentityProvider.getIdentity("symphony-develop-bot1-identity");
 	
 	private static final String CI_PROXY = System.getProperty("proxy");
-	private static final String SESSION_AUTH_URL = "https://develop-api.symphony.com/sessionauth";
-	private static final String KEY_AUTH_URL = "https://develop-api.symphony.com/keyauth";
-	private static final String AGENT_URL = "https://develop.symphony.com/agent";
-	private static final String POD_URL = "https://develop.symphony.com/pod";
-	private static final String LOGIN_URL = "https://develop.symphony.com/login";
-	private static final String RELAY_URL = "https://develop.symphony.com/relay";
+	public static final String SESSION_AUTH_URL = "https://develop-api.symphony.com/sessionauth";
+	public static final String KEY_AUTH_URL = "https://develop-api.symphony.com/keyauth";
+	public static final String AGENT_URL = "https://develop.symphony.com/agent";
+	public static final String POD_URL = "https://develop.symphony.com/pod";
+	public static final String LOGIN_URL = "https://develop.symphony.com/login";
+	public static final String RELAY_URL = "https://develop.symphony.com/relay";
 		
 	public static final TestClientStrategy JERSEY_RSA = new RSATestClientStrategy(BOT1_ID, () -> new JerseyApiBuilder());
 	

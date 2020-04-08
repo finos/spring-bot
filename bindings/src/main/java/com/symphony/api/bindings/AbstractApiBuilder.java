@@ -26,6 +26,7 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 	protected String password;
 	protected int port;
 	protected ApiWrapper[] wrappers = new ApiWrapper[0];
+	protected Long connectTimeout = null;
 	
 	@Override
 	public void setProxyDetails(String proxyHost, String user, String password, int port) {
@@ -68,6 +69,20 @@ public abstract class AbstractApiBuilder implements ConfigurableApiBuilder {
 	public ApiWrapper[] getWrappers() {
 		return this.wrappers;
 	}
+	
+	@Override
+	public void setConnectTimeout(long ct) {
+		this.connectTimeout = ct;
+	}
+	
+	/**
+	 * Should be overridden by specific implementations
+	 */
+	@Override
+	public boolean testConnection(String url) {
+		return true;
+	}
+	
 	
 	
 }

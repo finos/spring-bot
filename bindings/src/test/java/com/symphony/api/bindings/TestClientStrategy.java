@@ -1,7 +1,6 @@
 package com.symphony.api.bindings;
 
 import com.symphony.api.authenticator.AuthenticationApi;
-import com.symphony.api.bindings.TokenManager;
 import com.symphony.api.id.SymphonyIdentity;
 
 /**
@@ -24,4 +23,7 @@ public interface TestClientStrategy {
 	public com.symphony.api.login.AuthenticationApi getRSASessionAuthApi();
 	
 	public com.symphony.api.login.AuthenticationApi getRSAKeyAuthApi();
+
+	public ConfigurableApiBuilder getApiBuilder();
+
 }
