@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -29,7 +28,7 @@ import com.github.deutschebank.symphony.spring.api.SymphonyApiConfig;
 import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.StreamEventConsumer;
 import com.github.deutschebank.symphony.stream.cluster.ClusterMember;
-import com.github.deutschebank.symphony.stream.cluster.RaftClusterMember;
+import com.github.deutschebank.symphony.stream.cluster.SymphonyRaftClusterMember;
 import com.github.deutschebank.symphony.stream.cluster.transport.HttpMulticaster;
 import com.github.deutschebank.symphony.stream.cluster.transport.Multicaster;
 import com.github.deutschebank.symphony.stream.cluster.voting.BullyDecider;
@@ -77,6 +76,10 @@ public class SharedStreamConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SharedLog symphonySharedLog() {
+		if (StringUtils.isEmpty(streamProperties.getCoordinationStreamId())) {
+			throw new IllegalArgumentException("Shared Log needs a stream ID to write to.  PLease set symphony.stream.coordination-stream-id");
+		}
+		
 		return new SymphonyRoomSharedLog(
 				streamProperties.getCoordinationStreamId(), 
 				messagesApi, 
@@ -123,23 +126,21 @@ public class SharedStreamConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ParticipationNotifier participationNotifier() {
-		return new ParticipationNotifier(symphonySharedLog(), 
-				selfParticipant(),
+	public ParticipationNotifier participationNotifier(SharedLog sl, Participant self) {
+		return new ParticipationNotifier(sl, 
+				self,
 				taskScheduler, 
 				streamProperties.getParticipantWriteIntervalMillis());
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public Decider decider() {
-		Participant self = selfParticipant();
-		
+	public Decider decider(Participant self, Multicaster mc) {
 		switch (streamProperties.getAlgorithm()) { 
 		case BULLY: 	
 			return new BullyDecider(self);
 		case MAJORITY:
-			return new MajorityDecider(() -> multicaster().getQuorumSize(), self);
+			return new MajorityDecider(() -> mc.getQuorumSize(), self);
 		default:
 			throw new IllegalArgumentException("Algorithm not found: "+streamProperties.getAlgorithm());
 		} 
@@ -150,9 +151,9 @@ public class SharedStreamConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyStreamUrlMapping symphonyStreamUrlMapping() {
+	public SymphonyStreamUrlMapping symphonyStreamUrlMapping(HttpClusterMessageController clusterMessageController) {
 		SymphonyStreamUrlMapping out = new SymphonyStreamUrlMapping();
-		Map<String, Object> sm = Collections.singletonMap(streamProperties.getEndpointPath(), httpClusterMessageController());
+		Map<String, Object> sm = Collections.singletonMap(streamProperties.getEndpointPath(), clusterMessageController);
 		out.setUrlMap(sm);
 		return out;
 	}
@@ -166,36 +167,41 @@ public class SharedStreamConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public HttpClusterMessageController httpClusterMessageController() {
-		return new HttpClusterMessageController(symphonyJsonOutputView(), clusterMember());
+	public HttpClusterMessageController httpClusterMessageController(ClusterMember cm) {
+		return new HttpClusterMessageController(symphonyJsonOutputView(), cm, objectMapper);
 	}
 	
 	@Bean
-	public ClusterMember clusterMember() {
+	@ConditionalOnMissingBean
+	public ClusterMember clusterMember(Decider d,  Multicaster mc, Participant self, SharedLog sl) {
 		Random r = new Random();
 		long timeoutMs = streamProperties.getTimeoutMs();
 		long randComp = Math.abs(r.nextLong() % (timeoutMs / 4));
 		long totalTimeout = timeoutMs + randComp;
 		LOG.info("Cluster starting up. Timeout is: "+totalTimeout);
-		return new RaftClusterMember(selfParticipant(), totalTimeout, decider(), multicaster());
+		ClusterMember out = new SymphonyRaftClusterMember(self, totalTimeout, d, mc, sl);
+		out.startup();
+		return out;
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyLeaderEventFilter symphonyLeaderEventFilter() {
-		Multicaster mc = multicaster();
-		return new SymphonyLeaderEventFilter(userDefinedCallback, false, selfParticipant(), 
-			(LogMessageHandler) symphonySharedLog(), lm -> mc.accept(lm.getParticipant()));
+	public SymphonyLeaderEventFilter symphonyLeaderEventFilter(Multicaster mc, Participant self, LogMessageHandler lmh) {
+		return new SymphonyLeaderEventFilter(userDefinedCallback, false, self, 
+			lmh, lm -> mc.accept(lm.getParticipant()));
 	}
 	
-	@Bean(name = STREAM_EXCEPTIONS_BEAN)
+	public static interface ExceptionConsumer extends Consumer<Exception> {};
+	
+	@Bean
 	@ConditionalOnMissingBean
-	public Consumer<Exception> streamExceptions() {
+	public ExceptionConsumer streamExceptions() {
 		return e -> LOG.error("Symphony Stream Exception occurred: ", e);
 	}
 	
 	@Bean
-	public SymphonyStreamHandler symphonyStreamHandler(@Qualifier(STREAM_EXCEPTIONS_BEAN) Consumer<Exception> exceptionHandler) {
-		return new SymphonyStreamHandler(datafeedApi, symphonyLeaderEventFilter(), exceptionHandler, true);
+	@ConditionalOnMissingBean
+	public SymphonyStreamHandler symphonyStreamHandler(ExceptionConsumer exceptionHandler, SymphonyLeaderEventFilter eventFilter) {
+		return new SymphonyStreamHandler(datafeedApi, eventFilter, exceptionHandler, streamProperties.isStartImmediately());
 	}
 }

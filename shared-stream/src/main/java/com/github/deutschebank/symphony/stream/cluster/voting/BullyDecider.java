@@ -49,7 +49,6 @@ public class BullyDecider implements Decider {
 		int selfValue = Math.abs(self.hashCode());
 		int contenderValue = Math.abs(sm.getLeader().hashCode());
 		boolean out = contenderValue > selfValue;
-		System.out.println(self+" has value "+selfValue+" vs "+sm.getLeader()+" has value "+contenderValue+" suppresed:"+out);
 		return out;
 	}
 
