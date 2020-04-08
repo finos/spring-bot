@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.health.HealthEndpointAutoConfiguration;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -37,7 +38,7 @@ import com.symphony.api.model.V4Message;
 			"server.port=15743",
 			"symphony.stream.coordination-stream-id=y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA=="}, 
 	webEnvironment = WebEnvironment.DEFINED_PORT, 
-	classes={TestApplication.class, SharedStreamConfig.class, NoddyCallback.class, WebMvcAutoConfiguration.EnableWebMvcConfiguration.class})
+	classes={TestApplication.class, SharedStreamConfig.class, NoddyCallback.class, WebMvcAutoConfiguration.EnableWebMvcConfiguration.class, HealthEndpointAutoConfiguration.class})
 @ActiveProfiles("develop")
 public class TestSpringComponents {
 	

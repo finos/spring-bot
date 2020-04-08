@@ -38,3 +38,8 @@
 ## 16th March 2020
 
  - Continued fix of #33
+ 
+## 9th April 2020
+
+ - Working version of the `symphony-maven-build-reporter`
+ - First version of `symphony-

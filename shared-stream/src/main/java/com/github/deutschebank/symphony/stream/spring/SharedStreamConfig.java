@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.health.HealthEndpoint;
+import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -68,6 +70,9 @@ public class SharedStreamConfig {
 	TaskScheduler taskScheduler;
 	
 	@Autowired
+	HealthEndpoint health;
+	
+	@Autowired
 	ObjectMapper objectMapper;
 	
 	@Value("${server.port:8080}")
@@ -92,27 +97,17 @@ public class SharedStreamConfig {
 	public Participant selfParticipant() {
 		String endpointPath = streamProperties.getEndpointPath();
 		endpointPath = endpointPath.startsWith("/") ? endpointPath : "/" + endpointPath;
-		String url;
-		
-		if (StringUtils.isEmpty(streamProperties.getInternalHostUrl())) {
-			// construct URL from properties
-			String hostName = hostName();
-			url = "http://" + hostName +":"+serverPort +endpointPath;
-		} else {
-			// construct using supplied host url
-			String hostAndPortUrl = streamProperties.getInternalHostUrl();
-			url = hostAndPortUrl + endpointPath;
-		}
-
+		String hostAndPort = StringUtils.isEmpty(streamProperties.getEndpointHostAndPort()) ? hostNameAndPort() : streamProperties.getEndpointHostAndPort();
+		String scheme = streamProperties.getEndpointScheme().toString().toLowerCase();
+		String url = scheme+"://" + hostAndPort + endpointPath;
 		LOG.info("Cluster starting up. This participant id: "+url);
-		
 		return new Participant(url);	
 
 	}
 
-	protected String hostName() {
+	protected String hostNameAndPort() {
 		try {
-			return InetAddress.getLocalHost().getHostAddress();
+			return InetAddress.getLocalHost().getHostAddress() + ":" + serverPort;
 		} catch (UnknownHostException e) {
 			throw new UnsupportedOperationException("Couldn't determine local host address", e);
 		}
@@ -179,7 +174,7 @@ public class SharedStreamConfig {
 		long randComp = Math.abs(r.nextLong() % (timeoutMs / 4));
 		long totalTimeout = timeoutMs + randComp;
 		LOG.info("Cluster starting up. Timeout is: "+totalTimeout);
-		ClusterMember out = new SymphonyRaftClusterMember(self, totalTimeout, d, mc, sl);
+		ClusterMember out = new SymphonyRaftClusterMember(self, totalTimeout, d, mc, sl, () -> health.health().getStatus() == Status.UP);
 		out.startup();
 		return out;
 	}

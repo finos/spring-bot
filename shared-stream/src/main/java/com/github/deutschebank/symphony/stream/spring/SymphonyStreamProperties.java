@@ -6,13 +6,15 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class SymphonyStreamProperties {
 
 	static enum Algorithm { MAJORITY, BULLY };
+	static enum EndpointScheme { HTTP, HTTPS };
 	
+	private EndpointScheme endpointScheme = EndpointScheme.HTTP;
 	private String coordinationStreamId;
-	private String environmentIdentifier;
+	private String environmentIdentifier = "test";
 	private long participantWriteIntervalMillis = 24*60*60*1000;	// one day by default.
 	private Algorithm algorithm = Algorithm.BULLY;
 	private String endpointPath = "/symphony-api/cluster-communication";
-	private String internalHostUrl = null;
+	private String endpointHostAndPort = null;
 	private long timeoutMs = 5000;
 	private boolean startImmediately = true;
 	
@@ -57,12 +59,12 @@ public class SymphonyStreamProperties {
 		this.endpointPath = endpointPath;
 	}
 
-	public String getInternalHostUrl() {
-		return internalHostUrl;
+	public String getEndpointHostAndPort() {
+		return endpointHostAndPort;
 	}
 
-	public void setInternalHostUrl(String internalHostUrl) {
-		this.internalHostUrl = internalHostUrl;
+	public void setEndpointHostAndPort(String endpointHostAndPort) {
+		this.endpointHostAndPort = endpointHostAndPort;
 	}
 
 	public long getTimeoutMs() {
@@ -79,5 +81,13 @@ public class SymphonyStreamProperties {
 
 	public void setStartImmediately(boolean startImmediately) {
 		this.startImmediately = startImmediately;
+	}
+
+	public EndpointScheme getEndpointScheme() {
+		return endpointScheme;
+	}
+
+	public void setEndpointScheme(EndpointScheme endpointScheme) {
+		this.endpointScheme = endpointScheme;
 	}
 }
