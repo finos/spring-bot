@@ -4,6 +4,7 @@ import com.symphony.api.bindings.ConfigurableApiBuilder;
 
 public class ProxyProperties {
 
+	public static final String NO_PROXY = "<none>";
 	
 	private String host;
 	private int port = 8080;
@@ -35,10 +36,9 @@ public class ProxyProperties {
 		this.password = password;
 	}
 	public void configure(ConfigurableApiBuilder ab) {
-		if (getHost() != null) {
-			ab.setProxyDetails(getHost(), getUser(), getPassword(), getPort());
-		}
-
+		String proxyHost = getHost();
+		proxyHost = NO_PROXY.equals(proxyHost) ? null : proxyHost;
+		ab.setProxyDetails(proxyHost, getUser(), getPassword(), getPort());
 	}
 	
 	
