@@ -5,3 +5,4 @@ bindings/target
 identity/target
 .settings/
 pom.xml.versionsBackup
+bin/
