@@ -34,3 +34,12 @@
 ## 6 March 2020
 
  - Fixed #33, making JSON parsing lenient in the face of additions on Symphony's side.
+
+## 16th March 2020
+
+ - Continued fix of #33
+ 
+## 9th April 2020
+
+ - Working version of the `symphony-maven-build-reporter`
+ - First version of `symphony-
