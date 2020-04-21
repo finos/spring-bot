@@ -5,7 +5,6 @@ bindings/target
 identity/target
 .settings/
 pom.xml.versionsBackup
-
-### IntelliJ IDEA ###
 .idea
 *.iml
+bin/
