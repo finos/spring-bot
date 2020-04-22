@@ -197,6 +197,10 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		}
 		
 		if (!out) {
+			if (t.isEnumType()) {
+				return false;
+			}
+			
 			String className = t.getRawClass().getCanonicalName();
 			for (VersionSpace versionSpace : allowed) {
 				if (className.startsWith(versionSpace.packagePrefix)) {

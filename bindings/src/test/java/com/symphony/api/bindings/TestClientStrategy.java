@@ -25,4 +25,5 @@ public interface TestClientStrategy {
 	public com.symphony.api.login.AuthenticationApi getRSAKeyAuthApi();
 
 	public ConfigurableApiBuilder getApiBuilder();
+
 }
