@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import static org.codehaus.plexus.util.StringUtils.isNotBlank;
 
 public class ProxyingWrapper {
+	
     private static final String DEFAULT_JKS_RESOURCE = "all_symphony_certs_truststore.jks";
 
     private final List<String> proxyHosts;
