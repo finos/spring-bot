@@ -32,6 +32,6 @@ public class TestProxyLoading {
 	public void testThatProxiesAreThere() {
 		Assert.assertEquals("blah", properties.getApis().get(0).getPod().getProxies().get(0).getHost());
 		Assert.assertEquals(3, properties.getApis().get(0).getPod().getProxies().size());
-		Assert.assertEquals("single", properties.getApis().get(0).getLogin().getProxy().getHost());
+		Assert.assertEquals("single", properties.getApis().get(0).getSessionAuth().getProxy().getHost());
 	}
 }
