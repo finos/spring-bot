@@ -25,7 +25,7 @@ import com.symphony.api.bindings.jackson.LenientJacksonJsonProvider;
  * webclient.
  * 
  * The URL should be:
- * 
+ * os
  * <ul>
  * <li>https://&lt;your-pod&gt;.symphony.com:443/sessionauth
  * <li>https://&lt;your agent&gt;:8444/agent
@@ -91,7 +91,7 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 
 		return out;
 	}
-
+	
 	protected WebClient createWebClient(String url) {
 		List<Object> providers = getProviders();
 		WebClient wc = WebClient.create(url, providers);
@@ -100,7 +100,7 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 		setupClientConfiguration(config);
 		return wc;
 	}
-
+	
 	protected WebClient createWebClient() {
 		return createWebClient(this.url);
 	}
@@ -148,5 +148,4 @@ public class CXFApiBuilder extends AbstractApiBuilder {
 			return false;
 		}
 	}
-
 }
