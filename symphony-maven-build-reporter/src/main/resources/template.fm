@@ -70,9 +70,13 @@
                             <#list entity['event'].hashtags as label>
                                 <hash tag="${label}" />
                             </#list>
-                          <!--span class="tempo-text-color--secondary">Maven Build Reporter By: xxx</span-->
                             <hr />
                         </#if>
+                        
+                        <span class="tempo-text-color--secondary">Maven Symphony Build Reporter</span>
+                        <hr />
+                        <a href="https://github.com/deutschebank/symphony-java-client-parent/tree/master/symphony-maven-build-reporter" />
+                        
                     </div>
                 </div>
             </body>
