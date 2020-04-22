@@ -99,13 +99,11 @@ public class TestPodConfig {
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
 			return b.getApi(com.symphony.api.login.AuthenticationApi.class);
 		}
-
+		
 		@Override
 		public ConfigurableApiBuilder getApiBuilder() {
 			return pab.call();
 		}
-		
-		
 	}
 	
 	public static final class CertTestClientStrategy extends AbstractTestClientStrategy {
