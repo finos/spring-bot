@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.junit.Before;
 import org.junit.experimental.theories.Theories;
 import org.junit.runner.RunWith;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,11 @@ import ch.qos.logback.classic.Logger;
  */
 @RunWith(Theories.class)
 public abstract class AbstractClusterTest {
+	
+	@Before
+	public void setupLogLevel() {
+		((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(Level.WARN);
+	}
 	
 	static class Setup {
 		Connectivity c;
@@ -62,9 +68,6 @@ public abstract class AbstractClusterTest {
 	}
 	
 	public Setup setupNetwork(Configuration c) {
-		((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(Level.WARN);
-
-		
 		Setup setup = new Setup();
 		setup.c = new Connectivity();
 		setup.n = new TestNetwork(setup.c, c.time / 2);
