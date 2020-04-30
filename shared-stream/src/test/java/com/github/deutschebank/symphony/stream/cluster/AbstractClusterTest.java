@@ -9,12 +9,16 @@ import java.util.stream.IntStream;
 
 import org.junit.experimental.theories.Theories;
 import org.junit.runner.RunWith;
+import org.slf4j.LoggerFactory;
 
 import com.github.deutschebank.symphony.stream.Participant;
 import com.github.deutschebank.symphony.stream.cluster.ClusterMember.State;
 import com.github.deutschebank.symphony.stream.fixture.Connectivity;
 import com.github.deutschebank.symphony.stream.fixture.TestClusterMember;
 import com.github.deutschebank.symphony.stream.fixture.TestNetwork;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 
 /**
  * Builds various sizes / speeds of network so we can test the clustering algorithm.
@@ -58,6 +62,9 @@ public abstract class AbstractClusterTest {
 	}
 	
 	public Setup setupNetwork(Configuration c) {
+		((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(Level.WARN);
+
+		
 		Setup setup = new Setup();
 		setup.c = new Connectivity();
 		setup.n = new TestNetwork(setup.c, c.time / 2);
