@@ -35,13 +35,13 @@ public class TestNetwork implements Multicaster {
 			Thread nw = new Thread(() -> {
 				randomDelay();
 				
-				System.out.println("Attempting to send message from "+from+" to "+to);
+				//System.out.println("Attempting to send message from "+from+" to "+to);
 				
 				if (c.canTalkTo(from, to)) {
 					ClusterMessage vr = tcm.receiveMessage(r);
 					randomDelay();
 
-					System.out.println("Sent message from "+from+" to "+to);
+					//System.out.println("Sent message from "+from+" to "+to);
 
 					consumer.accept(vr);
 				}
