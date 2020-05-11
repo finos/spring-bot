@@ -70,7 +70,7 @@ public abstract class AbstractClusterTest {
 	public Setup setupNetwork(Configuration c) {
 		Setup setup = new Setup();
 		setup.c = new Connectivity();
-		setup.n = new TestNetwork(setup.c, c.time / 2);
+		setup.n = new TestNetwork(setup.c, c.time / 6);
 		Random r= new Random();
 		
 		setup.allParticipants = IntStream.range(0, c.size).mapToObj(i -> new Participant("P"+i)).collect(Collectors.toSet());
