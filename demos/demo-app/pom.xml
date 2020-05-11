@@ -80,7 +80,7 @@
             <extension>
                 <groupId>com.github.deutschebank.symphony</groupId>
                 <artifactId>symphony-maven-build-reporter</artifactId>
-                <version>4.55.12</version>
+                <version>4.55.13-SNAPSHOT</version>
             </extension>
         </extensions> 
 
