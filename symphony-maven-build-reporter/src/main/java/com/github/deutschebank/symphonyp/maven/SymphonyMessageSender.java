@@ -134,8 +134,8 @@ public class SymphonyMessageSender {
                         .getUsers().stream()
                         .map(u -> u.getId()).findFirst().orElse(null);
             });
-        } catch (Exception e) {
-            LOG.warn("No symphony account for " + email, e);
+        } catch (NullPointerException e) {
+            LOG.warn("No symphony account for " + email);
             return null;
         }
 
