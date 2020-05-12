@@ -19,10 +19,10 @@
 		<module>symphony-app-spring-boot-starter</module>
 		<module>demos/demo-bot</module>
 		<module>demos/demo-app</module>
-    <module>entity-json</module>
-    <module>quickfix-json</module>
-    <module>shared-stream</module>
-    <module>symphony-maven-build-reporter</module>
+		<module>entity-json</module>
+		<module>quickfix-json</module>
+		<module>shared-stream</module>
+		<module>symphony-maven-build-reporter</module>
 	</modules>
 
 	<properties>
@@ -34,6 +34,14 @@
 		<!-- this must match the version from the spring boot pom -->
 		<jackson-databind.version>2.10.0</jackson-databind.version>
 		<jackson.version>2.10.0</jackson.version>
+
+		<!-- this configures the build reporter -->
+		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
+		<symphony.reporter.recipients>y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==</symphony.reporter.recipients>
+		<symphony.reporter.agent.url>https://develop.symphony.com/agent</symphony.reporter.agent.url>
+		<symphony.reporter.pod.url>https://develop.symphony.com/pod</symphony.reporter.pod.url>
+		<symphony.reporter.login.url>https://develop.symphony.com/login</symphony.reporter.login.url>
+		<symphony.reporter.relay.url>https://develop.symphony.com/relay</symphony.reporter.relay.url>
 	</properties>
 
 	<licenses>
@@ -134,6 +142,17 @@
 				</executions>
 			</plugin>
 		</plugins>
+
+
+		<extensions>
+			<extension>
+				<groupId>com.github.deutschebank.symphony</groupId>
+				<artifactId>symphony-maven-build-reporter</artifactId>
+				<!-- since we are building the build reporter, this must refer to an earlier, built version -->
+				<version>4.55.12</version>
+			</extension>
+		</extensions>
+
 	</build>
 
 	<distributionManagement>
@@ -143,15 +162,16 @@
 			<url>https://api.bintray.com/maven/deutschebank/SymphonyPractice/symphony-java-client-parent/;publish=1</url>
 		</repository>
 	</distributionManagement>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				 <groupId>com.fasterxml.jackson.core</groupId>
-			      <artifactId>jackson-core</artifactId>
-			      <version>${jackson.version}</version>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+
 
 </project>
