@@ -5,12 +5,12 @@
   <artifactId>symphony-java-client-entity-json</artifactId>
   <packaging>jar</packaging>
   <name>Symphony Java Client Entity Json</name>
-  <version>4.55.13-SNAPSHOT</version>
+  <version>4.55.14-SNAPSHOT</version>
 
   <parent>
     <groupId>com.github.deutschebank.symphony</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.55.13-SNAPSHOT</version>
+    <version>4.55.14-SNAPSHOT</version>
   </parent>
 
   <developers>
