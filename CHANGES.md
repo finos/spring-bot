@@ -42,4 +42,8 @@
 ## 9th April 2020
 
  - Working version of the `symphony-maven-build-reporter`
- - First version of `symphony-
+ - First version of `symphony-shared-stream`
+ 
+## 26th May 2020
+
+ - Improved tests and reliability of `symphony-shared-stream`
