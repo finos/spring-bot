@@ -47,3 +47,7 @@
 ## 26th May 2020
 
  - Improved tests and reliability of `symphony-shared-stream`
+ 
+## 2nd September 2020
+
+ - Added FINOS materials.
