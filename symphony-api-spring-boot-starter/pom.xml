@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>com.github.deutschebank.symphony</groupId>
 		<artifactId>symphony-java-client-parent</artifactId>
-		<version>4.55.14-SNAPSHOT</version>
+		<version>4.59.1-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -32,13 +32,13 @@
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-java-client-bindings</artifactId>
-			<version>4.55.14-SNAPSHOT</version>
+			<version>4.59.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-java-client-identity</artifactId>
-			<version>4.55.14-SNAPSHOT</version>
+			<version>4.59.1-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
