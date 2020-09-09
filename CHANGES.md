@@ -51,3 +51,9 @@
 ## 2nd September 2020
 
  - Added FINOS materials.
+
+## 9th September 2020
+
+ - Updated to Symphony Agent 1.59.0 API (this includes breaking changes to old APIs, sadly)
+ - Updated `swagger-codegen-maven-plugin` to version 3.0.21, removing stutter in method names (e.g. `isIsPodConnectivity()`).  
+ - These are both breaking changes, forcing an update of the major version number.

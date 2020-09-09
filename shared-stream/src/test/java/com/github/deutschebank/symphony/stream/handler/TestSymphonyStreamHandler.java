@@ -10,14 +10,18 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.symphony.api.agent.DatafeedApi;
+import com.symphony.api.model.AckId;
 import com.symphony.api.model.Datafeed;
 import com.symphony.api.model.MessageList;
+import com.symphony.api.model.V2Error;
 import com.symphony.api.model.V2MessageList;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4EventList;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageSent;
 import com.symphony.api.model.V4Payload;
+import com.symphony.api.model.V5Datafeed;
+import com.symphony.api.model.V5EventList;
 
 public class TestSymphonyStreamHandler {
 	
@@ -89,6 +93,26 @@ public class TestSymphonyStreamHandler {
 					new V4Payload().messageSent(
 							new V4MessageSent().message(
 								new V4Message().message("hi"))));
+		}
+
+		@Override
+		public V5Datafeed createDatafeed(String sessionToken, String keyManagerToken) {
+			return null; // not used
+		}
+
+		@Override
+		public V2Error deleteDatafeed(String datafeedId, String sessionToken, String keyManagerToken) {
+			return null; // not used
+		}
+
+		@Override
+		public List<V5Datafeed> listDatafeed(String sessionToken, String keyManagerToken) {
+			return null; // not used
+		}
+
+		@Override
+		public V5EventList readDatafeed(String sessionToken, String keyManagerToken, String datafeedId, AckId body) {
+			return null; // not used
 		}
 	}
 
