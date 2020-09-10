@@ -1,4 +1,4 @@
-package com.github.detuschebank.symphony.json;
+package com.github.deutschebank.symphony.json;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
