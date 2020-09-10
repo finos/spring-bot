@@ -19,7 +19,7 @@
 
     <groupId>com.github.deutschebank.symphony</groupId>
 	  <artifactId>demo-app</artifactId>
-	  <version>4.59.3</version>
+	  <version>4.59.4</version>
 	  <name>Symphony Demo App</name>
 	  <description>Demo App Using Spring Boot Starter</description>
 
@@ -51,7 +51,7 @@
 		  <groupId>com.github.deutschebank.symphony</groupId>
 		  <artifactId>symphony-app-spring-boot-starter</artifactId>
 		  <scope>compile</scope>
-		  <version>4.59.3</version>
+		  <version>4.59.4</version>
 		</dependency>
       
         <dependency>
