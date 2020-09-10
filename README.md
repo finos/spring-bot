@@ -112,8 +112,9 @@ In order to do a release:
 1. On Releaser's machine:
 
 ```
+mvn test
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=*  -DgroupId=*
-mvn -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy 
+mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy 
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=*  -DgroupId=*
 # then push to git
 ```
