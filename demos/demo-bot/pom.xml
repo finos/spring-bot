@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>com.github.deutschebank.symphony</groupId>
 	<artifactId>demo-bot</artifactId>
-	<version>4.59.4</version>
+	<version>4.59.3</version>
 	<name>Symphony Demo Bot</name>
 	<description>Demo Bot Using Spring Boot Starter</description>
 
@@ -41,8 +41,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-common</artifactId>
