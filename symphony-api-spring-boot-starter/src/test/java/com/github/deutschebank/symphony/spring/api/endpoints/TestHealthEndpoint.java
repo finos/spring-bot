@@ -44,7 +44,7 @@ public class TestHealthEndpoint {
 	
 	@Test
 	public void testAutowire() throws Exception {
-		System.out.println(api.v2HealthCheckGet(false, null, null));
+		System.out.println(api.v2HealthCheckGet(false,false,false,false,false,false,false,false, null, null));
 		
 		HealthComponent h = he.health();
 		Assert.assertEquals(Status.UP, h.getStatus());
