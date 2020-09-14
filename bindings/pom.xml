@@ -5,25 +5,18 @@
   <artifactId>symphony-java-client-bindings</artifactId>
   <packaging>jar</packaging>
   <name>Symphony Java Client Bindings</name>
-  <version>4.55.13-SNAPSHOT</version>
+  <version>4.59.1-SNAPSHOT</version>
 
   <parent>
     <groupId>com.github.deutschebank.symphony</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.55.13-SNAPSHOT</version>
+    <version>4.59.1-SNAPSHOT</version>
   </parent>
-
-  <developers>
-    <developer>
-      <name>Rob Moffat</name>
-      <email>robert.moffat@db.com</email>
-    </developer>
-  </developers>
 
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <symphony.api-version>1_55_4</symphony.api-version>
+    <symphony.api-version>1_59_0</symphony.api-version>
   </properties>
 
   <build>
@@ -66,7 +59,7 @@
       <plugin>
         <groupId>io.swagger.codegen.v3</groupId>
         <artifactId>swagger-codegen-maven-plugin</artifactId>
-        <version>3.0.8</version>
+        <version>3.0.21</version>
         <configuration>
           <language>jaxrs-cxf-client</language>
           <supportingFilesToGenerate></supportingFilesToGenerate>
