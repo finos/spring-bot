@@ -15,10 +15,8 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.agent.SystemApi;
 import com.symphony.api.bindings.Streams.Worker;
 import com.symphony.api.model.Datafeed;
-import com.symphony.api.model.MessageSearchQuery;
 import com.symphony.api.model.V2HealthCheckResponse;
 import com.symphony.api.model.V4Event;
-import com.symphony.api.model.V4MessageList;
 
 /**
  * Tests of some Agent endpoints.
@@ -49,7 +47,7 @@ public class AgentTest extends AbstractTest {
 	}
 	
 	@Theory
-	public void testStreams(TestClientStrategy s) throws Exception {
+	public void testStreamsV4(TestClientStrategy s) throws Exception {
 		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
 
@@ -77,15 +75,15 @@ public class AgentTest extends AbstractTest {
 			Thread.yield();
 		}
 	}
-
+	
 	@Theory
 	public void testHealthEndpoint(TestClientStrategy s) throws Exception {
 		SystemApi systemApi = s.getAgentApi(SystemApi.class);
-		V2HealthCheckResponse resp = systemApi.v2HealthCheckGet(false, null, null);
+		V2HealthCheckResponse resp = systemApi.v2HealthCheckGet(false, null, null, null, null, null, null, null, null, null);
 		String json = new ObjectMapper().writeValueAsString(resp);
-		Assert.assertTrue(resp.isisPodConnectivity());
-		Assert.assertTrue(resp.isisKeyManagerConnectivity());
-		Assert.assertTrue(resp.isisAgentServiceUser());
+		Assert.assertTrue(resp.isPodConnectivity());
+		Assert.assertTrue(resp.isKeyManagerConnectivity());
+		Assert.assertTrue(resp.isAgentServiceUser());
 		System.out.println(json);
 	}
 	
