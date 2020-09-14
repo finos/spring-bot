@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.github.deutschebank.symphony</groupId>
 		<artifactId>symphony-java-client-parent</artifactId>
-		<version>4.55.14-SNAPSHOT</version>
+		<version>4.59.1-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.55.14-SNAPSHOT</version>
+			<version>4.59.1-SNAPSHOT</version>
 		</dependency>
 
 
@@ -71,7 +71,7 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-rs-client</artifactId>
-			<version>3.3.1</version>
+			<version>3.3.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

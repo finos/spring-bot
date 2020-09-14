@@ -25,7 +25,7 @@ public class TestProxyLoading {
 
 	@Test
 	public void testAutowire() throws Exception {
-		api.v2HealthCheckGet(false, null, null);
+		api.v2HealthCheckGet(false, false, false, false, false, false, false, false, null, null);
 	}
 	
 	@Test
