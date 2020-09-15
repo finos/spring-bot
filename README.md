@@ -115,7 +115,7 @@ In order to do a release:
 ```
 mvn test
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=*  -DgroupId=*
-mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy 
+mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy -P symphony-release 
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=*  -DgroupId=*
 # then push to git
 ```
@@ -126,3 +126,5 @@ Jcenter release is performed automatically.
 To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-client-parent#central
 Enter details and click sync.
 
+ - **NB:**: This seems to be somewhat unreliable. If it fails, un-check "Close and release repository when done." and instead do the close + release process via the interface at [oss.sonatype.org](https://oss.sonatype.org).
+ 
