@@ -31,7 +31,7 @@ public class SymphonyIdentityModuleTest {
 		stuff.put("pub", p12.getPublicKey());
 		
 		String written = om.writeValueAsString(stuff);
-		System.out.println(written);
+		//System.out.println(written);
 		
 		String expected = StreamHelp.asString(this.getClass().getResourceAsStream("/map.json"));
 		Assert.assertEquals(expected, written);
