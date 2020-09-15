@@ -40,7 +40,7 @@ jobs:
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
     - name: Build + Test (on master)
       if: github.ref == 'refs/heads/master'
-      run: mvn install -V --settings .github/workflows/settings.xml
+      run: mvn install --settings .github/workflows/settings.xml
     - name: Build (not on master)
       if: github.ref != 'refs/heads/master'
       run: mvn install -DskipTests
