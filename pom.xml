@@ -5,7 +5,7 @@
 
 	<groupId>com.github.deutschebank.symphony</groupId>
 	<artifactId>symphony-java-client-parent</artifactId>
-	<version>4.59.5-SNAPSHOT</version>
+	<version>4.59.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Symphony Java Client Parent</name>
@@ -80,71 +80,89 @@
 	</developers>
 
 	<scm>
-		<connection>scm:git@github.com:deutschebank/symphony-java-client-parent.git</connection>
+		<connection>scm:git@github.com:finos/symphony-java-toolkit.git</connection>
 		<tag>HEAD</tag>
-		<url>https://github.com/deutschebank/symphony-java-client-parent</url>
+		<url>https://github.com/finos/symphony-java-toolkit</url>
 	</scm>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>0.8.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.6</version>
-				<executions>
-					<execution>
-						<id>sign-artifacts</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>sign</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<skip>${env.PGP_SKIP}</skip>
-					<interactive>false</interactive>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.1.1</version>
-				<executions>
-					<execution>
-						<id>attach-javadocs</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-						<configuration> <!-- add this to disable checking -->
-							<doclint>none</doclint>
-							<failOnError>false</failOnError>
-							<failOnWarnings>false</failOnWarnings>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
 
+  <profiles>
+    <!-- using this profile creates Javadocs, etc. and signs the jars for upload to maven central -->
+    <profile>
+      <id>symphony-release</id>
+	    <build>
+		    <plugins>
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-gpg-plugin</artifactId>
+		        <version>1.6</version>
+		        <executions>
+		          <execution>
+		            <id>sign-artifacts</id>
+		            <phase>verify</phase>
+		            <goals>
+		              <goal>sign</goal>
+		            </goals>
+		          </execution>
+		        </executions>
+		        <configuration>
+		          <interactive>false</interactive>
+		        </configuration>
+		      </plugin>
+		      <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-javadoc-plugin</artifactId>
+		        <version>3.1.1</version>
+		        <executions>
+		          <execution>
+		            <id>attach-javadocs</id>
+		            <goals>
+		              <goal>jar</goal>
+		            </goals>
+		            <configuration> <!-- add this to disable checking -->
+		              <doclint>none</doclint>
+		              <failOnError>false</failOnError>
+		              <failOnWarnings>false</failOnWarnings>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>
+		    </plugins>
+		  </build>
+    </profile>
+    
+    
+    <profile>
+      <!-- this profile generates code coverage, should be run by the ci server -->
+      <id>symphony-ci</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.2</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>prepare-agent</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>report</id>
+                <phase>test</phase>
+                <goals>
+                  <goal>report</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+ 	
 
+  <build>
 		<extensions>
 			<extension>
 				<groupId>com.github.deutschebank.symphony</groupId>
@@ -153,7 +171,6 @@
 				<version>4.59.2</version>
 			</extension>
 		</extensions>
-
 	</build>
 
 	<distributionManagement>
