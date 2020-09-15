@@ -1,3 +1,4 @@
+[![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![BuildStatus](https://img.shields.io/travis/deutschebank/symphony-java-client-parent)](https://travis-ci.org/deutschebank/symphony-java-client-parent)
 ![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-client-parent)
 [![Coverage](https://img.shields.io/codecov/c/github/deutschebank/symphony-java-client-parent)](https://codecov.io/gh/deutschebank/symphony-java-client-parent)
@@ -112,8 +113,9 @@ In order to do a release:
 1. On Releaser's machine:
 
 ```
+mvn test
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=*  -DgroupId=*
-mvn -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy 
+mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy -P symphony-release 
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=*  -DgroupId=*
 # then push to git
 ```
@@ -124,3 +126,5 @@ Jcenter release is performed automatically.
 To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-client-parent#central
 Enter details and click sync.
 
+ - **NB:**: This seems to be somewhat unreliable. If it fails, un-check "Close and release repository when done." and instead do the close + release process via the interface at [oss.sonatype.org](https://oss.sonatype.org).
+ 
