@@ -15,7 +15,7 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.github.detuschebank.symphony.json.EntityJson;
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.Content;
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Paragraph;
