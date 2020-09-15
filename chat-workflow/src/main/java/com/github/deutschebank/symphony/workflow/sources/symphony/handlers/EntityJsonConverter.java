@@ -5,15 +5,15 @@ import java.util.List;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.detuschebank.symphony.json.EntityJson;
-import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import com.github.deutschebank.symphony.json.EntityJson;
+import com.github.deutschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import com.github.deutschebank.symphony.json.ObjectMapperFactory;
 import com.github.deutschebank.symphony.workflow.AbstractNeedsWorkflow;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
-import com.github.detuschebank.symphony.json.ObjectMapperFactory;
 
 /**
  * Converts workflow objects to/from JSON.
