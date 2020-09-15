@@ -75,6 +75,7 @@ public class SymphonyMessageSender {
         filterDevelopersEmails((List<Developer>) event.get("developers"), sessionToken);
         String dataStr = objectMapper.writeValueAsString(data);
 
+        LOG.debug("Writing Message: -----\n"+dataStr+"\n-------");
 
         for (String recip : (List<String>) event.get("recipients")) {
             String stream;
