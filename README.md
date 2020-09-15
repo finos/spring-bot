@@ -1,5 +1,5 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
-[![BuildStatus](https://img.shields.io/travis/deutschebank/symphony-java-client-parent)](https://travis-ci.org/deutschebank/symphony-java-client-parent)
+[![BuildStatus](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)]((https://github.com/finos/symphony-java-toolkit/workflows)
 ![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-client-parent)
 [![Coverage](https://img.shields.io/codecov/c/github/deutschebank/symphony-java-client-parent)](https://codecov.io/gh/deutschebank/symphony-java-client-parent)
 ![License](https://img.shields.io/github/license/deutschebank/symphony-java-client-parent)
