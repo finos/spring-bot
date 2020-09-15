@@ -38,9 +38,9 @@ jobs:
         server-password: CI_DEPLOY_PASSWORD
     - name: Download deps and plugins
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
-    - name: Build + Test on master
+    - name: Build + Test (on master)
       if: github.ref == 'refs/heads/master'
-      run: mvn install -V -DskipTests
-    - name: Build + Test not on master
+      run: mvn install -V 
+    - name: Build (not on master)
       if: github.ref != 'refs/heads/master'
       run: mvn install -DskipTests
