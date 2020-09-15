@@ -1,4 +1,4 @@
-package com.github.detuschebank.symphony.json;
+package com.github.deutschebank.symphony.json;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.AsPropertyTypeSerializer;
 import com.fasterxml.jackson.databind.jsontype.impl.ClassNameIdResolver;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import com.github.deutschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
 
 /**
  * Contains configuration code to get Jackson to read/write in a Symphony-compatible JSON format.

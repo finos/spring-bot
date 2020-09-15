@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.detuschebank.symphony.json.EntityJson;
-import com.github.detuschebank.symphony.json.ObjectMapperFactory;
+import com.github.deutschebank.symphony.json.EntityJson;
+import com.github.deutschebank.symphony.json.ObjectMapperFactory;
 import com.github.deutschebank.symphony.stream.MessagingVersionSpace;
 import com.github.deutschebank.symphony.stream.SharedStreamException;
 import com.symphony.api.agent.MessagesApi;
