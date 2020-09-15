@@ -5,12 +5,12 @@
   <artifactId>symphony-java-client-bindings</artifactId>
   <packaging>jar</packaging>
   <name>Symphony Java Client Bindings</name>
-  <version>4.59.4</version>
+  <version>4.59.5-SNAPSHOT</version>
 
   <parent>
     <groupId>com.github.deutschebank.symphony</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.59.4</version>
+    <version>4.59.5-SNAPSHOT</version>
   </parent>
 
   <properties>

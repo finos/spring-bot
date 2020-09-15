@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.github.deutschebank.symphony</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.59.1-SNAPSHOT</version>
+    <version>4.59.5-SNAPSHOT</version>
   </parent>
 
   <properties>
