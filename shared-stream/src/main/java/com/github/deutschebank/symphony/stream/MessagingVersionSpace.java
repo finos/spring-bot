@@ -1,6 +1,6 @@
 package com.github.deutschebank.symphony.stream;
 
-import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import com.github.deutschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
 
 
 public class MessagingVersionSpace {

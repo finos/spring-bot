@@ -1,4 +1,4 @@
-package com.github.detuschebank.symphony.json;
+package com.github.deutschebank.symphony.json;
 
 import java.util.Arrays;
 
@@ -11,7 +11,7 @@ import org.symphonyoss.fin.security.id.Ticker;
 import org.symphonyoss.taxonomy.Hashtag;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.detuschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import com.github.deutschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import com.symphony.user.Mention;
 import com.symphony.user.UserId;
 
