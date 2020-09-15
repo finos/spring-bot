@@ -29,9 +29,9 @@ public class AgentHealthHelper implements HealthIndicator {
 
 	@Override
 	public Health health() {
-		V2HealthCheckResponse resp = api.v2HealthCheckGet(false, null, null);
-		Health.Builder hb = (resp.isisAgentServiceUser() && resp.isisEncryptDecryptSuccess()
-				&& resp.isisKeyManagerConnectivity() && resp.isisPodConnectivity()) ? Health.up() : Health.down();
+		V2HealthCheckResponse resp = api.v2HealthCheckGet(false, false, false, false, false, false, false, false, null, null);
+		Health.Builder hb = (resp.isAgentServiceUser() && resp.isEncryptDecryptSuccess()
+				&& resp.isKeyManagerConnectivity() && resp.isPodConnectivity()) ? Health.up() : Health.down();
 				
 		Map<String, Object> reasons = om.convertValue(resp, Map.class);
 		hb.withDetails(reasons);
