@@ -23,6 +23,7 @@
 		<module>quickfix-json</module>
 		<module>shared-stream</module>
 		<module>symphony-maven-build-reporter</module>
+		<module>chat-workflow</module>
 	</modules>
 
 	<properties>
@@ -149,7 +150,7 @@
 				<groupId>com.github.deutschebank.symphony</groupId>
 				<artifactId>symphony-maven-build-reporter</artifactId>
 				<!-- since we are building the build reporter, this must refer to an earlier, built version -->
-				<version>4.55.13</version>
+				<version>4.59.2</version>
 			</extension>
 		</extensions>
 
