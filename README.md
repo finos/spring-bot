@@ -1,7 +1,7 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![BuildStatus](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)](https://github.com/finos/symphony-java-toolkit/workflows)
 ![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-client-parent)
-[![Coverage](https://img.shields.io/codecov/c/github/deutschebank/symphony-java-client-parent)](https://codecov.io/gh/deutschebank/symphony-java-client-parent)
+[![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
 ![License](https://img.shields.io/github/license/deutschebank/symphony-java-client-parent)
 [![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
 
