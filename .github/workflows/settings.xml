@@ -8,22 +8,22 @@
      <properties>
        <symphony-develop-bot1-identity>
          {
-           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT1PRIVATEKEY}\n-----END PRIVATE KEY-----",
+           "privateKey": "${env.BOT1PRIVATEKEY}",
            "email": "symphony.practice.bot1@list.db.com",
            "commonName": "symphony.practice.bot1"
          }
        </symphony-develop-bot1-identity>
        <symphony-develop-bot2-identity>
          {
-           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT2PRIVATEKEY}\n-----END PRIVATE KEY-----",
+           "privateKey": "${env.BOT2PRIVATEKEY}",
            "email": "symphony.practice.bot2@list.db.com",
            "commonName": "symphony.practice.bot2",
-           "chain": [ "-----BEGIN CERTIFICATE-----\n${env.BOT2CERTIFICATE}\n-----END CERTIFICATE-----" ]
+           "chain": [ "${env.BOT2CERTIFICATE}" ]
          }
        </symphony-develop-bot2-identity>
        <symphony-test-identity>
          {
-           "privateKey": "-----BEGIN PRIVATE KEY-----\n${env.BOT1PRIVATEKEY}\n-----END PRIVATE KEY-----",
+           "privateKey": "${env.BOT1PRIVATEKEY}",
            "email": "symphony.practice.bot1@list.db.com",
            "commonName": "symphony.practice.bot1"
          }
@@ -33,5 +33,6 @@
   </profiles>
   <activeProfiles>
    <activeProfile>develop-pod-profile</activeProfile>
+   <activeProfile>symphony-ci</activeProfile>
   </activeProfiles>
 </settings>
