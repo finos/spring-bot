@@ -315,7 +315,10 @@ public class SimpleMessageParser {
 					if (top instanceof TextFrame) {
 						((TextFrame) top).push(ch, start, length);
 					} else {
-						throw new UnsupportedOperationException("Wasn't expecting text");
+						String content = new String(ch, start, length);
+						if (!content.trim().isEmpty()) {
+							throw new UnsupportedOperationException("Wasn't expecting text: "+content);
+						}
 					}
 				}
 				

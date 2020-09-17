@@ -31,7 +31,8 @@
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-shared-stream</artifactId>
       <version>4.59.6-SNAPSHOT</version>
-    </dependency>    
+    </dependency> 
+    <!-- needed for formatting messageml -->   
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>

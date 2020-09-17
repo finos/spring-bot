@@ -24,7 +24,7 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 
 	ObjectMapper om;
 	
-	public EntityJsonConverter(Workflow wf) {
+	public EntityJsonConverter(Workflow wf, ObjectMapper objectMapper) {
 		super(wf);
 		List<Class<?>> extendedClassSpace = new ArrayList<Class<?>>();
 		extendedClassSpace.add(RoomDef.class);
@@ -33,7 +33,7 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 		extendedClassSpace.add(Room.class);
 		extendedClassSpace.addAll(wf.getDataTypes());
 		VersionSpace[] vs = extendedClassSpace.stream().map(c -> new VersionSpace(c.getCanonicalName(), "1.0")).toArray(s -> new VersionSpace[s]);
-		om = ObjectMapperFactory.initialize(ObjectMapperFactory.extendedSymphonyVersionSpace(vs));		
+		om = ObjectMapperFactory.initialize(objectMapper, ObjectMapperFactory.extendedSymphonyVersionSpace(vs));		
 		om.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}

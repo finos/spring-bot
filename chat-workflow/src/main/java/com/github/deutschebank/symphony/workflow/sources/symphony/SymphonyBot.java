@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import com.github.deutschebank.symphony.stream.StreamEventConsumer;
 import com.symphony.api.id.SymphonyIdentity;
@@ -39,11 +38,6 @@ public class SymphonyBot implements StreamEventConsumer {
 		} catch (Throwable e) {
 			LOG.error("Couldn't handle symphony event: ", e);
 		}
-	}
-
-	@Scheduled(fixedRate=10000)
-	public void doSomething() {
-		
 	}
 	
 }
