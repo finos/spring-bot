@@ -5,11 +5,9 @@ env:
   CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   PGP_SKIP: ${{ secrets.PGP_SKIP }}
-  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   BOT1PRIVATEKEY: ${{ secrets.BOT1PRIVATEKEY }}
   BOT2PRIVATEKEY: ${{ secrets.BOT2PRIVATEKEY }}
   BOT2CERTIFICATE: ${{ secrets.BOT2CERTIFICATE }}
-  symphony-test-identity: ${{ secrets.BOT1PRIVATEKEY }}
 
 on: [push, pull_request]
 
@@ -41,7 +39,13 @@ jobs:
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
     - name: Build + Test (on master)
       if: github.ref == 'refs/heads/master'
-      run: mvn install -V -P symphony-ci
+      run: mvn install --settings .github/workflows/settings.xml
     - name: Build (not on master)
       if: github.ref != 'refs/heads/master'
       run: mvn install -DskipTests
+    - name: Coverage (on master)
+      if: github.ref == 'refs/heads/master'
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+       
