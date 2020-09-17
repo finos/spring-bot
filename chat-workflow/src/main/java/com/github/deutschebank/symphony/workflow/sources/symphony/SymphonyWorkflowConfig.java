@@ -4,13 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-<<<<<<< HEAD
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-=======
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
->>>>>>> 4971935eafb7b3c7e8f45cb2a7081d970acce818
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.Validator;
@@ -40,11 +35,7 @@ import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
 
 @Configuration
-<<<<<<< HEAD
-@AutoConfigureBefore({SharedStreamConfig.class})
-=======
 @AutoConfigureBefore(SharedStreamConfig.class)
->>>>>>> 4971935eafb7b3c7e8f45cb2a7081d970acce818
 public class SymphonyWorkflowConfig {
 	
 	@Autowired
