@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.Validator;
 
 import com.github.deutschebank.symphony.spring.api.SymphonyApiConfig;
+import com.github.deutschebank.symphony.stream.spring.SharedStreamConfig;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.ElementsConsumer;
@@ -24,7 +26,6 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.messages.Simpl
 import com.github.deutschebank.symphony.workflow.sources.symphony.messages.SimpleMessageParser;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRoomsImpl;
-import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.pod.RoomMembershipApi;
@@ -32,6 +33,7 @@ import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
 
 @Configuration
+@AutoConfigureBefore(SharedStreamConfig.class)
 public class SymphonyWorkflowConfig {
 	
 	@Autowired

@@ -20,6 +20,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
@@ -48,6 +49,7 @@ import com.symphony.api.agent.MessagesApi;
 @Configuration
 @AutoConfigureAfter({SymphonyApiConfig.class})
 @EnableConfigurationProperties(SymphonyStreamProperties.class)
+@EnableScheduling
 public class SharedStreamConfig {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SharedStreamConfig.class);
