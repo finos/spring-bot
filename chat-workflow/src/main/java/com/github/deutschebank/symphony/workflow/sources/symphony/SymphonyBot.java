@@ -39,5 +39,4 @@ public class SymphonyBot implements StreamEventConsumer {
 			LOG.error("Couldn't handle symphony event: ", e);
 		}
 	}
-	
 }
