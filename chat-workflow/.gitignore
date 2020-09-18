@@ -1,0 +1,8 @@
+/bin/
+/target
+twitter4j.properties
+.project
+.classpath
+/temp
+.settings/
+.idea
