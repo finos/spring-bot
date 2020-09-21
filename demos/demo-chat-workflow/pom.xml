@@ -1,40 +1,39 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.db.symphony.example-chat-workflow</groupId>
+	<artifactId>demo-chat-workflow</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<name>demo-chat-workflow</name>
+	<description>Demo App for creation of Symphony chat workflow</description>
+	<url>http://maven.apache.org</url>
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.2.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<version>2.2.0.RELEASE</version>
+		<relativePath />
 	</parent>
-	<groupId>com.db.symphony.example-bot</groupId>
-	<artifactId>demo-bot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Symphony Demo Bot</name>
-	<description>Demo Bot Using Spring Boot Starter</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
-			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
-			<scope>compile</scope>
+			<artifactId>chat-workflow</artifactId>
+			<version>4.59.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -83,5 +82,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
