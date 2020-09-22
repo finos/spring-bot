@@ -44,43 +44,6 @@ public class ElementsAction implements Action {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((action == null) ? 0 : action.hashCode());
-		result = prime * result + ((formData == null) ? 0 : formData.hashCode());
-		result = prime * result + ((workflowObject == null) ? 0 : workflowObject.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ElementsAction other = (ElementsAction) obj;
-		if (action == null) {
-			if (other.action != null)
-				return false;
-		} else if (!action.equals(other.action))
-			return false;
-		if (formData == null) {
-			if (other.formData != null)
-				return false;
-		} else if (!formData.equals(other.formData))
-			return false;
-		if (workflowObject == null) {
-			if (other.workflowObject != null)
-				return false;
-		} else if (!workflowObject.equals(other.workflowObject))
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
 		return "ElementsAction [formData=" + formData + ", action=" + action
 				+ ", workflowObject=" + workflowObject + "]";

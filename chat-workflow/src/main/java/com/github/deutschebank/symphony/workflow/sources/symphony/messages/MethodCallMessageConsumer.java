@@ -11,9 +11,10 @@ public class MethodCallMessageConsumer implements SimpleMessageConsumer {
 	@Override
 	public List<Response> apply(SimpleMessageAction sma) {
 		Optional<Word> firstWord = sma.getWords().getNth(Word.class, 0);
-		return firstWord.filter(w -> sma.getWorkflow().getCommands(sma.getRoom()).containsKey(w.getIdentifier()))
+		return firstWord.filter(w -> sma.getWorkflow().hasMatchingCommand(w.getIdentifier(), sma.getRoom()))
 				.map(w -> sma.getWorkflow().applyCommand(sma.getUser(), sma.getRoom(), w.getIdentifier(), null, sma.getWords()))
 				.orElse(null);
 	}
+
 
 }
