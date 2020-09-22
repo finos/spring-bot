@@ -68,12 +68,12 @@ public class TagDef implements Tag {
 
 	@Override
 	public String toString() {
-		return "TagDef [name=" + name + ", id=" + id + ", type=" + tagType + "]";
+		return "TagDef [name=" + getName() + ", id=" + getId() + ", type=" + getTagType() + "]";
 	}
 
 	@Override
 	public String getText() {
-		return tagType.getSymbol()+name;
+		return (tagType == null ? "" : tagType.getSymbol()) + name;
 	}
 
 	
