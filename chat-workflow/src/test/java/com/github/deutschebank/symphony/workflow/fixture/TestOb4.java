@@ -110,7 +110,7 @@ public class TestOb4 {
 		this.theId = theId;
 	}
 
-	@Exposed(description = "Testing")
+	@Exposed(description = "Creates a TestOb4")
 	public static TestOb4 ob4(TestOb4 in) {
 		return in;
 	}
