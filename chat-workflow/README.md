@@ -30,7 +30,7 @@ NB:  Chat workflow will bring in the other Spring Boot Starters transitively, so
 
 A _workflow_ here is a sequence of interactions carried out by a group of users, coordinated with a bot.  For example, an expenses workflow might look like this:
 
-![Simple Expenses Workflow](../images/chat-workflow1.png)
+![Simple Expenses Workflow](images/chat-workflow1.png)
 
 Note - different people are responsible for different _actions_ in the workflow, that move the state of the workflow on. 
 
@@ -40,7 +40,7 @@ Note - different people are responsible for different _actions_ in the workflow,
 
 These users might belong to different _teams_, as shown below:
 
-![Simple Expenses Workflow, v2](../images/chat-workflow2.png)
+![Simple Expenses Workflow, v2](images/chat-workflow2.png)
 
 ### How Can Symphony Help?
 
@@ -56,4 +56,11 @@ Symphony is perfect for workflows like this:
 
 In order to build a workflow like the one above, you simply need to create a Java class to encapsulate all of this data, and then use the appropriate annotations to say which methods can be used in which rooms.
 
-![Java Class](../images/chat-workflow3.png)
+![Java Class](images/chat-workflow3.png)
+
+The UML diagram above demonstrates this.
+
+
+
+
+

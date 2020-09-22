@@ -115,5 +115,12 @@ public abstract class AbstractWorkflow implements Workflow {
 		roomsProviders.add(r);
 	}
 
+	@Override
+	public boolean hasMatchingCommand(String name, Room r) {
+		return getCommands(r).stream()
+			.filter(c -> c.getName().equals(name))
+			.count() > 0;
+	}
+
 	
 }
