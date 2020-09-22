@@ -2,9 +2,9 @@ package com.github.deutschebank.symphony.workflow.sources.symphony.messages;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
+import com.github.deutschebank.symphony.workflow.Workflow;
+import com.github.deutschebank.symphony.workflow.Workflow.CommandDescription;
 import com.github.deutschebank.symphony.workflow.content.Word;
 import com.github.deutschebank.symphony.workflow.response.MessageResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
@@ -23,7 +23,7 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 			.filter(w -> w.getIdentifier().equals("help"))
 			.map(w -> {
 				
-				Map<String, String> commands = new TreeMap<>(sma.getWorkflow().getCommands(sma.getRoom()));
+				List<Workflow.CommandDescription> commands = sma.getWorkflow().getCommands(sma.getRoom());
 				String descriptions = renderDescriptions(commands);
 						
 				
@@ -32,14 +32,16 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 			}).orElse(null);
 	}
 
+	private String renderButton(CommandDescription cd) {
+		return cd.isShowButton() ? "<button name=\""+cd.getName()+"\" type=\"action\">"+cd.getName()+"</button>": "";
+	}
 	
-	private String renderDescriptions(Map<String, String> commands) {
+	private String renderDescriptions(List<CommandDescription> commands) {
 		String out = "<form id=\".\"><table><thead><tr><td>Button</td><td>Or Type...</td><td>Description</td></tr></thead><tbody>" + 
-				commands.entrySet().stream()
-					.map(e -> "<tr><td><button name=\""+e.getKey()+"\" type=\"action\">"+e.getKey()+"</button></td><td><b> /"+ e.getKey() + "</b></td><td> "+ e.getValue()+"</td></tr>")
+				commands.stream()
+					.map(c -> "<tr><td>"+renderButton(c)+"</td><td><b> /"+ c.getName() + "</b></td><td> "+ c.getDescription()+"</td></tr>")
 					.reduce("", String::concat)
 				+"</tbody></table></form>";
-		System.out.println(out);
 		return out;
 	}
 

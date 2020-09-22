@@ -1,7 +1,6 @@
 package com.github.deutschebank.symphony.workflow;
 
 import java.util.List;
-import java.util.Map;
 
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Room;
@@ -18,10 +17,24 @@ import com.github.deutschebank.symphony.workflow.room.Rooms;
  *
  */
 public interface Workflow {
+	
+	public static interface CommandDescription {
+		
+		public String getName();
+		
+		public String getDescription();
+		
+		public boolean isShowButton();
+		
+		public boolean isShowText();
+		
+	}
 		
 	public String getNamespace();
 	
-	public Map<String, String> getCommands(Room r);
+	public List<CommandDescription> getCommands(Room r);
+	
+	public boolean hasMatchingCommand(String name, Room r);
 	
 	public List<Response> applyCommand(User u, Room r, String commandName, Object argument, Message m);
 	

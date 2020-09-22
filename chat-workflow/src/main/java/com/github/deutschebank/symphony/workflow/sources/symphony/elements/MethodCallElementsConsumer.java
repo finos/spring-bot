@@ -21,7 +21,7 @@ public class MethodCallElementsConsumer extends AbstractElementsConsumer impleme
 			// needsArgument
 			verb = verb.substring(0, verb.length()-2);
 			return wf.applyCommand(u.getUser(), u.getRoom(), verb, null, null);
-		} else if (wf.getCommands(u.getRoom()).containsKey(verb)) {
+		} else if (wf.hasMatchingCommand(verb, u.getRoom())) {
 			// no argument needed
 			return wf.applyCommand(u.getUser(), u.getRoom(), verb, null, null);
 		}
