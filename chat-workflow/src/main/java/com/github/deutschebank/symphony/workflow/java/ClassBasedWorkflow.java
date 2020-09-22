@@ -44,10 +44,31 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	}
 
 	@Override
-	public Map<String, String> getCommands(Room r) {
+	public List<CommandDescription> getCommands(Room r) {
 		return methods.entrySet().stream()
 			.filter(e -> validRoom(e.getValue(), r))
-			.collect(Collectors.toMap(e -> e.getKey(), e -> getDescription(e.getValue())));
+			.map(method -> new CommandDescription() {
+				
+				@Override
+				public boolean isShowButton() {
+					return canBeButton(method.getValue());
+				}
+				
+				@Override
+				public boolean isShowText() {
+					return canBeText(method.getValue());
+				}
+				
+				@Override
+				public String getName() {
+					return method.getKey();
+				}
+				
+				@Override
+				public String getDescription() {
+					return ClassBasedWorkflow.getDescription(method.getValue());
+				}
+			}).collect(Collectors.toList());
 	}
 	
 	public void addClass(Class<?> e) {
@@ -70,7 +91,7 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 		
 		for (Method m : c.getDeclaredMethods()) {
 			if (m.getAnnotation(Exposed.class) != null) {
-				if (checkParameters(m)) {
+				if (!checkParameters(m)) {
 					throw new UnsupportedOperationException("Methods annotated with @Exposed must have 1 or 0 parameters (excluding room, workflow, user etc): "+m.getClass()+"::"+m.getName());
 				}
 				
@@ -89,11 +110,32 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 				.filter(p -> !isWorkflowParameter(p))
 				.count();
 	}
+	
+	/**
+	 * If we want a button to represent a method, then it can only have workflow classes as parameters.
+	 */
+	private boolean canBeButton(Method m) {
+		return Arrays.stream(m.getParameters())
+				.filter(p -> !isWorkflowParameter(p))
+				.filter(p -> p.getType().getAnnotation(Work.class)==null)
+				.count() == 0;
+	}
+	
+	/**
+	 * If we want to type text to call a method, then the arguments must be {@link Content} subclasses.
+	 */
+	private boolean canBeText(Method m) {
+		return Arrays.stream(m.getParameters())
+				.filter(p -> !isWorkflowParameter(p))
+				.filter(p -> !(Content.class.isAssignableFrom(p.getType())))
+				.count() == 0;
+	}
 
+	/**
+	 * Called when we add a method to the workflow.
+	 */
 	private boolean checkParameters(Method m) {
-		long count = countParameters(m);
-		
-		return count > 1;
+		return canBeButton(m) || canBeText(m);
 	}
 
 	private boolean isWorkflowParameter(Parameter p) {
@@ -217,10 +259,12 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 		if (cms != null) {
 			for (Method method : cms) {
 				if (!Modifier.isStatic(method.getModifiers())) {
-					if(countParameters(method) == 1) {
-						buttons.add(new Button(method.getName()+"+1", Type.ACTION, method.getName()));
-					} else {
-						buttons.add(new Button(method.getName(), Type.ACTION, method.getName()));
+					if (canBeButton(method)) {
+						if(countParameters(method) == 1) {
+							buttons.add(new Button(method.getName()+"+1", Type.ACTION, method.getName()));
+						} else {
+							buttons.add(new Button(method.getName(), Type.ACTION, method.getName()));
+						}
 					}
 				}
 			}
