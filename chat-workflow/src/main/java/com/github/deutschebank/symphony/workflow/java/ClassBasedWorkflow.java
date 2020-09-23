@@ -39,6 +39,10 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	private List<Class<?>> workflowClasses = new ArrayList<>();
 	private Map<String, Method> methods = new HashMap<>();
 	
+	public ClassBasedWorkflow(String namespace) {
+		this(namespace, Collections.emptyList(), Collections.emptyList());
+	}
+	
 	public ClassBasedWorkflow(String namespace, List<User> admins, List<Room> keyRooms) {
 		super(namespace, admins, keyRooms); 
 	}

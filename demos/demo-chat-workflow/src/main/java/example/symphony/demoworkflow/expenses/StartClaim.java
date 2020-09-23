@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.workflow.fixture;
+package example.symphony.demoworkflow.expenses;
 
 public class StartClaim {
 

@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -20,8 +19,6 @@ import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
-import com.github.deutschebank.symphony.workflow.room.Rooms;
-import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 
 @Configuration
 public class TestWorkflowConfig {
@@ -73,7 +70,7 @@ public class TestWorkflowConfig {
 	
 	@Bean
 	public Workflow testObjectsWorkflow() {
-		ClassBasedWorkflow basicWorkflow = new ClassBasedWorkflow("TestObjects-workflow", Collections.singletonList(u), Collections.singletonList(room));
+		ClassBasedWorkflow basicWorkflow = new ClassBasedWorkflow("testing-fixture-namespace", Collections.singletonList(u), Collections.singletonList(room));
 		basicWorkflow.addClass(TestObjects.class);
 		basicWorkflow.addClass(TestObject.class);
 		basicWorkflow.addClass(TestOb3.class);

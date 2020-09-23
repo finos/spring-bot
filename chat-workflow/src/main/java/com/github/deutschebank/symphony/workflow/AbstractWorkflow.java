@@ -35,6 +35,7 @@ public abstract class AbstractWorkflow implements Workflow {
 		this.rooms = createRoomsDelegate();
 		this.keyRooms = keyRooms;
 		this.admins = admins;
+		this.namespace = namespace;
 	}
 
 	@Override
