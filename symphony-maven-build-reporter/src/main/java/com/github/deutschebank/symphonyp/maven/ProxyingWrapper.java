@@ -19,8 +19,6 @@ import static org.codehaus.plexus.util.StringUtils.isNotBlank;
 
 public class ProxyingWrapper {
 	
-    private static final String DEFAULT_JKS_RESOURCE = "all_symphony_certs_truststore.jks";
-
     private final List<String> proxyHosts;
 
     private final Logger log;
@@ -39,14 +37,16 @@ public class ProxyingWrapper {
 
         InputStream is = readJks(jksFile);
 
-        try {
-            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-            KeyStore keystore = KeyStore.getInstance("JKS");
-            keystore.load(is, null);
-            tmf.init(keystore);
-            builder.setTrustManagers(tmf.getTrustManagers());
-        } catch (Exception e) {
-            throw new RuntimeException("Couldn't instantiate trust store", e);
+        if (is != null) {
+	        try {
+	            TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+	            KeyStore keystore = KeyStore.getInstance("JKS");
+	            keystore.load(is, null);
+	            tmf.init(keystore);
+	            builder.setTrustManagers(tmf.getTrustManagers());
+	        } catch (Exception e) {
+	            throw new RuntimeException("Couldn't instantiate trust store", e);
+	        }
         }
     }
 
@@ -89,7 +89,7 @@ public class ProxyingWrapper {
             return new FileInputStream(jksFile);
         } else {
             log.info("trust-store.jks was not specified, using default jks");
-            return this.getClass().getClassLoader().getResourceAsStream(DEFAULT_JKS_RESOURCE);
+            return null;
         }
     }
 }
