@@ -35,7 +35,7 @@ public class RoomDef implements Room {
 
 	@Override
 	public String toString() {
-		return "RoomDef [name=" + roomName + ", description=" + roomDescription + ", pub=" + pub + "]";
+		return "RoomDef [name=" + getRoomName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
 	}
 
 	@Override

@@ -1,7 +1,5 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.messages;
 
-import java.util.List;
-
 import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Message;

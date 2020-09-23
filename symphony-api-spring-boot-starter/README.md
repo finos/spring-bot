@@ -2,7 +2,7 @@
 
 # Spring Boot Starter for Symphony Api / Bot Creation
 
-This class provides Spring-Boot Starter for Symphony endpoints.  It is expected that you'll want to define details like your agent url and keymanager url in Spring, and have this "just work" with Symphony APIs.  This package provides for that, using `symphony-java-client-bindings` definitions of Symphony APIs to call.
+This module provides Spring-Boot Starter for Symphony endpoints.  It is expected that you'll want to define details like your agent url and keymanager url in Spring, and have this "just work" with Symphony APIs.  This package provides for that, using `symphony-java-client-bindings` definitions of Symphony APIs to call.
 
 ## Use Case 1:   A Single Bot Using Symphony APIs
 

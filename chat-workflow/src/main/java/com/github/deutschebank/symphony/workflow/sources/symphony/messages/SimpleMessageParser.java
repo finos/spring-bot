@@ -250,9 +250,9 @@ public class SimpleMessageParser {
 						Object o = jsonObjects.get(dataEntityId);
 						tf.deReference(o);
 					} else if (isStartTable(qName, attributes)) {
-						TableFrame tf = push(new TableFrame());
+						push(new TableFrame());
 					} else if (isStartParaOrCell(qName, attributes)) {
-						ParagraphFrame pf = push(new ParagraphFrame());
+						push(new ParagraphFrame());
 					} else if (isStartList(qName, attributes)) {
 						//
 					} else if (isStartRow(qName, attributes)) {
@@ -313,7 +313,7 @@ public class SimpleMessageParser {
 				@Override
 				public void characters(char[] ch, int start, int length) throws SAXException {
 					if (top instanceof TextFrame) {
-						((TextFrame) top).push(ch, start, length);
+						((TextFrame<?>) top).push(ch, start, length);
 					} else {
 						String content = new String(ch, start, length);
 						if (!content.trim().isEmpty()) {
