@@ -35,7 +35,7 @@
                               </#if>
                              </td>
                              <td>
-                               ${p.time / 1000} Seconds
+                               ${p.time } ms
                              </td>
                           </tr>
                           </#list>
