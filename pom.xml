@@ -17,13 +17,14 @@
 		<module>bindings</module>
 		<module>symphony-api-spring-boot-starter</module>
 		<module>symphony-app-spring-boot-starter</module>
-		<module>demos/demo-bot</module>
-		<module>demos/demo-app</module>
 		<module>entity-json</module>
 		<module>quickfix-json</module>
 		<module>shared-stream</module>
 		<module>symphony-maven-build-reporter</module>
 		<module>chat-workflow</module>
+    <module>demos/demo-bot</module>
+    <module>demos/demo-app</module>
+    <module>demos/demo-chat-workflow</module>
 	</modules>
 
 	<properties>

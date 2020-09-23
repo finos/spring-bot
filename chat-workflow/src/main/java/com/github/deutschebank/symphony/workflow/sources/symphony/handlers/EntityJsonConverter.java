@@ -24,6 +24,10 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 
 	ObjectMapper om;
 	
+	public EntityJsonConverter(Workflow wf) {
+		this(wf, new ObjectMapper());
+	}
+	
 	public EntityJsonConverter(Workflow wf, ObjectMapper objectMapper) {
 		super(wf);
 		List<Class<?>> extendedClassSpace = new ArrayList<Class<?>>();

@@ -58,7 +58,32 @@ In order to build a workflow like the one above, you simply need to create a Jav
 
 ![Java Class](images/chat-workflow3.png)
 
-The UML diagram above demonstrates this.
+The UML diagram above demonstrates this, and here is some skeleton Java code which implements this:
+
+```java
+@Work(editable = false, instructions = "Expenses Claim")
+public class Claim {
+  
+  enum Status { OPEN, APPROVED, PAID };
+  
+  String description;
+  
+  Author author;
+  
+  float amount;
+  
+  User approvedBy;
+  
+  User paidBy;
+  
+  Status status;
+
+  // getters & setters omitted for brevity. 
+
+}
+```
+
+
 
 
 

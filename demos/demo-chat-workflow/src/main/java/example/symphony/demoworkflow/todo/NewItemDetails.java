@@ -1,7 +1,7 @@
 /**
  * 
  */
-package example.symphony.demo.workflow.item;
+package example.symphony.demoworkflow.todo;
 
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.java.Work;

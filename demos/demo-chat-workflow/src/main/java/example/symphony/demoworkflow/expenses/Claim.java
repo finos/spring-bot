@@ -1,10 +1,11 @@
-package com.github.deutschebank.symphony.workflow.fixture;
+package example.symphony.demoworkflow.expenses;
 
 import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.User;
+import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
 
-@Work(editable = false, instructions = "Expenses Claim")
+@Work(editable = true, instructions = "Sales Expense Claim Form", name = "Expense Claim")
 public class Claim {
 	
 	enum Status { OPEN, APPROVED, PAID };
@@ -13,14 +14,26 @@ public class Claim {
 	
 	Author author;
 	
-	float amount;
+	Float amount;
 	
 	User approvedBy;
 	
 	User paidBy;
 	
 	Status status;
+	
+	@Exposed
+	public static Claim open() {
+		Claim c = new Claim();
+		return c;
+	}
 
+	@Exposed
+	public Claim approve() {
+		return this;
+	}
+	
+	
 	public String getDescription() {
 		return description;
 	}
@@ -37,11 +50,11 @@ public class Claim {
 		this.author = author;
 	}
 
-	public float getAmount() {
+	public Float getAmount() {
 		return amount;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(Float amount) {
 		this.amount = amount;
 	}
 

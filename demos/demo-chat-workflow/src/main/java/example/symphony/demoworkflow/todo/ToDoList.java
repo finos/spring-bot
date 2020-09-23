@@ -1,7 +1,7 @@
 /**
  * 
  */
-package example.symphony.demo.workflow.item;
+package example.symphony.demoworkflow.todo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +15,9 @@ import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.Word;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
+import com.github.deutschebank.symphony.workflow.response.Response;
 
-import example.symphony.demo.workflow.item.ToDoItem.Status;
+import example.symphony.demoworkflow.todo.ToDoItem.Status;
 
 /**
  * @author rupnsur
@@ -141,4 +142,5 @@ public class ToDoList {
 			return false;
 		return true;
 	}
+	
 }
