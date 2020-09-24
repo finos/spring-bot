@@ -11,6 +11,7 @@ import org.springframework.validation.Validator;
 
 import com.github.deutschebank.symphony.workflow.AbstractNeedsWorkflow;
 import com.github.deutschebank.symphony.workflow.Workflow;
+import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
@@ -69,8 +70,11 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 				String formId = action.getFormId();
 				Object currentForm = formConverter.convert((Map<String, Object>) action.getFormValues(), formId);
 				Object data = retrieveData(action.getFormMessageId());
-				Room rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
+				Addressable rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
 				User u = ruBuilder.loadUserById(t.getInitiator().getUser().getUserId());
+				
+				// if we're not in a room, address the user directly.
+				rr = rr == null ? u : rr;
 				Author.CURRENT_AUTHOR.set((Author) u);
 				Errors e = ErrorHelp.createErrorHolder();
 				

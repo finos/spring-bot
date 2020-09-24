@@ -19,7 +19,7 @@ public class EditActionElementsConsumer extends AbstractElementsConsumer {
 		if (u.getAction().equals(ClassBasedWorkflow.WF_EDIT)) {
 			
 			Object ob = u.getWorkflowObject();
-			return Collections.singletonList(new FormResponse(wf, u.getRoom(), ob, "Edit "+ClassBasedWorkflow.getName(ob.getClass()), ClassBasedWorkflow.getInstructions(ob.getClass()), u.getWorkflowObject(), true, 
+			return Collections.singletonList(new FormResponse(wf, u.getAddressable(), ob, "Edit "+ClassBasedWorkflow.getName(ob.getClass()), ClassBasedWorkflow.getInstructions(ob.getClass()), u.getWorkflowObject(), true, 
 				Collections.emptyList()));
 		}
 		

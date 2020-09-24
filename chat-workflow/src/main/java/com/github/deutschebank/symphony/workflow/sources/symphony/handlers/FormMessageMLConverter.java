@@ -3,6 +3,7 @@ package com.github.deutschebank.symphony.workflow.sources.symphony.handlers;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -120,12 +121,14 @@ public class FormMessageMLConverter {
 			return convertID((ID) bean, e, editMode, f.getName());
 		} else if (Tag.class.isAssignableFrom(c)) {
 			return convertTag((Tag) bean, e, editMode, f.getName());
+		} else if (Instant.class.isAssignableFrom(c)) {
+			return convertTextField(bean.toString(), e, editMode, f.getName());
 		} else if (c.isEnum()) {
 			return convertEnum((Enum<?>) bean, e, c, editMode, f.getName());
 		} else if (Room.class.isAssignableFrom(c)) {
 			return convertRoom((Room) bean, e, c, editMode, f.getName());
 		} else {
-			return convertInner(beanClass, bean, editMode, e);
+			return convertInner(c, bean, editMode, e);
 		}
 	};
 
