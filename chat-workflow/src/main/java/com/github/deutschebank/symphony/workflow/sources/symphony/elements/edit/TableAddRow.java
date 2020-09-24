@@ -47,7 +47,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 			} catch (Exception e1) {
 				throw new UnsupportedOperationException("Can't instantiate", e1);
 			}
-			return Collections.singletonList(new FormResponse(wf, ea.getRoom(), ea.getWorkflowObject(), "New "+ClassBasedWorkflow.getName(c), "Provide details for the new row", out, true, Collections.singletonList(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
+			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ea.getWorkflowObject(), "New "+ClassBasedWorkflow.getName(c), "Provide details for the new row", out, true, Collections.singletonList(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 		} else if (verb.endsWith(DO_SUFFIX)) {
 			Object data = ea.getWorkflowObject();
 			String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
@@ -56,8 +56,8 @@ public class TableAddRow extends AbstractElementsConsumer {
 			Object updated = ea.getFormData();
 			List<Object> listToUpdate = (List<Object>) e.getValue(data);
 			listToUpdate.add(updated);
-			return Collections.singletonList(new FormResponse(wf, ea.getRoom(), data, ClassBasedWorkflow.getName(data.getClass()), ClassBasedWorkflow.getInstructions(data.getClass()), data, false, wf.gatherButtons(data, ea.getRoom())));
-		}
+			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), data, ClassBasedWorkflow.getName(data.getClass()), ClassBasedWorkflow.getInstructions(data.getClass()), data, false, wf.gatherButtons(data, ea.getAddressable())));
+		} 
 		
 		return null;
 	}

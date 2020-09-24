@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Room;
+import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.room.Rooms;
@@ -92,6 +93,15 @@ public abstract class AbstractWorkflow implements Workflow {
 					.flatMap(hp -> hp.getFromHistory(type, address, since).stream())
 					.collect(Collectors.toList());
 			}
+
+			@Override
+			public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
+				return historyProviders.stream()
+						.flatMap(hp -> hp.getFromHistory(t, address, since).stream())
+						.collect(Collectors.toList());
+			}
+
+			
 			
 		};
 	} 
@@ -117,7 +127,7 @@ public abstract class AbstractWorkflow implements Workflow {
 	}
 
 	@Override
-	public boolean hasMatchingCommand(String name, Room r) {
+	public boolean hasMatchingCommand(String name, Addressable r) {
 		return getCommands(r).stream()
 			.filter(c -> c.getName().equals(name))
 			.count() > 0;

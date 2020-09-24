@@ -72,8 +72,12 @@ public class SymphonyRoomsImpl extends AbstractNeedsWorkflow implements Symphony
 
 	@Override
 	public Room loadRoomById(String streamId) {
-		V3RoomDetail r = streamsApi.v3RoomIdInfoGet(streamId, null);
-		return new RoomDef(r.getRoomAttributes().getName(), r.getRoomAttributes().getDescription(), r.getRoomAttributes().isPublic(), streamId);
+		try {
+			V3RoomDetail r = streamsApi.v3RoomIdInfoGet(streamId, null);
+			return new RoomDef(r.getRoomAttributes().getName(), r.getRoomAttributes().getDescription(), r.getRoomAttributes().isPublic(), streamId);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override

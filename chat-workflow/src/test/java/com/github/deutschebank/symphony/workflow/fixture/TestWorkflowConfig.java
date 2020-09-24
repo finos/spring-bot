@@ -15,6 +15,7 @@ import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
+import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.history.History;
@@ -61,6 +62,11 @@ public class TestWorkflowConfig {
 				} else {
 					throw new IllegalArgumentException();
 				}
+			}
+
+			@Override
+			public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
+				return Collections.EMPTY_LIST;
 			}
 		};
 		

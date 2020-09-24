@@ -52,7 +52,7 @@ public class TableDeleteRows extends AbstractElementsConsumer {
 				table.remove((int) i);
 			}
 			
-			return Collections.singletonList(new FormResponse(wf, ea.getRoom(), data, ClassBasedWorkflow.getName(data.getClass()), ClassBasedWorkflow.getInstructions(data.getClass()), data, false, wf.gatherButtons(data, ea.getRoom())));
+			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), data, ClassBasedWorkflow.getName(data.getClass()), ClassBasedWorkflow.getInstructions(data.getClass()), data, false, wf.gatherButtons(data, ea.getAddressable())));
 		}
 		
 		return null;

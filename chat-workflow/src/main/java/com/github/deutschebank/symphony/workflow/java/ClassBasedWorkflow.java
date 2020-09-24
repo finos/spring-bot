@@ -48,9 +48,9 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	}
 
 	@Override
-	public List<CommandDescription> getCommands(Room r) {
+	public List<CommandDescription> getCommands(Addressable r) {
 		return methods.entrySet().stream()
-			.filter(e -> validRoom(e.getValue(), r))
+			.filter(e -> validCommandInAddressable(e.getValue(), r))
 			.map(method -> new CommandDescription() {
 				
 				@Override
@@ -86,7 +86,7 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 		workflowClasses.add(e);
 	}
 	
-	private List<Method> matchingMethods(Class<?> c, Room r) {
+	private List<Method> matchingMethods(Class<?> c, Addressable a) {
 		if ((c == null) || (c == Object.class)) {
 			return Collections.emptyList();
 		}
@@ -99,13 +99,13 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 					throw new UnsupportedOperationException("Methods annotated with @Exposed must have 1 or 0 parameters (excluding room, workflow, user etc): "+m.getClass()+"::"+m.getName());
 				}
 				
-				if (validRoom(m, r)) {
+				if (validCommandInAddressable(m, a)) {
 					out.add(m);
 				}
 			}
 		}
 		
-		out.addAll(matchingMethods(c.getSuperclass(), r));
+		out.addAll(matchingMethods(c.getSuperclass(), a));
 		return out;
 	}
 	
@@ -154,30 +154,30 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	}
 
 	@Override
-	public List<Response> applyCommand(User u, Room r, String commandName, Object argument, Message msg) {
+	public List<Response> applyCommand(User u, Addressable a, String commandName, Object argument, Message msg) {
 		Method m = methods.get(commandName);
 		
 		if (m == null) {
 			return null;
 		}
 		
-		if (!validRoom(m, r)) {
-			return Collections.singletonList(new ErrorResponse(this, r, "'"+commandName+"' can't be used in this room"));
+		if (!validCommandInAddressable(m, a)) {
+			return Collections.singletonList(new ErrorResponse(this, a, "'"+commandName+"' can't be used in this room"));
 		}
 		
 		Class<?> c = m.getDeclaringClass();
 		Optional<?> o = Optional.empty();
 		if (!Modifier.isStatic(m.getModifiers())) {
 			// load the current object
-			o = getHistoryApi().getLastFromHistory(c, r);
+			o = getHistoryApi().getLastFromHistory(c, a);
 			
 			if ((!o.isPresent()) || (o.get().getClass() != c)) {
-				return Collections.singletonList(new ErrorResponse(this, r, "Couldn't find work for "+commandName));
+				return Collections.singletonList(new ErrorResponse(this, a, "Couldn't find work for "+commandName));
 			}
 		}
 			
 		Object[] args = new Object[m.getParameterCount()];
-		Map<Class<?>, Deque<Object>> parameterBuckets = setupParameterBuckets(u, r, msg);
+		Map<Class<?>, Deque<Object>> parameterBuckets = setupParameterBuckets(u, (a instanceof Room) ? (Room) a : null, msg);
 		
 		for (int i = 0; i < args.length; i++) {
 			Class<?> cl = m.getParameters()[i].getType();
@@ -187,7 +187,7 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 				args[i] = argument;
 			} else {
 				// missing parameter
-				return  Collections.singletonList(new FormResponse(this, r,  null, "Enter "+getName(cl), getInstructions(cl), cl, true, 
+				return  Collections.singletonList(new FormResponse(this, a,  null, "Enter "+getName(cl), getInstructions(cl), cl, true, 
 					Collections.singletonList(new Button(commandName+"+0", Type.ACTION, m.getName()))));
 			}
 		}
@@ -201,12 +201,12 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 			} else if (listOfResponses(m)) {
 				return (List<Response>) out;
 			} else {
-				return  Collections.singletonList(new FormResponse(this, r, out, getName(cc), getInstructions(cc), out, false, gatherButtons(out, r)));
+				return  Collections.singletonList(new FormResponse(this, a, out, getName(cc), getInstructions(cc), out, false, gatherButtons(out, a)));
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return Collections.singletonList(new ErrorResponse(this, r, e.getCause().getMessage()));
+			return Collections.singletonList(new ErrorResponse(this, a, e.getMessage()));
 		}
 	}
 
@@ -250,7 +250,7 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	}
 
 	@Override
-	public List<Button> gatherButtons(Object out, Room r) {
+	public List<Button> gatherButtons(Object out, Addressable r) {
 		List<Button> buttons = new ArrayList<>();
 		if (out.getClass().isAnnotationPresent(Work.class)) {
 			Work w = out.getClass().getAnnotation(Work.class);
@@ -296,14 +296,15 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 		return e.description();
 	}
 	
-	public static boolean validRoom(Method value, Room r) {
-		if (r == null) {
+	public static boolean validCommandInAddressable(Method value, Addressable a) {
+		if (a == null) {
 			return true;
 		} else {
 			Exposed e = value.getAnnotation(Exposed.class);
 			if (e.rooms().length == 0) {
 				return true;
-			} else {
+			} else if (a instanceof Room) {
+				Room r = (Room) a;
 				for (int i = 0; i < e.rooms().length; i++) {
 					if (e.rooms()[i].equals(r.getRoomName())) {
 						return true;

@@ -2,6 +2,7 @@ package com.github.deutschebank.symphony.workflow;
 
 import java.util.List;
 
+import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
@@ -32,13 +33,13 @@ public interface Workflow {
 		
 	public String getNamespace();
 	
-	public List<CommandDescription> getCommands(Room r);
+	public List<CommandDescription> getCommands(Addressable r);
 	
-	public boolean hasMatchingCommand(String name, Room r);
+	public boolean hasMatchingCommand(String name, Addressable r);
 	
-	public List<Response> applyCommand(User u, Room r, String commandName, Object argument, Message m);
+	public List<Response> applyCommand(User u, Addressable in, String commandName, Object argument, Message m);
 	
-	List<Button> gatherButtons(Object out, Room r);
+	List<Button> gatherButtons(Object out, Addressable r);
 	
 	public Rooms getRoomsApi();
 	

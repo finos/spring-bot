@@ -1,7 +1,7 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.elements;
 
 import com.github.deutschebank.symphony.workflow.Workflow;
-import com.github.deutschebank.symphony.workflow.content.Room;
+import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Action;
 import com.symphony.api.model.V4SymphonyElementsAction;
@@ -18,16 +18,16 @@ public class ElementsAction implements Action {
 	private final Object formData;
 	private final String action;
 	private final Object workflowObject;
-	private final Room r;
+	private final Addressable a;
 	private final User u;
 	
-	public ElementsAction(Workflow w, Room r, User u, Object formData, String action, Object workflowObject) {
+	public ElementsAction(Workflow w, Addressable a, User u, Object formData, String action, Object workflowObject) {
 		super();
 		this.workflow = w;
 		this.formData = formData;
 		this.action = action;
 		this.workflowObject = workflowObject;
-		this.r = r;
+		this.a = a;
 		this.u = u;
 	}
 
@@ -50,8 +50,8 @@ public class ElementsAction implements Action {
 	}
 
 	@Override
-	public Room getRoom() {
-		return r;
+	public Addressable getAddressable() {
+		return a;
 	}
 
 	@Override

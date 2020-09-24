@@ -98,6 +98,9 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 		return updated;
 	}
 
+	public ObjectMapper getObjectMapper() {
+		return om;
+	}
 
 
 }

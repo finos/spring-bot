@@ -23,11 +23,11 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 			.filter(w -> w.getIdentifier().equals("help"))
 			.map(w -> {
 				
-				List<Workflow.CommandDescription> commands = sma.getWorkflow().getCommands(sma.getRoom());
+				List<Workflow.CommandDescription> commands = sma.getWorkflow().getCommands(sma.getAddressable());
 				String descriptions = renderDescriptions(commands);
 						
 				
-				return Collections.singletonList((Response) new MessageResponse(sma.getWorkflow(), sma.getRoom(), null, "Help", "This is what I can do:", descriptions));
+				return Collections.singletonList((Response) new MessageResponse(sma.getWorkflow(), sma.getAddressable(), null, "Help", "This is what I can do:", descriptions));
 				
 			}).orElse(null);
 	}

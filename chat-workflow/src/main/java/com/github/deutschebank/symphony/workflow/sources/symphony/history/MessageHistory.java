@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.github.deutschebank.symphony.workflow.AbstractNeedsWorkflow;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
+import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.sources.symphony.TagSupport;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
@@ -33,8 +34,7 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <X> Optional<X> getLastFromHistory(Class<X> type, Addressable address) {
-		String hashtag = TagSupport.formatTag(type);
-		MessageSearchQuery msq = new MessageSearchQuery().hashtag(hashtag).streamId(ru.getStreamFor(address));
+		MessageSearchQuery msq = createMessageSearchQuery(type, address, null, null);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 1, null, null);
 		
 		if (out.size() == 1) {
@@ -42,21 +42,36 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 			if (type.isAssignableFrom(o.getClass())) {
 				return Optional.of((X) o);
 			} else {
-				throw new RuntimeException("Tagged with "+hashtag+" but actually a" +o.getClass());
+				throw new RuntimeException("Tagged with "+TagSupport.formatTag(type)+" but actually a" +o.getClass());
 			}
 		} else {
 			return Optional.empty();
 		}
 	}
+	
+
+	@Override
+	public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
+		MessageSearchQuery msq = createMessageSearchQuery(null, address, since, t);
+		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 50, null, null);
+		
+		return out.stream()
+				.map(msg -> {
+					try {
+						return jsonConverter.readWorkflowValue(msg.getData());
+					} catch (Exception e1) {
+						e1.printStackTrace();
+						return null;
+					}
+				})
+				.filter(e -> e != null)
+				.collect(Collectors.toList());
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <X> List<X> getFromHistory(Class<X> type, Addressable address, Instant since) {
-		String hashtag = TagSupport.formatTag(type);
-		MessageSearchQuery msq = new MessageSearchQuery()
-				.hashtag(hashtag)
-				.fromDate(since.toEpochMilli())
-				.streamId(ru.getStreamFor(address));
+		MessageSearchQuery msq = createMessageSearchQuery(type, address, since, null);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 50, null, null);
 				
 		return out.stream()
@@ -77,4 +92,34 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 			.collect(Collectors.toList());
 
 	}
+
+	private <X> MessageSearchQuery createMessageSearchQuery(Class<X> type, Addressable address, Instant since, Tag t) {
+		MessageSearchQuery msq = new MessageSearchQuery();
+		if (address != null) {
+			msq.setStreamId(ru.getStreamFor(address));
+		}
+		
+		if (since != null) {
+			msq.fromDate(since.toEpochMilli());
+		}
+		
+		if (type != null) {
+			msq.setHashtag(TagSupport.formatTag(type));
+		} else if (t != null) {
+			switch (t.getTagType()) {
+			case CASH:
+				msq.setCashtag(t.getName());
+				break;
+			case HASH:
+				msq.setHashtag(t.getName());
+				break;
+			case USER:
+				msq.setMention(Long.parseLong(t.getId()));
+				break;
+			}
+		}
+		
+		return msq;
+	}
+
 }
