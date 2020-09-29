@@ -52,11 +52,9 @@ Symphony is perfect for workflows like this:
 </dependency>
 ```
 
-2.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`.
+2.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`. (See below).
 
-3.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).
-
-NB:  Chat workflow will bring in the other Symphony Spring Boot Starters transitively, so you don't need to specify those.
+3.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).  NB:  Chat workflow will bring in the other Symphony Spring Boot Starters transitively, so you don't need to specify those.
 
 4.  Add the dependency for a JAX-RS implementation, as described [here](../symphony-api-spring-boot-starter/README.md).
 
@@ -210,7 +208,7 @@ These are useful for when there is no context to an operation. e.g. creating a n
 
 Here, we are starting a new expense claim, and the interaction will look like this:
 
-![Start Claim](images/start-claim.png)
+![Start Claim](images/start-claim.PNG)
 
 As you can see, the user types `/open` to call the `open()` method above.  The method takes a parameter of a `StartClaim` object, so the bot displays a form, allowing a `StartClaim` object to be created.
 
@@ -233,7 +231,7 @@ The `Claim` object has a method `approve()` which looks like this:
 
 You can invoke the method by entering `/approve`:
 
-![Invoking Approve](images/approve-claim.png)
+![Invoking Approve](images/approve-claim.PNG)
 
 `this` is given the value of the _last `Claim` object in the chat_.  As you can see, I am able to approve my own expense claim!  We'll address this issue later.  
 
