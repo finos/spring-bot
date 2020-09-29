@@ -14,7 +14,7 @@ Each use-case is a couple of classes in size, and relies on zero understanding o
 
 ## Overview
 
-### What Exactly is a Work-Flow?
+### What Exactly is a Workflow?
 
 A _workflow_ here is a sequence of interactions carried out by a group of users, coordinated with a bot.  For example, an expenses workflow might look like this:
 
@@ -42,11 +42,7 @@ Symphony is perfect for workflows like this:
 
 ## Installation
 
-1.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`.
-
-2.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).
-
-3.  Add the following dependency in your application:
+1.  Add the following dependency to your Spring Boot application:
 
 ```xml
 <dependency>
@@ -56,7 +52,11 @@ Symphony is perfect for workflows like this:
 </dependency>
 ```
 
-NB:  Chat workflow will bring in the other Spring Boot Starters transitively, so you don't need to specify those.
+2.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`.
+
+3.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).
+
+NB:  Chat workflow will bring in the other Symphony Spring Boot Starters transitively, so you don't need to specify those.
 
 4.  Add the dependency for a JAX-RS implementation, as described [here](../symphony-api-spring-boot-starter/README.md).
 
@@ -72,7 +72,7 @@ There are three steps to building a workflow using `chat-workflow` in Symphony:
  - **Add Properties:** Properties of the Java bean will be rendered as _elements_ in Symphony, so that users can set their values.
  - **Add Methods:** Methods are commands that users can invoke, either by pressing a button (again, using Symphony _elements_) or typing a message (e.g. /command).
  
-The [Tutorial](../tutorials/chat-workflow.md) shows how to get Symphony to host to-do lists in chat rooms, and is a good place to start.  The rest of this README will focus on breaking down the steps described above, detailing all the options.
+The [Tutorial](../tutorials/Chat-Workflow.md) shows how to get Symphony to host to-do lists in chat rooms, and is a good place to start.  The rest of this README will focus on breaking down the steps described above, detailing all the options.
 
 ### Add Classes
 
