@@ -30,7 +30,7 @@ public class Claim {
 		return out;
 	}
 
-	@Exposed(description = "Approve an expense claim")
+	@Exposed(description = "Approve an expense claim", rooms= {"Claim Approval Room"})
 	public Claim approve() {
 		if (this.status == Status.OPEN) {
 			this.approvedBy = Author.CURRENT_AUTHOR.get();

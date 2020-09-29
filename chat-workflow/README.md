@@ -2,35 +2,15 @@
 
 # Spring Boot Starter for Chat Workflow
 
-This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
+This module provides a one-stop-shop for constructing workflows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
 
 ## Example Use-Cases
 
 - Below, we concentrate on building an _Expense Claim_ workflow.
-- In the [Tutorial](), we show how to build a _To Do List_.
-- In the [Demo](), we have the code for the above, but also show how to build a bot to conduct _Polls_ in chatrooms.
+- In the [Tutorial](../tutorials/Chat-Workflow.md), we show how to build a _To Do List_.
+- In the [Demo](../demos/demo-chat-workflow), we have the code for the above, but also show how to build a bot to conduct _Polls_ in chat rooms.
 
 Each use-case is a couple of classes in size, and relies on zero understanding of the Symphony APIs.
-
-## Installation
-
-1.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`.
-
-2.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).
-
-3.  Add the following dependency in your application:
-
-```xml
-<dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
-  <artifactId>chat-workflow</artifactId>
-  <version>--see above--</version>
-</dependency>
-```
-
-NB:  Chat workflow will bring in the other Spring Boot Starters transitively, so you don't need to specify those.
-
-4.  Add the dependency for a JAX-RS implementation, as described [here](../symphony-api-spring-boot-starter/README.md).
 
 ## Overview
 
@@ -56,11 +36,31 @@ Symphony is perfect for workflows like this:
 
 1.  Symphony supports messages containing _data_, via the use of JSON, and also supports form-filling via Symphony Elements.  That means, you can keep track of the status of workflow objects within Symphony.  In the example above, the _state_ of the expense claim can be held in a Symphony message as JSON.
 
-2.  Symphony also supports the ideas of teams via private rooms.  That is, there could be rooms called "Sales Team Room", "Approvers Team Room" and "Accounts Team Room".  This provides a natural separation of responsibilities:  some actions should only be allowed by the participants of some rooms.
+2.  Symphony also supports the concept of teams via private rooms.  That is, there could be rooms called "Sales Team Room", "Approvers Team Room" and "Accounts Team Room".  This provides a natural separation of responsibilities:  some actions should only be allowed by the participants of some rooms.
 
 3.  Bots allow us to provide the interface between a workflow (expressed as java code) on the one hand, and messages in Symphony on the other.
 
-## What Would I Need To Do?
+## Installation
+
+1.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`.
+
+2.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).
+
+3.  Add the following dependency in your application:
+
+```xml
+<dependency>
+  <groupId>com.github.deutschebank.symphony</groupId>
+  <artifactId>chat-workflow</artifactId>
+  <version>--see above--</version>
+</dependency>
+```
+
+NB:  Chat workflow will bring in the other Spring Boot Starters transitively, so you don't need to specify those.
+
+4.  Add the dependency for a JAX-RS implementation, as described [here](../symphony-api-spring-boot-starter/README.md).
+
+## Implementing A Workflow
 
 In order to build a workflow like the one above, you simply need to create a Java class to encapsulate all of this data, and then use the appropriate annotations to say which methods can be used in which rooms.
 
@@ -115,9 +115,10 @@ public class Claim {
   
   User paidBy;      (4)
   
+  // getters & setters omitted for brevity. (5)
+
   Status status = Status.OPEN;  (5)
 
-  // getters & setters omitted for brevity. (6)
  
 }
 ```
@@ -125,20 +126,20 @@ public class Claim {
 Notes:
 
 1. The `@Work` annotation describes the workflow object to our `ClassBasedWorkflow` implementation.  As you can see, here we can say whether the bean is editable by the users in Symphony (if it is, we render the properties as elements).  You can give a human-readable name and description for the java class here.
-2. (&5) Here, we are defining the different states a workflow can be in.  
+2. (&6) Here, we are defining the different states a workflow can be in.  
 3. Assign the creator as the person interacting with the bot in this request.
 4. These fields will track approvals.
-6. You _must_ provide getters and setters for any properties you want Symphony to store/expose.  
+5. You _must_ provide getters and setters for any properties you want Symphony to store/expose.  
 
 ### Add Properties
 
 As you can see in the example above, we have various different properties defined, which will be rendered on the screen in one of two ways:
 
-![Editable Properties](images/claim1.png)
+![Editable Properties](images/claim1.PNG)
 
 Either as _editable properties_ as above.
 
-![Display Properties](images/claim2.png)
+![Display Properties](images/claim2.PNG)
 
 Or as _display properties_ as above.  If the `@Work(editable=true)` annotation is set, we get an `Edit` button on the display screen.
 
@@ -156,8 +157,14 @@ Out-of-the-box support exists for:
 - `User`: the name of a user, rendered as an @-mention for viewing, or a user-picker when editing
 - `Author`: the person talking to the bot
 
- - TODO:  Describe how to plug in property editors/displayers.
- - TODO: Describe overriding the displayers
+#### Extending Support To New Types
+
+TODO
+
+#### Overriding The Default Displays
+
+`chat-workflow` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.
+
  
 #### Validation
 
@@ -296,8 +303,36 @@ Alternatively, you can return an instance of ` com.github.deutschebank.symphony.
 |`MessageResponse      |Send a `MessageML` message to the user|
 |`ErrorResponse`       |Sends a formatted error message (mainly used internally)   |    
   
-
-
-
 #### Limiting Methods To Certain Users.
+
+The whole point of a workflow is that different users are allowed to perform different tasks.  In order to enforce this kind of segregation of responsibilities, we need to use different _rooms_.  If you are a member of a room, you are entitled to view the workflows in the room, and interact with them.  By managing the membership of key rooms, you can make sure that only the right users can execute the right methods.
+
+```java
+  @Exposed(description = "Approve an expense claim", rooms= {"Claim Approval Room"})
+  public Claim approve() {
+     ..
+  }
+```
+
+In the example above, we ensure that the room is the "Claim Approval Room".  Alternatively, we can examine the room programmatically, like this:
+
+```java
+  @Exposed(description = "Approve an expense claim")
+  public Claim approve(Room r) {
+     if (r.getRoomName.equals("Claim Approval Room")) {
+       ..
+     } else {
+       throw new RuntimeException("Some error");
+     }
+  }
+```
+
+
+### Asking For Help
+
+The bot _always_ supports the user typing `/help`, which will reveal the commands relevant to the current room (via inspecting the `@Exposed` annotation.  e.g.
+
+![Help](images/help.png)
+
+Depending on the arguments of the command, they may be shows as buttons, or suggestions of what to type.
 
