@@ -254,7 +254,7 @@ public Task assign(Tag task, User u) {
 
 The first `Tag` parameter would be assigned the first hashtag the user types, and so on.  
 
-If you want something more generic (assigning multiple tasks, say, you could try:
+If you want something more generic (assigning multiple tasks, say) you could try:
 
 ```java
 @Exposed(description="Assign all tasks to user")
