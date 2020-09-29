@@ -90,13 +90,13 @@ public class WorkflowConfig {
 	public Workflow appWorkflow() {
 		MemberQueryClassBasedWorkflow wf = new MemberQueryClassBasedWorkflow(WorkflowConfig.class.getCanonicalName());
 		wf.addClass(Claim.class);
-		wf.addClass(ToDoItem.class);
-		wf.addClass(ToDoList.class);
-		wf.addClass(Poll.class);
-		wf.addClass(ChoiceForm.class);
-		wf.addClass(PollResult.class);
-		wf.addClass(PollResponse.class);
-		wf.addClass(Question.class);
+//		wf.addClass(ToDoItem.class);
+//		wf.addClass(ToDoList.class);
+//		wf.addClass(Poll.class);
+//		wf.addClass(ChoiceForm.class);
+//		wf.addClass(PollResult.class);
+//		wf.addClass(PollResponse.class);
+//		wf.addClass(Question.class);
 		return wf;
 	}
 }
