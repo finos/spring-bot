@@ -107,7 +107,7 @@ The purpose of this module is to provide a drop-in stream consumer for Symphony 
 
 This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
 
- - [View the README(chat-workflow/README.md)
+ - [View the README](chat-workflow/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
 
 ## License
