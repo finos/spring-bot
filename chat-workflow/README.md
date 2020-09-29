@@ -40,6 +40,8 @@ Symphony is perfect for workflows like this:
 
 3.  Bots allow us to provide the interface between a workflow (expressed as java code) on the one hand, and messages in Symphony on the other.
 
+## Installation
+
 ## Installation
 
 1.  Add the following dependency to your Spring Boot application:
