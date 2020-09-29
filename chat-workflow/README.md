@@ -298,10 +298,10 @@ Alternatively, you can return an instance of ` com.github.deutschebank.symphony.
 |---------------------|--------------------------|
 |`AttachmentResponse`   |Allows you to send the user an attachment (an image or something)|
 |`FormResponse`         |Send the user a bean, which is turned into a form to fill in|
-|`MessageResponse      |Send a `MessageML` message to the user|
+|`MessageResponse`      |Send a `MessageML` message to the user|
 |`ErrorResponse`       |Sends a formatted error message (mainly used internally)   |    
   
-#### Limiting Methods To Certain Users.
+#### Limiting Methods To Certain Users
 
 The whole point of a workflow is that different users are allowed to perform different tasks.  In order to enforce this kind of segregation of responsibilities, we need to use different _rooms_.  If you are a member of a room, you are entitled to view the workflows in the room, and interact with them.  By managing the membership of key rooms, you can make sure that only the right users can execute the right methods.
 
@@ -317,7 +317,7 @@ In the example above, we ensure that the room is the "Claim Approval Room".  Alt
 ```java
   @Exposed(description = "Approve an expense claim")
   public Claim approve(Room r) {
-     if (r.getRoomName.equals("Claim Approval Room")) {
+     if (r.getRoomName().equals("Claim Approval Room")) {
        ..
      } else {
        throw new RuntimeException("Some error");
@@ -330,7 +330,7 @@ In the example above, we ensure that the room is the "Claim Approval Room".  Alt
 
 The bot _always_ supports the user typing `/help`, which will reveal the commands relevant to the current room (via inspecting the `@Exposed` annotation.  e.g.
 
-![Help](images/help.png)
+![Help](images/help.PNG)
 
 Depending on the arguments of the command, they may be shows as buttons, or suggestions of what to type.
 
