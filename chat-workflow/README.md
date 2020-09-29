@@ -42,7 +42,6 @@ Symphony is perfect for workflows like this:
 
 ## Installation
 
-## Installation
 
 1.  Add the following dependency to your Spring Boot application:
 
