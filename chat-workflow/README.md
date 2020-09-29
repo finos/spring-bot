@@ -183,7 +183,7 @@ public class StartClaim {
 
 If the user enters an incorrect value, they will get an error, like so:
 
-![Start Claim Fail](images/start-claim.png)
+![Start Claim Fail](images/start-claim-fail.PNG)
 
 This is particularly useful for things like email addresses, where you might want to add `@Email` to ensure the user enters a correctlt-formatted email address. 
  
