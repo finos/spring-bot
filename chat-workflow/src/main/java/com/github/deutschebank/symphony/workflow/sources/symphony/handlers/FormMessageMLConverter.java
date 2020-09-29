@@ -315,7 +315,7 @@ public class FormMessageMLConverter {
 		if (editMode) {
 			return ErrorHelp.errors(e) + "<person-selector " 
 					+ attribute("name", e.getNestedPath()) +
-				 "placeholder=\"Search for someone\" required=\"false\"/>";
+				 "placeholder=\""+name+"\" required=\"false\"/>";
 		} else if (bean == null) {
 			return "-- no user --";
 		} else {
