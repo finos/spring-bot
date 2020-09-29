@@ -4,6 +4,14 @@
 
 This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
 
+## Example Use-Cases
+
+- Below, we concentrate on building an _Expense Claim_ workflow.
+- In the [Tutorial](), we show how to build a _To Do List_.
+- In the [Demo](), we have the code for the above, but also show how to build a bot to conduct _Polls_ in chatrooms.
+
+Each use-case is a couple of classes in size, and relies on zero understanding of the Symphony APIs.
+
 ## Installation
 
 1.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`.
@@ -52,40 +60,244 @@ Symphony is perfect for workflows like this:
 
 3.  Bots allow us to provide the interface between a workflow (expressed as java code) on the one hand, and messages in Symphony on the other.
 
-### What Would I Need To Do?
+## What Would I Need To Do?
 
 In order to build a workflow like the one above, you simply need to create a Java class to encapsulate all of this data, and then use the appropriate annotations to say which methods can be used in which rooms.
 
 ![Java Class](images/chat-workflow3.png)
 
-The UML diagram above demonstrates this, and here is some skeleton Java code which implements this:
+There are three steps to building a workflow using `chat-workflow` in Symphony:
+
+ - **Add Classes:** Java Beans will represent _structured messages_ in Symphony.  That is, it'll have JSON data (for the bot to understand) and MessageML (for presentation to users).
+ - **Add Properties:** Properties of the Java bean will be rendered as _elements_ in Symphony, so that users can set their values.
+ - **Add Methods:** Methods are commands that users can invoke, either by pressing a button (again, using Symphony _elements_) or typing a message (e.g. /command).
+ 
+The [Tutorial](../tutorials/chat-workflow.md) shows how to get Symphony to host to-do lists in chat rooms, and is a good place to start.  The rest of this README will focus on breaking down the steps described above, detailing all the options.
+
+### Add Classes
+
+`chat-workflow` requires a Spring bean of type `com.github.deutschebank.symphony.workflow.Workflow` to be present.  The easiest way to provide one of these is to instantiate `ClassBasedWorkflow` like so:
 
 ```java
-@Work(editable = false, instructions = "Expenses Claim")
-public class Claim {
-  
-  enum Status { OPEN, APPROVED, PAID };
-  
-  String description;
-  
-  Author author;
-  
-  float amount;
-  
-  User approvedBy;
-  
-  User paidBy;
-  
-  Status status;
 
-  // getters & setters omitted for brevity. 
+@Configuration (1)
+public class WorkflowConfig {
 
+
+  @Bean
+  public Workflow appWorkflow() {
+    ClassBasedWorkflow wf = new ClassBasedWorfklow(WorkflowConfig.class.getCanonicalName()); (2)
+    wf.addClass(Claim.class); (3)
+  }
+  
 }
 ```
 
+Notes:
+
+1.  This is a Spring `@Configuration` class, so contains programmatically-defined `@Bean`s.  
+2.  We create the `ClassBasedWorkflow` bean. The parameter is a namespace - all messages related to this workflow will have a `hashtag` containing this namespace to identify them to the bot.
+3.  We are adding the `Claim` class to the workflow, which is defined below:
+
+```java
+@Work(editable = false, instructions = "Sales Expense Claim Form", name = "Expense Claim") (1)
+public class Claim {
+  
+  enum Status { OPEN, APPROVED, PAID };(2)
+  
+  String description;
+  
+  User author = Author.CURRENT_AUTHOR.get();  (3)
+  
+  Float amount;
+  
+  User approvedBy;  (4)
+  
+  User paidBy;      (4)
+  
+  Status status = Status.OPEN;  (5)
+
+  // getters & setters omitted for brevity. (6)
+ 
+}
+```
+
+Notes:
+
+1. The `@Work` annotation describes the workflow object to our `ClassBasedWorkflow` implementation.  As you can see, here we can say whether the bean is editable by the users in Symphony (if it is, we render the properties as elements).  You can give a human-readable name and description for the java class here.
+2. (&5) Here, we are defining the different states a workflow can be in.  
+3. Assign the creator as the person interacting with the bot in this request.
+4. These fields will track approvals.
+6. You _must_ provide getters and setters for any properties you want Symphony to store/expose.  
+
+### Add Properties
+
+As you can see in the example above, we have various different properties defined, which will be rendered on the screen in one of two ways:
+
+![Editable Properties](images/claim1.png)
+
+Either as _editable properties_ as above.
+
+![Display Properties](images/claim2.png)
+
+Or as _display properties_ as above.  If the `@Work(editable=true)` annotation is set, we get an `Edit` button on the display screen.
+
+#### Supported Property Types
+
+Out-of-the-box support exists for:
+
+- `Collection`s (e.g. `List`s) of other objects in the workflow
+- `String`s
+- `Number`s
+- `Instant`s
+- Other objects in the workflow as nested properties.
+- `Room`:   the name of a room
+- `Tag`s, including `HashTag`, `CashTag` and `ID` ( a hashtag build on a UUID, used for identifying objects uniquely in the workflow).
+- `User`: the name of a user, rendered as an @-mention for viewing, or a user-picker when editing
+- `Author`: the person talking to the bot
+
+ - TODO:  Describe how to plug in property editors/displayers.
+ - TODO: Describe overriding the displayers
+ 
+#### Validation
+
+You can add validation annotations a la [JSR-380](https://confluence.intranet.db.com/display/SYMPHONYP/1.+Creating+A+Bot+Account+For+Symphony) to your properties.  For example:
+
+```
+@Work(name = "New Claim Details")
+public class StartClaim {
+
+  String description;
+  
+  @Min(0)   # Part of JRS-380 Bean Validation, must be > 0
+  Number amount;
+
+```
+
+If the user enters an incorrect value, they will get an error, like so:
+
+![Start Claim Fail](images/start-claim.png)
+
+This is particularly useful for things like email addresses, where you might want to add `@Email` to ensure the user enters a correctlt-formatted email address. 
+ 
+### Add Methods
+
+In order to move from one state in the workflow to another, we need _methods_ on our beans.  `chat-workflow` supports both static and instance methods. 
+
+In order for a method to be available to users in Symphony, you need to tag it with the `@Exposed` annotation.  
+
+#### Static Example
+
+These are useful for when there is no context to an operation. e.g. creating a new expense claim.  The method looks like this:
+
+```java
+
+  @Exposed(description="Begin New Expense Claim")
+  public static Claim open(StartClaim c) {
+    Claim out = new Claim();
+    out.description = c.description;
+    out.amount = c.amount;
+    return out;
+  }
+```
+
+Here, we are starting a new expense claim, and the interaction will look like this:
+
+![Start Claim](images/start-claim.png)
+
+As you can see, the user types `/open` to call the `open()` method above.  The method takes a parameter of a `StartClaim` object, so the bot displays a form, allowing a `StartClaim` object to be created.
+
+This then allows the `open()` method to start properly:  a new `Claim` object is created, filled and returned to the user.
+
+#### Instance Method Example
+
+The `Claim` object has a method `approve()` which looks like this:
+
+```java
+  @Exposed(description = "Approve an expense claim")
+  public Claim approve() { (2)
+    if (this.status == Status.OPEN) {
+      this.approvedBy = Author.CURRENT_AUTHOR.get();
+      this.status = Status.APPROVED;
+    }
+    return this;
+  }
+```
+
+You can invoke the method by entering `/approve`:
+
+![Invoking Approve](images/approve-claim.png)
+
+`this` is given the value of the _last `Claim` object in the chat_.  As you can see, I am able to approve my own expense claim!  We'll address this issue later.  
+
+#### Allowed Parameters
+
+`ClassBasedWorkflow` is quite intelligent with respect to filling the parameters of the methods for you.  As you can see in the static-call example above, a `StartClaim` object is provided in order to satisfy the methods' requirements.  Here are other parameters you can add:
+
+##### Subclasses of `Content`
+
+e.g. `Message`, `Paragraph`, `PastedTable`, `Tag`, `User`, `Word`.
+
+Let's say you want your bot to have a command like:  `/assign #TASK820 @RobMoffat`.  You could have a method with a signature like this:
+
+```java
+@Exposed(description="Assign task to user")
+public Task assign(Tag task, User u) {
+  ...
+}
+```
+
+The first `Tag` parameter would be assigned the first hashtag the user types, and so on.  
+
+If you want something more generic (assigning multiple tasks, say, you could try:
+
+```java
+@Exposed(description="Assign all tasks to user")
+public Task assign(Message m) {
+   List<Tag> allTags = m.only(Tag.class);
+   User firstUser = m.getNth(User.class, 0);
+   ...  
+}
+```
+
+##### Workflow Objects
+
+There are various other objects you can request as parameters for a method:
+
+
+|Class                   |Use                         |
+|------------------------|----------------------------|
+|`Workflow`           |The workflow object that the bot is running.  |
+|`History`            |A class which allows you to interrogate the history of the chat room(s) with methods like `getLastFromHistory()`|
+|`Rooms`               |A class which allows you to get or create new rooms for the bot to work in, with methods like `getAllRooms()` and `ensureRoom()`|
+
+#### Allowed Return Types
+
+Most of the time, you'll probably just want to return something into the chat which originated the method-call.  To do this, simply return an object like in the examples above.  
+
+Alternatively, you can return an instance of ` com.github.deutschebank.symphony.workflow.response.Response`, or even a whole list of those.  An example of where this might be useful is the poll bot in the demo workflow.  After a poll is created, it sends a message to every person in the room.  To do this, it's signature is:
+
+```java
+
+  @Exposed
+  public static List<FormResponse> poll(ChoiceForm cf, Room r, Workflow wf) {
+     ...
+     
+  }
+```
+
+`FormResponse` is a subclass of `Response`, allowing you to send a form.  Here are the possible `Response` types:
+
+
+|Class                |Purpose                   |
+|---------------------|--------------------------|
+|`AttachmentResponse`   |Allows you to send the user an attachment (an image or something)|
+|`FormResponse`         |Send the user a bean, which is turned into a form to fill in|
+|`MessageResponse      |Send a `MessageML` message to the user|
+|`ErrorResponse`       |Sends a formatted error message (mainly used internally)   |    
+  
 
 
 
-
-
+#### Limiting Methods To Certain Users.
 

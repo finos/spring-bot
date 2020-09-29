@@ -5,31 +5,37 @@ import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
 
-@Work(editable = true, instructions = "Sales Expense Claim Form", name = "Expense Claim")
+@Work(editable = false, instructions = "Sales Expense Claim Form", name = "Expense Claim")
 public class Claim {
 	
 	enum Status { OPEN, APPROVED, PAID };
 	
 	String description;
 	
-	Author author;
+	Author author = Author.CURRENT_AUTHOR.get();
 	
-	Float amount;
+	Number amount;
 	
 	User approvedBy;
 	
 	User paidBy;
 	
-	Status status;
+	Status status = Status.OPEN;
 	
-	@Exposed
-	public static Claim open() {
-		Claim c = new Claim();
-		return c;
+	@Exposed(description="Begin New Expense Claim")
+	public static Claim open(StartClaim c) {
+		Claim out = new Claim();
+		out.description = c.description;
+		out.amount = c.amount;
+		return out;
 	}
 
-	@Exposed
+	@Exposed(description = "Approve an expense claim")
 	public Claim approve() {
+		if (this.status == Status.OPEN) {
+			this.approvedBy = Author.CURRENT_AUTHOR.get();
+			this.status = Status.APPROVED;
+		}
 		return this;
 	}
 	
@@ -50,11 +56,11 @@ public class Claim {
 		this.author = author;
 	}
 
-	public Float getAmount() {
+	public Number getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Float amount) {
+	public void setAmount(Number amount) {
 		this.amount = amount;
 	}
 
