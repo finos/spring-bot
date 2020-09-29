@@ -67,13 +67,13 @@ In order to build a workflow like the one above, you simply need to create a Jav
 
 There are three steps to building a workflow using `chat-workflow` in Symphony:
 
- - **Add Classes:** Java Beans will represent _structured messages_ in Symphony.  That is, it'll have JSON data (for the bot to understand) and MessageML (for presentation to users).
- - **Add Properties:** Properties of the Java bean will be rendered as _elements_ in Symphony, so that users can set their values.
- - **Add Methods:** Methods are commands that users can invoke, either by pressing a button (again, using Symphony _elements_) or typing a message (e.g. /command).
+1. **Add Classes:** Java Beans will represent _structured messages_ in Symphony.  That is, it'll have JSON data (for the bot to understand) and MessageML (for presentation to users).
+2. **Add Properties:** Properties of the Java bean will be rendered as _elements_ in Symphony, so that users can set their values.
+3. **Add Methods:** Methods are commands that users can invoke, either by pressing a button (again, using Symphony _elements_) or typing a message (e.g. /command).
  
 The [Tutorial](../tutorials/Chat-Workflow.md) shows how to get Symphony to host to-do lists in chat rooms, and is a good place to start.  The rest of this README will focus on breaking down the steps described above, detailing all the options.
 
-### Add Classes
+### 1.  Add Classes
 
 `chat-workflow` requires a Spring bean of type `com.github.deutschebank.symphony.workflow.Workflow` to be present.  The easiest way to provide one of these is to instantiate `ClassBasedWorkflow` like so:
 
@@ -130,7 +130,7 @@ Notes:
 4. These fields will track approvals.
 5. You _must_ provide getters and setters for any properties you want Symphony to store/expose.  
 
-### Add Properties
+### 2.  Add Properties
 
 As you can see in the example above, we have various different properties defined, which will be rendered on the screen in one of two ways:
 
@@ -186,7 +186,7 @@ If the user enters an incorrect value, they will get an error, like so:
 
 This is particularly useful for things like email addresses, where you might want to add `@Email` to ensure the user enters a correctlt-formatted email address. 
  
-### Add Methods
+### 3. Add Methods
 
 In order to move from one state in the workflow to another, we need _methods_ on our beans.  `chat-workflow` supports both static and instance methods. 
 
@@ -327,7 +327,7 @@ In the example above, we ensure that the room is the "Claim Approval Room".  Alt
 ```
 
 
-### Asking For Help
+## Asking For Help
 
 The bot _always_ supports the user typing `/help`, which will reveal the commands relevant to the current room (via inspecting the `@Exposed` annotation.  e.g.
 
