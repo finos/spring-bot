@@ -9,11 +9,13 @@ import com.github.deutschebank.symphony.workflow.java.Work;
 @Work(name = "Poll Setup", editable = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChoiceForm {
-	
-	enum TimeUnit { MINUTES, HOURS, DAYS };
+
+	enum TimeUnit {
+		MINUTES, HOURS, DAYS
+	};
 
 	public String question = "Ask your question here";
-	
+
 	public String option1;
 	public String option2;
 	public String option3;
@@ -21,11 +23,10 @@ public class ChoiceForm {
 	public String option5;
 	public String option6;
 
-	
 	@Min(0)
 	@Max(60)
 	private Integer time = 5;
-	
+
 	private TimeUnit timeUnit = TimeUnit.MINUTES;
 
 	public String getQuestion() {
@@ -100,6 +101,4 @@ public class ChoiceForm {
 		this.timeUnit = timeUnit;
 	}
 
-	
-	
 }

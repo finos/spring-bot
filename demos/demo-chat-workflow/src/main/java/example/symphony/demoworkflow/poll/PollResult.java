@@ -9,7 +9,7 @@ import com.github.deutschebank.symphony.workflow.java.Work;
 public class PollResult {
 
 	private List<Integer> counts = new ArrayList<>();
-	
+
 	private Integer totalResponses = 0;
 
 	public Integer getTotalResponses() {
@@ -27,6 +27,5 @@ public class PollResult {
 	public void setCounts(List<Integer> counts) {
 		this.counts = counts;
 	}
-	
-	
+
 }

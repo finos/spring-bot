@@ -3,7 +3,6 @@ package example.symphony.demoworkflow.poll;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -20,17 +19,20 @@ import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
+import com.github.deutschebank.symphony.workflow.response.MessageResponse;
+import com.github.deutschebank.symphony.workflow.response.Response;
 
 import example.symphony.demoworkflow.WorkflowConfig.MemberQueryWorkflow;
+import example.symphony.demoworkflow.poll.bot.CreatePoll;
+import example.symphony.demoworkflow.poll.service.MarkupService;
 
 @Work(name = "Poll", instructions = "Please participate in our poll", editable = false)
 public class Poll {
-	
+
 	private ID id = new ID(UUID.randomUUID());
 	private Instant startTime = Instant.now();
 	private List<String> options;
-	
-	
+
 	public Poll(List<String> options) {
 		super();
 		this.options = options;
@@ -65,45 +67,56 @@ public class Poll {
 		
 		return out;
 	}
+
+	@Exposed(description = "Initialize Poll setup")
+	public Response initpoll(User u, Room r, Workflow wf) {
+		MarkupService markupService = new MarkupService();
+		return new MessageResponse(wf, r, markupService.getPollCreateData(u, r, wf, new ID(UUID.randomUUID()).getId()), "Create Poll", "",
+				markupService.getCreatePollTemplate());
+	}
 	
+	@Exposed
+	public List<Response> endpoll(User u, Room r, Workflow wf) {
+		return CreatePoll.handleEndPoll(r, u, u.getName(), wf);
+	}
+
 	@Exposed
 	public PollResult end(Room r, Workflow wf) {
 		History h = wf.getHistoryApi();
-		
+
 		List<PollResponse> responses = new ArrayList<>();
-		
+
 		List<Object> results = h.getFromHistory(id, null, null);
-		
+
 		for (Object o : results) {
 			if (o instanceof PollResponse) {
-				responses.add((PollResponse)o);
+				responses.add((PollResponse) o);
 			}
 		}
-			
+
 		PollResult out = new PollResult();
-		
+
 		List<Integer> counts = new ArrayList<>(options.size());
 		for (int i = 0; i < options.size(); i++) {
 			counts.add(0);
 		}
-		
-		
+
 		for (PollResponse pollResponse : responses) {
-			counts.set(pollResponse.getChoice(), counts.get(pollResponse.getChoice())+1);
-			out.setTotalResponses(out.getTotalResponses()+1);
+			counts.set(pollResponse.getChoice(), counts.get(pollResponse.getChoice()) + 1);
+			out.setTotalResponses(out.getTotalResponses() + 1);
 		}
-		
+
 		out.setCounts(counts);
-		
+
 		return out;
 	}
 
-	private static FormResponse createResponseForUser(ChoiceForm cf, Workflow wf, List<String> choices, ID id, List<Button> buttons,
-			User u) {
+	private static FormResponse createResponseForUser(ChoiceForm cf, Workflow wf, List<String> choices, ID id,
+			List<Button> buttons, User u) {
 		Question q = new Question(cf.getQuestion(), choices, id);
 		return new FormResponse(wf, u, q, cf.getQuestion(), "Pick one of: ", q, false, buttons);
 	}
-	
+
 	public List<String> getOptions() {
 		return options;
 	}
@@ -127,4 +140,5 @@ public class Poll {
 	public void setId(ID id) {
 		this.id = id;
 	}
+
 }
