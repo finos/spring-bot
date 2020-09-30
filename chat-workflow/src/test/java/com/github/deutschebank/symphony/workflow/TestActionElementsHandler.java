@@ -12,6 +12,7 @@ import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
 import com.github.deutschebank.symphony.json.EntityJson;
@@ -24,6 +25,7 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.elements.Metho
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.AttachmentHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.FreemarkerFormMessageMLConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.messages.HelpMessageConsumer;
 import com.github.deutschebank.symphony.workflow.sources.symphony.messages.MethodCallMessageConsumer;
@@ -66,11 +68,15 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 	
 	EntityJsonConverter ejc;
 	
+
+	@Autowired
+	ResourceLoader rl;
+	
 	@Before
 	public void setup() {
 		ejc = new EntityJsonConverter(wf);
 		FormConverter fc = new FormConverter(symphonyRooms);
-		FormMessageMLConverter fmc = new FormMessageMLConverter(symphonyRooms);
+		FormMessageMLConverter fmc = new FreemarkerFormMessageMLConverter(symphonyRooms, rl);
 		MethodCallElementsConsumer mcec = new MethodCallElementsConsumer();
 		SymphonyResponseHandler srh = new SymphonyResponseHandler(messagesApi, fmc, ejc, symphonyRooms, ah);
 		handler = new ElementsHandler(wf, messagesApi, ejc,  fc, Arrays.asList(mcec), srh, symphonyRooms, v);

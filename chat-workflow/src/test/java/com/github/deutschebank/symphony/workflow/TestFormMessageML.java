@@ -13,10 +13,12 @@ import org.springframework.validation.Validator;
 
 import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.ID;
+import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.fixture.TestOb4;
 import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestObjects;
+import com.github.deutschebank.symphony.workflow.fixture.TestTemplatedObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestOb4.Choice;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
@@ -33,14 +35,25 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 
 
 	@Test
+	public void testFreemarkerView() throws Exception {
+		TestTemplatedObject to4 = new TestTemplatedObject();
+		to4.setSomeText("howdy");
+		to4.setR(new RoomDef("tesxt room", "blah", true, "abc123"));
+		Button submit = new Button("submit", Type.ACTION, "GO");
+		String actual = messageMlConverter.convert(TestTemplatedObject.class, to4, Collections.singletonList(submit), false, ErrorHelp.createErrorHolder());
+		System.out.println("<messageML>" + actual + "</messageML>");
+		Assert.assertEquals("abcdef", actual); 
+	}
+	
+	
+	@Test
 	public void testNewWeirdFieldsEdit() throws Exception {
 		TestOb4 to4 = new TestOb4();
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		Button submit = new Button("submit", Type.ACTION, "GO");
 		String actual = messageMlConverter.convert(TestOb4.class, to4, Collections.singletonList(submit), true, ErrorHelp.createErrorHolder());
 		System.out.println("<messageML>" + actual + "</messageML>");
-		Assert.assertEquals("<form id=\"com.github.deutschebank.symphony.workflow.fixture.TestOb4\" ><hash tag=\"adf360dd-06fe-43a4-9a62-2c17fe2deefa\" /> <select name=\"c.\" required=\"false\" data-placeholder=\"Choose c\" ><option value=\"A\" >A</option><option value=\"B\" >B</option><option value=\"C\" >C</option></select><checkbox name=\"b.\" checked=\"false\" value=\"true\" >b</checkbox><person-selector name=\"someUser.\" placeholder=\"Search for someone\" required=\"false\"/><p><button name=\"submit\" type=\"action\" >GO</button></p></form>", actual); 
-		
+		Assert.assertEquals("<form id=\"com.github.deutschebank.symphony.workflow.fixture.TestOb4\" ><hash tag=\"adf360dd-06fe-43a4-9a62-2c17fe2deefa\" /> <select name=\"c.\" required=\"false\" data-placeholder=\"Choose c\" ><option value=\"A\" >A</option><option value=\"B\" >B</option><option value=\"C\" >C</option></select><checkbox name=\"b.\" checked=\"false\" value=\"true\" >b</checkbox><person-selector name=\"someUser.\" placeholder=\"someUser\" required=\"false\"/><p><button name=\"submit\" type=\"action\" >GO</button></p></form>", actual); 
 	}
 	
 	
