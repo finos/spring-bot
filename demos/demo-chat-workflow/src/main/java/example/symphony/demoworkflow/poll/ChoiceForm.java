@@ -5,9 +5,11 @@ import javax.validation.constraints.Min;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.deutschebank.symphony.workflow.java.Work;
+import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 
 @Work(name = "Poll Setup", editable = true)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Template(edit="classpath://templates/pollchoiceform.fml")
 public class ChoiceForm {
 
 	enum TimeUnit {

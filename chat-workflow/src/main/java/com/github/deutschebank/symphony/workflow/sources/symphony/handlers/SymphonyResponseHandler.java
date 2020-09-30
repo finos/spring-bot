@@ -1,11 +1,15 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.handlers;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.github.deutschebank.symphony.workflow.response.AttachmentResponse;
 import com.github.deutschebank.symphony.workflow.response.DataResponse;
 import com.github.deutschebank.symphony.workflow.response.ErrorResponse;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.MessageResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
+import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyBot;
 import com.github.deutschebank.symphony.workflow.sources.symphony.TagSupport;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.symphony.api.agent.MessagesApi;
@@ -17,6 +21,8 @@ import com.symphony.api.agent.MessagesApi;
  *
  */
 public class SymphonyResponseHandler implements ResponseHandler {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(SymphonyResponseHandler.class);
 
 	MessagesApi messagesApi;
 	FormMessageMLConverter formConverter;
@@ -70,6 +76,8 @@ public class SymphonyResponseHandler implements ResponseHandler {
 		String outMessage = "<messageML>"+tags+messageBody+"</messageML>";
 		String json = jsonConverter.toWorkflowJson(t.getData());
 		String streamId = ru.getStreamFor(t.getAddress());
+		LOG.debug(json);
+		LOG.debug(outMessage);
 		messagesApi.v4StreamSidMessageCreatePost(null, streamId, outMessage, json, null, attachment, null, null);
 	}
 	
