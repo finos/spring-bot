@@ -1,6 +1,7 @@
 package com.github.deutschebank.symphony.workflow;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import com.github.deutschebank.symphony.workflow.fixture.TestTemplatedObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestOb4.Choice;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import com.github.deutschebank.symphony.workflow.validation.ErrorHelp;
 
@@ -34,6 +36,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	@Autowired
 	Validator validator;
 
+	@Autowired
+	EntityJsonConverter ejc;
 
 	@Test
 	public void testFreemarkerView() throws Exception {
@@ -70,8 +74,10 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		Button submit = new Button("submit", Type.ACTION, "GO");
 		EntityJson empty = new EntityJson();
-		String actual = messageMlConverter.convert(TestOb4.class, to4, Collections.singletonList(submit), false, ErrorHelp.createErrorHolder(), empty);
-		System.out.println("<messageML>" + actual + "</messageML>");
+		
+		String actual = messageMlConverter.convert(TestOb4.class, to4, new ArrayList<Button>(Collections.singletonList(submit)), false, ErrorHelp.createErrorHolder(), empty);
+		String json = ejc.writeValue(empty);
+		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
 		Assert.assertEquals("<table><tr><td><b>theId:</b></td><td><hash tag=\"adf360dd-06fe-43a4-9a62-2c17fe2deefa\" /> </td></tr><tr><td><b>c:</b></td><td>B</td></tr><tr><td><b>b:</b></td><td>Y</td></tr><tr><td><b>a:</b></td><td><mention uid=\"sdfjk\" /></td></tr><tr><td><b>someUser:</b></td><td><mention uid=\"2678\" /></td></tr></table><form id=\"com.github.deutschebank.symphony.workflow.fixture.TestOb4\" ><p><button name=\"submit\" type=\"action\" >GO</button></p></form>", actual);
 		
 	}	

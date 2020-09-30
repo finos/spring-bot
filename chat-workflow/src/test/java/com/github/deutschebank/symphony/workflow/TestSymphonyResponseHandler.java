@@ -50,6 +50,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	@Before
 	public void setup() {
 		responseHandler = new SymphonyResponseHandler(messagesApi, new FreemarkerFormMessageMLConverter(rooms, rl), entityJsonConverter, rooms, ah);
+		responseHandler.setOutputTemplates(true);
 	}
 	
 	@Test
