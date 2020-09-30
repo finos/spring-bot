@@ -163,17 +163,17 @@
   </profiles>
  	
 
-  <build>
+  <!-- <build>
 		<extensions>
 			<extension>
 				<groupId>com.github.deutschebank.symphony</groupId>
 				<artifactId>symphony-maven-build-reporter</artifactId>
-				<!-- since we are building the build reporter, this must refer to an earlier, built version -->
+				since we are building the build reporter, this must refer to an earlier, built version
 				<version>4.59.2</version>
 			</extension>
 		</extensions>
 	</build>
-
+ -->
 	<distributionManagement>
 		<repository>
 			<id>bintray-deutschebank-SymphonyPractice</id>

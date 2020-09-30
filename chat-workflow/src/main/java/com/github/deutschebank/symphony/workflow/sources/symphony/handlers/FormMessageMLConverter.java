@@ -50,6 +50,7 @@ public class FormMessageMLConverter {
 	}
 
 	public String convert(Class<?> c, Object o, List<Button> actions, boolean editMode, Errors e) {
+		
 		StringBuilder sb = new StringBuilder();
 		Mode m = editMode ? Mode.FORM : ((actions.size() > 0) ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 		if (o instanceof String) {
@@ -314,7 +315,7 @@ public class FormMessageMLConverter {
 		if (editMode) {
 			return ErrorHelp.errors(e) + "<person-selector " 
 					+ attribute("name", e.getNestedPath()) +
-				 "placeholder=\"Search for someone\" required=\"false\"/>";
+				 "placeholder=\""+name+"\" required=\"false\"/>";
 		} else if (bean == null) {
 			return "-- no user --";
 		} else {
