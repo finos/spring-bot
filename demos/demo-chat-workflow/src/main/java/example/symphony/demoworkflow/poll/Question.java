@@ -14,23 +14,17 @@ public class Question {
 	public String question;
 	public List<String> options;
 	public ID id;
-	
-	
-	
+
 	public Question(String question, List<String> options, ID id) {
 		super();
 		this.question = question;
 		this.options = options;
 		this.id = id;
 	}
-	
-	
 
 	public Question() {
 		super();
 	}
-
-
 
 	public String getQuestion() {
 		return question;
@@ -62,30 +56,29 @@ public class Question {
 	}
 
 	private PollResponse chooseResponse(User u, int r) {
-		System.out.println("You chose option "+r+" which was "+options.get(r));
 		return new PollResponse(id, u, Instant.now(), r, options.get(r));
 	}
-	
+
 	@Exposed
 	public PollResponse poll1(User u) {
 		return chooseResponse(u, 1);
 	}
-	
+
 	@Exposed
 	public PollResponse poll2(User u) {
 		return chooseResponse(u, 2);
 	}
-	
+
 	@Exposed
 	public PollResponse poll3(User u) {
 		return chooseResponse(u, 3);
 	}
-	
+
 	@Exposed
 	public PollResponse poll4(User u) {
 		return chooseResponse(u, 4);
 	}
-	
+
 	@Exposed
 	public PollResponse poll5(User u) {
 		return chooseResponse(u, 5);
