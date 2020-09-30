@@ -17,6 +17,7 @@
 		<module>bindings</module>
 		<module>symphony-api-spring-boot-starter</module>
 		<module>symphony-app-spring-boot-starter</module>
+		<module>koreai</module>
 		<module>entity-json</module>
 		<module>quickfix-json</module>
 		<module>shared-stream</module>
@@ -131,8 +132,8 @@
 		    </plugins>
 		  </build>
     </profile>
-    
-    
+
+
     <profile>
       <!-- this profile generates code coverage, should be run by the ci server -->
       <id>symphony-ci</id>
@@ -161,7 +162,7 @@
       </build>
     </profile>
   </profiles>
- 	
+
 
   <!-- <build>
 		<extensions>
