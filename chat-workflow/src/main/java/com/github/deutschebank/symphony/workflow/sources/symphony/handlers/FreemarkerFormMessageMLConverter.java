@@ -95,10 +95,10 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 			}
 			if (m == Mode.DISPLAY_WITH_BUTTONS) {
 				sb.append("</table><form " + attribute("id", c.getCanonicalName()) + ">");
-				sb.append(handleButtons(actions));
+				sb.append(handleButtons(actions, work));
 				sb.append("</form>");
 			} else if (m == Mode.FORM) {
-				sb.append(handleButtons(actions));
+				sb.append(handleButtons(actions, work));
 				sb.append("</form>");
 			} else {
 				sb.append("</table>");
@@ -108,18 +108,18 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		return sb.toString();
 	}
 
-	private String handleButtons(List<Button> actions) {
+	private String handleButtons(List<Button> actions, EntityJson work) {
+		work.put("buttons", actions);
+		
 		StringBuilder sb = new StringBuilder();
-		sb.append("<p>");
-		for (Button button : actions) {
-			sb.append("<button ");
-			sb.append(attribute("name", button.getName()));
-			sb.append(attribute("type", button.getType().toString().toLowerCase()));
-			sb.append(">");
-			sb.append(HtmlUtils.htmlEscape(button.getText()));
-			sb.append("</button>");
-		}
-		sb.append("</p>");
+		sb.append("<p><#list entity['buttons'][1] as button>");
+		sb.append("<button ");
+		sb.append(" name=\"${button.name}\"");
+		sb.append(" type=\"${button.type.?lower_case}\"");
+		sb.append(">");
+		sb.append("${button.text}");
+		sb.append("</button>");
+		sb.append("</#list></p>");
 		return sb.toString();
 	}
 

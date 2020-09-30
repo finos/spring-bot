@@ -2,6 +2,7 @@ package com.github.deutschebank.symphony.workflow.sources.symphony.handlers;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.github.deutschebank.symphony.workflow.response.AttachmentResponse;
 import com.github.deutschebank.symphony.workflow.response.DataResponse;
@@ -28,6 +29,9 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	EntityJsonConverter jsonConverter;
 	SymphonyRooms ru;
 	AttachmentHandler ah;
+	
+	@Value("${symphony.chat-workflow.outputTemplates:true}")
+	private boolean outputTemplates;
 	
 	public SymphonyResponseHandler(MessagesApi api, FormMessageMLConverter fmc, EntityJsonConverter ejc, SymphonyRooms ru, AttachmentHandler ah) {
 		this.messagesApi = api;
@@ -75,8 +79,10 @@ public class SymphonyResponseHandler implements ResponseHandler {
 		String outMessage = "<messageML>"+tags+messageBody+"</messageML>";
 		String json = jsonConverter.writeValue(t.getData());
 		String streamId = ru.getStreamFor(t.getAddress());
-		LOG.debug(json);
-		LOG.debug(outMessage);
+		if (isOutputTemplates()) {
+			LOG.info("JSON: \n", json);
+			LOG.info("TEMPLATE: \n"+ outMessage);
+		}
 		messagesApi.v4StreamSidMessageCreatePost(null, streamId, outMessage, json, null, attachment, null, null);
 	}
 	
@@ -89,6 +95,15 @@ public class SymphonyResponseHandler implements ResponseHandler {
 				TagSupport.classHashTags(dr.getData()) + 
 				"</p></body>" +
 				"  </card>";
+	}
+	
+
+	public boolean isOutputTemplates() {
+		return outputTemplates;
+	}
+
+	public void setOutputTemplates(boolean outputTemplates) {
+		this.outputTemplates = outputTemplates;
 	}
 
 }
