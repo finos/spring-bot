@@ -7,6 +7,7 @@ import org.springframework.validation.Errors;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 import com.github.deutschebank.symphony.workflow.validation.ErrorHelp;
 
 public class FormResponse extends DataResponse {
@@ -18,7 +19,7 @@ public class FormResponse extends DataResponse {
 	private final Errors errors;
 		
 	public FormResponse(Workflow wf, Addressable stream, Object data, String name, String instructions, Object formObject, boolean editable, List<Button> buttons, Errors e) {
-		super(wf, stream, data, name, instructions);
+		super(wf, stream, EntityJsonConverter.newWorkflow(data), name, instructions);
 		this.editable = editable;
 		this.formObject = formObject;
 		this.buttons = buttons;
@@ -31,7 +32,7 @@ public class FormResponse extends DataResponse {
 	}
 	
 	public FormResponse(Workflow wf, Addressable stream, Object data, String name, String instructions, Class<?> formClass, boolean editable, List<Button> buttons) {
-		super(wf, stream, data, name, instructions);
+		super(wf, stream, EntityJsonConverter.newWorkflow(data), name, instructions);
 		this.editable = editable;
 		this.formObject = null;
 		this.buttons = buttons;

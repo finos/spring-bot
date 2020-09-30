@@ -1,6 +1,7 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.handlers;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -48,24 +49,15 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 				return null;
 			}
 
-			return readValue(json).get(WORKFLOW_001);
+			return readWorkflow(readValue(json));
 		} catch (Exception e) {
 			System.out.println(json);
 			throw new UnsupportedOperationException("Map Fail", e);
 		}
 	}
-
-	public String toWorkflowJson(Object o) {
-		try {
-			if (o == null) {
-				return null;
-			}
-			EntityJson out = new EntityJson();
-			out.put(WORKFLOW_001, o);
-			return om.writeValueAsString(out);
-		} catch (Exception e) {
-			throw new UnsupportedOperationException("Map Fail", e);
-		}
+	
+	public Object readWorkflow(EntityJson ej) {
+		return ej.get(WORKFLOW_001);
 	}
 
 	public EntityJson readValue(String json) {
@@ -102,5 +94,26 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 		return om;
 	}
 
+	
+	public static EntityJson newWorkflow(Object o) {
+		return new EntityJson(Collections.singletonMap(WORKFLOW_001, o));
+	}
+	
+	
 
+	/** 
+	 * Used in tests 
+	 */
+	public String toWorkflowJson(Object o) {
+		try {
+			if (o == null) {
+				return null;
+			}
+			EntityJson out = new EntityJson();
+			out.put(WORKFLOW_001, o);
+			return om.writeValueAsString(out);
+		} catch (Exception e) {
+			throw new UnsupportedOperationException("Map Fail", e);
+		}
+	}
 }

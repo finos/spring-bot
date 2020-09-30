@@ -21,6 +21,7 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.elements.FormC
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableAddRow;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableEditRow;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 
 public class TestTableEdit extends AbstractMockSymphonyTest {
 
@@ -38,11 +39,13 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 	@Autowired
 	TableAddRow addRows;
 	
+	EntityJsonConverter ejc; 
 	
 	
 	@Before
 	public void setup() {
 		to = TestWorkflowConfig.createTestObjects();
+		ejc = new EntityJsonConverter(wf);
 	}
 	
 	@Test
@@ -60,9 +63,10 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 		newTo.setBidQty(324);
 		ea = new ElementsAction(wf, room, u, newTo, "items."+TableAddRow.DO_SUFFIX, to);
 		fr = (FormResponse) addRows.apply(ea).get(0);
+		TestObjects to = (TestObjects) ejc.readWorkflow(fr.getData());
 		
-		Assert.assertEquals(3, ((TestObjects) fr.getData()).getItems().size()); 
-		Assert.assertEquals(newTo, ((TestObjects) fr.getData()).getItems().get(2)); 
+		Assert.assertEquals(3, to.getItems().size()); 
+		Assert.assertEquals(newTo, to.getItems().get(2)); 
 	}
 	
 	@Test
