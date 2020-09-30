@@ -9,7 +9,6 @@ import com.github.deutschebank.symphony.workflow.response.ErrorResponse;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.MessageResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
-import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyBot;
 import com.github.deutschebank.symphony.workflow.sources.symphony.TagSupport;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.symphony.api.agent.MessagesApi;
@@ -66,7 +65,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	}
 
 	private void processFormResponse(FormResponse t) {
-		String convertedForm = formConverter.convert(t.getFormClass(), t.getFormObject(), t.getButtons(), t.isEditable(), t.getErrors());
+		String convertedForm = formConverter.convert(t.getFormClass(), t.getFormObject(), t.getButtons(), t.isEditable(), t.getErrors(), t.getData());
 		processDataResponse(convertedForm, t, null);
 	}
 
@@ -74,7 +73,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	private void processDataResponse(String messageBody, DataResponse t, Object attachment) {
 		String tags = createWorkflowHeader(t);
 		String outMessage = "<messageML>"+tags+messageBody+"</messageML>";
-		String json = jsonConverter.toWorkflowJson(t.getData());
+		String json = jsonConverter.writeValue(t.getData());
 		String streamId = ru.getStreamFor(t.getAddress());
 		LOG.debug(json);
 		LOG.debug(outMessage);

@@ -19,6 +19,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.util.HtmlUtils;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.ID;
 import com.github.deutschebank.symphony.workflow.content.Room;
@@ -58,7 +59,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	}
 
 	@Override
-	public String convert(Class<?> c, Object o, List<Button> actions, boolean editMode, Errors e) {
+	public String convert(Class<?> c, Object o, List<Button> actions, boolean editMode, Errors e, EntityJson work) {
 		
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
