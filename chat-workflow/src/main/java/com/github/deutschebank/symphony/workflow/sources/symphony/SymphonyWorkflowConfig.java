@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +22,7 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.elements.FormC
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.AttachmentHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.FreemarkerFormMessageMLConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.history.MessageHistory;
 import com.github.deutschebank.symphony.workflow.sources.symphony.messages.PresentationMLHandler;
@@ -63,6 +65,9 @@ public class SymphonyWorkflowConfig {
 	@Autowired
 	AttachmentHandler attachmentHandler;
 	
+	@Autowired
+	ResourceLoader resourceLoader;
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public SimpleMessageParser simpleMessageParser() {
@@ -78,7 +83,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public FormMessageMLConverter formMessageMLConverter() {
-		return new FormMessageMLConverter(symphonyRooms());
+		return new FreemarkerFormMessageMLConverter(symphonyRooms(), resourceLoader);
 	}
 	
 	@Bean
