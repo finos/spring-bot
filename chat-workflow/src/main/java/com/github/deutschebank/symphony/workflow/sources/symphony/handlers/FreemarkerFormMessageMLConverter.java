@@ -26,6 +26,7 @@ import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.sources.symphony.TagSupport;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableAddRow;
@@ -59,7 +60,10 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	}
 
 	@Override
-	public String convert(Class<?> c, Object o, List<Button> actions, boolean editMode, Errors e, EntityJson work) {
+	public String convert(Class<?> c, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work) {
+		
+		// ensure o is in the work object
+		work.put("formdata", o);
 		
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
@@ -108,7 +112,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		return sb.toString();
 	}
 
-	private String handleButtons(List<Button> actions, EntityJson work) {
+	private String handleButtons(ButtonList actions, EntityJson work) {
 		work.put("buttons", actions);
 		
 		StringBuilder sb = new StringBuilder();

@@ -7,6 +7,7 @@ import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.room.Rooms;
@@ -39,7 +40,7 @@ public interface Workflow {
 	
 	public List<Response> applyCommand(User u, Addressable in, String commandName, Object argument, Message m);
 	
-	List<Button> gatherButtons(Object out, Addressable r);
+	ButtonList gatherButtons(Object out, Addressable r);
 	
 	public Rooms getRoomsApi();
 	

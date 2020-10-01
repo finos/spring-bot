@@ -8,6 +8,9 @@ public class Button {
 	private Type type;
 	private String text;
 	
+	public Button() {
+	}
+	
 	public Button(String name, Type type, String text) {
 		super();
 		this.name = name;
