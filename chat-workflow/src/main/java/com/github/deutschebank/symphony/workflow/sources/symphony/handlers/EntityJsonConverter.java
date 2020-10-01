@@ -15,6 +15,8 @@ import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
+import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 
 /**
  * Converts workflow objects to/from JSON.
@@ -36,6 +38,8 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 		extendedClassSpace.add(UserDef.class);
 		extendedClassSpace.add(User.class);
 		extendedClassSpace.add(Room.class);
+		extendedClassSpace.add(Button.class);
+		extendedClassSpace.add(ButtonList.class);
 		extendedClassSpace.addAll(wf.getDataTypes());
 		VersionSpace[] vs = extendedClassSpace.stream().map(c -> new VersionSpace(c.getCanonicalName(), "1.0")).toArray(s -> new VersionSpace[s]);
 		om = ObjectMapperFactory.initialize(objectMapper, ObjectMapperFactory.extendedSymphonyVersionSpace(vs));		

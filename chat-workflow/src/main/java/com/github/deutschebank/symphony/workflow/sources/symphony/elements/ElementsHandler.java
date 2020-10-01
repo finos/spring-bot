@@ -16,6 +16,7 @@ import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyEventHandler;
@@ -94,7 +95,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 					}
 				} else {
 					FormResponse fr = new FormResponse(wf, rr, data, "Error In Form", "Please Fix the validation errors below", currentForm, true, 
-						Collections.singletonList(new Button(verb, Button.Type.ACTION, "Retry")), e);
+						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), e);
 					rh.accept(fr);
 				}
 			}
