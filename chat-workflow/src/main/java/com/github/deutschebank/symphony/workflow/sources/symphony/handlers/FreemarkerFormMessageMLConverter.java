@@ -49,10 +49,10 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	enum Mode {
 		DISPLAY, DISPLAY_WITH_BUTTONS, FORM
 	};
-	
+
 	SymphonyRooms ru;
 	ResourceLoader rl;
-	
+
 	public FreemarkerFormMessageMLConverter(SymphonyRooms ru, ResourceLoader rl) {
 		this.ru = ru;
 		this.rl = rl;
@@ -60,14 +60,17 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 
 	@Override
 	public String convert(Class<?> c, Object o, List<Button> actions, boolean editMode, Errors e, EntityJson work) {
-		
+
+		// ensure o is in the work object
+		work.put("formdata", o);
+
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
-		
+
 		if (templateName != null) {
 			Resource r = rl.getResource(templateName);
 			if (!r.exists()) {
-				throw new UnsupportedOperationException("Template not available: "+templateName);
+				throw new UnsupportedOperationException("Template not available: " + templateName);
 			}
 			try {
 				return StreamUtils.copyToString(r.getInputStream(), Charset.defaultCharset());
@@ -75,8 +78,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 				throw new UnsupportedOperationException("Template not available:", e1);
 			}
 		}
-		
-		
+
 		StringBuilder sb = new StringBuilder();
 		Mode m = editMode ? Mode.FORM : ((actions.size() > 0) ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 		if (o instanceof String) {
@@ -110,7 +112,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 
 	private String handleButtons(List<Button> actions, EntityJson work) {
 		work.put("buttons", actions);
-		
+
 		StringBuilder sb = new StringBuilder();
 		sb.append("<p><#list entity['buttons'][1] as button>");
 		sb.append("<button ");
@@ -141,7 +143,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		} else if (boolClass(c)) {
 			return convertCheckboxField((Boolean) bean, e, editMode, f.getName());
 		} else if (Author.class.isAssignableFrom(c)) {
-			return convertAuthor((Author) bean, e, editMode, f.getName());			
+			return convertAuthor((Author) bean, e, editMode, f.getName());
 		} else if (User.class.isAssignableFrom(c)) {
 			return convertUser((User) bean, e, editMode, f.getName());
 		} else if (ID.class.isAssignableFrom(c)) {
@@ -166,7 +168,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	private String convertRoom(Room r, Errors e, Class<?> c, boolean editMode, String name) {
 		if (editMode) {
 			return renderDropdown(r, e, ru.getAllRooms(), name, (o) -> o.getId(), (o) -> o.getRoomName());
-		} else if (r != null){
+		} else if (r != null) {
 			return r.getRoomName();
 		} else {
 			return "";
@@ -174,9 +176,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	}
 
 	/**
-	 * This converts tags that aren't users.  So, hashtags and cashtags only.
-	 * For these tags, the id and the name are the same thing, so we only need to 
-	 * worry about one of those
+	 * This converts tags that aren't users. So, hashtags and cashtags only. For
+	 * these tags, the id and the name are the same thing, so we only need to worry
+	 * about one of those
 	 */
 	private String convertTag(Tag bean, Errors e, boolean editMode, String name) {
 		if (editMode) {
@@ -185,14 +187,15 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 			return TagSupport.format(bean);
 		}
 	}
-	
+
 	private String convertID(ID id, Errors e, boolean editMode, String name) {
 		return TagSupport.format(id);
 	}
 
 	private String convertEnum(Enum<?> n, Errors e, Class<?> c, boolean editMode, String name) {
 		if (editMode) {
-			return renderDropdown(n, e, Arrays.asList(c.getEnumConstants()), name, (g) -> ((Enum<?>)g).name(), (g) -> g.toString());
+			return renderDropdown(n, e, Arrays.asList(c.getEnumConstants()), name, (g) -> ((Enum<?>) g).name(),
+					(g) -> g.toString());
 		} else if (n != null) {
 			return n.toString();
 		} else {
@@ -200,15 +203,16 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		}
 	}
 
-	private <V> String renderDropdown(V selected, Errors e, Collection<V> options, String name, Function<V, String> keyFunction, Function<V, String> displayFunction) {
+	private <V> String renderDropdown(V selected, Errors e, Collection<V> options, String name,
+			Function<V, String> keyFunction, Function<V, String> displayFunction) {
 		StringBuilder out = new StringBuilder();
-		out.append("<select "+ attribute("name", e.getNestedPath()));
+		out.append("<select " + attribute("name", e.getNestedPath()));
 		out.append(attribute("required", "false"));
-		out.append(attribute("data-placeholder", "Choose "+name));
+		out.append(attribute("data-placeholder", "Choose " + name));
 		out.append(">");
-		
+
 		Object selectedKey = selected == null ? null : keyFunction.apply(selected);
-		
+
 		for (V o : options) {
 			out.append("<option ");
 			out.append(attribute("value", keyFunction.apply(o)));
@@ -219,7 +223,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 			out.append(displayFunction.apply(o));
 			out.append("</option>");
 		}
-		
+
 		out.append("</select>");
 		return out.toString();
 	}
@@ -247,7 +251,8 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	}
 
 	private WithField formDisplay = (beanClass, bean, f, editMode, e) -> {
-		return "<tr><td><b>" + f.getName() + ":</b></td><td>" + formField.apply(beanClass, bean, f, editMode, e) + "</td></tr>";
+		return "<tr><td><b>" + f.getName() + ":</b></td><td>" + formField.apply(beanClass, bean, f, editMode, e)
+				+ "</td></tr>";
 	};
 
 	private WithField tableDisplay = (beanClass, bean, f, editMode, e) -> {
@@ -262,7 +267,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 
 	private String withFields(Class<?> c, Object bean, WithField action, boolean editMode, Errors e) {
 		StringBuilder out = new StringBuilder();
-		if ((c != Object.class) && (c!=null)) {
+		if ((c != Object.class) && (c != null)) {
 			out.append(withFields(c.getSuperclass(), bean, action, editMode, e));
 
 			for (Field f : c.getDeclaredFields()) {
@@ -339,16 +344,15 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 
 	private String convertUser(User bean, Errors e, boolean editMode, String name) {
 		if (editMode) {
-			return ErrorHelp.errors(e) + "<person-selector " 
-					+ attribute("name", e.getNestedPath()) +
-				 "placeholder=\""+name+"\" required=\"false\"/>";
+			return ErrorHelp.errors(e) + "<person-selector " + attribute("name", e.getNestedPath()) + "placeholder=\""
+					+ name + "\" required=\"false\"/>";
 		} else if (bean == null) {
 			return "-- no user --";
 		} else {
 			return TagSupport.format(bean);
 		}
 	}
-	
+
 	private String convertAuthor(Author bean, Errors e, boolean editMode, String name) {
 		if (editMode) {
 			return "";
@@ -362,8 +366,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	private String convertTextField(String value, Errors e, boolean editMode, String placeholder) {
 		if (editMode) {
 			return ErrorHelp.errors(e) + "<text-field " + attribute("name", e.getNestedPath())
-					+ attribute("placeholder", placeholder) +
-					">" + text(value) + "</text-field>";
+					+ attribute("placeholder", placeholder) + ">" + text(value) + "</text-field>";
 		} else {
 			return value;
 		}
