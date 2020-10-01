@@ -28,6 +28,7 @@ import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.Word;
 import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
 import com.github.deutschebank.symphony.workflow.response.ErrorResponse;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
@@ -254,8 +255,8 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	}
 
 	@Override
-	public List<Button> gatherButtons(Object out, Addressable r) {
-		List<Button> buttons = new ArrayList<>();
+	public ButtonList gatherButtons(Object out, Addressable r) {
+		ButtonList buttons = new ButtonList();
 		if (out.getClass().isAnnotationPresent(Work.class)) {
 			Work w = out.getClass().getAnnotation(Work.class);
 			if (w.editable()) {

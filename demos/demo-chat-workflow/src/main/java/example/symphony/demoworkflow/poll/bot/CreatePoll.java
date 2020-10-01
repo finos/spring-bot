@@ -39,8 +39,8 @@ public class CreatePoll extends Poll {
 	public String option6;
 
 	public CreatePoll(String question, String option1, String option2, String option3, String option4, String option5,
-			String option6, Integer timeLimit, String pollId) {
-		super(pollId, question, timeLimit);
+			String option6, Integer timeLimit, String id) {
+		super(id, question, timeLimit);
 		this.option1 = option1;
 		this.option2 = option2;
 		this.option3 = option3;

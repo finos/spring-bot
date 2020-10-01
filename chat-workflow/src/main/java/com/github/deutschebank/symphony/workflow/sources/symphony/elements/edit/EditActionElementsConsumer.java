@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import com.github.deutschebank.symphony.workflow.Workflow;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
@@ -20,7 +21,7 @@ public class EditActionElementsConsumer extends AbstractElementsConsumer {
 			
 			Object ob = u.getWorkflowObject();
 			return Collections.singletonList(new FormResponse(wf, u.getAddressable(), ob, "Edit "+ClassBasedWorkflow.getName(ob.getClass()), ClassBasedWorkflow.getInstructions(ob.getClass()), u.getWorkflowObject(), true, 
-				Collections.emptyList()));
+				ButtonList.of()));
 		}
 		
 		return null;

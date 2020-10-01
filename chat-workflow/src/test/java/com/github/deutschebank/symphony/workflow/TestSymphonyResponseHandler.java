@@ -19,6 +19,7 @@ import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestWorkflowConfig;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.MessageResponse;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.AttachmentHandler;
@@ -80,7 +81,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 			return null;
 		});
 		
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", TestObject.class, true, Collections.singletonList(new Button("OK", Type.ACTION, "Click me")));
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", TestObject.class, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")));
 		responseHandler.accept(fr);
 	}
 	
@@ -97,7 +98,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestObject a = new TestObject("213", true, false, "rob@here.com", 55, 22);
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, Collections.singletonList(new Button("OK", Type.ACTION, "Click me")), e);
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 	
@@ -114,7 +115,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestOb3 a = new TestOb3(new RoomDef("abc", "asds", true, null), new UserDef(null, "Graham Bobki", "graham@goodle.com"), "some text");
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, Collections.singletonList(new Button("OK", Type.ACTION, "Click me")), e);
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 }
