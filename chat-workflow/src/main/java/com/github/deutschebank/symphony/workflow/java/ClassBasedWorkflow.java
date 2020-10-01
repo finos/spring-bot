@@ -187,8 +187,12 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 				args[i] = argument;
 			} else {
 				// missing parameter
-				return  Collections.singletonList(new FormResponse(this, a,  null, "Enter "+getName(cl), getInstructions(cl), cl, true, 
-					Collections.singletonList(new Button(commandName+"+0", Type.ACTION, m.getName()))));
+				try {
+					return  Collections.singletonList(new FormResponse(this, a,  null, "Enter "+getName(cl), getInstructions(cl), cl.newInstance(), true, 
+						Collections.singletonList(new Button(commandName+"+0", Type.ACTION, m.getName()))));
+				} catch (Exception e) {
+					throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
+				} 
 			}
 		}
 			
