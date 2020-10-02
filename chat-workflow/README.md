@@ -160,6 +160,10 @@ Out-of-the-box support exists for:
 
 TODO
 
+#### Limitations
+
+At the moment, the forms are displayed by walking the class structure and inspecting the declared types (not instance types).  For that reason, polymorphism won't work: only the fields in declared types will be shown.
+
 #### Overriding The Default Displays
 
 `chat-workflow` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.

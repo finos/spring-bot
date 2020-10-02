@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.deutschebank.symphony.spring.api.SymphonyApiConfig;
 import com.github.deutschebank.symphony.stream.spring.SharedStreamConfig;
 import com.github.deutschebank.symphony.workflow.Workflow;
@@ -108,7 +107,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public EntityJsonConverter entityJsonConverter() {
-		return new EntityJsonConverter(wf, new ObjectMapper());
+		return new EntityJsonConverter(wf);
 	}
 	
 	@Bean
