@@ -28,8 +28,8 @@ import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.Word;
 import com.github.deutschebank.symphony.workflow.form.Button;
-import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.response.ErrorResponse;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
@@ -188,8 +188,12 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 				args[i] = argument;
 			} else {
 				// missing parameter
-				return  Collections.singletonList(new FormResponse(this, a,  null, "Enter "+getName(cl), getInstructions(cl), cl, true, 
-					ButtonList.of(new Button(commandName+"+0", Type.ACTION, m.getName()))));
+				try {
+					return  Collections.singletonList(new FormResponse(this, a,  null, "Enter "+getName(cl), getInstructions(cl), cl.newInstance(), true, 
+							ButtonList.of(new Button(commandName+"+0", Type.ACTION, m.getName()))));
+				} catch (Exception e) {
+					throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
+				} 
 			}
 		}
 			
