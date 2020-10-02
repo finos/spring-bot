@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.validation.Errors;
+
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import com.github.deutschebank.symphony.json.ObjectMapperFactory;
@@ -28,7 +32,13 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 	ObjectMapper om;
 	
 	public EntityJsonConverter(Workflow wf) {
-		this(wf, new ObjectMapper());
+		this(wf, instantiateObjectMapper());
+	}
+
+	private static ObjectMapper instantiateObjectMapper() {
+		ObjectMapper om = new ObjectMapper();
+		om.enable(SerializationFeature.INDENT_OUTPUT);
+		return om;
 	}
 	
 	public EntityJsonConverter(Workflow wf, ObjectMapper objectMapper) {
@@ -102,8 +112,7 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 	public static EntityJson newWorkflow(Object o) {
 		return new EntityJson(Collections.singletonMap(WORKFLOW_001, o));
 	}
-	
-	
+
 
 	/** 
 	 * Used in tests 

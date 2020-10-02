@@ -8,32 +8,32 @@ import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.util.HtmlUtils;
+import org.springframework.validation.FieldError;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.Author;
+import com.github.deutschebank.symphony.workflow.content.CashTag;
+import com.github.deutschebank.symphony.workflow.content.HashTag;
 import com.github.deutschebank.symphony.workflow.content.ID;
 import com.github.deutschebank.symphony.workflow.content.Room;
-import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.ButtonList;
-import com.github.deutschebank.symphony.workflow.sources.symphony.TagSupport;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableAddRow;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableEditRow;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
-import com.github.deutschebank.symphony.workflow.validation.ErrorHelp;
 
 /**
  * Takes a bean and converts it into a form with either an editable or display
@@ -58,12 +58,60 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		this.ru = ru;
 		this.rl = rl;
 	}
+	
+	public class Variable {
+		
+		String segment;
+		Variable parent = null;
+		int depth = 0;
+		
+		public Variable() {
+			this(0, "entity['formdata']");
+		}
+		
+		private Variable(int depth, String var) {
+			this.segment = var;
+			this.depth = depth;
+		}
+		
+		private Variable(Variable parent2, String seg) {
+			this.segment = seg;
+			this.parent = parent2;
+			this.depth = parent2.depth + 1;
+		}
+
+		public Variable field(String seg) {
+			return new Variable(this, seg);
+		}
+		
+		public Variable index() {
+			return new Variable(parent.depth + 1, "i"+parent.depth);
+		}
+		
+		public String getDisplayName() {
+			return segment.replaceAll("(.)(\\p{Upper})", "$1 $2").toLowerCase();
+		}
+
+		public String getFormFieldName() {
+			return segment;
+		}
+		
+		public String getDataPath() {
+			return (parent != null ? parent.getDataPath() + "." : "") + segment;
+		}
+		
+		public String getErrorPath() {
+			return getDataPath() + ".error";
+		}
+
+	}
 
 	@Override
 	public String convert(Class<?> c, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work) {
 		
 		// ensure o is in the work object
-		work.put("formdata", o);
+		work.putIfAbsent("formdata", o);
+		work.putIfAbsent("errors", convertErrorsToMap(e));
 		
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
@@ -82,84 +130,94 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		
 		
 		StringBuilder sb = new StringBuilder();
+		Variable v = new Variable();
+		sb.append("\n<#-- starting template -->");
 		Mode m = editMode ? Mode.FORM : ((actions.size() > 0) ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 		if (o instanceof String) {
 			sb.append(o.toString());
 		} else {
 			// convert to an object form
 			if (m == Mode.FORM) {
-				sb.append("<form " + attribute("id", c.getCanonicalName()) + ">");
+				sb.append("\n<form " + attribute(v, "id", c.getCanonicalName()) + ">");
 			} else {
-				sb.append("<table>");
+				sb.append("\n<table>");
 			}
 			if (m == Mode.FORM) {
-				sb.append(withFields(c, o, formField, true, e));
+				sb.append(withFields(c, formField, true,v, work));
 			} else {
-				sb.append(withFields(c, o, formDisplay, false, e));
+				sb.append(withFields(c, formDisplay, false,v, work));
 			}
 			if (m == Mode.DISPLAY_WITH_BUTTONS) {
-				sb.append("</table><form " + attribute("id", c.getCanonicalName()) + ">");
+				sb.append("\n</table>\n<form " + attribute(v, "id", c.getCanonicalName()) + ">");
 				sb.append(handleButtons(actions, work));
-				sb.append("</form>");
+				sb.append("\n</form>");
 			} else if (m == Mode.FORM) {
 				sb.append(handleButtons(actions, work));
-				sb.append("</form>");
+				sb.append("\n</form>");
 			} else {
-				sb.append("</table>");
+				sb.append("\n</table>");
 			}
-		}
+		} 
 
+		sb.append("\n<#-- ending template -->\n");
 		return sb.toString();
+	}
+
+	private Map<String, String> convertErrorsToMap(Errors e) {
+		return e.getAllErrors().stream()
+			.map(err -> (FieldError) err)
+			.collect(Collectors.toMap(fe -> fe.getField(), fe -> fe.getDefaultMessage()));
 	}
 
 	private String handleButtons(ButtonList actions, EntityJson work) {
 		work.put("buttons", actions);
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("<p><#list entity['buttons'][1] as button>");
-		sb.append("<button ");
-		sb.append(" name=\"${button.name}\"");
-		sb.append(" type=\"${button.type.?lower_case}\"");
-		sb.append(">");
-		sb.append("${button.text}");
-		sb.append("</button>");
-		sb.append("</#list></p>");
+		sb.append("\n  <p><#list entity['buttons']['contents'] as button>");
+		sb.append("\n    <button ");
+		sb.append("\n         name=\"${button.name}\"");
+		sb.append("\n         type=\"${button.type?lower_case}\">");
+		sb.append("\n      ${button.text}");
+		sb.append("\n    </button>");
+		sb.append("\n  </#list></p>");
 		return sb.toString();
 	}
 
 	static interface WithField {
 
-		public String apply(Class<?> beanClass, Object bean, Field f, boolean editMode, Errors e);
+		public String apply(Class<?> beanClass, Field f, boolean editMode, Variable variable, EntityJson ej);
 
 	}
 
-	public WithField formField = (beanClass, bean, f, editMode, e) -> {
+	public WithField formField = (beanClass, f, editMode, variable, ej) -> {
 		Class<?> c = f.getType();
 		if (String.class.isAssignableFrom(c)) {
-			return convertTextField((String) bean, e, editMode, f.getName());
+			return convertTextField(variable, editMode);
 		} else if (numberClass(c)) {
-			return convertNumberField((Number) bean, e, editMode, f.getName());
+			return convertNumberField(variable, editMode);
 		} else if (Collection.class.isAssignableFrom(c)) {
 			Class<?> elementClass = (Class<?>) ((ParameterizedType) f.getGenericType()).getActualTypeArguments()[0];
-			return convertTable(elementClass, (Collection<?>) bean, e, editMode);
+			return convertTable(elementClass, variable, editMode, ej);
 		} else if (boolClass(c)) {
-			return convertCheckboxField((Boolean) bean, e, editMode, f.getName());
+			return convertCheckboxField(variable, editMode);
 		} else if (Author.class.isAssignableFrom(c)) {
-			return convertAuthor((Author) bean, e, editMode, f.getName());			
+			return convertAuthor(variable, editMode);			
 		} else if (User.class.isAssignableFrom(c)) {
-			return convertUser((User) bean, e, editMode, f.getName());
+			return convertUser(variable, editMode);
 		} else if (ID.class.isAssignableFrom(c)) {
-			return convertID((ID) bean, e, editMode, f.getName());
-		} else if (Tag.class.isAssignableFrom(c)) {
-			return convertTag((Tag) bean, e, editMode, f.getName());
+			return convertID(variable, editMode);
+		} else if (CashTag.class.isAssignableFrom(c)) {
+			return convertCashTag(variable, editMode);
+		} else if (HashTag.class.isAssignableFrom(c)) {
+			return convertHashTag(variable, editMode);
 		} else if (Instant.class.isAssignableFrom(c)) {
-			return convertTextField(bean.toString(), e, editMode, f.getName());
+			return convertTextField(variable, editMode);
 		} else if (c.isEnum()) {
-			return convertEnum((Enum<?>) bean, e, c, editMode, f.getName());
+			return convertEnum(variable, c, editMode);
 		} else if (Room.class.isAssignableFrom(c)) {
-			return convertRoom((Room) bean, e, c, editMode, f.getName());
+			return convertRoom(variable, c, editMode, ej);
 		} else {
-			return convertInner(c, bean, editMode, e);
+			return convertInner(c, editMode, variable, ej);
 		}
 	};
 
@@ -167,58 +225,80 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		return Number.class.isAssignableFrom(c);
 	}
 
-	private String convertRoom(Room r, Errors e, Class<?> c, boolean editMode, String name) {
+	private String convertRoom(Variable v, Class<?> c, boolean editMode, EntityJson ej) {
+		ej.putIfAbsent("room", ru.getAllRooms());
+		
 		if (editMode) {
-			return renderDropdown(r, e, ru.getAllRooms(), name, (o) -> o.getId(), (o) -> o.getRoomName());
-		} else if (r != null){
-			return r.getRoomName();
+			StringBuilder out = new StringBuilder();
+			out.append(indent(v.depth) + "<select "+ attribute(v, "name", v.getFormFieldName()));
+			out.append(attribute(v, "required", "false"));
+			out.append(attribute(v, "data-placeholder", "Choose "+v.getDisplayName()));
+			out.append(">");
+			out.append(indent(v.depth) + "<#list entity['rooms'] as r>");
+			out.append(indent(v.depth) + "<option ");
+			out.append(attribute(v, "value", "hi"));
+			out.append(attributeParam(v, "selected", "bingo"));
+			out.append(indent(v.depth) + ">");
+			out.append("</option>");
+			out.append("</select>");
+			return out.toString();
 		} else {
-			return "";
+			return convertTextField(v, editMode);
 		}
 	}
 
-	/**
-	 * This converts tags that aren't users.  So, hashtags and cashtags only.
-	 * For these tags, the id and the name are the same thing, so we only need to 
-	 * worry about one of those
-	 */
-	private String convertTag(Tag bean, Errors e, boolean editMode, String name) {
+
+	protected String convertHashTag(Variable variable, boolean editMode) {
 		if (editMode) {
-			return convertTextField(bean.getText(), e, editMode, "$cashtag or $hashtag");
+			return convertTextField(variable, editMode);
 		} else {
-			return TagSupport.format(bean);
+			return indent(variable.depth)+"<hash "
+				+ attributeParam(variable, "tag", variable.getDataPath())
+				+ " />";
 		}
 	}
 	
-	private String convertID(ID id, Errors e, boolean editMode, String name) {
-		return TagSupport.format(id);
-	}
-
-	private String convertEnum(Enum<?> n, Errors e, Class<?> c, boolean editMode, String name) {
+	protected String convertCashTag(Variable variable, boolean editMode) {
 		if (editMode) {
-			return renderDropdown(n, e, Arrays.asList(c.getEnumConstants()), name, (g) -> ((Enum<?>)g).name(), (g) -> g.toString());
-		} else if (n != null) {
-			return n.toString();
+			return convertTextField(variable, editMode);
+		} else {
+			return indent(variable.depth)+"<cash "
+				+ attributeParam(variable, "tag", variable.getDataPath())
+				+ " />";
+		}
+	}
+	
+	protected String convertID(Variable variable, boolean editMode) {
+		if (!editMode) {
+			return convertTextField(variable, false);
 		} else {
 			return "";
 		}
 	}
 
-	private <V> String renderDropdown(V selected, Errors e, Collection<V> options, String name, Function<V, String> keyFunction, Function<V, String> displayFunction) {
+	private String convertEnum(Variable variable, Class<?> c, boolean editMode) {
+		if (editMode) {
+			return renderDropdown(variable, 
+					Arrays.asList(c.getEnumConstants()), variable.getFormFieldName(), 
+					(g) -> ((Enum<?>)g).name(), 
+					(g) -> g.toString(),
+					(v, g) -> "((" + v.getDataPath()+"!'') == '"+g.toString()+"')?then('true', 'false')");
+		} else {
+			return convertTextField(variable, false);
+		}
+	}
+
+	private <V> String renderDropdown(Variable v, Collection<V> options, String name, Function<V, String> keyFunction, Function<V, String> displayFunction, BiFunction<Variable, V,String> selectedFunction) {
 		StringBuilder out = new StringBuilder();
-		out.append("<select "+ attribute("name", e.getNestedPath()));
-		out.append(attribute("required", "false"));
-		out.append(attribute("data-placeholder", "Choose "+name));
+		out.append("<select "+ attribute(v, "name", name));
+		out.append(attribute(v, "required", "false"));
+		out.append(attribute(v, "data-placeholder", "Choose "+v.getDisplayName()));
 		out.append(">");
-		
-		Object selectedKey = selected == null ? null : keyFunction.apply(selected);
-		
+				
 		for (V o : options) {
-			out.append("<option ");
-			out.append(attribute("value", keyFunction.apply(o)));
-			if (keyFunction.apply(o).equals(selectedKey)) {
-				out.append(attribute("selected", "true"));
-			}
+			out.append(indent(v.depth)+ "<option ");
+			out.append(attribute(v, "value", keyFunction.apply(o)));
+			out.append(attributeParam(v, "selected", selectedFunction.apply(v, o)));
 			out.append(">");
 			out.append(displayFunction.apply(o));
 			out.append("</option>");
@@ -228,17 +308,17 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		return out.toString();
 	}
 
-	private String convertInner(Class<?> c, Object o, boolean editMode, Errors e) {
+	private String convertInner(Class<?> c, boolean editMode, Variable variable, EntityJson ej) {
 		StringBuilder sb = new StringBuilder();
-		if (o instanceof String) {
-			sb.append(o.toString());
+		if (String.class.isAssignableFrom(c)) {
+			sb.append("${"+variable+"}");
 		} else {
 			// convert to an object form
 			sb.append("<table>");
 			if (editMode) {
-				sb.append(withFields(c, o, formField, true, e));
+				sb.append(withFields(c, formField, true, variable, ej));
 			} else {
-				sb.append(withFields(c, o, formDisplay, false, e));
+				sb.append(withFields(c, formDisplay, false, variable, ej));
 			}
 			sb.append("</table>");
 		}
@@ -250,168 +330,158 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		return (Boolean.class.isAssignableFrom(c)) || (boolean.class.isAssignableFrom(c));
 	}
 
-	private WithField formDisplay = (beanClass, bean, f, editMode, e) -> {
-		return "<tr><td><b>" + f.getName() + ":</b></td><td>" + formField.apply(beanClass, bean, f, editMode, e) + "</td></tr>";
+	private WithField formDisplay = (beanClass, f, editMode, variable, ej) -> {
+		return "<tr><td><b>" + f.getName() + ":</b></td><td>" + formField.apply(beanClass, f, editMode, variable, ej) + "</td></tr>";
 	};
 
-	private WithField tableDisplay = (beanClass, bean, f, editMode, e) -> {
+	private WithField tableDisplay = (beanClass, f, editMode, variable, ej) -> {
 		String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
-		return "<td " + align + ">" + formField.apply(beanClass, bean, f, editMode, e) + "</td>";
+		return  indent(variable.depth) + "<td " + align + ">" + formField.apply(beanClass, f, editMode, variable, ej) + "</td>";
 	};
 
-	private WithField tableColumnNames = (beanClass, bean, f, editMode, e) -> {
+	private WithField tableColumnNames = (beanClass, f, editMode, variable, ej) -> {
 		String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
-		return "<td " + align + "><b>" + f.getName() + "</b></td>";
+		return indent(variable.depth+1) + "<td " + align + "><b>" + f.getName() + "</b></td>";
 	};
 
-	private String withFields(Class<?> c, Object bean, WithField action, boolean editMode, Errors e) {
+	private String withFields(Class<?> c, WithField action, boolean editMode, Variable variable, EntityJson ej) {
 		StringBuilder out = new StringBuilder();
 		if ((c != Object.class) && (c!=null)) {
-			out.append(withFields(c.getSuperclass(), bean, action, editMode, e));
+			out.append(withFields(c.getSuperclass(), action, editMode, variable, ej));
 
 			for (Field f : c.getDeclaredFields()) {
 				if (!Modifier.isStatic(f.getModifiers())) {
-					f.setAccessible(true);
-					e.pushNestedPath(f.getName());
-					Object value;
-					try {
-						value = bean != null ? f.get(bean) : null;
-					} catch (Exception e1) {
-						throw new UnsupportedOperationException(
-								"Couldn't get value of field " + f.getName() + " on object " + bean);
-					}
-					String text = action.apply(c, value, f, editMode, e);
+					String text = action.apply(c, f, editMode, variable.field(f.getName()), ej);
 					out.append(text);
-					e.popNestedPath();
 				}
 			}
 		}
 
 		return out.toString();
 	}
+	
+	private String beginIterator(Variable variable, Variable reg) {
+		return indent(variable.depth) + "<#list "+variable.getDataPath()+" as "+reg.getDataPath()+">";
+	}
+	
+	private String endIterator(Variable variable) {
+		return indent(variable.depth) + "</#list>";
+	}
 
-	private String convertTable(Class<?> elementClass, Collection<?> collection, Errors e, boolean editMode) {
+	private String convertTable(Class<?> elementClass, Variable variable, boolean editMode, EntityJson ej) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(ErrorHelp.errors(e));
-		sb.append("<table><thead><tr>");
-		sb.append(withFields(elementClass, null, tableColumnNames, editMode, e));
+		sb.append(formatErrorsAndIndent(variable));
+		sb.append(indent(variable.depth) + "<table><thead><tr>");
+		sb.append(withFields(elementClass, tableColumnNames, editMode, variable, ej));
 		if (editMode) {
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + e.getNestedPath() + TableDeleteRows.ACTION_SUFFIX
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + TableDeleteRows.ACTION_SUFFIX
 					+ "\">Delete</button></td>");
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + e.getNestedPath() + TableAddRow.ACTION_SUFFIX
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + TableAddRow.ACTION_SUFFIX
 					+ "\">New</button></td>");
 		}
-		sb.append("</tr></thead><tbody>");
-		int i = 0;
+		sb.append(indent(variable.depth) + "</tr></thead><tbody>");
+		
+		Variable subVar = variable.index();
 
-		if (collection != null) {
-			for (Object o : collection) {
-				sb.append("<tr>");
-				e.pushNestedPath("[" + i + "]");
-				sb.append(withFields(elementClass, o, tableDisplay, false, e));
-				if (editMode) {
-					sb.append("<td " + CENTER_ALIGN + "><checkbox name=\"" + e.getNestedPath()
-							+ TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
-					sb.append("<td " + CENTER_ALIGN + "><button name=\"" + e.getNestedPath() + TableEditRow.EDIT_SUFFIX
-							+ "\">Edit</button></td>");
-				}
-				e.popNestedPath();
-				sb.append("</tr>");
-				i++;
-			}
+		sb.append(beginIterator(variable, subVar));
+		sb.append(indent(subVar.depth) + "<tr>");
+		sb.append(withFields(elementClass, tableDisplay, false, subVar, ej));
+		if (editMode) {
+			sb.append("<td " + CENTER_ALIGN + "><checkbox name=\"" + subVar.getDataPath() + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + subVar.getDataPath() + TableEditRow.EDIT_SUFFIX + "\">Edit</button></td>");
 		}
-
-		sb.append("</tbody></table>");
+		sb.append("</tr>");
+		sb.append(endIterator(variable));
+		sb.append(indent(variable.depth) + "</tbody></table>");
 		return sb.toString();
 	}
 
-	private String convertNumberField(Number n, Errors e, boolean editMode, String placeholder) {
+	private String convertNumberField(Variable variable, boolean editMode) {
 		if (editMode) {
-			return ErrorHelp.errors(e) + "<text-field " + attribute("name", e.getNestedPath())
-					+ attribute("placeholder", placeholder) +
+			return formatErrorsAndIndent(variable) + "<text-field " 
+					+ attribute(variable, "name", variable.getFormFieldName())
+					+ attribute(variable, "placeholder", variable.getDisplayName())
 					/*
 					 * attribute("required", required)+ attribute("masked", masked)+
 					 * attribute("maxlength", maxLength)+ attribute("minlength", minLength)+
 					 */
-					">" + text(n == null ? "" : n.toString()) + "</text-field>";
-		} else if (n != null) {
-			return n.toString();
+					+ ">" 
+					+ text(variable, "") 
+					+ "</text-field>";
 		} else {
-			return "";
+			return text(variable, "");
 		}
 	}
 
-	private String convertUser(User bean, Errors e, boolean editMode, String name) {
+	private String convertUser(Variable variable, boolean editMode) {
 		if (editMode) {
-			return ErrorHelp.errors(e) + "<person-selector " 
-					+ attribute("name", e.getNestedPath()) +
-				 "placeholder=\""+name+"\" required=\"false\"/>";
-		} else if (bean == null) {
-			return "-- no user --";
+			return formatErrorsAndIndent(variable) 
+					+ "<person-selector " 
+					+ attribute(variable, "name", variable.getFormFieldName())
+					+ attribute(variable, "placeholder", variable.getDisplayName())
+					+" required=\"false\"/>";
 		} else {
-			return TagSupport.format(bean);
+			return "<mention "
+					+ attributeParam(variable, "uid", text(variable.field("id"), ""))
+					+ " />";
 		}
 	}
 	
-	private String convertAuthor(Author bean, Errors e, boolean editMode, String name) {
+	private String convertAuthor(Variable variable, boolean editMode) {
 		if (editMode) {
 			return "";
-		} else if (bean == null) {
-			return "-- no user --";
 		} else {
-			return TagSupport.format(bean);
+			return convertUser(variable, editMode);
 		}
 	}
 
-	private String convertTextField(String value, Errors e, boolean editMode, String placeholder) {
+	private String convertTextField(Variable variable, boolean editMode) {
 		if (editMode) {
-			return ErrorHelp.errors(e) + "<text-field " + attribute("name", e.getNestedPath())
-					+ attribute("placeholder", placeholder) +
-					">" + text(value) + "</text-field>";
+			return formatErrorsAndIndent(variable)
+					+ "<text-field "
+					+ attribute(variable, "name", variable.getFormFieldName())
+					+ attribute(variable, "placeholder", variable.getDisplayName()) +
+					">" + text(variable, "") + "</text-field>";
 		} else {
-			return value;
+			return text(variable, "");
 		}
 	}
 
-	public String convertCheckboxField(Boolean value, Errors e, boolean editMode, String name) {
+	public String convertCheckboxField(Variable variable, boolean editMode) {
 		if (editMode) {
-			return ErrorHelp.errors(e) + "<checkbox " + attribute("name", e.getNestedPath())
-					+ attribute("checked", value) + attribute("value", "true") + ">" + text(name) + "</checkbox>";
+			return formatErrorsAndIndent(variable) + 
+					"<checkbox " 
+					+ attribute(variable, "name", variable.getFormFieldName())
+					+ attributeParam(variable, "checked", variable.getDataPath()+"?string('true', 'false')") 
+					+ attribute(variable, "value", "true") 
+					+ ">" 
+					+ variable.getDisplayName()
+					+ "</checkbox>";
 		} else {
-			return value ? "Y" : "N";
+			return text(variable, "?string(\"Y\", \"N\")");
 		}
 	}
 
-	public static String attribute(String name, String value) {
-		if (!StringUtils.isEmpty(value)) {
-			return name + "=\"" + HtmlUtils.htmlEscape(value) + "\" ";
-		} else {
-			return "";
-		}
+	private static String indent(int n) {
+		return "\n"+String.format("%"+n+"s", "");
+	}
+	
+	private String formatErrorsAndIndent(Variable variable) {
+		return indent(variable.depth) 
+				+ "<span class=\"tempo-text-color--red\">${entity['errors']['"+variable.getFormFieldName()+"']!''}</span>"
+				+ indent(variable.depth);
 	}
 
-	public static String attribute(String name, Boolean value) {
-		if (value != null) {
-			return name + "=\"" + value + "\" ";
-		} else {
-			return "";
-		}
+	public static String attributeParam(Variable v, String name, String value) {
+		return indent(v.depth+1) + name + "=\"${" + value + "}\"";
+	}
+	
+	public static String attribute(Variable v, String name, String value) {
+		return indent(v.depth+1) + name + "=\"" + value + "\"";
 	}
 
-	public static String attribute(String name, Integer value) {
-		if (value != null) {
-			return name + "=\"" + value + "\" ";
-		} else {
-			return "";
-		}
-	}
-
-	public static String text(String value) {
-		if (value != null) {
-			return HtmlUtils.htmlEscape(value);
-		} else {
-			return "";
-		}
+	public static String text(Variable variable, String suffix) {
+		return "${"+variable.getDataPath()+suffix+"}";
 	}
 
 	public static <T> BinaryOperator<T> throwingMerger() {
