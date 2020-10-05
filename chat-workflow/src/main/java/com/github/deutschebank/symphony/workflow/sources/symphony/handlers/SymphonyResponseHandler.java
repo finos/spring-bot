@@ -1,5 +1,8 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.handlers;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -90,11 +93,27 @@ public class SymphonyResponseHandler implements ResponseHandler {
 		return " <card accent=\"tempo-bg-color--blue\"><header><h3>" + dr.getName() +"</h3></header>" + 
 				"<body><p>"+
 				dr.getInstructions()+
-				TagSupport.toHashTag(dr.getWorkflow())+
-				TagSupport.toHashTag("symphony-workflow")+
-				TagSupport.classHashTags(dr.getData()) + 
+				getDataTags(dr) + 
 				"</p></body>" +
 				"  </card>";
+	}
+	
+	public String getDataTags(DataResponse d) {
+		if (d.getData() == null) {
+			return "";
+		}
+		Set<String> tags = d.getData().values().stream()
+			.filter(v -> v != null)
+			.flatMap(v -> TagSupport.classHashTags(v).stream())
+			.collect(Collectors.toSet());
+		
+		tags.add(TagSupport.toHashTag(d.getWorkflow()));
+		tags.add(TagSupport.toHashTag("symphony-workflow"));
+		
+		return "<ul>"+tags.stream()
+			.map(t -> "<li>"+t+"</li>")
+			.reduce((a, b) -> a.toString() + b.toString())
+			.orElse("") + "</ul>";
 	}
 	
 
