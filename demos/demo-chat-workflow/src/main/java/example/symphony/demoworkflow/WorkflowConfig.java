@@ -22,17 +22,8 @@ import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.UsersApi;
 
-import example.symphony.demoworkflow.expenses.Claim;
-import example.symphony.demoworkflow.poll.ChoiceForm;
 import example.symphony.demoworkflow.poll.Poll;
-import example.symphony.demoworkflow.poll.PollResponse;
-import example.symphony.demoworkflow.poll.PollResult;
-import example.symphony.demoworkflow.poll.Question;
-import example.symphony.demoworkflow.poll.bot.CreatePoll;
-import example.symphony.demoworkflow.poll.bot.CreatePollByTemplate;
-import example.symphony.demoworkflow.poll.bot.CreatePollResponse;
-import example.symphony.demoworkflow.poll.bot.DisposePollByTemplate;
-import example.symphony.demoworkflow.poll.bot.PollVote;
+import example.symphony.demoworkflow.todo.NewItemDetails;
 import example.symphony.demoworkflow.todo.ToDoItem;
 import example.symphony.demoworkflow.todo.ToDoList;
 
@@ -89,20 +80,21 @@ public class WorkflowConfig {
 	@Bean
 	public Workflow appWorkflow() {
 		MemberQueryClassBasedWorkflow wf = new MemberQueryClassBasedWorkflow(WorkflowConfig.class.getCanonicalName());
-		wf.addClass(Claim.class);
-//		wf.addClass(ToDoItem.class);
-//		wf.addClass(ToDoList.class);
-		wf.addClass(Poll.class);
+//		wf.addClass(Claim.class);
+		wf.addClass(ToDoItem.class);
+		wf.addClass(ToDoList.class);
+		wf.addClass(NewItemDetails.class);
+//		wf.addClass(Poll.class);
 //		wf.addClass(ChoiceForm.class);
 //		wf.addClass(PollResult.class);
 //		wf.addClass(PollResponse.class);
 //		wf.addClass(Question.class);
-		wf.addClass(CreatePoll.class);
-		wf.addClass(CreatePollResponse.class);
-		wf.addClass(example.symphony.demoworkflow.poll.bot.Poll.class);
-		wf.addClass(PollVote.class);
-		wf.addClass(CreatePollByTemplate.class);
-		wf.addClass(DisposePollByTemplate.class);
+//		wf.addClass(CreatePoll.class);
+//		wf.addClass(CreatePollResponse.class);
+//		wf.addClass(example.symphony.demoworkflow.poll.bot.Poll.class);
+//		wf.addClass(PollVote.class);
+//		wf.addClass(CreatePollByTemplate.class);
+//		wf.addClass(DisposePollByTemplate.class);
 		return wf;
 	}
 }
