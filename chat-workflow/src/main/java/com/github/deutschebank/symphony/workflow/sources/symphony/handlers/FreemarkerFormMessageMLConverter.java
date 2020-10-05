@@ -68,7 +68,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		int depth = 0;
 		
 		public Variable() {
-			this(0, "entity['formdata']");
+			this(0, "entity.formdata");
 		}
 		
 		private Variable(int depth, String var) {
@@ -175,7 +175,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		work.put("buttons", actions);
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append("\n  <p><#list entity['buttons']['contents'] as button>");
+		sb.append("\n  <p><#list entity.buttons.contents as button>");
 		sb.append("\n    <button ");
 		sb.append("\n         name=\"${button.name}\"");
 		sb.append("\n         type=\"${button.buttonType?lower_case}\">");
@@ -236,7 +236,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 			out.append(attribute(v, "required", "false"));
 			out.append(attribute(v, "data-placeholder", "Choose "+v.getDisplayName()));
 			out.append(">");
-			out.append(indent(v.depth) + "<#list entity['rooms'] as r>");
+			out.append(indent(v.depth) + "<#list entity.rooms as r>");
 			out.append(indent(v.depth) + "<option ");
 			out.append(attribute(v, "value", "hi"));
 			out.append(attributeParam(v, "selected", "bingo"));
@@ -254,9 +254,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		if (editMode) {
 			return convertTextField(variable, editMode);
 		} else {
-			return indent(variable.depth)+"<hash "
+			return indent(variable.depth)+"<#if " + variable.getDataPath() +"??><hash "
 				+ attributeParam(variable, "tag", variable.getDataPath()+".name!''")
-				+ " />";
+				+ " /></#if>";
 		}
 	}
 	
@@ -264,9 +264,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		if (editMode) {
 			return convertTextField(variable, editMode);
 		} else {
-			return indent(variable.depth)+"<cash "
+			return indent(variable.depth)+"<#if " + variable.getDataPath() +"??><cash "
 				+ attributeParam(variable, "tag", variable.getDataPath()+".name!''")
-				+ " />";
+				+ " /></#if>";
 		}
 	}
 	
@@ -274,9 +274,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		if (editMode) {
 			return "";
 		} else {
-			return indent(variable.depth)+"<hash "
+			return indent(variable.depth)+"<#if " + variable.getDataPath() +"??><hash "
 				+ attributeParam(variable, "tag", variable.getDataPath()+".name!''")
-				+ " />";
+				+ " /></#if>";
 		}
 	}
 
@@ -378,9 +378,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		sb.append(indent(variable.depth) + "<table><thead><tr>");
 		sb.append(withFields(elementClass, tableColumnNames, editMode, variable, ej));
 		if (editMode) {
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + "." + TableDeleteRows.ACTION_SUFFIX
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getFormFieldName() + "." + TableDeleteRows.ACTION_SUFFIX
 					+ "\">Delete</button></td>");
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + "." + TableAddRow.ACTION_SUFFIX
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getFormFieldName() + "." + TableAddRow.ACTION_SUFFIX
 					+ "\">New</button></td>");
 		}
 		sb.append(indent(variable.depth) + "</tr></thead><tbody>");
@@ -391,8 +391,8 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		sb.append(indent(subVar.depth) + "<tr>");
 		sb.append(withFields(elementClass, tableDisplay, false, subVar, ej));
 		if (editMode) {
-			sb.append("<td " + CENTER_ALIGN + "><checkbox name=\"${" + subVar.getDataPath() + "?index}." + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"${" + subVar.getDataPath() + "?index}." + TableEditRow.EDIT_SUFFIX + "\">Edit</button></td>");
+			sb.append("<td " + CENTER_ALIGN + "><checkbox name=\""+ variable.getFormFieldName() + ".${" + subVar.getDataPath() + "?index}." + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getFormFieldName() + "[${" + subVar.getDataPath() + "?index}]." + TableEditRow.EDIT_SUFFIX + "\">Edit</button></td>");
 		}
 		sb.append("</tr>");
 		sb.append(endIterator(variable));
@@ -425,9 +425,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 					+ attribute(variable, "placeholder", variable.getDisplayName())
 					+" required=\"false\"/>";
 		} else {
-			return "<mention "
-					+ attributeParam(variable, "uid", variable.field("id").getDataPath() + "!''")
-					+ " />";
+			return "<#if " + variable.getDataPath() +"??><mention "
+					+ attributeParam(variable, "uid", variable.field("id").getDataPath())
+					+ " /></#if>";
 		}
 	}
 	
@@ -472,7 +472,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	
 	private String formatErrorsAndIndent(Variable variable) {
 		return indent(variable.depth) 
-				+ "<span class=\"tempo-text-color--red\">${entity['errors']['"+variable.getFormFieldName()+"']!''}</span>"
+				+ "<span class=\"tempo-text-color--red\">${entity.errors['"+variable.getFormFieldName()+"']!''}</span>"
 				+ indent(variable.depth);
 	}
 
