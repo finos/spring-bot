@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.springframework.validation.Errors;
-
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -21,6 +18,8 @@ import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.ButtonList;
+import com.github.deutschebank.symphony.workflow.form.ErrorMap;
+import com.github.deutschebank.symphony.workflow.form.RoomList;
 
 /**
  * Converts workflow objects to/from JSON.
@@ -50,6 +49,9 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 		extendedClassSpace.add(Room.class);
 		extendedClassSpace.add(Button.class);
 		extendedClassSpace.add(ButtonList.class);
+		extendedClassSpace.add(RoomList.class);
+		extendedClassSpace.add(ErrorMap.class);
+		
 		extendedClassSpace.addAll(wf.getDataTypes());
 		VersionSpace[] vs = extendedClassSpace.stream().map(c -> new VersionSpace(c.getCanonicalName(), "1.0")).toArray(s -> new VersionSpace[s]);
 		om = ObjectMapperFactory.initialize(objectMapper, ObjectMapperFactory.extendedSymphonyVersionSpace(vs));		

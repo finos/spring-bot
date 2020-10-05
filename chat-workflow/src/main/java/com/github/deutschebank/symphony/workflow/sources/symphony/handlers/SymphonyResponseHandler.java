@@ -80,7 +80,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 		String json = jsonConverter.writeValue(t.getData());
 		String streamId = ru.getStreamFor(t.getAddress());
 		if (isOutputTemplates()) {
-			LOG.info("JSON: \n", json);
+			LOG.info("JSON: \n"+ json);
 			LOG.info("TEMPLATE: \n"+ outMessage);
 		}
 		messagesApi.v4StreamSidMessageCreatePost(null, streamId, outMessage, json, null, attachment, null, null);
