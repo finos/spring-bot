@@ -378,9 +378,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		sb.append(indent(variable.depth) + "<table><thead><tr>");
 		sb.append(withFields(elementClass, tableColumnNames, editMode, variable, ej));
 		if (editMode) {
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + TableDeleteRows.ACTION_SUFFIX
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + "." + TableDeleteRows.ACTION_SUFFIX
 					+ "\">Delete</button></td>");
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + TableAddRow.ACTION_SUFFIX
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + variable.getDataPath() + "." + TableAddRow.ACTION_SUFFIX
 					+ "\">New</button></td>");
 		}
 		sb.append(indent(variable.depth) + "</tr></thead><tbody>");
@@ -391,8 +391,8 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		sb.append(indent(subVar.depth) + "<tr>");
 		sb.append(withFields(elementClass, tableDisplay, false, subVar, ej));
 		if (editMode) {
-			sb.append("<td " + CENTER_ALIGN + "><checkbox name=\"" + subVar.getDataPath() + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
-			sb.append("<td " + CENTER_ALIGN + "><button name=\"" + subVar.getDataPath() + TableEditRow.EDIT_SUFFIX + "\">Edit</button></td>");
+			sb.append("<td " + CENTER_ALIGN + "><checkbox name=\"${" + subVar.getDataPath() + "?index}." + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
+			sb.append("<td " + CENTER_ALIGN + "><button name=\"${" + subVar.getDataPath() + "?index}." + TableEditRow.EDIT_SUFFIX + "\">Edit</button></td>");
 		}
 		sb.append("</tr>");
 		sb.append(endIterator(variable));
@@ -426,7 +426,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 					+" required=\"false\"/>";
 		} else {
 			return "<mention "
-					+ attributeParam(variable, "uid", text(variable.field("id"), "!''"))
+					+ attributeParam(variable, "uid", variable.field("id").getDataPath() + "!''")
 					+ " />";
 		}
 	}

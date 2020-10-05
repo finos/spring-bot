@@ -26,7 +26,7 @@ public class TableEditRow  extends AbstractElementsConsumer {
 	public static final String UPDATE_SUFFIX = "table-update";
 
 	public static String fixSpel(String in) {
-		return in.replace(".[", "[");
+		return in.replace("entity['formdata'].", "").replace(".[", "[");
 	}
 	
 	@Override
