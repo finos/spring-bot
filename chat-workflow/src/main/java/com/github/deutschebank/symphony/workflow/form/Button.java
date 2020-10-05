@@ -5,7 +5,7 @@ public class Button {
 	public enum Type { ACTION, RESET };
 
 	private String name;
-	private Type type;
+	private Type buttonType;
 	private String text;
 	
 	public Button() {
@@ -14,7 +14,7 @@ public class Button {
 	public Button(String name, Type type, String text) {
 		super();
 		this.name = name;
-		this.type = type;
+		this.buttonType = type;
 		this.text = text;
 	}
 
@@ -26,12 +26,12 @@ public class Button {
 		this.name = name;
 	}
 
-	public Type getType() {
-		return type;
+	public Type getButtonType() {
+		return buttonType;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setButtonType(Type type) {
+		this.buttonType = type;
 	}
 
 	public String getText() {

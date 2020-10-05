@@ -8,6 +8,7 @@ import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
@@ -20,7 +21,6 @@ import org.springframework.util.StreamUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.CashTag;
@@ -29,6 +29,8 @@ import com.github.deutschebank.symphony.workflow.content.ID;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.form.ButtonList;
+import com.github.deutschebank.symphony.workflow.form.ErrorMap;
+import com.github.deutschebank.symphony.workflow.form.RoomList;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableAddRow;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableDeleteRows;
@@ -85,7 +87,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		}
 		
 		public Variable index() {
-			return new Variable(parent.depth + 1, "i"+parent.depth);
+			return new Variable(parent.depth + 1, "i"+Character.toString((char) (65 + parent.depth)));
 		}
 		
 		public String getDisplayName() {
@@ -163,10 +165,10 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		return sb.toString();
 	}
 
-	private Map<String, String> convertErrorsToMap(Errors e) {
-		return e.getAllErrors().stream()
+	private ErrorMap convertErrorsToMap(Errors e) {
+		return e == null ? new ErrorMap() : new ErrorMap(e.getAllErrors().stream()
 			.map(err -> (FieldError) err)
-			.collect(Collectors.toMap(fe -> fe.getField(), fe -> fe.getDefaultMessage()));
+			.collect(Collectors.toMap(fe -> fe.getField(), fe -> fe.getDefaultMessage())));
 	}
 
 	private String handleButtons(ButtonList actions, EntityJson work) {
@@ -176,7 +178,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		sb.append("\n  <p><#list entity['buttons']['contents'] as button>");
 		sb.append("\n    <button ");
 		sb.append("\n         name=\"${button.name}\"");
-		sb.append("\n         type=\"${button.type?lower_case}\">");
+		sb.append("\n         type=\"${button.buttonType?lower_case}\">");
 		sb.append("\n      ${button.text}");
 		sb.append("\n    </button>");
 		sb.append("\n  </#list></p>");
@@ -226,7 +228,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	}
 
 	private String convertRoom(Variable v, Class<?> c, boolean editMode, EntityJson ej) {
-		ej.putIfAbsent("room", ru.getAllRooms());
+		ej.putIfAbsent("room", new RoomList(ru.getAllRooms()));
 		
 		if (editMode) {
 			StringBuilder out = new StringBuilder();
@@ -253,7 +255,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 			return convertTextField(variable, editMode);
 		} else {
 			return indent(variable.depth)+"<hash "
-				+ attributeParam(variable, "tag", variable.getDataPath())
+				+ attributeParam(variable, "tag", variable.getDataPath()+".name!''")
 				+ " />";
 		}
 	}
@@ -263,16 +265,18 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 			return convertTextField(variable, editMode);
 		} else {
 			return indent(variable.depth)+"<cash "
-				+ attributeParam(variable, "tag", variable.getDataPath())
+				+ attributeParam(variable, "tag", variable.getDataPath()+".name!''")
 				+ " />";
 		}
 	}
 	
 	protected String convertID(Variable variable, boolean editMode) {
-		if (!editMode) {
-			return convertTextField(variable, false);
-		} else {
+		if (editMode) {
 			return "";
+		} else {
+			return indent(variable.depth)+"<hash "
+				+ attributeParam(variable, "tag", variable.getDataPath()+".name!''")
+				+ " />";
 		}
 	}
 
@@ -406,10 +410,10 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 					 * attribute("maxlength", maxLength)+ attribute("minlength", minLength)+
 					 */
 					+ ">" 
-					+ text(variable, "") 
+					+ text(variable, "!''") 
 					+ "</text-field>";
 		} else {
-			return text(variable, "");
+			return text(variable, "!''");
 		}
 	}
 
@@ -422,7 +426,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 					+" required=\"false\"/>";
 		} else {
 			return "<mention "
-					+ attributeParam(variable, "uid", text(variable.field("id"), ""))
+					+ attributeParam(variable, "uid", text(variable.field("id"), "!''"))
 					+ " />";
 		}
 	}
@@ -441,9 +445,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 					+ "<text-field "
 					+ attribute(variable, "name", variable.getFormFieldName())
 					+ attribute(variable, "placeholder", variable.getDisplayName()) +
-					">" + text(variable, "") + "</text-field>";
+					">" + text(variable, "!''") + "</text-field>";
 		} else {
-			return text(variable, "");
+			return text(variable, "!''");
 		}
 	}
 
