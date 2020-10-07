@@ -7,23 +7,19 @@ import com.github.deutschebank.symphony.workflow.content.ID;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
-import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 
 @Work
-@Template(view = "classpath:/template/question.ftl")
 public class Question {
 
 	public String question;
 	public List<String> options;
 	public ID id;
-	public User poller;
 
-	public Question(String question, List<String> options, ID id, User poller) {
+	public Question(String question, List<String> options, ID id) {
 		super();
 		this.question = question;
 		this.options = options;
 		this.id = id;
-		this.poller = poller;
 	}
 
 	public Question() {
@@ -54,45 +50,37 @@ public class Question {
 		this.id = id;
 	}
 
-	@Exposed(addToHelp = false)
-	public Answer poll0(User u) {
+	@Exposed
+	public PollResponse poll0(User u) {
 		return chooseResponse(u, 0);
 	}
 
-	private Answer chooseResponse(User u, int r) {
-		return new Answer(id, u, Instant.now(), r, question, options.get(r));
+	private PollResponse chooseResponse(User u, int r) {
+		return new PollResponse(id, u, Instant.now(), r, options.get(r));
 	}
 
-	@Exposed(addToHelp = false)
-	public Answer poll1(User u) {
+	@Exposed
+	public PollResponse poll1(User u) {
 		return chooseResponse(u, 1);
 	}
 
-	@Exposed(addToHelp = false)
-	public Answer poll2(User u) {
+	@Exposed
+	public PollResponse poll2(User u) {
 		return chooseResponse(u, 2);
 	}
 
-	@Exposed(addToHelp = false)
-	public Answer poll3(User u) {
+	@Exposed
+	public PollResponse poll3(User u) {
 		return chooseResponse(u, 3);
 	}
 
-	@Exposed(addToHelp = false)
-	public Answer poll4(User u) {
+	@Exposed
+	public PollResponse poll4(User u) {
 		return chooseResponse(u, 4);
 	}
 
-	@Exposed(addToHelp = false)
-	public Answer poll5(User u) {
+	@Exposed
+	public PollResponse poll5(User u) {
 		return chooseResponse(u, 5);
-	}
-
-	public User getPoller() {
-		return poller;
-	}
-
-	public void setPoller(User poller) {
-		this.poller = poller;
 	}
 }

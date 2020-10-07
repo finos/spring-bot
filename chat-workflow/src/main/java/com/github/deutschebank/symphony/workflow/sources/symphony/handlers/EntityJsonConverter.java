@@ -26,7 +26,7 @@ import com.github.deutschebank.symphony.workflow.form.RoomList;
  */
 public class EntityJsonConverter extends AbstractNeedsWorkflow {
 
-	private static final String WORKFLOW_001 = "workflow_001";
+	public static final String WORKFLOW_001 = "workflow_001";
 
 	ObjectMapper om;
 	

@@ -96,9 +96,9 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 		
 		for (Method m : c.getDeclaredMethods()) {
 			if (m.getAnnotation(Exposed.class) != null) {
-				if (!checkParameters(m)) {
-					throw new UnsupportedOperationException("Methods annotated with @Exposed must have 1 or 0 parameters (excluding room, workflow, user etc): "+m.getClass()+"::"+m.getName());
-				}
+//				if (!checkParameters(m)) {
+//					throw new UnsupportedOperationException("Methods annotated with @Exposed must have 1 or 0 parameters (excluding room, workflow, user etc): "+m.getClass()+"::"+m.getName());
+//				}
 				
 				if (validCommandInAddressable(m, a)) {
 					out.add(m);
@@ -120,6 +120,11 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	 * If we want a button to represent a method, then it can only have workflow classes as parameters.
 	 */
 	private boolean canBeButton(Method m) {
+		Exposed e = m.getAnnotation(Exposed.class);
+		if (e.addToHelp() == false) {
+			return false;
+		}
+		
 		return Arrays.stream(m.getParameters())
 				.filter(p -> !isWorkflowParameter(p))
 				.filter(p -> p.getType().getAnnotation(Work.class)==null)
@@ -130,6 +135,11 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	 * If we want to type text to call a method, then the arguments must be {@link Content} subclasses.
 	 */
 	private boolean canBeText(Method m) {
+		Exposed e = m.getAnnotation(Exposed.class);
+		if (e.addToHelp() == false) {
+			return false;
+		}
+		
 		return Arrays.stream(m.getParameters())
 				.filter(p -> !isWorkflowParameter(p))
 				.filter(p -> !(Content.class.isAssignableFrom(p.getType())))
