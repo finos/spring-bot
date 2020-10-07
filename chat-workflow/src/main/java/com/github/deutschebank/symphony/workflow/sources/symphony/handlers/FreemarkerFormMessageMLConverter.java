@@ -67,8 +67,8 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		Variable parent = null;
 		int depth = 0;
 		
-		public Variable() {
-			this(0, "entity.formdata");
+		public Variable(String name) {
+			this(0, name);
 		}
 		
 		private Variable(int depth, String var) {
@@ -110,10 +110,19 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 
 	@Override
 	public String convert(Class<?> c, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work) {
+		Variable v;
 		
 		// ensure o is in the work object
-		work.putIfAbsent("formdata", o);
+		if (editMode) {
+			work.putIfAbsent("formdata", o);
+			v = new Variable("entity.formdata");
+		} else {
+			work.putIfAbsent(EntityJsonConverter.WORKFLOW_001, o);
+			v = new Variable("entity."+EntityJsonConverter.WORKFLOW_001);
+		}
+		
 		work.putIfAbsent("errors", convertErrorsToMap(e));
+		work.putIfAbsent("buttons", actions);
 		
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
@@ -132,7 +141,6 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		
 		
 		StringBuilder sb = new StringBuilder();
-		Variable v = new Variable();
 		sb.append("\n<#-- starting template -->");
 		Mode m = editMode ? Mode.FORM : ((actions.size() > 0) ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 		if (o instanceof String) {
@@ -172,8 +180,6 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	}
 
 	private String handleButtons(ButtonList actions, EntityJson work) {
-		work.put("buttons", actions);
-		
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n  <p><#list entity.buttons.contents as button>");
 		sb.append("\n    <button ");

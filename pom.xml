@@ -24,7 +24,9 @@
 		<module>chat-workflow</module>
     <module>demos/demo-bot</module>
     <module>demos/demo-app</module>
-    <module>demos/demo-chat-workflow</module>
+    <module>demos/poll-bot</module>
+    <module>demos/todo-bot</module>
+    <module>demos/claim-bot</module>
 	</modules>
 
 	<properties>

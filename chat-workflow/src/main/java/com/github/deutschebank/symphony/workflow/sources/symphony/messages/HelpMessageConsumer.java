@@ -2,6 +2,7 @@ package com.github.deutschebank.symphony.workflow.sources.symphony.messages;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.Workflow.CommandDescription;
@@ -23,7 +24,9 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 			.filter(w -> w.getIdentifier().equals("help"))
 			.map(w -> {
 				
-				List<Workflow.CommandDescription> commands = sma.getWorkflow().getCommands(sma.getAddressable());
+				List<Workflow.CommandDescription> commands = sma.getWorkflow().getCommands(sma.getAddressable()).stream()
+					.filter(c -> c.isShowButton() || c.isShowText())
+					.collect(Collectors.toList());
 				String descriptions = renderDescriptions(commands);
 						
 				

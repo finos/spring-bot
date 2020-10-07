@@ -10,4 +10,6 @@ public @interface Exposed {
 	
 	String[] rooms() default {};
 	
+	boolean addToHelp() default true;
+	
 }
