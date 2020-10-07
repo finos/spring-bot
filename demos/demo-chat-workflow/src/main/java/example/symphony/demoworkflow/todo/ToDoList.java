@@ -50,7 +50,30 @@ public class ToDoList {
 	public static ToDoList init() {
 		return new ToDoList();
 	}
+	
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+	private void reNumber() {
+		int initial = 1;
+		for (ToDoItem toDoItem : items) {
+			toDoItem.setNumber(initial++);
+		}
+	}
+	
+	
 	@Exposed(description = "Add an item")
 	public ToDoList add(NewItemDetails a, User u) {
 		this.items.add(new ToDoItem(a.getDescription(), u, a.getAssignTo(), Status.OPEN));
@@ -58,6 +81,13 @@ public class ToDoList {
 		return this;
 	}
 
+	
+	
+	
+	
+	
+	
+/*	
 	@Exposed(description = "Show current list of items")
 	public ToDoList show(Workflow wf) {
 		reNumber();
@@ -111,36 +141,7 @@ public class ToDoList {
 		return this;
 	}
 
-	private void reNumber() {
-		int initial = 1;
-		for (ToDoItem toDoItem : items) {
-			toDoItem.setNumber(initial++);
-		}
-	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((items == null) ? 0 : items.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		ToDoList other = (ToDoList) obj;
-		if (items == null) {
-			if (other.items != null)
-				return false;
-		} else if (!items.equals(other.items))
-			return false;
-		return true;
-	}
 	
 }
+*/
