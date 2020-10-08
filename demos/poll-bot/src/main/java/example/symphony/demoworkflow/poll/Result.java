@@ -7,7 +7,7 @@ import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.java.Work;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 
-@Work(editable = false)
+@Work(editable = false, name = "The Results Are In!")
 @Template(view="classpath:/template/result.ftl")
 public class Result {
 
