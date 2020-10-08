@@ -1,15 +1,14 @@
 package example.symphony.demoworkflow.poll;
 
+import java.time.temporal.ChronoUnit;
+
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.github.deutschebank.symphony.workflow.java.Work;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 
 @Work(name = "Poll Setup", editable = true)
-@JsonIgnoreProperties(ignoreUnknown = true)
 @Template(edit="classpath:/template/poll-create-form.ftl")
 public class PollCreateForm {
 
@@ -19,13 +18,8 @@ public class PollCreateForm {
 
 	public String question;
 
-	@NotNull
 	public String option1;
-	
-	@NotNull
 	public String option2;
-	
-	
 	public String option3;
 	public String option4;
 	public String option5;
@@ -33,9 +27,10 @@ public class PollCreateForm {
 
 	@Min(0)
 	@Max(60)
-	private Integer time = 5;
-
-	private TimeUnit timeUnit = TimeUnit.MINUTES;
+	private Integer time = 15;
+	private ChronoUnit timeUnit = ChronoUnit.MINUTES;
+	
+	private boolean endAutomatically = true;
 
 	public String getQuestion() {
 		return question;
@@ -101,12 +96,20 @@ public class PollCreateForm {
 		this.time = time;
 	}
 
-	public TimeUnit getTimeUnit() {
+	public ChronoUnit getTimeUnit() {
 		return timeUnit;
 	}
 
-	public void setTimeUnit(TimeUnit timeUnit) {
+	public void setTimeUnit(ChronoUnit timeUnit) {
 		this.timeUnit = timeUnit;
+	}
+
+	public boolean isEndAutomatically() {
+		return endAutomatically;
+	}
+
+	public void setEndAutomatically(boolean endAutomatically) {
+		this.endAutomatically = endAutomatically;
 	}
 
 }

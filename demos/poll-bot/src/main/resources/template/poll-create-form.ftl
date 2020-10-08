@@ -1,5 +1,4 @@
-  
-<form 
+  <form 
  id="example.symphony.demoworkflow.poll.PollCreateForm">
  <span class="tempo-text-color--red">${entity.errors['question']!''}</span>
  <textarea 
@@ -46,6 +45,12 @@
   
  <div style='height:2px;background:#0098ff;margin-top:10px;margin-bottom:10px'> </div>
   <h6>Duration</h6>
+    
+    <checkbox 
+  name="endAutomatically"
+  checked="${entity.formdata.endAutomatically?string('true', 'false')}"
+  value="true">End automatically after ...</checkbox>
+    
  <text-field 
   name="time"
   placeholder="time">${entity.formdata.time!''}</text-field>
@@ -64,9 +69,7 @@
  <option 
   value="DAYS"
   selected="${((entity.formdata.timeUnit!'') == 'DAYS')?then('true', 'false')}">DAYS</option></select>
-  
- <p>Leave time blank for an open-ended poll</p>
-  
+    
   <div style='height:2px;background:#0098ff;margin-top:10px;margin-bottom:10px'> </div>
 
 
