@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.ws.rs.ext.RuntimeDelegate.HeaderDelegate;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -19,6 +21,7 @@ import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.form.ErrorMap;
+import com.github.deutschebank.symphony.workflow.form.HeaderDetails;
 import com.github.deutschebank.symphony.workflow.form.RoomList;
 
 /**
@@ -51,6 +54,7 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 		extendedClassSpace.add(ButtonList.class);
 		extendedClassSpace.add(RoomList.class);
 		extendedClassSpace.add(ErrorMap.class);
+		extendedClassSpace.add(HeaderDetails.class);
 		
 		extendedClassSpace.addAll(wf.getDataTypes());
 		VersionSpace[] vs = extendedClassSpace.stream().map(c -> new VersionSpace(c.getCanonicalName(), "1.0")).toArray(s -> new VersionSpace[s]);

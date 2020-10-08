@@ -1,12 +1,21 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.handlers;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.util.StreamUtils;
 
+import com.github.deutschebank.symphony.workflow.content.HashTag;
+import com.github.deutschebank.symphony.workflow.content.HashTagDef;
+import com.github.deutschebank.symphony.workflow.form.HeaderDetails;
 import com.github.deutschebank.symphony.workflow.response.AttachmentResponse;
 import com.github.deutschebank.symphony.workflow.response.DataResponse;
 import com.github.deutschebank.symphony.workflow.response.ErrorResponse;
@@ -36,7 +45,14 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	@Value("${symphony.chat-workflow.outputTemplates:true}")
 	private boolean outputTemplates;
 	
-	public SymphonyResponseHandler(MessagesApi api, FormMessageMLConverter fmc, EntityJsonConverter ejc, SymphonyRooms ru, AttachmentHandler ah) {
+	@Value("${symphony.chat-workflow.header.template:classpath:/templates/response-header.ftl}")
+	private Resource responseHeader;
+	
+	public SymphonyResponseHandler(MessagesApi api, 
+			FormMessageMLConverter fmc, 
+			EntityJsonConverter ejc, 
+			SymphonyRooms ru, 
+			AttachmentHandler ah) {
 		this.messagesApi = api;
 		this.formConverter = fmc;
 		this.jsonConverter = ejc;
@@ -89,31 +105,29 @@ public class SymphonyResponseHandler implements ResponseHandler {
 		messagesApi.v4StreamSidMessageCreatePost(null, streamId, outMessage, json, null, attachment, null, null);
 	}
 	
-	private String createWorkflowHeader(DataResponse dr) {
-		return " <card accent=\"tempo-bg-color--blue\"><header><h3>" + dr.getName() +"</h3></header>" + 
-				"<body><p>"+
-				dr.getInstructions()+
-				getDataTags(dr) + 
-				"</p></body>" +
-				"  </card>";
+	protected String createWorkflowHeader(DataResponse dr)  {
+		try {
+			HeaderDetails hd = new HeaderDetails(dr.getName(), dr.getInstructions(), getDataTags(dr));
+			dr.getData().putIfAbsent("header", hd);
+			return StreamUtils.copyToString(responseHeader.getInputStream(), Charset.forName("UTF-8"));
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't download / parse header template at "+responseHeader.getDescription(), e);
+		}
 	}
 	
-	public String getDataTags(DataResponse d) {
+	public Set<HashTag> getDataTags(DataResponse d) {
 		if (d.getData() == null) {
-			return "";
+			return Collections.emptySet();
 		}
-		Set<String> tags = d.getData().values().stream()
+		Set<HashTag> tags = d.getData().values().stream()
 			.filter(v -> v != null)
 			.flatMap(v -> TagSupport.classHashTags(v).stream())
 			.collect(Collectors.toSet());
 		
-		tags.add(TagSupport.toHashTag(d.getWorkflow()));
-		tags.add(TagSupport.toHashTag("symphony-workflow"));
+		tags.add(new HashTagDef(TagSupport.formatTag(d.getWorkflow().getNamespace())));
+		tags.add(new HashTagDef("symphony-workflow"));
 		
-		return "<ul>"+tags.stream()
-			.map(t -> "<li>"+t+"</li>")
-			.reduce((a, b) -> a.toString() + b.toString())
-			.orElse("") + "</ul>";
+		return tags;
 	}
 	
 
