@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestObjects;
@@ -40,7 +41,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void testHistoricMethodCall() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", null);
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", new EntityJson());
 		List<Response> r = cp.applyCommand("wrap", sma);
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
 		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL.getItems().get(1)));
@@ -50,7 +51,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void testStaticMethodCall() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "testObjects", null);
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "testObjects", new EntityJson());
 		List<Response> r = cp.applyCommand("testObjects", sma);
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
 		Assert.assertEquals(TestWorkflowConfig.INITIAL, ((FormResponse) r.get(0)).getFormObject());
@@ -59,7 +60,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void testParameterizedMethodCall() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "add", null);
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "add", new EntityJson());
 		List<Response> r = cp.applyCommand("add", sma);
 		
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
@@ -71,7 +72,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	@Test
 	public void testParameterizedMethodCallWithArgument() {
 		TestObject argument = new TestObject("dj", true, false, "me@rob.com", 23324323, 0);
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, argument,  "add", null);
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, argument,  "add", new EntityJson());
 
 		List<Response> r = cp.applyCommand("add", sma);
 		

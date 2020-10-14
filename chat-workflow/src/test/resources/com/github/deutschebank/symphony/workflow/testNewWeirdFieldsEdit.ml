@@ -14,12 +14,12 @@
  <option 
   value="C"
   selected="${((entity.formdata.c!'') == 'C')?then('true', 'false')}">C</option></select>
- <span class="tempo-text-color--red">${entity.errors['b']!''}</span>
+ <span class="tempo-text-color--red">${entity.errors.contents['b']!''}</span>
  <checkbox 
   name="b"
   checked="${entity.formdata.b?string('true', 'false')}"
   value="true">b</checkbox>
- <span class="tempo-text-color--red">${entity.errors['someUser']!''}</span>
+ <span class="tempo-text-color--red">${entity.errors.contents['someUser']!''}</span>
  <person-selector 
   name="someUser"
   placeholder="some user" required="false"/>

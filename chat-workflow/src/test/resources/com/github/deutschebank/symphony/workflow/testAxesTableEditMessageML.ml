@@ -2,7 +2,7 @@
 <#-- starting template -->
 <form 
  id="com.github.deutschebank.symphony.workflow.fixture.TestObjects">
- <span class="tempo-text-color--red">${entity.errors['items']!''}</span>
+ <span class="tempo-text-color--red">${entity.errors.contents['items']!''}</span>
  
  <table><thead><tr>
    <td ><b>isin</b></td>

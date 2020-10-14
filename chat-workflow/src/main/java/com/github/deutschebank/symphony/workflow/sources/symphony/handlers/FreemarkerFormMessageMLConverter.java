@@ -176,7 +176,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	private ErrorMap convertErrorsToMap(Errors e) {
 		return e == null ? new ErrorMap() : new ErrorMap(e.getAllErrors().stream()
 			.map(err -> (FieldError) err)
-			.collect(Collectors.toMap(fe -> fe.getField(), fe -> fe.getDefaultMessage())));
+			.collect(Collectors.toMap(fe -> fe.getField(), fe -> ""+fe.getDefaultMessage())));
 	}
 
 	private String handleButtons(ButtonList actions, EntityJson work) {
