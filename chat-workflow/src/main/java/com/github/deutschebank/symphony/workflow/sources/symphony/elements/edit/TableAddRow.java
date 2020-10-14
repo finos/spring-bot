@@ -52,7 +52,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 			} catch (Exception e1) {
 				throw new UnsupportedOperationException("Can't instantiate", e1);
 			}
-			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), workflowObject, "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
+			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 		} else if (verb.endsWith(DO_SUFFIX)) {
 			String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
 			tableLocation = TableEditRow.fixSpel(tableLocation);
@@ -62,7 +62,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 			listToUpdate.add(updated);
 			return Collections.singletonList(
 				new FormResponse(wf, ea.getAddressable(), 
-						workflowObject, 
+						ej, 
 						wf.getName(workflowObject.getClass()), 
 						wf.getInstructions(workflowObject.getClass()), 
 						workflowObject, false, 

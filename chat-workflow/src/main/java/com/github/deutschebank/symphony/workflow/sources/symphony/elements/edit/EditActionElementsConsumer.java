@@ -22,7 +22,7 @@ public class EditActionElementsConsumer extends AbstractElementsConsumer {
 		if (u.getAction().equals(ClassBasedWorkflow.WF_EDIT)) {
 			EntityJson ej = u.getData();
 			Object ob = ej.get(EntityJsonConverter.WORKFLOW_001);
-			return Collections.singletonList(new FormResponse(wf, u.getAddressable(), ob, 
+			return Collections.singletonList(new FormResponse(wf, u.getAddressable(), ej, 
 					"Edit "+wf.getName(ob.getClass()), 
 					wf.getInstructions(ob.getClass()), ob, true, 
 				ButtonList.of()));

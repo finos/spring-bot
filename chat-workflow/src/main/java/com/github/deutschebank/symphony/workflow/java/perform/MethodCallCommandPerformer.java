@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Action;
 import com.github.deutschebank.symphony.workflow.CommandPerformer;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
@@ -23,6 +24,7 @@ import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflo
 import com.github.deutschebank.symphony.workflow.response.ErrorResponse;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 
 /**
  * Implements command performer by using method calls on workflow classes.
@@ -88,7 +90,7 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 			} else {
 				// missing parameter
 				try {
-					return  Collections.singletonList(new FormResponse(wf, a,  null, "Enter "+
+					return  Collections.singletonList(new FormResponse(wf, a,  new EntityJson(), "Enter "+
 						wf.getName(cl), wf.getInstructions(cl), cl.newInstance(), true, 
 							ButtonList.of(new Button(commandName+"+0", Type.ACTION, m.getName()))));
 				} catch (Exception e) {
@@ -107,8 +109,9 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 			} else if (listOfResponses(m)) {
 				return (List<Response>) out;
 			} else {
+				EntityJson ej = EntityJsonConverter.newWorkflow(out);
 				return  Collections.singletonList(
-					new FormResponse(wf, a, out, 
+					new FormResponse(wf, a, ej, 
 						wf.getName(cc), 
 						wf.getInstructions(cc), out, false, wf.gatherButtons(out, a)));
 			}

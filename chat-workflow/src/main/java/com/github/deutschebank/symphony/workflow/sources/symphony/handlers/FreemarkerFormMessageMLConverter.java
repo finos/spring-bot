@@ -114,15 +114,15 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 		
 		// ensure o is in the work object
 		if (editMode) {
-			work.putIfAbsent("formdata", o);
+			work.put("formdata", o);
 			v = new Variable("entity.formdata");
 		} else {
-			work.putIfAbsent(EntityJsonConverter.WORKFLOW_001, o);
+			work.put(EntityJsonConverter.WORKFLOW_001, o);
 			v = new Variable("entity."+EntityJsonConverter.WORKFLOW_001);
 		}
 		
-		work.putIfAbsent("errors", convertErrorsToMap(e));
-		work.putIfAbsent("buttons", actions);
+		work.put("errors", convertErrorsToMap(e));
+		work.put("buttons", actions);
 		
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
@@ -478,7 +478,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 	
 	private String formatErrorsAndIndent(Variable variable) {
 		return indent(variable.depth) 
-				+ "<span class=\"tempo-text-color--red\">${entity.errors['"+variable.getFormFieldName()+"']!''}</span>"
+				+ "<span class=\"tempo-text-color--red\">${entity.errors.contents['"+variable.getFormFieldName()+"']!''}</span>"
 				+ indent(variable.depth);
 	}
 

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.Workflow.CommandDescription;
 import com.github.deutschebank.symphony.workflow.content.Content;
@@ -32,7 +33,7 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 				String descriptions = renderDescriptions(commands);
 						
 				
-				return Collections.singletonList((Response) new MessageResponse(sma.getWorkflow(), sma.getAddressable(), null, "Help", "This is what I can do:", descriptions));
+				return Collections.singletonList((Response) new MessageResponse(sma.getWorkflow(), sma.getAddressable(), new EntityJson(), "Help", "This is what I can do:", descriptions));
 				
 			}).orElse(null);
 	}
