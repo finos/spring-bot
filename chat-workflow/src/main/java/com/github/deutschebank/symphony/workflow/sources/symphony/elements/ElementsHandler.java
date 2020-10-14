@@ -1,6 +1,5 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.elements;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,6 @@ import com.github.deutschebank.symphony.workflow.AbstractNeedsWorkflow;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Author;
-import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.ButtonList;
@@ -23,7 +21,6 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyEventH
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.FormConverter.UnconvertedContent;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.ResponseHandler;
-import com.github.deutschebank.symphony.workflow.sources.symphony.messages.PresentationMLHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.github.deutschebank.symphony.workflow.validation.ErrorHelp;
 import com.symphony.api.agent.MessagesApi;
@@ -39,7 +36,7 @@ import com.symphony.api.model.V4SymphonyElementsAction;
  */
 public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEventHandler {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PresentationMLHandler.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ElementsHandler.class);
 	
 	MessagesApi messagesApi;
 	EntityJsonConverter jsonConverter;

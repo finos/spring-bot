@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.workflow.sources.symphony;
+package com.github.deutschebank.symphony.workflow;
 
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.User;
@@ -14,4 +14,9 @@ public interface Action {
 	 * Who performed the action.
 	 */
 	public User getUser();
+
+	/**
+	 * Workflow that the action belongs to.
+	 */
+	public Workflow getWorkflow();
 }

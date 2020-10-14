@@ -11,7 +11,6 @@ import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
 import com.github.deutschebank.symphony.workflow.form.ButtonList;
-import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.AbstractElementsConsumer;
@@ -48,7 +47,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 			} catch (Exception e1) {
 				throw new UnsupportedOperationException("Can't instantiate", e1);
 			}
-			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ea.getWorkflowObject(), "New "+ClassBasedWorkflow.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
+			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ea.getWorkflowObject(), "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 		} else if (verb.endsWith(DO_SUFFIX)) {
 			Object data = ea.getWorkflowObject();
 			String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
@@ -57,7 +56,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 			Object updated = ea.getFormData();
 			List<Object> listToUpdate = (List<Object>) e.getValue(data);
 			listToUpdate.add(updated);
-			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), data, ClassBasedWorkflow.getName(data.getClass()), ClassBasedWorkflow.getInstructions(data.getClass()), data, false, wf.gatherButtons(data, ea.getAddressable())));
+			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), data, wf.getName(data.getClass()), wf.getInstructions(data.getClass()), data, false, wf.gatherButtons(data, ea.getAddressable())));
 		} 
 		
 		return null;

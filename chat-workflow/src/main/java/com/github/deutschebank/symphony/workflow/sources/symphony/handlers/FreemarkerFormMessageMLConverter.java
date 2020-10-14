@@ -8,8 +8,6 @@ import java.nio.charset.Charset;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;

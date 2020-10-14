@@ -1,6 +1,8 @@
 package com.github.deutschebank.symphony.workflow;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -8,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -55,10 +59,19 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String actual = messageMlConverter.convert(TestTemplatedObject.class, to4, ButtonList.of(submit), false, ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
-		Assert.assertEquals("abcdef", actual); 
+		Assert.assertEquals(loadML("testFreemarkerView.ml"), actual); 
+		Assert.assertEquals(loadJson("testFreemarkerView.json"), json); 
 	}
 	
 	
+	private String loadML(String string) throws IOException {
+		return StreamUtils.copyToString(TestFormMessageML.class.getResourceAsStream(string), Charset.forName("UTF-8")).replace("\r\n", "\n");
+	}
+
+	private String loadJson(String string) throws IOException {
+		return StreamUtils.copyToString(TestFormMessageML.class.getResourceAsStream(string), Charset.forName("UTF-8"));
+	}
+
 	@Test
 	public void testNewWeirdFieldsEdit() throws Exception {
 		TestOb4 to4 = new TestOb4();
@@ -69,8 +82,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String actual = messageMlConverter.convert(TestOb4.class, to4, ButtonList.of(submit), true, ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
-		Assert.assertEquals("<form id=\"com.github.deutschebank.symphony.workflow.fixture.TestOb4\" ><hash tag=\"adf360dd-06fe-43a4-9a62-2c17fe2deefa\" /> <select name=\"c.\" required=\"false\" data-placeholder=\"Choose c\" ><option value=\"A\" >A</option><option value=\"B\" >B</option><option value=\"C\" >C</option></select><checkbox name=\"b.\" checked=\"false\" value=\"true\" >b</checkbox><person-selector name=\"someUser.\" placeholder=\"someUser\" required=\"false\"/><p><button name=\"submit\" type=\"action\" >GO</button></p></form>", actual); 
-	}
+		Assert.assertEquals(loadML("testNewWeirdFieldsEdit.ml"), actual); 
+		Assert.assertEquals(loadJson("testNewWeirdFieldsEdit.json"), json); 	}
 	
 	
 	@Test
@@ -87,9 +100,10 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String actual = messageMlConverter.convert(TestOb4.class, to4, ButtonList.of(submit), false, ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
-		Assert.assertEquals("<table><tr><td><b>theId:</b></td><td><hash tag=\"adf360dd-06fe-43a4-9a62-2c17fe2deefa\" /> </td></tr><tr><td><b>c:</b></td><td>B</td></tr><tr><td><b>b:</b></td><td>Y</td></tr><tr><td><b>a:</b></td><td><mention uid=\"sdfjk\" /></td></tr><tr><td><b>someUser:</b></td><td><mention uid=\"2678\" /></td></tr></table><form id=\"com.github.deutschebank.symphony.workflow.fixture.TestOb4\" ><p><button name=\"submit\" type=\"action\" >GO</button></p></form>", actual);
-		
-	}	
+		Assert.assertEquals(loadML("testNewWeirdFieldsView.ml"), actual); 
+		Assert.assertEquals(loadJson("testNewWeirdFieldsView.json"), json); 
+	}
+	
 	@Test
 	public void testAxeFormEditMessageML() throws Exception {
 
@@ -102,9 +116,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 				ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
-		Assert.assertEquals(
-				"<form id=\"com.github.deutschebank.symphony.workflow.fixture.TestObject\" ><text-field name=\"isin.\" placeholder=\"isin\" >83274239874</text-field><checkbox name=\"bidAxed.\" checked=\"true\" value=\"true\" >bidAxed</checkbox><checkbox name=\"askAxed.\" checked=\"true\" value=\"true\" >askAxed</checkbox><text-field name=\"creator.\" placeholder=\"creator\" >rob@example.com</text-field><text-field name=\"bidQty.\" placeholder=\"bidQty\" >234786</text-field><text-field name=\"askQty.\" placeholder=\"askQty\" >2138</text-field><p><button name=\"submit\" type=\"action\" >GO</button></p></form>",
-				out);
+		Assert.assertEquals(loadML("testAxeFormEditMessageML1.ml"), out); 
+		Assert.assertEquals(loadJson("testAxeFormEditMessageML1.json"), json); 
 
 		// new form
 		empty = new EntityJson();
@@ -112,9 +125,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 				ErrorHelp.createErrorHolder(), empty);
 		json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
-		Assert.assertEquals(
-				"<form id=\"com.github.deutschebank.symphony.workflow.fixture.TestObject\" ><text-field name=\"isin.\" placeholder=\"isin\" ></text-field><checkbox name=\"bidAxed.\" value=\"true\" >bidAxed</checkbox><checkbox name=\"askAxed.\" value=\"true\" >askAxed</checkbox><text-field name=\"creator.\" placeholder=\"creator\" ></text-field><text-field name=\"bidQty.\" placeholder=\"bidQty\" ></text-field><text-field name=\"askQty.\" placeholder=\"askQty\" ></text-field><p><button name=\"submit\" type=\"action\" >GO</button></p></form>",
-				out);
+		Assert.assertEquals(loadML("testAxeFormEditMessageML2.ml"), out); 
+		Assert.assertEquals(loadJson("testAxeFormEditMessageML2.json"), json); 
 
 	}
 
@@ -130,8 +142,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 				ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
-		Assert.assertEquals("<table><tr><td><b>isin:</b></td><td>83274239874</td></tr><tr><td><b>bidAxed:</b></td><td>Y</td></tr><tr><td><b>askAxed:</b></td><td>Y</td></tr><tr><td><b>creator:</b></td><td>rob@example.com</td></tr><tr><td><b>bidQty:</b></td><td>234786</td></tr><tr><td><b>askQty:</b></td><td>2138</td></tr></table><form id=\"com.github.deutschebank.symphony.workflow.fixture.TestObject\" ><p><button name=\"submit\" type=\"action\" >GO</button></p></form>", out);
-							
+		Assert.assertEquals(loadML("testAxeFormViewMessageML.ml"), out); 
+		Assert.assertEquals(loadJson("testAxeFormViewMessageML.json"), json); 					
 	}
 
 	@Test
@@ -150,7 +162,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 				ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
-		Assert.assertEquals("<form id=\"com.github.deutschebank.symphony.workflow.fixture.TestObjects\" ><table><thead><tr><td ><b>isin</b></td><td style=\"text-align:center;\" ><b>bidAxed</b></td><td style=\"text-align:center;\" ><b>askAxed</b></td><td ><b>creator</b></td><td style=\"text-align: right;\"><b>bidQty</b></td><td style=\"text-align: right;\"><b>askQty</b></td><td style=\"text-align:center;\" ><button name=\"items.table-delete-rows\">Delete</button></td><td style=\"text-align:center;\" ><button name=\"items.table-add-row\">New</button></td></tr></thead><tbody><tr><td >83274239874</td><td style=\"text-align:center;\" >Y</td><td style=\"text-align:center;\" >Y</td><td >rob@example.com</td><td style=\"text-align: right;\">234786</td><td style=\"text-align: right;\">2138</td><td style=\"text-align:center;\" ><checkbox name=\"items.[0].selected\" /></td><td style=\"text-align:center;\" ><button name=\"items.[0].table-edit-row\">Edit</button></td></tr><tr><td >AUD274239874</td><td style=\"text-align:center;\" >Y</td><td style=\"text-align:center;\" >N</td><td >gregb@example.com</td><td style=\"text-align: right;\">2386</td><td style=\"text-align: right;\">234823498.573</td><td style=\"text-align:center;\" ><checkbox name=\"items.[1].selected\" /></td><td style=\"text-align:center;\" ><button name=\"items.[1].table-edit-row\">Edit</button></td></tr></tbody></table><p><button name=\"submit\" type=\"action\" >GO</button></p></form>", out);
+		Assert.assertEquals(loadML("testAxesTableEditMessageML.ml"), out); 
+		Assert.assertEquals(loadJson("testAxesTableEditMessageML.json"), json); 
 	}
 
 	@Test
@@ -169,8 +182,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 				ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
-		Assert.assertTrue(out.startsWith("<table><tr><td><b>items:</b></td><td><table><thead><tr><td ><b>isin</b></td><td style=\"text-align:center;\" ><b>bidAxed</b></td><td style=\"text-align:center;\" ><b>askAxed</b></td><td ><b>creator</b></td><td style=\"text-align: right;\"><b>bidQty</b></td><td style=\"text-align: right;\"><b>askQty</b></td></tr></thead><tbody><tr><td >83274239874</td><td style=\"text-align:center;\" >Y</td><td style=\"text-align:center;\" >Y</td><td >rob@example.com</td><td style=\"text-align: right;\">234786</td><td style=\"text-align: right;\">2138</td></tr><tr><td >AUD274239874</td><td style=\"text-align:center;\" >Y</td><td style=\"text-align:center;\" >N</td><td >gregb@example.com</td><td style=\"text-align: right;\">2386</td><td style=\"text-align: right;\">234823498.573</td></tr></tbody></table></td></tr></table><form id=\"com.github.deutschebank.symphony.workflow.fixture.TestObjects\" ><p><button name=\"submit\" type=\"action\" >GO</button></p></form>"));
-
+		Assert.assertEquals(loadML("testAxesTableViewMessageML.ml"), out); 
+		Assert.assertEquals(loadJson("testAxesTableViewMessageML.json"), json); 
 	}
 	
 	@Test
@@ -186,7 +199,10 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String out = messageMlConverter.convert(TestObject.class, a, ButtonList.of(submit), true, eh, empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
-		Assert.assertTrue(out.startsWith("<form id=\"com.github.deutschebank.symphony.workflow.fixture.TestObject\" ><span class=\"tempo-text-color--red\">size must be between 12 and 2147483647</span><text-field name=\"isin.\" placeholder=\"isin\" >83274239874</text-field"));
-		Assert.assertTrue(out.contains("<span class=\"tempo-text-color--red\">must be a well-formed email address</span><text-field name=\"creator.\" placeholder=\"creator\" >rob</text-field>"));
+		String expectedOut = loadML("testValidation.ml");
+		String expectedJson = loadJson("testValidation.json");
+		System.out.println("<messageML>" + expectedOut + "</messageML>\n"+expectedJson);
+		Assert.assertEquals(expectedOut, out); 
+		Assert.assertEquals(expectedJson, json); 
 	}
 }

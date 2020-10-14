@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.util.StringUtils;
 
 import com.github.deutschebank.symphony.workflow.Workflow;
@@ -21,9 +22,9 @@ import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
+import com.github.deutschebank.symphony.workflow.room.Rooms;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
-
-import example.symphony.demoworkflow.WorkflowConfig.MemberQueryWorkflow;
+import com.symphony.api.id.SymphonyIdentity;
 
 @Work(name = "Poll", instructions = "Please participate in our poll", editable = false)
 @Template(view = "classpath:/template/poll.ftl")
@@ -43,9 +44,20 @@ public class Poll {
 	public Poll() {
 		super();
 	}
+	
+
+	public static boolean isMe(User u, SymphonyIdentity botIdentity) {
+		return u.getAddress().equals(botIdentity.getEmail());
+	}
 
 	@Exposed(description = "Start A Poll")
-	public static List<FormResponse> poll(PollCreateForm cf, Room r, Workflow wf) {
+	public static List<FormResponse> poll(
+			Workflow wf, 
+			PollCreateForm cf, 
+			Room r, 
+			TaskScheduler taskScheduler, 
+			SymphonyIdentity botIdentity, 
+			Rooms rooms) {
 		int[] i = { 0 };
 		List<String> options = Arrays.asList(cf.option1, cf.option2, cf.option3, cf.option4, cf.option5, cf.option6)	
 				.stream()
@@ -64,9 +76,9 @@ public class Poll {
 		p.setOptions(options);
 		p.setId(id);
 		
-		List<User> users = ((MemberQueryWorkflow)wf).getMembersInRoom(r);
+		List<User> users = rooms.getRoomMembers(r);
 		List<FormResponse> out = users.stream()
-			.filter(u -> !((MemberQueryWorkflow)wf).isMe(u))
+			.filter(u -> !isMe(u, botIdentity))
 			.map(u -> createResponseForUser(cf, wf, options, id, buttons, u))
 			.collect(Collectors.toList());
 		
@@ -79,9 +91,7 @@ public class Poll {
 	}
 
 	@Exposed
-	public Result end(Room r, Workflow wf) {
-		History h = wf.getHistoryApi();
-
+	public Result end(Room r, History h) {
 		List<Answer> responses = new ArrayList<>();
 
 		List<Object> results = h.getFromHistory(id, null, null);

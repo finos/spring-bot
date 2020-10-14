@@ -16,25 +16,32 @@ import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestObjects;
 import com.github.deutschebank.symphony.workflow.fixture.TestWorkflowConfig;
+import com.github.deutschebank.symphony.workflow.java.perform.PerformerConfig;
+import com.github.deutschebank.symphony.workflow.java.resolvers.ResolverConfig;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.room.Rooms;
+import com.github.deutschebank.symphony.workflow.sources.symphony.elements.ElementsAction;
+import com.github.deutschebank.symphony.workflow.sources.symphony.messages.SimpleMessageAction;
+import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {  TestWorkflowConfig.class })
-public class TestWorkflow {
+public class TestCommandPerformer extends AbstractMockSymphonyTest {
 
 	
 	@Autowired
 	Workflow wf;
 	
 	@MockBean
-	Rooms r;
+	SymphonyRooms r;
 	
+	@Autowired
+	CommandPerformer cp;
 	
 	@Test
 	public void testHistoricMethodCall() {
-		List<Response> r = wf.applyCommand(TestWorkflowConfig.u, TestWorkflowConfig.room, "wrap", null, null);
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", null);
+		List<Response> r = cp.applyCommand("wrap", sma);
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
 		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL.getItems().get(1)));
 		Assert.assertEquals(expected, ((FormResponse) r.get(0)).getFormObject());
@@ -43,8 +50,8 @@ public class TestWorkflow {
 	
 	@Test
 	public void testStaticMethodCall() {
-		List<Response> r = wf.applyCommand(TestWorkflowConfig.u, TestWorkflowConfig.room, "testObjects", null, null);
-		
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "testObjects", null);
+		List<Response> r = cp.applyCommand("testObjects", sma);
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
 		Assert.assertEquals(TestWorkflowConfig.INITIAL, ((FormResponse) r.get(0)).getFormObject());
 		Assert.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
@@ -52,7 +59,8 @@ public class TestWorkflow {
 	
 	@Test
 	public void testParameterizedMethodCall() {
-		List<Response> r = wf.applyCommand(TestWorkflowConfig.u, TestWorkflowConfig.room, "add", null, null);
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "add", null);
+		List<Response> r = cp.applyCommand("add", sma);
 		
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
 		Assert.assertEquals(null, ((FormResponse) r.get(0)).getFormObject());
@@ -63,7 +71,9 @@ public class TestWorkflow {
 	@Test
 	public void testParameterizedMethodCallWithArgument() {
 		TestObject argument = new TestObject("dj", true, false, "me@rob.com", 23324323, 0);
-		List<Response> r = wf.applyCommand(TestWorkflowConfig.u, TestWorkflowConfig.room, "add", argument, null);
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, argument,  "add", null);
+
+		List<Response> r = cp.applyCommand("add", sma);
 		
 		List<TestObject> all = new ArrayList<TestObject>();
 		all.addAll(TestWorkflowConfig.INITIAL.getItems());

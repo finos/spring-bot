@@ -11,8 +11,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.github.deutschebank.symphony.spring.api.SymphonyApiConfig;
 import com.github.deutschebank.symphony.workflow.fixture.TestWorkflowConfig;
+import com.github.deutschebank.symphony.workflow.java.perform.PerformerConfig;
+import com.github.deutschebank.symphony.workflow.java.resolvers.ResolverConfig;
 import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyBot;
-import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyWorkflowComponentsConfig;
 import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyWorkflowConfig;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig;
 import com.symphony.api.agent.DatafeedApi;
@@ -25,10 +26,11 @@ import com.symphony.api.pod.UsersApi;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = { 
+		PerformerConfig.class,
+		ResolverConfig.class,
 		TestWorkflowConfig.class, 
 		SymphonyWorkflowConfig.class,
 		AbstractMockSymphonyTest.MockConfiguration.class, 
-		SymphonyWorkflowComponentsConfig.class,
 		JerseyAttachmentHandlerConfig.class })
 public abstract class AbstractMockSymphonyTest {
 

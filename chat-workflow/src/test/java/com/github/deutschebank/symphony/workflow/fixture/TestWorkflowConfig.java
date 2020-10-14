@@ -19,7 +19,7 @@ import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.history.History;
-import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
+import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 
 @Configuration
 public class TestWorkflowConfig {
@@ -39,7 +39,7 @@ public class TestWorkflowConfig {
 	public static final Room room = new RoomDef("Test Room",  "Test Room Desc", false, null);
 	
 	@Bean
-	public History history(Workflow wf) {
+	public History symphonyHistory(Workflow wf) {
 		History h = new History() {
 			
 			@Override
@@ -70,7 +70,6 @@ public class TestWorkflowConfig {
 			}
 		};
 		
-		wf.registerHistoryProvider(h);
 		return h;
 	}
 	
