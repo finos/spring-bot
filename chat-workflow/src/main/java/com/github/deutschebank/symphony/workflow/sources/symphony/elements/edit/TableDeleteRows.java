@@ -58,7 +58,7 @@ public class TableDeleteRows extends AbstractElementsConsumer {
 			}
 			
 			return Collections.singletonList(
-				new FormResponse(wf, ea.getAddressable(), data, 
+				new FormResponse(wf, ea.getAddressable(), ej, 
 						wf.getName(data.getClass()), 
 						wf.getInstructions(data.getClass()), 
 						data, false, 
