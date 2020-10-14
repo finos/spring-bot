@@ -11,7 +11,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 import com.github.deutschebank.symphony.workflow.Workflow;
-import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
+import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.AbstractElementsConsumer;
@@ -54,8 +54,8 @@ public class TableDeleteRows extends AbstractElementsConsumer {
 			
 			return Collections.singletonList(
 				new FormResponse(wf, ea.getAddressable(), data, 
-						ClassBasedWorkflow.getName(data.getClass()), 
-						ClassBasedWorkflow.getInstructions(data.getClass()), 
+						wf.getName(data.getClass()), 
+						wf.getInstructions(data.getClass()), 
 						data, false, 
 						wf.gatherButtons(data, ea.getAddressable())));
 		}

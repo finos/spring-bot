@@ -14,7 +14,7 @@ import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
-import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
+import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.MemberInfo;
 import com.symphony.api.model.MembershipList;

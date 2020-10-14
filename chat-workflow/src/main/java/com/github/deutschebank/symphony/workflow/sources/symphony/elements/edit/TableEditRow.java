@@ -10,7 +10,6 @@ import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
 import com.github.deutschebank.symphony.workflow.form.ButtonList;
-import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.AbstractElementsConsumer;
@@ -44,7 +43,7 @@ public class TableEditRow  extends AbstractElementsConsumer {
 			Expression e = spel.parseExpression(tableLocation);
 			Object o = e.getValue(data);
 			Class<?> c = o.getClass();
-			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), in.getWorkflowObject(), "Edit "+ClassBasedWorkflow.getName(c), "Update Row Details", o, true, ButtonList.of(new Button(tableLocation+"."+UPDATE_SUFFIX, Type.ACTION, "Update"))));
+			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), in.getWorkflowObject(), "Edit "+wf.getName(c), "Update Row Details", o, true, ButtonList.of(new Button(tableLocation+"."+UPDATE_SUFFIX, Type.ACTION, "Update"))));
 		} else if (verb.endsWith(UPDATE_SUFFIX)) {
 			Object data = in.getWorkflowObject();
 			String tableLocation = verb.substring(0, verb.length() - UPDATE_SUFFIX.length()-1);
@@ -57,7 +56,7 @@ public class TableEditRow  extends AbstractElementsConsumer {
 			List<Object> listToUpdate = (List<Object>) e.getValue(data);
 			listToUpdate.set(row, updated);
 			Class<?> c = data.getClass();
-			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), data, ClassBasedWorkflow.getName(c), ClassBasedWorkflow.getInstructions(c), data, false, wf.gatherButtons(data, in.getAddressable())));
+			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), data, wf.getName(c), wf.getInstructions(c), data, false, wf.gatherButtons(data, in.getAddressable())));
 		}
 		
 		return null;

@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.Workflow.CommandDescription;
+import com.github.deutschebank.symphony.workflow.content.Content;
 import com.github.deutschebank.symphony.workflow.content.Word;
 import com.github.deutschebank.symphony.workflow.response.MessageResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
@@ -24,8 +25,9 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 			.filter(w -> w.getIdentifier().equals("help"))
 			.map(w -> {
 				
-				List<Workflow.CommandDescription> commands = sma.getWorkflow().getCommands(sma.getAddressable()).stream()
-					.filter(c -> c.isShowButton() || c.isShowText())
+				List<Workflow.CommandDescription> commands = sma.getWorkflow()
+					.getCommands(sma.getAddressable()).stream()
+					.filter(c -> c.addToHelp())
 					.collect(Collectors.toList());
 				String descriptions = renderDescriptions(commands);
 						
@@ -35,17 +37,36 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 			}).orElse(null);
 	}
 
-	private String renderButton(CommandDescription cd) {
-		return cd.isShowButton() ? "<button name=\""+cd.getName()+"\" type=\"action\">"+cd.getName()+"</button>": "";
-	}
-	
 	private String renderDescriptions(List<CommandDescription> commands) {
 		String out = "<form id=\".\"><table><thead><tr><td>Button</td><td>Or Type...</td><td>Description</td></tr></thead><tbody>" + 
 				commands.stream()
-					.map(c -> "<tr><td>"+renderButton(c)+"</td><td><b> /"+ c.getName() + "</b></td><td> "+ c.getDescription()+"</td></tr>")
+					.map(c -> "<tr><td>"+renderButton(c)+"</td><td>" + renderMessage(c) + "</td><td> "+ c.getDescription()+"</td></tr>")
 					.reduce("", String::concat)
 				+"</tbody></table></form>";
 		return out;
+	}
+	
+	
+	private String renderButton(CommandDescription cd) {
+		return canBeButton(cd) ? "<button name=\""+cd.getName()+"\" type=\"action\">"+cd.getName()+"</button>": "";
+	}
+	
+	private String renderMessage(CommandDescription c) {
+		return canBeText(c) ? "<b> /"+ c.getName() + "</b>" : "";
+	}
+
+	/**
+	 * If we want a button to represent a method, then it can only have workflow classes as parameters.
+	 */
+	private boolean canBeButton(CommandDescription cd) {
+		return cd.isButton();
+	}
+	
+	/**
+	 * If we want to type text to call a method, then the arguments must be {@link Content} subclasses.
+	 */
+	private boolean canBeText(CommandDescription cd) {
+		return cd.isMessage();
 	}
 
 

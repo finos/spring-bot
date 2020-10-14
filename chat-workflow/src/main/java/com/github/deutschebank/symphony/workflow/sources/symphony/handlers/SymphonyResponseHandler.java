@@ -3,7 +3,6 @@ package com.github.deutschebank.symphony.workflow.sources.symphony.handlers;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -109,7 +108,11 @@ public class SymphonyResponseHandler implements ResponseHandler {
 		try {
 			HeaderDetails hd = new HeaderDetails(dr.getName(), dr.getInstructions(), getDataTags(dr));
 			dr.getData().putIfAbsent("header", hd);
-			return StreamUtils.copyToString(responseHeader.getInputStream(), Charset.forName("UTF-8"));
+			if (responseHeader != null) {
+				return StreamUtils.copyToString(responseHeader.getInputStream(), Charset.forName("UTF-8"));
+			} else {
+				return "";
+			}
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't download / parse header template at "+responseHeader.getDescription(), e);
 		}

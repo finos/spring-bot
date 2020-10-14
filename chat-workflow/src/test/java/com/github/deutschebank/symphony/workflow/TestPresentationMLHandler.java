@@ -49,6 +49,8 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 	@MockBean
 	AttachmentHandler ah;
 	
+	@Autowired
+	CommandPerformer cp;
 
 	@Autowired
 	ResourceLoader rl;
@@ -58,7 +60,7 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 		SimpleMessageParser smp = new SimpleMessageParser();
 		EntityJsonConverter ejc = new EntityJsonConverter(wf);
 		FormMessageMLConverter fmc = new FreemarkerFormMessageMLConverter(symphonyRooms, rl);
-		List<SimpleMessageConsumer> consumers = Arrays.asList(new HelpMessageConsumer(), new MethodCallMessageConsumer());
+		List<SimpleMessageConsumer> consumers = Arrays.asList(new HelpMessageConsumer(), new MethodCallMessageConsumer(cp));
 		SymphonyResponseHandler srh = new SymphonyResponseHandler(messagesApi, fmc, ejc, symphonyRooms, ah);
 		handler = new PresentationMLHandler(wf, identity, usersApi, smp, ejc, consumers, srh, symphonyRooms);
 	}

@@ -27,7 +27,9 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyR
 public class WorkflowModule extends Module {
 
 	private static final String NAME = "Symphony Workflow Module";
-	private static final Version VERSION = new Version(1, 0, 0, "", "com.db.symphony", "workflow-module");
+	private static final Version VERSION = new Version(1, 0, 0, "", 
+			WorkflowModule.class.getPackage().getName().toLowerCase(), 
+			"workflow-module");
 
 
 	@Override

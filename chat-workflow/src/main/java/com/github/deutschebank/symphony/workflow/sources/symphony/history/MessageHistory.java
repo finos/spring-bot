@@ -15,6 +15,7 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.Entit
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;
+import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageList;
 
 public class MessageHistory extends AbstractNeedsWorkflow implements History {
@@ -28,7 +29,6 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 		this.jsonConverter = jsonConverter;
 		this.messageApi = messageApi;
 		this.ru = ru;
-		wf.registerHistoryProvider(this);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -37,16 +37,14 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 		MessageSearchQuery msq = createMessageSearchQuery(type, address, null, null);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 1, null, null);
 		
-		if (out.size() == 1) {
-			Object o = jsonConverter.readWorkflowValue(out.get(0).getData());
-			if (type.isAssignableFrom(o.getClass())) {
+		for (V4Message msg : out) {
+			Object o = jsonConverter.readWorkflowValue(msg.getData());
+			if ((o != null) && (type.isAssignableFrom(o.getClass()))) {
 				return Optional.of((X) o);
-			} else {
-				throw new RuntimeException("Tagged with "+TagSupport.formatTag(type)+" but actually a" +o.getClass());
 			}
-		} else {
-			return Optional.empty();
 		}
+
+		return Optional.empty();
 	}
 	
 

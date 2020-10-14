@@ -1,11 +1,11 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.messages;
 
 import com.github.deutschebank.symphony.json.EntityJson;
+import com.github.deutschebank.symphony.workflow.Action;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.sources.symphony.Action;
 
 public class SimpleMessageAction implements Action {
 	

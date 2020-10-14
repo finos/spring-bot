@@ -1,9 +1,9 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.elements;
 
+import com.github.deutschebank.symphony.workflow.Action;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.sources.symphony.Action;
 import com.symphony.api.model.V4SymphonyElementsAction;
 
 /**
@@ -59,6 +59,7 @@ public class ElementsAction implements Action {
 		return u;
 	}
 
+	@Override
 	public Workflow getWorkflow() {
 		return workflow;
 	}

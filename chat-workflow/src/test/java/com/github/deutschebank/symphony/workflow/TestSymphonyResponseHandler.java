@@ -1,7 +1,5 @@
 package com.github.deutschebank.symphony.workflow;
 
-import java.util.Collections;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,7 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Errors;
 
-import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.fixture.TestOb3;
@@ -34,6 +31,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	@MockBean
 	SymphonyRooms rooms;
 	
+	@Autowired
 	SymphonyResponseHandler responseHandler;
 	
 	@Autowired

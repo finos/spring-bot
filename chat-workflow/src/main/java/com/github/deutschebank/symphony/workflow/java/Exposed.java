@@ -12,4 +12,14 @@ public @interface Exposed {
 	
 	boolean addToHelp() default true;
 	
+	/**
+	 * Whether this method can be exposed as a button
+	 */
+	boolean isButton() default true;
+	
+	/**
+	 * Whether this method can be called by typing it's name.
+	 */
+	boolean isMessage() default true;
+	
 }
