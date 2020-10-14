@@ -38,6 +38,7 @@ public class SimpleMessageAction implements Action {
 		return words;
 	}
 
+	@Override
 	public EntityJson getData() {
 		return data;
 	}

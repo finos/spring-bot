@@ -46,6 +46,8 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 
 	private static final String CENTER_ALIGN = "style=\"text-align:center;\" ";
 	public static final String RIGHT_ALIGN = "style=\"text-align: right;\"";
+	
+	public static final String JUST_BUTTONS_FORM = "just-buttons-form";
 
 	enum Mode {
 		DISPLAY, DISPLAY_WITH_BUTTONS, FORM
@@ -156,7 +158,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 				sb.append(withFields(c, formDisplay, false,v, work));
 			}
 			if (m == Mode.DISPLAY_WITH_BUTTONS) {
-				sb.append("\n</table>\n<form " + attribute(v, "id", c.getCanonicalName()) + ">");
+				sb.append("\n</table>\n<form " + attribute(v, "id", JUST_BUTTONS_FORM) + ">");
 				sb.append(handleButtons(actions, work));
 				sb.append("\n</form>");
 			} else if (m == Mode.FORM) {

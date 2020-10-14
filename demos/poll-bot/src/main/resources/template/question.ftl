@@ -5,7 +5,7 @@
 </div>  
 
 <form 
- id="example.symphony.demoworkflow.poll.Question">
+ id="just-buttons-form">
   <p><#list entity.buttons.contents as button>
     <button 
          name="${button.name}"

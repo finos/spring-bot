@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.AbstractNeedsWorkflow;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
@@ -67,7 +68,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 				String verb = (String) ((Map<String, String>) action.getFormValues()).get("action");
 				String formId = action.getFormId();
 				Object currentForm = formConverter.convert((Map<String, Object>) action.getFormValues(), formId);
-				Object data = retrieveData(action.getFormMessageId());
+				EntityJson data = retrieveData(action.getFormMessageId());
 				Addressable rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
 				User u = ruBuilder.loadUserById(t.getInitiator().getUser().getUserId());
 				
@@ -110,9 +111,9 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 		}
 	}
 
-	private Object retrieveData(String formMessageId) {
+	private EntityJson retrieveData(String formMessageId) {
 		V4Message originatingMessage = messagesApi.v1MessageIdGet(null, null, formMessageId.replace("/", "_").replace("+", "-").replace("=", ""));
-		return jsonConverter.readWorkflowValue(originatingMessage.getData());
+		return jsonConverter.readValue(originatingMessage.getData());
 	}
 
 

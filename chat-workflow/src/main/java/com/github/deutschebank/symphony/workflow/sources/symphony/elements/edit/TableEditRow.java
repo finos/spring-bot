@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
@@ -14,6 +15,7 @@ import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.AbstractElementsConsumer;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.ElementsAction;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 
 
 public class TableEditRow  extends AbstractElementsConsumer {
@@ -36,16 +38,17 @@ public class TableEditRow  extends AbstractElementsConsumer {
 			return null;
 		}
 		
+		EntityJson ej = in.getData();
+		Object data = ej.get(EntityJsonConverter.WORKFLOW_001);
+		
 		if (verb.endsWith(EDIT_SUFFIX)) {
-			Object data = in.getWorkflowObject();
 			String tableLocation = verb.substring(0, verb.length() - EDIT_SUFFIX.length()-1);
 			tableLocation = fixSpel(tableLocation);
 			Expression e = spel.parseExpression(tableLocation);
 			Object o = e.getValue(data);
 			Class<?> c = o.getClass();
-			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), in.getWorkflowObject(), "Edit "+wf.getName(c), "Update Row Details", o, true, ButtonList.of(new Button(tableLocation+"."+UPDATE_SUFFIX, Type.ACTION, "Update"))));
+			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), data, "Edit "+wf.getName(c), "Update Row Details", o, true, ButtonList.of(new Button(tableLocation+"."+UPDATE_SUFFIX, Type.ACTION, "Update"))));
 		} else if (verb.endsWith(UPDATE_SUFFIX)) {
-			Object data = in.getWorkflowObject();
 			String tableLocation = verb.substring(0, verb.length() - UPDATE_SUFFIX.length()-1);
 			tableLocation = fixSpel(tableLocation);
 			int lastBracket = tableLocation.lastIndexOf('[');
