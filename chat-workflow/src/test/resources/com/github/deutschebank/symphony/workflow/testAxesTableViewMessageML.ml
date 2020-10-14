@@ -1,7 +1,7 @@
 
 <#-- starting template -->
 <table><tr><td><b>items:</b></td><td>
- <span class="tempo-text-color--red">${entity.errors['items']!''}</span>
+ <span class="tempo-text-color--red">${entity.errors.contents['items']!''}</span>
  
  <table><thead><tr>
    <td ><b>isin</b></td>

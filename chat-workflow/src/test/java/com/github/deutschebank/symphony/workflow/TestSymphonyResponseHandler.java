@@ -9,6 +9,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Errors;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.fixture.TestOb3;
@@ -62,7 +63,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 			return null;
 		});
 		
-		MessageResponse mr = new MessageResponse(wf, TestWorkflowConfig.room, new TestObject("213", true, false, "rob@here.com", 55, 22), "test name", "test instruction", "testing");
+		MessageResponse mr = new MessageResponse(wf, TestWorkflowConfig.room, EntityJsonConverter.newWorkflow(new TestObject("213", true, false, "rob@here.com", 55, 22)), "test name", "test instruction", "testing");
 		responseHandler.accept(mr);
 	}
 
@@ -79,7 +80,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 			return null;
 		});
 		
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", TestObject.class, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")));
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", TestObject.class, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")));
 		responseHandler.accept(fr);
 	}
 	
@@ -96,7 +97,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestObject a = new TestObject("213", true, false, "rob@here.com", 55, 22);
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 	
@@ -113,7 +114,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestOb3 a = new TestOb3(new RoomDef("abc", "asds", true, null), new UserDef(null, "Graham Bobki", "graham@goodle.com"), "some text");
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 }

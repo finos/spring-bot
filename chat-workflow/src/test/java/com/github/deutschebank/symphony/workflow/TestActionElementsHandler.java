@@ -147,8 +147,9 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 		// should return a form for TestObject
 		handler.accept(e);
 		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
-				Mockito.isNull(), Mockito.isNull(), 
-				Mockito.argThat(s ->  s.contains("<form id=\""+TestObject.class.getCanonicalName()+"\"")), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.any(), 
 				Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull());
 			
 	}
