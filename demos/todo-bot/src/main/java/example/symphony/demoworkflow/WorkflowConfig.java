@@ -22,7 +22,6 @@ import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.UsersApi;
 
-import example.symphony.demoworkflow.poll.Poll;
 import example.symphony.demoworkflow.todo.NewItemDetails;
 import example.symphony.demoworkflow.todo.ToDoItem;
 import example.symphony.demoworkflow.todo.ToDoList;

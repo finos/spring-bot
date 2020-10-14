@@ -15,6 +15,7 @@ import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.history.History;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
@@ -59,11 +60,11 @@ public class Poll {
 		List<User> users = ((MemberQueryWorkflow)wf).getMembersInRoom(r);
 		List<FormResponse> out = users.stream()
 			.filter(u -> !((MemberQueryWorkflow)wf).isMe(u))
-			.map(u -> createResponseForUser(cf, wf, options, p.getId(), buttons, u))
+			.map(u -> createResponseForUser(cf, wf, options, p.getId(), new ButtonList(buttons), u))
 			.collect(Collectors.toList());
 		
 		out.add(new FormResponse(wf, r, p, "Poll Created", "", p, false, 
-			Arrays.asList(new Button("end", Type.ACTION, "End Poll"))));
+				ButtonList.of(new Button("end", Type.ACTION, "End Poll"))));
 		
 		return out;
 	}
@@ -112,7 +113,7 @@ public class Poll {
 	}
 
 	private static FormResponse createResponseForUser(ChoiceForm cf, Workflow wf, List<String> choices, ID id,
-			List<Button> buttons, User u) {
+			ButtonList buttons, User u) {
 		Question q = new Question(cf.getQuestion(), choices, id);
 		return new FormResponse(wf, u, q, cf.getQuestion(), "Pick one of: ", q, false, buttons);
 	}
