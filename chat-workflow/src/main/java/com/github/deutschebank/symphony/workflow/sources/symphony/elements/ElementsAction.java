@@ -1,5 +1,6 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.elements;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Action;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
@@ -17,16 +18,16 @@ public class ElementsAction implements Action {
 	private final Workflow workflow;
 	private final Object formData;
 	private final String action;
-	private final Object workflowObject;
+	private final EntityJson entityJson;
 	private final Addressable a;
 	private final User u;
 	
-	public ElementsAction(Workflow w, Addressable a, User u, Object formData, String action, Object workflowObject) {
+	public ElementsAction(Workflow w, Addressable a, User u, Object formData, String action, EntityJson entityJson) {
 		super();
 		this.workflow = w;
 		this.formData = formData;
 		this.action = action;
-		this.workflowObject = workflowObject;
+		this.entityJson = entityJson;
 		this.a = a;
 		this.u = u;
 	}
@@ -39,14 +40,15 @@ public class ElementsAction implements Action {
 		return action;
 	}
 
-	public Object getWorkflowObject() {
-		return workflowObject;
+	@Override
+	public EntityJson getData() {
+		return entityJson;
 	}
 
 	@Override
 	public String toString() {
 		return "ElementsAction [formData=" + formData + ", action=" + action
-				+ ", workflowObject=" + workflowObject + "]";
+				+ ", entityJson=" + entityJson + "]";
 	}
 
 	@Override

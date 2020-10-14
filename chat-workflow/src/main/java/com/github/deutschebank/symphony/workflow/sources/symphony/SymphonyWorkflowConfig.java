@@ -206,13 +206,16 @@ public class SymphonyWorkflowConfig {
 	 */
 	@SuppressWarnings("unchecked")
 	@Bean
-	public WorkflowResolverFactory symphonyLastMessageResolver(History sh) {
+	public WorkflowResolverFactory symphonyLastMessageResolver(History sh, EntityJsonConverter ejc) {
 		return action -> {
 			return new WorkflowResolver() {
 				
 				@Override
 				public Optional<Object> resolve(Class<?> cl, Addressable a) {
-					if (wf.getDataTypes().contains(cl)) {
+					Object oo = ejc.readWorkflow(action.getData());
+					if ((oo != null) && (cl.isAssignableFrom(oo.getClass()))) {
+						return Optional.of(oo);
+					} else if (wf.getDataTypes().contains(cl)) {
 						return (Optional<Object>) sh.getLastFromHistory(cl, a);	
 					} else {
 						return Optional.empty();

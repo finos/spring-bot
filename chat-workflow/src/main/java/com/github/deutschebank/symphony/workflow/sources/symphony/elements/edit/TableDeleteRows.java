@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
@@ -17,6 +18,7 @@ import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.AbstractElementsConsumer;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.ElementsAction;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.FormConverter;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 
 public class TableDeleteRows extends AbstractElementsConsumer {
 	
@@ -34,10 +36,13 @@ public class TableDeleteRows extends AbstractElementsConsumer {
 		if (verb == null) {
 			return null;
 		}
+		
+		EntityJson ej = ea.getData();
+		Object data = ej.get(EntityJsonConverter.WORKFLOW_001);
+		
 		if (verb.endsWith(ACTION_SUFFIX)) {
 			
 			// get the table to modify
-			Object data = ea.getWorkflowObject();
 			String tableLocation = verb.substring(0, verb.length() - ACTION_SUFFIX.length()-1);
 			tableLocation = TableEditRow.fixSpel(tableLocation);
 			Expression e = spel.parseExpression(tableLocation);
