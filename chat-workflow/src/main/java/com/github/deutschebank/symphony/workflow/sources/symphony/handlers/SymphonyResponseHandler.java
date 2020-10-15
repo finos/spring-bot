@@ -93,8 +93,8 @@ public class SymphonyResponseHandler implements ResponseHandler {
 
 
 	private void processDataResponse(String messageBody, DataResponse t, Object attachment) {
-		String tags = createWorkflowHeader(t);
-		String outMessage = "<messageML>"+tags+messageBody+"</messageML>";
+		String header = createWorkflowHeader(t);
+		String outMessage = "<messageML>"+header+messageBody+"</messageML>";
 		String json = jsonConverter.writeValue(t.getData());
 		String streamId = ru.getStreamFor(t.getAddress());
 		if (isOutputTemplates()) {
