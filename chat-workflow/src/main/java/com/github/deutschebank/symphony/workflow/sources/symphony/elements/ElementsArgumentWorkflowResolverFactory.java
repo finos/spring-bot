@@ -27,7 +27,7 @@ public class ElementsArgumentWorkflowResolverFactory implements WorkflowResolver
 				}
 
 				@Override
-				public Optional<Object> resolve(Class<?> cl, Addressable a) {
+				public Optional<Object> resolve(Class<?> cl, Addressable a, boolean isTarget) {
 					if (cl.isAssignableFrom(((ElementsAction) originatingAction).getFormData().getClass())) {
 						return Optional.of(((ElementsAction) originatingAction).getFormData());
 					} else {
@@ -44,7 +44,7 @@ public class ElementsArgumentWorkflowResolverFactory implements WorkflowResolver
 				}
 
 				@Override
-				public Optional<Object> resolve(Class<?> c, Addressable a) {
+				public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget) {
 					return Optional.empty();
 				}
 			};

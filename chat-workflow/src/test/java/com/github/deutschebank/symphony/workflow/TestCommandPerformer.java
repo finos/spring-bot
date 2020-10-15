@@ -64,7 +64,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		List<Response> r = cp.applyCommand("add", sma);
 		
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
-		Assert.assertEquals(null, ((FormResponse) r.get(0)).getFormObject());
+		Assert.assertNotNull(((FormResponse) r.get(0)).getFormObject());
 		Assert.assertEquals(TestObject.class, ((FormResponse) r.get(0)).getFormClass());
 		Assert.assertEquals(true, ((FormResponse) r.get(0)).isEditable());	
 	}

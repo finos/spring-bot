@@ -38,7 +38,11 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 			return new WorkflowResolver() {
 				
 				@Override
-				public Optional<Object> resolve(Class<?> cl, Addressable a) {
+				public Optional<Object> resolve(Class<?> cl, Addressable a, boolean isTarget) {
+					if (isTarget) {
+						return Optional.empty();
+					}
+					
 					if (parameterBuckets.containsKey(cl)) {
 						return Optional.of(parameterBuckets.get(cl).pop());
 					} else {
@@ -55,7 +59,7 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 			return new WorkflowResolver() {
 				
 				@Override
-				public Optional<Object> resolve(Class<?> c, Addressable a) {
+				public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget) {
 					return Optional.empty();
 				}
 				

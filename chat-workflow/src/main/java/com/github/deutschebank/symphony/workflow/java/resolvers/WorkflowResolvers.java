@@ -14,6 +14,6 @@ public interface WorkflowResolvers {
 
 	public boolean canResolve(Class<?> c);
 	
-	public Optional<Object> resolve(Class<?> c, Addressable a);
+	public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget);
 	
 }

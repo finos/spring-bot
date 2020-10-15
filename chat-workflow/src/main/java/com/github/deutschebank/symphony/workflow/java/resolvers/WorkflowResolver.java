@@ -14,7 +14,11 @@ public interface WorkflowResolver {
 
 	public boolean canResolve(Class<?> c);
 	
-	public Optional<Object> resolve(Class<?> c, Addressable a);
+	/**
+	 * Resolves an argument for a method call, within a given room a, of type c. 
+	 * If we are resolving the object that the method is being called on, isTarget=true.
+	 */
+	public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget);
 	
 }
 

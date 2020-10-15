@@ -73,7 +73,7 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 		Optional<?> o = Optional.empty();
 		if (!Modifier.isStatic(m.getModifiers())) {
 			// load the current object
-			o = wr.resolve(c, a);
+			o = wr.resolve(c, a, true);
 			
 			if ((!o.isPresent()) || (o.get().getClass() != c)) {
 				return Collections.singletonList(new ErrorResponse(wf, a, "Couldn't find work for "+commandName));
@@ -84,7 +84,7 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 		Object[] args = new Object[m.getParameterCount()];
 		for (int i = 0; i < args.length; i++) {
 			Class<?> cl = m.getParameters()[i].getType();
-			Optional<Object> oo = wr.resolve(cl, a);
+			Optional<Object> oo = wr.resolve(cl, a, false);
 			if (oo.isPresent()) {
 				args[i] = oo.get();
 			} else {

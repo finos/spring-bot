@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.util.StringUtils;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.ID;
@@ -24,6 +25,7 @@ import com.github.deutschebank.symphony.workflow.java.Work;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.room.Rooms;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 import com.symphony.api.id.SymphonyIdentity;
 
 @Work(name = "Poll", instructions = "Please participate in our poll", editable = false)
@@ -85,7 +87,9 @@ public class Poll {
 		ButtonList bl = new ButtonList();
 		bl.add(new Button("end", Type.ACTION, "End Poll Now"));
 		
-		out.add(new FormResponse(wf, r, p, "Poll Created : "+cf.getQuestion(), "", Poll.class, false, bl));
+		EntityJson json = EntityJsonConverter.newWorkflow(p);
+		
+		out.add(new FormResponse(wf, r, json, "Poll Created : "+cf.getQuestion(), "", Poll.class, false, bl));
 		
 		return out;
 	}

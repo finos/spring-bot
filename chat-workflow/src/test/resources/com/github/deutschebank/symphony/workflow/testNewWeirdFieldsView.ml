@@ -7,7 +7,7 @@
   uid="${entity.workflow_001.someUser.id}" /></#if></td></tr>
 </table>
 <form 
- id="com.github.deutschebank.symphony.workflow.fixture.TestOb4">
+ id="just-buttons-form">
   <p><#list entity.buttons.contents as button>
     <button 
          name="${button.name}"
