@@ -59,7 +59,7 @@ public class ResolverConfig {
 	}
 	
 	/**
-	 * Allows parameters to include {@link Room}, {@link User}, {@link Author} or {@link Addressable}.
+	 * Allows parameters to include {@link Room} or {@link Author} .
 	 */
 	@Bean 
 	public WorkflowResolverFactory userRoomOrAddressableResolver() {
@@ -68,7 +68,7 @@ public class ResolverConfig {
 
 			@Override
 			public boolean canResolve(Class<?> c) {
-				return (c.isAssignableFrom(User.class)) || (c.isAssignableFrom(Room.class));
+				return (c.isAssignableFrom(Room.class))  || (c.isAssignableFrom(Author.class)) ;
 			}
 
 			@Override
@@ -83,13 +83,8 @@ public class ResolverConfig {
 				}
 				
 				// handle user arg
-				if (cl.isAssignableFrom(User.class)) {
+				if (cl.isAssignableFrom(Author.class)) {
 					return Optional.of(action.getUser());
-				}
-				
-				// handle general addressable
-				if (cl.isAssignableFrom(Addressable.class)) {
-					return Optional.of(action.getAddressable());
 				}
 				
 				return Optional.empty();

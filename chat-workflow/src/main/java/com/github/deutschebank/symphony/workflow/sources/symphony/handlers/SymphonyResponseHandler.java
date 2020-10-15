@@ -101,7 +101,11 @@ public class SymphonyResponseHandler implements ResponseHandler {
 			LOG.info("JSON: \n"+ json);
 			LOG.info("TEMPLATE: \n"+ outMessage);
 		}
-		messagesApi.v4StreamSidMessageCreatePost(null, streamId, outMessage, json, null, attachment, null, null);
+		try {
+			messagesApi.v4StreamSidMessageCreatePost(null, streamId, outMessage, json, null, attachment, null, null);
+		} catch (Exception e) {
+			LOG.error("Failed to send message: \nTEMPLATE:\n"+outMessage+"\nJSON:\n"+json+"\n", e);
+		}
 	}
 	
 	protected String createWorkflowHeader(DataResponse dr)  {

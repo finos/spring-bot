@@ -26,6 +26,7 @@ import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.room.Rooms;
 import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.ResponseHandler;
 import com.symphony.api.id.SymphonyIdentity;
 
 @Work(name = "Poll", instructions = "Please participate in our poll", editable = false)
@@ -57,9 +58,12 @@ public class Poll {
 			Workflow wf, 
 			PollCreateForm cf, 
 			Room r, 
+			Author a, 
 			TaskScheduler taskScheduler, 
 			SymphonyIdentity botIdentity, 
-			Rooms rooms) {
+			Rooms rooms,
+			ResponseHandler rh,
+			History h) {
 		int[] i = { 0 };
 		List<String> options = Arrays.asList(cf.option1, cf.option2, cf.option3, cf.option4, cf.option5, cf.option6)	
 				.stream()
@@ -73,7 +77,7 @@ public class Poll {
 		ID id = new ID(UUID.randomUUID());
 		
 		Poll p = new Poll(options);
-		p.setPoller(Author.CURRENT_AUTHOR.get());
+		p.setPoller(a);
 		p.setQuestion(cf.getQuestion());
 		p.setOptions(options);
 		p.setId(id);
@@ -91,7 +95,23 @@ public class Poll {
 		
 		out.add(new FormResponse(wf, r, json, "Poll Created : "+cf.getQuestion(), "", Poll.class, false, bl));
 		
+		doScheduling(p, taskScheduler, cf, rh, h, r, wf);
+		
 		return out;
+	}
+
+	private static void doScheduling(Poll p, TaskScheduler taskScheduler, PollCreateForm cf, ResponseHandler rh, History h, Room r, Workflow wf) {
+		if (cf.isEndAutomatically()) {
+			Instant endTime = Instant.now().plus(cf.getTime(), cf.getTimeUnit());
+			p.setEndTime(endTime);
+			taskScheduler.schedule(() -> {
+				Result result = p.end(r, h);
+				EntityJson data = EntityJsonConverter.newWorkflow(result);
+				FormResponse out = new FormResponse(wf, r, data, wf.getName(Result.class), wf.getInstructions(Result.class), Result.class, false, wf.gatherButtons(result, r));
+				rh.accept(out);
+				
+			}, endTime);
+		}
 	}
 
 	@Exposed
@@ -125,7 +145,7 @@ public class Poll {
 	private static FormResponse createResponseForUser(PollCreateForm cf, Workflow wf, List<String> choices, ID id,
 			ButtonList buttons, User u) {
 		Question q = new Question(cf.getQuestion(), choices, id, u);
-		return new FormResponse(wf, u, null, cf.getQuestion(), "Pick one of: ", q, false, buttons);
+		return new FormResponse(wf, u, new EntityJson(), cf.getQuestion(), "Pick one of: ", q, false, buttons);
 	}
 
 	public List<String> getOptions() {
