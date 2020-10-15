@@ -8,4 +8,4 @@ pom.xml.versionsBackup
 .idea
 *.iml
 bin/
-application.yml
+application*.yml
