@@ -4,18 +4,23 @@
 package example.symphony.demoworkflow.todo;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
-import com.github.deutschebank.symphony.workflow.Workflow;
+import com.github.deutschebank.symphony.workflow.content.Author;
 import com.github.deutschebank.symphony.workflow.content.Content;
+import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Paragraph;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.Word;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
-import com.github.deutschebank.symphony.workflow.response.Response;
 
 import example.symphony.demoworkflow.todo.ToDoItem.Status;
 
@@ -51,21 +56,6 @@ public class ToDoList {
 		return new ToDoList();
 	}
 	
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/*
 	private void reNumber() {
 		int initial = 1;
 		for (ToDoItem toDoItem : items) {
@@ -73,75 +63,74 @@ public class ToDoList {
 		}
 	}
 	
-	
 	@Exposed(description = "Add an item")
-	public ToDoList add(NewItemDetails a, User u) {
+	public ToDoList add(NewItemDetails a, Author u) {
 		this.items.add(new ToDoItem(a.getDescription(), u, a.getAssignTo(), Status.OPEN));
 		reNumber();
 		return this;
 	}
 
-	
-	
-	
-	
-	
-	
-/*	
 	@Exposed(description = "Show current list of items")
-	public ToDoList show(Workflow wf) {
+	public ToDoList show() {
 		reNumber();
 		return this;
 	}
+	
+	private Integer parseInt(Word w) {
+		try {
+			return Integer.parseInt(w.getText());
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
+	}
+	
+	private Set<Integer> numbers(Message m) {
+		return m.only(Word.class).stream()
+			.map(w -> parseInt(w))
+			.filter(i -> i != null)
+			.collect(Collectors.toSet());
+	}
 
-	@Exposed(description = "Append an item. e.g. \"/append item1\"")
-	public ToDoList append(Paragraph p, User u) {
-		List<Content> elements = p.getContents();
-		if (elements.size() > 1) {
-			elements.remove(0);
-			p = Paragraph.of(elements);
-			this.items.add(new ToDoItem(p.getText(), u, null, Status.OPEN));
+	@Exposed(isButton = false, description = "Remove items by number. e.g. \"/delete 5 6 7\"")
+	public ToDoList delete(Message m) {
+		Set<Integer> toRemove = numbers(m);
+		for (Iterator<ToDoItem> iterator = items.iterator(); iterator.hasNext();) {
+			ToDoItem item = iterator.next();
+			if (toRemove.contains(item.getNumber())) {
+				iterator.remove();
+			}	
 		}
 		reNumber();
 		return this;
 	}
 
-	@Exposed(description = "Remove items. e.g. \"/remove 5 6 7\"")
-	public ToDoList remove(Paragraph p) {
-		List<Content> elements = p.getContents();
-		if (elements.size() > 1) {
-			elements.remove(0);
-			List<ToDoItem> removeItems = new ArrayList<>();
-			for (Content content : elements) {
-				if (content instanceof Word) {
-					removeItems.add(items.get(Integer.parseInt(content.getText()) - 1));					
-				}
-			}
-			items.removeAll(removeItems);
-		}
+
+
+	private void changeStatus(Message m, User u, Status s) {
+		Set<Integer> toUpdate = numbers(m);
+
+		items.stream()
+			.filter(i -> toUpdate.contains(i.getNumber()))
+			.forEach(i -> {
+				i.setAssignTo(u);	
+				i.setStatus(s);
+		});
 		reNumber();
+	}
+	
+	@Exposed(isButton = false, description = "Complete items, e.g. \"/complete 1 3 5 @Suresh Rupnar\"")
+	public ToDoList complete(Message m, Author a) {
+		User u = m.getNth(User.class, 0).orElse(a);
+		changeStatus(m, u, Status.COMPLETE);
 		return this;
 	}
 
-	@Exposed(description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
-	public ToDoList assign(Paragraph p) {
-		List<Content> elements = p.getContents();
-		if (elements.size() > 1) {
-			elements.remove(0);
-			if (elements.get(elements.size() - 1) instanceof User) {
-				User user = (User) elements.get(elements.size() - 1);
-				for (Content content : elements) {
-					if (content instanceof Word) {
-						items.get(Integer.valueOf(content.getText()) - 1).setAssignTo(user);;
-					}
-				}
-			}
-		}
-		reNumber();
+	@Exposed(isButton = false, description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
+	public ToDoList assign(Message m, Author a) {
+		User u = m.getNth(User.class, 0).orElse(a);
+		changeStatus(m, u, Status.OPEN);
 		return this;
 	}
-
 	
 	
 }
-*/
