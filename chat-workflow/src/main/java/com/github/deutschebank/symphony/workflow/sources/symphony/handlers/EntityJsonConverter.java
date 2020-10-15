@@ -75,7 +75,7 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 	}
 	
 	public Object readWorkflow(EntityJson ej) {
-		return ej.get(WORKFLOW_001);
+		return ej == null ? null : ej.get(WORKFLOW_001);
 	}
 
 	public EntityJson readValue(String json) {
