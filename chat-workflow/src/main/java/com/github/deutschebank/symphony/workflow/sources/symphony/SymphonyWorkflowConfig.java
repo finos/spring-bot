@@ -211,7 +211,10 @@ public class SymphonyWorkflowConfig {
 			return new WorkflowResolver() {
 				
 				@Override
-				public Optional<Object> resolve(Class<?> cl, Addressable a) {
+				public Optional<Object> resolve(Class<?> cl, Addressable a, boolean isTarget) {
+					if (!isTarget) {
+						return Optional.empty();
+					}
 					Object oo = ejc.readWorkflow(action.getData());
 					if ((oo != null) && (cl.isAssignableFrom(oo.getClass()))) {
 						return Optional.of(oo);

@@ -42,7 +42,11 @@ public class ResolverConfig {
 				}
 
 				@Override
-				public Optional<Object> resolve(Class<?> c, Addressable a) {
+				public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget) {
+					if (isTarget) {
+						return Optional.empty();
+					}
+					
 					try {
 						Object bean = context.getBean(c);
 						return Optional.of(bean);
@@ -68,7 +72,11 @@ public class ResolverConfig {
 			}
 
 			@Override
-			public Optional<Object> resolve(Class<?> cl, Addressable a) {
+			public Optional<Object> resolve(Class<?> cl, Addressable a, boolean isTarget) {
+				if (isTarget) {
+					return Optional.empty();
+				}
+				
 				// handle room arg
 				if ((cl.isAssignableFrom(Room.class)) && (action.getAddressable() instanceof Room)) {
 					return Optional.of((Room) action.getAddressable());
