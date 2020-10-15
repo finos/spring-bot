@@ -117,7 +117,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter 
 			work.put("formdata", o);
 			v = new Variable("entity.formdata");
 		} else {
-			work.put(EntityJsonConverter.WORKFLOW_001, o);
+			if (o != null) {
+				work.put(EntityJsonConverter.WORKFLOW_001, o);
+			}
 			v = new Variable("entity."+EntityJsonConverter.WORKFLOW_001);
 		}
 		
