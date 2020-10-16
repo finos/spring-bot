@@ -1,6 +1,8 @@
 package com.github.deutschebank.symphony.koreai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.deutschebank.symphony.koreai.response.KoreaiResponseMessageAdapter;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
