@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.github.deutschebank.symphony</groupId>
-	<artifactId>symphony-java-client-parent</artifactId>
+	<artifactId>symphony-java-toolkit</artifactId>
 	<version>4.59.7-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Symphony Java Client Parent</name>
+	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
 	<url>https://github.com/deutschebank/symphony-java-client-parent</url>
 
@@ -20,13 +20,13 @@
 		<module>entity-json</module>
 		<module>quickfix-json</module>
 		<module>shared-stream</module>
-		<module>symphony-maven-build-reporter</module>
 		<module>chat-workflow</module>
 		<module>demos/demo-bot</module>
 		<module>demos/demo-app</module>
 		<module>demos/poll-bot</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
+    <module>symphony-maven-build-reporter</module>
 	</modules>
 
 	<properties>
