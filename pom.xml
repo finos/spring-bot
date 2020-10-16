@@ -10,7 +10,7 @@
 
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
-	<url>https://github.com/deutschebank/symphony-java-client-parent</url>
+	<url>https://github.com/deutschebank/symphony-java-toolkit</url>
 
 	<modules>
 		<module>identity</module>
@@ -150,7 +150,7 @@
 		<repository>
 			<id>bintray-deutschebank-SymphonyPractice</id>
 			<name>deutschebank-SymphonyPractice</name>
-			<url>https://api.bintray.com/maven/deutschebank/SymphonyPractice/symphony-java-client-parent/;publish=1</url>
+			<url>https://api.bintray.com/maven/deutschebank/SymphonyPractice/symphony-java-toolkit/;publish=1</url>
 		</repository>
 	</distributionManagement>
 
