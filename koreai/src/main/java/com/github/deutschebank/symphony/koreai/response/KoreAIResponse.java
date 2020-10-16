@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.koreai;
+package com.github.deutschebank.symphony.koreai.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -6,14 +6,39 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
+ * Holder for responses from KoreAI REST Endpoint, 
+ * and also to be returned for Symphony Freemarker data.
+ * 
  * @author rodriva
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KoreaResponse {
+public class KoreAIResponse {
     private String text;
+    
     @JsonProperty(value = "isTemplate")
     private boolean template;
+    
     private List<Errors> errors;
+    
+    private List<String> options;
+    
+    private String form;
+
+	public String getForm() {
+		return form;
+	}
+
+	public void setForm(String form) {
+		this.form = form;
+	}
+
+	public List<String> getOptions() {
+		return options;
+	}
+
+	public void setOptions(List<String> options) {
+		this.options = options;
+	}
 
     public String getText() {
         return text;
@@ -58,5 +83,20 @@ public class KoreaResponse {
         public void setCode(int code) {
             this.code = code;
         }
+
+		@Override
+		public String toString() {
+			return "Errors [msg=" + msg + ", code=" + code + "]";
+		}
+        
+        
     }
+
+	@Override
+	public String toString() {
+		return "KoreAIResponse [text=" + text + ", template=" + template + ", errors=" + errors + ", options=" + options
+				+ "]";
+	}
+    
+    
 }

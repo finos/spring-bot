@@ -1,108 +1,84 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <artifactId>koreai</artifactId>
-    <name>Koreai Support</name>
-    <description>Build Workflows Using Enterprise Chat</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>koreai</artifactId>
+	<name>Koreai Support</name>
+	<description>Build Workflows Using Enterprise Chat</description>
 
-    <parent>
-        <groupId>com.github.deutschebank.symphony</groupId>
-        <artifactId>symphony-java-client-parent</artifactId>
-        <version>4.59.7-SNAPSHOT</version>
-    </parent>
+	<parent>
+		<groupId>com.github.deutschebank.symphony</groupId>
+		<artifactId>symphony-java-client-parent</artifactId>
+		<version>4.59.7-SNAPSHOT</version>
+	</parent>
 
-    <properties>
-        <java.version>1.8</java.version>
-        <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
-    </properties>
+	<properties>
+		<java.version>1.8</java.version>
+		<spring-boot.version>2.2.0.RELEASE</spring-boot.version>
+	</properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.github.deutschebank.symphony</groupId>
-            <artifactId>symphony-api-spring-boot-starter</artifactId>
-            <version>4.59.7-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.deutschebank.symphony</groupId>
-            <artifactId>symphony-java-client-entity-json</artifactId>
-            <version>4.59.7-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.deutschebank.symphony</groupId>
-            <artifactId>symphony-shared-stream</artifactId>
-            <version>4.59.7-SNAPSHOT</version>
-        </dependency>
-        <!-- needed for formatting messageml -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
-            <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>com.github.deutschebank.symphony</groupId>
+			<artifactId>symphony-api-spring-boot-starter</artifactId>
+			<version>4.59.7-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.deutschebank.symphony</groupId>
+			<artifactId>symphony-java-client-entity-json</artifactId>
+			<version>4.59.7-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.deutschebank.symphony</groupId>
+			<artifactId>symphony-shared-stream</artifactId>
+			<version>4.59.7-SNAPSHOT</version>
+		</dependency>
+		<!-- needed for formatting messageml -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring-boot.version}</version>
+		</dependency>
 
-        <!-- allows chat workflow to send attachments -->
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-multipart</artifactId>
-            <scope>provided</scope>
-            <version>2.28</version>
-        </dependency>
+		<!-- for testing -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<version>${spring-boot.version}</version>
+		</dependency>
 
-        <!-- for testing -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-            <version>${spring-boot.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+		</dependency>
+	</dependencies>
 
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.11</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20180130</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.6</version>
-        </dependency>
-
-        <!-- Symphony -->
-        <dependency>
-            <groupId>com.symphony.platformsolutions</groupId>
-            <artifactId>symphony-api-client-java</artifactId>
-            <version>1.0.45</version>
-            <exclusions>
-                <!-- Fixing logging issues with Symphony and Spring Boot libs -->
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-    </dependencies>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>2.27</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>

@@ -41,11 +41,14 @@ public class JWTHelper {
 	}
 
 	public static String createSignedJwtFromClaims(String constructedClaims, PrivateKey privateKey) throws Exception {
+		return createSignedJwtFromClaims(constructedClaims, privateKey, JWT_HEADER, Signature.getInstance("SHA512withRSA"));
+	}
+
+	
+	public static String createSignedJwtFromClaims(String constructedClaims, PrivateKey privateKey, String header, Signature sigBuilder) throws Exception {
 		Encoder enc = Base64.getUrlEncoder().withoutPadding();
-	    String part1 = enc.encodeToString(JWT_HEADER.getBytes());
+	    String part1 = enc.encodeToString(header.getBytes());
 	    String part2 = enc.encodeToString(constructedClaims.getBytes());
-			
-		Signature sigBuilder = Signature.getInstance("SHA512withRSA");
 		sigBuilder.initSign(privateKey);
 		sigBuilder.update((part1+"."+part2).getBytes());
 	    byte[] sig = sigBuilder.sign();
@@ -55,6 +58,8 @@ public class JWTHelper {
 	    String out = part1+"."+part2+"."+part3;
 	    return out;
 	}
+	
+
 	
 	public static String decodeJwt(String in) {
 		String[] parts = in.split("\\.");

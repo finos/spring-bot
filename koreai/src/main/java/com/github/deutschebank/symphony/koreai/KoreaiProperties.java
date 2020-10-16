@@ -3,39 +3,26 @@ package com.github.deutschebank.symphony.koreai;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
+ * Stores configuration settings for koreai connectivity.
+ * 
  * @author rodriva
  */
 @ConfigurationProperties("symphony.koreai")
 public class KoreaiProperties {
-    private String clientId;
-    private String botId;
-    private String secret;
+	
     private String jwt;
+    
     private String url;
+    
+    private String template = "classpath:/templates/koreai-form.ftl";
+    
+    public String getTemplate() {
+		return template;
+	}
 
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public String getBotId() {
-        return botId;
-    }
-
-    public void setBotId(String botId) {
-        this.botId = botId;
-    }
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
+	public void setTemplate(String template) {
+		this.template = template;
+	}
 
     public String getJwt() {
         return jwt;

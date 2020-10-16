@@ -16,13 +16,13 @@ This project contains the following:
 - Symphony API Spring-Boot Starter
 - Symphony App Spring-Boot Starter
 - Symphony JSON Support
-- Demo App 
-- Demo Bot
 - Tutorials for getting started
 - Symphony FIX Support
 - A Symphony Maven Build Notifier
 - Symphony Shared Stream
 - Chat Workflow
+- KoreAI Connector
+- Lots of Demo Code
 
 Read further to see what each of these includes.
 
@@ -105,10 +105,15 @@ The purpose of this module is to provide a drop-in stream consumer for Symphony 
  
 ## Chat Workflow
 
-This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
+This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
 
  - [View the README](chat-workflow/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
+ - [To-Do List Tutorial](tutorials/Chat-Workflow.md)
+ - [Demo Poll Bot](demos/demo-poll-bot)
+ - [Demo To-Do List Bot](demos/demo-todo-bot)
+ - [Demo Claim Bot](demos/demo-claim-bot)
+  
 
 ## License
 
