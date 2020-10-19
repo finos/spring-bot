@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestObjects;
@@ -21,6 +22,7 @@ import com.github.deutschebank.symphony.workflow.sources.symphony.elements.FormC
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableAddRow;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.edit.TableEditRow;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 
 public class TestTableEdit extends AbstractMockSymphonyTest {
 
@@ -28,6 +30,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 	Workflow wf;
 	
 	private TestObjects to;
+	private EntityJson toWrapper;
 	
 	@Autowired
 	TableEditRow editRow;
@@ -38,16 +41,19 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 	@Autowired
 	TableAddRow addRows;
 	
+	EntityJsonConverter ejc; 
 	
 	
 	@Before
 	public void setup() {
 		to = TestWorkflowConfig.createTestObjects();
+		toWrapper = EntityJsonConverter.newWorkflow(to);
+		ejc = new EntityJsonConverter(wf);
 	}
 	
 	@Test
 	public void testAddRow() {
-		ElementsAction ea = new ElementsAction(wf, room, u, null, "items."+TableAddRow.ACTION_SUFFIX, to);
+		ElementsAction ea = new ElementsAction(wf, room, u, null, "items."+TableAddRow.ACTION_SUFFIX, toWrapper);
 		FormResponse fr = (FormResponse) addRows.apply(ea).get(0);
 		Assert.assertEquals(TestObject.class, fr.getFormClass());
 		Assert.assertEquals("New Test Object", fr.getName());
@@ -58,16 +64,17 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 		newTo.setIsin("isiny");
 		newTo.setBidAxed(true);
 		newTo.setBidQty(324);
-		ea = new ElementsAction(wf, room, u, newTo, "items."+TableAddRow.DO_SUFFIX, to);
+		ea = new ElementsAction(wf, room, u, newTo, "items."+TableAddRow.DO_SUFFIX, toWrapper);
 		fr = (FormResponse) addRows.apply(ea).get(0);
+		TestObjects to = (TestObjects) ejc.readWorkflow(fr.getData());
 		
-		Assert.assertEquals(3, ((TestObjects) fr.getData()).getItems().size()); 
-		Assert.assertEquals(newTo, ((TestObjects) fr.getData()).getItems().get(2)); 
+		Assert.assertEquals(3, to.getItems().size()); 
+		Assert.assertEquals(newTo, to.getItems().get(2)); 
 	}
 	
 	@Test
 	public void testEditRow() {
-		ElementsAction ea = new ElementsAction(wf, room, u, null, "items.[0]."+TableEditRow.EDIT_SUFFIX, to);
+		ElementsAction ea = new ElementsAction(wf, room, u, null, "items.[0]."+TableEditRow.EDIT_SUFFIX, toWrapper);
 		FormResponse fr = (FormResponse) editRow.apply(ea).get(0);
 		Assert.assertEquals(TestObject.class, fr.getFormClass());
 		Assert.assertEquals("Edit Test Object", fr.getName());
@@ -80,7 +87,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 		newTo.setBidAxed(true);
 		newTo.setBidQty(324);
 		
-		ea = new ElementsAction(wf, room, u, newTo, "items.[0]."+TableEditRow.UPDATE_SUFFIX, to);
+		ea = new ElementsAction(wf, room, u, newTo, "items.[0]."+TableEditRow.UPDATE_SUFFIX, toWrapper);
 		fr = (FormResponse) editRow.apply(ea).get(0);
 		Assert.assertEquals(TestObjects.class, fr.getFormClass());
 		TestObjects out = (TestObjects) fr.getFormObject();
@@ -91,7 +98,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 	public void testDeleteRows() {
 		Map<String, Object> selects = Collections.singletonMap("items", Collections.singletonList(Collections.singletonMap("selected", "true")));
 		UnconvertedContent uc = new UnconvertedContent(TestObjects.class, selects);
-		ElementsAction ea = new ElementsAction(wf, room, u, uc, "items."+TableDeleteRows.ACTION_SUFFIX, to);
+		ElementsAction ea = new ElementsAction(wf, room, u, uc, "items."+TableDeleteRows.ACTION_SUFFIX, toWrapper);
 		FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
 		Assert.assertEquals(TestObjects.class, fr.getFormClass());
 		TestObjects formObject2 = (TestObjects) fr.getFormObject();

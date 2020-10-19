@@ -43,7 +43,7 @@ public class SymphonyMessageSenderIntegrationTest {
 		data.put("title", "Some Test Project");
 		data.put("date", new Date());
 		data.put("passed", true);
-		data.put("url", "https://github.com/deutschebank/symphony-java-client-parent");
+		data.put("url", "https://github.com/deutschebank/symphony-java-toolkit");
 		data.put("recipients", Collections.singletonList("y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA=="));
 		data.put("hashtags", Collections.singletonList("some-hash-tag"));
 		data.put("version", "1.0");

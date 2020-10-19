@@ -1,16 +1,15 @@
 package com.github.deutschebank.symphony.workflow;
 
-import java.util.Collections;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Errors;
 
-import com.github.deutschebank.symphony.workflow.Workflow;
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.fixture.TestOb3;
@@ -18,11 +17,12 @@ import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestWorkflowConfig;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.MessageResponse;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.AttachmentHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
-import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.FreemarkerFormMessageMLConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.github.deutschebank.symphony.workflow.validation.ErrorHelp;
@@ -32,6 +32,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	@MockBean
 	SymphonyRooms rooms;
 	
+	@Autowired
 	SymphonyResponseHandler responseHandler;
 	
 	@Autowired
@@ -43,9 +44,13 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	@Autowired
 	AttachmentHandler ah;
 	
+	@Autowired
+	ResourceLoader rl;
+	
 	@Before
 	public void setup() {
-		responseHandler = new SymphonyResponseHandler(messagesApi, new FormMessageMLConverter(rooms), entityJsonConverter, rooms, ah);
+		responseHandler = new SymphonyResponseHandler(messagesApi, new FreemarkerFormMessageMLConverter(rooms, rl), entityJsonConverter, rooms, ah);
+		responseHandler.setOutputTemplates(true);
 	}
 	
 	@Test
@@ -58,7 +63,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 			return null;
 		});
 		
-		MessageResponse mr = new MessageResponse(wf, TestWorkflowConfig.room, new TestObject("213", true, false, "rob@here.com", 55, 22), "test name", "test instruction", "testing");
+		MessageResponse mr = new MessageResponse(wf, TestWorkflowConfig.room, EntityJsonConverter.newWorkflow(new TestObject("213", true, false, "rob@here.com", 55, 22)), "test name", "test instruction", "testing");
 		responseHandler.accept(mr);
 	}
 
@@ -75,7 +80,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 			return null;
 		});
 		
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", TestObject.class, true, Collections.singletonList(new Button("OK", Type.ACTION, "Click me")));
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", TestObject.class, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")));
 		responseHandler.accept(fr);
 	}
 	
@@ -92,7 +97,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestObject a = new TestObject("213", true, false, "rob@here.com", 55, 22);
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, Collections.singletonList(new Button("OK", Type.ACTION, "Click me")), e);
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 	
@@ -109,7 +114,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestOb3 a = new TestOb3(new RoomDef("abc", "asds", true, null), new UserDef(null, "Graham Bobki", "graham@goodle.com"), "some text");
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, null,  "test name", "test instruction", a, true, Collections.singletonList(new Button("OK", Type.ACTION, "Click me")), e);
+		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 }
