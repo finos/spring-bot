@@ -1,9 +1,9 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![BuildStatus](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)](https://github.com/finos/symphony-java-toolkit/workflows)
-![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-client-parent)
+![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-toolkit)
 [![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
-![License](https://img.shields.io/github/license/deutschebank/symphony-java-client-parent)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+![License](https://img.shields.io/github/license/deutschebank/symphony-java-toolkit)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
 
 ## What This Is
 
@@ -64,7 +64,7 @@ Provides Spring-Based configuration and auto-wiring for Symphony APIs.  This is 
 
  - [View the README](symphony-api-spring-boot-starter/README.md)
  - [Read the Bot-Building Tutorial](tutorials/Spring-Boot-Bot.md)
- - [View Demo Bot Code](https://github.com/robmoffat/symphony-java-client-parent/tree/master/demos/demo-bot)
+ - [View Demo Bot Code](https://github.com/robmoffat/symphony-java-toolkit/tree/master/demos/demo-bot)
 
 ## Symphony App Spring Boot Starter
 
@@ -74,7 +74,7 @@ This provides you with an out-of-the-box way to get started and build an app wit
 
  - [View the README](symphony-app-spring-boot-starter/README.md)
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
- - [View Demo App Code](https://github.com/robmoffat/symphony-java-client-parent/tree/master/demos/demo-app)
+ - [View Demo App Code](https://github.com/robmoffat/symphony-java-toolkit/tree/master/demos/demo-app)
 
 ## Symphony JSON Support
 
@@ -123,7 +123,7 @@ In order to do a release:
 ```
 mvn test
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=*  -DgroupId=*
-mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy -P symphony-release 
+mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/demo-claim-bot,demos/demo-poll-bot,!demos/demo-todo-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release 
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=*  -DgroupId=*
 # then push to git
 ```
@@ -131,7 +131,7 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 2.  In Bintray:
 
 Jcenter release is performed automatically.
-To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-client-parent#central
+To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-toolkit#central
 Enter details and click sync.
 
  - **NB:**: This seems to be somewhat unreliable. If it fails, un-check "Close and release repository when done." and instead do the close + release process via the interface at [oss.sonatype.org](https://oss.sonatype.org).
