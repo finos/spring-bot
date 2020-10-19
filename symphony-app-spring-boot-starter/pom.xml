@@ -36,9 +36,8 @@
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
-
 
 		<!-- used for certificate generation -->
 		<dependency>
