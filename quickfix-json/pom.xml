@@ -7,11 +7,10 @@
     <artifactId>jackson-quickfix-module</artifactId>
     <packaging>jar</packaging>
     <name>Jackson QuickFix Module</name>
-    <version>4.59.7-SNAPSHOT</version>
     
     <parent>
         <groupId>com.github.deutschebank.symphony</groupId>
-        <artifactId>symphony-java-client-parent</artifactId>
+        <artifactId>symphony-java-toolkit</artifactId>
         <version>4.59.7-SNAPSHOT</version>
     </parent>
 	
@@ -33,6 +32,5 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
 
 </project>
