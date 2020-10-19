@@ -13,37 +13,28 @@
 		<version>4.59.7-SNAPSHOT</version>
 	</parent>
 
-	<developers>
-		<developer>
-			<name>Rob Moffat</name>
-			<email>robert.moffat@db.com</email>
-		</developer>
-	</developers>
-
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-
 	<dependencies>
-
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-java-client-bindings</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-java-client-identity</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-java-client-entity-json</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -57,7 +48,7 @@
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -72,12 +63,12 @@
 			<version>${spring-boot.version}</version>
 			<scope>provided</scope>
 		</dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>${spring-boot.version}</version>
-      <scope>provided</scope>
-    </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<version>${spring-boot.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
 		<!-- testing -->
 		<dependency>
@@ -98,23 +89,20 @@
 			<version>${spring-boot.version}</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
-	
-	
-	<build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
-        <configuration>
-          <systemPropertyVariables>
-            <symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<configuration>
+					<systemPropertyVariables>
+						<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -32,13 +32,13 @@
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-java-client-bindings</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-java-client-identity</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
