@@ -78,7 +78,7 @@ public class TestOb3 {
 		return true;
 	}
 	
-	@Exposed(description = "Testing")
+	@Exposed(description = "Creates a TestOb3")
 	public static TestOb3 ob3(TestOb3 in) {
 		return in;
 	}

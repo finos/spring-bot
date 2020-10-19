@@ -10,8 +10,4 @@ public @interface Exposed {
 	
 	String[] rooms() default {};
 	
-	/**
-	 * Use this with a pasted table command
-	 */
-	String[] columns() default {};
 }
