@@ -276,7 +276,7 @@ import com.symphony.api.model.AuthenticateRequest;
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-java-client-identity</artifactId>
-      <version>${project.version}</version>
+      <version>4.59.7-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
 
