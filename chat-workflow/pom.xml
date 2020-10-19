@@ -20,17 +20,17 @@
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-api-spring-boot-starter</artifactId>
-      <version>${project.version}</version>
+      <version>4.59.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-java-client-entity-json</artifactId>
-      <version>${project.version}</version>
+      <version>4.59.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-shared-stream</artifactId>
-      <version>${project.version}</version>
+      <version>4.59.7-SNAPSHOT</version>
     </dependency> 
     <!-- needed for formatting messageml -->   
     <dependency>
