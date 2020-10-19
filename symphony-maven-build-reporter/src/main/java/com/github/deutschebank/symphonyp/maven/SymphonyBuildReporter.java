@@ -211,9 +211,10 @@ public class SymphonyBuildReporter extends AbstractMavenLifecycleParticipant {
 
     }
 
-    private Object getTime(MavenExecutionResult done, MavenProject mp) {
+    private long getTime(MavenExecutionResult done, MavenProject mp) {
         BuildSummary bs = done.getBuildSummary(mp);
-        return bs == null ? null : bs.getTime();
+        long out = bs == null ? 0 : bs.getTime();
+        return out;
     }
 
     private List<String> formatExceptions(MavenExecutionResult done) {
