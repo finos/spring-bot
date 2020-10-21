@@ -38,7 +38,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", new EntityJson());
 		List<Response> r = cp.applyCommand("wrap", sma);
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
-		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL_TEST_OBJECTS.getItems().get(1)));
+		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL_TEST_OBJECT));
 		Assert.assertEquals(expected, ((FormResponse) r.get(0)).getFormObject());
 		Assert.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
 	}
