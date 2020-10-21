@@ -1,6 +1,6 @@
 package com.github.deutschebank.symphony.workflow.content;
 
-public class UserDef extends TagDef implements Author, User {
+public class UserDef extends TagDef implements Author {
 	
 	protected String address;
 	
@@ -61,7 +61,7 @@ public class UserDef extends TagDef implements Author, User {
 
 	@Override
 	public String toString() {
-		return "UserDef [address=" + address + ", name=" + name + ", id=" + id + "]";
+		return "UserDef [address=" + getAddress() + ", name=" + getName() + ", id=" + getId() + "]";
 	}
 
 	

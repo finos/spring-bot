@@ -7,8 +7,8 @@
 
   <parent>
     <groupId>com.github.deutschebank.symphony</groupId>
-    <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.59.1-SNAPSHOT</version>
+    <artifactId>symphony-java-toolkit</artifactId>
+    <version>4.59.7-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -20,18 +20,19 @@
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-api-spring-boot-starter</artifactId>
-      <version>4.59.1-SNAPSHOT</version>
+      <version>4.59.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-java-client-entity-json</artifactId>
-      <version>4.59.1-SNAPSHOT</version>
+      <version>4.59.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-shared-stream</artifactId>
-      <version>4.59.1-SNAPSHOT</version>
-    </dependency>    
+      <version>4.59.7-SNAPSHOT</version>
+    </dependency> 
+    <!-- needed for formatting messageml -->   
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>

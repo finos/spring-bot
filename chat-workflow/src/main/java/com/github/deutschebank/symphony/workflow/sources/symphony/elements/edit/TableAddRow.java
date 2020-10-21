@@ -7,14 +7,16 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.form.Button;
 import com.github.deutschebank.symphony.workflow.form.Button.Type;
-import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.AbstractElementsConsumer;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.ElementsAction;
+import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 
 
 
@@ -34,30 +36,38 @@ public class TableAddRow extends AbstractElementsConsumer {
 		if (verb == null) {
 			return null;
 		}
+		EntityJson ej = ea.getData();
+		Object workflowObject = ej.get(EntityJsonConverter.WORKFLOW_001);
+		
 		if (verb.endsWith(ACTION_SUFFIX)) {
 			String tableLocation = verb.substring(0, verb.length() - ACTION_SUFFIX.length()-1);
 			tableLocation = TableEditRow.fixSpel(tableLocation);
 			Expression e = spel.parseExpression(tableLocation);
-			TypeDescriptor td  = e.getValueTypeDescriptor(ea.getWorkflowObject());
+			TypeDescriptor td  = e.getValueTypeDescriptor(workflowObject);
 			Class<?> c = td.getResolvableType().getGeneric(0).resolve();
 			
 			Object out;
 			try {
-				out = c.newInstance();
+				out = c.newInstance(); 
 			} catch (Exception e1) {
 				throw new UnsupportedOperationException("Can't instantiate", e1);
 			}
-			return Collections.singletonList(new FormResponse(wf, ea.getRoom(), ea.getWorkflowObject(), "New "+ClassBasedWorkflow.getName(c), "Provide details for the new row", out, true, Collections.singletonList(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
+			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 		} else if (verb.endsWith(DO_SUFFIX)) {
-			Object data = ea.getWorkflowObject();
 			String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
 			tableLocation = TableEditRow.fixSpel(tableLocation);
 			Expression e = spel.parseExpression(tableLocation);
 			Object updated = ea.getFormData();
-			List<Object> listToUpdate = (List<Object>) e.getValue(data);
+			List<Object> listToUpdate = (List<Object>) e.getValue(workflowObject);
 			listToUpdate.add(updated);
-			return Collections.singletonList(new FormResponse(wf, ea.getRoom(), data, ClassBasedWorkflow.getName(data.getClass()), ClassBasedWorkflow.getInstructions(data.getClass()), data, false, wf.gatherButtons(data, ea.getRoom())));
-		}
+			return Collections.singletonList(
+				new FormResponse(wf, ea.getAddressable(), 
+						ej, 
+						wf.getName(workflowObject.getClass()), 
+						wf.getInstructions(workflowObject.getClass()), 
+						workflowObject, false, 
+						wf.gatherButtons(workflowObject, ea.getAddressable())));
+		} 
 		
 		return null;
 	}

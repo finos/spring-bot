@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.github.deutschebank.symphony.workflow.content.Word;
 import com.github.deutschebank.symphony.workflow.java.Exposed;
 import com.github.deutschebank.symphony.workflow.java.Work;
 
@@ -12,7 +13,7 @@ import com.github.deutschebank.symphony.workflow.java.Work;
 public class TestObjects {
 
 	@Valid
-	private List<TestObject> items;
+	private List<TestObject> items = new ArrayList<>();
 
 	public TestObjects() {
 		super();
@@ -61,9 +62,10 @@ public class TestObjects {
 		return true;
 	}
 	
-	@Exposed
-	public TestObjects remove(int i) {
-		items.remove(i);
+	@Exposed(description="removes item by number. e.g. /remove 4")
+	public TestObjects remove(Word w1, Word w2) {
+		Integer i = Integer.parseInt(w2.getText());
+		items.remove((int) i);
 		return this;
 	}
 	

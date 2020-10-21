@@ -6,22 +6,31 @@ import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.fixture.TestOb3;
 import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestObjects;
+import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.form.Button.Type;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
+import com.github.deutschebank.symphony.workflow.validation.ErrorHelp;
 
 public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 
 	@Autowired
 	EntityJsonConverter converter;
+	
+	@Autowired
+	Validator validator;
 		
 	ObjectMapper om = new ObjectMapper();
 
@@ -76,4 +85,5 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 		TestOb3 b = (TestOb3) converter.readWorkflowValue(out);
 		Assert.assertEquals(a1, b);
 	}
+
 }

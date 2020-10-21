@@ -8,21 +8,25 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
+import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.fixture.TestWorkflowConfig;
-import com.github.deutschebank.symphony.workflow.room.Rooms;
+import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRoomsImpl;
+import com.symphony.api.model.RoomSpecificStreamAttributes;
 import com.symphony.api.model.RoomSystemInfo;
+import com.symphony.api.model.Stream;
 import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamList;
 import com.symphony.api.model.UserV2;
@@ -39,7 +43,7 @@ import com.symphony.api.pod.UsersApi;
 @SpringBootTest(classes = {  TestWorkflowConfig.class })
 public class TestRoomAndUsersBuilder {
 	
-	Rooms ruBuilder;
+	SymphonyRooms ruBuilder;
 	
 	@MockBean
 	RoomMembershipApi rmApi;
@@ -89,9 +93,33 @@ public class TestRoomAndUsersBuilder {
 	
 	@Test
 	public void testCreateRoom() {
+		when(streamsApi.v1StreamsListPost(Mockito.isNull(), Mockito.any(), Mockito.eq(0), Mockito.eq(0)))
+			.thenAnswer(c -> {
+				StreamList out = new StreamList();
+				out.add(new StreamAttributes()
+					.roomAttributes(new RoomSpecificStreamAttributes()
+						.name("Some Test Room"))
+					.id("abc123"));
+				
+				return out;
+			});
+		
 		RoomDef rd = new RoomDef("Some Test Room", "Automated Test Room Created", true, null);
 		Room out = ruBuilder.ensureRoom(rd);
 		assertEquals("Some Test Room", out.getRoomName());
 		assertEquals(1, ruBuilder.getAllRooms().size());
+		
+		String someStream = ruBuilder.getStreamFor(out);
+		Assert.assertEquals("abc123", someStream);
+	}
+	
+	@Test
+	public void testGetUserStream() {
+		when(streamsApi.v1ImCreatePost(Mockito.any(),Mockito.isNull()))
+			.thenAnswer(c -> new Stream().id("123"));
+		
+		UserDef rd = new UserDef("123", "Robski mo", "rob@example.com");
+		String someStream = ruBuilder.getStreamFor(rd);
+		Assert.assertEquals("123", someStream);
 	}
 }

@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.github.detuschebank.symphony.json.EntityJson;
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.content.Content;
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Paragraph;
@@ -48,7 +48,6 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 							.collect(Collectors.toList())
 						))), smp.parseMessage("<messageML><p>this is it</p></messageML>", null));
 	}
-	
 	
 	@Test
 	public void testTaggedMessage() throws Exception {

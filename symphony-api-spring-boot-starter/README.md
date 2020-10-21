@@ -1,8 +1,8 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
 
 # Spring Boot Starter for Symphony Api / Bot Creation
 
-This class provides Spring-Boot Starter for Symphony endpoints.  It is expected that you'll want to define details like your agent url and keymanager url in Spring, and have this "just work" with Symphony APIs.  This package provides for that, using `symphony-java-client-bindings` definitions of Symphony APIs to call.
+This module provides Spring-Boot Starter for Symphony endpoints.  It is expected that you'll want to define details like your agent url and keymanager url in Spring, and have this "just work" with Symphony APIs.  This package provides for that, using `symphony-java-client-bindings` definitions of Symphony APIs to call.
 
 ## Use Case 1:   A Single Bot Using Symphony APIs
 
@@ -178,7 +178,23 @@ This will be loaded into a bean called `botIdentity` of class `SymphonyIdentity`
 
 You can control whether the bot is authenticated with RSA or certificates using `symphony.bot.auth-with=RSA|CERT`.
 
-### Step 5: Dependency Injection
+### Step 5: Trust Store Configuration (Optional)
+
+If you want to add a trust store for the bot to use, configure it in the YAML like this:
+
+```
+symphony: 
+  trust-store:
+    location:  classpath:/some-file.crt
+    type: PEMS / JKS / PKCS12
+    password: optional
+    
+```
+
+Where `location` is a spring resource location, starting with `classpath:` or `file:`, and `type` is the type of file, one of `PEMS`, `JKS` or `PKCS12`.
+If you don't supply the trust store, Java's main one is used instead.
+
+### Step 6: Dependency Injection
 
 You can now build a really simple spring component like so:
 
