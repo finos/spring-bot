@@ -9,6 +9,7 @@ import org.springframework.beans.factory.InitializingBean;
 import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.AbstractNeedsWorkflow;
 import com.github.deutschebank.symphony.workflow.Workflow;
+import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
@@ -66,8 +67,11 @@ public class PresentationMLHandler extends AbstractNeedsWorkflow implements Init
 				Message words = messageParser.parseMessage(ms.getMessage().getMessage(), ej);
 				TypeEnum streamType = TypeEnum.fromValue(ms.getMessage().getStream().getStreamType());
 				if (isForThisBot(words, streamType)) {
-					Room rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
+					Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
 					User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());
+					
+					// TODO: multi-user chat (not room)
+					rr = rr == null ? u : rr;
 					SimpleMessageAction sma = new SimpleMessageAction(wf, rr, u, words, ej);
 					for (SimpleMessageConsumer c : messageConsumers) {
 						try {

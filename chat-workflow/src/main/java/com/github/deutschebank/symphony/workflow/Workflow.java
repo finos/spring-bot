@@ -2,13 +2,10 @@ package com.github.deutschebank.symphony.workflow;
 
 import java.util.List;
 
-import com.github.deutschebank.symphony.workflow.content.Message;
+import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.form.Button;
-import com.github.deutschebank.symphony.workflow.history.History;
-import com.github.deutschebank.symphony.workflow.response.Response;
-import com.github.deutschebank.symphony.workflow.room.Rooms;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 
 /**
  * A workflow is a collection of steps, which can be triggered by messages posted in a Symphony room.
@@ -24,25 +21,27 @@ public interface Workflow {
 		
 		public String getDescription();
 		
-		public boolean isShowButton();
+		boolean addToHelp();
 		
-		public boolean isShowText();
+		/**
+		 * Whether this method can be exposed as a button
+		 */
+		boolean isButton();
+		
+		/**
+		 * Whether this method can be called by typing it's name.
+		 */
+		boolean isMessage();
 		
 	}
 		
 	public String getNamespace();
 	
-	public List<CommandDescription> getCommands(Room r);
+	public List<CommandDescription> getCommands(Addressable r);
 	
-	public boolean hasMatchingCommand(String name, Room r);
-	
-	public List<Response> applyCommand(User u, Room r, String commandName, Object argument, Message m);
-	
-	List<Button> gatherButtons(Object out, Room r);
-	
-	public Rooms getRoomsApi();
-	
-	public History getHistoryApi();
+	public boolean hasMatchingCommand(String name, Addressable r);
+		
+	public ButtonList gatherButtons(Object out, Addressable r);
 	
 	/**
 	 * Important named rooms that must exist for the workflow.  
@@ -59,8 +58,9 @@ public interface Workflow {
 	 */
 	public List<Class<?>> getDataTypes();
 
-	public void registerHistoryProvider(History h);
-	
-	public void registerRoomsProvider(Rooms r);
+	public String getInstructions(Class<?> c);
+
+	public String getName(Class<?> c);
+
 }
 

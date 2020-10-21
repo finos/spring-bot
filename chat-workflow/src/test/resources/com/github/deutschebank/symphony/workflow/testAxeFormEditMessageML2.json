@@ -1,0 +1,19 @@
+{
+  "formdata" : null,
+  "errors" : {
+    "type" : "com.github.deutschebank.symphony.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  },
+  "buttons" : {
+    "type" : "com.github.deutschebank.symphony.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "com.github.deutschebank.symphony.workflow.form.button",
+      "version" : "1.0",
+      "name" : "submit",
+      "buttonType" : "ACTION",
+      "text" : "GO"
+    } ]
+  }
+}

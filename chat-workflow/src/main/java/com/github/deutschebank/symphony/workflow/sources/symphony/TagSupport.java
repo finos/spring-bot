@@ -2,12 +2,14 @@ package com.github.deutschebank.symphony.workflow.sources.symphony;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.util.StringUtils;
 
 import com.github.deutschebank.symphony.workflow.Workflow;
+import com.github.deutschebank.symphony.workflow.content.HashTag;
+import com.github.deutschebank.symphony.workflow.content.HashTagDef;
 import com.github.deutschebank.symphony.workflow.content.Tag;
 
 public class TagSupport {
@@ -52,33 +54,28 @@ public class TagSupport {
 		}
 	}
 	
-	public static Set<String> classHashTags(Object in) {
+	public static Set<HashTag> classHashTags(Object in) {
 		if (in != null) {
-			return toHashTags(in.getClass());
+			return toHashTags(in.getClass()).stream()
+				.collect(Collectors.toSet());
 		} else {
 			return Collections.emptySet();
 		}
 	}
-
 	
-	
-	private static String formatTag(String in) {
-		return in.replace(".", "-").toLowerCase();
-	}
-	
-	public static String toHashTag(Class<?> in) {
+	public static HashTag toHashTag(Class<?> in) {
 		if (in == null) {
-			return "";
+			return null;
 		}
 		
-		return toHashTag(in.getCanonicalName());
+		return new HashTagDef(formatTag(in));
 	}
 	
-	public static Set<String> toHashTags(Class<?> c) {
+	public static Set<HashTag> toHashTags(Class<?> c) {
 		if ((c == Object.class) || (c == null)) {
 			return Collections.emptySet();
 		} else {
-			Set<String> out = new HashSet<>();
+			Set<HashTag> out = new HashSet<>();
 			out.add(toHashTag(c));
 			for (Class<?> i : c.getInterfaces()) {
 				out.add(toHashTag(i));
@@ -88,6 +85,11 @@ public class TagSupport {
 			return out;
 		}
 		
+	}
+	
+
+	public static String formatTag(String in) {
+		return in.replace(".", "-").toLowerCase();
 	}
 	
 	public static String formatTag(Class<?> in) {
