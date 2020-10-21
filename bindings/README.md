@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)[![Javadocs](https://img.shields.io/badge/Javadocs-symphony--java--client--bindings-green)](https://javadoc.io/doc/com.github.deutschebank.symphony/symphony-java-client-bindings/latest/index.html)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)[![Javadocs](https://img.shields.io/badge/Javadocs-symphony--java--client--bindings-green)](https://javadoc.io/doc/com.github.deutschebank.symphony/symphony-java-client-bindings/latest/index.html)
 
 
 ## What This Is

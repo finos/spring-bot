@@ -1,8 +1,8 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
-![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg) ![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-toolkit)
+![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg) ![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-client-parent)
 [![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
 ![License](https://img.shields.io/github/license/deutschebank/symphony-java-toolkit)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
 
 ## What This Is
 
@@ -63,7 +63,7 @@ Provides Spring-Based configuration and auto-wiring for Symphony APIs.  This is 
 
  - [View the README](symphony-api-spring-boot-starter/README.md)
  - [Read the Bot-Building Tutorial](tutorials/Spring-Boot-Bot.md)
- - [View Demo Bot Code](https://github.com/robmoffat/symphony-java-toolkit/tree/master/demos/demo-bot)
+ - [View Demo Bot Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-bot)
 
 ## Symphony App Spring Boot Starter
 
@@ -73,7 +73,7 @@ This provides you with an out-of-the-box way to get started and build an app wit
 
  - [View the README](symphony-app-spring-boot-starter/README.md)
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
- - [View Demo App Code](https://github.com/robmoffat/symphony-java-toolkit/tree/master/demos/demo-app)
+ - [View Demo App Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-app)
 
 ## Symphony JSON Support
 
