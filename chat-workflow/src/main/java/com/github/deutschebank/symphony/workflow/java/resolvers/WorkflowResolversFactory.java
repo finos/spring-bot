@@ -15,7 +15,6 @@ import com.github.deutschebank.symphony.workflow.content.Addressable;
  * 
  * @author moffrob
  *
- * @param <X>
  */
 public class WorkflowResolversFactory implements ApplicationContextAware {
 	

@@ -7,7 +7,6 @@ import com.github.deutschebank.symphony.workflow.Action;
  * 
  * @author moffrob
  *
- * @param <X>
  */
 public interface WorkflowResolverFactory {
 
