@@ -71,7 +71,7 @@ public class TestObjects {
 	
 	@Exposed(description= "creates a new test objects")
 	public static TestObjects testObjects() {
-		return TestWorkflowConfig.INITIAL;
+		return TestWorkflowConfig.INITIAL_TEST_OBJECTS;
 	}
 	
 	@Exposed(description = "Add another test object")
