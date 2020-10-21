@@ -24,9 +24,15 @@ import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflo
 @Configuration
 public class TestWorkflowConfig {
 
-	public static final TestObjects INITIAL = createTestObjects();
+	public static final TestObject INITIAL_TEST_OBJECT = createTestObject();
+	
+	public static final TestObjects INITIAL_TEST_OBJECTS = createTestObjects();
 	
 	public static final List<String> ADMIN_EMAILS = Collections.singletonList("robert.moffat@example.com");
+	
+	public static TestObject createTestObject() {
+		return new TestObject("AUD274239874", true, false, "gregb@example.com", 2386, new BigDecimal("234823498.573"));
+	}
 	
 	public static TestObjects createTestObjects() {
 		return new TestObjects(
@@ -42,28 +48,31 @@ public class TestWorkflowConfig {
 	public History symphonyHistory(Workflow wf) {
 		History h = new History() {
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public <X> Optional<X> getLastFromHistory(Class<X> type, Addressable address) {
 				if (type == TestObject.class) {
-					return Optional.of((X) INITIAL.getItems().get(1));
+					return Optional.of((X) INITIAL_TEST_OBJECT);
 				} else if (type == TestObjects.class) {
-					return Optional.of((X) INITIAL);
+					return Optional.of((X) INITIAL_TEST_OBJECTS);
 				} else {
 					throw new IllegalArgumentException();
 				}
 			}
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public <X> List<X> getFromHistory(Class<X> type, Addressable address, Instant since) {
 				if (type == TestObject.class) {
-					return (List<X>) INITIAL.getItems();
+					return (List<X>) Collections.singletonList(INITIAL_TEST_OBJECT);
 				} else if (type == TestObjects.class) {
-					return (List<X>) Collections.singletonList(INITIAL);
+					return (List<X>) Collections.singletonList(INITIAL_TEST_OBJECTS);
 				} else {
 					throw new IllegalArgumentException();
 				}
 			}
 
+			@SuppressWarnings("unchecked")
 			@Override
 			public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
 				return Collections.EMPTY_LIST;

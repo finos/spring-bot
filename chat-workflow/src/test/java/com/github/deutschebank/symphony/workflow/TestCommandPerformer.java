@@ -8,22 +8,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.github.deutschebank.symphony.json.EntityJson;
-import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.fixture.TestObject;
 import com.github.deutschebank.symphony.workflow.fixture.TestObjects;
 import com.github.deutschebank.symphony.workflow.fixture.TestWorkflowConfig;
-import com.github.deutschebank.symphony.workflow.java.perform.PerformerConfig;
-import com.github.deutschebank.symphony.workflow.java.resolvers.ResolverConfig;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
-import com.github.deutschebank.symphony.workflow.room.Rooms;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.ElementsAction;
-import com.github.deutschebank.symphony.workflow.sources.symphony.messages.SimpleMessageAction;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 
 @RunWith(SpringRunner.class)
@@ -44,7 +38,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", new EntityJson());
 		List<Response> r = cp.applyCommand("wrap", sma);
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
-		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL.getItems().get(1)));
+		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL_TEST_OBJECTS.getItems().get(1)));
 		Assert.assertEquals(expected, ((FormResponse) r.get(0)).getFormObject());
 		Assert.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
 	}
@@ -54,7 +48,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "testObjects", new EntityJson());
 		List<Response> r = cp.applyCommand("testObjects", sma);
 		Assert.assertEquals(FormResponse.class, r.get(0).getClass());
-		Assert.assertEquals(TestWorkflowConfig.INITIAL, ((FormResponse) r.get(0)).getFormObject());
+		Assert.assertEquals(TestWorkflowConfig.INITIAL_TEST_OBJECTS, ((FormResponse) r.get(0)).getFormObject());
 		Assert.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
 	}
 	
@@ -77,7 +71,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		List<Response> r = cp.applyCommand("add", sma);
 		
 		List<TestObject> all = new ArrayList<TestObject>();
-		all.addAll(TestWorkflowConfig.INITIAL.getItems());
+		all.addAll(TestWorkflowConfig.INITIAL_TEST_OBJECTS.getItems());
 		all.add(argument);
 		TestObjects expected = new TestObjects(all);
 
