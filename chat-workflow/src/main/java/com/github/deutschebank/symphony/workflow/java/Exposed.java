@@ -10,8 +10,16 @@ public @interface Exposed {
 	
 	String[] rooms() default {};
 	
+	boolean addToHelp() default true;
+	
 	/**
-	 * Use this with a pasted table command
+	 * Whether this method can be exposed as a button
 	 */
-	String[] columns() default {};
+	boolean isButton() default true;
+	
+	/**
+	 * Whether this method can be called by typing it's name.
+	 */
+	boolean isMessage() default true;
+	
 }

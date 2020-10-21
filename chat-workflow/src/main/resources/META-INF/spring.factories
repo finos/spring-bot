@@ -1,3 +1,6 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
- com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyWorkflowConfig,com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyWorkflowComponentsConfig,com.github.deutschebank.symphony.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig
+ com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyWorkflowConfig,\
+ com.github.deutschebank.symphony.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig,\
+ com.github.deutschebank.symphony.workflow.java.resolvers.ResolverConfig,\
+ com.github.deutschebank.symphony.workflow.java.perform.PerformerConfig

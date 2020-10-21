@@ -1,0 +1,43 @@
+{
+  "workflow_001" : {
+    "type" : "com.github.deutschebank.symphony.workflow.fixture.testOb4",
+    "version" : "1.0",
+    "theId" : {
+      "name" : "adf360dd-06fe-43a4-9a62-2c17fe2deefa",
+      "id" : "adf360dd-06fe-43a4-9a62-2c17fe2deefa",
+      "tagType" : "HASH"
+    },
+    "c" : "B",
+    "b" : true,
+    "a" : {
+      "name" : "bbb",
+      "id" : "28374682376",
+      "tagType" : "USER",
+      "address" : "v@example.com"
+    },
+    "someUser" : {
+      "type" : "com.github.deutschebank.symphony.workflow.content.userDef",
+      "version" : "1.0",
+      "name" : "bob",
+      "id" : "2678",
+      "tagType" : "USER",
+      "address" : "bob@example.com"
+    }
+  },
+  "errors" : {
+    "type" : "com.github.deutschebank.symphony.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  },
+  "buttons" : {
+    "type" : "com.github.deutschebank.symphony.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "com.github.deutschebank.symphony.workflow.form.button",
+      "version" : "1.0",
+      "name" : "submit",
+      "buttonType" : "ACTION",
+      "text" : "GO"
+    } ]
+  }
+}
