@@ -9,7 +9,7 @@
   <parent>
     <groupId>com.github.deutschebank.symphony</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.59.7</version>
+    <version>4.59.9-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -276,7 +276,7 @@ import com.symphony.api.model.AuthenticateRequest;
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-java-client-identity</artifactId>
-      <version>4.59.7</version>
+      <version>4.59.9-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
 
