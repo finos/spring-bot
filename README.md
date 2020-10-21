@@ -1,8 +1,9 @@
-[![BuildStatus](https://img.shields.io/travis/deutschebank/symphony-java-client-parent)](https://travis-ci.org/deutschebank/symphony-java-client-parent)
-![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-client-parent)
-[![Coverage](https://img.shields.io/codecov/c/github/deutschebank/symphony-java-client-parent)](https://codecov.io/gh/deutschebank/symphony-java-client-parent)
-![License](https://img.shields.io/github/license/deutschebank/symphony-java-client-parent)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
+[![BuildStatus](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)](https://github.com/finos/symphony-java-toolkit/workflows)
+![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-toolkit)
+[![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
+![License](https://img.shields.io/github/license/deutschebank/symphony-java-toolkit)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
 
 ## What This Is
 
@@ -21,6 +22,7 @@ This project contains the following:
 - Symphony FIX Support
 - A Symphony Maven Build Notifier
 - Symphony Shared Stream
+- Chat Workflow
 
 Read further to see what each of these includes.
 
@@ -41,7 +43,7 @@ This provides a JAX-RS standard, **Type-Safe** means of interacting with [Sympho
 
 This is used in preference to Symphony's own API as the configuration can be left to spring boot, and you can use Spring's starters for JAX-RS to build your application.
 
-[View The Readme](bindings/README.md)
+[View The README](bindings/README.md)
 
 ## Symphony Java Client Identity
 
@@ -54,15 +56,15 @@ This is used in preference to Symphony's own API as the configuration can be lef
 
 This is a highly convenient abstraction which works with Spring Boot's use of [Jackson](https://github.com/FasterXML/jackson) and [YAML](https://yaml.org) to describe Bot and App identities in Java.
 
-[View The Readme](identity/README.md)
+[View The README](identity/README.md)
 
 ## Symphony API Spring Boot Starter
 
 Provides Spring-Based configuration and auto-wiring for Symphony APIs.  This is perfect if you are building a Symphony Bot using Spring Boot.
 
- - [View the Readme](symphony-api-spring-boot-starter/README.md)
+ - [View the README](symphony-api-spring-boot-starter/README.md)
  - [Read the Bot-Building Tutorial](tutorials/Spring-Boot-Bot.md)
- - [View Demo Bot Code](https://github.com/robmoffat/symphony-java-client-parent/tree/master/demos/demo-bot)
+ - [View Demo Bot Code](https://github.com/robmoffat/symphony-java-toolkit/tree/master/demos/demo-bot)
 
 ## Symphony App Spring Boot Starter
 
@@ -70,15 +72,15 @@ If you are building a Symphony App, there are multiple concerns around app secur
 
 This provides you with an out-of-the-box way to get started and build an app with all of these concerns taken care of.
 
- - [View the Readme](symphony-app-spring-boot-starter/README.md)
+ - [View the README](symphony-app-spring-boot-starter/README.md)
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
- - [View Demo App Code](https://github.com/robmoffat/symphony-java-client-parent/tree/master/demos/demo-app)
+ - [View Demo App Code](https://github.com/robmoffat/symphony-java-toolkit/tree/master/demos/demo-app)
 
 ## Symphony JSON Support
 
 This is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON data payload of a Symphony Message, using Jackson.
 
- - [View the Readme](entity-json/README.md)
+ - [View the README](entity-json/README.md)
  - [Read the Tutorial](tutorials/Entity-JSON.md)
  
 ## QuickFIX Support
@@ -87,19 +89,26 @@ This is a utility that helps you serialize/deserialize QuickFIX messages into JS
 
 Although this is not reliant on Symphony code, it is adjacent tech and so might be useful for sending FIX payloads within Symphony.
 
- - [View the Readme](quickfix-json/README.md)
+ - [View the README](quickfix-json/README.md)
  
 ## Maven Build Reporter
 
 Provides a maven extension that allows you to report build results into a Symphony chat room.  
 
- - [View the Readme](symphony-maven-build-reporter/README.md)
+ - [View the README](symphony-maven-build-reporter/README.md)
  
 ## Symphony Shared Stream
 
 The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
 
- - [View the Readme](shared-stream/README.md)
+ - [View the README](shared-stream/README.md)
+ 
+## Chat Workflow
+
+This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
+
+ - [View the README](chat-workflow/README.md)
+ - [View the Tutorial](tutorials/Chat-Workflow.md) 
 
 ## License
 
@@ -114,7 +123,7 @@ In order to do a release:
 ```
 mvn test
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=*  -DgroupId=*
-mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app' clean test source:jar javadoc:javadoc deploy -P symphony-release 
+mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/demo-claim-bot,demos/demo-poll-bot,!demos/demo-todo-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release 
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=*  -DgroupId=*
 # then push to git
 ```
@@ -122,7 +131,7 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 2.  In Bintray:
 
 Jcenter release is performed automatically.
-To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-client-parent#central
+To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-toolkit#central
 Enter details and click sync.
 
  - **NB:**: This seems to be somewhat unreliable. If it fails, un-check "Close and release repository when done." and instead do the close + release process via the interface at [oss.sonatype.org](https://oss.sonatype.org).

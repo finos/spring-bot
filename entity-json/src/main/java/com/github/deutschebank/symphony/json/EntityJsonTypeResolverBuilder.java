@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTypeResolverBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping;
 import com.fasterxml.jackson.databind.SerializationConfig;
@@ -195,12 +196,12 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		if (t.isEnumType()) {
 			return false;
 		}
+
+		if (JsonNode.class.isAssignableFrom(t.getRawClass())) {
+			return false;
+		}
 		
 		if (!out) {
-			if (t.isEnumType()) {
-				return false;
-			}
-			
 			String className = t.getRawClass().getCanonicalName();
 			for (VersionSpace versionSpace : allowed) {
 				if (className.startsWith(versionSpace.packagePrefix)) {

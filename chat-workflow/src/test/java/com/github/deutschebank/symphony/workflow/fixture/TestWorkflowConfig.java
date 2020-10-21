@@ -8,7 +8,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,12 +15,11 @@ import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
+import com.github.deutschebank.symphony.workflow.content.Tag;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.history.History;
-import com.github.deutschebank.symphony.workflow.java.ClassBasedWorkflow;
-import com.github.deutschebank.symphony.workflow.room.Rooms;
-import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
+import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 
 @Configuration
 public class TestWorkflowConfig {
@@ -41,7 +39,7 @@ public class TestWorkflowConfig {
 	public static final Room room = new RoomDef("Test Room",  "Test Room Desc", false, null);
 	
 	@Bean
-	public History history(Workflow wf) {
+	public History symphonyHistory(Workflow wf) {
 		History h = new History() {
 			
 			@Override
@@ -65,19 +63,24 @@ public class TestWorkflowConfig {
 					throw new IllegalArgumentException();
 				}
 			}
+
+			@Override
+			public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
+				return Collections.EMPTY_LIST;
+			}
 		};
 		
-		wf.registerHistoryProvider(h);
 		return h;
 	}
 	
 	@Bean
 	public Workflow testObjectsWorkflow() {
-		ClassBasedWorkflow basicWorkflow = new ClassBasedWorkflow("TestObjects-workflow", Collections.singletonList(u), Collections.singletonList(room));
+		ClassBasedWorkflow basicWorkflow = new ClassBasedWorkflow("testing-fixture-namespace", Collections.singletonList(u), Collections.singletonList(room));
 		basicWorkflow.addClass(TestObjects.class);
 		basicWorkflow.addClass(TestObject.class);
 		basicWorkflow.addClass(TestOb3.class);
 		basicWorkflow.addClass(TestOb4.class);
+		basicWorkflow.addClass(TestTemplatedObject.class);
 		return basicWorkflow;
 	}
 
