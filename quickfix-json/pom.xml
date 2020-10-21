@@ -10,7 +10,7 @@
     
     <parent>
         <groupId>com.github.deutschebank.symphony</groupId>
-        <artifactId>symphony-java-toolkit</artifactId>
+        <artifactId>symphony-java-client-parent</artifactId>
         <version>4.59.7</version>
     </parent>
 	
