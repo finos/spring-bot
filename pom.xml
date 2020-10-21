@@ -48,10 +48,39 @@
 		<symphony.reporter.relay.url>https://develop.symphony.com/relay</symphony.reporter.relay.url>
 	</properties>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
 	<organization>
 		<name>Deutsche Bank AG</name>
 		<url>https://github.com/deutschebank</url>
 	</organization>
+
+	<developers>
+		<developer>
+			<id>robmoffat</id>
+			<name>Rob Moffat</name>
+			<email>rob@kite9.com</email>
+			<url>https://robmoff.at</url>
+			<organization>Kite9 Ltd</organization>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>vladimirpar</id>
+			<name>Vladimir Parnashvili</name>
+			<email>vladimir.parnashvili@db.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<scm>
 		<connection>scm:git@github.com:finos/symphony-java-toolkit.git</connection>
