@@ -9,9 +9,9 @@
 		<version>2.3.2.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.github.deutschebank.symphony</groupId>
+	<groupId>com.db.symphony.example-bot</groupId>
 	<artifactId>demo-bot</artifactId>
-	<version>4.59.7-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>Symphony Demo Bot</name>
 	<description>Demo Bot Using Spring Boot Starter</description>
 

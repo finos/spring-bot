@@ -16,15 +16,16 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.github.deutschebank.symphony.json.EntityJson;
+import com.github.deutschebank.symphony.workflow.content.CashTagDef;
 import com.github.deutschebank.symphony.workflow.content.Content;
+import com.github.deutschebank.symphony.workflow.content.HashTagDef;
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Paragraph;
 import com.github.deutschebank.symphony.workflow.content.PastedTable;
 import com.github.deutschebank.symphony.workflow.content.Tag;
-import com.github.deutschebank.symphony.workflow.content.TagDef;
+import com.github.deutschebank.symphony.workflow.content.Tag.Type;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
 import com.github.deutschebank.symphony.workflow.content.Word;
-import com.github.deutschebank.symphony.workflow.content.Tag.Type;
 import com.symphony.user.Mention;
 
 /**
@@ -60,8 +61,10 @@ public class SimpleMessageParser {
 		public Tag getContents() {
 			if (type== Type.USER) {
 				return new UserDef(id, buf.substring(1), null);
+			} else if (type == Type.CASH ){
+				return new CashTagDef(id);
 			} else {
-				return new TagDef(id, buf.substring(1), type);
+				return new HashTagDef(id);
 			}
 		}
 		
@@ -315,7 +318,10 @@ public class SimpleMessageParser {
 					if (top instanceof TextFrame) {
 						((TextFrame<?>) top).push(ch, start, length);
 					} else {
-						throw new UnsupportedOperationException("Wasn't expecting text");
+						String content = new String(ch, start, length);
+						if (!content.trim().isEmpty()) {
+							throw new UnsupportedOperationException("Wasn't expecting text: "+content);
+						}
 					}
 				}
 				
