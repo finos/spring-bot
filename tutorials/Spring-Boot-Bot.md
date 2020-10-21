@@ -60,7 +60,7 @@ versions)
 ```
 Latest version: 
 
-![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)
+![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)
 
 
 5.  Add Jax-RS Dependency
