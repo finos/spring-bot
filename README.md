@@ -117,7 +117,15 @@ This project is licensed under the [Apache 2.0 License](License).
 
 In order to do a release:
 
-1. On Releaser's machine:
+1.  Changes.md
+
+- Update this file to include details of the release.
+
+4.  On Github 
+
+- Create 
+
+2. On Releaser's machine:
 
 ```
 mvn test
@@ -127,11 +135,12 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 # then push to git
 ```
 
-2.  In Bintray:
+3.  In Bintray:
 
 Jcenter release is performed automatically.
 To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-toolkit#central
 Enter details and click sync.
 
  - **NB:**: This seems to be somewhat unreliable. If it fails, un-check "Close and release repository when done." and instead do the close + release process via the interface at [oss.sonatype.org](https://oss.sonatype.org).
- 
+
+
