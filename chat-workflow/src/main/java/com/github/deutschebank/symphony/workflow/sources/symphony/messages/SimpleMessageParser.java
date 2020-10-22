@@ -8,6 +8,7 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.symphonyoss.Taxonomy;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.taxonomy.Hashtag;
 import org.xml.sax.Attributes;
@@ -69,6 +70,10 @@ public class SimpleMessageParser {
 		}
 		
 		private void deReference(Object o) {
+			if (o instanceof Taxonomy) {
+				o = ((Taxonomy)o).getId().get(0);
+			} 
+			
 			if (o instanceof Mention) {
 				id = ((Mention) o).getId().get(0).getValue();
 				type = Type.USER;
