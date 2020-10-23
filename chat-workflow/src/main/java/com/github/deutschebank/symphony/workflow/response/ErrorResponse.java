@@ -1,12 +1,13 @@
 package com.github.deutschebank.symphony.workflow.response;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 
 public class ErrorResponse extends MessageResponse {
 
 	public ErrorResponse(Workflow wf, Addressable stream, String messageML) {
-		super(wf, stream, null, "Error", "Please Investigate", messageML);
+		super(wf, stream, new EntityJson(), "Error", "Please Investigate", messageML);
 	}
 
 	@Override

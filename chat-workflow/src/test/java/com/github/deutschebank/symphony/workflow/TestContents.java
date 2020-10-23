@@ -6,7 +6,9 @@ import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.github.deutschebank.symphony.workflow.content.CashTagDef;
 import com.github.deutschebank.symphony.workflow.content.Content;
+import com.github.deutschebank.symphony.workflow.content.HashTagDef;
 import com.github.deutschebank.symphony.workflow.content.ID;
 import com.github.deutschebank.symphony.workflow.content.Message;
 import com.github.deutschebank.symphony.workflow.content.Paragraph;
@@ -21,10 +23,8 @@ public class TestContents {
 	@Test
 	public void testContents() {
 		// tag def
-		doAssertsOnContent(new TagDef("id123", "rob", Type.CASH), new TagDef("id123", "rob", Type.CASH));
-		doAssertsOnContent(new TagDef("id123", null, Type.CASH), new TagDef("id123", null, Type.CASH));
-		doAssertsOnContent(new TagDef("id123", "rob", null), new TagDef("id123", "rob", null));
-		doAssertsOnContent(new TagDef(null, "rob", Type.CASH), new TagDef(null, "rob", Type.CASH));
+		doAssertsOnContent(new CashTagDef("id123"), new CashTagDef("id123"));
+		doAssertsOnContent(new HashTagDef("id123"), new HashTagDef("id123"));
 		
 		// room def
 		doAssertsOnObject(new RoomDef("abc", "desc", true, "abc123"), new RoomDef("abc", "desc", true, "abc123"));

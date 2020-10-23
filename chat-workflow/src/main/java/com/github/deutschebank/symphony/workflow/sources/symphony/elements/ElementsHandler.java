@@ -1,6 +1,5 @@
 package com.github.deutschebank.symphony.workflow.sources.symphony.elements;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -9,20 +8,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.github.deutschebank.symphony.json.EntityJson;
 import com.github.deutschebank.symphony.workflow.AbstractNeedsWorkflow;
 import com.github.deutschebank.symphony.workflow.Workflow;
 import com.github.deutschebank.symphony.workflow.content.Addressable;
 import com.github.deutschebank.symphony.workflow.content.Author;
-import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.form.Button;
+import com.github.deutschebank.symphony.workflow.form.ButtonList;
 import com.github.deutschebank.symphony.workflow.response.FormResponse;
 import com.github.deutschebank.symphony.workflow.response.Response;
 import com.github.deutschebank.symphony.workflow.sources.symphony.SymphonyEventHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.elements.FormConverter.UnconvertedContent;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
 import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.ResponseHandler;
-import com.github.deutschebank.symphony.workflow.sources.symphony.messages.PresentationMLHandler;
 import com.github.deutschebank.symphony.workflow.sources.symphony.room.SymphonyRooms;
 import com.github.deutschebank.symphony.workflow.validation.ErrorHelp;
 import com.symphony.api.agent.MessagesApi;
@@ -38,7 +37,7 @@ import com.symphony.api.model.V4SymphonyElementsAction;
  */
 public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEventHandler {
 
-	private static final Logger LOG = LoggerFactory.getLogger(PresentationMLHandler.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ElementsHandler.class);
 	
 	MessagesApi messagesApi;
 	EntityJsonConverter jsonConverter;
@@ -69,7 +68,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 				String verb = (String) ((Map<String, String>) action.getFormValues()).get("action");
 				String formId = action.getFormId();
 				Object currentForm = formConverter.convert((Map<String, Object>) action.getFormValues(), formId);
-				Object data = retrieveData(action.getFormMessageId());
+				EntityJson data = retrieveData(action.getFormMessageId());
 				Addressable rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
 				User u = ruBuilder.loadUserById(t.getInitiator().getUser().getUserId());
 				
@@ -94,7 +93,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 					}
 				} else {
 					FormResponse fr = new FormResponse(wf, rr, data, "Error In Form", "Please Fix the validation errors below", currentForm, true, 
-						Collections.singletonList(new Button(verb, Button.Type.ACTION, "Retry")), e);
+						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), e);
 					rh.accept(fr);
 				}
 			}
@@ -112,9 +111,9 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 		}
 	}
 
-	private Object retrieveData(String formMessageId) {
+	private EntityJson retrieveData(String formMessageId) {
 		V4Message originatingMessage = messagesApi.v1MessageIdGet(null, null, formMessageId.replace("/", "_").replace("+", "-").replace("=", ""));
-		return jsonConverter.readWorkflowValue(originatingMessage.getData());
+		return jsonConverter.readValue(originatingMessage.getData());
 	}
 
 

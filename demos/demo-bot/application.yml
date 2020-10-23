@@ -1,0 +1,29 @@
+#set the room for the bot to post in.  Bot (and you) should be members of this room
+room: y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==
+
+symphony:
+  trust-store:
+    location: classpath:/example-trust.crt
+    type: PEMS
+  apis:
+  - id: develop
+    pod:
+      url: https://develop.symphony.com/pod
+#     proxy:
+#       host: <your proxy host>
+#       user: <optional>
+#       password: <optional>
+#       port: <default 8080>
+    sessionauth:
+      url: https://develop.symphony.com/sessionauth
+#     proxy:  as above
+    keyauth:
+      url: https://develop.symphony.com/keyauth
+#     proxy:  as above
+    agent: 
+      url: https://develop.symphony.com/agent
+#     proxy:  as above
+    login: 
+      url: https://develop.symphony.com/login
+    relay:
+      url: https://develop.symphony.com/relay

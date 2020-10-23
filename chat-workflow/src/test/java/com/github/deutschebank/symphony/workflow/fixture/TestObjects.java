@@ -13,7 +13,7 @@ import com.github.deutschebank.symphony.workflow.java.Work;
 public class TestObjects {
 
 	@Valid
-	private List<TestObject> items;
+	private List<TestObject> items = new ArrayList<>();
 
 	public TestObjects() {
 		super();
@@ -71,7 +71,7 @@ public class TestObjects {
 	
 	@Exposed(description= "creates a new test objects")
 	public static TestObjects testObjects() {
-		return TestWorkflowConfig.INITIAL;
+		return TestWorkflowConfig.INITIAL_TEST_OBJECTS;
 	}
 	
 	@Exposed(description = "Add another test object")
