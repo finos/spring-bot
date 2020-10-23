@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.finos.symphony.toolkit</groupId>
-	<artifactId>symphony-java-client-parent</artifactId>
+	<artifactId>symphony-java-toolkit</artifactId>
 	<version>4.59.9-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
