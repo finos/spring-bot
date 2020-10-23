@@ -2,6 +2,7 @@ package com.github.deutschebank.symphony.koreai.request;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
 import org.slf4j.Logger;
@@ -48,8 +49,7 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
 				client.target(url).request()
 					.accept(MediaType.APPLICATION_JSON)
 					.header("Authorization", "Bearer " + jwt)
-					.get()
-					//.post(Entity.json(buildPayload(a, symphonyQuery)))
+					.post(Entity.json(buildPayload(a, symphonyQuery)))
 					.readEntity(KoreAIResponse.class));
 		} catch (Exception e) {
 	    	LOG.error("Request to Kore AI FAILED:\n Address={}\n url={}\n Message={}", a, url, symphonyQuery);
