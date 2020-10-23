@@ -6,7 +6,7 @@
   <description>Build Workflows Using Enterprise Chat</description>
 
   <parent>
-    <groupId>com.github.deutschebank.symphony</groupId>
+    <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
     <version>4.59.9-SNAPSHOT</version>
   </parent>
@@ -18,17 +18,17 @@
   
   <dependencies>
     <dependency>
-      <groupId>com.github.deutschebank.symphony</groupId>
+      <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>symphony-api-spring-boot-starter</artifactId>
       <version>4.59.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.github.deutschebank.symphony</groupId>
+      <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>symphony-java-client-entity-json</artifactId>
       <version>4.59.9-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>com.github.deutschebank.symphony</groupId>
+      <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>symphony-shared-stream</artifactId>
       <version>4.59.9-SNAPSHOT</version>
     </dependency> 

@@ -7,7 +7,7 @@
   <name>Symphony Java Client Bindings</name>
 
   <parent>
-    <groupId>com.github.deutschebank.symphony</groupId>
+    <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
     <version>4.59.9-SNAPSHOT</version>
   </parent>
@@ -274,7 +274,7 @@ import com.symphony.api.model.AuthenticateRequest;
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.deutschebank.symphony</groupId>
+      <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>symphony-java-client-identity</artifactId>
       <version>4.59.9-SNAPSHOT</version>
       <scope>test</scope>

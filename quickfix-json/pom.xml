@@ -9,7 +9,7 @@
     <name>Jackson QuickFix Module</name>
     
     <parent>
-        <groupId>com.github.deutschebank.symphony</groupId>
+        <groupId>org.finos.symphony.toolkit</groupId>
         <artifactId>symphony-java-client-parent</artifactId>
         <version>4.59.9-SNAPSHOT</version>
     </parent>

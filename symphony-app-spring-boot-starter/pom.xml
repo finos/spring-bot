@@ -7,7 +7,7 @@
 	<name>Spring Boot Starter For Symphony Apps</name>
 
 	<parent>
-		<groupId>com.github.deutschebank.symphony</groupId>
+		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-client-parent</artifactId>
 		<version>4.59.9-SNAPSHOT</version>
 	</parent>
@@ -34,7 +34,7 @@
 			<version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
 			<version>4.59.9-SNAPSHOT</version>
 		</dependency>
