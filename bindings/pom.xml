@@ -5,12 +5,11 @@
   <artifactId>symphony-java-client-bindings</artifactId>
   <packaging>jar</packaging>
   <name>Symphony Java Client Bindings</name>
-  <version>4.59.7-SNAPSHOT</version>
 
   <parent>
     <groupId>com.github.deutschebank.symphony</groupId>
     <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.59.7-SNAPSHOT</version>
+    <version>4.59.9-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -21,7 +20,6 @@
 
   <build>
     <plugins>
-
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -234,7 +232,6 @@ import com.symphony.api.model.AuthenticateRequest;
       <scope>compile</scope>
     </dependency>
 
-
     <!-- Apache CXF Example -->
     <dependency>
       <groupId>org.apache.cxf</groupId>
@@ -242,7 +239,6 @@ import com.symphony.api.model.AuthenticateRequest;
       <version>3.3.1</version>
       <scope>provided</scope>
     </dependency>
-
 
     <!-- Jersey Client Example -->
     <dependency>
@@ -274,13 +270,13 @@ import com.symphony.api.model.AuthenticateRequest;
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.github.deutschebank.symphony</groupId>
       <artifactId>symphony-java-client-identity</artifactId>
-      <version>${project.version}</version>
+      <version>4.59.9-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
 
@@ -292,7 +288,4 @@ import com.symphony.api.model.AuthenticateRequest;
       <scope>test</scope>
     </dependency>
   </dependencies>
-
-
-
 </project>

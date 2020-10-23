@@ -67,17 +67,19 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 	Validator v;
 	
 	EntityJsonConverter ejc;
-	
 
 	@Autowired
 	ResourceLoader rl;
+	
+	@Autowired
+	CommandPerformer cp;
 	
 	@Before
 	public void setup() {
 		ejc = new EntityJsonConverter(wf);
 		FormConverter fc = new FormConverter(symphonyRooms);
 		FormMessageMLConverter fmc = new FreemarkerFormMessageMLConverter(symphonyRooms, rl);
-		MethodCallElementsConsumer mcec = new MethodCallElementsConsumer();
+		MethodCallElementsConsumer mcec = new MethodCallElementsConsumer(cp);
 		SymphonyResponseHandler srh = new SymphonyResponseHandler(messagesApi, fmc, ejc, symphonyRooms, ah);
 		handler = new ElementsHandler(wf, messagesApi, ejc,  fc, Arrays.asList(mcec), srh, symphonyRooms, v);
 	}
@@ -145,8 +147,9 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 		// should return a form for TestObject
 		handler.accept(e);
 		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
-				Mockito.isNull(), Mockito.isNull(), 
-				Mockito.argThat(s ->  s.contains("<form id=\""+TestObject.class.getCanonicalName()+"\"")), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.any(), 
 				Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull());
 			
 	}

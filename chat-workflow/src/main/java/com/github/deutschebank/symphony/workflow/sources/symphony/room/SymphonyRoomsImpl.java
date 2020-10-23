@@ -15,6 +15,7 @@ import com.github.deutschebank.symphony.workflow.content.Room;
 import com.github.deutschebank.symphony.workflow.content.RoomDef;
 import com.github.deutschebank.symphony.workflow.content.User;
 import com.github.deutschebank.symphony.workflow.content.UserDef;
+import com.symphony.api.model.MembershipList;
 import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamFilter;
 import com.symphony.api.model.StreamList;
@@ -38,17 +39,12 @@ public class SymphonyRoomsImpl extends AbstractNeedsWorkflow implements Symphony
 	private RoomMembershipApi rmApi;
 	private StreamsApi streamsApi;
 	private UsersApi usersApi;
-	private List<Long> adminUserIds = Collections.emptyList();
 	
 	public SymphonyRoomsImpl(Workflow wf, RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi) {
 		super(wf);
-		wf.registerRoomsProvider(this);
 		this.rmApi = rmApi;
 		this.streamsApi = streamsApi;
 		this.usersApi = usersApi;
-		this.adminUserIds = wf.getAdministrators().stream()
-				.map(u -> getId(u))
-				.collect(Collectors.toList());
 	}
 	
 	@Override
@@ -111,7 +107,11 @@ public class SymphonyRoomsImpl extends AbstractNeedsWorkflow implements Symphony
 		V3RoomDetail detail = streamsApi.v3RoomCreatePost(ra, null);
 		
 		// next, we need to make sure that all of the admins are members of the room and owners.
-		for (Long user : adminUserIds) {
+		List<Long> adminIds = wf.getAdministrators().stream()
+			.map(admin -> Long.parseLong(admin.getId()))
+			.collect(Collectors.toList());
+		
+		for (Long user : adminIds) {
 			UserId u = new UserId().id(user);
 			rmApi.v1RoomIdMembershipAddPost(u, null, detail.getRoomSystemInfo().getId());
 			rmApi.v1RoomIdMembershipPromoteOwnerPost(u, null, detail.getRoomSystemInfo().getId());
@@ -134,6 +134,23 @@ public class SymphonyRoomsImpl extends AbstractNeedsWorkflow implements Symphony
 			UserV2 user = usersApi.v2UserGet(null, null, u.getAddress(), null, true);
 			return user.getId();
 		}
+	}
+
+	@Override
+	public List<User> getRoomMembers(Room r) {
+		MembershipList ml = rmApi.v1RoomIdMembershipListGet(r.getId(), null);
+		return ml.stream()
+			.map(m -> loadUserById(m.getId()))
+			.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<User> getRoomAdmins(Room r) {
+		MembershipList ml = rmApi.v1RoomIdMembershipListGet(r.getId(), null);
+		return ml.stream()
+			.filter(m -> m.isOwner())
+			.map(m -> loadUserById(m.getId()))
+			.collect(Collectors.toList());
 	}
 
 

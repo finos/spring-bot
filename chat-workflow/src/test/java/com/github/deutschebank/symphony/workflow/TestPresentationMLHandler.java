@@ -49,6 +49,8 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 	@MockBean
 	AttachmentHandler ah;
 	
+	@Autowired
+	CommandPerformer cp;
 
 	@Autowired
 	ResourceLoader rl;
@@ -58,7 +60,7 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 		SimpleMessageParser smp = new SimpleMessageParser();
 		EntityJsonConverter ejc = new EntityJsonConverter(wf);
 		FormMessageMLConverter fmc = new FreemarkerFormMessageMLConverter(symphonyRooms, rl);
-		List<SimpleMessageConsumer> consumers = Arrays.asList(new HelpMessageConsumer(), new MethodCallMessageConsumer());
+		List<SimpleMessageConsumer> consumers = Arrays.asList(new HelpMessageConsumer(), new MethodCallMessageConsumer(cp));
 		SymphonyResponseHandler srh = new SymphonyResponseHandler(messagesApi, fmc, ejc, symphonyRooms, ah);
 		handler = new PresentationMLHandler(wf, identity, usersApi, smp, ejc, consumers, srh, symphonyRooms);
 	}
@@ -81,8 +83,8 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
 				Mockito.isNull(), Mockito.isNull(), 
 				Mockito.argThat(s -> 
-					s.contains("<td><button name=\"add\" type=\"action\">add</button></td><td><b> /add</b></td><td> Add another test object</td>")
-					&& s.contains("<td></td><td><b> /remove</b></td><td> removes item by number. e.g. /remove 4</td>")), 
+					s.contains("<button name=\"add\" type=\"action\">add</button>")
+					&& s.contains("<b> /remove</b>")), 
 				Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull());
 	
 	}

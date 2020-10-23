@@ -1,6 +1,6 @@
 package com.github.deutschebank.symphony.workflow.content;
 
-public class TagDef implements Tag {
+public abstract class TagDef implements Tag {
 
 	protected String name;
 	protected String id;

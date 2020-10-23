@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.github.deutschebank.symphony</groupId>
 		<artifactId>symphony-java-client-parent</artifactId>
-		<version>4.59.7-SNAPSHOT</version>
+		<version>4.59.9-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -36,15 +36,14 @@
 		<dependency>
 			<groupId>com.github.deutschebank.symphony</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>4.59.9-SNAPSHOT</version>
 		</dependency>
-
 
 		<!-- used for certificate generation -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
-			<version>1.62</version>
+			<version>1.64</version>
 		</dependency>
 
 		<!-- for testing -->

@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
 
 # Spring Boot Starter for Chat Workflow
 
@@ -160,12 +160,29 @@ Out-of-the-box support exists for:
 
 TODO
 
+#### Limitations
+
+At the moment, the forms are displayed by walking the class structure and inspecting the declared types (not instance types).  For that reason, polymorphism won't work: only the fields in declared types will be shown.
+
 #### Overriding The Default Displays
 
-`chat-workflow` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.
+`chat-workflow` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.  
 
-TODO
+The [Poll Bot](../demos/demo-poll-bot) example uses this a lot.  Have a look at the `Poll` class below:
 
+
+```
+@Work(name = "Poll", instructions = "Please participate in our poll", editable = false)
+@Template(view = "classpath:/template/poll.ftl")
+public class Poll {
+
+   ...
+
+```
+
+Here we use the `@Template` annotation to tell `chat-workflow` to use a template rather than build it's own.  To get you started, the forms that `chat-workflow` produces for your classes are shown in the log file, along with the JSON that powers them, so you can easily [edit them in Symphony's PresentationML Tool](https://renderer-tool.app.symphony.com/).
+
+![Using PresentationML Editor](../tutorials/chat-workflow/media/image18.png)
  
 #### Validation
 
@@ -244,7 +261,7 @@ You can invoke the method by entering `/approve`:
 
 ##### Subclasses of `Content`
 
-e.g. `Message`, `Paragraph`, `PastedTable`, `Tag`, `User`, `Word`.
+e.g. `Message`, `Paragraph`, `PastedTable`, `Tag`, `User`, `Word`, `CashTag`, `HashTag`
 
 Let's say you want your bot to have a command like:  `/assign #TASK820 @RobMoffat`.  You could have a method with a signature like this:
 
@@ -278,6 +295,9 @@ There are various other objects you can request as parameters for a method:
 |`Workflow`           |The workflow object that the bot is running.  |
 |`History`            |A class which allows you to interrogate the history of the chat room(s) with methods like `getLastFromHistory()`|
 |`Rooms`               |A class which allows you to get or create new rooms for the bot to work in, with methods like `getAllRooms()` and `ensureRoom()`|
+|Spring Beans            |Any `@autowire`-able bean from Spring can be a parameter|
+|Any Workflow class      |Will add the last instance of the class from the history of the chat
+|`Author`              |The author of the message that the bot is currently responding to.
 
 #### Allowed Return Types
 
