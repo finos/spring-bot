@@ -23,7 +23,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>chat-workflow</artifactId>
 			<version>4.59.9-SNAPSHOT</version>
 		</dependency>

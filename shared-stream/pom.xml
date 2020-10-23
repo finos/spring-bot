@@ -8,7 +8,7 @@
 	<name>Symphony Shared Stream</name>
 
 	<parent>
-		<groupId>com.github.deutschebank.symphony</groupId>
+		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-client-parent</artifactId>
 		<version>4.59.9-SNAPSHOT</version>
 	</parent>
@@ -20,19 +20,19 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-java-client-bindings</artifactId>
 			<version>4.59.9-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-java-client-identity</artifactId>
 			<version>4.59.9-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-java-client-entity-json</artifactId>
 			<version>4.59.9-SNAPSHOT</version>
 			<scope>compile</scope>
@@ -46,7 +46,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
 			<version>4.59.9-SNAPSHOT</version>
 			<scope>provided</scope>
