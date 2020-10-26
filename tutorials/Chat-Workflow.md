@@ -50,7 +50,7 @@ In `pom.xml` add these dependencies:
 
 ```
 <dependency>
-	<groupId>com.github.deutschebank.symphony</groupId>
+	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>chat-workflow</artifactId>
 	<version>--latest version --</version>
 </dependency>

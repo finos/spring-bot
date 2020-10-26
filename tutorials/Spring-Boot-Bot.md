@@ -52,7 +52,7 @@ versions)
 
 ```
 <dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
+  <groupId>org.finos.symphony.toolkit</groupId>
   <artifactId>symphony-api-spring-boot-starter</artifactId>
   <version>--check below--</version>
   <scope>compile</scope>

@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 ## What This Is
 
@@ -21,7 +21,7 @@ Maven Coordinates for this project are:
 
 ```
 <dependency>
-	<groupId>com.github.deutschebank.symphony</groupId>
+	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-client-identity</artifactId>
 	<version>-- see above for version --</version>
 	<scope>compile</scope>

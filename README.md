@@ -2,7 +2,7 @@
 ![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)
 [![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
 ![License](https://img.shields.io/github/license/deutschebank/symphony-java-toolkit)
-[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 ## What This Is
 

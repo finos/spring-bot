@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 # spring-boot-starter-symphony-app
 
@@ -14,7 +14,7 @@ Add the starter to your Spring Boot project's `pom.xml`:
 
 ```
 <dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
+  <groupId>org.finos.symphony.toolkit</groupId>
   <artifactId>symphony-app-spring-boot-starter</artifactId>
   <version> -- see above -- </version>
 </dependency>
