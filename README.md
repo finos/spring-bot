@@ -15,13 +15,12 @@ This project contains the following:
 - Symphony API Spring-Boot Starter
 - Symphony App Spring-Boot Starter
 - Symphony JSON Support
-- Demo App 
-- Demo Bot
-- Tutorials for getting started
 - Symphony FIX Support
 - A Symphony Maven Build Notifier
 - Symphony Shared Stream
 - Chat Workflow
+- Tutorials for getting started
+- Demo bots and apps
 
 Read further to see what each of these includes.
 
@@ -108,6 +107,9 @@ This module provides a one-stop-shop for constructing work-flows in Java.  It is
 
  - [View the README](chat-workflow/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
+ - [To-Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-todo-bot)
+ - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-claim-bot)
+ - [Poll Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-poll-bot)
 
 ## License
 
