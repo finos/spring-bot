@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>4.59.9-SNAPSHOT</version>
+		<version>4.59.10-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -32,13 +32,13 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-java-client-bindings</artifactId>
-			<version>4.59.9-SNAPSHOT</version>
+			<version>4.59.10-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-java-client-identity</artifactId>
-			<version>4.59.9-SNAPSHOT</version>
+			<version>4.59.10-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

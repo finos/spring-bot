@@ -9,7 +9,7 @@
   <parent>
     <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>symphony-java-toolkit</artifactId>
-    <version>4.59.9-SNAPSHOT</version>
+    <version>4.59.10-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -276,7 +276,7 @@ import com.symphony.api.model.AuthenticateRequest;
     <dependency>
       <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>symphony-java-client-identity</artifactId>
-      <version>4.59.9-SNAPSHOT</version>
+      <version>4.59.10-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
 

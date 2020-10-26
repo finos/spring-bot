@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>4.59.9-SNAPSHOT</version>
+	<version>4.59.10-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Symphony Java Toolkit</name>
@@ -32,7 +32,7 @@
 		<module>demos/poll-bot</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
-    <module>symphony-maven-build-reporter</module>
+    		<module>symphony-maven-build-reporter</module>
 	</modules>
 
 	<properties>
@@ -89,7 +89,7 @@
 	</developers>
 
 	<scm>
-	  <developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
+	  	<developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
 		<connection>scm:git@github.com:finos/symphony-java-toolkit.git</connection>
 		<tag>HEAD</tag>
 		<url>https://github.com/finos/symphony-java-toolkit</url>
@@ -129,13 +129,13 @@
 								<goals>
 									<goal>jar</goal>
 								</goals>
-								<configuration> <!-- add this to disable checking -->
-									<doclint>none</doclint>
-									<failOnError>false</failOnError>
-									<failOnWarnings>false</failOnWarnings>
-								</configuration>
-							</execution>
-						</executions>
+              </execution>
+            </executions>							
+						<configuration> <!-- add this to disable checking -->
+							<doclint>none</doclint>
+							<failOnError>false</failOnError>
+							<source>8</source>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
