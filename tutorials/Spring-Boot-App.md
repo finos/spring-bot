@@ -92,7 +92,7 @@ In `pom.xml` add this dependency:
 
 ```
 <dependency>
-   <groupId>com.github.deutschebank.symphony</groupId>
+   <groupId>org.finos.symphony.toolkit</groupId>
    <artifactId>symphony-app-spring-boot-starter</artifactId>
    <scope>compile</scope>
    <version>--latest version --</version>

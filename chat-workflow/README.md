@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 # Spring Boot Starter for Chat Workflow
 
@@ -47,7 +47,7 @@ Symphony is perfect for workflows like this:
 
 ```xml
 <dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
+  <groupId>org.finos.symphony.toolkit</groupId>
   <artifactId>chat-workflow</artifactId>
   <version>--see above--</version>
 </dependency>

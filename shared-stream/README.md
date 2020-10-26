@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)[![Javadocs](https://img.shields.io/badge/Javadocs-symphony--shared--stream-green)](https://javadoc.io/doc/com.github.deutschebank.symphony/symphony-shared-stream/latest/index.html)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)[![Javadocs](https://img.shields.io/badge/Javadocs-symphony--shared--stream-green)](https://javadoc.io/doc/org.finos.symphony.toolkit/symphony-shared-stream/latest/index.html)
 
 # Symphony Shared Stream
 
@@ -12,7 +12,7 @@ The purpose of this module is to provide a drop-in stream consumer for Symphony 
 
 ```xml
 <dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
+  <groupId>org.finos.symphony.toolkit</groupId>
   <artifactId>symphony-shared-stream</artifactId>
   <version>--see above--</version>
 </dependency>

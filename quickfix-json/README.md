@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 # Jackson JSON QuickFIX Module
 
@@ -11,7 +11,7 @@ This is a stand-alone jar, and doesn't require Symphony or any of the other comp
 Maven coordinates are:
 
 ```
-	<groupId>com.github.deutschebank.symphonyp</groupId>
+	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>jackson-quickfix-module</artifactId>
 	<version>find latest in artifiactory</version>
 ```
