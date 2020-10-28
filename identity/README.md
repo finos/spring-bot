@@ -2,7 +2,7 @@
 
 ## What This Is
 
-`symphony-java-client-identity` provides a single abstraction of `SymphonyIdentity`, which encapsulates the data needed to authenticate with a symphony server.  That is:
+`identity` provides a single abstraction of `SymphonyIdentity`, which encapsulates the data needed to authenticate with a symphony server.  That is:
  
  - Private Key
  - Certificates
@@ -22,7 +22,7 @@ Maven Coordinates for this project are:
 ```
 <dependency>
 	<groupId>org.finos.symphony.toolkit</groupId>
-	<artifactId>symphony-java-client-identity</artifactId>
+	<artifactId>identity</artifactId>
 	<version>-- see above for version --</version>
 	<scope>compile</scope>
 </dependency>
