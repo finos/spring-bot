@@ -2,7 +2,7 @@
 
 # What This Is
 
-`symphony-java-client-entity-json` is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON `data` payload of a Symphony Message, using [Jackson](https://github.com/FasterXML/jackson).
+`entity-json` is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON `data` payload of a Symphony Message, using [Jackson](https://github.com/FasterXML/jackson).
 
 This data payload is used in a variety of ways in Symphony, such as:
 
@@ -93,7 +93,7 @@ That is, the app will receive a Javascript callback in order to render some HTML
 ```
 <dependency>
     <groupId>org.finos.symphony.toolkit</groupId>
-    <artifactId>symphony-java-client-entity-json</artifactId>
+    <artifactId>entity-json</artifactId>
     <version>-- see above for version --</version>
     <scope>compile</scope>
 </dependency>

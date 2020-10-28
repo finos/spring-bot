@@ -34,7 +34,7 @@ The first four projects have dependencies on one another, expressed through this
 
 This provides a JAX-RS standard, **Type-Safe** means of interacting with [Symphony](https://symphony.com) pods via REST apis.
 
-`symphony-java-client-bindings` is a set of swagger-generated domain objects and interfaces that provide a Java API for interacting with Symphony's REST endpoints. 
+`bindings` is a set of swagger-generated domain objects and interfaces that provide a Java API for interacting with Symphony's REST endpoints. 
 
 - [Symphony REST Endpoint Documentation](https://rest-api.symphony.com/reference)
 - [Symphony REST Endpoint Swagger Definitions](https://github.com/symphonyoss/symphony-api-spec)

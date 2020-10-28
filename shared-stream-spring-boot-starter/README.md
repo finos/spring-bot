@@ -13,7 +13,7 @@ The purpose of this module is to provide a drop-in stream consumer for Symphony 
 ```xml
 <dependency>
   <groupId>org.finos.symphony.toolkit</groupId>
-  <artifactId>symphony-shared-stream</artifactId>
+  <artifactId>shared-stream-spring-boot-starter</artifactId>
   <version>--see above--</version>
 </dependency>
 ```

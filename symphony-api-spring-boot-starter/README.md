@@ -213,8 +213,7 @@ public class SomeComponent {
 }
 ```
 
-**Note**: By default, session and key manager tokens are handled for you in the created beans, hence those parameters are `null`.  For more information on how this works, 
-check out the `symphony-java-client-bindings` project.
+**Note**: By default, session and key manager tokens are handled for you in the created beans, hence those parameters are `null`.  For more information on how this works, check out the `bindings` project.
 
 ## Use Case 2:  Multiple Identities / Multiple Pods
 
