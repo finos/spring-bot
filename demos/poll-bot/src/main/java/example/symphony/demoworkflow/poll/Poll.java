@@ -7,26 +7,26 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.content.Author;
+import org.finos.symphony.toolkit.workflow.content.ID;
+import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.form.Button;
+import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.form.Button.Type;
+import org.finos.symphony.toolkit.workflow.history.History;
+import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.room.Rooms;
+import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.util.StringUtils;
 
-import com.github.deutschebank.symphony.json.EntityJson;
-import com.github.deutschebank.symphony.workflow.Workflow;
-import com.github.deutschebank.symphony.workflow.content.Author;
-import com.github.deutschebank.symphony.workflow.content.ID;
-import com.github.deutschebank.symphony.workflow.content.Room;
-import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.form.Button;
-import com.github.deutschebank.symphony.workflow.form.Button.Type;
-import com.github.deutschebank.symphony.workflow.form.ButtonList;
-import com.github.deutschebank.symphony.workflow.history.History;
-import com.github.deutschebank.symphony.workflow.java.Exposed;
-import com.github.deutschebank.symphony.workflow.java.Work;
-import com.github.deutschebank.symphony.workflow.response.FormResponse;
-import com.github.deutschebank.symphony.workflow.room.Rooms;
-import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
-import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.EntityJsonConverter;
-import com.github.deutschebank.symphony.workflow.sources.symphony.handlers.ResponseHandler;
 import com.symphony.api.id.SymphonyIdentity;
 
 @Work(name = "Poll", instructions = "Please participate in our poll", editable = false)

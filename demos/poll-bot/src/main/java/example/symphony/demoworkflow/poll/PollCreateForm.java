@@ -5,8 +5,8 @@ import java.time.temporal.ChronoUnit;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import com.github.deutschebank.symphony.workflow.java.Work;
-import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
+import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
 @Work(name = "Poll Setup", editable = true)
 @Template(edit="classpath:/template/poll-create-form.ftl")

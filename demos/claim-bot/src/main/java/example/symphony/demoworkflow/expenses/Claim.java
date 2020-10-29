@@ -1,9 +1,9 @@
 package example.symphony.demoworkflow.expenses;
 
-import com.github.deutschebank.symphony.workflow.content.Author;
-import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.java.Exposed;
-import com.github.deutschebank.symphony.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.content.Author;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.finos.symphony.toolkit.workflow.java.Work;
 
 @Work(editable = false, instructions = "Sales Expense Claim Form", name = "Expense Claim")
 public class Claim {

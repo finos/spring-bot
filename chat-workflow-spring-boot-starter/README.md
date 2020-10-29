@@ -53,7 +53,7 @@ Symphony is perfect for workflows like this:
 </dependency>
 ```
 
-2.  You will need a bean exposed in Spring implementing the interface `com.github.deutschebank.symphony.workflow.Workflow`. (See below).
+2.  You will need a bean exposed in Spring implementing the interface `org.finos.symphony.toolkit.workflow.Workflow`. (See below).
 
 3.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).  NB:  Chat workflow will bring in the other Symphony Spring Boot Starters transitively, so you don't need to specify those.
 
@@ -75,7 +75,7 @@ The [Tutorial](../tutorials/Chat-Workflow.md) shows how to get Symphony to host 
 
 ### 1.  Add Classes
 
-`chat-workflow-spring-boot-starter` requires a Spring bean of type `com.github.deutschebank.symphony.workflow.Workflow` to be present.  The easiest way to provide one of these is to instantiate `ClassBasedWorkflow` like so:
+`chat-workflow-spring-boot-starter` requires a Spring bean of type `org.finos.symphony.toolkit.workflow.Workflow` to be present.  The easiest way to provide one of these is to instantiate `ClassBasedWorkflow` like so:
 
 ```java
 
@@ -303,7 +303,7 @@ There are various other objects you can request as parameters for a method:
 
 Most of the time, you'll probably just want to return something into the chat which originated the method-call.  To do this, simply return an object like in the examples above.  
 
-Alternatively, you can return an instance of ` com.github.deutschebank.symphony.workflow.response.Response`, or even a whole list of those.  An example of where this might be useful is the poll bot in the demo workflow.  After a poll is created, it sends a message to every person in the room.  To do this, it's signature is:
+Alternatively, you can return an instance of ` org.finos.symphony.toolkit.workflow.response.Response`, or even a whole list of those.  An example of where this might be useful is the poll bot in the demo workflow.  After a poll is created, it sends a message to every person in the room.  To do this, it's signature is:
 
 ```java
 
