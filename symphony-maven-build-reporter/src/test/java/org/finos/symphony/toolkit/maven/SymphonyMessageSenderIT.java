@@ -16,9 +16,9 @@ import org.slf4j.LoggerFactory;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 
-public class SymphonyMessageSenderIntegrationTest {
+public class SymphonyMessageSenderIT {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(SymphonyMessageSenderIntegrationTest.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(SymphonyMessageSenderIT.class);
 	public static final String AGENT_URL = "https://develop.symphony.com/agent";
 	public static final String POD_URL = "https://develop.symphony.com/pod";
 	public static final String LOGIN_URL = "https://develop.symphony.com/login";

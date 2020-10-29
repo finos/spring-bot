@@ -10,7 +10,7 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageList;
 
-public class CXFMultipartTest {
+public class CXFMultipartIT {
 	
 
 	@Test

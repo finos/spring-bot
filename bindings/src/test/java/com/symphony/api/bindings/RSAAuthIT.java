@@ -7,7 +7,7 @@ import com.symphony.api.login.AuthenticationApi;
 import com.symphony.api.model.AuthenticateRequest;
 import com.symphony.api.model.Token;
 
-public class RSAAuthTest extends AbstractTest{
+public class RSAAuthIT extends AbstractTest{
 
 	@Theory
 	public void testSessionAuthWithRSA(TestClientStrategy s) throws Exception {

@@ -6,7 +6,7 @@ import org.junit.experimental.theories.Theory;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.V4MessageList;
 
-public class TokenTest extends AbstractTest {
+public class TokenIT extends AbstractTest {
 	
 	@Theory
 	public void checkTokenCreation(TestClientStrategy s) throws Exception  {

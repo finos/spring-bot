@@ -19,7 +19,7 @@ import com.symphony.api.pod.UsersApi;
  * @author moffrob
  *
  */
-public class PodApiTest extends AbstractTest {
+public class PodApiIT extends AbstractTest {
 
 	@Theory
 	public void testUserLookup(TestClientStrategy client) throws Exception {

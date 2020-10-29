@@ -9,7 +9,7 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.V4Message;
 
 
-public class JerseyMultipartTest {
+public class JerseyMultipartIT {
 
 
 	@Test
