@@ -2,7 +2,7 @@ package example.symphony.demoworkflow.expenses;
 
 import javax.validation.constraints.Min;
 
-import com.github.deutschebank.symphony.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.java.Work;
 
 @Work(name = "New Claim Details")
 public class StartClaim {

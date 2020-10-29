@@ -39,10 +39,10 @@ jobs:
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
     - name: Build + Test (on master)
       if: github.ref == 'refs/heads/master'
-      run: mvn install --settings .github/workflows/settings.xml
+      run: mvn install integration-test --settings .github/workflows/settings.xml
     - name: Build (not on master)
       if: github.ref != 'refs/heads/master'
-      run: mvn install -DskipTests
+      run: mvn install 
     - name: Coverage (on master)
       if: github.ref == 'refs/heads/master'
       uses: codecov/codecov-action@v1

@@ -3,12 +3,12 @@
  */
 package example.symphony.demoworkflow;
 
+import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.github.deutschebank.symphony.workflow.Workflow;
-import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.UsersApi;

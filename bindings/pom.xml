@@ -42,19 +42,6 @@
       </plugin>
 
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
-        <configuration>
-          <systemPropertyVariables>
-            <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
-            <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
-            <proxy>${symphony-proxy}</proxy>
-          </systemPropertyVariables>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>io.swagger.codegen.v3</groupId>
         <artifactId>swagger-codegen-maven-plugin</artifactId>
         <version>3.0.21</version>
