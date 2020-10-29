@@ -28,7 +28,7 @@ import com.symphony.api.model.V5EventList;
  * @author moffrob
  *
  */
-public class AgentTest extends AbstractTest {
+public class AgentIT extends AbstractTest {
 
 	public static String asString(InputStream is) {
 		try (Scanner scanner = new Scanner(is, "UTF-8")) {

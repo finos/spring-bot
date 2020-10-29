@@ -18,7 +18,7 @@ import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 
 
-public class JWTHelperTest {
+public class JWTHelperIT {
 	
 	public static final String NAME = "John Bobbins";
 	public static final String EXPECTED_PART1 = "eyJhbGciOiJSUzUxMiJ9";
