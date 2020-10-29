@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.StreamUtils;
 
 import com.symphony.api.id.PemSymphonyIdentity;
-import com.symphony.api.id.SymphonyIdentity;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(

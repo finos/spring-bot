@@ -41,7 +41,7 @@ import com.symphony.api.model.V4Message;
 	webEnvironment = WebEnvironment.DEFINED_PORT, 
 	classes={TestApplication.class, SharedStreamConfig.class, NoddyCallback.class, WebMvcAutoConfiguration.EnableWebMvcConfiguration.class, HealthEndpointAutoConfiguration.class})
 @ActiveProfiles("develop")
-public class TestSpringComponents {
+public class SpringComponentsIT {
 	
 	private String someLocalConversation = "Cscf+rSZRtGaOUrhkelBaH///o6ry5/5dA==";
 
