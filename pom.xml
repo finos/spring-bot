@@ -137,26 +137,6 @@
 							<source>8</source>
 						</configuration>
 					</plugin>
-					<plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<version>2.18.1</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-								<configuration>
-				         <systemPropertyVariables>
-				            <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
-				            <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
-				            <proxy>${symphony-proxy}</proxy>
-				          </systemPropertyVariables>
-            		</configuration>
-							</execution>
-						</executions>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -174,17 +154,45 @@
 							<execution>
 								<goals>
 									<goal>prepare-agent</goal>
+                  <goal>prepare-agent-integration</goal>
 								</goals>
 							</execution>
-							<execution>
+ 							<execution>
 								<id>report</id>
 								<phase>test</phase>
 								<goals>
 									<goal>report</goal>
 								</goals>
 							</execution>
+						  <execution>
+                <id>report-integration</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>report-integration</goal>
+                </goals>
+              </execution>
 						</executions>
 					</plugin>
+				  <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.18.1</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
+                </goals>
+                <configuration>
+                 <systemPropertyVariables>
+                    <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
+                    <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
+                    <proxy>${symphony-proxy}</proxy>
+                  </systemPropertyVariables>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
 				</plugins>
 			</build>
 		</profile>
