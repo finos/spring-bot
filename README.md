@@ -1,7 +1,7 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 ![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)
 [![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
-![License](https://img.shields.io/github/license/deutschebank/symphony-java-toolkit)
+![License](https://img.shields.io/github/license/finos/symphony-java-toolkit)
 [![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 ## What This Is
@@ -24,11 +24,11 @@ This project contains the following:
 
 Read further to see what each of these includes.
 
-## Dependencies
+## Overview and Dependencies
 
-The first four projects have dependencies on one another, expressed through this diagram.  If you are using the higher elements in the diagram, you'll automatically depend on the lower ones.  However, if you're building bots in Spring Boot (say), then you'll not need the top-most dependency. 
+Many of the components in this project rely on each other, as demonstrated in this dependency diagram.  This also gives and overviw of the purpose of each component.
 
-![Dependency Cake Diagram](cake.jpg)
+![Dependency Cake Diagram](cake.png)
 
 ## Symphony Java Client Bindings
 
@@ -119,17 +119,21 @@ This project is licensed under the [Apache 2.0 License](License).
 
 In order to do a release:
 
-1. On Releaser's machine:
+1.  Changes.md
+
+- Update this file to include details of the release.
+
+2. On Releaser's machine:
 
 ```
-mvn test
+mvn test integration-test
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=\*  -DgroupId=\*
 mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/claim-bot,!demos/poll-bot,!demos/todo-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then push to git
 ```
 
-2.  On `oss.sonatype.org`
+3.  On `oss.sonatype.org`
 
 - Close the Staging Repository
 - Release it.

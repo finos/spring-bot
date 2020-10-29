@@ -1,0 +1,28 @@
+{
+  "formdata" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.testObject",
+    "version" : "1.0",
+    "isin" : "83274239874",
+    "bidAxed" : true,
+    "askAxed" : true,
+    "creator" : "rob@example.com",
+    "bidQty" : 234786,
+    "askQty" : 2138
+  },
+  "errors" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  },
+  "buttons" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.form.button",
+      "version" : "1.0",
+      "name" : "submit",
+      "buttonType" : "ACTION",
+      "text" : "GO"
+    } ]
+  }
+}

@@ -137,6 +137,26 @@
 							<source>8</source>
 						</configuration>
 					</plugin>
+					<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.18.1</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+								<configuration>
+				         <systemPropertyVariables>
+				            <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
+				            <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
+				            <proxy>${symphony-proxy}</proxy>
+				          </systemPropertyVariables>
+            		</configuration>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -176,7 +196,7 @@
  	<!-- <build>
 		<extensions>
 			<extension>
-				<groupId>com.github.deutschebank.symphony</groupId>
+				<groupId>org.finos.symphony.toolkit</groupId>
 				<artifactId>symphony-maven-build-reporter</artifactId>
 
 				<version>4.59.6</version>
