@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 # Spring Boot Starter for Chat Workflow
 
@@ -47,8 +47,8 @@ Symphony is perfect for workflows like this:
 
 ```xml
 <dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
-  <artifactId>chat-workflow</artifactId>
+  <groupId>org.finos.symphony.toolkit</groupId>
+  <artifactId>chat-workflow-spring-boot-starter</artifactId>
   <version>--see above--</version>
 </dependency>
 ```
@@ -65,7 +65,7 @@ In order to build a workflow like the one above, you simply need to create a Jav
 
 ![Java Class](images/chat-workflow3.png)
 
-There are three steps to building a workflow using `chat-workflow` in Symphony:
+There are three steps to building a workflow using `chat-workflow-spring-boot-starter` in Symphony:
 
 1. **Add Classes:** Java Beans will represent _structured messages_ in Symphony.  That is, it'll have JSON data (for the bot to understand) and MessageML (for presentation to users).
 2. **Add Properties:** Properties of the Java bean will be rendered as _elements_ in Symphony, so that users can set their values.
@@ -75,7 +75,7 @@ The [Tutorial](../tutorials/Chat-Workflow.md) shows how to get Symphony to host 
 
 ### 1.  Add Classes
 
-`chat-workflow` requires a Spring bean of type `com.github.deutschebank.symphony.workflow.Workflow` to be present.  The easiest way to provide one of these is to instantiate `ClassBasedWorkflow` like so:
+`chat-workflow-spring-boot-starter` requires a Spring bean of type `com.github.deutschebank.symphony.workflow.Workflow` to be present.  The easiest way to provide one of these is to instantiate `ClassBasedWorkflow` like so:
 
 ```java
 
@@ -166,7 +166,7 @@ At the moment, the forms are displayed by walking the class structure and inspec
 
 #### Overriding The Default Displays
 
-`chat-workflow` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.  
+`chat-workflow-spring-boot-starter` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.  
 
 The [Poll Bot](../demos/demo-poll-bot) example uses this a lot.  Have a look at the `Poll` class below:
 
@@ -180,7 +180,7 @@ public class Poll {
 
 ```
 
-Here we use the `@Template` annotation to tell `chat-workflow` to use a template rather than build it's own.  To get you started, the forms that `chat-workflow` produces for your classes are shown in the log file, along with the JSON that powers them, so you can easily [edit them in Symphony's PresentationML Tool](https://renderer-tool.app.symphony.com/).
+Here we use the `@Template` annotation to tell `chat-workflow-spring-boot-starter` to use a template rather than build it's own.  To get you started, the forms that `chat-workflow-spring-boot-starter` produces for your classes are shown in the log file, along with the JSON that powers them, so you can easily [edit them in Symphony's PresentationML Tool](https://renderer-tool.app.symphony.com/).
 
 ![Using PresentationML Editor](../tutorials/chat-workflow/media/image18.png)
  
@@ -207,7 +207,7 @@ This is particularly useful for things like email addresses, where you might wan
  
 ### 3. Add Methods
 
-In order to move from one state in the workflow to another, we need _methods_ on our beans.  `chat-workflow` supports both static and instance methods. 
+In order to move from one state in the workflow to another, we need _methods_ on our beans.  `chat-workflow-spring-boot-starter` supports both static and instance methods. 
 
 In order for a method to be available to users in Symphony, you need to tag it with the `@Exposed` annotation.  
 

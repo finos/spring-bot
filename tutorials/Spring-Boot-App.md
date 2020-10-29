@@ -92,7 +92,7 @@ In `pom.xml` add this dependency:
 
 ```
 <dependency>
-   <groupId>com.github.deutschebank.symphony</groupId>
+   <groupId>org.finos.symphony.toolkit</groupId>
    <artifactId>symphony-app-spring-boot-starter</artifactId>
    <scope>compile</scope>
    <version>--latest version --</version>
@@ -101,7 +101,7 @@ In `pom.xml` add this dependency:
 
 Latest version: 
 
-![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)
+![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)
 
 It looks like this for me: 
 

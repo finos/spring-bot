@@ -1,8 +1,8 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 ## What This Is
 
-`symphony-java-client-identity` provides a single abstraction of `SymphonyIdentity`, which encapsulates the data needed to authenticate with a symphony server.  That is:
+`identity` provides a single abstraction of `SymphonyIdentity`, which encapsulates the data needed to authenticate with a symphony server.  That is:
  
  - Private Key
  - Certificates
@@ -21,8 +21,8 @@ Maven Coordinates for this project are:
 
 ```
 <dependency>
-	<groupId>com.github.deutschebank.symphony</groupId>
-	<artifactId>symphony-java-client-identity</artifactId>
+	<groupId>org.finos.symphony.toolkit</groupId>
+	<artifactId>identity</artifactId>
 	<version>-- see above for version --</version>
 	<scope>compile</scope>
 </dependency>

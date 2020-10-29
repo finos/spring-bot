@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 # spring-boot-starter-symphony-app
 
@@ -14,7 +14,7 @@ Add the starter to your Spring Boot project's `pom.xml`:
 
 ```
 <dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
+  <groupId>org.finos.symphony.toolkit</groupId>
   <artifactId>symphony-app-spring-boot-starter</artifactId>
   <version> -- see above -- </version>
 </dependency>
@@ -73,7 +73,7 @@ Once you have the basic app running, you can configure it with the following pro
 |`symphony.app.baseUrl`        |Base Url for your application.  Use if you are behind a load-balancer or something.          |
 |`symphony.app.allowOrigins`  |Will be auto-generated, but you can override if you want.                                    |
 |`symphony.app.appPath`        |Sets the path of symphony endpoints under baseUrl.  Default is "/symphony-app"               |
-|`symphony.app.identity`       |A `SymphonyIdentity` object, which will contain the certificate.    If this is left blank, a certificate will be generated, otherwise, use a `SymphonyIdentity` as defined in `symphony-java-client-identity` project (included transitively). |
+|`symphony.app.identity`       |A `SymphonyIdentity` object, which will contain the certificate.    If this is left blank, a certificate will be generated, otherwise, use a `SymphonyIdentity` as defined in `identity` project (included transitively). |
 |`symphony.app.services`       |Services required by the application, as described [here](https://developers.symphony.com/extension/docs/using-services).  Default is all of them|
 |`symphony.app.controller-javascript`|Defines the javascript that will be executed in the controller once the circle of trust is complete. Defaults to `/symphony-app/starter-include.js`, which is provided by the starter. **Override this when you create your app**          | 
 |`symphony.app.controllerPath`|Allows you to set a path to use for the controller page.  If not set, will be generated for you|
