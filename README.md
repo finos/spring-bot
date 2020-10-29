@@ -24,11 +24,11 @@ This project contains the following:
 
 Read further to see what each of these includes.
 
-## Dependencies
+## Overview and Dependencies
 
-The first four projects have dependencies on one another, expressed through this diagram.  If you are using the higher elements in the diagram, you'll automatically depend on the lower ones.  However, if you're building bots in Spring Boot (say), then you'll not need the top-most dependency. 
+Many of the components in this project rely on each other, as demonstrated in this dependency diagram.  This also gives and overviw of the purpose of each component.
 
-![Dependency Cake Diagram](cake.jpg)
+![Dependency Cake Diagram](cake.png)
 
 ## Symphony Java Client Bindings
 
