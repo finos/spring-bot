@@ -354,7 +354,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.github.deutschebank.symphony.spring.app.SymphonyAppProperties;
+import org.finos.symphony.toolkit.spring.app.SymphonyAppProperties;
 
 @Controller
 public class DemoAppController {

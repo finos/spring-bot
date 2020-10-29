@@ -3,11 +3,11 @@ package example.symphony.demoworkflow.poll;
 import java.time.Instant;
 import java.util.List;
 
-import com.github.deutschebank.symphony.workflow.content.ID;
-import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.java.Exposed;
-import com.github.deutschebank.symphony.workflow.java.Work;
-import com.github.deutschebank.symphony.workflow.sources.symphony.Template;
+import org.finos.symphony.toolkit.workflow.content.ID;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
 @Work
 @Template(view = "classpath:/template/question.ftl")
