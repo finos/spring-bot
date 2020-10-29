@@ -44,14 +44,14 @@ Here is my project in eclipse:
 -   If I run the project now, I should see Spring start, and then finish
     (as we haven\'t actually added any code).
 
-## 3. Add The Spring-Boot-Starter-Symphony-Chat-Workflow Dependency
+## 3. Add The Chat Workflow Dependency
 
 In `pom.xml` add these dependencies:
 
 ```
 <dependency>
-	<groupId>com.github.deutschebank.symphony</groupId>
-	<artifactId>chat-workflow</artifactId>
+	<groupId>org.finos.symphony.toolkit</groupId>
+	<artifactId>chat-workflow-spring-boot-starter</artifactId>
 	<version>--latest version --</version>
 </dependency>
 <dependency>
@@ -64,7 +64,7 @@ In `pom.xml` add these dependencies:
 
 Latest version: 
 
-![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)
+![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)
 
 
 ## 4. Some Beans
