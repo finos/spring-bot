@@ -8,7 +8,7 @@ import org.junit.Test;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 
-public class TestIdentityTest {
+public class IdentityIT {
 
 	/**
 	 * This will only work if an identity is set as a system property first, 
