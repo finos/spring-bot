@@ -8,18 +8,29 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.symphony.api.agent.SystemApi;
+import com.symphony.api.id.SymphonyIdentity;
+import com.symphony.api.pod.UsersApi;
 
+/**
+ * NOTE: This probably won't work on the local PC due to proxies.  You can override the property to use userproxy if you want.
+ * 
+ * @author Rob Moffat
+ *
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes={TestApplication.class})
-@ActiveProfiles({"develop", "crt"})
-public class TestAgentEndpoint {
+@ActiveProfiles("develop")
+public class PodEndpointIT {
 
 	@Autowired
-	SystemApi api;
-
+	UsersApi api;
+	
+	@Autowired
+	SymphonyIdentity id;
+	
 	@Test
 	public void testAutowire() throws Exception {
-		api.v2HealthCheckGet(false, false, false, false, false, false, false, false, null, null);
+		// enhance this with custom trust store. (maybe even have test with invalid trust store)
+		System.out.println(api.v3UsersGet(null, null, null, id.getCommonName(), true));
 	}
 }

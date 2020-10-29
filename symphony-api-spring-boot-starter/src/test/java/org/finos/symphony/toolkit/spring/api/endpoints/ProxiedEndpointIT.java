@@ -20,7 +20,7 @@ import com.symphony.api.pod.UsersApi;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes={TestApplication.class})
 @ActiveProfiles({"proxies", "crt"})
-public class TestProxiedEndpoint {
+public class ProxiedEndpointIT {
 
 	@Autowired
 	UsersApi api;
