@@ -14,7 +14,7 @@ import com.symphony.api.id.SymphonyIdentity;
 @RunWith(SpringRunner.class)
 @SpringBootTest(
 		classes={TestApplication.class})
-public class TestingIdentityConfigTest {
+public class IdentityConfigIT {
 
 	@Autowired
 	SymphonyIdentity id;

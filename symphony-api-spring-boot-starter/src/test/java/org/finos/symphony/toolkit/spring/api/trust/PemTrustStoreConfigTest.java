@@ -30,9 +30,6 @@ public class PemTrustStoreConfigTest {
 	@Autowired
 	TrustManagerFactory tmf;
 	
-	@Autowired
-	SymphonyIdentity id;
-	
 	/**
 	 * Checks instantiation of trust managers
 	 */

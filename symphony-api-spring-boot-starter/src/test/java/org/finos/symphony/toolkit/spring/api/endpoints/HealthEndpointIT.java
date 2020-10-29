@@ -28,7 +28,7 @@ import io.micrometer.core.instrument.Timer;
 @SpringBootTest(classes={TestApplication.class})
 @ActiveProfiles("develop")
 @TestPropertySource(properties = {"management.endpoints.web.exposure.include=*"})
-public class TestHealthEndpoint {
+public class HealthEndpointIT {
 
 	@Autowired
 	SystemApi api;
