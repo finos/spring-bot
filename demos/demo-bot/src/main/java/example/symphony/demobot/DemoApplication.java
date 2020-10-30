@@ -1,8 +1,6 @@
 package example.symphony.demobot;
 
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -19,13 +17,11 @@ import com.symphony.api.model.V4MessageSent;
 @SpringBootApplication
 @Configuration
 public class DemoApplication {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(DemoApplication.class);
-	
+		
 	@Autowired
 	MessagesApi messagesApi;
 	
-	@Value("${room:StQv5mK1u-06afIwrhtN1n___pPiNy8tdA==}")
+	@Value("${room}")
 	String streamId;
 
 	public static void main(String[] args) {
