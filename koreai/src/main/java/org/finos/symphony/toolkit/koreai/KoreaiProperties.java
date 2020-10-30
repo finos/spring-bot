@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.koreai;
+package org.finos.symphony.toolkit.koreai;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

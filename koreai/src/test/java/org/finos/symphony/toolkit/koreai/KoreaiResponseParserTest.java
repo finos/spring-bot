@@ -1,8 +1,8 @@
-package com.github.deutschebank.symphony.koreai;
+package org.finos.symphony.toolkit.koreai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.deutschebank.symphony.koreai.response.KoreaiResponseMessageAdapter;
 
+import org.finos.symphony.toolkit.koreai.response.KoreaiResponseMessageAdapter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 @RunWith(Parameterized.class)
 public class KoreaiResponseParserTest {
 
-    private final KoreaiResponseMessageAdapter parser;
+/*    private final KoreaiResponseMessageAdapter parser;
     private String fInput;
     private String fExpected;
 
@@ -55,5 +55,5 @@ public class KoreaiResponseParserTest {
 
     private InputStream asInputStream(String fInput) {
         return new ByteArrayInputStream(fInput.getBytes());
-    }
+    } */
 }

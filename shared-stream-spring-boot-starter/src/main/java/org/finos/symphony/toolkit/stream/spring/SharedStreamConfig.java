@@ -1,9 +1,5 @@
 package org.finos.symphony.toolkit.stream.spring;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
 
@@ -12,7 +8,6 @@ import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.SymphonyRaftClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.transport.HttpMulticaster;
 import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
 import org.finos.symphony.toolkit.stream.cluster.voting.BullyDecider;
 import org.finos.symphony.toolkit.stream.cluster.voting.Decider;
@@ -25,7 +20,6 @@ import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -37,11 +31,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;
 
@@ -74,12 +64,6 @@ public class SharedStreamConfig {
 	@Autowired
 	HealthEndpoint health;
 	
-	@Autowired
-	ObjectMapper objectMapper;
-	
-	@Value("${server.port:8080}")
-	private String serverPort;
-	
 	@Bean
 	@ConditionalOnMissingBean
 	public SharedLog symphonySharedLog() {
@@ -97,30 +81,11 @@ public class SharedStreamConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public Participant selfParticipant() {
-		String endpointPath = streamProperties.getEndpointPath();
-		endpointPath = endpointPath.startsWith("/") ? endpointPath : "/" + endpointPath;
-		String hostAndPort = StringUtils.isEmpty(streamProperties.getEndpointHostAndPort()) ? hostNameAndPort() : streamProperties.getEndpointHostAndPort();
-		String scheme = streamProperties.getEndpointScheme().toString().toLowerCase();
-		String url = scheme+"://" + hostAndPort + endpointPath;
-		LOG.info("Cluster starting up. This participant id: "+url);
+		String url = "dummy";
+		LOG.info("Cluster starting up with dummy participant (no spring-web detected) "+url);
 		return new Participant(url);	
-
 	}
 
-	protected String hostNameAndPort() {
-		try {
-			return InetAddress.getLocalHost().getHostAddress() + ":" + serverPort;
-		} catch (UnknownHostException e) {
-			throw new UnsupportedOperationException("Couldn't determine local host address", e);
-		}
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public Multicaster multicaster() {
-		return new HttpMulticaster(selfParticipant());
-	}
-	
 	@Bean
 	@ConditionalOnMissingBean
 	public ParticipationNotifier participationNotifier(SharedLog sl, Participant self) {
@@ -143,30 +108,6 @@ public class SharedStreamConfig {
 		} 
 	}
 	
-	public static class SymphonyStreamUrlMapping extends SimpleUrlHandlerMapping {}
-
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public SymphonyStreamUrlMapping symphonyStreamUrlMapping(HttpClusterMessageController clusterMessageController) {
-		SymphonyStreamUrlMapping out = new SymphonyStreamUrlMapping();
-		Map<String, Object> sm = Collections.singletonMap(streamProperties.getEndpointPath(), clusterMessageController);
-		out.setUrlMap(sm);
-		return out;
-	}
-	
-	private View symphonyJsonOutputView() {
-		MappingJackson2JsonView out = new MappingJackson2JsonView(objectMapper);
-		out.setPrettyPrint(true);
-		out.setExtractValueFromSingleKeyModel(true);
-		return out;
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public HttpClusterMessageController httpClusterMessageController(ClusterMember cm) {
-		return new HttpClusterMessageController(symphonyJsonOutputView(), cm, objectMapper);
-	}
 	
 	@Bean
 	@ConditionalOnMissingBean

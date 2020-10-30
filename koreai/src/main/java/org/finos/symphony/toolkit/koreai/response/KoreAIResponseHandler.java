@@ -1,6 +1,6 @@
-package com.github.deutschebank.symphony.koreai.response;
+package org.finos.symphony.toolkit.koreai.response;
 
-import com.github.deutschebank.symphony.koreai.Address;
+import org.finos.symphony.toolkit.koreai.Address;
 
 /**
  * Handles responses coming back from KoreAI.

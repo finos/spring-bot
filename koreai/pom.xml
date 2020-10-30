@@ -7,9 +7,9 @@
 	<description>Build Workflows Using Enterprise Chat</description>
 
 	<parent>
-		<groupId>com.github.deutschebank.symphony</groupId>
-		<artifactId>symphony-java-client-parent</artifactId>
-		<version>4.59.7-SNAPSHOT</version>
+		<groupId>org.finos.symphony.toolkit</groupId>
+		<artifactId>symphony-java-toolkit</artifactId>
+		<version>5.59.1-SNAPSHOT</version>
 	</parent>
 
 	<properties>
@@ -19,19 +19,19 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>5.59.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
-			<artifactId>symphony-java-client-entity-json</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>entity-json</artifactId>
+			<version>5.59.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
-			<artifactId>symphony-shared-stream</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>shared-stream-spring-boot-starter</artifactId>
+			<version>5.59.1-SNAPSHOT</version>
 		</dependency>
 		<!-- needed for formatting messageml -->
 		<dependency>
