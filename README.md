@@ -1,8 +1,8 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
-![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg) ![Version](https://img.shields.io/bintray/v/deutschebank/SymphonyPractice/symphony-java-client-parent)
+![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)
 [![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
-![License](https://img.shields.io/github/license/deutschebank/symphony-java-toolkit)
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+![License](https://img.shields.io/github/license/finos/symphony-java-toolkit)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 ## What This Is
 
@@ -15,27 +15,27 @@ This project contains the following:
 - Symphony API Spring-Boot Starter
 - Symphony App Spring-Boot Starter
 - Symphony JSON Support
-- Tutorials for getting started
 - Symphony FIX Support
 - A Symphony Maven Build Notifier
 - Symphony Shared Stream
 - Chat Workflow
 - KoreAI Connector
-- Lots of Demo Code
+- Tutorials for getting started
+- Demo bots and apps
 
 Read further to see what each of these includes.
 
-## Dependencies
+## Overview and Dependencies
 
-The first four projects have dependencies on one another, expressed through this diagram.  If you are using the higher elements in the diagram, you'll automatically depend on the lower ones.  However, if you're building bots in Spring Boot (say), then you'll not need the top-most dependency. 
+Many of the components in this project rely on each other, as demonstrated in this dependency diagram.  This also gives and overviw of the purpose of each component.
 
-![Dependency Cake Diagram](cake.jpg)
+![Dependency Cake Diagram](cake.png)
 
 ## Symphony Java Client Bindings
 
 This provides a JAX-RS standard, **Type-Safe** means of interacting with [Symphony](https://symphony.com) pods via REST apis.
 
-`symphony-java-client-bindings` is a set of swagger-generated domain objects and interfaces that provide a Java API for interacting with Symphony's REST endpoints. 
+`bindings` is a set of swagger-generated domain objects and interfaces that provide a Java API for interacting with Symphony's REST endpoints. 
 
 - [Symphony REST Endpoint Documentation](https://rest-api.symphony.com/reference)
 - [Symphony REST Endpoint Swagger Definitions](https://github.com/symphonyoss/symphony-api-spec)
@@ -75,7 +75,7 @@ This provides you with an out-of-the-box way to get started and build an app wit
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
  - [View Demo App Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-app)
 
-## Symphony JSON Support
+## Entity JSON - Symphony JSON Support
 
 This is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON data payload of a Symphony Message, using Jackson.
 
@@ -108,11 +108,17 @@ This module provides a one-stop-shop for constructing work-flows in Java.  It is
 
  - [View the README](chat-workflow/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
+<<<<<<< HEAD
  - [To-Do List Tutorial](tutorials/Chat-Workflow.md)
  - [Demo Poll Bot](demos/demo-poll-bot)
  - [Demo To-Do List Bot](demos/demo-todo-bot)
  - [Demo Claim Bot](demos/demo-claim-bot)
   
+=======
+ - [To-Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-todo-bot)
+ - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-claim-bot)
+ - [Poll Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-poll-bot)
+>>>>>>> master
 
 ## License
 
@@ -122,21 +128,24 @@ This project is licensed under the [Apache 2.0 License](License).
 
 In order to do a release:
 
-1. On Releaser's machine:
+1.  Changes.md
+
+- Update this file to include details of the release.
+
+2. On Releaser's machine:
 
 ```
-mvn test
-mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=*  -DgroupId=*
+mvn test integration-test
+mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=\*  -DgroupId=\*
 mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/claim-bot,!demos/poll-bot,!demos/todo-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release
-mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=*  -DgroupId=*
+mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then push to git
 ```
 
-2.  In Bintray:
+3.  On `oss.sonatype.org`
 
-Jcenter release is performed automatically.
-To release to maven central: https://bintray.com/package/central/deutschebank/SymphonyPractice/symphony-java-toolkit#central
-Enter details and click sync.
+- Close the Staging Repository
+- Release it.
 
- - **NB:**: This seems to be somewhat unreliable. If it fails, un-check "Close and release repository when done." and instead do the close + release process via the interface at [oss.sonatype.org](https://oss.sonatype.org).
+4.  Perform release on github with same number
  

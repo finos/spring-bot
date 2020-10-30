@@ -44,14 +44,14 @@ Here is my project in eclipse:
 -   If I run the project now, I should see Spring start, and then finish
     (as we haven\'t actually added any code).
 
-## 3. Add The Spring-Boot-Starter-Symphony-Chat-Workflow Dependency
+## 3. Add The Chat Workflow Dependency
 
 In `pom.xml` add these dependencies:
 
 ```
 <dependency>
-	<groupId>com.github.deutschebank.symphony</groupId>
-	<artifactId>chat-workflow</artifactId>
+	<groupId>org.finos.symphony.toolkit</groupId>
+	<artifactId>chat-workflow-spring-boot-starter</artifactId>
 	<version>--latest version --</version>
 </dependency>
 <dependency>
@@ -64,7 +64,7 @@ In `pom.xml` add these dependencies:
 
 Latest version: 
 
-![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)
+![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)
 
 
 ## 4. Some Beans
@@ -191,7 +191,7 @@ public class NewItemDetails {
 
 ## 5. A Workflow Spring Bean
 
-`chat-workflow` defines the Symphony bot for you, but it needs to know about the workflow classes we've created.  We need a Spring bean that implements `com.github.deutschebank.symphony.workflow.Workflow` to describe this, and for our To Do app, it looks like this:
+`chat-workflow` defines the Symphony bot for you, but it needs to know about the workflow classes we've created.  We need a Spring bean that implements `org.finos.symphony.toolkit.workflow.Workflow` to describe this, and for our To Do app, it looks like this:
 
 ```
 @Configuration
@@ -417,17 +417,17 @@ If you don't like the look of the forms presented, you don't have to stick with 
     } ]
   },
   "errors" : {
-    "type" : "com.github.deutschebank.symphony.workflow.form.errorMap",
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
     "version" : "1.0",
     "contents" : { ... }
   },
   "buttons" : {
-    "type" : "com.github.deutschebank.symphony.workflow.form.buttonList",
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
     "version" : "1.0",
     "contents" : [ ... ]
   },
   "header" : {
-    "type" : "com.github.deutschebank.symphony.workflow.form.headerDetails",
+    "type" : "org.finos.symphony.toolkit.workflow.form.headerDetails",
     "version" : "1.0",
     "name" : "Todo Items",
     "description" : "List of current items",
