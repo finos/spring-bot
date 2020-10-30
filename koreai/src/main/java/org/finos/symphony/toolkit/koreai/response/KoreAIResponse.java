@@ -1,4 +1,4 @@
-package com.github.deutschebank.symphony.koreai.response;
+package org.finos.symphony.toolkit.koreai.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

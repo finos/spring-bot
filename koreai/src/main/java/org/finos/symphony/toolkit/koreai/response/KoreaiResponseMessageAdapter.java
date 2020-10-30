@@ -1,19 +1,19 @@
-package com.github.deutschebank.symphony.koreai.response;
+package org.finos.symphony.toolkit.koreai.response;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import org.finos.symphony.toolkit.koreai.Address;
+import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.deutschebank.symphony.json.EntityJson;
-import com.github.deutschebank.symphony.json.EntityJsonTypeResolverBuilder.VersionSpace;
-import com.github.deutschebank.symphony.json.ObjectMapperFactory;
-import com.github.deutschebank.symphony.koreai.Address;
 import com.symphony.api.agent.MessagesApi;
 
 /**

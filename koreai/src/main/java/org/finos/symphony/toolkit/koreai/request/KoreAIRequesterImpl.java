@@ -1,19 +1,19 @@
-package com.github.deutschebank.symphony.koreai.request;
+package org.finos.symphony.toolkit.koreai.request;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
+import org.finos.symphony.toolkit.koreai.Address;
+import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
+import org.finos.symphony.toolkit.koreai.response.KoreAIResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.github.deutschebank.symphony.koreai.Address;
-import com.github.deutschebank.symphony.koreai.response.KoreAIResponse;
-import com.github.deutschebank.symphony.koreai.response.KoreAIResponseHandler;
 
 
 /**

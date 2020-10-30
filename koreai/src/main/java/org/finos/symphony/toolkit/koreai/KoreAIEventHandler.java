@@ -1,16 +1,16 @@
-package com.github.deutschebank.symphony.koreai;
+package org.finos.symphony.toolkit.koreai;
 
 import java.io.ByteArrayInputStream;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
+import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
-import com.github.deutschebank.symphony.koreai.request.KoreAIRequester;
-import com.github.deutschebank.symphony.stream.StreamEventConsumer;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4MessageSent;

@@ -1,8 +1,8 @@
-package com.github.deutschebank.symphony.koreai;
+package org.finos.symphony.toolkit.koreai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.deutschebank.symphony.koreai.response.KoreAIResponse;
 
+import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.junit.Test;
 
 import java.io.IOException;

@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.finos.symphony.toolkit.stream.spring.SharedStreamConfig
+  org.finos.symphony.toolkit.stream.spring.SharedStreamConfig, \
+  org.finos.symphony.toolkit.stream.spring.SharedStreamWebConfig

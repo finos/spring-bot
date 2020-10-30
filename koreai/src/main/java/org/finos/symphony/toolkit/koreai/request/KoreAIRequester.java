@@ -1,6 +1,6 @@
-package com.github.deutschebank.symphony.koreai.request;
+package org.finos.symphony.toolkit.koreai.request;
 
-import com.github.deutschebank.symphony.koreai.Address;
+import org.finos.symphony.toolkit.koreai.Address;
 
 public interface KoreAIRequester {
 
