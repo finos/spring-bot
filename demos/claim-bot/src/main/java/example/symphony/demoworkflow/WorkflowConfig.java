@@ -6,15 +6,15 @@ package example.symphony.demoworkflow;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.content.UserDef;
+import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.github.deutschebank.symphony.workflow.Workflow;
-import com.github.deutschebank.symphony.workflow.content.Room;
-import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.content.UserDef;
-import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.MemberInfo;
 import com.symphony.api.model.MembershipList;

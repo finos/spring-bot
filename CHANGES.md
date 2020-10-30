@@ -62,3 +62,15 @@
 
  - Tutorial and major functionality updates for `chat-workflow` module.
  - New demo bots:  `poll-bot`, `claim-bot`, `todo-bot`.
+
+## 28th October 2020
+ 
+ - Moved to `org.finos.symphony.toolkit` groupId.
+ - Renaming modules so that they match directories/spring-starter naming structure.
+
+## 29th October 2020
+
+ - Renamed packages to match `org.finos.symphony.toolkit`
+ - Divided tests into integration tests, unit tests
+ - Minor fixes to chat workflow 
+

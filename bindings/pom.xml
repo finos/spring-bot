@@ -2,14 +2,14 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>symphony-java-client-bindings</artifactId>
+  <artifactId>bindings</artifactId>
   <packaging>jar</packaging>
   <name>Symphony Java Client Bindings</name>
 
   <parent>
-    <groupId>com.github.deutschebank.symphony</groupId>
-    <artifactId>symphony-java-client-parent</artifactId>
-    <version>4.59.9-SNAPSHOT</version>
+    <groupId>org.finos.symphony.toolkit</groupId>
+    <artifactId>symphony-java-toolkit</artifactId>
+    <version>5.59.1-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -39,19 +39,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
-        <configuration>
-          <systemPropertyVariables>
-            <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
-            <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
-            <proxy>${symphony-proxy}</proxy>
-          </systemPropertyVariables>
-        </configuration>
       </plugin>
 
       <plugin>
@@ -274,9 +261,9 @@ import com.symphony.api.model.AuthenticateRequest;
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.deutschebank.symphony</groupId>
-      <artifactId>symphony-java-client-identity</artifactId>
-      <version>4.59.9-SNAPSHOT</version>
+      <groupId>org.finos.symphony.toolkit</groupId>
+      <artifactId>identity</artifactId>
+      <version>5.59.1-SNAPSHOT</version>
       <scope>test</scope>
     </dependency>
 

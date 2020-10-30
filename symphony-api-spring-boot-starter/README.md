@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-client-parent)](https://search.maven.org/search?q=com.github.deutschebank.symphony)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
 # Spring Boot Starter for Symphony Api / Bot Creation
 
@@ -14,7 +14,7 @@ Add the starter to your `pom.xml`:s
 
 ```
 <dependency>
-  <groupId>com.github.deutschebank.symphony</groupId>
+  <groupId>org.finos.symphony.toolkit</groupId>
   <artifactId>symphony-api-spring-boot-starter</artifactId>
   <version> -- see above -- </version>
 </dependency>
@@ -213,8 +213,7 @@ public class SomeComponent {
 }
 ```
 
-**Note**: By default, session and key manager tokens are handled for you in the created beans, hence those parameters are `null`.  For more information on how this works, 
-check out the `symphony-java-client-bindings` project.
+**Note**: By default, session and key manager tokens are handled for you in the created beans, hence those parameters are `null`.  For more information on how this works, check out the `bindings` project.
 
 ## Use Case 2:  Multiple Identities / Multiple Pods
 
