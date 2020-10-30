@@ -9,11 +9,13 @@ import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.SymphonyRaftClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
+import org.finos.symphony.toolkit.stream.cluster.transport.NullMulticaster;
 import org.finos.symphony.toolkit.stream.cluster.voting.BullyDecider;
 import org.finos.symphony.toolkit.stream.cluster.voting.Decider;
 import org.finos.symphony.toolkit.stream.cluster.voting.MajorityDecider;
 import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.symphony.toolkit.stream.log.LocalConsoleOnlyLog;
 import org.finos.symphony.toolkit.stream.log.LogMessageHandler;
 import org.finos.symphony.toolkit.stream.log.SharedLog;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
@@ -25,6 +27,7 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,6 +69,7 @@ public class SharedStreamConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "symphony.stream.coordination-stream-id")
 	public SharedLog symphonySharedLog() {
 		if (StringUtils.isEmpty(streamProperties.getCoordinationStreamId())) {
 			throw new IllegalArgumentException("Shared Log needs a stream ID to write to.  PLease set symphony.stream.coordination-stream-id");
@@ -76,6 +80,21 @@ public class SharedStreamConfig {
 				messagesApi, 
 				streamProperties.getEnvironmentIdentifier(),
 				streamProperties.getParticipantWriteIntervalMillis());
+	}
+	
+	/**
+	 * This is used if there is no coordination stream id defined. 
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public SharedLog fallbackLocalLog() {
+		return new LocalConsoleOnlyLog();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public Multicaster fallbackMulticaster() {
+		return new NullMulticaster();
 	}
 	
 	@Bean
@@ -125,7 +144,9 @@ public class SharedStreamConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyLeaderEventFilter symphonyLeaderEventFilter(Multicaster mc, Participant self, LogMessageHandler lmh) {
-		return new SymphonyLeaderEventFilter(userDefinedCallback, false, self, 
+		return new SymphonyLeaderEventFilter(userDefinedCallback, 
+			streamProperties.getCoordinationStreamId() == null, // if not defined, we are leader
+			self, 
 			lmh, lm -> mc.accept(lm.getParticipant()));
 	}
 	
