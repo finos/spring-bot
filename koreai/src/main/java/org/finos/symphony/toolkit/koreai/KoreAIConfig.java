@@ -6,7 +6,7 @@ import java.nio.charset.Charset;
 import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
 import org.finos.symphony.toolkit.koreai.request.KoreAIRequesterImpl;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseHandler;
-import org.finos.symphony.toolkit.koreai.response.KoreaiResponseMessageAdapter;
+import org.finos.symphony.toolkit.koreai.response.KoreAIResponseHandlerImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +42,7 @@ public class KoreAIConfig {
 	public KoreAIResponseHandler responseMessageAdapter() throws IOException {
 	  	String template = StreamUtils.copyToString(
 	  			rl.getResource(properties.getTemplate()).getInputStream(), Charset.forName("UTF-8"));
-		return new KoreaiResponseMessageAdapter(messagesApi, template);	
+		return new KoreAIResponseHandlerImpl(messagesApi, template);	
 	}
 	
 	@Bean
