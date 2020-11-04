@@ -1,16 +1,18 @@
 package org.finos.symphony.toolkit.koreai.response;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.codec.Charsets;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
-import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.koreai.Address;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,28 +23,20 @@ import com.symphony.api.agent.MessagesApi;
  * 
  * @author rodriva
  */
-public class KoreaiResponseMessageAdapter implements InitializingBean, KoreAIResponseHandler {
+public class KoreAIResponseHandlerImpl implements InitializingBean, KoreAIResponseHandler {
 
-    private static final Logger LOG = LoggerFactory.getLogger(KoreaiResponseMessageAdapter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(KoreAIResponseHandlerImpl.class);
 
     private ObjectMapper om;
     private final MessagesApi messagesApi;
-    private final String template;
+    private final boolean skipEmptyAnswers;
+    private ResourceLoader rl;
 
-    public KoreaiResponseMessageAdapter(MessagesApi messagesApi, String template) {
+    public KoreAIResponseHandlerImpl(MessagesApi messagesApi, ResourceLoader rl, ObjectMapper symphonyEntityMapper, boolean skipEmptyAnswers) {
         this.messagesApi = messagesApi;
-        this.template = template;
-    }
-
-
-    public static final String BR = "<br />\n";
-
-    public String parse(String input) {
-        return input
-                .replaceAll("\\\\n", "\n")
-                .replaceAll("\n", BR)
-                .replaceAll("(https?:\\/\\/[\\w.\\/\\+_\\=\\-\\?]*)", "<a href=\"$1\">$1</a>");
-
+        this.skipEmptyAnswers = skipEmptyAnswers;
+        this.rl = rl;
+        this.om = symphonyEntityMapper;
     }
 
     @Override
@@ -50,45 +44,30 @@ public class KoreaiResponseMessageAdapter implements InitializingBean, KoreAIRes
     	LOG.info("KoreAIResponseMessageAdapter address={} response={}", to, koreaResponse);
     	
         try {
-            if (koreaResponse.getText().contains("I am unable to find an answer")) {
-            	LOG.warn("Returning nothing");
-            	return;
-            }
-
-            // this seems weird - one response wrapped in another?
-            if (koreaResponse.getText().startsWith("{\"text\"")) {
-                koreaResponse = om.readValue(koreaResponse.getText(), KoreAIResponse.class);
-            }
-            
-            String parsed = parse(koreaResponse.getText());
-            koreaResponse.setText(parsed);
-
-            if (koreaResponse.isTemplate()) {
-            	handleButtons(koreaResponse);
-            }
-            
+        	
+        	if(skipEmptyAnswers) {
+	            if (koreaResponse.getText().contains("I am unable to find an answer")) {
+	            	LOG.warn("Returning nothing");
+	            	return;
+	            }
+        	}
+             
             LOG.debug("Prepared Response: {}", koreaResponse);
             
-            sendMessage(to, koreaResponse);
+            sendMessage(to, koreaResponse, 
+            	StreamUtils.copyToString(rl.getResource(koreaResponse.getForm()).getInputStream(),
+            			Charsets.UTF_8));
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
         }
     }
 
-    public void sendMessage(Address to, KoreAIResponse koreaResponse) throws Exception {
+    public void sendMessage(Address to, KoreAIResponse koreaResponse, String template) throws Exception {
     	EntityJson out = new EntityJson();
     	out.put("koreai", koreaResponse);
     	String json = om.writeValueAsString(out);
 		messagesApi.v4StreamSidMessageCreatePost(null, to.getRoomStreamID(), template, json, null, null, null, null);
 	}
-
-	public void handleButtons(KoreAIResponse template) {
-        String[] multiline = template.getText().split(BR);
-        List<String> options = Arrays.asList(Arrays.copyOfRange(multiline, 1, multiline.length));
-        template.setOptions(options);
-        template.setText(multiline[0]);
-        template.setForm("koreai-passthrough");
-    }
 
 	@Override
 	public void afterPropertiesSet() throws Exception {

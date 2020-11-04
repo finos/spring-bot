@@ -1,0 +1,5 @@
+{
+  "text": "Did you mean?",
+  "isTemplate" : false,
+  "form" : "classpath:/templates/koreai-message.ftl"
+}

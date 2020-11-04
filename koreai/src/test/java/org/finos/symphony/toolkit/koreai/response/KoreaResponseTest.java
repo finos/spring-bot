@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.koreai;
+package org.finos.symphony.toolkit.koreai.response;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
