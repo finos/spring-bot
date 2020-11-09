@@ -32,11 +32,10 @@ public class KoreAIResponseHandlerImpl implements InitializingBean, KoreAIRespon
     private final boolean skipEmptyAnswers;
     private ResourceLoader rl;
 
-    public KoreAIResponseHandlerImpl(MessagesApi messagesApi, ResourceLoader rl, ObjectMapper symphonyEntityMapper, boolean skipEmptyAnswers) {
+    public KoreAIResponseHandlerImpl(MessagesApi messagesApi, ResourceLoader rl, boolean skipEmptyAnswers) {
         this.messagesApi = messagesApi;
         this.skipEmptyAnswers = skipEmptyAnswers;
         this.rl = rl;
-        this.om = symphonyEntityMapper;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class KoreAIResponseHandlerImpl implements InitializingBean, KoreAIRespon
         try {
         	
         	if(skipEmptyAnswers) {
-	            if (koreaResponse.getText().contains("I am unable to find an answer")) {
+	            if (((String) koreaResponse.getText()).contains("I am unable to find an answer")) {
 	            	LOG.warn("Returning nothing");
 	            	return;
 	            }

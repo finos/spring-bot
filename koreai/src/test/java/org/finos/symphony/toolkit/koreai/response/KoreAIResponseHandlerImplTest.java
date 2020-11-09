@@ -28,7 +28,7 @@ import com.symphony.api.agent.MessagesApi;
  * @author rodriva
  */
 @RunWith(SpringRunner.class)
-public class KoreAIResponseImplTest {
+public class KoreAIResponseHandlerImplTest {
 
     private KoreAIResponseHandler parser;
     
@@ -47,8 +47,9 @@ public class KoreAIResponseImplTest {
     String streamId; 
     
     @Before
-    public void setup() throws IOException {
-        this.parser = new KoreAIResponseHandlerImpl(api, rl, om, true);
+    public void setup() throws Exception {
+        this.parser = new KoreAIResponseHandlerImpl(api, rl, true);
+        ((KoreAIResponseHandlerImpl)this.parser).afterPropertiesSet();
         Mockito.when(api.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
         	.then((a) -> {
         		streamId = a.getArgument(1);
@@ -73,10 +74,11 @@ public class KoreAIResponseImplTest {
     @Test
     public void testFormAnswer() throws JsonMappingException, JsonProcessingException, IOException {
     	Address a = new Address(1l, "alf", "angstrom", "alf@example.com", "abc1234");
-    	KoreAIResponse resp = om.readValue(contents("response-in.json"), KoreAIResponse.class);
+    	KoreAIResponse resp = om.readValue(contents("response-form.json"), KoreAIResponse.class);
         this.parser.handle(a, resp);
         Assert.assertEquals(contents("templates/koreai-form.ftl"), messageMLResponse);
-        Assert.assertEquals(contents("response-out.json"), jsonResponse);
+        System.out.println(jsonResponse);
+        Assert.assertEquals(contents("response-form-out.json"), jsonResponse);
         Assert.assertEquals("abc1234", streamId);
     }
     
@@ -86,6 +88,7 @@ public class KoreAIResponseImplTest {
     	KoreAIResponse resp = om.readValue(contents("response-message.json"), KoreAIResponse.class);
         this.parser.handle(a, resp);
         Assert.assertEquals(contents("templates/koreai-message.ftl"), messageMLResponse);
+        System.out.println(jsonResponse);
         Assert.assertEquals(contents("response-message-out.json"), jsonResponse);
         Assert.assertEquals("m3", streamId);
     }

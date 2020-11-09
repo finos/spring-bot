@@ -9,34 +9,56 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties("symphony.koreai")
 public class KoreaiProperties {
+
+	private String jwt;
+
+	private String url;
 	
-    private String jwt;
-    
-    private String url;
-    
-    private String template = "classpath:/templates/koreai-form.ftl";
-    
-    public String getTemplate() {
-		return template;
+	private boolean skipEmptyResponses;
+
+	private String formTemplate = "classpath:/templates/koreai-form.ftl";
+
+	private String messageTemplate = "classpath:/templates/koreai-message.ftl";
+
+	public String getFormTemplate() {
+		return formTemplate;
 	}
 
-	public void setTemplate(String template) {
-		this.template = template;
+	public void setFormTemplate(String template) {
+		this.formTemplate = template;
 	}
 
-    public String getJwt() {
-        return jwt;
-    }
+	public String getMessageTemplate() {
+		return messageTemplate;
+	}
 
-    public void setJwt(String jwt) {
-        this.jwt = jwt;
-    }
+	public void setMessageTemplate(String template) {
+		this.messageTemplate = template;
+	}
 
-    public String getUrl() {
-        return url;
-    }
+	public String getJwt() {
+		return jwt;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setJwt(String jwt) {
+		this.jwt = jwt;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+	
+
+	public boolean isSkipEmptyResponses() {
+		return skipEmptyResponses;
+	}
+
+	public void setSkipEmptyResponses(boolean skipEmptyResponses) {
+		this.skipEmptyResponses = skipEmptyResponses;
+	}
+
 }
