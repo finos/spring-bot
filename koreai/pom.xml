@@ -21,23 +21,17 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>5.59.0</version>
+			<version>5.59.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>entity-json</artifactId>
-			<version>5.59.0</version>
+			<version>5.59.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
-			<version>5.59.0</version>
-		</dependency>
-		<!-- needed for formatting messageml -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>${spring-boot.version}</version>
+			<version>5.59.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- for testing -->
@@ -73,6 +67,14 @@
 		<dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-json-jackson</artifactId>
+    </dependency>
+    
+    <!-- mocking KoreAI -->
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-jre8</artifactId>
+      <version>2.25.1</version>
+      <scope>test</scope>
     </dependency>
 	</dependencies>
 

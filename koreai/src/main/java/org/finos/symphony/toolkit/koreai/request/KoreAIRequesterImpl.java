@@ -1,7 +1,10 @@
 package org.finos.symphony.toolkit.koreai.request;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -50,7 +53,10 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
     }
     
     protected Client createClient() {
-    	return ClientBuilder.newClient();
+    	return ClientBuilder.newBuilder()
+    		.connectTimeout(15, TimeUnit.SECONDS)
+    		.readTimeout(15, TimeUnit.SECONDS)
+    		.build();
     }
 
     public void send(Address a, String symphonyQuery) {
@@ -65,12 +71,14 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
     }
 
 	protected KoreAIResponse requestToKoreAI(Address a, String symphonyQuery) throws Exception {
-		KoreAIResponse out =  client.target(url).request()
+		Entity<Object> json = Entity.json(buildPayload(a, symphonyQuery));
+		KoreAIResponse out = client.target(url).request()
 			.accept(MediaType.APPLICATION_JSON)
 			.header("Authorization", "Bearer " + jwt)
-			.post(Entity.json(buildPayload(a, symphonyQuery)))
+			.header("Content-Type", "application/json")
+			.post(json)
 			.readEntity(KoreAIResponse.class);
-		
+				
 		out = postProcessKoreAIResponse(out);
 		return out;
 	}
@@ -80,51 +88,67 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
 	 */
 	protected KoreAIResponse postProcessKoreAIResponse(KoreAIResponse out) throws Exception {
 		  // this seems weird - one response wrapped in another?
-        if (out.getText().startsWith("{\"text\"")) {
-            out = om.readValue(out.getText(), KoreAIResponse.class);
+		Object text = out.getText();
+		if ((text instanceof String) && (((String)text).startsWith("{\"text\""))) {
+            out = om.readValue((String) out.getText(), KoreAIResponse.class);
         }
         
         // handle formatting for messageML
         handleMessageMLConversion(out);
         
         // handle template choice
-        if (out.isTemplate()) {
-        	handleForm(out);
-        } else {
-        	handleMessage(out);
-        }
+        handleOptions(out);
         
         return out;
-	}
-
-	private void handleMessage(KoreAIResponse out) {
-		out.setForm(messageTemplate);
 	}
 
 	public static final String BR = "<br />";
 	
 	private void handleMessageMLConversion(KoreAIResponse out) {
+		String text = out.getText() instanceof String ? 
+				(String) out.getText() 
+				: ((List<String>) out.getText()).get(0);
+		
 		// convert newlines to <br />
-		String txt = out.getText().replaceAll("\\\\n", "\n").replaceAll("\n", BR);
+		text = text.replaceAll("\\\\n", "\n").replaceAll("\n", BR);
 		
 		// now convert urls to symphony format
-		txt = txt.replaceAll("(https?:\\/\\/[\\w.\\/\\+_\\=\\-\\?]*)", "<a href=\"$1\">$1</a>");
-		out.setText(txt);
+		text = text.replaceAll("(https?:\\/\\/[\\w.\\/\\+_\\=\\-\\?]*)", "<a href=\"$1\">$1</a>");
+		out.setMessageML(text);
 	}
+	
+	public static final Pattern OPTION = Pattern.compile("^[ ]?[a-z]\\)\\ (.*)$");
 
-	public void handleForm(KoreAIResponse template) {
-        String[] multiline = template.getText().split(BR);
-        List<String> options = Arrays.asList(Arrays.copyOfRange(multiline, 1, multiline.length));
+	public void handleOptions(KoreAIResponse template) {
+		String messageML = template.getMessageML();
+		
+        String[] multiline = messageML.split(BR);
+        StringBuilder text = new StringBuilder();
+        List<String> options = new ArrayList<String>();
+        for (String string : multiline) {
+        	Matcher m = OPTION.matcher(string);
+			if (m.find()) {
+				options.add(m.group(1));
+			} else {
+				text.append(string);
+				text.append(BR);
+			}
+		}
+        
         template.setOptions(options);
-        template.setText(multiline[0]);
-		template.setForm(formTemplate);
+        template.setMessageML(text.toString());
+        if (!options.isEmpty()) {
+        	template.setForm(formTemplate);
+        } else {
+        	template.setForm(messageTemplate);
+        }
     }
 
 	public Object buildPayload(Address a, String text) {
         LOG.info("buildPayload for text={} address={}", text, a); 
 
         ObjectNode payload = jnf.objectNode().put("to", "");
-        payload.set("session", jnf.objectNode().put("new", "false"));
+        payload.set("session", jnf.objectNode().put("new", false));
         payload.set("message", jnf.objectNode().put("text", text));
         payload.set("from", jnf.objectNode()
         		.put("id", String.valueOf(a.getUserId()))
@@ -134,7 +158,7 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
         				.put("email", a.getEmail())));
         
         LOG.info("Constructed Payload for KoreAI={}", payload);
-        return payload.toString();
+        return payload;
     }
 
 	@Override

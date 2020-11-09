@@ -13,7 +13,7 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KoreAIResponse {
-    private String text;
+    private Object text;
     
     @JsonProperty(value = "isTemplate")
     private boolean template;
@@ -23,6 +23,16 @@ public class KoreAIResponse {
     private List<String> options;
     
     private String form;
+
+    private String messageML;
+    
+	public String getMessageML() {
+		return messageML;
+	}
+
+	public void setMessageML(String messageML) {
+		this.messageML = messageML;
+	}
 
 	public String getForm() {
 		return form;
@@ -40,11 +50,11 @@ public class KoreAIResponse {
 		this.options = options;
 	}
 
-    public String getText() {
+    public Object getText() {
         return text;
     }
 
-    public void setText(String text) {
+    public void setText(Object text) {
         this.text = text;
     }
 
@@ -88,8 +98,6 @@ public class KoreAIResponse {
 		public String toString() {
 			return "Errors [msg=" + msg + ", code=" + code + "]";
 		}
-        
-        
     }
 
 	@Override

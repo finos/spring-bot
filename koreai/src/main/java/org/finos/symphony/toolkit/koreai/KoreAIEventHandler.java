@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.koreai;
 
 import java.io.ByteArrayInputStream;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +15,7 @@ import org.w3c.dom.Document;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4MessageSent;
+import com.symphony.api.model.V4Stream;
 import com.symphony.api.model.V4SymphonyElementsAction;
 import com.symphony.api.model.V4User;
 
@@ -38,16 +40,11 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 	@Override
 	public void accept(V4Event t) {
 		V4MessageSent ms = t.getPayload().getMessageSent();
+		V4User u = t.getInitiator().getUser();
 		if (ms != null) {
-			V4User from = ms.getMessage().getUser();
-			if (!from.getEmail().equals(botIdentity.getEmail())) {
+			if (!u.getEmail().equals(botIdentity.getEmail())) {
 				try {
-					Address a = new Address(from.getUserId(), 
-							from.getFirstName(),
-							from.getLastName(), 
-							from.getEmail(),
-							ms.getMessage().getStream().getStreamId());
-					
+					Address a = buildAddress(u, ms.getMessage().getStream());
 					DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 					Document d = db.parse(new ByteArrayInputStream(ms.getMessage().getMessage().getBytes()));
 					String text = d.getDocumentElement().getTextContent();
@@ -59,11 +56,28 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 		}
 
 		// handle form submits
-		
 		V4SymphonyElementsAction elements = t.getPayload().getSymphonyElementsAction();
+		if (elements != null) {
+			String formId = elements.getFormId();
+			if (formId.equals("koreai-choice")) {
+				String button = ((Map<String, String>) elements.getFormValues()).get("action");
+				try {
+					Address a = buildAddress(u, elements.getStream());
+					requester.send(a, button);
+					
+				} catch (Exception e) {
+					LOG.error("Couldn't handle form submission {}", ms);
+				}
+			}		
+		}
+	}
 
-	
-		
+	private Address buildAddress(V4User from, V4Stream stream) {
+		return new Address(from.getUserId(), 
+				from.getFirstName(),
+				from.getLastName(), 
+				from.getEmail(),
+				stream.getStreamId());
 	}
 
 }
