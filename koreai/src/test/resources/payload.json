@@ -1,0 +1,17 @@
+{
+	"to": "",
+	"session": {
+		"new": "false"
+	},
+	"message": {
+		"text": "hello"
+	},
+	"from": {
+		"id": "345315370604208",
+		"userInfo": {
+			"firstName": "Robert",
+			"lastName": "Moffat",
+			"email": "robert.moffat@db.com"
+		}
+	}
+}

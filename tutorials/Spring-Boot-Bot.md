@@ -43,12 +43,9 @@ Here is my project in eclipse:
 -   If I run the project now, I should see Spring start, and then shut down
     (as we haven't actually added any code).
 
-## 4. Add The Symphony-Api-Spring-Boot-Starter Dependency
+## 4. Add Toolkit Dependencies
 
-In pom.xml add this dependency (please check artifactory for later
-versions)
-
-![Adding the starter](bot/media/image4.png)
+In pom.xml add these dependencies (please check maven badge below for latest versions)
 
 ```
 <dependency>
@@ -57,10 +54,21 @@ versions)
   <version>--check below--</version>
   <scope>compile</scope>
 </dependency>
+<dependency>
+  <groupId>org.finos.symphony.toolkit</groupId>
+  <artifactId>shared-stream-spring-boot-starter</artifactId>
+  <version>--check below--</version>
+  <scope>compile</scope>
+</dependency>
 ```
 Latest version: 
 
 ![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)
+
+The `symphony-api-spring-boot-starter` gives us auto-wiring of various Symphony API beans, and the 
+`shared-stream-spring-boot-starter` handles the stream of events from Symphony, giving us error-handling
+and, if we deploy in a cluster, leader election for the instances of the bot so that we don't get multiple instances handling the 
+same messages.
 
 
 5.  Add Jax-RS Dependency
@@ -129,34 +137,9 @@ You can use the Jersey BOM to avoid specifying version numbers like so:
 </dependencyManagement>
 ```
 
-## 6. Rebuild your Project
+## 6. Bot Configuration
 
-```
-mvn eclipse:eclipse -DdownloadSources
-```
-
--   Then, refresh in eclipse.
-
-## 7.  Autowiring! 
-
-If the dependencies loaded correctly, you should now be able to auto-wire some beans:
-
-![Spring Auto-wiring](bot/media/image5.png)
-
-- Here, I have auto-wired the `messagesApi`, `datafeedApi` and the `symphonyIdentity`.  
-- The apis are provided by the [symphony-java-client-bindings](../bindings/README.md) project
-- The ID is a bean exposed by the [Symphony API Spring Boot Starter](../symphony-api-spring-boot-starter/README.md) containing the id of your bot.
-- The ID is a `SymphonyIdentity` object, defined by the [symphony-java-client-identity](../identity/README.md) project.
-
-What happens if we run now?
-
-![Disaster](bot/media/image6.png)
-
-Disaster!  We now need to configure our application..
-
-## 8. Bot Configuration
-
-If you have completed step 1, you should have the bot common name, email
+In order to complete this step, you'll need to have a bot created for you in the Symphony admin console.  You'll need the bot common name, email
 address and private key (and possibly also a certificate).
 
 Create an **application.yml** file and add them like so:
@@ -201,7 +184,7 @@ symphony:
 -   Column formatting is very important in yaml!  Make sure everything
     lines up.
 
-## 9. Pod Configuration
+## 7. Pod Configuration
 
 Add the pod information to you **application.yml** too:
 
@@ -235,38 +218,10 @@ symphony:
 
 -   You can have separate proxy entries for each of the main
     endpoints, **pod, sessionauth, keyauth, relay, login** and **agent.**
+    
+## 8.  Room Configuration
 
-## 10. Object Mapper 
-
-Out-of-the-box, Spring Boot contains Jackson for doing marshalling to
-JSON, however without `spring-boot-starter-web`, it doesn\'t expose a bean
-for this.  Since we\'re going to need to marshal to JSON for calling
-symphony APIs, we need to provide one:
-
-```
-@Configuration
-public class Config {
-
-  @Bean
-  public ObjectMapper objectMapper() {
-    return new ObjectMapper();
-  }
-}
-```
-## 11. Run It
-
-![Running the code](bot/media/image7.png)
-
-At this point, you should be able to start your app, and the autowiring
-should complete successfully.
-
-- You'll get some information on the screen about the bot you\'ve
-autowired.
-- Nothing else will happen, as we've not written much in the way of functionality.
-
-## 12.  Create A Chat Room
-
-You'll need a room for you and the bot to talk in.
+We're going to create a room that the bot posts in when it starts up.
 
 - Create a chat room and add the bot
 
@@ -290,80 +245,120 @@ This should be wired into the `application.yml` file:
 room: StQv5mK1u+06afIwrhtN1n///pPiNy8tdA==
 ```
 
-**NB:** For weird Symphony reasons about URL encoding, the `+`s get turned into `-`s, and the `/`s get turned into `_`s.  It's documented [here](https://stackoverflow.com/questions/47874229/symphony-embedded-chat-module-not-working).  This conversion is now automatically handled by `StreamsIDHelp` for you when you use the starter.
+## 9. Object Mapper 
 
-## 13. Send A Message
-
-We're going to add an event listener, so that the bot will send an
-event when the room is created.
-
-
-Add this code into your `DemoApplication` class:
+Out-of-the-box, Spring Boot contains Jackson for doing marshalling to
+JSON, however without `spring-boot-starter-web`, it doesn\'t expose a bean
+for this.  Since we\'re going to need to marshal to JSON for calling
+symphony APIs, we need to provide one:
 
 ```
-	@Value("${room}")
-	String streamId;
+@Configuration
+public class Config {
 
-	@EventListener(ApplicationReadyEvent.class)
-	public void doSomethingAfterStartup() {
-	    System.out.println("hello world, I have just started up");
-	    messagesApi.v4StreamSidMessageCreatePost(null, streamId, "<messageML>sometestmessage</messageML>", null, null, null, null, null);
+  @Bean
+  public ObjectMapper objectMapper() {
+    return new ObjectMapper();
+  }
+}
 ```
 
-When you start the application now, you'll see the test message in
-Symphony:
+## 10.  Functionality! 
+
+Let's modify the `DemoApplication` class so that it:
+
+ - Writes a greeting into the room (configured above) as the bot starts.
+ - Echoes back anything written to the bot.
+ 
+
+### Handle the greeting:
+
+```
+@SpringBootApplication
+@Configuration
+public class DemoApplication {
+    
+  @Autowired
+  MessagesApi messagesApi;                                              (1)
+  
+  @Value("${room}")
+  String streamId;                                                      (2)
+
+  public static void main(String[] args) {
+    SpringApplication.run(DemoApplication.class, args);
+  }
+
+  @EventListener(ApplicationReadyEvent.class)
+  public void doSomethingAfterStartup() {                               (3)
+      System.out.println("hello world, I have just started up");
+      messagesApi.v4StreamSidMessageCreatePost(null, streamId, "<messageML>sometestmessage</messageML>", null, null, null, null, null);
+  }
+  
+  // rest of class below
+```
+
+Notes:
+
+- At (1) we are auto-wiring one of the Symphony REST APIs.  - The apis are provided by the [symphony-java-client-bindings](../bindings/README.md) project.
+- At (2) we are getting the stream ID of the room we configured
+- (3) is automatically called when the application starts, and it writes the message to Symphony using the API we auto-wired.
+
 
 ![Test Message](bot/media/image11.png)
 
-### Some Notes
+### Handle the Echo  
 
--   This is the method we are calling from
-    Symphony: [Create Message v4](https://developers.symphony.com/restapi/reference#create-message-v4)
-
--   [Symphony-Java-Client-Bindings](../bindings/README.md)
-    will handle **sessionTokens** and **keyManagerTokens**, so you can
-    leave those parameters blank.
-
-## 14. Listening For Messages
-
-We're going to add code to *listen *to messages sent to the bot.
-
-to do this, add the following in your **doSomethingAfterStartup**
-method:
+To handle the echo, we're going to implement a `StreamEventConsumer` bean.  `shared-streams-spring-boot-starter` requires that you have one of these defined in order that it will work.
 
 ```
- 		// create a datafeed
-	    Datafeed df = datafeedApi.v4DatafeedCreatePost(null, null);
-	    
-	    Streams.createWorker(() -> datafeedApi.v4DatafeedIdReadGet(df.getId(), null, null, 50), e -> LOG.error("Problem with Symphony!", e))
-	    	.stream()
-	    	.filter(e -> e.getType().equals("MESSAGESENT"))
-	    	.map(e -> e.getPayload().getMessageSent().getMessage())
-	    	.filter(m -> !m.getUser().getEmail().equals(id.getEmail()))
-	    	.forEach(m -> messagesApi.v4StreamSidMessageCreatePost(null, streamId, m.getMessage(), null, null, null, null, null));
+@SpringBootApplication
+@Configuration
+public class DemoApplication {
+
+
+  ... // as before
+  
+  @Autowired
+  SymphonyIdentity id;                                                                      (1)
+  
+  @Bean
+  public StreamEventConsumer consumer() {
+    return event -> {
+      V4MessageSent ms = event.getPayload().getMessageSent();                               (2)
+      if ((ms != null) && (!ms.getMessage().getUser().getEmail().equals(id.getEmail()))) {  (3)
+        
+        // echo the message back
+        messagesApi.v4StreamSidMessageCreatePost(null,                                      (4)
+          ms.getMessage().getStream().getStreamId(),    // reply to the room the message came from
+          ms.getMessage().getMessage(),                 // reply with original content
+        null, null, null, null, null);  
+        
+      }
+      
+    };
+  }
+}
 
 ```
+Notes:
+
+- At (1), the bot's ID is autowired.  This is a bean exposed by the [Symphony API Spring Boot Starter](../symphony-api-spring-boot-starter/README.md) containing the id of your bot.
+- The ID is a `SymphonyIdentity` object, defined by the [symphony-java-client-identity](../identity/README.md) project.
+- At (2) we are telling our StreamEventConsumer to only care about `V4MessageSent` events.
+- At (3) we check that the sender is not the bot itself (otherwise you'll get infinite echoing of messages)
+- At (4), we are calling the same method as we used on startup.  This is the method we are calling from Symphony: [Create Message v4](https://developers.symphony.com/restapi/reference#create-message-v4)
+- [Symphony-Java-Client-Bindings](../bindings/README.md) will handle **sessionTokens** and **keyManagerTokens**, so you can leave those parameters blank.
+
+## 11. Run It
+
+![Running the code](bot/media/image7.png)
+
+At this point, you should be able to start your app, and the autowiring
+should complete successfully.
 
 When you run now, you should see your messages echoed back to you:
 
 ![Echoes](bot/media/image12.png)
-
-### Some Notes
-
--   Streams is a class from
-    [Symphony-Java-Client-Bindings](../bindings/README.md). 
-    You can read about it there.  It allows you to create a stream from
-    symphony REST calls, handling tokens and so on. The first parameter
-    is the call to get some events from the stream, the second parameter
-    is a function to handle exceptions.  You do what you want here.
-
--   It returns a stream.  We are filtering this so that we only get the
-    "MESSAGESENT" event, and then pulling the message out.
-
--   We ignore messages from ourselves (otherwise, an infinite loop
-    ensues)
-
--   At the end, we write the message back as it came in. 
 
 ## For Bonus Points
 

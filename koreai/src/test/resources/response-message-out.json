@@ -1,0 +1,1 @@
+{"koreai":{"type":"org.finos.symphony.toolkit.koreai.response.koreAIResponse","version":"1.0","text":"Did you mean?","errors":null,"options":null,"form":"classpath:/templates/koreai-message.ftl","messageML":null,"isTemplate":false}}

@@ -19,6 +19,7 @@ This project contains the following:
 - A Symphony Maven Build Notifier
 - Symphony Shared Stream
 - Chat Workflow
+- KoreAI Connector
 - Tutorials for getting started
 - Demo bots and apps
 
@@ -74,7 +75,7 @@ This provides you with an out-of-the-box way to get started and build an app wit
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
  - [View Demo App Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-app)
 
-## Symphony JSON Support
+## Entity JSON - Symphony JSON Support
 
 This is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON data payload of a Symphony Message, using Jackson.
 
@@ -103,13 +104,21 @@ The purpose of this module is to provide a drop-in stream consumer for Symphony 
  
 ## Chat Workflow
 
-This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
+This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
 
  - [View the README](chat-workflow/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
+<<<<<<< HEAD
+ - [To-Do List Tutorial](tutorials/Chat-Workflow.md)
+ - [Demo Poll Bot](demos/demo-poll-bot)
+ - [Demo To-Do List Bot](demos/demo-todo-bot)
+ - [Demo Claim Bot](demos/demo-claim-bot)
+  
+=======
  - [To-Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-todo-bot)
  - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-claim-bot)
  - [Poll Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-poll-bot)
+>>>>>>> master
 
 ## License
 
