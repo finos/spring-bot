@@ -1,6 +1,7 @@
-package org.finos.symphony.toolkit.koreai.response;
+package org.finos.symphony.toolkit.koreai.output;
 
 import org.finos.symphony.toolkit.koreai.Address;
+import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 
 /**
  * Handles responses coming back from KoreAI.

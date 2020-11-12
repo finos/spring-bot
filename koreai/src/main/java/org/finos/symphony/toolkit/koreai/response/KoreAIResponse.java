@@ -1,9 +1,10 @@
 package org.finos.symphony.toolkit.koreai.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Holder for responses from KoreAI REST Endpoint, 
@@ -13,35 +14,17 @@ import java.util.List;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KoreAIResponse {
-    private Object text;
+	
+    private Map<String, Object> response = Collections.emptyMap();
     
-    @JsonProperty(value = "isTemplate")
-    private boolean template;
+    private Map<String, Object> template = Collections.emptyMap();
     
-    private List<Errors> errors;
+    private String messageML = "";
     
-    private List<String> options;
+    private String symphonyTemplate = "message";
     
-    private String form;
-
-    private String messageML;
+    private List<String> options = Collections.emptyList();
     
-	public String getMessageML() {
-		return messageML;
-	}
-
-	public void setMessageML(String messageML) {
-		this.messageML = messageML;
-	}
-
-	public String getForm() {
-		return form;
-	}
-
-	public void setForm(String form) {
-		this.form = form;
-	}
-
 	public List<String> getOptions() {
 		return options;
 	}
@@ -50,61 +33,42 @@ public class KoreAIResponse {
 		this.options = options;
 	}
 
-    public Object getText() {
-        return text;
-    }
+	public String getSymphonyTemplate() {
+		return symphonyTemplate;
+	}
 
-    public void setText(Object text) {
-        this.text = text;
-    }
+	public void setSymphonyTemplate(String symphonyTemplate) {
+		this.symphonyTemplate = symphonyTemplate;
+	}
 
-    public boolean isTemplate() {
-        return template;
-    }
+	public String getMessageML() {
+		return messageML;
+	}
 
-    public void setTemplate(boolean template) {
-        this.template = template;
-    }
+	public void setMessageML(String messageML) {
+		this.messageML = messageML;
+	}
 
-    public List<Errors> getErrors() {
-        return errors;
-    }
+	public Map<String, Object> getResponse() {
+		return response;
+	}
 
-    public void setErrors(List<Errors> errors) {
-        this.errors = errors;
-    }
+	public void setResponse(Map<String, Object> response) {
+		this.response = response;
+	}
 
-    static class Errors {
-        private String msg;
-        private int code;
+	public Map<String, Object> getTemplate() {
+		return template;
+	}
 
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
-
-        public int getCode() {
-            return code;
-        }
-
-        public void setCode(int code) {
-            this.code = code;
-        }
-
-		@Override
-		public String toString() {
-			return "Errors [msg=" + msg + ", code=" + code + "]";
-		}
-    }
+	public void setTemplate(Map<String, Object> template) {
+		this.template = template;
+	}
 
 	@Override
 	public String toString() {
-		return "KoreAIResponse [text=" + text + ", template=" + template + ", errors=" + errors + ", options=" + options
-				+ "]";
+		return "KoreAIResponse [response=" + response + ", template=" + template + ", messageML=" + messageML + "]";
 	}
-    
+
     
 }

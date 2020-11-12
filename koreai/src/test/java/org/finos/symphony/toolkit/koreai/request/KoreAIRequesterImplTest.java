@@ -5,8 +5,9 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import org.finos.symphony.toolkit.koreai.Address;
+import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandler;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
-import org.finos.symphony.toolkit.koreai.response.KoreAIResponseHandler;
+import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilderImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -54,7 +55,9 @@ public class KoreAIRequesterImplTest {
 			.willReturn(aResponse()
 				.withHeader("Content-Type", "application/json")
 				.withBody(response)));
-		requester = new KoreAIRequesterImpl(responseHandler, "http://localhost:9999/kore", JsonNodeFactory.instance, "some-jwt", om);
+		requester = new KoreAIRequesterImpl(responseHandler, 
+				new KoreAIResponseBuilderImpl(om),
+				"http://localhost:9999/kore", JsonNodeFactory.instance, "some-jwt", om);
 		((KoreAIRequesterImpl) requester).afterPropertiesSet();
 	}
 	
