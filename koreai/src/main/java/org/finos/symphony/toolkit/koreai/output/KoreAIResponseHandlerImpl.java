@@ -66,7 +66,7 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
 
 	private String loadSymphonyTemplate(KoreAIResponse koreaResponse) throws IOException {
 		String name = koreaResponse.getSymphonyTemplate();
-		Resource r = rl.getResource(templatePrefix+"name"+".ftl");
+		Resource r = rl.getResource(templatePrefix+name+".ftl");
 		if (r.exists()) {
 			return StreamUtils.copyToString(r.getInputStream(), Charsets.UTF_8);
 		} else {

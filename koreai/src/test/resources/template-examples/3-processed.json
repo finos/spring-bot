@@ -1,0 +1,46 @@
+{
+	"koreai": {
+		"type": "org.finos.symphony.toolkit.koreai.response.koreAIResponse",
+		"version": "1.0",
+		"response": {
+			"text": "{\"type\":\"template\",\"payload\":{\"template_type\":\"button\",\"text\":\"Hi.  You can ask me questions such as the following\\n\\n* how do I create groups\\n\\n* how do I develop playbooks\\n\\n* how do i promote playbooks\\n\\nJust remember to use the '*yoda*' trigger word - or click on one of the following topics to get you started...\",\"buttons\":[{\"type\":\"postback\",\"title\":\"Playbooks\",\"payload\":\"playbooks\"},{\"type\":\"postback\",\"title\":\"SSH Keys\",\"payload\":\"ssh\"},{\"type\":\"postback\",\"title\":\"Support\",\"payload\":\"support\"}]}}",
+			"endOfTask": true,
+			"endReason": "Cancelled_Interruption_Initiated",
+			"completedTaskId": "dg-a51792e8-d346-5203-ac65-8597feb63f30",
+			"completedTaskName": "manage dbrundev"
+		},
+		"template": {
+			"type": "template",
+			"payload": {
+				"template_type": "button",
+				"text": "Hi.  You can ask me questions such as the following\n\n* how do I create groups\n\n* how do I develop playbooks\n\n* how do i promote playbooks\n\nJust remember to use the '*yoda*' trigger word - or click on one of the following topics to get you started...",
+				"buttons": [
+					"java.util.arrayList",
+					[
+						{
+							"type": "java.util.linkedHashMap",
+							"type": "postback",
+							"title": "Playbooks",
+							"payload": "playbooks"
+						},
+						{
+							"type": "java.util.linkedHashMap",
+							"type": "postback",
+							"title": "SSH Keys",
+							"payload": "ssh"
+						},
+						{
+							"type": "java.util.linkedHashMap",
+							"type": "postback",
+							"title": "Support",
+							"payload": "support"
+						}
+					]
+				]
+			}
+		},
+		"messageML": "<br />",
+		"symphonyTemplate": "button",
+		"options": []
+	}
+}

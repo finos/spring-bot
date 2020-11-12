@@ -71,7 +71,7 @@ public class KoreAIConfig {
 	
 	@Bean
 	public KoreAIResponseBuilder koreAIResponseBuilder() {
-		return new KoreAIResponseBuilderImpl(symphonyObjectMapper());
+		return new KoreAIResponseBuilderImpl(new ObjectMapper());
 	}
 	
 	@Bean
