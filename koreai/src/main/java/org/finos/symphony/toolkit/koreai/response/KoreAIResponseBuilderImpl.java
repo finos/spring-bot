@@ -6,11 +6,18 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandlerImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 
+	private static final Logger LOG = LoggerFactory.getLogger(KoreAIResponseBuilderImpl.class);
+
+	
 	ObjectMapper om;
 	
 	public KoreAIResponseBuilderImpl(ObjectMapper om) {
@@ -49,9 +56,18 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 	}
 
 	protected void decideTemplate(KoreAIResponse kr) {
-		if (!kr.getOptions().isEmpty()) {
-        	kr.setSymphonyTemplate("form");
-        }
+		try {
+			if ("template".equals(kr.getTemplate().get("type"))) {
+				Map<String, Object> payload = (Map<String, Object>) kr.getTemplate().get("payload");
+				if (payload.containsKey("template_type")) {
+					kr.setSymphonyTemplate((String) payload.get("template_type")); 
+				}
+			} else if (!kr.getOptions().isEmpty()) {
+				kr.setSymphonyTemplate("form");
+			}
+		} catch (RuntimeException e) {
+			LOG.error("Couldn't determine template for "+kr, e);
+		}
 	}
 
 	   
@@ -70,7 +86,7 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 		if (in.get("text") instanceof String) {
 			return (String) in.get("text");
 		} else if (in.get("text") instanceof List) {
-			return ((List<String>) in.get("text")).get(0);
+			return ((List<String>)in.get("text")).stream().reduce("", (a, b) -> a +"\n" +b);
 		} else {
 			return "";
 		}
