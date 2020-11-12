@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.finos.symphony.toolkit.koreai.Address;
+import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandler;
+import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandlerImpl;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
-import org.finos.symphony.toolkit.koreai.response.KoreAIResponseHandler;
-import org.finos.symphony.toolkit.koreai.response.KoreAIResponseHandlerImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -14,27 +14,11 @@ public class KoreaiProperties {
 
 	private String url;
 	
-	private boolean skipEmptyResponses;
-
-	private String formTemplate = "classpath:/templates/koreai-form.ftl";
-
-	private String messageTemplate = "classpath:/templates/koreai-message.ftl";
-
-	public String getFormTemplate() {
-		return formTemplate;
-	}
-
-	public void setFormTemplate(String template) {
-		this.formTemplate = template;
-	}
-
-	public String getMessageTemplate() {
-		return messageTemplate;
-	}
-
-	public void setMessageTemplate(String template) {
-		this.messageTemplate = template;
-	}
+	private boolean skipEmptyResponses = false;
+	
+	private boolean onlyAddressed = false;
+	
+	private String templatePrefix = "classpath:/templates/";
 
 	public String getJwt() {
 		return jwt;
@@ -61,4 +45,19 @@ public class KoreaiProperties {
 		this.skipEmptyResponses = skipEmptyResponses;
 	}
 
+	public boolean isOnlyAddressed() {
+		return onlyAddressed;
+	}
+
+	public void setOnlyAddressed(boolean onlyAddressed) {
+		this.onlyAddressed = onlyAddressed;
+	}
+
+	public String getTemplatePrefix() {
+		return templatePrefix;
+	}
+
+	public void setTemplatePrefix(String templatePrefix) {
+		this.templatePrefix = templatePrefix;
+	}
 }
