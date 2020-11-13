@@ -1,74 +1,47 @@
 package org.finos.symphony.toolkit.koreai.response;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;	
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * Holder for responses from KoreAI REST Endpoint, 
- * and also to be returned for Symphony Freemarker data.
+ * This class contains the JSON returned from the KoreAI call, (original) 
+ * and a post-processed version which is more useful for FreeMarker templates in symphony.
  * 
- * @author rodriva
+ * @author rodriva, robmoffat
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class KoreAIResponse {
 	
-    private Map<String, Object> response = Collections.emptyMap();
+	public static final String MESSAGE_ML = "messageML";
+
+	public static final String TEMPLATE_TYPE = "template_type";
+
+	public static final String TEXT = "text";
+
+	
+	private JsonNode original;
     
-    private Map<String, Object> template = Collections.emptyMap();
+    private List<ObjectNode> processed;
+
+
+	public JsonNode getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(JsonNode original) {
+		this.original = original;
+	}
+
+	public List<ObjectNode> getProcessed() {
+		return processed;
+	}
+
+	public void setProcessed(List<ObjectNode> processed) {
+		this.processed = processed;
+	}
     
-    private String messageML = "";
-    
-    private String symphonyTemplate = "message";
-    
-    private List<String> options = Collections.emptyList();
-    
-	public List<String> getOptions() {
-		return options;
-	}
-
-	public void setOptions(List<String> options) {
-		this.options = options;
-	}
-
-	public String getSymphonyTemplate() {
-		return symphonyTemplate;
-	}
-
-	public void setSymphonyTemplate(String symphonyTemplate) {
-		this.symphonyTemplate = symphonyTemplate;
-	}
-
-	public String getMessageML() {
-		return messageML;
-	}
-
-	public void setMessageML(String messageML) {
-		this.messageML = messageML;
-	}
-
-	public Map<String, Object> getResponse() {
-		return response;
-	}
-
-	public void setResponse(Map<String, Object> response) {
-		this.response = response;
-	}
-
-	public Map<String, Object> getTemplate() {
-		return template;
-	}
-
-	public void setTemplate(Map<String, Object> template) {
-		this.template = template;
-	}
-
-	@Override
-	public String toString() {
-		return "KoreAIResponse [response=" + response + ", template=" + template + ", messageML=" + messageML + "]";
-	}
-
     
 }

@@ -1,7 +1,5 @@
 package org.finos.symphony.toolkit.koreai.output;
 
-import java.io.IOException;
-
 import org.apache.commons.codec.Charsets;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.koreai.Address;
@@ -12,7 +10,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 import com.symphony.api.agent.MessagesApi;
 
 /**
@@ -47,43 +48,57 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
 	public void handle(Address to, KoreAIResponse koreaResponse) {
     	LOG.info("KoreAIResponseMessageAdapter address={} response={}", to, koreaResponse);
     	
-        try {
-        	
-        	if(skipEmptyAnswers) {
-	            if (((String) koreaResponse.getMessageML()).contains("I am unable to find an answer")) {
-	            	LOG.warn("Returning nothing");
-	            	return;
-	            }
-        	}
-             
-            LOG.debug("Prepared Response: {}", koreaResponse);
-            
-            sendMessage(to, koreaResponse, loadSymphonyTemplate(koreaResponse));
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-        }
+    	koreaResponse.getProcessed().stream()
+    		.filter(on -> !canSkip(on))
+    		.forEach(on -> sendMessage(to, on, loadSymphonyTemplate(on)));
+ 
     }
 
-	private String loadSymphonyTemplate(KoreAIResponse koreaResponse) throws IOException {
-		String name = koreaResponse.getSymphonyTemplate();
+	private boolean canSkip(ObjectNode on) {
+    	if(skipEmptyAnswers) {
+    		TextNode messageML = (TextNode) on.get("messageML");
+    		if (messageML.asText().contains("I am unable to find an answer")) {
+            	return true;
+            }
+    	}
+    	
+    	return false;
+    }
+	
+	private String loadSymphonyTemplate(ObjectNode on) {
+		String name = on.get(KoreAIResponse.TEMPLATE_TYPE).asText();
 		Resource r = rl.getResource(templatePrefix+name+".ftl");
 		if (r.exists()) {
-			return StreamUtils.copyToString(r.getInputStream(), Charsets.UTF_8);
+			return loadResourceOrShowError(r);
 		} else {
 			// try for default template
 			r = rl.getResource("classpath:/templates/default/koreai-"+name+".ftl");
 			if (r.exists()) {
-				return StreamUtils.copyToString(r.getInputStream(), Charsets.UTF_8);
+				return loadResourceOrShowError(r);
 			}
 		}
 		
-		throw new RuntimeException("Template not found for: "+name);
+		return "<messageML><div>No template for: "+name+"</div></messageML>";
 	}
 
-    public void sendMessage(Address to, KoreAIResponse koreaResponse, String template) throws Exception {
+	private String loadResourceOrShowError(Resource r) {
+		try {
+			return StreamUtils.copyToString(r.getInputStream(), Charsets.UTF_8);
+		} catch (Exception e) {
+			return "<messageML><div>Couldn't load template: "+e.getMessage()+"</div></messageML>";
+		}
+	}
+
+    public void sendMessage(Address to, ObjectNode on, String template) {
     	EntityJson out = new EntityJson();
-    	out.put("koreai", koreaResponse);
-    	String json = symphonyObjectMapper.writeValueAsString(out);
+    	out.put("koreai", on);
+    	String json;
+		try {
+			json = symphonyObjectMapper.writeValueAsString(out);
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException("Couldn't prepare JSON", e);
+		}
+		
 		messagesApi.v4StreamSidMessageCreatePost(null, to.getRoomStreamID(), template, json, null, null, null, null);
 	}
 

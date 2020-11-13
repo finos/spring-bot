@@ -56,8 +56,8 @@ public class KoreAIRequesterImplTest {
 				.withHeader("Content-Type", "application/json")
 				.withBody(response)));
 		requester = new KoreAIRequesterImpl(responseHandler, 
-				new KoreAIResponseBuilderImpl(om),
-				"http://localhost:9999/kore", JsonNodeFactory.instance, "some-jwt", om);
+				new KoreAIResponseBuilderImpl(om, JsonNodeFactory.instance),
+				"http://localhost:9999/kore", JsonNodeFactory.instance, "some-jwt");
 		((KoreAIRequesterImpl) requester).afterPropertiesSet();
 	}
 	
@@ -67,7 +67,7 @@ public class KoreAIRequesterImplTest {
 		requester.send(a, "Send me the answers");
 		Mockito.verify(responseHandler).handle(this.a.capture(), this.response.capture());
 		Assert.assertEquals(a, this.a.getValue());
-		Assert.assertTrue(this.response.getValue().getMessageML().contains("Looks like your application"));
+		Assert.assertTrue(this.response.getValue().getProcessed().get(0).toPrettyString().contains("Looks like your application"));
 		
 	}
 }

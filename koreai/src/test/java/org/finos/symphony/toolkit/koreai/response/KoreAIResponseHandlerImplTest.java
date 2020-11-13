@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.nio.charset.Charset;
 
 import org.finos.symphony.toolkit.koreai.Address;
+import org.finos.symphony.toolkit.koreai.KoreAIConfig;
 import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandler;
 import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandlerImpl;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -23,11 +25,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.MessagesApi;
+import com.symphony.api.id.SymphonyIdentity;
 
 /**
  * @author rodriva
  */
 @RunWith(SpringRunner.class)
+@SpringBootTest(classes = KoreAIConfig.class )
 public class KoreAIResponseHandlerImplTest {
 
     private KoreAIResponseHandler parser;
@@ -35,10 +39,14 @@ public class KoreAIResponseHandlerImplTest {
     @MockBean
     MessagesApi api;
     
+    @MockBean
+    SymphonyIdentity id;
+    
     @Autowired
     ResourceLoader rl;
     
-    ObjectMapper om = new ObjectMapper();
+    @Autowired
+    ObjectMapper om;
     
     String jsonResponse;
     
@@ -48,8 +56,7 @@ public class KoreAIResponseHandlerImplTest {
     
     @Before
     public void setup() throws Exception {
-        this.parser = new KoreAIResponseHandlerImpl(api, rl, true);
-        ((KoreAIResponseHandlerImpl)this.parser).afterPropertiesSet();
+        this.parser = new KoreAIResponseHandlerImpl(api, rl, true, om, "classpath:/test-templates");
         Mockito.when(api.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
         	.then((a) -> {
         		streamId = a.getArgument(1);
