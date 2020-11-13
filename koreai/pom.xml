@@ -41,6 +41,13 @@
 			<scope>test</scope>
 			<version>${spring-boot.version}</version>
 		</dependency>
+		
+		<!-- converting markdown to messageML -->
+    <dependency>
+      <groupId>com.atlassian.commonmark</groupId>
+      <artifactId>commonmark</artifactId>
+      <version>0.15.2</version>
+    </dependency>
 
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>

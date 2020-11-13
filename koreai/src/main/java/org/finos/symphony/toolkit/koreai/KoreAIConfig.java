@@ -71,12 +71,11 @@ public class KoreAIConfig {
 	
 	@Bean
 	public KoreAIResponseBuilder koreAIResponseBuilder() {
-		return new KoreAIResponseBuilderImpl(new ObjectMapper());
+		return new KoreAIResponseBuilderImpl(new ObjectMapper(), JsonNodeFactory.instance);
 	}
 	
 	@Bean
 	public KoreAIEventHandler koreAIEventHandler(KoreAIRequester requester) {
-		User u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
-		return new KoreAIEventHandler(botIdentity, u.getId(), requester, symphonyObjectMapper(), properties.isOnlyAddressed());
+		return new KoreAIEventHandler(botIdentity, usersApi, requester, symphonyObjectMapper(), properties.isOnlyAddressed());
 	}
 }

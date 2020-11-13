@@ -14,6 +14,7 @@ import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.symphonyoss.TaxonomyElement;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -22,12 +23,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.StreamType.TypeEnum;
+import com.symphony.api.model.User;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4MessageSent;
-import com.symphony.api.model.V4RoomUpdated;
 import com.symphony.api.model.V4Stream;
 import com.symphony.api.model.V4SymphonyElementsAction;
 import com.symphony.api.model.V4User;
+import com.symphony.api.pod.UsersApi;
 import com.symphony.user.Mention;
 import com.symphony.user.UserId;
 
@@ -37,7 +39,7 @@ import com.symphony.user.UserId;
  * @author moffrob
  *
  */
-public class KoreAIEventHandler implements StreamEventConsumer {
+public class KoreAIEventHandler implements StreamEventConsumer, InitializingBean {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIEventHandler.class);
 
@@ -47,16 +49,26 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 	private ObjectMapper symphonyObjectMapper;
 	private Long botUserId;
 
+	public Long getBotUserId() {
+		return botUserId;
+	}
+
+	public void setBotUserId(Long botUserId) {
+		this.botUserId = botUserId;
+	}
+
+	private UsersApi usersApi;
+
 	public KoreAIEventHandler(SymphonyIdentity botIdentity, 
-			Long botUserId, 
+			UsersApi usersApi, 
 			KoreAIRequester requester, 
 			ObjectMapper symphonyObjectMapper, 
 			boolean onlyAddressed) {
 		this.botIdentity = botIdentity;
 		this.requester = requester;
 		this.symphonyObjectMapper = symphonyObjectMapper;
-		this.botUserId = botUserId;
 		this.onlyAddressed = onlyAddressed;
+		this.usersApi = usersApi;
 	}
 
 	@Override
@@ -155,6 +167,16 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 				from.getLastName(), 
 				from.getEmail(),
 				stream.getStreamId());
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		User u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
+		if (u != null) {
+			setBotUserId(u.getId());
+		} else {
+			setBotUserId(0l);
+		}
 	}
 
 }

@@ -1,98 +1,116 @@
 package org.finos.symphony.toolkit.koreai.response;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandlerImpl;
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+
+import static org.finos.symphony.toolkit.koreai.response.KoreAIResponse.*;
 
 public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIResponseBuilderImpl.class);
 
-	
+	JsonNodeFactory jnf;
 	ObjectMapper om;
 	
-	public KoreAIResponseBuilderImpl(ObjectMapper om) {
+	public KoreAIResponseBuilderImpl(ObjectMapper om, JsonNodeFactory instance) {
 		super();
 		this.om = om;
+		this.jnf = instance;
 	}
 
 	@Override
-	public KoreAIResponse formatResponse(String json) throws Exception {
-		TypeReference<Map<String, Object>> tr = new TypeReference<Map<String,Object>>() {};
-		Map<String, Object> out = om.readValue(json, tr);
+	public KoreAIResponse formatResponse(String json) {
+		JsonNode out = parseJson(json);
 		KoreAIResponse r = new KoreAIResponse();
-		r.setResponse(out);
+		r.setOriginal(out);
 		
-		String text = getFirstText(out);
+		List<TextNode> elems = getTextElements(out);
 		
-		// check for nested templates
-		if ((text instanceof String) && (((String)text).startsWith("{\"type\":"))) {
-			Map<String, Object> template = om.readValue(text, tr);
-			r.setTemplate(template);
-			text = getFirstText(template);
-        }
+		List<ObjectNode> processElements = elems.stream()
+			.map(tn -> convertToPayload(tn))
+			.map(n -> convertToMessageMl(n))
+//			.map(n -> extractButtons(n))
+			.collect(Collectors.toList());
 		
-		// handle messageML conversion
-		String messageML = handleMessageMLConversion(text);
-		r.setMessageML(messageML);
+					
+		r.setProcessed(processElements);
 		
-		
-		// handle options
-		handleOptions(r);
-		
-		// figure out correct template to use
-		decideTemplate(r);
 		
 		return r;
 	}
 
-	protected void decideTemplate(KoreAIResponse kr) {
+	protected JsonNode parseJson(String json) {
 		try {
-			if ("template".equals(kr.getTemplate().get("type"))) {
-				Map<String, Object> payload = (Map<String, Object>) kr.getTemplate().get("payload");
-				if (payload.containsKey("template_type")) {
-					kr.setSymphonyTemplate((String) payload.get("template_type")); 
-				}
-			} else if (!kr.getOptions().isEmpty()) {
-				kr.setSymphonyTemplate("form");
-			}
-		} catch (RuntimeException e) {
-			LOG.error("Couldn't determine template for "+kr, e);
+			return om.readTree(json);
+		} catch (JsonProcessingException e) {
+			LOG.error("Coudln't parse JSON message from KoreAI", e);
+			return jnf.objectNode().set(TEXT, jnf.textNode("Couldn't parse template: "+e.getMessage()));
 		}
 	}
 
-	   
-	public static final String BR = "<br />";
-	
-	protected String handleMessageMLConversion(String text) {
-		// convert newlines to <br />
-		text = text.replaceAll("\\\\n", "\n").replaceAll("\n", BR);
+	protected ObjectNode convertToMessageMl(ObjectNode n) {
+		Parser p = Parser.builder().build();
+		TextNode tn = (TextNode) n.get(TEXT);
+		if (tn != null) {
+			Node document = p.parse(tn.asText());
+			HtmlRenderer r = HtmlRenderer.builder().build();
+			String markup = r.render(document);
+			n.set(MESSAGE_ML, jnf.textNode(markup));
+		}
 		
-		// now convert urls to symphony format
-		text = text.replaceAll("(https?:\\/\\/[\\w.\\/\\+_\\=\\-\\?]*)", "<a href=\"$1\">$1</a>");
-		return text;
+		return n;
 	}
 
-	protected String getFirstText(Map<String, Object> in){
-		if (in.get("text") instanceof String) {
-			return (String) in.get("text");
-		} else if (in.get("text") instanceof List) {
-			return ((List<String>)in.get("text")).stream().reduce("", (a, b) -> a +"\n" +b);
+	protected ObjectNode convertToPayload(TextNode elem) {
+		String txt = elem.asText();
+		if (txt.startsWith("{\"type\":\"template\",")) {
+			JsonNode jn = parseJson(txt);
+			return (ObjectNode) jn.get("payload");
+		} else if (txt.startsWith("{\"text\":\"{")) {
+			ObjectNode jn = (ObjectNode) parseJson(txt);
+			jn.set(TEMPLATE_TYPE, jnf.textNode("message"));
+			return jn;
 		} else {
-			return "";
+			ObjectNode out = jnf.objectNode();
+			out.set(TEXT, elem);
+			out.set(TEMPLATE_TYPE, jnf.textNode("message"));
+			return out;
 		}
 	}
-			
-	public static final Pattern OPTION = Pattern.compile("^[ ]?[a-z]\\)\\ (.*)$");
+
+	
+
+	protected List<TextNode> getTextElements(JsonNode in){
+		JsonNode text = in.get(TEXT);
+		if (text instanceof TextNode) {
+			return Collections.singletonList((TextNode) text);
+		} else if (text instanceof ArrayNode) {
+			return StreamSupport.stream(text.spliterator(), false)
+				.map(n -> (TextNode) n)
+				.collect(Collectors.toList());
+		} else {
+			throw new IllegalArgumentException("Can't process "+in);
+		}
+	}
+	
 
 	public void handleOptions(KoreAIResponse template) {
 		String messageML = template.getMessageML();
