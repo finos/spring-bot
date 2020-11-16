@@ -45,6 +45,10 @@ public class KoreAIConfig {
 	
 	@Bean
 	public ObjectMapper symphonyObjectMapper() {
+		return koreAIObjectMapper();
+	}
+
+	public static ObjectMapper koreAIObjectMapper() {
 		ObjectMapper out = new ObjectMapper();
 		ObjectMapperFactory.initialize(out, ObjectMapperFactory
 			.extendedSymphonyVersionSpace(

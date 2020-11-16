@@ -1,9 +1,13 @@
 package org.finos.symphony.toolkit.koreai.response;
 
-import java.util.ArrayList;
+import static org.finos.symphony.toolkit.koreai.response.KoreAIResponse.MESSAGE_ML;
+import static org.finos.symphony.toolkit.koreai.response.KoreAIResponse.TEMPLATE_TYPE;
+import static org.finos.symphony.toolkit.koreai.response.KoreAIResponse.TEXT;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -21,15 +25,15 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 
-import static org.finos.symphony.toolkit.koreai.response.KoreAIResponse.*;
-
 public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIResponseBuilderImpl.class);
 
 	JsonNodeFactory jnf;
 	ObjectMapper om;
-	
+	Parser p = Parser.builder().build();
+
+
 	public KoreAIResponseBuilderImpl(ObjectMapper om, JsonNodeFactory instance) {
 		super();
 		this.om = om;
@@ -41,19 +45,16 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 		JsonNode out = parseJson(json);
 		KoreAIResponse r = new KoreAIResponse();
 		r.setOriginal(out);
-		
+
 		List<TextNode> elems = getTextElements(out);
-		
+
 		List<ObjectNode> processElements = elems.stream()
-			.map(tn -> convertToPayload(tn))
-			.map(n -> convertToMessageMl(n))
-//			.map(n -> extractButtons(n))
-			.collect(Collectors.toList());
-		
-					
+				.map(tn -> convertToPayload(tn))
+				.map(n -> convertToMessageMlAndOptions(n))
+				.collect(Collectors.toList());
+
 		r.setProcessed(processElements);
-		
-		
+
 		return r;
 	}
 
@@ -62,74 +63,69 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 			return om.readTree(json);
 		} catch (JsonProcessingException e) {
 			LOG.error("Coudln't parse JSON message from KoreAI", e);
-			return jnf.objectNode().set(TEXT, jnf.textNode("Couldn't parse template: "+e.getMessage()));
+			return jnf.objectNode().set(TEXT, jnf.textNode("Couldn't parse template: " + e.getMessage()));
 		}
 	}
+	
+	public static final Pattern OPTION = Pattern.compile("[a-z]\\) (.*)");
 
-	protected ObjectNode convertToMessageMl(ObjectNode n) {
-		Parser p = Parser.builder().build();
+	protected ObjectNode convertToMessageMlAndOptions(ObjectNode n) {
 		TextNode tn = (TextNode) n.get(TEXT);
+		ArrayNode options = jnf.arrayNode();
+		n.set(KoreAIResponse.OPTIONS_ML, options);
+
 		if (tn != null) {
-			Node document = p.parse(tn.asText());
-			HtmlRenderer r = HtmlRenderer.builder().build();
-			String markup = r.render(document);
-			n.set(MESSAGE_ML, jnf.textNode(markup));
+			String[] multiline = tn.asText().split("\n");
+			StringBuilder text = new StringBuilder();
+			for (String string : multiline) {
+				Matcher m = OPTION.matcher(string);
+				if (m.find()) {
+					options.add(jnf.textNode(toMarkup(m.group(1))));
+				} else {
+					text.append(string);
+					text.append("\n");
+				}
+			}
+			n.set(MESSAGE_ML, jnf.textNode(toMarkup(text.toString())));
 		}
-		
 		return n;
+	}
+
+	public String toMarkup(String in) {
+		Node document = p.parse(in);
+		HtmlRenderer r = HtmlRenderer.builder().build();
+		String markup = r.render(document);
+		return markup;
 	}
 
 	protected ObjectNode convertToPayload(TextNode elem) {
 		String txt = elem.asText();
-		if (txt.startsWith("{\"type\":\"template\",")) {
+		if (txt.startsWith("{\"type\":\"")) {
 			JsonNode jn = parseJson(txt);
 			return (ObjectNode) jn.get("payload");
-		} else if (txt.startsWith("{\"text\":\"{")) {
-			ObjectNode jn = (ObjectNode) parseJson(txt);
-			jn.set(TEMPLATE_TYPE, jnf.textNode("message"));
-			return jn;
-		} else {
-			ObjectNode out = jnf.objectNode();
-			out.set(TEXT, elem);
-			out.set(TEMPLATE_TYPE, jnf.textNode("message"));
-			return out;
 		}
+
+		if (txt.startsWith("{\"text\":\"")) {
+			ObjectNode jn = (ObjectNode) parseJson(txt);
+			elem = (TextNode) jn.get("text");
+		}
+
+		ObjectNode out = jnf.objectNode();
+		out.set(TEXT, elem);
+		out.set(TEMPLATE_TYPE, jnf.textNode("message"));
+		return out;
 	}
 
-	
-
-	protected List<TextNode> getTextElements(JsonNode in){
+	protected List<TextNode> getTextElements(JsonNode in) {
 		JsonNode text = in.get(TEXT);
 		if (text instanceof TextNode) {
 			return Collections.singletonList((TextNode) text);
 		} else if (text instanceof ArrayNode) {
-			return StreamSupport.stream(text.spliterator(), false)
-				.map(n -> (TextNode) n)
-				.collect(Collectors.toList());
+			return StreamSupport.stream(text.spliterator(), false).map(n -> (TextNode) n).collect(Collectors.toList());
 		} else {
-			throw new IllegalArgumentException("Can't process "+in);
+			throw new IllegalArgumentException("Can't process " + in);
 		}
 	}
-	
 
-	public void handleOptions(KoreAIResponse template) {
-		String messageML = template.getMessageML();
-		
-        String[] multiline = messageML.split(BR);
-        StringBuilder text = new StringBuilder();
-        List<String> options = new ArrayList<String>();
-        for (String string : multiline) {
-        	Matcher m = OPTION.matcher(string);
-			if (m.find()) {
-				options.add(m.group(1));
-			} else {
-				text.append(string);
-				text.append(BR);
-			}
-		}
-        
-        template.setOptions(options);
-        template.setMessageML(text.toString());
-    }
-	
+
 }

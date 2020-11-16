@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.koreai;
+package org.finos.symphony.toolkit.koreai.bot;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.post;
@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.koreai.KoreAIConfig;
+import org.finos.symphony.toolkit.koreai.KoreAIEventHandler;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.JerseyApiBuilderConfig;
 import org.junit.Assert;
@@ -91,7 +93,7 @@ public class TestBot {
 				.initiator(new V4Initiator()
 						.user(new V4User().email("rob@example.com").displayName("Rob Example").userId(2438923l)))
 				.payload(new V4Payload().messageSent(new V4MessageSent().message(
-						new V4Message().message("<div>hello</div>").stream(new V4Stream().streamId("ABC123").streamType("IM")))));
+						new V4Message().message("<div>hello</div>").data("{}").stream(new V4Stream().streamId("ABC123").streamType("IM")))));
 
 		eventHandler.accept(in);
 		Assert.assertEquals(1, messagesSent);
@@ -121,7 +123,7 @@ public class TestBot {
 
 	@Before
 	public void setupWireMock() throws Exception {
-		String response = StreamUtils.copyToString(TestBot.class.getResourceAsStream("/ans1.json"), Charsets.UTF_8);
+		String response = StreamUtils.copyToString(TestBot.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
 		wireMockRule
 				.stubFor(post(urlEqualTo("/kore")).withHeader("Authorization", new EqualToPattern("Bearer some-jwt"))
 						// .withRequestBody(new
