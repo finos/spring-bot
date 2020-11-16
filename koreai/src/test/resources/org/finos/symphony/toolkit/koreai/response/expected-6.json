@@ -1,0 +1,15 @@
+{
+	"type": "org.finos.symphony.toolkit.koreai.response.koreAIResponse",
+	"version": "1.0",
+	"original": {
+		"text": "https://avinetworks.com/docs/18.2/load-balancing-algorithms/load-balancing-algorithms.pdf\n"
+	},
+	"processed": [
+		{
+			"text": "https://avinetworks.com/docs/18.2/load-balancing-algorithms/load-balancing-algorithms.pdf\n",
+			"template_type": "message",
+			"optionsML": [],
+			"messageML": "<p>https://avinetworks.com/docs/18.2/load-balancing-algorithms/load-balancing-algorithms.pdf</p>\n"
+		}
+	]
+}

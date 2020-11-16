@@ -48,7 +48,7 @@ public class KoreAIRequesterImplTest {
 	
 	@Before
 	public void setupWireMock() throws Exception {
-		String response = StreamUtils.copyToString(KoreAIRequesterImplTest.class.getResourceAsStream("/ans1.json"), Charsets.UTF_8);
+		String response = StreamUtils.copyToString(KoreAIRequesterImplTest.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
 		wireMockRule.stubFor(post(urlEqualTo("/kore"))
 			.withHeader("Authorization", new EqualToPattern("Bearer some-jwt"))
 			//.withRequestBody(new EqualToPattern("{\"entity\":{\"to\":\"\",\"session\":{\"new\":false},\"message\":{\"text\":\"Send me the answers\"},\"from\":{\"id\":\"1\",\"userInfo\":{\"firstName\":\"alf\",\"lastName\":\"angstrom\",\"email\":\"alf@example.com\"}}},\"variant\":{\"language\":null,\"mediaType\":{\"type\":\"application\",\"subtype\":\"json\",\"parameters\":{},\"wildcardType\":false,\"wildcardSubtype\":false},\"encoding\":null,\"languageString\":null},\"annotations\":[],\"language\":null,\"encoding\":null,\"mediaType\":{\"type\":\"application\",\"subtype\":\"json\",\"parameters\":{},\"wildcardType\":false,\"wildcardSubtype\":false}}"))
