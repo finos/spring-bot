@@ -17,7 +17,7 @@ public class KoreAIResponse {
 	
 	public static final String MESSAGE_ML = "messageML";
 
-	public static final String OPTIONS_ML = "optionsML";
+	public static final String OPTIONS_ML = "options";
 
 	public static final String TEMPLATE_TYPE = "template_type";
 

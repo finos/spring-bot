@@ -80,7 +80,10 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 			for (String string : multiline) {
 				Matcher m = OPTION.matcher(string);
 				if (m.find()) {
-					options.add(jnf.textNode(toMarkup(m.group(1))));
+					ObjectNode option = jnf.objectNode();
+					String t = m.group(1);
+					options.add(option);
+					option.set(KoreAIResponse.TEXT, jnf.textNode(t));
 				} else {
 					text.append(string);
 					text.append("\n");
@@ -102,7 +105,11 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 		String txt = elem.asText();
 		if (txt.startsWith("{\"type\":\"")) {
 			JsonNode jn = parseJson(txt);
-			return (ObjectNode) jn.get("payload");
+			ObjectNode out = (ObjectNode) jn.get("payload");
+			if (!out.has("template_type")) {
+				out.set("template_type", jn.get("type"));
+			}
+			return out;
 		}
 
 		if (txt.startsWith("{\"text\":\"")) {

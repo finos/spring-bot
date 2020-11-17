@@ -18,7 +18,7 @@ public class KoreaiProperties {
 	
 	private boolean onlyAddressed = false;
 	
-	private String templatePrefix = "classpath:/templates/";
+	private String templatePrefix = "classpath:/koreai/templates";
 
 	public String getJwt() {
 		return jwt;

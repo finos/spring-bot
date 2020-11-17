@@ -35,11 +35,6 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
     protected String jwt;
     protected String url;
     
-    
-	String messageTemplate = "classpath:templates/koreai-message.ftl";
-    String formTemplate = "classpath:templates/koreai-form.ftl";
-
-    
     public KoreAIRequesterImpl(KoreAIResponseHandler koreaiResponseParser, 
     		KoreAIResponseBuilder koreAIResponseBuilder, 
     		String url, 

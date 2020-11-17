@@ -57,7 +57,7 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
 	private boolean canSkip(ObjectNode on) {
     	if(skipEmptyAnswers) {
     		TextNode messageML = (TextNode) on.get("messageML");
-    		if (messageML.asText().contains("I am unable to find an answer")) {
+    		if ((messageML != null) &&(messageML.asText().contains("I am unable to find an answer"))) {
             	return true;
             }
     	}
@@ -67,12 +67,12 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
 	
 	private String loadSymphonyTemplate(ObjectNode on) {
 		String name = on.get(KoreAIResponse.TEMPLATE_TYPE).asText();
-		Resource r = rl.getResource(templatePrefix+name+".ftl");
+		Resource r = rl.getResource(templatePrefix+"/"+name+".ftl");
 		if (r.exists()) {
 			return loadResourceOrShowError(r);
 		} else {
 			// try for default template
-			r = rl.getResource("classpath:/templates/default/koreai-"+name+".ftl");
+			r = rl.getResource("classpath:/koreai/templates/default/"+name+".ftl");
 			if (r.exists()) {
 				return loadResourceOrShowError(r);
 			}
