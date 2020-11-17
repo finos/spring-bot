@@ -15,6 +15,7 @@ import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilderImpl;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,10 +31,13 @@ import org.springframework.util.StreamUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.pod.UsersApi;
 
+import freemarker.core.HTMLOutputFormat;
+import freemarker.core.OutputFormat;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
@@ -130,16 +134,20 @@ public class KoreAIResponseHandlerImplTest {
 			String json = jsonResponse.get(i);
 			String messsageML = messageMLResponse.get(i);
 			Configuration c = new Configuration(new Version("2.3.30"));
-			Template t = new Template("bs", new StringReader(messsageML), c);
+			c.setAutoEscapingPolicy(Configuration.DISABLE_AUTO_ESCAPING_POLICY);
+			c.setOutputFormat(HTMLOutputFormat.INSTANCE);
+			c.setObjectWrapper(new JsonAwareObjectWrapper(c.getIncompatibleImprovements()));
+			Template t = new Template("template-"+i, new StringReader(messsageML), c);
+			
 			StringWriter out = new StringWriter();
+			ObjectNode jo = JsonNodeFactory.instance.objectNode();
 			JsonNode o = om.readTree(json);
-			t.process(o, out);
-        	System.out.println(out);
-        	
-        	 Assert.assertEquals(contents("/templates/default/koreai-message.ftl"), messageMLResponse.get(0));
-             System.out.println(jsonResponse);
-             Assert.assertEquals(contents("response-message-out.json"), jsonResponse.get(0));
-             Assert.assertEquals("m3", streamId.get(0));
+			jo.set("entity", o);
+			System.out.println("Processing: "+json);
+			t.process(jo, out);
+			System.out.println("Created: "+out);
+			Assert.assertTrue(out.toString().contains("<messageML>"));
+			Assert.assertTrue(!out.toString().contains("<messageML><div>Couldn't load template"));
 		}
         
        
