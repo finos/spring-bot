@@ -1,5 +1,5 @@
 <messageML>
-  <p>${entity.koreai.messageML}</p>
+  ${entity.koreai.messageML}
   <#if entity.koreai.options?size &gt; 0>
   <form id="koreai-choice">
     <#list entity.koreai.options as o>
