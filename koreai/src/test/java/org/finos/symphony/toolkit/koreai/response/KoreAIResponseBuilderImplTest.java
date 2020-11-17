@@ -10,6 +10,7 @@ import org.springframework.util.StreamUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.google.common.base.Charsets;
 
@@ -58,7 +59,7 @@ public class KoreAIResponseBuilderImplTest {
 	public void cannedTest(String input) throws IOException, JsonProcessingException, JsonMappingException {
 		String json = load(input);
 		KoreAIResponse response = processor.formatResponse(json);
-		String out = symphonyMapper.writeValueAsString(response);
+		String out = symphonyMapper.writerWithDefaultPrettyPrinter().writeValueAsString(response);
 		System.out.println(out);
 		String expectedStr = load("expected-"+input);
 		KoreAIResponse expected = symphonyMapper.readValue(expectedStr, KoreAIResponse.class);

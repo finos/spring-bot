@@ -1,320 +1,220 @@
 {
-	"type": "org.finos.symphony.toolkit.koreai.response.koreAIResponse",
-	"version": "1.0",
-	"original": {
-		"text": [
-			"{\"type\":\"audio\",\"payload\":{\"url\":\"https://mydb.intranet.db.com/servlet/JiveServlet/previewBody/551156-102-2-1676118/chat-to-iva_1920-1080.mp4\"}}",
-			"{\"type\":\"template\",\"payload\":{\"template_type\":\"list\",\"elements\":[{\"title\":\"Element1\",\"image_url\":\"image url of the element\",\"subtitle\":\"Description of the element\",\"default_action\":{\"type\":\"web_url\",\"url\":\"Url to redirect when user clicks on the element\",\"messenger_extensions\":true,\"webview_height_ratio\":\"tall\",\"fallback_url\":\"fallback url\"}},{\"title\":\"Element2\",\"image_url\":\"image url of the element\",\"subtitle\":\"Description of the element\",\"default_action\":{\"type\":\"web_url\",\"url\":\"Url to redirect when user clicks on the element\",\"messenger_extensions\":true,\"webview_height_ratio\":\"tall\",\"fallback_url\":\"fallback url\"}},{\"title\":\"Element3\",\"image_url\":\"image url of the element\",\"subtitle\":\"Description of the element\",\"default_action\":{\"type\":\"web_url\",\"url\":\"Url to redirect when user clicks on the element\",\"messenger_extensions\":true,\"webview_height_ratio\":\"tall\",\"fallback_url\":\"fallback url\"}}],\"buttons\":[{\"title\":\"View More\",\"type\":\"postback\",\"payload\":\"payload\"}]}}",
-			"{\"type\":\"template\",\"payload\":{\"text\":\"Travelling expenses report chart\",\"template_type\":\"piechart\",\"pie_type\":\"regular\",\"elements\":[{\"title\":\"Airlines\",\"value\":\"1234.0\",\"displayValue\":\"$ 1,234\"}],\"speech_hint\":\"You spent $2855.71 from your account. Here is the breakup.\"}}",
-			"{\"type\":\"template\",\"payload\":{\"template_type\":\"carousel\",\"elements\":[{\"title\":\"Welcome to Peter's Hats1\",\"image_url\":\"https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]},{\"title\":\"Welcome to Peter's Hats2\",\"image_url\":\"https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]},{\"title\":\"Welcome to Peter's Hats3\",\"image_url\":\"https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]},{\"title\":\"Welcome to Peter's Hats4\",\"image_url\":\"https://static.pexels.com/photos/416458/pexels-photo-416458.jpeg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]}]}}",
-			"{\"type\":\"template\",\"payload\":{\"template_type\":\"quick_replies\",\"text\":\"Quick reply label\",\"quick_replies\":[{\"content_type\":\"text\",\"title\":\"quickReply1\",\"payload\":\"payload1\"},{\"content_type\":\"text\",\"title\":\"quickReply2\",\"payload\":\"payload1\"},{\"content_type\":\"text\",\"title\":\"quickReply3\",\"payload\":\"payload1\"}]}}",
-			"{\"text\":\"test message\"}",
-			"{\"type\":\"template\",\"payload\":{\"template_type\":\"mini_table\",\"layout\":\"horizontal\",\"text\":\"Account details\",\"speech_hint\":\"Here is your account details\",\"elements\":[{\"primary\":[[\"Current Accounts\"],[\"300\",\"right\"]],\"additional\":[[\"CA00001\",\"150\"],[\"CA00123\",\"50\"],[\"CA23423\",\"100\"]]},{\"primary\":[[\"Savings Accounts\"],[\"200\",\"right\"]],\"additional\":[[\"SA33001\",\"75\"],[\"SA67345\",\"125\"]]}]}}",
-			"{\"type\":\"message\",\"payload\":{\"text\":\"Message label\",\"videoUrl\":\"http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_30mb.mp4\"}}",
-			"table template regular",
-			"attachment template with image",
-			"linechart",
-			"button",
-			"attachment with audio",
-			"bar chart",
-			"Sample message for Message0003"
-		],
-		"endOfTask": true,
-		"endReason": "Fulfilled",
-		"completedTaskId": "dg-36459d23-3d71-5af3-8b41-2367a7382851",
-		"completedTaskName": "samples"
-	},
-	"processed": [
-		{
-			"url": "https://mydb.intranet.db.com/servlet/JiveServlet/previewBody/551156-102-2-1676118/chat-to-iva_1920-1080.mp4",
-			"optionsML": []
-		},
-		{
-			"template_type": "list",
-			"elements": [
-				{
-					"title": "Element1",
-					"image_url": "image url of the element",
-					"subtitle": "Description of the element",
-					"default_action": {
-						"type": "web_url",
-						"url": "Url to redirect when user clicks on the element",
-						"messenger_extensions": true,
-						"webview_height_ratio": "tall",
-						"fallback_url": "fallback url"
-					}
-				},
-				{
-					"title": "Element2",
-					"image_url": "image url of the element",
-					"subtitle": "Description of the element",
-					"default_action": {
-						"type": "web_url",
-						"url": "Url to redirect when user clicks on the element",
-						"messenger_extensions": true,
-						"webview_height_ratio": "tall",
-						"fallback_url": "fallback url"
-					}
-				},
-				{
-					"title": "Element3",
-					"image_url": "image url of the element",
-					"subtitle": "Description of the element",
-					"default_action": {
-						"type": "web_url",
-						"url": "Url to redirect when user clicks on the element",
-						"messenger_extensions": true,
-						"webview_height_ratio": "tall",
-						"fallback_url": "fallback url"
-					}
-				}
-			],
-			"buttons": [
-				{
-					"title": "View More",
-					"type": "postback",
-					"payload": "payload"
-				}
-			],
-			"optionsML": []
-		},
-		{
-			"text": "Travelling expenses report chart",
-			"template_type": "piechart",
-			"pie_type": "regular",
-			"elements": [
-				{
-					"title": "Airlines",
-					"value": "1234.0",
-					"displayValue": "$ 1,234"
-				}
-			],
-			"speech_hint": "You spent $2855.71 from your account. Here is the breakup.",
-			"optionsML": [],
-			"messageML": "<p>Travelling expenses report chart</p>\n"
-		},
-		{
-			"template_type": "carousel",
-			"elements": [
-				{
-					"title": "Welcome to Peter's Hats1",
-					"image_url": "https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg",
-					"subtitle": "carousel subtitle",
-					"default_action": {
-						"type": "web_url",
-						"url": "https://peterssendreceiveapp.ngrok.io/view?item=103"
-					},
-					"buttons": [
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_0"
-						},
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_1"
-						}
-					]
-				},
-				{
-					"title": "Welcome to Peter's Hats2",
-					"image_url": "https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg",
-					"subtitle": "carousel subtitle",
-					"default_action": {
-						"type": "web_url",
-						"url": "https://peterssendreceiveapp.ngrok.io/view?item=103"
-					},
-					"buttons": [
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_0"
-						},
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_1"
-						}
-					]
-				},
-				{
-					"title": "Welcome to Peter's Hats3",
-					"image_url": "https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg",
-					"subtitle": "carousel subtitle",
-					"default_action": {
-						"type": "web_url",
-						"url": "https://peterssendreceiveapp.ngrok.io/view?item=103"
-					},
-					"buttons": [
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_0"
-						},
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_1"
-						}
-					]
-				},
-				{
-					"title": "Welcome to Peter's Hats4",
-					"image_url": "https://static.pexels.com/photos/416458/pexels-photo-416458.jpeg",
-					"subtitle": "carousel subtitle",
-					"default_action": {
-						"type": "web_url",
-						"url": "https://peterssendreceiveapp.ngrok.io/view?item=103"
-					},
-					"buttons": [
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_0"
-						},
-						{
-							"type": "postback",
-							"title": "Buy now",
-							"payload": "DEVELOPER_DEFINED_PAYLOAD_1"
-						}
-					]
-				}
-			],
-			"optionsML": []
-		},
-		{
-			"template_type": "quick_replies",
-			"text": "Quick reply label",
-			"quick_replies": [
-				{
-					"content_type": "text",
-					"title": "quickReply1",
-					"payload": "payload1"
-				},
-				{
-					"content_type": "text",
-					"title": "quickReply2",
-					"payload": "payload1"
-				},
-				{
-					"content_type": "text",
-					"title": "quickReply3",
-					"payload": "payload1"
-				}
-			],
-			"optionsML": [],
-			"messageML": "<p>Quick reply label</p>\n"
-		},
-		{
-			"text": "test message",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>test message</p>\n"
-		},
-		{
-			"template_type": "mini_table",
-			"layout": "horizontal",
-			"text": "Account details",
-			"speech_hint": "Here is your account details",
-			"elements": [
-				{
-					"primary": [
-						[
-							"Current Accounts"
-						],
-						[
-							"300",
-							"right"
-						]
-					],
-					"additional": [
-						[
-							"CA00001",
-							"150"
-						],
-						[
-							"CA00123",
-							"50"
-						],
-						[
-							"CA23423",
-							"100"
-						]
-					]
-				},
-				{
-					"primary": [
-						[
-							"Savings Accounts"
-						],
-						[
-							"200",
-							"right"
-						]
-					],
-					"additional": [
-						[
-							"SA33001",
-							"75"
-						],
-						[
-							"SA67345",
-							"125"
-						]
-					]
-				}
-			],
-			"optionsML": [],
-			"messageML": "<p>Account details</p>\n"
-		},
-		{
-			"text": "Message label",
-			"videoUrl": "http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_30mb.mp4",
-			"optionsML": [],
-			"messageML": "<p>Message label</p>\n"
-		},
-		{
-			"text": "table template regular",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>table template regular</p>\n"
-		},
-		{
-			"text": "attachment template with image",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>attachment template with image</p>\n"
-		},
-		{
-			"text": "linechart",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>linechart</p>\n"
-		},
-		{
-			"text": "button",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>button</p>\n"
-		},
-		{
-			"text": "attachment with audio",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>attachment with audio</p>\n"
-		},
-		{
-			"text": "bar chart",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>bar chart</p>\n"
-		},
-		{
-			"text": "Sample message for Message0003",
-			"template_type": "message",
-			"optionsML": [],
-			"messageML": "<p>Sample message for Message0003</p>\n"
-		}
-	]
+  "type" : "org.finos.symphony.toolkit.koreai.response.koreAIResponse",
+  "version" : "1.0",
+  "original" : {
+    "text" : [ "{\"type\":\"audio\",\"payload\":{\"url\":\"https://mydb.intranet.db.com/servlet/JiveServlet/previewBody/551156-102-2-1676118/chat-to-iva_1920-1080.mp4\"}}", "{\"type\":\"template\",\"payload\":{\"template_type\":\"list\",\"elements\":[{\"title\":\"Element1\",\"image_url\":\"image url of the element\",\"subtitle\":\"Description of the element\",\"default_action\":{\"type\":\"web_url\",\"url\":\"Url to redirect when user clicks on the element\",\"messenger_extensions\":true,\"webview_height_ratio\":\"tall\",\"fallback_url\":\"fallback url\"}},{\"title\":\"Element2\",\"image_url\":\"image url of the element\",\"subtitle\":\"Description of the element\",\"default_action\":{\"type\":\"web_url\",\"url\":\"Url to redirect when user clicks on the element\",\"messenger_extensions\":true,\"webview_height_ratio\":\"tall\",\"fallback_url\":\"fallback url\"}},{\"title\":\"Element3\",\"image_url\":\"image url of the element\",\"subtitle\":\"Description of the element\",\"default_action\":{\"type\":\"web_url\",\"url\":\"Url to redirect when user clicks on the element\",\"messenger_extensions\":true,\"webview_height_ratio\":\"tall\",\"fallback_url\":\"fallback url\"}}],\"buttons\":[{\"title\":\"View More\",\"type\":\"postback\",\"payload\":\"payload\"}]}}", "{\"type\":\"template\",\"payload\":{\"text\":\"Travelling expenses report chart\",\"template_type\":\"piechart\",\"pie_type\":\"regular\",\"elements\":[{\"title\":\"Airlines\",\"value\":\"1234.0\",\"displayValue\":\"$ 1,234\"}],\"speech_hint\":\"You spent $2855.71 from your account. Here is the breakup.\"}}", "{\"type\":\"template\",\"payload\":{\"template_type\":\"carousel\",\"elements\":[{\"title\":\"Welcome to Peter's Hats1\",\"image_url\":\"https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]},{\"title\":\"Welcome to Peter's Hats2\",\"image_url\":\"https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]},{\"title\":\"Welcome to Peter's Hats3\",\"image_url\":\"https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]},{\"title\":\"Welcome to Peter's Hats4\",\"image_url\":\"https://static.pexels.com/photos/416458/pexels-photo-416458.jpeg\",\"subtitle\":\"carousel subtitle\",\"default_action\":{\"type\":\"web_url\",\"url\":\"https://peterssendreceiveapp.ngrok.io/view?item=103\"},\"buttons\":[{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_0\"},{\"type\":\"postback\",\"title\":\"Buy now\",\"payload\":\"DEVELOPER_DEFINED_PAYLOAD_1\"}]}]}}", "{\"type\":\"template\",\"payload\":{\"template_type\":\"quick_replies\",\"text\":\"Quick reply label\",\"quick_replies\":[{\"content_type\":\"text\",\"title\":\"quickReply1\",\"payload\":\"payload1\"},{\"content_type\":\"text\",\"title\":\"quickReply2\",\"payload\":\"payload1\"},{\"content_type\":\"text\",\"title\":\"quickReply3\",\"payload\":\"payload1\"}]}}", "{\"text\":\"test message\"}", "{\"type\":\"template\",\"payload\":{\"template_type\":\"mini_table\",\"layout\":\"horizontal\",\"text\":\"Account details\",\"speech_hint\":\"Here is your account details\",\"elements\":[{\"primary\":[[\"Current Accounts\"],[\"300\",\"right\"]],\"additional\":[[\"CA00001\",\"150\"],[\"CA00123\",\"50\"],[\"CA23423\",\"100\"]]},{\"primary\":[[\"Savings Accounts\"],[\"200\",\"right\"]],\"additional\":[[\"SA33001\",\"75\"],[\"SA67345\",\"125\"]]}]}}", "{\"type\":\"message\",\"payload\":{\"text\":\"Message label\",\"videoUrl\":\"http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_30mb.mp4\"}}", "table template regular", "attachment template with image", "linechart", "button", "attachment with audio", "bar chart", "Sample message for Message0003" ],
+    "endOfTask" : true,
+    "endReason" : "Fulfilled",
+    "completedTaskId" : "dg-36459d23-3d71-5af3-8b41-2367a7382851",
+    "completedTaskName" : "samples"
+  },
+  "processed" : [ {
+    "url" : "https://mydb.intranet.db.com/servlet/JiveServlet/previewBody/551156-102-2-1676118/chat-to-iva_1920-1080.mp4",
+    "template_type" : "audio",
+    "optionsML" : [ ]
+  }, {
+    "template_type" : "list",
+    "elements" : [ {
+      "title" : "Element1",
+      "image_url" : "image url of the element",
+      "subtitle" : "Description of the element",
+      "default_action" : {
+        "type" : "web_url",
+        "url" : "Url to redirect when user clicks on the element",
+        "messenger_extensions" : true,
+        "webview_height_ratio" : "tall",
+        "fallback_url" : "fallback url"
+      }
+    }, {
+      "title" : "Element2",
+      "image_url" : "image url of the element",
+      "subtitle" : "Description of the element",
+      "default_action" : {
+        "type" : "web_url",
+        "url" : "Url to redirect when user clicks on the element",
+        "messenger_extensions" : true,
+        "webview_height_ratio" : "tall",
+        "fallback_url" : "fallback url"
+      }
+    }, {
+      "title" : "Element3",
+      "image_url" : "image url of the element",
+      "subtitle" : "Description of the element",
+      "default_action" : {
+        "type" : "web_url",
+        "url" : "Url to redirect when user clicks on the element",
+        "messenger_extensions" : true,
+        "webview_height_ratio" : "tall",
+        "fallback_url" : "fallback url"
+      }
+    } ],
+    "buttons" : [ {
+      "title" : "View More",
+      "type" : "postback",
+      "payload" : "payload"
+    } ],
+    "optionsML" : [ ]
+  }, {
+    "text" : "Travelling expenses report chart",
+    "template_type" : "piechart",
+    "pie_type" : "regular",
+    "elements" : [ {
+      "title" : "Airlines",
+      "value" : "1234.0",
+      "displayValue" : "$ 1,234"
+    } ],
+    "speech_hint" : "You spent $2855.71 from your account. Here is the breakup.",
+    "optionsML" : [ ],
+    "messageML" : "<p>Travelling expenses report chart</p>\n"
+  }, {
+    "template_type" : "carousel",
+    "elements" : [ {
+      "title" : "Welcome to Peter's Hats1",
+      "image_url" : "https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg",
+      "subtitle" : "carousel subtitle",
+      "default_action" : {
+        "type" : "web_url",
+        "url" : "https://peterssendreceiveapp.ngrok.io/view?item=103"
+      },
+      "buttons" : [ {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_0"
+      }, {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_1"
+      } ]
+    }, {
+      "title" : "Welcome to Peter's Hats2",
+      "image_url" : "https://static.pexels.com/photos/46239/salmon-dish-food-meal-46239.jpeg",
+      "subtitle" : "carousel subtitle",
+      "default_action" : {
+        "type" : "web_url",
+        "url" : "https://peterssendreceiveapp.ngrok.io/view?item=103"
+      },
+      "buttons" : [ {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_0"
+      }, {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_1"
+      } ]
+    }, {
+      "title" : "Welcome to Peter's Hats3",
+      "image_url" : "https://previews.123rf.com/images/rez_art/rez_art1405/rez_art140500072/28632615-three-beef-tacos-with-cheese-lettuce-and-tomatos-Stock-Photo-taco.jpg",
+      "subtitle" : "carousel subtitle",
+      "default_action" : {
+        "type" : "web_url",
+        "url" : "https://peterssendreceiveapp.ngrok.io/view?item=103"
+      },
+      "buttons" : [ {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_0"
+      }, {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_1"
+      } ]
+    }, {
+      "title" : "Welcome to Peter's Hats4",
+      "image_url" : "https://static.pexels.com/photos/416458/pexels-photo-416458.jpeg",
+      "subtitle" : "carousel subtitle",
+      "default_action" : {
+        "type" : "web_url",
+        "url" : "https://peterssendreceiveapp.ngrok.io/view?item=103"
+      },
+      "buttons" : [ {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_0"
+      }, {
+        "type" : "postback",
+        "title" : "Buy now",
+        "payload" : "DEVELOPER_DEFINED_PAYLOAD_1"
+      } ]
+    } ],
+    "optionsML" : [ ]
+  }, {
+    "template_type" : "quick_replies",
+    "text" : "Quick reply label",
+    "quick_replies" : [ {
+      "content_type" : "text",
+      "title" : "quickReply1",
+      "payload" : "payload1"
+    }, {
+      "content_type" : "text",
+      "title" : "quickReply2",
+      "payload" : "payload1"
+    }, {
+      "content_type" : "text",
+      "title" : "quickReply3",
+      "payload" : "payload1"
+    } ],
+    "optionsML" : [ ],
+    "messageML" : "<p>Quick reply label</p>\n"
+  }, {
+    "text" : "test message",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>test message</p>\n"
+  }, {
+    "template_type" : "mini_table",
+    "layout" : "horizontal",
+    "text" : "Account details",
+    "speech_hint" : "Here is your account details",
+    "elements" : [ {
+      "primary" : [ [ "Current Accounts" ], [ "300", "right" ] ],
+      "additional" : [ [ "CA00001", "150" ], [ "CA00123", "50" ], [ "CA23423", "100" ] ]
+    }, {
+      "primary" : [ [ "Savings Accounts" ], [ "200", "right" ] ],
+      "additional" : [ [ "SA33001", "75" ], [ "SA67345", "125" ] ]
+    } ],
+    "optionsML" : [ ],
+    "messageML" : "<p>Account details</p>\n"
+  }, {
+    "text" : "Message label",
+    "videoUrl" : "http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_30mb.mp4",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>Message label</p>\n"
+  }, {
+    "text" : "table template regular",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>table template regular</p>\n"
+  }, {
+    "text" : "attachment template with image",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>attachment template with image</p>\n"
+  }, {
+    "text" : "linechart",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>linechart</p>\n"
+  }, {
+    "text" : "button",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>button</p>\n"
+  }, {
+    "text" : "attachment with audio",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>attachment with audio</p>\n"
+  }, {
+    "text" : "bar chart",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>bar chart</p>\n"
+  }, {
+    "text" : "Sample message for Message0003",
+    "template_type" : "message",
+    "optionsML" : [ ],
+    "messageML" : "<p>Sample message for Message0003</p>\n"
+  } ]
 }
