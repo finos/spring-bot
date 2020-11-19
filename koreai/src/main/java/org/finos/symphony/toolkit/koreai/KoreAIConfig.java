@@ -19,6 +19,7 @@ import org.springframework.core.io.ResourceLoader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.User;
@@ -52,7 +53,8 @@ public class KoreAIConfig {
 		ObjectMapper out = new ObjectMapper();
 		ObjectMapperFactory.initialize(out, ObjectMapperFactory
 			.extendedSymphonyVersionSpace(
-				new VersionSpace(KoreAIResponse.class.getPackage().getName(), "1.0")));
+				new VersionSpace(KoreAIResponse.class.getPackage().getName(), "1.0"),
+				new VersionSpace(ObjectNode.class.getPackage().getName(), "1.0")));
 		return out;
 	}
 		

@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.koreai.output;
 
+import java.nio.charset.Charset;
+
 import org.apache.commons.codec.Charsets;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.koreai.Address;
@@ -85,6 +87,7 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
 		try {
 			return StreamUtils.copyToString(r.getInputStream(), Charsets.UTF_8);
 		} catch (Exception e) {
+			LOG.error("Problem loading template:", e);
 			return "<messageML><div>Couldn't load template: "+e.getMessage()+"</div></messageML>";
 		}
 	}
