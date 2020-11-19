@@ -1,6 +1,5 @@
 <messageML>
-  <p>CAROUSEL</p>
-  <form id="koreai-choice">
+ <form id="koreai-choice">
  <#list entity.koreai.elements as e>
       <h2>${e.title}</h2>
       <img src="${e.image_url}" />

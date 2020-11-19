@@ -1,3 +1,3 @@
 <messageML>
-  <p>AUDIO TEMPLATE: <a href="${entity.koreai.url}" /></p>
+  <p>Audio: <a href="${entity.koreai.url}" /></p>
 </messageML>

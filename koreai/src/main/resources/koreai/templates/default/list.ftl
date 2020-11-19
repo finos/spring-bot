@@ -1,6 +1,4 @@
-<messageML>
-  <p>LIST TEMPLATE</p>
-  
+<messageML>  
     <#list entity.koreai.elements as e>
       <h2>${e.title}</h2>
       <img src="${e.image_url}" />
