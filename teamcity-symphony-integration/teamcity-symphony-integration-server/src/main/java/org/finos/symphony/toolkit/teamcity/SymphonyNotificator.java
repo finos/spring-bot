@@ -1,13 +1,32 @@
-package org.finos.symphony.toolkit.teamcity.teamcity;
+package org.finos.symphony.toolkit.teamcity;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+
+import org.apache.log4j.Logger;
+import org.finos.symphony.toolkit.spring.api.ApiInstance;
+import org.finos.symphony.toolkit.spring.api.ApiInstanceFactory;
+import org.finos.symphony.toolkit.spring.api.TokenManagingApiInstanceFactory;
+import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
+import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StringUtils;
+
+import com.symphony.api.agent.MessagesApi;
+import com.symphony.api.bindings.ApiBuilder;
+import com.symphony.api.bindings.ConfigurableApiBuilder;
+import com.symphony.api.bindings.jersey.JerseyApiBuilder;
+import com.symphony.api.id.SymphonyIdentity;
 
 import jetbrains.buildServer.Build;
 import jetbrains.buildServer.notification.Notificator;
 import jetbrains.buildServer.notification.NotificatorRegistry;
 import jetbrains.buildServer.responsibility.ResponsibilityEntry;
 import jetbrains.buildServer.responsibility.TestNameResponsibilityEntry;
-import jetbrains.buildServer.serverSide.Branch;
-import jetbrains.buildServer.serverSide.SBuild;
-import jetbrains.buildServer.serverSide.SBuildServer;
 import jetbrains.buildServer.serverSide.SBuildType;
 import jetbrains.buildServer.serverSide.SProject;
 import jetbrains.buildServer.serverSide.SRunningBuild;
@@ -20,37 +39,26 @@ import jetbrains.buildServer.users.NotificatorPropertyKey;
 import jetbrains.buildServer.users.PropertyKey;
 import jetbrains.buildServer.users.SUser;
 import jetbrains.buildServer.vcs.VcsRoot;
-import org.apache.log4j.Logger;
-import org.finos.symphony.toolkit.teamcity.symphony.SymphonyWrapper;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Set;
 
 public class SymphonyNotificator implements Notificator {
 
     private static final Logger log = Logger.getLogger(SymphonyNotificator.class);
 
-    private static final String type = "symphonyNotificator";
+    private static final String type = "SymphonyNotificator";
 
-    private static final String symphonyChannelKey = "symphony.Channel";
-    private static final String symphonyUsernameKey = "symphony.Username";
-    private static final String symphonyUrlKey = "symphony.Url";
-    private static final String symphonyVerboseKey = "symphony.Verbose";
+    private static final String symphonyStreamIdKey = "symphony.streamId";
 
-    private static final PropertyKey symphonyChannel = new NotificatorPropertyKey(type, symphonyChannelKey);
-    private static final PropertyKey symphonyUsername = new NotificatorPropertyKey(type, symphonyUsernameKey);
-    private static final PropertyKey symphonyUrl = new NotificatorPropertyKey(type, symphonyUrlKey);
-    private static final PropertyKey symphonyVerbose = new NotificatorPropertyKey(type, symphonyVerboseKey);
+    private static final PropertyKey symphonyStreamId = new NotificatorPropertyKey(type, symphonyStreamIdKey);
+    
+    private SymphonyAdminController c;
+    
+    private ResourceLoader rl;
 
-    private SBuildServer myServer;
-
-    public SymphonyNotificator(NotificatorRegistry notificatorRegistry, SBuildServer server) {
+    public SymphonyNotificator(NotificatorRegistry notificatorRegistry, SymphonyAdminController c, ResourceLoader rl) {
         registerNotificatorAndUserProperties(notificatorRegistry);
-        myServer = server;
+        this.c = c;
+        this.rl = rl;
+        log.warn("SYMPHONY: Constructed notificator ");
     }
 
     @NotNull
@@ -60,7 +68,7 @@ public class SymphonyNotificator implements Notificator {
 
     @NotNull
     public String getDisplayName() {
-        return "symphony Notifier";
+        return "Symphony Notifier";
     }
 
     public void notifyBuildFailed(@NotNull SRunningBuild sRunningBuild, @NotNull Set<SUser> users) {
@@ -147,69 +155,35 @@ public class SymphonyNotificator implements Notificator {
     private ArrayList<UserPropertyInfo> getUserPropertyInfosList() {
         ArrayList<UserPropertyInfo> userPropertyInfos = new ArrayList<UserPropertyInfo>();
 
-        userPropertyInfos.add(new UserPropertyInfo(symphonyChannelKey, "#channel or @name"));
-        userPropertyInfos.add(new UserPropertyInfo(symphonyUsernameKey, "Bot name"));
-        userPropertyInfos.add(new UserPropertyInfo(symphonyUrlKey, "Webhook URL"));
-        userPropertyInfos.add(new UserPropertyInfo(symphonyVerboseKey, "Verbose Messages"));
+        userPropertyInfos.add(new UserPropertyInfo(symphonyStreamIdKey, "Stream ID To Report To"));
 
         return userPropertyInfos;
     }
 
-    private void sendNotification(String project, String build, String statusText, String statusColor, Set<SUser> users, Build bt) {
-        for (SUser user : users) {
-            SymphonyWrapper SymphonyWrapper = getSymphonyWrapperWithUser(user);
-            try {
-                SymphonyWrapper.send(project, build, getBranch((SBuild)bt), statusText, statusColor, bt);
-            }
-            catch (IOException e) {
-                log.error(e.getMessage());
-            }
-        }
-    }
+	private void sendNotification(String project, String build, String statusText, String statusColor, Set<SUser> users,
+			Build bt) {
+		
+		MessagesApi messages;
+		
+		try {
+			messages = c.getAPI(MessagesApi.class);
+		} catch (Exception e) {
+			log.error("Couldn't send message to symphony ", e);
+			return;
+		}
+		
+		
+		for (SUser sUser : users) {
+			String streamId = sUser.getPropertyValue(symphonyStreamId);
+			log.warn("Sending notification to Symphony on "+streamId);
+			if (StringUtils.hasText(streamId)) {
+				try {
+					messages.v4StreamSidMessageCreatePost(null, streamId, "<messageML>hello</messageML>", null, null, null, null, null);
+				} catch (Exception e) {
+					log.error("Couldn't send message to symphony ", e);
+				}
+			}
+		}
+	}
 
-    private SymphonyWrapper getSymphonyWrapperWithUser(SUser user) {
-        String channel = user.getPropertyValue(symphonyChannel);
-        String username = user.getPropertyValue(symphonyUsername);
-        String url = user.getPropertyValue(symphonyUrl);
-        String verbose = user.getPropertyValue(symphonyVerbose);
-
-        if (symphonyConfigurationIsInvalid(channel, username, url, verbose)) {
-            log.error("Could not send symphony notification. The symphony channel, username, or URL was null. " +
-                      "Double check your Notification settings");
-
-            return new SymphonyWrapper();
-        }
-
-        boolean useAttachements = convertToBoolean(verbose);
-        return constructSymphonyWrapper(channel, username, url, useAttachements);
-    }
-
-    private boolean symphonyConfigurationIsInvalid(String channel, String username, String url, String verbose) {
-        return channel == null || username == null || url == null || verbose == null;
-    }
-
-    private SymphonyWrapper constructSymphonyWrapper(String channel, String username, String url, boolean useAttachements) {
-        SymphonyWrapper SymphonyWrapper = new SymphonyWrapper(useAttachements);
-
-        SymphonyWrapper.setChannel(channel);
-        SymphonyWrapper.setUsername(username);
-        SymphonyWrapper.setsymphonyUrl(url);
-        SymphonyWrapper.setServerUrl(myServer.getRootUrl());
-
-        return SymphonyWrapper;
-    }
-
-    private String getBranch(SBuild build) {
-        Branch branch = build.getBranch();
-        if (branch != null && branch.getName() != "<default>") {
-            return branch.getDisplayName();
-        } else {
-            return "";
-        }
-    }
-
-    private boolean convertToBoolean(String value) {
-        String upper = value.toUpperCase();
-        return "TRUE".equals(upper) || "YES".equals(upper);
-    }
 }

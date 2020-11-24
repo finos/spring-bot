@@ -15,7 +15,7 @@
     <moduleSet>
        <useAllReactorProjects>true</useAllReactorProjects>
        <includes>
-           <include>com.enlivenhq.teamcity:teamcity-symphony-integration-server</include>
+           <include>org.finos.symphony.toolkit:teamcity-symphony-integration-server</include>
        </includes> 
        <binaries>
            <outputDirectory>server</outputDirectory>
