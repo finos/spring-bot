@@ -8,5 +8,5 @@
     <download-url>http://github.com/finos/symphony-java-toolkit</download-url>
     <email>rob@kite9.com</email>
   </info>
-  <deployment use-separate-classloader="true" />
+  <deployment use-separate-classloader="true" allow-runtime-reload="true"/>
 </teamcity-plugin>

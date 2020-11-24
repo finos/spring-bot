@@ -25,6 +25,28 @@
       <version>${teamcity-version}</version>
       <scope>test</scope>
     </dependency>
-
+    
+    <dependency>
+      <groupId>org.apache.cxf</groupId>
+      <artifactId>cxf-rt-rs-client</artifactId>
+      <version>3.3.4</version>
+      <scope>compile</scope>
+    </dependency>
+  
+    <dependency>
+      <groupId>org.finos.symphony.toolkit</groupId>
+      <artifactId>symphony-api-spring-boot-starter</artifactId>
+      <version>5.59.0-SNAPSHOT</version>
+      <!-- this stops us pulling in spring boot, which seems to cause
+           a classloading issue for teamcity -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+ 
   </dependencies>
+  
 </project>

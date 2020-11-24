@@ -27,6 +27,7 @@ public class AgentHealthHelper implements HealthIndicator {
 		this.om = om;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Health health() {
 		V2HealthCheckResponse resp = api.v2HealthCheckGet(false, false, false, false, false, false, false, false, null, null);
