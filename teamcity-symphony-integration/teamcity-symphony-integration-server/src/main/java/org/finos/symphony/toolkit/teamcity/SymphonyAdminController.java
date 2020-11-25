@@ -3,11 +3,7 @@ package org.finos.symphony.toolkit.teamcity;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -132,7 +128,6 @@ public class SymphonyAdminController extends BaseController {
 		if (StringUtils.hasText(c.getCertificates())) {
 			List<String> brokenCerts = Arrays.asList(c.getCertificates().split("\n\\w*\n"));
 			c.getIdentityProperties().setCertificates(brokenCerts);
-			log.warn("Found certs: "+brokenCerts.size());
 		}
 		
 		return c;
@@ -155,13 +150,8 @@ public class SymphonyAdminController extends BaseController {
 
 	protected <X> X getAPI(Class<X> x) throws IOException, Exception {
 		Config config = getConfig();
-		log.warn(getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(config));
-
 		SymphonyIdentity identity = IdentityProperties.instantiateIdentityFromDetails(rl,
 				config.getIdentityProperties(), getObjectMapper());
-		
-		log.warn(identity.getCommonName());
-		log.warn(identity.getPrivateKey().toString());
 		
 		ApiBuilderFactory abf = new ApiBuilderFactory() {
 

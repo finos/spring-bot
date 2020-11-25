@@ -2,6 +2,7 @@
 
 <script type="text/javascript">
   function saveSettings(form) {
+     $('spin').show();
      BS.ajaxRequest($('saveSettingsForm').action, {
         parameters: $('saveSettingsForm').serialize(true),
         onComplete: function(transport) {
@@ -11,6 +12,7 @@
             alert("Connection settings tested and working");
           }
           $('saveSettingsContainer').refresh();
+          $('spin').hide();
         }
      });
   }
@@ -37,7 +39,9 @@
         <td><textarea name="identityProperties.privateKey">${identityProperties.privateKey}</textarea></td>
       </tr>
       <tr>
-        <th><label for="certificates">Bot Certificate Chain (PEMs):</label></th>
+        <th><label for="certificates">Bot Certificate Chain (PEMs):</label>
+         <div class="grayNote">If supplying multiple certificates, leave a blank line between each one</div>
+         </th>
         <td><textarea name="certificates">${certificates}</textarea></td>
       </tr>
     </table>
@@ -55,7 +59,9 @@
         </th>
       </tr>
       <tr>
-        <td><label for="podProperties.${ep}.url">Endpoint (URL)<span class="mandatoryAsterix" title="Mandatory field">*</span></label></td>
+        <td><label for="podProperties.${ep}.url">Endpoint (URL)<span class="mandatoryAsterix" title="Mandatory field">*</span></label>
+        <div class="grayNote">e.g. http://develop.symphony.com/${ep}</div>
+        </td>
         <td colspan="2"><input type="text" name="podProperties.${ep}.url" value="${podProperties[ep].url}" class="textField" /></td>
       </tr>
       <tr>
@@ -94,6 +100,8 @@
     <div class="grayNote">A list of PEMs to be used as a trust store.  Leave empty to use the default</div>
     
     <input type="button" value="Save" class="btn btn_primary submitButton" onClick="saveSettings(this.form)" />
+    
+    <i id="spin" style="display: none" class="ring-loader-inline progressRing progressRingInline" title="Please wait..."></i>
     
   </form>
 </bs:refreshable>

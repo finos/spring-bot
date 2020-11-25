@@ -47,6 +47,7 @@ public class SymphonyAdminPage extends AdminPage {
 		model.put("trustStoreProperties", cfgOb.getTrustStoreProperties());
 		model.put("endpoints", Arrays.asList("pod", "sessionAuth", "keyAuth", "agent", "relay", "login"));
 		model.put("certificates", cfgOb.getCertificates());
+		model.put("template", cfgOb.getTemplate());
 	}
 
 	@Override

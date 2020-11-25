@@ -1,7 +1,5 @@
 package org.finos.symphony.toolkit.teamcity;
 
-import jetbrains.buildServer.Build;
-
 public class BuildData {
 	
 	private final String project;
@@ -11,12 +9,14 @@ public class BuildData {
 	private final String url;
 	private final String detail;
 	
-	public BuildData(String project, String build, String statusText, String statusColor) {
+	public BuildData(String project, String build, String statusText, String statusColor, String url, String detail) {
 		super();
 		this.project = project;
 		this.build = build;
 		this.statusText = statusText;
 		this.statusColor = statusColor;
+		this.url = url;
+		this.detail = detail;
 	}
 
 	public String getProject() {
@@ -33,6 +33,14 @@ public class BuildData {
 
 	public String getStatusColor() {
 		return statusColor;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String getDetail() {
+		return detail;
 	}
 	
 }
