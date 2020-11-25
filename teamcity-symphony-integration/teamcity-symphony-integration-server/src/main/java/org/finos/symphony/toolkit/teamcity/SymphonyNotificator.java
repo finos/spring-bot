@@ -1,11 +1,18 @@
 package org.finos.symphony.toolkit.teamcity;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
+import org.apache.commons.compress.utils.Charsets;
 import org.apache.log4j.Logger;
+import org.apache.log4j.lf5.util.StreamUtils;
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.ApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.TokenManagingApiInstanceFactory;
@@ -13,9 +20,12 @@ import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
@@ -159,11 +169,33 @@ public class SymphonyNotificator implements Notificator {
 
         return userPropertyInfos;
     }
+    
+    public static String asString(Resource resource) {
+        try (Reader reader = new InputStreamReader(resource.getInputStream(), Charsets.UTF_8)) {
+            return FileCopyUtils.copyToString(reader);
+        } catch (IOException e) {
+        	log.error("Couldn't load classpath template: ", e);
+            throw new UncheckedIOException(e);
+        }
+    }
 
-	private void sendNotification(String project, String build, String statusText, String statusColor, Set<SUser> users,
-			Build bt) {
+	private void sendNotification(String project, String build, String statusText, String statusColor, Set<SUser> users, Build bt) {
 		
 		MessagesApi messages;
+		String jsonString;
+		String template;
+		Config config = c.getConfig();
+		
+		try {
+			BuildData bd = new BuildData(project, build, statusText, statusColor);
+			EntityJson json = new EntityJson();
+			json.put("teamcity", bd);
+			jsonString = c.getObjectMapper().writeValueAsString(json);
+			log.warn("JSON: \n"+jsonString);
+		} catch (JsonProcessingException e1) {
+			log.error("Couldn't format JSON string ", e1);
+			return;
+		}
 		
 		try {
 			messages = c.getAPI(MessagesApi.class);
@@ -172,13 +204,20 @@ public class SymphonyNotificator implements Notificator {
 			return;
 		}
 		
+
+		
+		if (StringUtils.hasText(config.getTemplate())) {
+			template = config.getTemplate();
+		} else {
+			template = asString(rl.getResource("classpath:/template.ftl"));
+		}
 		
 		for (SUser sUser : users) {
 			String streamId = sUser.getPropertyValue(symphonyStreamId);
 			log.warn("Sending notification to Symphony on "+streamId);
 			if (StringUtils.hasText(streamId)) {
 				try {
-					messages.v4StreamSidMessageCreatePost(null, streamId, "<messageML>hello</messageML>", null, null, null, null, null);
+					messages.v4StreamSidMessageCreatePost(null, streamId, template, jsonString, null, null, null, null);
 				} catch (Exception e) {
 					log.error("Couldn't send message to symphony ", e);
 				}
