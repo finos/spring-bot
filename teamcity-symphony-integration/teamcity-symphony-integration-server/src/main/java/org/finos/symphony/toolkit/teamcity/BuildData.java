@@ -8,6 +8,8 @@ public class BuildData {
 	private final String build;
 	private final String statusText;
 	private final String statusColor;
+	private final String url;
+	private final String detail;
 	
 	public BuildData(String project, String build, String statusText, String statusColor) {
 		super();
