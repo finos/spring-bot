@@ -1,17 +1,24 @@
 package org.finos.symphony.toolkit.teamcity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.ApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.TokenManagingApiInstanceFactory;
@@ -24,13 +31,14 @@ import org.springframework.http.MediaType;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
+import org.springframework.web.servlet.view.AbstractView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
 import com.symphony.api.bindings.cxf.CXFApiBuilder;
-import com.symphony.api.bindings.jersey.JerseyApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.json.SymphonyIdentityModule;
 
@@ -55,37 +63,51 @@ public class SymphonyAdminController extends BaseController {
 		manager.registerController(CONTROLLER_PATH, this);
 		this.om = new ObjectMapper();
 		this.om.registerModule(new SymphonyIdentityModule());
+		this.om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+		
+		ObjectMapperFactory.initialize(om, 
+			ObjectMapperFactory.extendedSymphonyVersionSpace(
+				new VersionSpace(BuildData.class.getPackage().getName(), "1.0")));
+				
+		
 		this.configFile = serverPaths.getConfigDir() + CONFIG_PATH;
 		this.rl = rl;
 	}
 
 	@Override
 	protected ModelAndView doHandle(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
-		Config config = new Config();
-		FormUtil.bindFromRequest(arg0, config);
-		setConfig(config);
 		try {
+			Config config = new Config();
+			FormUtil.bindFromRequest(arg0, config);
+			setConfig(config);
 			// this is to make sure config is ok
 			DatafeedApi df = getAPI(DatafeedApi.class);
 			df.createDatafeed(null, null);
 			return null;
 		} catch (Exception e) {
-			StringWriter sw = new StringWriter();
-			e.printStackTrace(new PrintWriter(new StringWriter()));
-			log.error("Problem handling save: ", e);
-			View w = new View() {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			PrintStream ps = new PrintStream(baos);
+			e.printStackTrace(ps);
+			ps.close();
+			log.error("Problem handling save: "+ new String(baos.toByteArray()));
+			View w = new AbstractView() {
 				
 				@Override
-				public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response)
-						throws Exception {
+				protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
+						HttpServletResponse response) throws Exception {
+										
 					response.setStatus(HttpStatus.PARTIAL_CONTENT.value());
-					response.setContentType(MediaType.TEXT_PLAIN.toString());
-					response.setContentLength(sw.toString().getBytes().length);
-					response.getWriter().write(sw.toString());
-					response.getWriter().flush();
-					response.flushBuffer();
+					response.setContentType(getContentType());
+					response.setContentLength(baos.size());
+
+					// Flush byte array to servlet output stream.
+					ServletOutputStream out = response.getOutputStream();
+					baos.writeTo(out);
+					out.flush();
+					
+					log.warn("Flushed "+baos.size()+" bytes");
 				}
-				
+			
 				@Override
 				public String getContentType() {
 					return MediaType.TEXT_PLAIN.toString();

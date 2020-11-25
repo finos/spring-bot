@@ -7,8 +7,9 @@
         onComplete: function(transport) {
           if (transport.getStatus() == 206) {
             alert("problem: "+transport.responseText);
-          } 
-          
+          } else {
+            alert("Connection settings tested and working");
+          }
           $('saveSettingsContainer').refresh();
         }
      });
@@ -42,13 +43,16 @@
     </table>
     
     <h3>Pod Details</h3>
-    <div class="grayNote">This is the pod that will receive the bot's build notifications.</div>
+    <div class="grayNote">This is the pod that will receive the bot's build notifications.    
+    </div>
+    
       
     <table class="parametersTable">
       <!-- pod -->
       <c:forEach var="ep" items="${endpoints}">
       <tr>
-        <th colspan="3">${ep} Endpoint</th>
+        <th colspan="3"><h4>${ep} Endpoint</h4>
+        </th>
       </tr>
       <tr>
         <td><label for="podProperties.${ep}.url">Endpoint (URL)<span class="mandatoryAsterix" title="Mandatory field">*</span></label></td>
@@ -74,6 +78,17 @@
       </c:forEach>
     </table>  
       
+    <h3>Override Template</h3>
+    <div class="grayNote">Override the main symphony template here (Apache Freemarker format)</div>
+    <table class="parametersTable">
+      <tr>
+        <th>Template</th>
+      </tr>
+      <tr>
+        <td><textarea name="template">${template}</textarea></td>
+      </tr>
+    </table>
+    
     
     <h3>Trust Store Details</h3>
     <div class="grayNote">A list of PEMs to be used as a trust store.  Leave empty to use the default</div>

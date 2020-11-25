@@ -3,6 +3,11 @@ input[type=text] {
 	width: 100%;
 }
 
+textarea {
+	font-size: smaller;
+	height: 250px;
+}
+
 table.parametersTable {
   width: 100%;
   margin-top: 0.5em;
@@ -16,6 +21,7 @@ table.parametersTable th {
   text-align: left;
   font-weight: normal;
   border: 1px solid #ccc;
+  width: 25%;
 }
 
 table.parametersTable th,

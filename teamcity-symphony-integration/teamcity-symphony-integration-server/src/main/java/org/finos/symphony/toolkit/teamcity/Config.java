@@ -10,6 +10,7 @@ public class Config {
 	private IdentityProperties identityProperties;
 	private TrustStoreProperties trustStoreProperties;
 	private String certificates;
+	private String template;
 	
 	public PodProperties getPodProperties() {
 		return podProperties;
@@ -35,6 +36,12 @@ public class Config {
 	}
 	public void setCertificates(String certificates) {
 		this.certificates = certificates;
+	}
+	public String getTemplate() {
+		return template;
+	}
+	public void setTemplate(String template) {
+		this.template = template;
 	}
 	
 }
