@@ -44,7 +44,7 @@ public class SymphonyAdminPage extends AdminPage {
 		Config cfgOb = SymphonyAdminController.packCerts(config.getConfig());
 		model.put("podProperties", cfgOb.getPodProperties());
 		model.put("identityProperties", cfgOb.getIdentityProperties());
-		model.put("trustStoreProperties", cfgOb.getTrustStoreProperties());
+		model.put("trustedPems", cfgOb.getTrustedPems());
 		model.put("endpoints", Arrays.asList("pod", "sessionAuth", "keyAuth", "agent", "relay", "login"));
 		model.put("certificates", cfgOb.getCertificates());
 		model.put("template", cfgOb.getTemplate());

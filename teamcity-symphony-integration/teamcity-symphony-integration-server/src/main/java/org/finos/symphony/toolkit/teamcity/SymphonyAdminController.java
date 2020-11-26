@@ -20,6 +20,8 @@ import org.finos.symphony.toolkit.spring.api.ApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.TokenManagingApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
+import org.finos.symphony.toolkit.spring.api.properties.TrustStoreProperties;
+import org.finos.symphony.toolkit.spring.api.properties.TrustStoreProperties.Type;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpStatus;
@@ -128,6 +130,13 @@ public class SymphonyAdminController extends BaseController {
 		if (StringUtils.hasText(c.getCertificates())) {
 			List<String> brokenCerts = Arrays.asList(c.getCertificates().split("\n\\w*\n"));
 			c.getIdentityProperties().setCertificates(brokenCerts);
+		}
+		
+		if (StringUtils.hasText(c.getTrustedPems())) {
+			TrustStoreProperties tsp = new TrustStoreProperties();
+			tsp.setType(Type.INLINE_PEMS);
+			tsp.setInlinePems(c.getTrustedPems());
+			c.setTrustStoreProperties(tsp);
 		}
 		
 		return c;
