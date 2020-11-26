@@ -145,5 +145,5 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 - Close the Staging Repository
 - Release it.
 
-
+4.  Perform release on github with same number
  
