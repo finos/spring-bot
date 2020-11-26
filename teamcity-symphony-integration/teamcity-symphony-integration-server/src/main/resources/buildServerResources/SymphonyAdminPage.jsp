@@ -98,6 +98,15 @@
     
     <h3>Trust Store Details</h3>
     <div class="grayNote">A list of PEMs to be used as a trust store.  Leave empty to use the default</div>
+     <table class="parametersTable">
+      <tr>
+        <th><label for="certificates">Trusted Certificates (PEMs):</label>
+         <div class="grayNote">If supplying multiple certificates, leave a blank line between each one</div>
+         </th>
+        <td><textarea name="certificates">${trustedPems}</textarea></td>
+      </tr>
+    </table>
+    
     
     <input type="button" value="Save" class="btn btn_primary submitButton" onClick="saveSettings(this.form)" />
     

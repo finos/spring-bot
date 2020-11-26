@@ -11,6 +11,7 @@ public class Config {
 	private TrustStoreProperties trustStoreProperties;
 	private String certificates;
 	private String template;
+	private String trustedPems;
 	
 	public PodProperties getPodProperties() {
 		return podProperties;
@@ -42,6 +43,12 @@ public class Config {
 	}
 	public void setTemplate(String template) {
 		this.template = template;
+	}
+	public String getTrustedPems() {
+		return trustedPems;
+	}
+	public void setTrustedPems(String trustedPems) {
+		this.trustedPems = trustedPems;
 	}
 	
 }
