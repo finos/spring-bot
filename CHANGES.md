@@ -73,4 +73,8 @@
  - Renamed packages to match `org.finos.symphony.toolkit`
  - Divided tests into integration tests, unit tests
  - Minor fixes to chat workflow 
+ 
+## 25th November 2020
 
+ - Added TeamCity Integration
+ 

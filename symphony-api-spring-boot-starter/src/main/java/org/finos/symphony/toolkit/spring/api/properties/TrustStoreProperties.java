@@ -1,12 +1,15 @@
 package org.finos.symphony.toolkit.spring.api.properties;
 
+import java.util.List;
+
 public class TrustStoreProperties {
 
-	public enum Type { PEMS, JKS, PKCS12 }
+	public enum Type { PEMS, JKS, PKCS12, INLINE_PEMS }
 	
 	String location;
 	String password;
 	Type type = Type.PEMS;
+	String inlinePems;
 	
 	public Type getType() {
 		return type;
@@ -32,5 +35,14 @@ public class TrustStoreProperties {
 		this.password = password;
 	}
 
+	public String getInlinePems() {
+		return inlinePems;
+	}
+
+	public void setInlinePems(String inlinePems) {
+		this.inlinePems = inlinePems;
+	}
+
+	
 	
 }
