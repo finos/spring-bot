@@ -60,7 +60,7 @@
       </tr>
       <tr>
         <td><label for="podProperties.${ep}.url">Endpoint (URL)<span class="mandatoryAsterix" title="Mandatory field">*</span></label>
-        <div class="grayNote">e.g. http://develop.symphony.com/${ep}</div>
+        <div class="grayNote">e.g. https://develop.symphony.com/${ep}</div>
         </td>
         <td colspan="2"><input type="text" name="podProperties.${ep}.url" value="${podProperties[ep].url}" class="textField" /></td>
       </tr>
