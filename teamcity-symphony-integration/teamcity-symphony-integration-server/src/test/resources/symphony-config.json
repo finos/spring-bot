@@ -1,0 +1,88 @@
+{
+  "type": "org.finos.symphony.toolkit.teamcity.config",
+  "version": "1.0",
+  "podProperties": {
+    "id": null,
+    "pod": {
+      "url": "https://localhost:9999/pod",
+      "proxy": {
+        "host": "",
+        "port": 8080,
+        "user": "",
+        "password": ""
+      },
+      "proxies": null,
+      "testUrl": null
+    },
+    "sessionAuth": {
+      "url": "https://localhost:9999/sessionAuth",
+      "proxy": {
+        "host": "",
+        "port": 8080,
+        "user": "",
+        "password": ""
+      },
+      "proxies": null,
+      "testUrl": null
+    },
+    "keyAuth": {
+      "url": "https://localhost:9999/keyAuth",
+      "proxy": {
+        "host": "",
+        "port": 8080,
+        "user": "",
+        "password": ""
+      },
+      "proxies": null,
+      "testUrl": null
+    },
+    "agent": {
+      "url": "https://localhost:9999/agent",
+      "proxy": {
+        "host": "",
+        "port": 8080,
+        "user": "",
+        "password": ""
+      },
+      "proxies": null,
+      "testUrl": null
+    },
+    "relay": {
+      "url": "https://localhost:9999/relay",
+      "proxy": {
+        "host": "",
+        "port": 8080,
+        "user": "",
+        "password": ""
+      },
+      "proxies": null,
+      "testUrl": null
+    },
+    "login": {
+      "url": "https://localhost:9999/login",
+      "proxy": {
+        "host": "",
+        "port": 8080,
+        "user": "",
+        "password": ""
+      },
+      "proxies": null,
+      "testUrl": null
+    },
+    "authMethod": null
+  },
+  "identityProperties": {
+    "email": "symphony.practice.bot1@list.db.com",
+    "commonName": "symphony.practice.bot1",
+    "location": null,
+    "password": null,
+    "privateKey": "-----BEGIN PRIVATE KEY-----MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCmO262l9F6SzKVS3VB9gHGfcIzUTxyNOqwHZRERIIdJNvGVddx/2mxl99tA0T50MOpJ/wXDSESeHWH4PRo6l3YRkQg9+K/aYkB8fK0DnF8/VvuEtNdli+AZM6Cue3FESAM/wjpQ5YXmGKWVRpDYPTp1c2lyN8AXRelLkHPs74/HspsrMOPKCfAPsw4INKIFHKo8/GBW+vj2+vfEz/TTGJNXLbOmP0eacRfm9Pwzk8vlMEWaciLDWxEJKnNFIcp2w0dtDnX3p17NlE3mE/OpdZTqWeYiDzVBMYEcKnfZTJ8fxnqCV1up0KOGFXxW3bcPOC0kW5LIRXo8IOCSCER6TaNAgMBAAECggEALHq6pSD6bD6yyj/moD+zOelsjU6vXd/K7FT910Z9ik7Sf794ZohxP5PjtMerLS0vLZQFYCWjM84HpNQMkgYkFjq3ABtUEOOsRVj4GDXFKCyi7JEc/W2ySCixGUmm1ZQ/fzq+p6vt/WJI/vDGlkDbR7Zt0G5vPSmrqgc2lN0Dit/D10jhLqBfV5Xk2rAWr/GLLqqs2wkzPdGR7Q63m36BWzFPAzphAUqIn1FECtWfDsx2vMx+NBIT62HpJjxeMOUqijre2tGgPs81DSjp9ReeklLnPh5el7OuOM7jhdBGxKqEa3qvgIEV2166ZwQPr+ZUMioIcrDbFFYBHB4M6CouAQKBgQDUuhEY0QpciKvaEBK3EzE26saeKH0c1KhH7ygJCbGEW6VgfoIfCCYQZYqr6AHh2t0n0ly1YwO8Od3vS5E1T3R5TX5kzXD9hSmaCiUCMqgj53A0YjP6ICSryrj7MszC+WiR4p4JyPBLADAkRJkNxfFYqF9JkoHb2yGlR6YQoZAYVwKBgQDIDB2lQsPlfr0KrGvAXHm6Vp35kgIaosB9ppD8Pomg1tDhsR6/UWyq9QR+g8CalIyKLoPOAm2KtHfycgQwfdr3F5sSY2n1rWpSyuknzI1LCWYkA8tuw467NgXAH7F6awLHPZ9BCAq6aLOOFlvFwlprqS9rTyShr6kuyDFZOVqpuwKBgHRKf5w0ctihMmlUThbdHBNsh0Xg1nyTWKdye01tiijUPPUiU5oJR13BVOyjOZwxnKLvYhUa2ujkLYpqoiglloPVtFoA4VsGl/aIwzCPZtGx7OoGIWoEdmefvD4+yCdyVxMhcsngmlQ19xtskMsxwb141haPTARXp+4F3CfNWsujAoGAYlJqI7ar99kR6vQRxart/WLjJC3aMOM7PsamTgQiutW6NqNKXHgVs/TXL6Nr/83xQV1ZVOCmnFzU82mMm5TQEVAd3KzWAHUqY+TtMa186JuHAz6GNzuQpH0J2IL7RRLhe7HS2zCrrTEWx0g/9PPwYyf1cYWlmH5w5dhpQNRKtk8CgYAhaqNVvKoJxqyK+sNpbHn2ZDMdoEhNfP1mGRQrQHX0F+1sSuWgCCfhFumIBucE0NjHGw37a2mac6HzZBG4HAm7Y605MmwyGRsGo5Gc66HpFhUywgNPmwMZmvvituwY9a3A8c4xfTo5T2bksOdv79ZUA7hJUzC2kjEA23xMKg3x6A==-----END PRIVATE KEY-----",
+    "certificates": null,
+    "type": null
+  },
+  "trustStoreProperties": {
+    "inlinePems": ",-----BEGIN CERTIFICATE-----MIIDzTCCArWgAwIBAgIQCjeHZF5ftIwiTv0b7RQMPDANBgkqhkiG9w0BAQsFADBaMQswCQYDVQQGEwJJRTESMBAGA1UEChMJQmFsdGltb3JlMRMwEQYDVQQLEwpDeWJlclRydXN0MSIwIAYDVQQDExlCYWx0aW1vcmUgQ3liZXJUcnVzdCBSb290MB4XDTIwMDEyNzEyNDgwOFoXDTI0MTIzMTIzNTk1OVowSjELMAkGA1UEBhMCVVMxGTAXBgNVBAoTEENsb3VkZmxhcmUsIEluYy4xIDAeBgNVBAMTF0Nsb3VkZmxhcmUgSW5jIEVDQyBDQS0zMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEua1NZpkUC0bsH4HRKlAenQMVLzQSfS2WuIg4m4Vfj7+7Te9hRsTJc9QkT+DuHM5ss1FxL2ruTAUJd9NyYqSb16OCAWgwggFkMB0GA1UdDgQWBBSlzjfq67B1DpRniLRF+tkkEIeWHzAfBgNVHSMEGDAWgBTlnVkwgkdYzKz6CFQ2hns6tQRN8DAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBIGA1UdEwEB/wQIMAYBAf8CAQAwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL09tbmlyb290MjAyNS5jcmwwbQYDVR0gBGYwZDA3BglghkgBhv1sAQEwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL0NQUzALBglghkgBhv1sAQIwCAYGZ4EMAQIBMAgGBmeBDAECAjAIBgZngQwBAgMwDQYJKoZIhvcNAQELBQADggEBAAUkHd0bsCrrmNaF4zlNXmtXnYJX/OvoMaJXkGUFvhZEOFp3ArnPEELG4ZKk40Un+ABHLGioVplTVI+tnkDB0A+21w0LOEhsUCxJkAZbZB2LzEgwLt4I4ptJIsCSDBFelpKU1fwg3FZs5ZKTv3ocwDfjhUkV+ivhdDkYD7fa86JXWGBPzI6UAPxGezQxPk1HgoE6y/SJXQ7vTQ1unBuCJN0yJV0ReFEQPaA1IwQvZW+cwdFD19Ae8zFnWSfda9J1CZMRJCQUzym+5iPDuI9yP+kHyCREU3qzuWFloUwOxkgAyXVjBYdwRVKD05WdRerw6DEdfgkfCv4+3ao8XnTSrLE=-----END CERTIFICATE-----,-----BEGIN CERTIFICATE-----MIIDzTCCArWgAwIBAgIQCjeHZF5ftIwiTv0b7RQMPDANBgkqhkiG9w0BAQsFADBaMQswCQYDVQQGEwJJRTESMBAGA1UEChMJQmFsdGltb3JlMRMwEQYDVQQLEwpDeWJlclRydXN0MSIwIAYDVQQDExlCYWx0aW1vcmUgQ3liZXJUcnVzdCBSb290MB4XDTIwMDEyNzEyNDgwOFoXDTI0MTIzMTIzNTk1OVowSjELMAkGA1UEBhMCVVMxGTAXBgNVBAoTEENsb3VkZmxhcmUsIEluYy4xIDAeBgNVBAMTF0Nsb3VkZmxhcmUgSW5jIEVDQyBDQS0zMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEua1NZpkUC0bsH4HRKlAenQMVLzQSfS2WuIg4m4Vfj7+7Te9hRsTJc9QkT+DuHM5ss1FxL2ruTAUJd9NyYqSb16OCAWgwggFkMB0GA1UdDgQWBBSlzjfq67B1DpRniLRF+tkkEIeWHzAfBgNVHSMEGDAWgBTlnVkwgkdYzKz6CFQ2hns6tQRN8DAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBIGA1UdEwEB/wQIMAYBAf8CAQAwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL09tbmlyb290MjAyNS5jcmwwbQYDVR0gBGYwZDA3BglghkgBhv1sAQEwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL0NQUzALBglghkgBhv1sAQIwCAYGZ4EMAQIBMAgGBmeBDAECAjAIBgZngQwBAgMwDQYJKoZIhvcNAQELBQADggEBAAUkHd0bsCrrmNaF4zlNXmtXnYJX/OvoMaJXkGUFvhZEOFp3ArnPEELG4ZKk40Un+ABHLGioVplTVI+tnkDB0A+21w0LOEhsUCxJkAZbZB2LzEgwLt4I4ptJIsCSDBFelpKU1fwg3FZs5ZKTv3ocwDfjhUkV+ivhdDkYD7fa86JXWGBPzI6UAPxGezQxPk1HgoE6y/SJXQ7vTQ1unBuCJN0yJV0ReFEQPaA1IwQvZW+cwdFD19Ae8zFnWSfda9J1CZMRJCQUzym+5iPDuI9yP+kHyCREU3qzuWFloUwOxkgAyXVjBYdwRVKD05WdRerw6DEdfgkfCv4+3ao8XnTSrLE=-----END CERTIFICATE-----,-----BEGIN CERTIFICATE-----MIIDzTCCArWgAwIBAgIQCjeHZF5ftIwiTv0b7RQMPDANBgkqhkiG9w0BAQsFADBaMQswCQYDVQQGEwJJRTESMBAGA1UEChMJQmFsdGltb3JlMRMwEQYDVQQLEwpDeWJlclRydXN0MSIwIAYDVQQDExlCYWx0aW1vcmUgQ3liZXJUcnVzdCBSb290MB4XDTIwMDEyNzEyNDgwOFoXDTI0MTIzMTIzNTk1OVowSjELMAkGA1UEBhMCVVMxGTAXBgNVBAoTEENsb3VkZmxhcmUsIEluYy4xIDAeBgNVBAMTF0Nsb3VkZmxhcmUgSW5jIEVDQyBDQS0zMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEua1NZpkUC0bsH4HRKlAenQMVLzQSfS2WuIg4m4Vfj7+7Te9hRsTJc9QkT+DuHM5ss1FxL2ruTAUJd9NyYqSb16OCAWgwggFkMB0GA1UdDgQWBBSlzjfq67B1DpRniLRF+tkkEIeWHzAfBgNVHSMEGDAWgBTlnVkwgkdYzKz6CFQ2hns6tQRN8DAOBgNVHQ8BAf8EBAMCAYYwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBIGA1UdEwEB/wQIMAYBAf8CAQAwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wOgYDVR0fBDMwMTAvoC2gK4YpaHR0cDovL2NybDMuZGlnaWNlcnQuY29tL09tbmlyb290MjAyNS5jcmwwbQYDVR0gBGYwZDA3BglghkgBhv1sAQEwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL0NQUzALBglghkgBhv1sAQIwCAYGZ4EMAQIBMAgGBmeBDAECAjAIBgZngQwBAgMwDQYJKoZIhvcNAQELBQADggEBAAUkHd0bsCrrmNaF4zlNXmtXnYJX/OvoMaJXkGUFvhZEOFp3ArnPEELG4ZKk40Un+ABHLGioVplTVI+tnkDB0A+21w0LOEhsUCxJkAZbZB2LzEgwLt4I4ptJIsCSDBFelpKU1fwg3FZs5ZKTv3ocwDfjhUkV+ivhdDkYD7fa86JXWGBPzI6UAPxGezQxPk1HgoE6y/SJXQ7vTQ1unBuCJN0yJV0ReFEQPaA1IwQvZW+cwdFD19Ae8zFnWSfda9J1CZMRJCQUzym+5iPDuI9yP+kHyCREU3qzuWFloUwOxkgAyXVjBYdwRVKD05WdRerw6DEdfgkfCv4+3ao8XnTSrLE=-----END CERTIFICATE-----",
+    "type": "INLINE_PEMS"
+  },
+  "template": "<messageML>some template</messageML>"
+}
