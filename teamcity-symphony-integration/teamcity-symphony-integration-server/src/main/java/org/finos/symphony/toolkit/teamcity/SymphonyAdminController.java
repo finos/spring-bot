@@ -77,42 +77,59 @@ public class SymphonyAdminController extends BaseController {
 		try {
 			Config config = new Config();
 			FormUtil.bindFromRequest(arg0, config);
-			setConfig(config);
-			// this is to make sure config is ok
-			DatafeedApi df = getAPI(DatafeedApi.class);
-			df.createDatafeed(null, null);
-			return null;
+			return handleInternal(config);
 		} catch (Exception e) {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			PrintStream ps = new PrintStream(baos);
-			e.printStackTrace(ps);
-			ps.close();
-			log.error("Problem handling save: "+ new String(baos.toByteArray()));
-			View w = new AbstractView() {
-				
-				@Override
-				protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
-						HttpServletResponse response) throws Exception {
-										
-					response.setStatus(HttpStatus.PARTIAL_CONTENT.value());
-					response.setContentType(getContentType());
-					response.setContentLength(baos.size());
-
-					// Flush byte array to servlet output stream.
-					ServletOutputStream out = response.getOutputStream();
-					baos.writeTo(out);
-					out.flush();
-					
-					log.warn("Flushed "+baos.size()+" bytes");
-				}
-			
-				@Override
-				public String getContentType() {
-					return MediaType.TEXT_PLAIN.toString();
-				}
-			};
-			return new ModelAndView(w);
+			return createModelAndViewFromException(e);
 		}
+	}
+
+	public ModelAndView handleInternal(Config config) {
+		try {
+			setConfig(config);
+			return testConfig();
+		} catch (Throwable e) {
+			return createModelAndViewFromException(e);
+		}
+	}
+
+	protected ModelAndView testConfig() throws IOException, Exception {
+		// this is to make sure config is ok
+		DatafeedApi df = getAPI(DatafeedApi.class);
+		df.createDatafeed(null, null);
+		return null;
+	}
+
+	protected ModelAndView createModelAndViewFromException(Throwable e) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintStream ps = new PrintStream(baos);
+		e.printStackTrace(ps);
+		ps.close();
+		log.error("Problem handling save: "+ new String(baos.toByteArray()));
+		View w = new AbstractView() {
+			
+			@Override
+			protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
+					HttpServletResponse response) throws Exception {
+									
+				response.setStatus(HttpStatus.PARTIAL_CONTENT.value());
+				response.setContentType(getContentType());
+				response.setContentLength(baos.size());
+
+				// Flush byte array to servlet output stream.
+				ServletOutputStream out = response.getOutputStream();
+				baos.writeTo(out);
+				out.flush();
+				
+				log.warn("Flushed "+baos.size()+" bytes");
+			}
+		
+			@Override
+			public String getContentType() {
+				return MediaType.TEXT_PLAIN.toString();
+			}
+		};
+		
+		return new ModelAndView(w);
 	}
 	
 	public Config getConfig() {
@@ -132,11 +149,8 @@ public class SymphonyAdminController extends BaseController {
 			c.getIdentityProperties().setCertificates(brokenCerts);
 		}
 		
-		if (StringUtils.hasText(c.getTrustedPems())) {
-			TrustStoreProperties tsp = new TrustStoreProperties();
-			tsp.setType(Type.INLINE_PEMS);
-			tsp.setInlinePems(c.getTrustedPems());
-			c.setTrustStoreProperties(tsp);
+		if (StringUtils.hasText(c.getTrustStoreProperties().getInlinePems())) {
+			c.getTrustStoreProperties().setType(Type.INLINE_PEMS);
 		}
 		
 		return c;
