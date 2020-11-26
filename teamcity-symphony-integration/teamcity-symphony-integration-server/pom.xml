@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>teamcity-symphony-integration</artifactId>
-    <version>5.59.1-SNAPSHOT</version>
+    <version>5.59.1</version>
   </parent>
   
   <artifactId>teamcity-symphony-integration-server</artifactId>
@@ -36,13 +36,13 @@
     <dependency>
       <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>entity-json</artifactId>
-      <version>5.59.1-SNAPSHOT</version>
+      <version>5.59.1</version>
     </dependency>
   
     <dependency>
       <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>symphony-api-spring-boot-starter</artifactId>
-      <version>5.59.1-SNAPSHOT</version>
+      <version>5.59.1</version>
       <!-- this stops us pulling in spring boot, which seems to cause
            a classloading issue for teamcity -->
       <exclusions>
