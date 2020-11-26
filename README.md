@@ -101,7 +101,6 @@ Provides a maven extension that allows you to report build results into a Sympho
 Allows you to report your TeamCity builds into Symphony chat rooms, using a bot.
 
  - [View the README](teamcity-symphony-integration/README.md)
-
  
 ## Symphony Shared Stream
 

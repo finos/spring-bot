@@ -77,4 +77,3 @@
 ## 25th November 2020
 
  - Added TeamCity Integration
- 
