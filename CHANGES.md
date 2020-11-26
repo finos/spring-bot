@@ -67,6 +67,12 @@
  
  - Moved to `org.finos.symphony.toolkit` groupId.
  - Renaming modules so that they match directories/spring-starter naming structure.
+
+## 29th October 2020
+
+ - Renamed packages to match `org.finos.symphony.toolkit`
+ - Divided tests into integration tests, unit tests
+ - Minor fixes to chat workflow 
  
 ## 25th November 2020
 
