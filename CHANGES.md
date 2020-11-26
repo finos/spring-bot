@@ -67,3 +67,8 @@
  
  - Moved to `org.finos.symphony.toolkit` groupId.
  - Renaming modules so that they match directories/spring-starter naming structure.
+ 
+## 25th November 2020
+
+ - Added TeamCity Integration
+ 
