@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>5.59.1-SNAPSHOT</version>
+	<version>5.59.1</version>
 	<packaging>pom</packaging>
 
 	<name>Symphony Java Toolkit</name>

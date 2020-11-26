@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>chat-workflow-spring-boot-starter</artifactId>
-			<version>5.59.1-SNAPSHOT</version>
+			<version>5.59.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
