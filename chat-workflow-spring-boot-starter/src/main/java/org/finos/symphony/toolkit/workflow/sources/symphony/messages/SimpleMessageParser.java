@@ -187,46 +187,16 @@ public class SimpleMessageParser {
 		}
 	}
 	
-	static class MessageFrame extends Frame<Message> {
-
-		List<Content> stuffSoFar = new ArrayList<>();
-		
-		public Message getContents() {
-			return Message.of(stuffSoFar);
-				
-		}
-		
-		void push(Content c) {
-			stuffSoFar.add(c);
-		}
-		
-		@Override
-		boolean isEnding(String qName) {
-			return true;
-		}
-
-		@Override
-		boolean hasContent() {
-			return stuffSoFar.size() > 0;
-		}
-	}
-	
-	static class ParagraphFrame extends TextFrame<Paragraph> {
+	static abstract class TextRunFrame<X extends Content> extends TextFrame<X> {
 		
 		List<Content> stuffSoFar = new ArrayList<>();
-		
-		public Paragraph getContents() {
-			consumeBuffer();
-			return Paragraph.of(stuffSoFar);
-				
-		}
 		
 		void push(Content c) {
 			consumeBuffer();
 			stuffSoFar.add(c);
 		}
 
-		private void consumeBuffer() {
+		protected void consumeBuffer() {
 			Arrays.stream(buf.toString().split("\\s+"))
 			.filter(s -> s.length() > 0)
 			.map(s -> Word.of(s))
@@ -244,6 +214,34 @@ public class SimpleMessageParser {
 		boolean hasContent() {
 			return stuffSoFar.size() > 0;
 		}
+	}
+	
+	static class MessageFrame extends TextRunFrame<Message> {
+		
+		public Message getContents() {
+			consumeBuffer();
+			return Message.of(stuffSoFar);
+				
+		}
+		
+		@Override
+		boolean isEnding(String qName) {
+			return true;
+		}
+
+		
+	}
+	
+	static class ParagraphFrame extends TextRunFrame<Paragraph> {
+
+
+		public Paragraph getContents() {
+			consumeBuffer();
+			return Paragraph.of(stuffSoFar);
+				
+		}
+	
+		
 	}
 	
 	public Message parseMessage(String message, EntityJson jsonObjects) throws Exception {
