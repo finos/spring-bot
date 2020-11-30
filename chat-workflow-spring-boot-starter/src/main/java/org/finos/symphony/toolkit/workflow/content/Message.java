@@ -3,10 +3,8 @@ package org.finos.symphony.toolkit.workflow.content;
 import java.util.Iterator;
 import java.util.List;
 
-public interface Message extends Content, Iterable<Content> {
+public interface Message extends Paragraph {
 
-	List<Content> getContents();
-	
 	public static Message of(List<Content> c) {
 		return new Message() {
 
