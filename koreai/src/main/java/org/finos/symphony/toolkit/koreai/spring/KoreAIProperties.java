@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.koreai;
+package org.finos.symphony.toolkit.koreai.spring;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @author rodriva
  */
 @ConfigurationProperties("symphony.koreai")
-public class KoreaiProperties {
+public class KoreAIProperties {
 
 	private String jwt;
 

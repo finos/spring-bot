@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.koreai;
+package org.finos.symphony.toolkit.koreai.spring;
 
 import java.io.IOException;
 
@@ -26,11 +26,11 @@ import com.symphony.api.model.User;
 import com.symphony.api.pod.UsersApi;
 
 @Configuration
-@EnableConfigurationProperties(KoreaiProperties.class)
+@EnableConfigurationProperties(KoreAIProperties.class)
 public class KoreAIConfig {
 
 	@Autowired
-	KoreaiProperties properties;
+	KoreAIProperties properties;
 	
 	@Autowired
 	SymphonyIdentity botIdentity;
