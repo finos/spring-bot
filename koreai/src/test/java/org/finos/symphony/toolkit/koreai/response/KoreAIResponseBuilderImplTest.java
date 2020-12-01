@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.koreai.response;
 
 import java.io.IOException;
 
-import org.finos.symphony.toolkit.koreai.KoreAIConfig;
+import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StreamUtils;
