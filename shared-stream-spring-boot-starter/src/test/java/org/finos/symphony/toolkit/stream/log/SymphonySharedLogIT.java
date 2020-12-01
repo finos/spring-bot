@@ -20,7 +20,7 @@ import com.symphony.api.agent.MessagesApi;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes={TestApplication.class})
 @ActiveProfiles("develop")
-public class IntegrationTestSymphonySharedLog  {
+public class SymphonySharedLogIT  {
 
 	private String streamId = "y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==";
 	

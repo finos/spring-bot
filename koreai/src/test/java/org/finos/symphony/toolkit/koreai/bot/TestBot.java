@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.koreai.KoreAIConfig;
-import org.finos.symphony.toolkit.koreai.KoreAIEventHandler;
+import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
+import org.finos.symphony.toolkit.koreai.spring.KoreAIEventHandler;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.JerseyApiBuilderConfig;
 import org.junit.Assert;
