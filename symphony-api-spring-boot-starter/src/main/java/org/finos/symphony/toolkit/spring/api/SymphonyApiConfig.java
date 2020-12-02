@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.spring.api;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -108,12 +109,17 @@ public class SymphonyApiConfig {
 	public TrustManagerFactory symphonyTrustManagerFactory() throws Exception {
 		if (symphonyProperties.getTrustStore() != null) {
 			TrustStoreProperties tsp = symphonyProperties.getTrustStore();
-			InputStream is = resourceLoader.getResource(tsp.getLocation()).getInputStream();
-			TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			String storeType = tsp.getType() == Type.PEMS ? "PKCS12" : tsp.getType().name();
-			KeyStore keystore = KeyStore.getInstance(storeType);
 			
-			if (tsp.getType() == Type.PEMS) {
+			// input stream of trusted certs
+			InputStream is = tsp.getType() == Type.INLINE_PEMS ? 
+					new ByteArrayInputStream(tsp.getInlinePems().getBytes()) :
+					resourceLoader.getResource(tsp.getLocation()).getInputStream();
+					
+			TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+			KeyStore keystore;
+			
+			if ((tsp.getType() == Type.PEMS) || (tsp.getType() == Type.INLINE_PEMS)) {
+				keystore = KeyStore.getInstance("PKCS12");
 				keystore.load(null, null);
 				Scanner scanner = new Scanner(is);
 				scanner.useDelimiter("-----END CERTIFICATE-----");
@@ -127,6 +133,8 @@ public class SymphonyApiConfig {
 				}
 				scanner.close();
 			} else {
+				String storeType = tsp.getType().name();
+				keystore = KeyStore.getInstance(storeType);
 				keystore.load(is, tsp.getPassword().toCharArray());
 			}
 

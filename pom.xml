@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>5.59.1-SNAPSHOT</version>
+	<version>5.59.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Symphony Java Toolkit</name>
@@ -33,6 +33,7 @@
 		<module>demos/poll-bot</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
+		<module>teamcity-symphony-integration</module>
     <module>symphony-maven-build-reporter</module>
 	</modules>
 
@@ -186,7 +187,7 @@
                 </goals>
                 <configuration>
                  <systemPropertyVariables>
-		    <symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
+                    <symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
                     <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
                     <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
                     <proxy>${symphony-proxy}</proxy>
