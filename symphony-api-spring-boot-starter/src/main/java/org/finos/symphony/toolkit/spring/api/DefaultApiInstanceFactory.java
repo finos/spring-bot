@@ -150,6 +150,11 @@ public class DefaultApiInstanceFactory implements ApiInstanceFactory {
 			public <X> X getLoginApi(Class<X> c) {
 				return loginApiBuilder.getApi(c);
 			}
+
+			@Override
+			public SymphonyIdentity getIdentity() {
+				return id;
+			}
 		};
 		
 		if (registry != null) { 
