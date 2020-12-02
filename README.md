@@ -17,6 +17,7 @@ This project contains the following:
 - Symphony JSON Support
 - Symphony FIX Support
 - A Symphony Maven Build Notifier
+- A TeamCity Build Notifier
 - Symphony Shared Stream
 - Chat Workflow
 - KoreAI Connector
@@ -95,6 +96,12 @@ Although this is not reliant on Symphony code, it is adjacent tech and so might 
 Provides a maven extension that allows you to report build results into a Symphony chat room.  
 
  - [View the README](symphony-maven-build-reporter/README.md)
+ 
+## TeamCity Build Notifier
+
+Allows you to report your TeamCity builds into Symphony chat rooms, using a bot.
+
+ - [View the README](teamcity-symphony-integration/README.md)
  
 ## Symphony Shared Stream
 
