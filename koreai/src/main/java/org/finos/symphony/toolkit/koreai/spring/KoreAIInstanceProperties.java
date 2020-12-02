@@ -13,16 +13,6 @@ public class KoreAIInstanceProperties {
 	private String jwt;
 
 	private String url;
-	
-	private String name;
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	private boolean skipEmptyResponses = false;
 	
@@ -69,5 +59,10 @@ public class KoreAIInstanceProperties {
 
 	public void setOnlyAddressed(boolean onlyAddressed) {
 		this.onlyAddressed = onlyAddressed;
+	}
+	
+	public String getName() {
+		String email = (symphonyBot != null) ? symphonyBot.getEmail(): "unnamed";
+		return email == null ? "unnamed" : email;
 	}
 }
