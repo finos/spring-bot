@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.koreai;
+package org.finos.symphony.toolkit.koreai.spring;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
