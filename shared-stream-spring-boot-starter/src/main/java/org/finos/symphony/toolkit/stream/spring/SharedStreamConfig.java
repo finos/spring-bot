@@ -62,16 +62,6 @@ public class SharedStreamConfig {
 		LOG.info("Cluster starting up with dummy participant (no spring-web detected) {} ",url);
 		return new Participant(url);	
 	}
-
-	/**
-	 * This is used if there is no coordination stream id defined. 
-	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@Lazy
-	public SharedLog fallbackLocalLog() {
-		return new LocalConsoleOnlyLog();
-	}
 	
 	public static interface ExceptionConsumer extends Consumer<Exception> {};
 	
@@ -84,6 +74,15 @@ public class SharedStreamConfig {
 		return e -> LOG.error("Symphony Stream Exception occurred: ", e);
 	}
 
+	/**
+	 * This is used if there is no coordination stream id defined. 
+	 */
+	@Bean
+	@ConditionalOnMissingBean	
+	@Lazy
+	public SharedLog fallbackLocalLog() {
+		return new LocalConsoleOnlyLog();
+	}
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -109,10 +108,9 @@ public class SharedStreamConfig {
 		} 
 	}
 	
-	
+
 	@Bean
 	@ConditionalOnMissingBean
-	@Lazy
 	public ClusterMember clusterMember(Decider d,  Multicaster mc, Participant self, SharedLog sl, HealthEndpoint health) {
 		Random r = new Random();
 		long timeoutMs = streamProperties.getTimeoutMs();
@@ -123,7 +121,5 @@ public class SharedStreamConfig {
 		out.startup();
 		return out;
 	}
-
-	
 	
 }

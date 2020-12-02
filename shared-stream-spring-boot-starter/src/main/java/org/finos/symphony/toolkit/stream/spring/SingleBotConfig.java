@@ -10,6 +10,8 @@ import org.finos.symphony.toolkit.stream.log.LogMessageHandler;
 import org.finos.symphony.toolkit.stream.log.SharedLog;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
 import org.finos.symphony.toolkit.stream.spring.SharedStreamConfig.ExceptionConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -36,6 +38,8 @@ import com.symphony.api.agent.MessagesApi;
 @EnableConfigurationProperties(SymphonyStreamProperties.class)
 public class SingleBotConfig {
 	
+	private static final Logger LOG = LoggerFactory.getLogger(SingleBotConfig.class);
+	
 	@Autowired
 	SymphonyStreamProperties streamProperties;
 	
@@ -44,7 +48,7 @@ public class SingleBotConfig {
 	@ConditionalOnProperty(name = "symphony.stream.coordination-stream-id")
 	public SharedLog symphonySharedLog(MessagesApi messagesApi) {
 		if (StringUtils.isEmpty(streamProperties.getCoordinationStreamId())) {
-			throw new IllegalArgumentException("Shared Log needs a stream ID to write to.  PLease set symphony.stream.coordination-stream-id");
+			throw new IllegalArgumentException("Shared Log needs a stream ID to write to.  Please set symphony.stream.coordination-stream-id");
 		}
 		
 		return new SymphonyRoomSharedLog(
@@ -54,7 +58,7 @@ public class SingleBotConfig {
 				streamProperties.getParticipantWriteIntervalMillis());
 	}
 	
-	@Bean
+
 	@ConditionalOnMissingBean
 	public SymphonyStreamHandler symphonyStreamHandler(ExceptionConsumer exceptionHandler, SymphonyLeaderEventFilter eventFilter, DatafeedApi datafeedApi) {
 		return new SymphonyStreamHandler(datafeedApi, eventFilter, exceptionHandler, streamProperties.isStartImmediately());
@@ -68,4 +72,5 @@ public class SingleBotConfig {
 			self, 
 			lmh, lm -> mc.accept(lm.getParticipant()));
 	}
+	
 }

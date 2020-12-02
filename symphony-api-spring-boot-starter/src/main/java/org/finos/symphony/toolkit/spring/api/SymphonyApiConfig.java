@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthIndicatorRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -49,8 +50,10 @@ import io.micrometer.core.instrument.MeterRegistry;
 public class SymphonyApiConfig {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SymphonyApiConfig.class); 
+
+	public static final String SINGLE_BOT_IDENTITY_PROPERTY = "symphony.bot.identity";
 	
-	public static final String BOT_IDENTITY = "botIdentity";
+	public static final String SINGLE_BOT_IDENTITY_BEAN = "botIdentity";
 
 	public static final String SINGLE_BOT_INSTANCE_BEAN = "singleBotInstance";
 
@@ -73,13 +76,13 @@ public class SymphonyApiConfig {
 	@Autowired
 	ObjectMapper mapper;
 		
-	@ConfigurationProperties(prefix = "symphony.bot.identity")
+	@ConfigurationProperties(prefix = SINGLE_BOT_IDENTITY_PROPERTY)
 	@Bean
 	IdentityProperties identityDetails() {
 		return new IdentityProperties();
 	}
 	
-	@Bean(name=BOT_IDENTITY)
+	@Bean(name=SINGLE_BOT_IDENTITY_BEAN)
 	@Lazy
 	@ConditionalOnMissingBean
 	public SymphonyIdentity botIdentity() throws IOException {
@@ -146,8 +149,9 @@ public class SymphonyApiConfig {
 	
 	@Bean(name=SINGLE_BOT_INSTANCE_BEAN)
 	@ConditionalOnMissingBean
+	@ConditionalOnProperty(name = "privateKey", prefix = SINGLE_BOT_IDENTITY_PROPERTY)
 	@Lazy
-	public ApiInstance singleBotInstance(ApiInstanceFactory bif, @Qualifier(BOT_IDENTITY) SymphonyIdentity id,  @Autowired(required=false) @Qualifier(SYMPHONY_TRUST_MANAGERS_BEAN) TrustManagerFactory trustManagerFactory) throws Exception {
+	public ApiInstance singleBotApiInstance(ApiInstanceFactory bif, @Qualifier(SINGLE_BOT_IDENTITY_BEAN) SymphonyIdentity id,  @Autowired(required=false) @Qualifier(SYMPHONY_TRUST_MANAGERS_BEAN) TrustManagerFactory trustManagerFactory) throws Exception {
 		PodProperties pp = getMainPodProperties();
 		return bif.createApiInstance(id, pp, trustManagerFactory == null ? null : trustManagerFactory.getTrustManagers());
 	}
