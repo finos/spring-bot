@@ -9,7 +9,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.github.finos.symphony.examples</groupId>
+	<groupId>com.db.symphony</groupId>
 	<artifactId>demo-poll-bot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Poll Bot (Demo)</name>
