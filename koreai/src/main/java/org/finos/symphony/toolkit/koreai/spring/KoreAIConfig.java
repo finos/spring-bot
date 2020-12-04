@@ -110,7 +110,7 @@ public class KoreAIConfig implements InitializingBean {
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 	public ApiInstance symphonyAPIInstance(KoreAIInstanceProperties props) {
 		try {
-			SymphonyIdentity symphonyBotIdentity = IdentityProperties.instantiateIdentityFromDetails(rl, props.getSymphonyBot(), koreAIObjectMapper());
+			SymphonyIdentity symphonyBotIdentity = IdentityProperties.instantiateIdentityFromDetails(rl, props.getSymphonyBot(), symphonyObjectMapper());
 			TrustManager[] tms = tmf == null ? null: tmf.getTrustManagers();
 			ApiInstance apiInstance = symphonyAPIInstanceFactory.createApiInstance(symphonyBotIdentity, firstPodProperties(), tms);
 			LOG.info("Constructed API Factory for {} ",props.getName());
@@ -126,7 +126,7 @@ public class KoreAIConfig implements InitializingBean {
 	public KoreAIBridgeFactory koreAIBridgeFactory() {
 		return new KoreAIBridgeFactoryImpl(
 			rl, 
-			koreAIObjectMapper(), 
+			symphonyObjectMapper(), 
 			koreProperties, 
 			streamProperties, 
 			ec, 
