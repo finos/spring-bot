@@ -26,17 +26,17 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>5.59.1-SNAPSHOT</version>
+			<version>5.59.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>entity-json</artifactId>
-			<version>5.59.1-SNAPSHOT</version>
+			<version>5.59.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
-			<version>5.59.1-SNAPSHOT</version>
+			<version>5.59.2-SNAPSHOT</version>
 		</dependency>
 		
 		<!-- allows shared stream coordination -->

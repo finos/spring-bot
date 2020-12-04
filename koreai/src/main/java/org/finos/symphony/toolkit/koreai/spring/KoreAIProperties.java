@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.koreai.spring;
 
 import java.util.List;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
