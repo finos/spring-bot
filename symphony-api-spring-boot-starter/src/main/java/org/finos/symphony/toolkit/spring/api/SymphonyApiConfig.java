@@ -21,7 +21,7 @@ import org.springframework.beans.BeanInstantiationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.health.HealthIndicatorRegistry;
+import org.springframework.boot.actuate.health.HealthContributorRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -96,16 +96,6 @@ public class SymphonyApiConfig {
 			return TestIdentityProvider.getTestIdentity();
 		}
 	}	
-
-	@Bean
-	public static ApiBeanRegistration podApiRegistration() {
-		return new ApiBeanRegistration(SINGLE_BOT_INSTANCE_BEAN, SystemApi.class.getPackage().getName(), "getPodApi");
-	}
-	
-	@Bean
-	public static ApiBeanRegistration agentApiRegistration() {
-		return new ApiBeanRegistration(SINGLE_BOT_INSTANCE_BEAN, MessagesApi.class.getPackage().getName(), "getAgentApi");
-	}
 	
 	@Bean(name=SYMPHONY_TRUST_MANAGERS_BEAN)
 	@ConditionalOnMissingBean(name=SYMPHONY_TRUST_MANAGERS_BEAN)
@@ -151,7 +141,7 @@ public class SymphonyApiConfig {
 	
 	@Bean(name=API_INSTANCE_FACTORY)
 	@ConditionalOnMissingBean
-	public ApiInstanceFactory apiInstanceFactory(@Autowired ApiBuilderFactory abf, @Autowired(required=false) HealthIndicatorRegistry hir, @Autowired(required=false) MeterRegistry mr) {
+	public ApiInstanceFactory apiInstanceFactory(@Autowired ApiBuilderFactory abf, @Autowired(required=false) HealthContributorRegistry hir, @Autowired(required=false) MeterRegistry mr) {
 		return new DefaultApiInstanceFactory(abf, hir, mr, mapper);
 	}
 	
