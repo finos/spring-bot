@@ -96,6 +96,7 @@ public class KoreAIEventHandler implements StreamEventConsumer, InitializingBean
 			if (elements != null) {
 				String formId = elements.getFormId();
 				if (formId.equals("koreai-choice")) {
+					@SuppressWarnings("unchecked")
 					String button = ((Map<String, String>) elements.getFormValues()).get("action");
 					try {
 						Address a = buildAddress(u, elements.getStream());

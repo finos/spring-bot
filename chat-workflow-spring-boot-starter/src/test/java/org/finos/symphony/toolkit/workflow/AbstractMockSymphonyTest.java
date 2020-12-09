@@ -58,7 +58,7 @@ public abstract class AbstractMockSymphonyTest {
 	@Configuration
 	public static class MockConfiguration {
 	
-		@Bean(name=SymphonyApiConfig.BOT_IDENTITY)
+		@Bean(name=SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
 		public SymphonyIdentity symphonyIdentity() {
 			SymphonyIdentity botIdentity = Mockito.mock(SymphonyIdentity.class);
 			Mockito.when(botIdentity.getEmail()).then((i) -> BOT_EMAIL);
