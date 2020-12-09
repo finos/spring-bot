@@ -45,6 +45,7 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
         this.url = url;
         this.jnf = jsonNodeFactory;
         this.jwt = jwt;
+        this.client = createClient();
     }
     
     protected Client createClient() {

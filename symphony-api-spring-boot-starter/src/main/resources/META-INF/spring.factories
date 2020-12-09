@@ -2,4 +2,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
   org.finos.symphony.toolkit.spring.api.builders.JerseyApiBuilderConfig,\
   org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig,\
-  org.finos.symphony.toolkit.spring.api.SymphonyApiConfig
+  org.finos.symphony.toolkit.spring.api.SymphonyApiConfig,\
+  org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig

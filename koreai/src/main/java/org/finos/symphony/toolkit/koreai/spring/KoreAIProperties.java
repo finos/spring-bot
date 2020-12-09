@@ -1,56 +1,27 @@
 package org.finos.symphony.toolkit.koreai.spring;
 
+import java.util.List;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Stores configuration settings for koreai connectivity.
+ * Stores configuration settings for koreai connectivity.  This supports 
+ * configuring multiple pairs of symphony/koreAI bots.
  * 
  * @author rodriva
  */
 @ConfigurationProperties("symphony.koreai")
 public class KoreAIProperties {
 
-	private String jwt;
-
-	private String url;
-	
-	private boolean skipEmptyResponses = false;
-	
-	private boolean onlyAddressed = false;
-	
 	private String templatePrefix = "file:/koreai/templates";
 
-	public String getJwt() {
-		return jwt;
-	}
-
-	public void setJwt(String jwt) {
-		this.jwt = jwt;
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
+	private List<KoreAIInstanceProperties> instances;
 	
-
-	public boolean isSkipEmptyResponses() {
-		return skipEmptyResponses;
+	public List<KoreAIInstanceProperties> getInstances() {
+		return instances;
 	}
 
-	public void setSkipEmptyResponses(boolean skipEmptyResponses) {
-		this.skipEmptyResponses = skipEmptyResponses;
-	}
-
-	public boolean isOnlyAddressed() {
-		return onlyAddressed;
-	}
-
-	public void setOnlyAddressed(boolean onlyAddressed) {
-		this.onlyAddressed = onlyAddressed;
+	public void setInstances(List<KoreAIInstanceProperties> instances) {
+		this.instances = instances;
 	}
 
 	public String getTemplatePrefix() {
