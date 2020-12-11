@@ -3,32 +3,43 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.github.deutschebank.symphony</groupId>
-	<artifactId>symphony-java-client-parent</artifactId>
-	<version>4.59.7-SNAPSHOT</version>
+	<groupId>org.finos.symphony.toolkit</groupId>
+	<artifactId>symphony-java-toolkit</artifactId>
+	<version>5.59.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Symphony Java Client Parent</name>
+	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
-	<url>https://github.com/deutschebank/symphony-java-client-parent</url>
+	<url>https://github.com/finos/symphony-java-toolkit</url>
+	
+	<parent>
+	 <groupId>org.finos</groupId>
+	 <artifactId>finos</artifactId>
+	 <version>2</version>
+	</parent>
 
 	<modules>
 		<module>identity</module>
 		<module>bindings</module>
 		<module>symphony-api-spring-boot-starter</module>
 		<module>symphony-app-spring-boot-starter</module>
+    <module>entity-json</module>
+		<!--module>koreai</module-->
+		<module>quickfix-json</module>
+		<module>shared-stream-spring-boot-starter</module>
+		<module>chat-workflow-spring-boot-starter</module>
 		<module>demos/demo-bot</module>
 		<module>demos/demo-app</module>
-		<module>entity-json</module>
-		<module>quickfix-json</module>
-		<module>shared-stream</module>
-		<module>symphony-maven-build-reporter</module>
-		<module>chat-workflow</module>
+		<module>demos/poll-bot</module>
+		<module>demos/todo-bot</module>
+		<module>demos/claim-bot</module>
+		<module>teamcity-symphony-integration</module>
+    <module>symphony-maven-build-reporter</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>2.3.2.RELEASE</spring-boot.version>
+		<spring-boot.version>2.3.4.RELEASE</spring-boot.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 
@@ -54,8 +65,8 @@
 	</licenses>
 
 	<organization>
-		<name>Deutsche Bank AG</name>
-		<url>https://github.com/deutschebank</url>
+		<name>Finos</name>
+		<url>https://github.com/finos</url>
 	</organization>
 
 	<developers>
@@ -80,107 +91,130 @@
 	</developers>
 
 	<scm>
+	  	<developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
 		<connection>scm:git@github.com:finos/symphony-java-toolkit.git</connection>
 		<tag>HEAD</tag>
 		<url>https://github.com/finos/symphony-java-toolkit</url>
 	</scm>
 
+	<profiles>
+		<!-- using this profile creates Javadocs, etc. and signs the jars for upload 
+			to maven central -->
+		<profile>
+			<id>symphony-release</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.6</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<interactive>false</interactive>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>3.1.1</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+              </execution>
+            </executions>							
+						<configuration> <!-- add this to disable checking -->
+							<doclint>none</doclint>
+							<failOnError>false</failOnError>
+							<source>8</source>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 
-  <profiles>
-    <!-- using this profile creates Javadocs, etc. and signs the jars for upload to maven central -->
-    <profile>
-      <id>symphony-release</id>
-	    <build>
-		    <plugins>
-		      <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-gpg-plugin</artifactId>
-		        <version>1.6</version>
-		        <executions>
-		          <execution>
-		            <id>sign-artifacts</id>
-		            <phase>verify</phase>
-		            <goals>
-		              <goal>sign</goal>
-		            </goals>
-		          </execution>
-		        </executions>
-		        <configuration>
-		          <interactive>false</interactive>
-		        </configuration>
-		      </plugin>
-		      <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-javadoc-plugin</artifactId>
-		        <version>3.1.1</version>
-		        <executions>
-		          <execution>
-		            <id>attach-javadocs</id>
-		            <goals>
-		              <goal>jar</goal>
-		            </goals>
-		            <configuration> <!-- add this to disable checking -->
-		              <doclint>none</doclint>
-		              <failOnError>false</failOnError>
-		              <failOnWarnings>false</failOnWarnings>
-		            </configuration>
-		          </execution>
-		        </executions>
-		      </plugin>
-		    </plugins>
-		  </build>
-    </profile>
-    
-    
-    <profile>
-      <!-- this profile generates code coverage, should be run by the ci server -->
-      <id>symphony-ci</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.2</version>
+		<profile>
+			<!-- this profile generates code coverage, should be run by the ci server -->
+			<id>symphony-ci</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.2</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>prepare-agent</goal>
+                  <goal>prepare-agent-integration</goal>
+								</goals>
+							</execution>
+ 							<execution>
+								<id>report</id>
+								<phase>test</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						  <execution>
+                <id>report-integration</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>report-integration</goal>
+                </goals>
+              </execution>
+						</executions>
+					</plugin>
+				  <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>2.18.1</version>
             <executions>
               <execution>
                 <goals>
-                  <goal>prepare-agent</goal>
+                  <goal>integration-test</goal>
+                  <goal>verify</goal>
                 </goals>
-              </execution>
-              <execution>
-                <id>report</id>
-                <phase>test</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
+                <configuration>
+                 <systemPropertyVariables>
+                    <symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
+                    <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
+                    <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
+                    <proxy>${symphony-proxy}</proxy>
+                  </systemPropertyVariables>
+                </configuration>
               </execution>
             </executions>
           </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
- 	
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
-  <build>
+
+  <!-- since we are building
+     the build reporter, this must refer to an earlier, built version -->
+ 	<!-- <build>
 		<extensions>
 			<extension>
-				<groupId>com.github.deutschebank.symphony</groupId>
+				<groupId>org.finos.symphony.toolkit</groupId>
 				<artifactId>symphony-maven-build-reporter</artifactId>
-				<!-- since we are building the build reporter, this must refer to an earlier, built version -->
-				<version>4.59.2</version>
+
+				<version>4.59.6</version>
 			</extension>
 		</extensions>
-	</build>
-
-	<distributionManagement>
-		<repository>
-			<id>bintray-deutschebank-SymphonyPractice</id>
-			<name>deutschebank-SymphonyPractice</name>
-			<url>https://api.bintray.com/maven/deutschebank/SymphonyPractice/symphony-java-client-parent/;publish=1</url>
-		</repository>
-	</distributionManagement>
-
+	</build>  -->
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -190,6 +224,4 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-
 </project>

@@ -6,12 +6,12 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.2.RELEASE</version>
+		<version>2.3.4.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.github.deutschebank.symphony</groupId>
+	<groupId>com.db.symphony.example-bot</groupId>
 	<artifactId>demo-bot</artifactId>
-	<version>4.59.7-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>Symphony Demo Bot</name>
 	<description>Demo Bot Using Spring Boot Starter</description>
 
@@ -24,10 +24,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
-			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+    <dependency>
+      <groupId>org.finos.symphony.toolkit</groupId>
+      <artifactId>symphony-api-spring-boot-starter</artifactId>
+      <version>5.59.2-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+ 		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>shared-stream-spring-boot-starter</artifactId>
+			<version>5.59.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -68,7 +74,7 @@
 			<dependency>
 				<groupId>org.glassfish.jersey</groupId>
 				<artifactId>jersey-bom</artifactId>
-				<version>2.27</version>
+				<version>2.28</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

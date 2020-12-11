@@ -1,81 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.2.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
-    </parent>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.4.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
 
-    <developers>
-      <developer>
-        <id>robmoffat</id>
-        <name>Rob Moffat</name>
-        <email>rob@kite9.com</email>
-      </developer>
-    </developers>
+	<groupId>com.db.symphony.example-app</groupId>
+	<artifactId>demo-app</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>Symphony Demo App</name>
+	<description>Demo App for creation of Symphony App</description>
 
-    <groupId>com.github.deutschebank.symphony</groupId>
-	  <artifactId>demo-app</artifactId>
-	  <version>4.59.7-SNAPSHOT</version>
-	  <name>Symphony Demo App</name>
-	  <description>Demo App Using Spring Boot Starter</description>
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
+		<symphony.reporter.recipients>y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==</symphony.reporter.recipients>
+		<symphony.reporter.agent.url>https://develop.symphony.com/agent</symphony.reporter.agent.url>
+		<symphony.reporter.pod.url>https://develop.symphony.com/pod</symphony.reporter.pod.url>
+		<symphony.reporter.login.url>https://develop.symphony.com/login</symphony.reporter.login.url>
+		<symphony.reporter.relay.url>https://develop.symphony.com/relay</symphony.reporter.relay.url>
+	</properties>
 
-    <properties>
-        <maven.deploy.skip>true</maven.deploy.skip>
-        <symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
-        <symphony.reporter.recipients>y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==</symphony.reporter.recipients>
-        <symphony.reporter.agent.url>https://develop.symphony.com/agent</symphony.reporter.agent.url>
-	<symphony.reporter.pod.url>https://develop.symphony.com/pod</symphony.reporter.pod.url>
-	<symphony.reporter.login.url>https://develop.symphony.com/login</symphony.reporter.login.url>
-	<symphony.reporter.relay.url>https://develop.symphony.com/relay</symphony.reporter.relay.url>
-    </properties>
-
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
 
 		<dependency>
-		  <groupId>com.github.deutschebank.symphony</groupId>
-		  <artifactId>symphony-app-spring-boot-starter</artifactId>
-		  <scope>compile</scope>
-		  <version>4.59.7-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
-      
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-rs-client</artifactId>
-            <version>3.3.4</version>
-            <scope>compile</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>symphony-app-spring-boot-starter</artifactId>
+			<scope>compile</scope>
+			<version>5.59.2-SNAPSHOT</version>
+		</dependency>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-client</artifactId>
+			<version>3.3.4</version>
+			<scope>compile</scope>
+		</dependency>
 
-    </build>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>
