@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>5.59.1</version>
+	<version>5.59.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Symphony Java Toolkit</name>
@@ -23,7 +23,8 @@
 		<module>bindings</module>
 		<module>symphony-api-spring-boot-starter</module>
 		<module>symphony-app-spring-boot-starter</module>
-		<module>entity-json</module>
+    <module>entity-json</module>
+		<!--module>koreai</module-->
 		<module>quickfix-json</module>
 		<module>shared-stream-spring-boot-starter</module>
 		<module>chat-workflow-spring-boot-starter</module>

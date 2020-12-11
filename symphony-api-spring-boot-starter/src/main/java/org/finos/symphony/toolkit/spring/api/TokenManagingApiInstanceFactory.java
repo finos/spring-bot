@@ -56,7 +56,8 @@ public class TokenManagingApiInstanceFactory extends AbstractApiInstanceFactory 
 				relayApiBuilder,
 				loginApiBuilder,
 				podApiBuilder,
-				agentApiBuilder);
+				agentApiBuilder,
+				id);
 		
 		return out;
 				

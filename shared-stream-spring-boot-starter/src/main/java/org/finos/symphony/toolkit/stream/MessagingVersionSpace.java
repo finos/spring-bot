@@ -2,7 +2,6 @@ package org.finos.symphony.toolkit.stream;
 
 import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 
-
 public class MessagingVersionSpace {
 
 	public static final VersionSpace THIS = 

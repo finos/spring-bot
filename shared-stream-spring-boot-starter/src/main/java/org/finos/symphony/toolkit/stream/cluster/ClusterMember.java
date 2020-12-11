@@ -12,16 +12,14 @@ import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
  */
 public interface ClusterMember {
 	
-	public static enum State { LEADER, SUPRESSED, PROPOSING_ELECTION, STOPPED }
+	public enum State { LEADER, SUPRESSED, PROPOSING_ELECTION, STOPPED }
 
 	public void startup();
 	
 	public void shutdown();
 	
 	public ClusterMessage receiveMessage(ClusterMessage cm);
-	
-	//public void receiveEvent(ID id);
-	
+		
 	public void becomeLeader();
 	
 	public Participant getSelfDetails();

@@ -1,53 +1,35 @@
 package org.finos.symphony.toolkit.stream.spring;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.SymphonyRaftClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.transport.HttpMulticaster;
 import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
+import org.finos.symphony.toolkit.stream.cluster.transport.NullMulticaster;
 import org.finos.symphony.toolkit.stream.cluster.voting.BullyDecider;
 import org.finos.symphony.toolkit.stream.cluster.voting.Decider;
 import org.finos.symphony.toolkit.stream.cluster.voting.MajorityDecider;
-import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
-import org.finos.symphony.toolkit.stream.log.LogMessageHandler;
+import org.finos.symphony.toolkit.stream.log.LocalConsoleOnlyLog;
 import org.finos.symphony.toolkit.stream.log.SharedLog;
-import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.View;
-import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
-import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.api.agent.DatafeedApi;
-import com.symphony.api.agent.MessagesApi;
-
-@ConditionalOnBean(value = StreamEventConsumer.class)
 @Configuration
-@AutoConfigureAfter({SymphonyApiConfig.class})
+@AutoConfigureAfter({SymphonyApiConfig.class, SingleBotConfig.class})
 @EnableConfigurationProperties(SymphonyStreamProperties.class)
 @EnableScheduling
 public class SharedStreamConfig {
@@ -57,73 +39,55 @@ public class SharedStreamConfig {
 	public static final String STREAM_EXCEPTIONS_BEAN = "SymphonyStreamExceptionsBean";
 
 	@Autowired
-	MessagesApi messagesApi;
-	
-	@Autowired
-	DatafeedApi datafeedApi;
-	
-	@Autowired
 	SymphonyStreamProperties streamProperties;
 	
-	@Autowired
-	StreamEventConsumer userDefinedCallback;
-	
-	@Autowired
-	TaskScheduler taskScheduler;
-	
-	@Autowired
-	HealthEndpoint health;
-	
-	@Autowired
-	ObjectMapper objectMapper;
-	
-	@Value("${server.port:8080}")
-	private String serverPort;
-	
+	/**
+	 * Used if the http multicaster can't be instantiated.
+	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public SharedLog symphonySharedLog() {
-		if (StringUtils.isEmpty(streamProperties.getCoordinationStreamId())) {
-			throw new IllegalArgumentException("Shared Log needs a stream ID to write to.  PLease set symphony.stream.coordination-stream-id");
-		}
-		
-		return new SymphonyRoomSharedLog(
-				streamProperties.getCoordinationStreamId(), 
-				messagesApi, 
-				streamProperties.getEnvironmentIdentifier(),
-				streamProperties.getParticipantWriteIntervalMillis());
+	@Lazy
+	public Multicaster fallbackMulticaster() {
+		return new NullMulticaster();
 	}
 	
+	/**
+	 * Used if the http participant can't be instantiated.
+	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public Participant selfParticipant() {
-		String endpointPath = streamProperties.getEndpointPath();
-		endpointPath = endpointPath.startsWith("/") ? endpointPath : "/" + endpointPath;
-		String hostAndPort = StringUtils.isEmpty(streamProperties.getEndpointHostAndPort()) ? hostNameAndPort() : streamProperties.getEndpointHostAndPort();
-		String scheme = streamProperties.getEndpointScheme().toString().toLowerCase();
-		String url = scheme+"://" + hostAndPort + endpointPath;
-		LOG.info("Cluster starting up. This participant id: "+url);
+	@Lazy
+	public Participant fallbackParticipant() {
+		String url = "dummy";
+		LOG.info("Cluster starting up with dummy participant (no spring-web detected) {} ",url);
 		return new Participant(url);	
-
+	}
+	
+	public static interface ExceptionConsumer extends Consumer<Exception> {};
+	
+	/**
+	 * Used unless overridden by the client.
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public ExceptionConsumer fallbackExceptionConsumer() {
+		return e -> LOG.error("Symphony Stream Exception occurred: ", e);
 	}
 
-	protected String hostNameAndPort() {
-		try {
-			return InetAddress.getLocalHost().getHostAddress() + ":" + serverPort;
-		} catch (UnknownHostException e) {
-			throw new UnsupportedOperationException("Couldn't determine local host address", e);
-		}
+	/**
+	 * This is used if there is no coordination stream id defined. 
+	 */
+	@Bean
+	@ConditionalOnMissingBean	
+	@Lazy
+	public SharedLog fallbackLocalLog() {
+		return new LocalConsoleOnlyLog();
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public Multicaster multicaster() {
-		return new HttpMulticaster(selfParticipant());
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public ParticipationNotifier participationNotifier(SharedLog sl, Participant self) {
+	@Lazy
+	public ParticipationNotifier participationNotifier(SharedLog sl, Participant self, TaskScheduler taskScheduler) {
 		return new ParticipationNotifier(sl, 
 				self,
 				taskScheduler, 
@@ -132,6 +96,7 @@ public class SharedStreamConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
+	@Lazy
 	public Decider decider(Participant self, Multicaster mc) {
 		switch (streamProperties.getAlgorithm()) { 
 		case BULLY: 	
@@ -143,62 +108,18 @@ public class SharedStreamConfig {
 		} 
 	}
 	
-	public static class SymphonyStreamUrlMapping extends SimpleUrlHandlerMapping {}
 
-	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyStreamUrlMapping symphonyStreamUrlMapping(HttpClusterMessageController clusterMessageController) {
-		SymphonyStreamUrlMapping out = new SymphonyStreamUrlMapping();
-		Map<String, Object> sm = Collections.singletonMap(streamProperties.getEndpointPath(), clusterMessageController);
-		out.setUrlMap(sm);
-		return out;
-	}
-	
-	private View symphonyJsonOutputView() {
-		MappingJackson2JsonView out = new MappingJackson2JsonView(objectMapper);
-		out.setPrettyPrint(true);
-		out.setExtractValueFromSingleKeyModel(true);
-		return out;
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public HttpClusterMessageController httpClusterMessageController(ClusterMember cm) {
-		return new HttpClusterMessageController(symphonyJsonOutputView(), cm, objectMapper);
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public ClusterMember clusterMember(Decider d,  Multicaster mc, Participant self, SharedLog sl) {
+	public ClusterMember clusterMember(Decider d,  Multicaster mc, Participant self, SharedLog sl, HealthEndpoint health) {
 		Random r = new Random();
 		long timeoutMs = streamProperties.getTimeoutMs();
 		long randComp = Math.abs(r.nextLong() % (timeoutMs / 4));
 		long totalTimeout = timeoutMs + randComp;
-		LOG.info("Cluster starting up. Timeout is: "+totalTimeout);
+		LOG.info("Cluster starting up. Timeout is: {} ", totalTimeout);
 		ClusterMember out = new SymphonyRaftClusterMember(self, totalTimeout, d, mc, sl, () -> health.health().getStatus() == Status.UP);
 		out.startup();
 		return out;
 	}
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public SymphonyLeaderEventFilter symphonyLeaderEventFilter(Multicaster mc, Participant self, LogMessageHandler lmh) {
-		return new SymphonyLeaderEventFilter(userDefinedCallback, false, self, 
-			lmh, lm -> mc.accept(lm.getParticipant()));
-	}
-	
-	public static interface ExceptionConsumer extends Consumer<Exception> {};
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public ExceptionConsumer streamExceptions() {
-		return e -> LOG.error("Symphony Stream Exception occurred: ", e);
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public SymphonyStreamHandler symphonyStreamHandler(ExceptionConsumer exceptionHandler, SymphonyLeaderEventFilter eventFilter) {
-		return new SymphonyStreamHandler(datafeedApi, eventFilter, exceptionHandler, streamProperties.isStartImmediately());
-	}
 }
