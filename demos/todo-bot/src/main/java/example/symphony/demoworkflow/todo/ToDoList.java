@@ -13,14 +13,14 @@ import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
-import com.github.deutschebank.symphony.workflow.content.Author;
-import com.github.deutschebank.symphony.workflow.content.Content;
-import com.github.deutschebank.symphony.workflow.content.Message;
-import com.github.deutschebank.symphony.workflow.content.Paragraph;
-import com.github.deutschebank.symphony.workflow.content.User;
-import com.github.deutschebank.symphony.workflow.content.Word;
-import com.github.deutschebank.symphony.workflow.java.Exposed;
-import com.github.deutschebank.symphony.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.content.Author;
+import org.finos.symphony.toolkit.workflow.content.Content;
+import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.Paragraph;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.finos.symphony.toolkit.workflow.java.Work;
 
 import example.symphony.demoworkflow.todo.ToDoItem.Status;
 

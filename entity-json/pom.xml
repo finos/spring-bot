@@ -3,14 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>symphony-java-client-entity-json</artifactId>
+	<artifactId>entity-json</artifactId>
 	<packaging>jar</packaging>
-	<name>Symphony Java Client Entity Json</name>
+	<name>Symphony Entity Json</name>
 
 	<parent>
-		<groupId>com.github.deutschebank.symphony</groupId>
+		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>4.59.7-SNAPSHOT</version>
+		<version>5.59.2-SNAPSHOT</version>
 	</parent>
 
 	<properties>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

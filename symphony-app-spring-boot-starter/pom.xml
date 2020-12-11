@@ -7,9 +7,9 @@
 	<name>Spring Boot Starter For Symphony Apps</name>
 
 	<parent>
-		<groupId>com.github.deutschebank.symphony</groupId>
+		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>4.59.7-SNAPSHOT</version>
+		<version>5.59.2-SNAPSHOT</version>
 	</parent>
 
 	<dependencies>
@@ -34,16 +34,16 @@
 			<version>${spring-boot.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.deutschebank.symphony</groupId>
+			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>4.59.7-SNAPSHOT</version>
+			<version>5.59.2-SNAPSHOT</version>
 		</dependency>
 
 		<!-- used for certificate generation -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcpkix-jdk15on</artifactId>
-			<version>1.62</version>
+			<version>1.64</version>
 		</dependency>
 
 		<!-- for testing -->

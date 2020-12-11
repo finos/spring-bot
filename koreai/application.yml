@@ -1,0 +1,73 @@
+# this is an example file to set up Kore AI 
+
+symphony: 
+  stream:
+    # if using clustering, a room containing the bot where the bot instances can
+    # coordinate and decide a leader.  Any room in your pod containing the first-defined KoreAI bot will do.
+    coordination-stream-id: teTciUUD97QutXGmPP3///o5FJNtKdA==
+  trust-store:
+    location: classpath:/example-trust.crt
+    type: PEMS
+  apis:
+    # add in the details for your pod instead
+  - id: develop
+    pod:
+      url: https://develop.symphony.com/pod
+#     proxy:
+#       host: <your proxy host>
+#       user: <optional>
+#       password: <optional>
+#       port: <default 8080>
+    sessionauth:
+      url: https://develop.symphony.com/sessionauth
+#     proxy:  as above
+    keyauth:
+      url: https://develop.symphony.com/keyauth
+#     proxy:  as above
+    agent: 
+      url: https://develop.symphony.com/agent
+#     proxy:  as above
+    login: 
+      url: https://develop.symphony.com/login
+    relay:
+      url: https://develop.symphony.com/relay
+  koreai: 
+    instances:
+      # one entry for each KoreAI Bot/Symphony Bot mapping
+    
+      - symphonyBot:
+          email: bot-email-address@example.com
+          privateKey: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MII...
+            # your Symphony bot private key here.
+            ..hsadf8w3
+            -----END RSA PRIVATE KEY-----
+          certificates: 
+            - |
+              -----BEGIN CERTIFICATE-----
+              MIIT...
+              # your cert here, if needed
+              ...9J8vQ8u8pQ==
+              -----END CERTIFICATE-----
+        # this is where we set up the connection to Kore.AI.
+        url: https:/kore-ai-bot-host.com/chatbot/hooks/webhook-endpoint
+        
+        # JWT token for the bot.  See https://developer.kore.ai/docs/bots/api-guide/apis/ for details how 
+        # to generate one of these
+        jwt: your.JWTtoken.here
+        
+        # set only addressed to true if the bot is to be used in busy rooms, where you don't want 
+        # the bot to respond to every message in the room.  If true, will only respond to text starting with
+        # a slash, e.g. "/help", or the bot's name "@Kore-AI Bot help"
+        onlyAddressed: true
+        
+        # if true, any empty response from KoreAI isn't sent to the symphony chat.
+        skipEmptyResponses: false
+    
+    # you can provide overrides for the templates in /src/main/resources/koreai/templates/default in 
+    # this directory.  Template files must match the `template-type` field in the Kore AI response, 
+    # and end with '.ftl' (since they are freemarker templates).
+    # You can use https://renderer-tool.app.symphony.com/ to try out new templates.
+    templatePrefix: file:/mytemplatedir
+    
