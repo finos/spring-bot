@@ -75,7 +75,7 @@
                         
                         <span class="tempo-text-color--secondary">Maven Symphony Build Reporter</span>
                         <hr />
-                        <a href="https://github.com/deutschebank/symphony-java-client-parent/tree/master/symphony-maven-build-reporter" />
+                        <a href="https://github.com/finos/symphony-java-toolkit/tree/master/symphony-maven-build-reporter" />
                         
                     </div>
                 </div>
