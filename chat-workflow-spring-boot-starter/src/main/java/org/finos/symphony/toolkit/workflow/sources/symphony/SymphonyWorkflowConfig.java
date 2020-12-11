@@ -60,7 +60,7 @@ import com.symphony.api.pod.UsersApi;
 public class SymphonyWorkflowConfig {
 	
 	@Autowired
-	@Qualifier(SymphonyApiConfig.BOT_IDENTITY)
+	@Qualifier(SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
 	SymphonyIdentity botIdentity;
 	
 	@Autowired

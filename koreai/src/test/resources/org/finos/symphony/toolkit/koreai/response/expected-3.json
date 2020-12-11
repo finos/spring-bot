@@ -1,0 +1,36 @@
+{
+	"type": "org.finos.symphony.toolkit.koreai.response.koreAIResponse",
+	"version": "1.0",
+	"original": {
+		"text": "{\"type\":\"template\",\"payload\":{\"template_type\":\"button\",\"text\":\"Hi.  You can ask me questions such as the following\\n\\n* how do I create groups\\n\\n* how do I develop playbooks\\n\\n* how do i promote playbooks\\n\\nJust remember to use the '*yoda*' trigger word - or click on one of the following topics to get you started...\",\"buttons\":[{\"type\":\"postback\",\"title\":\"Playbooks\",\"payload\":\"playbooks\"},{\"type\":\"postback\",\"title\":\"SSH Keys\",\"payload\":\"ssh\"},{\"type\":\"postback\",\"title\":\"Support\",\"payload\":\"support\"}]}}",
+		"endOfTask": true,
+		"endReason": "Cancelled_Interruption_Initiated",
+		"completedTaskId": "dg-a51792e8-d346-5203-ac65-8597feb63f30",
+		"completedTaskName": "manage dbrundev"
+	},
+	"processed": [
+		{
+			"template_type": "button",
+			"text": "Hi.  You can ask me questions such as the following\n\n* how do I create groups\n\n* how do I develop playbooks\n\n* how do i promote playbooks\n\nJust remember to use the '*yoda*' trigger word - or click on one of the following topics to get you started...",
+			"buttons": [
+				{
+					"type": "postback",
+					"title": "Playbooks",
+					"payload": "playbooks"
+				},
+				{
+					"type": "postback",
+					"title": "SSH Keys",
+					"payload": "ssh"
+				},
+				{
+					"type": "postback",
+					"title": "Support",
+					"payload": "support"
+				}
+			],
+			"optionsML": [],
+			"messageML": "<p>Hi.  You can ask me questions such as the following</p>\n<ul>\n<li>\n<p>how do I create groups</p>\n</li>\n<li>\n<p>how do I develop playbooks</p>\n</li>\n<li>\n<p>how do i promote playbooks</p>\n</li>\n</ul>\n<p>Just remember to use the '<em>yoda</em>' trigger word - or click on one of the following topics to get you started...</p>\n"
+		}
+	]
+}

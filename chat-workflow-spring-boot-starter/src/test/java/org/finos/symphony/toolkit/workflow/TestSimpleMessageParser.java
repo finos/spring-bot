@@ -49,6 +49,16 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 	}
 	
 	@Test
+	public void testHelpMessage() throws Exception {
+		Assert.assertEquals(
+			Message.of(
+					Arrays.stream(new String[] {"help"})
+						.map(s -> Word.of(s))
+						.collect(Collectors.toList())
+						), smp.parseMessage("<messageML>Help</messageML>", null));
+	}
+	
+	@Test
 	public void testTaggedMessage() throws Exception {
 		EntityJson ej = entityJsonConverter.readValue("{\"0\":{\"id\":[{\"type\":\"com.symphony.user.userId\",\"value\":\"347583113331315\"}],\"type\":\"com.symphony.user.mention\"},\"1\":{\"id\":[{\"type\":\"com.symphony.user.userId\",\"value\":\"345315370604167\"}],\"type\":\"com.symphony.user.mention\"},\"2\":{\"id\":[{\"type\":\"com.symphony.user.userId\",\"value\":\"345315370598706\"}],\"type\":\"com.symphony.user.mention\"}}");
 		Assert.assertEquals(

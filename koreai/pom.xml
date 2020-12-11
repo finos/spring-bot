@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>koreai</artifactId>
+	<groupId>org.finos.symphony.toolkit</groupId>
+	<version>5.59.1-SNAPSHOT</version>
+	<name>Koreai Support</name>
+	<description>Build Workflows Using Enterprise Chat</description>
+	<packaging>jar</packaging>
+
+	<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.3.4.RELEASE</version>
+    <relativePath /> <!-- lookup parent from repository -->
+  </parent>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+    <spring-boot.run.main-class>org.finos.symphony.toolkit.KoreAIBot</spring-boot.run.main-class>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>symphony-api-spring-boot-starter</artifactId>
+			<version>5.59.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>entity-json</artifactId>
+			<version>5.59.2-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>shared-stream-spring-boot-starter</artifactId>
+			<version>5.59.2-SNAPSHOT</version>
+		</dependency>
+		
+		<!-- allows shared stream coordination -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+		
+		<!-- converting markdown to messageML -->
+    <dependency>
+      <groupId>com.atlassian.commonmark</groupId>
+      <artifactId>commonmark</artifactId>
+      <version>0.15.2</version>
+    </dependency>
+
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
+		</dependency>
+		
+		<!--  this is needed to deserialize the KoteAIResponse -->
+		<dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+    </dependency>
+    
+    <!-- mocking KoreAI -->
+    <dependency>
+      <groupId>com.github.tomakehurst</groupId>
+      <artifactId>wiremock-jre8</artifactId>
+      <version>2.25.1</version>
+      <scope>test</scope>
+    </dependency>
+    
+    
+    <!-- for testing -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <version>${spring-boot.version}</version>
+    </dependency>
+    
+    <!-- testing freemarker templates -->
+    <dependency>
+      <groupId>org.freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>2.3.30</version>
+      <scope>test</scope>
+    </dependency>
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.glassfish.jersey</groupId>
+				<artifactId>jersey-bom</artifactId>
+				<version>2.27</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+</project>

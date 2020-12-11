@@ -30,4 +30,6 @@ public interface ApiInstance {
 	
 	public <X> X getLoginApi(Class<X> c);
 	
+	public SymphonyIdentity getIdentity();
+	
 }

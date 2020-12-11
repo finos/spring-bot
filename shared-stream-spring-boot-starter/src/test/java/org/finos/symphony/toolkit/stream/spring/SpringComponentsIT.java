@@ -39,7 +39,12 @@ import com.symphony.api.model.V4Message;
 			"server.port=15743",
 			"symphony.stream.coordination-stream-id=y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA=="}, 
 	webEnvironment = WebEnvironment.DEFINED_PORT, 
-	classes={TestApplication.class, SharedStreamConfig.class, NoddyCallback.class, WebMvcAutoConfiguration.EnableWebMvcConfiguration.class, HealthEndpointAutoConfiguration.class})
+	classes={TestApplication.class, 
+			SingleBotConfig.class,
+			SharedStreamConfig.class, 
+			NoddyCallback.class, 
+			WebMvcAutoConfiguration.EnableWebMvcConfiguration.class, 
+			HealthEndpointAutoConfiguration.class})
 @ActiveProfiles("develop")
 public class SpringComponentsIT {
 	

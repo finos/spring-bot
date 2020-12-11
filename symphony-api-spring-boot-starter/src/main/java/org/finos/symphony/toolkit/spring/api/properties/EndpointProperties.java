@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.spring.api.properties;
 
-import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
