@@ -9,9 +9,9 @@
     <name>Jackson QuickFix Module</name>
     
     <parent>
-        <groupId>com.github.deutschebank.symphony</groupId>
+        <groupId>org.finos.symphony.toolkit</groupId>
         <artifactId>symphony-java-toolkit</artifactId>
-        <version>4.59.7-SNAPSHOT</version>
+        <version>5.59.2-SNAPSHOT</version>
     </parent>
 	
 	<dependencies>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.11</version>
+			<version>4.13.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

@@ -3,11 +3,10 @@
  */
 package example.symphony.demoworkflow;
 
+import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.github.deutschebank.symphony.workflow.Workflow;
-import com.github.deutschebank.symphony.workflow.java.workflow.ClassBasedWorkflow;
 
 import example.symphony.demoworkflow.todo.NewItemDetails;
 import example.symphony.demoworkflow.todo.ToDoItem;

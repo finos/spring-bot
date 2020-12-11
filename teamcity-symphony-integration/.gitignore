@@ -1,0 +1,21 @@
+target
+teamcity-symphony-integration-server/target
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# IntelliJ #
+.idea
+*.iml
+*.ipr
+*.iws
+
+# Emacs #
+*~
+
+# Gradle #
+.gradle
+teamcity-symphony-integration-server/build

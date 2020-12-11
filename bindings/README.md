@@ -1,15 +1,15 @@
-[![Maven Central](https://img.shields.io/maven-central/v/com.github.deutschebank.symphony/symphony-java-toolkit)](https://search.maven.org/search?q=com.github.deutschebank.symphony)[![Javadocs](https://img.shields.io/badge/Javadocs-symphony--java--client--bindings-green)](https://javadoc.io/doc/com.github.deutschebank.symphony/symphony-java-client-bindings/latest/index.html)
+[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)[![Javadocs](https://img.shields.io/badge/Javadocs-symphony--java--client--bindings-green)](https://javadoc.io/doc/org.finos.symphony.toolkit/bindings/latest/index.html)
 
 
 ## What This Is
 
 This provides a JAX-RS standard, **Type-Safe** means of interacting with [Symphony](https://symphony.com) pods via REST apis.
 
-`symphony-java-client-bindings` is a set of swagger-generated domain objects and interfaces that provide a Java API for interacting with Symphony's REST endpoints. 
+`bindings` is a set of swagger-generated domain objects and interfaces that provide a Java API for interacting with Symphony's REST endpoints. 
 
 - [Symphony REST Endpoint Documentation](https://rest-api.symphony.com/reference)
 - [Symphony REST Endpoint Swagger Definitions](https://github.com/symphonyoss/symphony-api-spec)
-- [Javadocs](https://javadoc.io/doc/com.github.deutschebank.symphony/symphony-java-client-bindings/latest/index.html)
+- [Javadocs](https://javadoc.io/doc/org.finos.symphony.toolkit/bindings/latest/index.html)
 
 Since these interfaces are mainly generated, there isn't a lot of code checked in here.  
 
@@ -17,8 +17,8 @@ Since these interfaces are mainly generated, there isn't a lot of code checked i
 
 ```
 <dependency>
-	<groupId>com.github.deutschebank.symphony</groupId>
-	<artifactId>symphony-java-client-bindings</artifactId>
+	<groupId>org.finos.symphony.toolkit</groupId>
+	<artifactId>bindings</artifactId>
 	<version>-- see above for version --</version>
 	<scope>compile</scope>
 </dependency>
@@ -55,7 +55,7 @@ ApiBuilder apiBuilder = new CXFApiBuilder(<pod endpoint url>);
 
 The apis themselves are held in four packages, `com.symphony.api.pod`, `com.symphony.api.agent`,  `com.symphony.api.authenticator` and `com.symphony.api.login`.  
 
-[View Javadoc APIs Here](https://javadoc.io/doc/com.github.deutschebank.symphony/symphony-java-client-bindings).
+[View Javadoc APIs Here](https://javadoc.io/doc/org.finos.symphony.toolkit/symphony-java-toolkit).
 
 If you are trying to find the right class given the Symphony endpoint, the search box on this page is very helpful.
 
@@ -248,4 +248,4 @@ This workflow is perhaps more complex than using other Symphony clients, but it 
 
 Let's say you know the Symphony API you want to call.  How should you find the Java interface, and the method on it? Sadly, this is not very clear from the swagger definitions! 
 
-You should be able to check the [Javadocs](https://javadoc.io/doc/com.github.deutschebank.symphony/symphony-java-client-bindings/latest/index.html) to find this out - but be prepared to use the search function a lot. 
+You should be able to check the [Javadocs](https://javadoc.io/doc/org.finos.symphony.toolkit/symphony-java-toolkit/latest/index.html) to find this out - but be prepared to use the search function a lot. 
