@@ -24,7 +24,7 @@
 		<module>symphony-api-spring-boot-starter</module>
 		<module>symphony-app-spring-boot-starter</module>
     <module>entity-json</module>
-		<!--module>koreai</module-->
+		<module>koreai</module>
 		<module>quickfix-json</module>
 		<module>shared-stream-spring-boot-starter</module>
 		<module>chat-workflow-spring-boot-starter</module>
