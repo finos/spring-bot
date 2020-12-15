@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthContributorRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
@@ -147,7 +148,7 @@ public class SymphonyApiConfig {
 	
 	@Bean(name=SINGLE_BOT_INSTANCE_BEAN)
 	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = "privateKey", prefix = SINGLE_BOT_IDENTITY_PROPERTY)
+	@ConditionalOnBean(name = SINGLE_BOT_IDENTITY_BEAN)
 	@Lazy
 	public ApiInstance singleBotApiInstance(ApiInstanceFactory bif, @Qualifier(SINGLE_BOT_IDENTITY_BEAN) SymphonyIdentity id,  @Autowired(required=false) @Qualifier(SYMPHONY_TRUST_MANAGERS_BEAN) TrustManagerFactory trustManagerFactory) throws Exception {
 		PodProperties pp = getMainPodProperties();
