@@ -107,7 +107,7 @@ Allows you to report your TeamCity builds into Symphony chat rooms, using a bot.
 
 The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
 
- - [View the README](shared-stream/README.md)
+ - [View the README](shared-stream-spring-boot-starter/README.md)
  
 ## Chat Workflow
 
@@ -115,17 +115,10 @@ This module provides a one-stop-shop for constructing work-flows in Java.  It is
 
  - [View the README](chat-workflow/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
-<<<<<<< HEAD
- - [To-Do List Tutorial](tutorials/Chat-Workflow.md)
- - [Demo Poll Bot](demos/demo-poll-bot)
- - [Demo To-Do List Bot](demos/demo-todo-bot)
- - [Demo Claim Bot](demos/demo-claim-bot)
+ - [Demo Poll Bot](demos/demo-poll-bot/README.md)
+ - [Demo To-Do List Bot](demos/demo-todo-bot/README.md)
+ - [Demo Claim Bot](demos/demo-claim-bot/README.md)
   
-=======
- - [To-Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-todo-bot)
- - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-claim-bot)
- - [Poll Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-poll-bot)
->>>>>>> master
 
 ## License
 
