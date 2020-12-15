@@ -251,5 +251,5 @@ UP {diskSpace=UP {total=75159826432, free=13292236800, threshold=10485760}, symp
  
 ## Tutorial
 
- - [Read the Bot-Building Tutorial](tutorials/Spring-Boot-Bot.md)
+ - [Read the Bot-Building Tutorial](../tutorials/Spring-Boot-Bot.md)
 
