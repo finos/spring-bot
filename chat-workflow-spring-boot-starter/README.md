@@ -8,7 +8,7 @@ This module provides a one-stop-shop for constructing workflows in Java.  It is 
 
 - Below, we concentrate on building an _Expense Claim_ workflow.
 - In the [Tutorial](../tutorials/Chat-Workflow.md), we show how to build a _To Do List_.
-- In the [Demo](../demos/demo-chat-workflow), we have the code for the above, but also show how to build a bot to conduct _Polls_ in chat rooms.
+- In the [Demo](../demos/demo-chat-workflow/README.md), we have the code for the above, but also show how to build a bot to conduct _Polls_ in chat rooms.
 
 Each use-case is a couple of classes in size, and relies on zero understanding of the Symphony APIs.
 
