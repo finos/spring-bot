@@ -168,7 +168,7 @@ At the moment, the forms are displayed by walking the class structure and inspec
 
 `chat-workflow-spring-boot-starter` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.  
 
-The [Poll Bot](../demos/demo-poll-bot) example uses this a lot.  Have a look at the `Poll` class below:
+The [Poll Bot](../demos/demo-poll-bot/README.md) example uses this a lot.  Have a look at the `Poll` class below:
 
 
 ```
@@ -186,7 +186,7 @@ Here we use the `@Template` annotation to tell `chat-workflow-spring-boot-starte
  
 #### Validation
 
-You can add validation annotations a la [JSR-380](https://confluence.intranet.db.com/display/SYMPHONYP/1.+Creating+A+Bot+Account+For+Symphony) to your properties.  For example:
+You can add validation annotations a la [JSR-380](https://beanvalidation.org/2.0-jsr380/) to your properties.  For example:
 
 ```
 @Work(name = "New Claim Details")
