@@ -1,17 +1,10 @@
-on:
-  schedule:
-  - cron: '0 0 11 * *'
-name: Check markdown links
+name: Check Markdown links
+
+on: push
+
 jobs:
-  linkChecker:
+  markdown-link-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Link Checker
-        uses: peter-evans/link-checker@v1.2.2
-      - name: Create Issue From File
-        uses: peter-evans/create-issue-from-file@v2
-        with:
-          title: Link Checker Report
-          content-filepath: ./link-checker/out.md
-          labels: report, automated issue
+    - uses: actions/checkout@master
+    - uses: gaurav-nelson/github-action-markdown-link-check@v1
