@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.Random;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.app.TestApplication;
+import org.finos.symphony.toolkit.stream.fixture.TestApplication;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
 import org.junit.Assert;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.app;
+package org.finos.symphony.toolkit.stream.fixture;
 
 import java.util.ArrayList;
 import java.util.List;
