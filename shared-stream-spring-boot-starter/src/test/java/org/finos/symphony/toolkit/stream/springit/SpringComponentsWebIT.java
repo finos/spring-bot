@@ -1,20 +1,16 @@
 package org.finos.symphony.toolkit.stream.springit;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.app.NoddyCallback;
-import org.finos.symphony.toolkit.stream.app.TestApplication;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
-import org.finos.symphony.toolkit.stream.spring.SharedStreamSingleBotConfig;
-import org.finos.symphony.toolkit.stream.spring.SharedStreamWebConfig;
+import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
+import org.finos.symphony.toolkit.stream.fixture.TestApplication;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.health.HealthEndpointAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -41,12 +37,7 @@ import com.symphony.api.id.SymphonyIdentity;
 			"server.port=15743",
 			"symphony.stream.coordination-stream-id=y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA=="}, 
 	webEnvironment = WebEnvironment.DEFINED_PORT, 
-	classes={TestApplication.class, 
-			WebMvcAutoConfiguration.EnableWebMvcConfiguration.class, 
-			SharedStreamWebConfig.class,
-			SharedStreamSingleBotConfig.class,
-			NoddyCallback.class, 
-			HealthEndpointAutoConfiguration.class})
+	classes={TestApplication.class})
 @ActiveProfiles("develop")
 public class SpringComponentsWebIT {
 	

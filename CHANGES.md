@@ -77,3 +77,10 @@
 ## 25th November 2020
 
  - Added TeamCity Integration
+
+## 16th December 2020
+ 
+ - KoreAI Mult-Tennant Support
+ - Fixing missing links
+ - Better factoring of Shared Streams
+ - Minor fixes to chat workflow
