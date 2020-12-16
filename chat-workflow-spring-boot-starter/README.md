@@ -292,8 +292,8 @@ There are various other objects you can request as parameters for a method:
 
 |Class                   |Use                         |
 |------------------------|----------------------------|
-|`Workflow`           |The workflow object that the bot is running.  |
-|`History`            |A class which allows you to interrogate the history of the chat room(s) with methods like `getLastFromHistory()`|
+|`Workflow`               |The workflow object that the bot is running.  |
+|`History`                |A class which allows you to interrogate the history of the chat room(s) with methods like `getLastFromHistory()`|
 |`Rooms`               |A class which allows you to get or create new rooms for the bot to work in, with methods like `getAllRooms()` and `ensureRoom()`|
 |Spring Beans            |Any `@autowire`-able bean from Spring can be a parameter|
 |Any Workflow class      |Will add the last instance of the class from the history of the chat

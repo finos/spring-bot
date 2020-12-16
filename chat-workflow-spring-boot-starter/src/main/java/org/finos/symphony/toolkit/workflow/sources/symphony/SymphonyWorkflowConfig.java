@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
-import org.finos.symphony.toolkit.stream.spring.SharedStreamConfig;
+import org.finos.symphony.toolkit.stream.springit.SharedStreamConfig;
 import org.finos.symphony.toolkit.workflow.CommandPerformer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;

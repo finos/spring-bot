@@ -25,7 +25,6 @@ import org.springframework.boot.actuate.health.HealthContributorRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -37,12 +36,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.id.PemSymphonyIdentity;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
-import com.symphony.api.pod.SystemApi;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -85,7 +82,6 @@ public class SymphonyApiConfig {
 	}
 	
 	@Bean(name=SINGLE_BOT_IDENTITY_BEAN)
-	@Lazy
 	@ConditionalOnMissingBean
 	public SymphonyIdentity botIdentity() throws IOException {
 		SymphonyIdentity id = IdentityProperties.instantiateIdentityFromDetails(resourceLoader, identityDetails(), mapper);
