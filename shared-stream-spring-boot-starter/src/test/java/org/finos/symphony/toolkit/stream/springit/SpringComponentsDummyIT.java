@@ -1,33 +1,32 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream.springit;
 
+import org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig;
+import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
+import org.finos.symphony.toolkit.spring.api.builders.JerseyApiBuilderConfig;
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.app.NoddyCallback;
+import org.finos.symphony.toolkit.stream.app.TestApplication;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
-import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
-import org.finos.symphony.toolkit.stream.spring.SharedStreamConfig;
-import org.junit.Assert;
+import org.finos.symphony.toolkit.stream.spring.SharedStreamObjectMapperConfig;
+import org.finos.symphony.toolkit.stream.spring.SharedStreamSingleBotConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.health.HealthEndpointAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.V4Message;
 
 
 /**
- * NOTE: This probably won't work on the local PC due to proxies.  You can override the property to use userproxy if you want.
+ * Tests without spring web.
  * 
  * @author Rob Moffat
  *
@@ -36,17 +35,18 @@ import com.symphony.api.model.V4Message;
 @SpringBootTest(
 	properties = { 
 			"logging.level.org.finos.symphony.toolkit=debug",
-			"server.port=15743",
 			"symphony.stream.coordination-stream-id=y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA=="}, 
-	webEnvironment = WebEnvironment.DEFINED_PORT, 
-	classes={TestApplication.class, 
-			SingleBotConfig.class,
-			SharedStreamConfig.class, 
-			NoddyCallback.class, 
-			WebMvcAutoConfiguration.EnableWebMvcConfiguration.class, 
-			HealthEndpointAutoConfiguration.class})
+	classes={
+			SharedStreamObjectMapperConfig.class,
+			CXFApiBuilderConfig.class,
+			SymphonyApiConfig.class,
+			SymphonyApiAutowireConfig.class,
+ 			SharedStreamSingleBotConfig.class,
+			NoddyCallback.class
+			}
+	)
 @ActiveProfiles("develop")
-public class SpringComponentsIT {
+public class SpringComponentsDummyIT {
 	
 	private String someLocalConversation = "Cscf+rSZRtGaOUrhkelBaH///o6ry5/5dA==";
 
@@ -70,21 +70,10 @@ public class SpringComponentsIT {
 	
 	@Autowired
 	SymphonyLeaderEventFilter eventFilter;
+
 	
 	@Test
-	public void testCallEndpoint() throws Exception {
-		int sc = WebClient.create(self.getDetails())
-			.post()
-			.bodyValue(new SuppressionMessage(self, 102))
-			.accept(MediaType.APPLICATION_JSON)
-			.exchange()
-			.block()
-			.rawStatusCode();
-		Assert.assertEquals(200, sc);
-	}
-	
-	@Test
-	public void testCallbackGetsCalled() throws Exception {
+	public void testDummyCluster() throws Exception {
 		// wait for this cluster to become leader
 		while (cm.getState() != State.LEADER) {
 			Thread.sleep(50);

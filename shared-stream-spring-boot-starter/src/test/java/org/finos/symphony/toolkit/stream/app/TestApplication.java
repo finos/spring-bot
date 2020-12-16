@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
