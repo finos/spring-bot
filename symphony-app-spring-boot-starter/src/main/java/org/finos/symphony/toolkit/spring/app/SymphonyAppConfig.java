@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.net.ssl.TrustManager;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.spring.app.auth.AppAuthController;
@@ -81,7 +82,7 @@ public class SymphonyAppConfig  {
 	@Autowired
 	private ApiBuilderFactory apiBuilderFactory;
 	
-	@Qualifier(SymphonyApiConfig.SYMPHONY_TRUST_MANAGERS_BEAN)
+	@Qualifier(SymphonyApiTrustManagersConfig.SYMPHONY_TRUST_MANAGERS_BEAN)
 	@Autowired(required=false)
 	private TrustManager[] trustManagers;
 	

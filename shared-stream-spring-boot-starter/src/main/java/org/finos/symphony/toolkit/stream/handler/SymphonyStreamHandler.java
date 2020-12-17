@@ -4,6 +4,8 @@ import java.util.function.Consumer;
 
 import javax.ws.rs.BadRequestException;
 
+import org.finos.symphony.toolkit.spring.api.ApiInstance;
+
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.bindings.Streams;
 import com.symphony.api.bindings.Streams.Worker;
@@ -20,22 +22,27 @@ public class SymphonyStreamHandler {
 	public static final long MIN_BACK_OFF_MS = 2000;   // 2 secs
 	public static final long MAX_BACK_OFF_MS = 600000;	// 10 mins
 	
+	protected final ApiInstance instance;
+	protected final Consumer<V4Event> consumer;
+	protected final DatafeedApi datafeedApi;
+	protected final Consumer<Exception> exceptionHandler;
 
-	protected boolean running = false;
-	protected Consumer<V4Event> consumer;
-	protected DatafeedApi datafeedApi;
-	protected Consumer<Exception> exceptionHandler;
 	protected Thread runThread;
 	protected long currentBackOff = MIN_BACK_OFF_MS;
 	protected Worker<V4Event> worker;
+	protected StreamEventFilter filter = (x) -> true;
+	protected boolean running = false;
 
-	public SymphonyStreamHandler(DatafeedApi api, Consumer<V4Event> eventConsumer, Consumer<Exception> exceptionHandler, boolean start) {
-		this.datafeedApi = api;
+	public SymphonyStreamHandler(ApiInstance api,
+			Consumer<V4Event> eventConsumer, 
+			Consumer<Exception> exceptionHandler, boolean start) {
+		this.datafeedApi = api.getAgentApi(DatafeedApi.class);
 		this.consumer = eventConsumer;
 		this.exceptionHandler = exceptionHandler;
 		if (start) {
 			start();
 		}
+		this.instance = api;
 	}
 
 	/**
@@ -67,8 +74,10 @@ public class SymphonyStreamHandler {
 						});
 				
 				worker.stream().forEach(event -> { 
-					sendToConsumer(event);
-					currentBackOff = MIN_BACK_OFF_MS;
+					if (filter.test(event)) {
+						sendToConsumer(event);
+					}
+					currentBackOff = MIN_BACK_OFF_MS;		
 				});
 			} catch (Exception e) {
 				exceptionHandler.accept(e);
@@ -98,4 +107,18 @@ public class SymphonyStreamHandler {
 		worker.shutdown();
 		runThread.interrupt();
 	}
+
+	public StreamEventFilter getFilter() {
+		return filter;
+	}
+
+	public void setFilter(StreamEventFilter filter) {
+		this.filter = filter;
+	}
+	
+	public ApiInstance getInstance() {
+		return instance;
+	}
+
+
 }

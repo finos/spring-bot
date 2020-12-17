@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
+import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.log.LogMessageHandler;
 import org.finos.symphony.toolkit.stream.log.LogMessageType;
@@ -22,24 +23,22 @@ import com.symphony.api.model.V4MessageSent;
  * @author robmoffat
  *
  */
-public class SymphonyLeaderEventFilter implements StreamEventConsumer {
+public class SymphonyLeaderEventFilter implements StreamEventFilter {
 	
-	protected final StreamEventConsumer next;
 	protected boolean active;
 	protected final Participant self;
 	protected final LogMessageHandler messageHandler;
 	protected final Consumer<LogMessage> controlEventConsumer;
 
-	public SymphonyLeaderEventFilter(StreamEventConsumer next, boolean startAsLeader, Participant self, LogMessageHandler messageHandler, Consumer<LogMessage> consumer) {
-		this.next = next;
+	public SymphonyLeaderEventFilter(boolean startAsLeader, Participant self, LogMessageHandler messageHandler, Consumer<LogMessage> consumer) {
 		this.active = startAsLeader;
 		this.messageHandler = messageHandler;
 		this.self = self;
 		this.controlEventConsumer = consumer;
 	}
-
+	
 	@Override
-	public void accept(V4Event t) {
+	public boolean test(V4Event t) {
 		if (messageHandler.isLeaderMessage(t)) {
 			V4MessageSent ms = t.getPayload().getMessageSent();
 			V4Message m = ms.getMessage();
@@ -51,6 +50,7 @@ public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 				}
 				controlEventConsumer.accept(logMessage);
 			}
+			return false;
 		} else if (messageHandler.isParticipantMessage(t)) {
 			V4MessageSent ms = t.getPayload().getMessageSent();
 			V4Message m = ms.getMessage();
@@ -58,8 +58,9 @@ public class SymphonyLeaderEventFilter implements StreamEventConsumer {
 			if (slm.isPresent()) {
 				controlEventConsumer.accept(slm.get());
 			}
-		} else if (active) {
-			next.accept(t);
+			return false;
+		} else {
+			return isActive();
 		}
 	}
 

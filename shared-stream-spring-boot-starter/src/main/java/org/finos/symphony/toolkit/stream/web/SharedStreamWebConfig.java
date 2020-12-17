@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream.web;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -7,11 +7,14 @@ import java.util.Map;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.SharedStreamProperties;
 import org.finos.symphony.toolkit.stream.cluster.transport.HttpMulticaster;
 import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
+import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.boot.actuate.health.Status;
@@ -41,20 +44,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Configuration
 @AutoConfigureAfter({SymphonyApiConfig.class})
 @AutoConfigureBefore({SharedStreamSingleBotConfig.class})
-@EnableConfigurationProperties(SymphonyStreamProperties.class)
+@EnableConfigurationProperties(SharedStreamProperties.class)
 public class SharedStreamWebConfig {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SharedStreamWebConfig.class);
 	
 	@Autowired
-	SymphonyStreamProperties streamProperties;
+	SharedStreamProperties streamProperties;
 
+	/**
+	 * This will be the regular object mapper defined for REST JSON conversion by 
+	 * spring-web.
+	 */
 	@Autowired
 	ObjectMapper objectMapper;
 	
 	@Value("${server.port:8080}")
 	private String serverPort;
-	
 
 	public static class SymphonyStreamUrlMapping extends SimpleUrlHandlerMapping {}
 	

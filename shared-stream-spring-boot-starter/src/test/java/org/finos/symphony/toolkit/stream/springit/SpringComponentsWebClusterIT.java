@@ -25,6 +25,8 @@ import com.symphony.api.id.SymphonyIdentity;
 
 
 /**
+ * Tests with a coordination-stream-id defined, which should mean starting the cluster.
+ * 
  * NOTE: This probably won't work on the local PC due to proxies.  You can override the property to use userproxy if you want.
  * 
  * @author Rob Moffat
@@ -39,7 +41,7 @@ import com.symphony.api.id.SymphonyIdentity;
 	webEnvironment = WebEnvironment.DEFINED_PORT, 
 	classes={TestApplication.class})
 @ActiveProfiles("develop")
-public class SpringComponentsWebIT {
+public class SpringComponentsWebClusterIT {
 	
 	private String someLocalConversation = "Cscf+rSZRtGaOUrhkelBaH///o6ry5/5dA==";
 
@@ -63,6 +65,7 @@ public class SpringComponentsWebIT {
 	
 	@Autowired
 	SymphonyLeaderEventFilter eventFilter;
+	
 	
 	@Test
 	public void testCallEndpoint() throws Exception {
@@ -89,7 +92,7 @@ public class SpringComponentsWebIT {
 		}
 		
 		// post an event.
-		api.v4StreamSidMessageCreatePost(null, someLocalConversation, "<messageML>This is a test</messageML>", null, null, null, null, null);
+		api.v4StreamSidMessageCreatePost(null, someLocalConversation, "<messageML>This is a test</messageML>", "{\"some\":\"BS JSON\"}", null, null, null, null);
 
 		// wait for it to arrive
 		while (noddyCallback.getReceived().size() == 0) {

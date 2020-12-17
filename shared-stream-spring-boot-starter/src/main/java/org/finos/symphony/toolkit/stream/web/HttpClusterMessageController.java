@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream.web;
 
 import java.util.HashMap;
 import java.util.Map;

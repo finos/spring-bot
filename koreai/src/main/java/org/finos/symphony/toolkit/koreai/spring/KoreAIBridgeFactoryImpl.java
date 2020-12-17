@@ -10,13 +10,13 @@ import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilderImpl;
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.SharedStreamProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
 import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
+import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.finos.symphony.toolkit.stream.log.LogMessageHandler;
-import org.finos.symphony.toolkit.stream.spring.SymphonyStreamProperties;
-import org.finos.symphony.toolkit.stream.springit.SharedStreamConfig.ExceptionConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ResourceLoader;
@@ -34,14 +34,14 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	private ResourceLoader rl;
 	private ObjectMapper om;
 	private KoreAIProperties koreAIProperties;
-	private SymphonyStreamProperties streamProperties;
+	private SharedStreamProperties streamProperties;
 	private ExceptionConsumer exceptionConsumer;
 	private Multicaster mc;
 	private Participant self;
 	private LogMessageHandler log;
 
 	public KoreAIBridgeFactoryImpl(ResourceLoader rl, ObjectMapper om, KoreAIProperties koreAIProperties,
-			SymphonyStreamProperties streamProperties, ExceptionConsumer exceptionConsumer, Multicaster mc,
+			SharedStreamProperties streamProperties, ExceptionConsumer exceptionConsumer, Multicaster mc,
 			Participant self, LogMessageHandler log) {
 		super();
 		this.rl = rl;

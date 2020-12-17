@@ -31,7 +31,7 @@ Follow instructions [here](https://developer.kore.ai/docs/bots/api-guide/apis/) 
 
 ### Application.yml
 
-You will need to add these details along with all the other bot connection details into your application.yml file.  You can find a sample in [application.yml](application.yml).   
+You will need to add these details along with all the other bot connection details into your application.yml file.  You can find a sample in [application-example.yml](application-example.yml).   
 
 ## Troubleshooting
 

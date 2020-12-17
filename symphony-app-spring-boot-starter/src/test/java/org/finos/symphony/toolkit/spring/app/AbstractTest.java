@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.app.SymphonyAppConfig;
 import org.finos.symphony.toolkit.spring.app.AbstractTest.LocalConfiguration;
 import org.junit.Before;
@@ -27,7 +28,11 @@ import com.symphony.api.id.json.SymphonyIdentityModule;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
-		classes={TestApplication.class, SymphonyAppConfig.class, LocalConfiguration.class, SymphonyApiConfig.class})
+		classes={TestApplication.class, 
+				SymphonyAppConfig.class, 
+				LocalConfiguration.class, 
+				SymphonyApiConfig.class, 
+				SymphonyApiTrustManagersConfig.class})
 @ActiveProfiles("test")
 @AutoConfigureMockMvc(print=MockMvcPrint.LOG_DEBUG)
 @WebAppConfiguration
