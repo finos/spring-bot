@@ -13,5 +13,5 @@ import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 public interface LeaderElectionInjector {
 	
 	public void injectLeaderElectionBehaviour(SymphonyStreamHandler h);
-	
+		
 }

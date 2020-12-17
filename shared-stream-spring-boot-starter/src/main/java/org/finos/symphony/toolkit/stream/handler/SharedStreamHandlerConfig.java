@@ -1,11 +1,15 @@
 package org.finos.symphony.toolkit.stream.handler;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.filter.LeaderElectionInjector;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -28,24 +32,49 @@ public class SharedStreamHandlerConfig {
 	@Autowired
 	ExceptionConsumer ec;
 	
-	private boolean createdCluster = false;
+	private Map<ApiInstance, SymphonyStreamHandler> created = new HashMap<>();
+	
+	public static interface SymphonyStreamHandlerFactory {
+				
+		public SymphonyStreamHandler createBean(ApiInstance symphonyApi, StreamEventConsumer consumer);
+		
+	}
+	
+	/**
+	 * This makes sure we don't "double up" creating multiple stream handlers for the same Symphony API.
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public SymphonyStreamHandlerFactory symphonyStreamHandlerFactory() {
+		return new SymphonyStreamHandlerFactory() {
+			
+			@Override
+			public SymphonyStreamHandler createBean(ApiInstance symphonyApi, StreamEventConsumer consumer) {
+				if (created.containsKey(symphonyApi)) {
+					return created.get(symphonyApi);
+				}
+				
+				SymphonyStreamHandler out = streamHandler(symphonyApi, consumer);
+				created.put(symphonyApi, out);
+				return out;
+			}
+		};
+	}
 	
 	@Bean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	public SymphonyStreamHandler streamHandler(ApiInstance symphonyApi, StreamEventConsumer consumer) {
+	protected SymphonyStreamHandler streamHandler(ApiInstance symphonyApi, StreamEventConsumer consumer) {
 		SymphonyStreamHandler out = new SymphonyStreamHandler(symphonyApi, consumer, ec, false);
 		LOG.info("Created SymphonyStreamHandler for "+symphonyApi.getIdentity().getEmail()+" with consumer "+consumer);
 		
-		if (!createdCluster) {
+		if (created.size() == 0) {
 			// first bot is expected to be the cluster-manager.
 			if (injector != null) {
 				injector.injectLeaderElectionBehaviour(out);
 			}
-			createdCluster = true;
 		}
 		
 		out.start();
 		return out;
 	}
-	
 }
