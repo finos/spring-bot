@@ -12,25 +12,28 @@ import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.ApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
 import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.SharedStreamProperties;
 import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
+import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
-import org.finos.symphony.toolkit.stream.spring.SharedStreamWebConfig;
-import org.finos.symphony.toolkit.stream.spring.SymphonyStreamProperties;
-import org.finos.symphony.toolkit.stream.springit.SharedStreamConfig.ExceptionConsumer;
+import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
+import org.finos.symphony.toolkit.stream.web.SharedStreamWebConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -38,6 +41,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -46,8 +50,10 @@ import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 
 @Configuration
-@AutoConfigureAfter({SymphonyApiConfig.class, SharedStreamWebConfig.class})
-@EnableConfigurationProperties({KoreAIProperties.class, SymphonyStreamProperties.class, SymphonyApiProperties.class})
+@AutoConfigureAfter({SharedStreamWebConfig.class, SymphonyApiTrustManagersConfig.class })
+@AutoConfigureBefore({SymphonyApiConfig.class, SharedStreamSingleBotConfig.class})
+@EnableConfigurationProperties({KoreAIProperties.class, SharedStreamProperties.class, SymphonyApiProperties.class})
+@EnableWebMvc
 public class KoreAIConfig implements InitializingBean {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIConfig.class);
@@ -56,7 +62,7 @@ public class KoreAIConfig implements InitializingBean {
 	KoreAIProperties koreProperties;
 	
 	@Autowired
-	SymphonyStreamProperties streamProperties;
+	SharedStreamProperties streamProperties;
 	
 	@Autowired
 	SymphonyApiProperties apiProperties;
@@ -80,7 +86,7 @@ public class KoreAIConfig implements InitializingBean {
 	Participant participant;
 
 	@Autowired(required = false)
-	@Named(SymphonyApiConfig.SYMPHONY_TRUST_MANAGERS_BEAN)
+	@Named(SymphonyApiTrustManagersConfig.SYMPHONY_TRUST_MANAGERS_BEAN)
 	TrustManagerFactory tmf;
 		
 	@Bean
@@ -98,7 +104,15 @@ public class KoreAIConfig implements InitializingBean {
 				new VersionSpace(ObjectNode.class.getPackage().getName(), "1.0")));
 		return out;
 	}
-		
+	
+	/**
+	 * Used unless overridden by the client.
+	 */
+	@Bean
+	@ConditionalOnMissingBean
+	public ExceptionConsumer fallbackExceptionConsumer() {
+		return e -> LOG.error("Symphony Stream Exception occurred: ", e);
+	}
 	
 	@Bean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
@@ -138,18 +152,7 @@ public class KoreAIConfig implements InitializingBean {
 	/**
 	 * This constructs a SharedLog using just the first bot to decide the cluster leadership
 	 */
-	@Bean
-	@ConditionalOnMissingBean
-	@ConditionalOnProperty(name = "symphony.stream.coordination-stream-id")
-	public SymphonyRoomSharedLog symphonySharedLog() {
-		ApiInstance symphonyInstance = getFirstSymphonyAPIInstance();
-		
-		return new SymphonyRoomSharedLog(
-				streamProperties.getCoordinationStreamId(), 
-				symphonyInstance.getAgentApi(MessagesApi.class), 
-				streamProperties.getEnvironmentIdentifier(),
-				streamProperties.getParticipantWriteIntervalMillis());
-	}
+	
 
 	protected ApiInstance getFirstSymphonyAPIInstance() {
 		if ((koreProperties.getInstances() == null) || (koreProperties.getInstances().isEmpty())) {
@@ -168,7 +171,9 @@ public class KoreAIConfig implements InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		for (KoreAIInstanceProperties instance : koreProperties.getInstances()) {
-				ctx.getBean(SymphonyStreamHandler.class, instance, symphonyAPIInstance(instance));
+			LOG.info("Constructing: "+instance.getName());
+			SymphonyStreamHandler handler = ctx.getBean(SymphonyStreamHandler.class, instance, symphonyAPIInstance(instance));
+			LOG.debug("Constructed "+handler);
 		}
 	}
 	
@@ -190,7 +195,9 @@ public class KoreAIConfig implements InitializingBean {
 	/**
 	 * This provides the first symphony bot, used to manage the cluster
 	 */
-	protected SymphonyIdentity firstBotIdentity() throws IOException {
+	@Bean(name=SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
+	@ConditionalOnMissingBean
+	public SymphonyIdentity botIdentity() throws IOException {
 		ApiInstance api = getFirstSymphonyAPIInstance();
 		
 		if (api != null) {

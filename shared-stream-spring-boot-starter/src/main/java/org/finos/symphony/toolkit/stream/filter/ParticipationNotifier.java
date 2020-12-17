@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream.filter;
 
 import java.util.concurrent.TimeUnit;
 

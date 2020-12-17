@@ -48,25 +48,6 @@ public class TestSymphonyLeaderEventFilter {
 			.map(p -> new SimpleEventConsumer(p))
 			.collect(Collectors.toList());
 		
-		/*MessagesApi messagesAPI = Mockito.mock(MessagesApi.class);
-		
-		Mockito.when(messagesAPI.v4StreamSidMessageCreatePost(
-			Mockito.isNull(), 
-			Mockito.anyString(), 
-			Mockito.anyString(),
-			Mockito.anyString(), 
-			Mockito.isNull(), 
-			Mockito.isNull(),
-			Mockito.isNull(),
-			Mockito.isNull())).then(a -> {
-				
-				System.out.println("Posting");
-				
-			});
-		
-		
-		ListBackedSharedLog lbsl = new ListBackedSharedLog(null);*/
-		
 		List<Participant> participantMessages = new ArrayList<Participant>(); 
 		
 		

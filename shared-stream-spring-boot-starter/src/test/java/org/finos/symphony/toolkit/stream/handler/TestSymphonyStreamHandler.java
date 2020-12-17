@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.ws.rs.BadRequestException;
 
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -116,7 +116,14 @@ public class TestSymphonyStreamHandler {
 			return null; // not used
 		}
 	}
-
+	
+	protected ApiInstance dummyApiInstance() {
+		return new BasicAPIInstance(null, null, null, null, null, null, null) {
+			
+		};
+	}
+	
+	
 	protected void sleep(long l) {
 		try {
 			Thread.sleep(l);

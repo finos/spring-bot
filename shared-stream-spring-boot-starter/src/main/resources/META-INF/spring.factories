@@ -1,5 +1,7 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.finos.symphony.toolkit.stream.spring.SharedStreamObjectMapperConfig, \
-  org.finos.symphony.toolkit.stream.spring.SharedStreamWebConfig, \
-  org.finos.symphony.toolkit.stream.spring.SharedStreamSingleBotConfig
+  org.finos.symphony.toolkit.stream.filter.SharedStreamFilterConfig, \
+  org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig, \
+  org.finos.symphony.toolkit.stream.web.SharedStreamWebConfig, \
+  org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig
+  
