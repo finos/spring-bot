@@ -7,14 +7,13 @@ import java.util.stream.IntStream;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
-import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
+import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.log.LogMessageHandlerImpl;
 import org.finos.symphony.toolkit.stream.log.LogMessageType;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageSent;
@@ -39,6 +38,27 @@ public class TestSymphonyLeaderEventFilter {
 		}
 	}
 	
+	static class FilteringConsumer implements StreamEventConsumer {
+		
+		StreamEventConsumer delegate;
+		StreamEventFilter filter;
+		
+		public FilteringConsumer(StreamEventConsumer delegate, StreamEventFilter filter) {
+			this.delegate = delegate;
+			this.filter = filter;
+		}
+
+		@Override
+		public void accept(V4Event t) {
+			if (filter.test(t)) {
+				delegate.accept(t);
+			}
+		}
+		
+		
+		
+	}
+	
 	LogMessageHandlerImpl lmh = new LogMessageHandlerImpl("abc123", null, "UNIT");
 	
 	@Test
@@ -51,9 +71,9 @@ public class TestSymphonyLeaderEventFilter {
 		List<Participant> participantMessages = new ArrayList<Participant>(); 
 		
 		
-		List<SymphonyLeaderEventFilter> wrapped = consumers.stream()
-			.map(c -> new SymphonyLeaderEventFilter(c, false, c.p, lmh, 
-				m -> participantMessages.add(m.getParticipant())))
+		List<StreamEventConsumer> wrapped = consumers.stream()
+			.map(c -> new FilteringConsumer(c, new SymphonyLeaderEventFilter(false, c.p, lmh, 
+				m -> participantMessages.add(m.getParticipant()))))
 			.collect(Collectors.toList());
 
 
@@ -89,7 +109,7 @@ public class TestSymphonyLeaderEventFilter {
 							.message("some message"))));
 	}
 
-	private void pipeEvent(V4Event lm, List<SymphonyLeaderEventFilter> wrapped) {
+	private void pipeEvent(V4Event lm, List<StreamEventConsumer> wrapped) {
 		wrapped.forEach(w -> w.accept(lm));
 	}
 

@@ -1,12 +1,17 @@
 package org.finos.symphony.toolkit.stream.springit;
 
+import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
+import org.finos.symphony.toolkit.stream.filter.LeaderElectionInjector;
 import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.fixture.TestApplication;
+import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig.SymphonyStreamHandlerFactory;
+import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
@@ -52,6 +58,9 @@ public class SpringComponentsWebClusterIT {
 	MessagesApi api;
 	
 	@Autowired
+	ApiInstance apiInstance; 
+	
+	@Autowired
 	SymphonyIdentity id;
 	
 	@Autowired
@@ -64,8 +73,7 @@ public class SpringComponentsWebClusterIT {
 	ClusterMember cm;
 	
 	@Autowired
-	SymphonyLeaderEventFilter eventFilter;
-	
+	SymphonyStreamHandlerFactory handlerFactory;
 	
 	@Test
 	public void testCallEndpoint() throws Exception {
@@ -85,9 +93,10 @@ public class SpringComponentsWebClusterIT {
 		while (cm.getState() != State.LEADER) {
 			Thread.sleep(50);
 		}
-
+		
 		// wait for the event to say it's leader.
-		while (!eventFilter.isActive()) {
+		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, noddyCallback).getFilter();
+		while (!lef.isActive()) {
 			Thread.sleep(50);
 		}
 		

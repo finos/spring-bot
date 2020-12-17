@@ -59,24 +59,26 @@ public class SharedStreamFilterConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy
-	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	public LeaderElectionInjector leaderElectionInjector(ApiInstance symphonyApi) {
+	@Scope(value = BeanDefinition.SCOPE_SINGLETON)
+	public LeaderElectionInjector leaderElectionInjector() {
 		return new LeaderElectionInjector() {
-			
-			SymphonyRoomSharedLog sl = symphonySharedLog(symphonyApi);
-
-			SymphonyLeaderEventFilter f = leaderEventFilter(sl);
-			
+						
+				
 			@Override
 			public void injectLeaderElectionBehaviour(SymphonyStreamHandler h) {
-				h.setFilter(h.getFilter().and(f));				
+				ApiInstance symphonyApi = h.getInstance();
+				SymphonyRoomSharedLog sl = symphonySharedLog(symphonyApi);
+
+				SymphonyLeaderEventFilter f = leaderEventFilter(sl);
+				
+				h.setFilter(f);				
 				
 				LOG.info("Creating cluster using "+symphonyApi.getIdentity().getEmail());
 				health = health == null ? () -> true : health;
 				clusterMember(decider(self, mc), mc, self, sl, health);
 				
 				LOG.info("Creating participation notifier");
-				participationNotifier(symphonyApi, self, taskScheduler);
+				participationNotifier(symphonyApi, self, taskScheduler, sl);
 			}
 		};
 	}
@@ -85,7 +87,7 @@ public class SharedStreamFilterConfig {
 	@ConditionalOnMissingBean
 	@Lazy
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	public SymphonyLeaderEventFilter leaderEventFilter(SymphonyRoomSharedLog sl) {
+	protected SymphonyLeaderEventFilter leaderEventFilter(SymphonyRoomSharedLog sl) {
 		SymphonyLeaderEventFilter f = new SymphonyLeaderEventFilter( 
 				streamProperties.getCoordinationStreamId() == null, // if not defined, we are leader
 				self, 
@@ -116,14 +118,16 @@ public class SharedStreamFilterConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	protected ParticipationNotifier participationNotifier(ApiInstance api, Participant self, TaskScheduler taskScheduler) {
+	protected ParticipationNotifier participationNotifier(ApiInstance api, Participant self, TaskScheduler taskScheduler, SymphonyRoomSharedLog sl) {
 		return new ParticipationNotifier(
-				symphonySharedLog(api), 
+				sl, 
 				self,
 				taskScheduler, 
 				streamProperties.getParticipantWriteIntervalMillis());
 	}
 
+	boolean created  = false;
+	
 	@Bean
 	@ConditionalOnMissingBean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
@@ -139,6 +143,11 @@ public class SharedStreamFilterConfig {
 				streamProperties.getParticipantWriteIntervalMillis());
 		
 		LOG.info("Building Shared Log for "+api.getIdentity().getEmail());
+		
+		if (created) {
+			throw new RuntimeException();
+		}
+		created = true;
 		return out;
 	}
 
