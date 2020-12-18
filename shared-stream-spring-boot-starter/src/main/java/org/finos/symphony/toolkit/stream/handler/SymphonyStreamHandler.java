@@ -98,7 +98,7 @@ public class SymphonyStreamHandler {
 		}
 	}
 
-	protected void sendToConsumer(V4Event event) {
+	public void sendToConsumer(V4Event event) {
 		consumer.accept(event);
 	}
 	
