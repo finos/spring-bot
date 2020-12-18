@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.stream.handler;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,6 @@ import org.finos.symphony.toolkit.stream.filter.LeaderElectionInjector;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -25,6 +25,8 @@ import org.springframework.context.annotation.Scope;
 public class SharedStreamHandlerConfig {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SharedStreamSingleBotConfig.class);
+	public static final String SYMPHONY_STREAM_HANDLER_FACTORY_BEAN = "SymphonyStreamHandlerFactoryBean";
+	
 	
 	@Autowired(required = false)
 	LeaderElectionInjector injector; 
@@ -38,12 +40,14 @@ public class SharedStreamHandlerConfig {
 				
 		public SymphonyStreamHandler createBean(ApiInstance symphonyApi, StreamEventConsumer consumer);
 		
+		public Collection<SymphonyStreamHandler> getAllHandlers();
+		
 	}
 	
 	/**
 	 * This makes sure we don't "double up" creating multiple stream handlers for the same Symphony API.
 	 */
-	@Bean
+	@Bean(name = SYMPHONY_STREAM_HANDLER_FACTORY_BEAN)
 	@ConditionalOnMissingBean
 	public SymphonyStreamHandlerFactory symphonyStreamHandlerFactory() {
 		return new SymphonyStreamHandlerFactory() {
@@ -57,6 +61,10 @@ public class SharedStreamHandlerConfig {
 				SymphonyStreamHandler out = streamHandler(symphonyApi, consumer);
 				created.put(symphonyApi, out);
 				return out;
+			}
+			
+			public Collection<SymphonyStreamHandler> getAllHandlers() {
+				return created.values();
 			}
 		};
 	}
