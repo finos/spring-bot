@@ -14,7 +14,7 @@ It's going to look something like this:
 
 ![Screenshot](chat-workflow/media/image10.png)
 
-If you want to cheat, you can view the code for this [here](../demos/demo-todo-bot).
+If you want to cheat, you can view the code for this [here](../demos/todo-bot/README.md).
 
 Let's go!
 
@@ -214,7 +214,7 @@ Here, we are using Spring's Java config to describe a bean implementing `Workflo
 
 We're nearly ready to run this for the first time, but we need to supply some configuration.  This is done in spring with the `application.yml` file.  We covered this in the [Spring Boot Bot Building Tutorial](Spring-Boot-Bot.md)  
 
-An example is checked into the demo project here: [application.yml](../demos/demo-todo-bot/application.yml)
+An example is checked into the demo project here: [application.yml](../demos/todo-bot/application.yml)
 
 ## 7. Run It
 
@@ -280,7 +280,7 @@ Note this form now has the **add** button at the bottom of it.  And `/help` also
 
 ![Using Add](chat-workflow/media/image13.png)
 
-Now, you might well ask what parameters a workflow method like `add()` can have.  The [README](../chat-workflow/README.md) goes into more detail on this.
+Now, you might well ask what parameters a workflow method like `add()` can have.  The [README](../chat-workflow-spring-boot-starter/README.md) goes into more detail on this.
 
 ## 9. Returning State
 

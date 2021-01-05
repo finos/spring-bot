@@ -113,16 +113,16 @@ The purpose of this module is to provide a drop-in stream consumer for Symphony 
 
 This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
 
- - [View the README](chat-workflow/README.md)
+ - [View the README](chat-workflow-spring-boot-starter/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
- - [Demo Poll Bot](demos/demo-poll-bot/README.md)
- - [Demo To-Do List Bot](demos/demo-todo-bot/README.md)
- - [Demo Claim Bot](demos/demo-claim-bot/README.md)
+ - [Demo Poll Bot](demos/poll-bot/README.md)
+ - [Demo To-Do List Bot](demos/todo-bot/README.md)
+ - [Demo Claim Bot](demos/claim-bot/README.md)
   
 
 ## License
 
-This project is licensed under the [Apache 2.0 License](License).
+This project is licensed under the [Apache 2.0 License](LICENSE).
 
 ## Releasing This Project (For Maintainers)
 

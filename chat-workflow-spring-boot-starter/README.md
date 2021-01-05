@@ -8,7 +8,9 @@ This module provides a one-stop-shop for constructing workflows in Java.  It is 
 
 - Below, we concentrate on building an _Expense Claim_ workflow.
 - In the [Tutorial](../tutorials/Chat-Workflow.md), we show how to build a _To Do List_.
-- In the [Demo](../demos/demo-chat-workflow/README.md), we have the code for the above, but also show how to build a bot to conduct _Polls_ in chat rooms.
+- In the [Demo ToDo Bot](../demos/todo-bot/README.md), we have the code for the above
+- In the [Demo Claim Bot](../demos/claim-bot/README.md), the claims bot, described below.
+- in the [Demo Poll Bot](../demos/poll-bot/README.md), a working poll bot that can be deployed on Symphony.
 
 Each use-case is a couple of classes in size, and relies on zero understanding of the Symphony APIs.
 
@@ -134,11 +136,11 @@ Notes:
 
 As you can see in the example above, we have various different properties defined, which will be rendered on the screen in one of two ways:
 
-![Editable Properties](images/claim1.PNG)
+![Editable Properties](images/claim1.png)
 
 Either as _editable properties_ as above.
 
-![Display Properties](images/claim2.PNG)
+![Display Properties](images/claim2.png)
 
 Or as _display properties_ as above.  If the `@Work(editable=true)` annotation is set, we get an `Edit` button on the display screen.
 
@@ -168,7 +170,7 @@ At the moment, the forms are displayed by walking the class structure and inspec
 
 `chat-workflow-spring-boot-starter` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.  
 
-The [Poll Bot](../demos/demo-poll-bot/README.md) example uses this a lot.  Have a look at the `Poll` class below:
+The [Poll Bot](../demos/poll-bot/README.md) example uses this a lot.  Have a look at the `Poll` class below:
 
 
 ```
@@ -201,7 +203,7 @@ public class StartClaim {
 
 If the user enters an incorrect value, they will get an error, like so:
 
-![Start Claim Fail](images/start-claim-fail.PNG)
+![Start Claim Fail](images/start-claim-fail.png)
 
 This is particularly useful for things like email addresses, where you might want to add `@Email` to ensure the user enters a correctly formatted email address. 
  
@@ -228,7 +230,7 @@ These are useful for when there is no context to an operation. e.g. creating a n
 
 Here, we are starting a new expense claim, and the interaction will look like this:
 
-![Start Claim](images/start-claim.PNG)
+![Start Claim](images/start-claim.png)
 
 As you can see, the user types `/open` to call the `open()` method above.  The method takes a parameter of a `StartClaim` object, so the bot displays a form, allowing a `StartClaim` object to be created.
 
@@ -251,7 +253,7 @@ The `Claim` object has a method `approve()` which looks like this:
 
 You can invoke the method by entering `/approve`:
 
-![Invoking Approve](images/approve-claim.PNG)
+![Invoking Approve](images/approve-claim.png)
 
 `this` is given the value of the _last `Claim` object in the chat_.  As you can see, I am able to approve my own expense claim!  We'll address this issue later.  
 
@@ -353,7 +355,7 @@ In the example above, we ensure that the room is the "Claim Approval Room".  Alt
 
 The bot _always_ supports the user typing `/help`, which will reveal the commands relevant to the current room (via inspecting the `@Exposed` annotation.  e.g.
 
-![Help](images/help.PNG)
+![Help](images/help.png)
 
 Depending on the arguments of the command, they may be shows as buttons, or suggestions of what to type.
 
