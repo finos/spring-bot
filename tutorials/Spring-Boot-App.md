@@ -13,7 +13,7 @@ Symphony much like a chat would,
 You can install apps from the **Symphony Market**, which is at the
 bottom of the Left-Hand Navigator in the screenshot.
 
-**NB:** You can cheat on this tutorial by looking at the finished code directly in [demo-app](demos/demo-app/README.md)
+**NB:** You can cheat on this tutorial by looking at the finished code directly in [demo-app](../demos/demo-app/README.md)
 
 ## What Can Apps Do?
 
@@ -42,7 +42,7 @@ This diagram demonstrates how these different components interact:
 
 ![Components of an app](./app/media/image2.png)
 
-The [symphony-app-spring-boot-starter](../../symphony-app-spring-boot-starter/README.md) takes care of providing all this boilerplate for you.
+The [symphony-app-spring-boot-starter](../symphony-app-spring-boot-starter/README.md) takes care of providing all this boilerplate for you.
 
 ## Security
 
@@ -111,7 +111,7 @@ It looks like this for me:
 
 JAX-RS provides the code to call REST endpoints.  You can either add Jersey, or CXF.  
 
-Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../../symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
+Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
 
 #### CXF
 
