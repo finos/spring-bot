@@ -53,7 +53,7 @@ import com.symphony.user.UserId;
 	"symphony.koreai.only-addressed=true",
 	"symphony.stream.startImmediately=false"
 })
-public class TestBot {
+public class BotIT {
 
 	static WireMockServer wireMockRule = new WireMockServer(9999);
 
@@ -125,7 +125,7 @@ public class TestBot {
 	
 	@BeforeClass
 	public static void setupWireMock() throws Exception {
-		String response = StreamUtils.copyToString(TestBot.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
+		String response = StreamUtils.copyToString(BotIT.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
 		wireMockRule
 				.stubFor(post(urlEqualTo("/kore")).withHeader("Authorization", new EqualToPattern("Bearer some-jwt"))
 						// .withRequestBody(new
