@@ -111,7 +111,7 @@ It looks like this for me:
 
 JAX-RS provides the code to call REST endpoints.  You can either add Jersey, or CXF.  
 
-Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
+Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../../symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
 
 #### CXF
 
@@ -265,7 +265,7 @@ We're going to change the application in the following way:
 
 ## 11. Customizing the Bundle
 
-[The App Starter Readme](../symphony-app-spring-boot-starter/README.md) provides
+[The App Starter Readme](../../symphony-app-spring-boot-starter/README.md) provides
 details on how to customize the contents of the bundle file.  
 
 You can set a description for the application, name, permissions, whether it is
