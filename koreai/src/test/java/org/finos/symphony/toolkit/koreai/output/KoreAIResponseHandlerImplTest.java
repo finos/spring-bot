@@ -107,10 +107,10 @@ public class KoreAIResponseHandlerImplTest {
     	Address a = new Address(1l, "alf", "angstrom", "alf@example.com", "abc1234");
     	KoreAIResponse resp = builder.formatResponse(contents("response-form.json"));
         this.output.handle(a, resp);
-        Assert.assertEquals(contents("/templates/default/koreai-message.ftl"), messageMLResponse);
+        Assert.assertEquals(contents("/koreai/templates/default/message.ftl"), messageMLResponse.get(0));
         System.out.println(jsonResponse);
-        Assert.assertEquals(contents("response-form-out.json"), jsonResponse);
-        Assert.assertEquals("abc1234", streamId);
+        Assert.assertEquals(contents("response-form-out.json"), jsonResponse.get(0));
+        Assert.assertEquals("abc1234", streamId.get(0));
     }
     
     @Test
@@ -118,7 +118,7 @@ public class KoreAIResponseHandlerImplTest {
     	Address a = new Address(1l, "alf", "angstrom", "alf@example.com", "m3");
     	KoreAIResponse resp =builder.formatResponse(contents("response-message.json"));
         this.output.handle(a, resp);
-        Assert.assertEquals(contents("/templates/default/koreai-message.ftl"), messageMLResponse.get(0));
+        Assert.assertEquals(contents("/koreai/templates/default/message.ftl"), messageMLResponse.get(0));
         System.out.println(jsonResponse);
         Assert.assertEquals(contents("response-message-out.json"), jsonResponse.get(0));
         Assert.assertEquals("m3", streamId.get(0));

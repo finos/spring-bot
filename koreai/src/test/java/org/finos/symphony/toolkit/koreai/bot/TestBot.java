@@ -16,12 +16,11 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.koreai.KoreAIBot;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
-import org.junit.Assert;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
@@ -36,7 +35,6 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.google.common.base.Charsets;
-import com.symphony.api.model.User;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4Initiator;
 import com.symphony.api.model.V4Message;
@@ -188,5 +186,10 @@ public class TestBot {
 //			.then((a) -> {
 //				return new User().emailAddress("some.bot@example.com");
 //			});*/
+	}
+	
+	@AfterClass
+	public static void close() {
+		wireMockRule.shutdown();
 	}
 }

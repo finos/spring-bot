@@ -3,12 +3,14 @@ package org.finos.symphony.toolkit.koreai.response;
 import java.io.IOException;
 
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -57,14 +59,19 @@ public class KoreAIResponseBuilderImplTest {
 	}
 
 	public void cannedTest(String input) throws IOException, JsonProcessingException, JsonMappingException {
+		// output
 		String json = load(input);
 		KoreAIResponse response = processor.formatResponse(json);
 		String out = symphonyMapper.writerWithDefaultPrettyPrinter().writeValueAsString(response);
 		System.out.println(out);
-		String expectedStr = load("expected-"+input);
-		KoreAIResponse expected = symphonyMapper.readValue(expectedStr, KoreAIResponse.class);
 		
-		Assert.assertEquals(expected, response);
+		// expected
+		String expectedStr = load("expected-"+input);
+		JsonNode expectedTree = symphonyMapper.readTree(expectedStr);
+		String expected = symphonyMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedTree);
+		System.out.println(expected);
+				
+		Assert.assertEquals(expected, out);
 	}
 
 	public String load(String name) throws IOException {

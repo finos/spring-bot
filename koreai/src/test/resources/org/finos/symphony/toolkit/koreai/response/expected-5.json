@@ -11,7 +11,7 @@
   "processed" : [ {
     "url" : "https://mydb.intranet.db.com/servlet/JiveServlet/previewBody/551156-102-2-1676118/chat-to-iva_1920-1080.mp4",
     "template_type" : "audio",
-    "optionsML" : [ ]
+    "options" : [ ]
   }, {
     "template_type" : "list",
     "elements" : [ {
@@ -53,7 +53,7 @@
       "type" : "postback",
       "payload" : "payload"
     } ],
-    "optionsML" : [ ]
+    "options" : [ ]
   }, {
     "text" : "Travelling expenses report chart",
     "template_type" : "piechart",
@@ -64,7 +64,7 @@
       "displayValue" : "$ 1,234"
     } ],
     "speech_hint" : "You spent $2855.71 from your account. Here is the breakup.",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>Travelling expenses report chart</p>\n"
   }, {
     "template_type" : "carousel",
@@ -137,7 +137,7 @@
         "payload" : "DEVELOPER_DEFINED_PAYLOAD_1"
       } ]
     } ],
-    "optionsML" : [ ]
+    "options" : [ ]
   }, {
     "template_type" : "quick_replies",
     "text" : "Quick reply label",
@@ -154,12 +154,12 @@
       "title" : "quickReply3",
       "payload" : "payload1"
     } ],
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>Quick reply label</p>\n"
   }, {
     "text" : "test message",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>test message</p>\n"
   }, {
     "template_type" : "mini_table",
@@ -173,48 +173,48 @@
       "primary" : [ [ "Savings Accounts" ], [ "200", "right" ] ],
       "additional" : [ [ "SA33001", "75" ], [ "SA67345", "125" ] ]
     } ],
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>Account details</p>\n"
   }, {
     "text" : "Message label",
     "videoUrl" : "http://www.sample-videos.com/video/mp4/240/big_buck_bunny_240p_30mb.mp4",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>Message label</p>\n"
   }, {
     "text" : "table template regular",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>table template regular</p>\n"
   }, {
     "text" : "attachment template with image",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>attachment template with image</p>\n"
   }, {
     "text" : "linechart",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>linechart</p>\n"
   }, {
     "text" : "button",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>button</p>\n"
   }, {
     "text" : "attachment with audio",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>attachment with audio</p>\n"
   }, {
     "text" : "bar chart",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>bar chart</p>\n"
   }, {
     "text" : "Sample message for Message0003",
     "template_type" : "message",
-    "optionsML" : [ ],
+    "options" : [ ],
     "messageML" : "<p>Sample message for Message0003</p>\n"
   } ]
 }
