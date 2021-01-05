@@ -8,10 +8,16 @@
 		{
 			"text": "Did you mean?\na) Which are the load-balancing algos were supported by fabric env? as per my knowledge its only supports least connections. Is it true?\nb) Fabric?\nc) Fabric Concepts\n",
 			"template_type": "message",
-			"optionsML": [
-				"<p>Which are the load-balancing algos were supported by fabric env? as per my knowledge its only supports least connections. Is it true?</p>\n",
-				"<p>Fabric?</p>\n",
-				"<p>Fabric Concepts</p>\n"
+			"options": [
+				{
+					"text": "Which are the load-balancing algos were supported by fabric env? as per my knowledge its only supports least connections. Is it true?"
+				},
+				{
+					"text": "Fabric?"
+				},
+				{
+					"text": "Fabric Concepts"
+				}
 			],
 			"messageML": "<p>Did you mean?</p>\n"
 		}
