@@ -265,7 +265,7 @@ We're going to change the application in the following way:
 
 ## 11. Customizing the Bundle
 
-[The App Starter Readme](../../symphony-app-spring-boot-starter/README.md) provides
+[The App Starter Readme](../symphony-app-spring-boot-starter/README.md) provides
 details on how to customize the contents of the bundle file.  
 
 You can set a description for the application, name, permissions, whether it is

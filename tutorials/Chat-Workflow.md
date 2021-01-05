@@ -404,7 +404,7 @@ Let's do the `/assign` and `/complete` commands together:
 
 ## Templating
 
-If you don't like the look of the forms presented, you don't have to stick with them!  Take a look a the [README](../../chat-workflow-spring-boot-starter/README.md), which covers how to customize your templates.  In the standard out logging for your bot, you will find sources which you can use as the basis for your templates.  e.g.
+If you don't like the look of the forms presented, you don't have to stick with them!  Take a look a the [README](../chat-workflow-spring-boot-starter/README.md), which covers how to customize your templates.  In the standard out logging for your bot, you will find sources which you can use as the basis for your templates.  e.g.
 
 ```
 2020-10-15 17:26:01.339  INFO 21628 --- [ SymphonyStream] c.g.d.s.w.s.s.h.SymphonyResponseHandler  : JSON: 
