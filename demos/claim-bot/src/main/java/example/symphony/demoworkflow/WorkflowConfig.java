@@ -20,7 +20,7 @@ public class WorkflowConfig {
 
 	@Bean
 	public Workflow appWorkflow() {
-		ClassBasedWorkflow wf = new ClassBasedWorkflow(this.getClass().getPackageName());
+		ClassBasedWorkflow wf = new ClassBasedWorkflow(this.getClass().getPackage().getName());
 		wf.addClass(StartClaim.class);
 		wf.addClass(Claim.class);
 		return wf;
