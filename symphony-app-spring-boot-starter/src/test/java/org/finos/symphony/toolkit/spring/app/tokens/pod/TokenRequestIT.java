@@ -23,7 +23,7 @@ import com.symphony.api.model.ExtensionAppTokens;
 @SpringBootTest()
 @ActiveProfiles({"inttest"})
 @ContextConfiguration
-public class TokenRequestIntegrationTest  {
+public class TokenRequestIT  {
 	
 	@Autowired
 	ConfiguredPodTokenStrategy cpts;
