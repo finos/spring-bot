@@ -80,6 +80,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		TestOb4 to4 = new TestOb4();
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		to4.setC(Choice.C);
+		to4.setA(null);
 		Button submit = new Button("submit", Type.ACTION, "GO");
 		EntityJson empty = new EntityJson();
 		String actual = messageMlConverter.convert(TestOb4.class, to4, ButtonList.of(submit), true, ErrorHelp.createErrorHolder(), empty);
@@ -95,6 +96,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		TestOb4 to4 = new TestOb4();
 		to4.setB(true);
 		to4.setC(Choice.B);
+		to4.setA(null);
 		to4.setSomeUser(new UserDef("2678", "bob", "bob@example.com"));
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		Button submit = new Button("submit", Type.ACTION, "GO");
