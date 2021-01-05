@@ -10,13 +10,6 @@ env:
   BOT2CERTIFICATE: ${{ secrets.BOT2CERTIFICATE }}
 
 on: [push, pull_request]
-    steps:
-    - uses: actions/checkout@master
-    - uses: gaurav-nelson/github-action-markdown-link-check@v1
-      with:
-        use-quiet-mode: yes
-
-
 
 jobs:
   build:
