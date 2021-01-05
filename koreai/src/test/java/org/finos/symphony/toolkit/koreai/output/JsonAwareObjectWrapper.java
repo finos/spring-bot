@@ -239,7 +239,7 @@ class JsonAwareObjectWrapper extends DefaultObjectWrapper {
     }
 
     @Override
-    protected ModelFactory getModelFactory(Class clazz) {
+    protected ModelFactory getModelFactory(Class<?> clazz) {
         if (TextNode.class.isAssignableFrom(clazz)) {
             return JsonTextNodeModel.FACTORY;
         } else if (NumericNode.class.isAssignableFrom(clazz)) {
