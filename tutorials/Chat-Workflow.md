@@ -280,7 +280,7 @@ Note this form now has the **add** button at the bottom of it.  And `/help` also
 
 ![Using Add](chat-workflow/media/image13.png)
 
-Now, you might well ask what parameters a workflow method like `add()` can have.  The [README](../../chat-workflow-spring-boot-starter/README.md) goes into more detail on this.
+Now, you might well ask what parameters a workflow method like `add()` can have.  The [README](../chat-workflow-spring-boot-starter/README.md) goes into more detail on this.
 
 ## 9. Returning State
 
