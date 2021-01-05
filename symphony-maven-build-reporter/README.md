@@ -128,7 +128,7 @@ See example below:
 </profiles>
 ``` 
 
-Having done this, you can refer to this variable within your project's `pom.xml` file like below (this is taken from the [Demo App](/../demos/demo-app/pom.xml).
+Having done this, you can refer to this variable within your project's `pom.xml` file like below (this is taken from the [Demo App](../demos/demo-app/pom.xml).
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>

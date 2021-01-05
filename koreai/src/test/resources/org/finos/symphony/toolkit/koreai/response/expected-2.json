@@ -15,13 +15,13 @@
 		{
 			"text": "sample",
 			"template_type": "message",
-			"optionsML": [],
+			"options": [],
 			"messageML": "<p>sample</p>\n"
 		},
 		{
 			"text": "If there is anything else you need just ask and remember to use the *yoda* trigger word.",
 			"template_type": "message",
-			"optionsML": [],
+			"options": [],
 			"messageML": "<p>If there is anything else you need just ask and remember to use the <em>yoda</em> trigger word.</p>\n"
 		}
 	]

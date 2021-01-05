@@ -1,9 +1,12 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream.fixture;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import com.symphony.api.model.V4Event;
@@ -14,10 +17,13 @@ import com.symphony.api.model.V4Event;
  * @author robmoffat
  */
 @Component
-public class NoddyCallback implements StreamEventConsumer {
+public class NoddyCallback implements StreamEventConsumer, InitializingBean {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(NoddyCallback.class);
+
 
 	private List<V4Event> received = new ArrayList<>();
-	
+		
 	@Override
 	public void accept(V4Event t) {
 		received.add(t);
@@ -26,6 +32,11 @@ public class NoddyCallback implements StreamEventConsumer {
 
 	public List<V4Event> getReceived() {
 		return received;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		LOG.info("Initialized Noddy Callback");
 	}
 
 }

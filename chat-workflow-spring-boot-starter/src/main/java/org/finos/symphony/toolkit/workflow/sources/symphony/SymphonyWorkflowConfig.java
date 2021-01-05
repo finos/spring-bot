@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
-import org.finos.symphony.toolkit.stream.spring.SharedStreamConfig;
+import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.workflow.CommandPerformer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -56,7 +56,7 @@ import com.symphony.api.pod.UsersApi;
  *
  */
 @Configuration
-@AutoConfigureBefore(SharedStreamConfig.class)
+@AutoConfigureBefore(SharedStreamSingleBotConfig.class)
 public class SymphonyWorkflowConfig {
 	
 	@Autowired

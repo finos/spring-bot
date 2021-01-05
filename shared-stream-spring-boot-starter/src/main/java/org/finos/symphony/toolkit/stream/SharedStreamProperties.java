@@ -1,15 +1,16 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("symphony.stream")
-public class SymphonyStreamProperties {
+public class SharedStreamProperties {
 
-	static enum Algorithm { MAJORITY, BULLY };
-	static enum EndpointScheme { HTTP, HTTPS };
+	public static enum Algorithm { MAJORITY, BULLY };
+	public static enum EndpointScheme { HTTP, HTTPS };
 	
 	private EndpointScheme endpointScheme = EndpointScheme.HTTP;
 	private String coordinationStreamId;
+
 	private String environmentIdentifier = "test";
 	private long participantWriteIntervalMillis = 24*60*60*1000;	// one day by default.
 	private Algorithm algorithm = Algorithm.BULLY;
@@ -90,4 +91,5 @@ public class SymphonyStreamProperties {
 	public void setEndpointScheme(EndpointScheme endpointScheme) {
 		this.endpointScheme = endpointScheme;
 	}
+
 }

@@ -1,11 +1,13 @@
 
-# KoreAI Bridge Bot
+# KoreAI Bridge
 
-This is a Symphony bot that acts as a proxy to a KoreAI bot, allowing you to expose your KoreAI bot as a bot on Symphony.  [Kore.AI](https://kore.ai/) is a low code/no code environment for building chat bots.
+This is a Spring Boot App that acts as a middleman between a Symphony bot and a KoreAI bot, allowing you to expose your KoreAI bot as a bot on Symphony.  [Kore.AI](https://kore.ai/) is a low code/no code environment for building chat bots.
 
-// diagram tbc
+![KoreAI Architecture](images/koreai.png)
 
-It is intended that you can deploy this bot as-is, either standalone or clustered (see configuration of [Shared Stream](./shared-stream-spring-boot-starter/README.md)), providing just configuration to get it to talk with Kore AI.
+It is intended that you can deploy this bot as-is, either standalone or clustered (see configuration of [Shared Stream](../shared-stream-spring-boot-starter/README.md)), providing just configuration to get it to talk with Kore AI.
+
+It is possible to include multiple KoreAI bot/symphony bot pairs in the configuration, allowing the bridge to wire up multiple bot-pairs.
 
 ## Template Examples
 
@@ -31,7 +33,7 @@ Follow instructions [here](https://developer.kore.ai/docs/bots/api-guide/apis/) 
 
 ### Application.yml
 
-You will need to add these details along with all the other bot connection details into your application.yml file.  You can find a sample in [application.yml](application.yml).   
+You will need to add these details along with all the other bot connection details into your `application.yml` file.  You can find a sample in [application-example.yml](application-example.yml).   
 
 ## Troubleshooting
 

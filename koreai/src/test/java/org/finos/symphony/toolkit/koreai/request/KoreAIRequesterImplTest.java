@@ -8,6 +8,7 @@ import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandler;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilderImpl;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,7 +31,7 @@ import com.google.common.base.Charsets;
 public class KoreAIRequesterImplTest {
 	
 	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(9999);
+	public WireMockRule wireMockRule = new WireMockRule(9998);
 	
 	public KoreAIRequester requester;
 	
@@ -57,8 +58,13 @@ public class KoreAIRequesterImplTest {
 				.withBody(response)));
 		requester = new KoreAIRequesterImpl(responseHandler, 
 				new KoreAIResponseBuilderImpl(om, JsonNodeFactory.instance),
-				"http://localhost:9999/kore", JsonNodeFactory.instance, "some-jwt");
+				"http://localhost:9998/kore", JsonNodeFactory.instance, "some-jwt");
 		((KoreAIRequesterImpl) requester).afterPropertiesSet();
+	}
+	
+	@After
+	public void closeWiremock() {
+		wireMockRule.shutdown();
 	}
 	
 	@Test

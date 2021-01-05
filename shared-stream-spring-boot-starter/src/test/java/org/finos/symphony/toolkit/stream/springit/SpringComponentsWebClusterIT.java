@@ -1,20 +1,25 @@
-package org.finos.symphony.toolkit.stream.spring;
+package org.finos.symphony.toolkit.stream.springit;
 
+import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
+import org.finos.symphony.toolkit.stream.filter.LeaderElectionInjector;
 import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
-import org.finos.symphony.toolkit.stream.spring.SharedStreamConfig;
+import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
+import org.finos.symphony.toolkit.stream.fixture.TestApplication;
+import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig.SymphonyStreamHandlerFactory;
+import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.autoconfigure.health.HealthEndpointAutoConfiguration;
-import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
@@ -23,10 +28,11 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.V4Message;
 
 
 /**
+ * Tests with a coordination-stream-id defined, which should mean starting the cluster.
+ * 
  * NOTE: This probably won't work on the local PC due to proxies.  You can override the property to use userproxy if you want.
  * 
  * @author Rob Moffat
@@ -39,14 +45,9 @@ import com.symphony.api.model.V4Message;
 			"server.port=15743",
 			"symphony.stream.coordination-stream-id=y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA=="}, 
 	webEnvironment = WebEnvironment.DEFINED_PORT, 
-	classes={TestApplication.class, 
-			SingleBotConfig.class,
-			SharedStreamConfig.class, 
-			NoddyCallback.class, 
-			WebMvcAutoConfiguration.EnableWebMvcConfiguration.class, 
-			HealthEndpointAutoConfiguration.class})
+	classes={TestApplication.class})
 @ActiveProfiles("develop")
-public class SpringComponentsIT {
+public class SpringComponentsWebClusterIT {
 	
 	private String someLocalConversation = "Cscf+rSZRtGaOUrhkelBaH///o6ry5/5dA==";
 
@@ -55,6 +56,9 @@ public class SpringComponentsIT {
 	
 	@Autowired
 	MessagesApi api;
+	
+	@Autowired
+	ApiInstance apiInstance; 
 	
 	@Autowired
 	SymphonyIdentity id;
@@ -69,7 +73,7 @@ public class SpringComponentsIT {
 	ClusterMember cm;
 	
 	@Autowired
-	SymphonyLeaderEventFilter eventFilter;
+	SymphonyStreamHandlerFactory handlerFactory;
 	
 	@Test
 	public void testCallEndpoint() throws Exception {
@@ -89,14 +93,15 @@ public class SpringComponentsIT {
 		while (cm.getState() != State.LEADER) {
 			Thread.sleep(50);
 		}
-
+		
 		// wait for the event to say it's leader.
-		while (!eventFilter.isActive()) {
+		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, noddyCallback).getFilter();
+		while (!lef.isActive()) {
 			Thread.sleep(50);
 		}
 		
 		// post an event.
-		api.v4StreamSidMessageCreatePost(null, someLocalConversation, "<messageML>This is a test</messageML>", null, null, null, null, null);
+		api.v4StreamSidMessageCreatePost(null, someLocalConversation, "<messageML>This is a test</messageML>", "{\"some\":\"BS JSON\"}", null, null, null, null);
 
 		// wait for it to arrive
 		while (noddyCallback.getReceived().size() == 0) {

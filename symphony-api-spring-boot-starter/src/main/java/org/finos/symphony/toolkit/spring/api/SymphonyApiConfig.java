@@ -1,11 +1,6 @@
 package org.finos.symphony.toolkit.spring.api;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.cert.X509Certificate;
-import java.util.Scanner;
 
 import javax.net.ssl.TrustManagerFactory;
 
@@ -13,8 +8,6 @@ import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
 import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
-import org.finos.symphony.toolkit.spring.api.properties.TrustStoreProperties;
-import org.finos.symphony.toolkit.spring.api.properties.TrustStoreProperties.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanInstantiationException;
@@ -25,7 +18,6 @@ import org.springframework.boot.actuate.health.HealthContributorRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -37,12 +29,9 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.bindings.ApiBuilder;
-import com.symphony.api.id.PemSymphonyIdentity;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
-import com.symphony.api.pod.SystemApi;
 
 import io.micrometer.core.instrument.MeterRegistry;
 
@@ -60,8 +49,6 @@ public class SymphonyApiConfig {
 	public static final String SINGLE_BOT_INSTANCE_BEAN = "singleBotInstance";
 
 	public static final String API_INSTANCE_FACTORY = "apiInstanceFactory";
-
-	public static final String SYMPHONY_TRUST_MANAGERS_BEAN = "symphonyTrustManagers";
 
 	@Autowired
 	SymphonyApiProperties symphonyProperties;
@@ -85,7 +72,6 @@ public class SymphonyApiConfig {
 	}
 	
 	@Bean(name=SINGLE_BOT_IDENTITY_BEAN)
-	@Lazy
 	@ConditionalOnMissingBean
 	public SymphonyIdentity botIdentity() throws IOException {
 		SymphonyIdentity id = IdentityProperties.instantiateIdentityFromDetails(resourceLoader, identityDetails(), mapper);
@@ -98,48 +84,6 @@ public class SymphonyApiConfig {
 		}
 	}	
 	
-	@Bean(name=SYMPHONY_TRUST_MANAGERS_BEAN)
-	@ConditionalOnMissingBean(name=SYMPHONY_TRUST_MANAGERS_BEAN)
-	public TrustManagerFactory symphonyTrustManagerFactory() throws Exception {
-		if (symphonyProperties.getTrustStore() != null) {
-			TrustStoreProperties tsp = symphonyProperties.getTrustStore();
-			
-			// input stream of trusted certs
-			InputStream is = tsp.getType() == Type.INLINE_PEMS ? 
-					new ByteArrayInputStream(tsp.getInlinePems().getBytes()) :
-					resourceLoader.getResource(tsp.getLocation()).getInputStream();
-					
-			TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-			KeyStore keystore;
-			
-			if ((tsp.getType() == Type.PEMS) || (tsp.getType() == Type.INLINE_PEMS)) {
-				keystore = KeyStore.getInstance("PKCS12");
-				keystore.load(null, null);
-				Scanner scanner = new Scanner(is);
-				scanner.useDelimiter("-----END CERTIFICATE-----");
-				int id = 0;
-				while (scanner.hasNext()) {
-					String certstring = scanner.next();
-					if (certstring.length()>5) {
-						X509Certificate cert = PemSymphonyIdentity.createCertificate(certstring);
-						keystore.setCertificateEntry("cert-"+(id++), cert);
-					}				
-				}
-				scanner.close();
-			} else {
-				String storeType = tsp.getType().name();
-				keystore = KeyStore.getInstance(storeType);
-				keystore.load(is, tsp.getPassword().toCharArray());
-			}
-
-			tmf.init(keystore);
-			return tmf;
-			
-		} else {
-			return null;
-		}
-	}
-	
 	@Bean(name=API_INSTANCE_FACTORY)
 	@ConditionalOnMissingBean
 	public ApiInstanceFactory apiInstanceFactory(@Autowired ApiBuilderFactory abf, @Autowired(required=false) HealthContributorRegistry hir, @Autowired(required=false) MeterRegistry mr) {
@@ -150,7 +94,10 @@ public class SymphonyApiConfig {
 	@ConditionalOnMissingBean
 	@ConditionalOnBean(name = SINGLE_BOT_IDENTITY_BEAN)
 	@Lazy
-	public ApiInstance singleBotApiInstance(ApiInstanceFactory bif, @Qualifier(SINGLE_BOT_IDENTITY_BEAN) SymphonyIdentity id,  @Autowired(required=false) @Qualifier(SYMPHONY_TRUST_MANAGERS_BEAN) TrustManagerFactory trustManagerFactory) throws Exception {
+	public ApiInstance singleBotApiInstance(ApiInstanceFactory bif, 
+			@Qualifier(SINGLE_BOT_IDENTITY_BEAN) SymphonyIdentity id,  
+			@Autowired(required=false) @Qualifier(SymphonyApiTrustManagersConfig.SYMPHONY_TRUST_MANAGERS_BEAN) TrustManagerFactory trustManagerFactory) 
+				throws Exception {
 		PodProperties pp = getMainPodProperties();
 		return bif.createApiInstance(id, pp, trustManagerFactory == null ? null : trustManagerFactory.getTrustManagers());
 	}

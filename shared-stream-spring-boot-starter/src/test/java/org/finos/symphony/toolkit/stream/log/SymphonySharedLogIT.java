@@ -5,8 +5,8 @@ import java.util.Optional;
 import java.util.Random;
 
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.fixture.TestApplication;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
-import org.finos.symphony.toolkit.stream.spring.TestApplication;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
