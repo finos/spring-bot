@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
+import org.finos.symphony.toolkit.koreai.spring.KoreAIInstanceProperties.Addressed;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,7 @@ public class KoreAIEventHandler implements StreamEventConsumer, InitializingBean
 
 	private SymphonyIdentity botIdentity;
 	private KoreAIRequester requester;
-	private boolean onlyAddressed = true;
+	private Addressed onlyAddressed = Addressed.TRUE;
 	private ObjectMapper symphonyObjectMapper;
 	private Long botUserId;
 
@@ -64,7 +65,7 @@ public class KoreAIEventHandler implements StreamEventConsumer, InitializingBean
 			UsersApi usersApi, 
 			KoreAIRequester requester, 
 			ObjectMapper symphonyObjectMapper, 
-			boolean onlyAddressed) {
+			Addressed onlyAddressed) {
 		this.botIdentity = botIdentity;
 		this.requester = requester;
 		this.symphonyObjectMapper = symphonyObjectMapper;
@@ -121,10 +122,6 @@ public class KoreAIEventHandler implements StreamEventConsumer, InitializingBean
 	}
 
 	private boolean isAddressed(V4Stream s, EntityJson ej, String text) {
-		if (!onlyAddressed) {
-			return true;
-		}
-		
 		TypeEnum streamType = TypeEnum.fromValue(s.getStreamType());
 		
 		switch (streamType) {
@@ -135,27 +132,36 @@ public class KoreAIEventHandler implements StreamEventConsumer, InitializingBean
 		case ROOM:
 		case MIM:
 		default:
-			if (text.trim().startsWith("/")) {
+			switch (onlyAddressed) {
+			case DIRECT:
+				return false;
+			case FALSE:
 				return true;
-			}
+			case TRUE:
+			default:
 			
-			for (Object	o  : ej.values()) {
-				if (o instanceof Mention) {
-					Mention m = (Mention) o;
-					for (TaxonomyElement t : (List<TaxonomyElement>) m.getId()) {
-						if (t instanceof UserId) {
-							if (t.getValue().equals(botUserId.toString())) {
-								return true;
+				if (text.trim().startsWith("/")) {
+					return true;
+				}
+				
+				for (Object	o  : ej.values()) {
+					if (o instanceof Mention) {
+						Mention m = (Mention) o;
+						for (TaxonomyElement t : (List<TaxonomyElement>) m.getId()) {
+							if (t instanceof UserId) {
+								if (t.getValue().equals(botUserId.toString())) {
+									return true;
+								}
 							}
 						}
+						
+						
 					}
-					
-					
 				}
+				
+				
+				return false;
 			}
-			
-			
-			return false;
 		}
 	}
 
