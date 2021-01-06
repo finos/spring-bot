@@ -5,11 +5,12 @@
   <name>Spring Boot Starter For Chat Workflow</name>
   <description>Build Workflows Using Enterprise Chat</description>
 
-  <parent>
+    <parent>
     <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>symphony-java-toolkit</artifactId>
     <version>5.59.2-SNAPSHOT</version>
-  </parent>
+    <relativePath>..</relativePath>
+  </parent> 
   
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
@@ -36,17 +37,14 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>${spring-boot.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
-      <version>${spring-boot.version}</version>
     </dependency>
     <dependency>
       <groupId>javax.validation</groupId>
       <artifactId>validation-api</artifactId>
-      <version>2.0.1.Final</version>
     </dependency>
 
     <!-- allows chat workflow to send attachments -->
@@ -54,7 +52,6 @@
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-multipart</artifactId>
       <scope>provided</scope>
-      <version>2.28</version>
     </dependency>
 
     <!-- for testing -->
@@ -62,12 +59,10 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-      <version>${spring-boot.version}</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
 
