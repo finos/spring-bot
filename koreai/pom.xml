@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>koreai</artifactId>
-	<name>Koreai Support</name>
-	<description>Build Workflows Using Enterprise Chat</description>
+	<name>Koreai Support Bridge</name>
+	<description>Supports Kore AI Bots Communicating On Symphony</description>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -15,8 +15,6 @@
 	</parent>
 
 	<properties>
-		<java.version>1.8</java.version>
-		<spring-boot.version>2.3.4.RELEASE</spring-boot.version>
 		<spring-boot.run.main-class>org.finos.symphony.toolkit.KoreAIBot</spring-boot.run.main-class>
 	</properties>
 
@@ -107,6 +105,7 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <version>${spring-boot.version}</version>
       </plugin>
     </plugins>
   </build>
