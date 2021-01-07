@@ -14,7 +14,7 @@
 	</parent>
 
 	<properties>
-		<spring-boot.run.main-class>org.finos.symphony.toolkit.KoreAIBot</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.symphony.toolkit.koreai.KoreAIBot</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -105,6 +105,16 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>${spring-boot.version}</version>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>repackage</goal>
+                </goals>
+                <configuration>
+                    <mainClass>${spring-boot.run.main-class}</mainClass>
+                </configuration>
+            </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
