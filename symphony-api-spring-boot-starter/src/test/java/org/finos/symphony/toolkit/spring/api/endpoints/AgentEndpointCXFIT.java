@@ -1,7 +1,8 @@
 package org.finos.symphony.toolkit.spring.api.endpoints;
 
+import org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
-import org.finos.symphony.toolkit.spring.api.builders.JerseyApiBuilderConfig;
+import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.agent.SystemApi;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes={SymphonyApiConfig.class, JerseyApiBuilderConfig.class, ObjectMapperConfig.class})
+@SpringBootTest(classes={SymphonyApiConfig.class, SymphonyApiAutowireConfig.class, CXFApiBuilderConfig.class, ObjectMapperConfig.class})
 @ActiveProfiles({"develop", "crt"})
 public class AgentEndpointCXFIT {
 

@@ -12,8 +12,8 @@ import org.finos.symphony.toolkit.spring.api.health.AgentHealthHelper;
 import org.finos.symphony.toolkit.spring.api.properties.EndpointProperties;
 import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 import org.springframework.boot.actuate.health.Health;
+import org.springframework.boot.actuate.health.HealthContributorRegistry;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.HealthIndicatorRegistry;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.bindings.ApiBuilder;
@@ -31,11 +31,11 @@ import io.micrometer.core.instrument.Timer.Sample;
  */
 public class DefaultApiInstanceFactory extends TokenManagingApiInstanceFactory {
 
-	protected HealthIndicatorRegistry registry;
+	protected HealthContributorRegistry registry;
 	protected MeterRegistry mr;
 	protected ObjectMapper om;
 
-	public DefaultApiInstanceFactory(ApiBuilderFactory apiBuilderFactory,  HealthIndicatorRegistry registry, MeterRegistry meter, ObjectMapper om) {
+	public DefaultApiInstanceFactory(ApiBuilderFactory apiBuilderFactory,  HealthContributorRegistry registry, MeterRegistry meter, ObjectMapper om) {
 		super(apiBuilderFactory);
 		this.registry = registry;
 		this.mr = meter;
@@ -117,8 +117,8 @@ public class DefaultApiInstanceFactory extends TokenManagingApiInstanceFactory {
 		
 		if (registry != null) { 
 			String healthIndicatorName = "symphony-api-"+id.getCommonName()+"-"+pp.getId();
-			if (registry.get(healthIndicatorName) == null) {
-				registry.register(healthIndicatorName, out);
+			if (registry.getContributor(healthIndicatorName) == null) {
+				registry.registerContributor(healthIndicatorName, out);
 			}
 		}
 		

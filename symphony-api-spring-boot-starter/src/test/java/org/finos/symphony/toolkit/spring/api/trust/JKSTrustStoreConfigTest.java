@@ -23,7 +23,7 @@ import com.symphony.api.id.PemSymphonyIdentity;
 @RunWith(SpringRunner.class)
 @SpringBootTest(
 		classes={TestApplication.class})
-@ActiveProfiles("jks")
+@ActiveProfiles({"jks", "p12idtest"})
 public class JKSTrustStoreConfigTest {
 
 	@Autowired

@@ -5,12 +5,13 @@ import java.util.List;
 
 import javax.ws.rs.BadRequestException;
 
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.symphony.api.agent.DatafeedApi;
+import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.AckId;
 import com.symphony.api.model.Datafeed;
 import com.symphony.api.model.MessageList;
@@ -116,7 +117,40 @@ public class TestSymphonyStreamHandler {
 			return null; // not used
 		}
 	}
-
+	
+	protected ApiInstance dummyApiInstance(DatafeedApi api) {
+		return new ApiInstance() {
+			
+			@Override
+			public <X> X getSessionAuthApi(Class<X> c) { return null; }
+			
+			@Override
+			public <X> X getRelayApi(Class<X> c) { return null; }
+			
+			@Override
+			public <X> X getPodApi(Class<X> c) { return null; }
+			
+			@Override
+			public <X> X getLoginApi(Class<X> c) { return null; }
+			
+			@Override
+			public <X> X getKeyAuthApi(Class<X> c) { return null; }
+			
+			@Override
+			public SymphonyIdentity getIdentity() { return null; }
+			
+			@Override
+			public <X> X getAgentApi(Class<X> c) { 
+				if (c==DatafeedApi.class) {
+					return (X) api;
+				} else {
+					return null;
+				}
+			}
+		};
+	}
+	
+	
 	protected void sleep(long l) {
 		try {
 			Thread.sleep(l);
@@ -128,7 +162,10 @@ public class TestSymphonyStreamHandler {
 
 	@Test
 	public void testGeneralOperation() throws InterruptedException {
-		SymphonyStreamHandler ssh = new SymphonyStreamHandler(new DummyDatafeedApi(), v -> events.add(v), e -> exceptions.add(e), true);
+		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(
+				new DummyDatafeedApi()), 
+				v -> events.add(v), 
+				e -> exceptions.add(e), true);
 		Thread.sleep(50);
 		Assert.assertEquals(1, events.size());
 		Assert.assertEquals(0, exceptions.size());
@@ -144,7 +181,7 @@ public class TestSymphonyStreamHandler {
 			}
 		};
 		
-		SymphonyStreamHandler ssh = new SymphonyStreamHandler(df, v -> events.add(v), e -> exceptions.add(e), false);
+		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> events.add(v), e -> exceptions.add(e), false);
 		ssh.start();
 		Thread t = ssh.runThread;
 		Assert.assertEquals(true, t.isAlive());
@@ -175,7 +212,7 @@ public class TestSymphonyStreamHandler {
 			}
 		};
 		
-		SymphonyStreamHandler ssh = new SymphonyStreamHandler(df, v -> {
+		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> {
 			if (v.getId().contains("5")) {
 				throw new IllegalArgumentException("Couldn't process: "+v.getId());
 			} else {
@@ -220,7 +257,7 @@ public class TestSymphonyStreamHandler {
 			}
 		};
 		
-		SymphonyStreamHandler ssh = new SymphonyStreamHandler(df, v -> events.add(v), e -> exceptions.add(e), true);
+		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> events.add(v), e -> exceptions.add(e), true);
 		Thread.sleep(4000);
 		ssh.stop();
 		
@@ -248,7 +285,7 @@ public class TestSymphonyStreamHandler {
 			}
 		};
 		
-		SymphonyStreamHandler ssh = new SymphonyStreamHandler(df, v -> events.add(v), e -> exceptions.add(e), true);
+		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> events.add(v), e -> exceptions.add(e), true);
 		ssh.stop();
 	}
 	
@@ -264,7 +301,7 @@ public class TestSymphonyStreamHandler {
 			}
 		};
 		
-		SymphonyStreamHandler ssh = new SymphonyStreamHandler(df, v -> events.add(v), e -> exceptions.add(e), true);
+		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> events.add(v), e -> exceptions.add(e), true);
 		Thread.sleep(10000);
 		ssh.stop();
 		// initial back-off is 2 secs, but we should only see 3 exceptions in the log.

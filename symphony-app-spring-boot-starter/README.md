@@ -23,7 +23,7 @@ Add the starter to your Spring Boot project's `pom.xml`:
 ## Getting Started
 
 0.  Start your Spring Boot application with the `spring-boot-starter-symphony-app` in the classpath.
-1.  Head to [https://localhost/symphony-app/bundle.json](https://localhost/symphony-app/bundle.json).  This page should load.  You might need to specify a port number.  If the certificate comes up untrusted, add it [as described here](https://support.securly.com/hc/en-us/articles/206081828-How-to-manually-install-the-Securly-SSL-certificate-in-Chrome).
+1.  Head to `https://localhost/symphony-app/bundle.json`.  This page should load.  You might need to specify a port number.  If the certificate comes up untrusted, add it [as described here](https://support.securly.com/hc/en-us/articles/206081828-How-to-manually-install-the-Securly-SSL-certificate-in-Chrome).
 2.  Load the Symphony in Chrome, using this URL:  `https://<your pod>.symphony.com/client/index.html?bundle=https://localhost/symphony-app/bundle.json` 
 3.  Symphony should try and load your app when it starts up.  You'll get a dialog box saying "Warning:  Unauthorized Apps(s)".  This means it has begun loading.  Click Continue.
 4.  Next, Symphony will load the `url` listed in the `bundle.json` it has downloaded.  This is the Symphony Controller.  
@@ -211,7 +211,7 @@ You can see this working in the `UserDetailsController`, which returns JSON cont
 
 ## Tutorial
 
- - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
+ - [Read the App-Building Tutorial](../tutorials/Spring-Boot-App.md)
 
 
 

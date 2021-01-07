@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.spring.api;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 
 import com.symphony.api.bindings.ApiBuilder;
+import com.symphony.api.id.SymphonyIdentity;
 
 public abstract class AbstractApiInstanceFactory implements ApiInstanceFactory {
 
@@ -21,10 +22,11 @@ public abstract class AbstractApiInstanceFactory implements ApiInstanceFactory {
 		protected final ApiBuilder loginApiBuilder;
 		protected final ApiBuilder podApiBuilder;
 		protected final ApiBuilder agentApiBuilder;
+		protected final SymphonyIdentity identity;
 		
 		public BasicAPIInstance(ApiBuilder sessionAuthApiBuilder, ApiBuilder keyAuthApiBuilder,
 				ApiBuilder relayApiBuilder, ApiBuilder loginApiBuilder, ApiBuilder podApiBuilder,
-				ApiBuilder agentApiBuilder) {
+				ApiBuilder agentApiBuilder, SymphonyIdentity identity) {
 			super();
 			this.sessionAuthApiBuilder = sessionAuthApiBuilder;
 			this.keyAuthApiBuilder = keyAuthApiBuilder;
@@ -32,6 +34,7 @@ public abstract class AbstractApiInstanceFactory implements ApiInstanceFactory {
 			this.loginApiBuilder = loginApiBuilder;
 			this.podApiBuilder = podApiBuilder;
 			this.agentApiBuilder = agentApiBuilder;
+			this.identity = identity;
 		}
 
 		@Override
@@ -62,6 +65,11 @@ public abstract class AbstractApiInstanceFactory implements ApiInstanceFactory {
 		@Override
 		public <X> X getLoginApi(Class<X> c) {
 			return loginApiBuilder.getApi(c);
+		}
+
+		@Override
+		public SymphonyIdentity getIdentity() {
+			return identity;
 		}
 	}
 	
@@ -96,6 +104,10 @@ public abstract class AbstractApiInstanceFactory implements ApiInstanceFactory {
 
 		public <X> X getLoginApi(Class<X> c) {
 			return delegate.getLoginApi(c);
+		}
+
+		public SymphonyIdentity getIdentity() {
+			return delegate.getIdentity();
 		}
 	}
 
