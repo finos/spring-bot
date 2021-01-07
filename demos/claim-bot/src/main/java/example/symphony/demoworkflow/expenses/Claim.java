@@ -1,11 +1,13 @@
 package example.symphony.demoworkflow.expenses;
 
+import javax.validation.constraints.Min;
+
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
 
-@Work(editable = false, instructions = "Sales Expense Claim Form", name = "Expense Claim")
+@Work(editable = true, instructions = "Sales Expense Claim Form", name = "Expense Claim")
 public class Claim {
 	
 	enum Status { OPEN, APPROVED, PAID };
@@ -14,6 +16,7 @@ public class Claim {
 	
 	Author author = Author.CURRENT_AUTHOR.get();
 	
+	@Min(0)
 	Number amount;
 	
 	User approvedBy;
@@ -37,6 +40,11 @@ public class Claim {
 			this.status = Status.APPROVED;
 		}
 		return this;
+	}
+	
+	@Exposed(description = "New Full Expense Form") 
+	public static Claim full(Claim c) {
+		return c;
 	}
 	
 	

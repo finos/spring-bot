@@ -1,6 +1,8 @@
 # Symphony Java Toolkit Contribution and Governance Policies
 
-This document describes the contribution process and governance policies of the FINOS Symphony Java Toolkit project. The project is also governed by the [Linux Foundation Antitrust Policy](https://www.linuxfoundation.org/antitrust-policy/), and the FINOS [IP Policy](IP-Policy.pdf), [Code of Conduct](Code-of-Conduct.md), [Collaborative Principles](Collaborative-Principles.md), and [Meeting Procedures](Meeting-Procedures.md).
+This document describes the contribution process and governance policies of the FINOS FDC3 project. The project is also 
+governed by the [Linux Foundation Antitrust Policy](https://www.linuxfoundation.org/antitrust-policy/), and the FINOS [IP Policy](https://github.com/finos/community/blob/master/governance/IP-Policy.pdf), [Code of Conduct](https://github.com/finos/community/blob/master/governance/Code-of-Conduct.md), [Collaborative 
+Principles](https://github.com/finos/community/blob/master/governance/Collaborative-Principles.md), and [Meeting Procedures](https://github.com/finos/community/blob/master/governance/Meeting-Procedures.md).
 
 ## Contribution Process
 
@@ -53,3 +55,4 @@ Any Contributor who has made a substantial contribution to the project MAY apply
 ### Changes to this Document
 
 This document MAY be amended by a vote of the Maintainers according to the Maintainer Voting process above.
+

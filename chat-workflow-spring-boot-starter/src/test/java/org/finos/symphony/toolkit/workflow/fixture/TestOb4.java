@@ -17,7 +17,7 @@ public class TestOb4 {
 	
 	boolean b;
 	
-	Author a= Author.CURRENT_AUTHOR.get();
+	Author a = Author.CURRENT_AUTHOR.get();
 	
 	User someUser;
 	

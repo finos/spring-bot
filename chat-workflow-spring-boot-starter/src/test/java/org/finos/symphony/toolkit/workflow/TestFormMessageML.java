@@ -31,7 +31,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestFormMessageML extends AbstractMockSymphonyTest {
 
@@ -60,7 +63,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testFreemarkerView.ml"), actual); 
-		Assert.assertEquals(loadJson("testFreemarkerView.json"), json); 
+		compareJson(loadJson("testFreemarkerView.json"), json); 
 	}
 	
 	
@@ -77,13 +80,14 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		TestOb4 to4 = new TestOb4();
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		to4.setC(Choice.C);
+		to4.setA(null);
 		Button submit = new Button("submit", Type.ACTION, "GO");
 		EntityJson empty = new EntityJson();
 		String actual = messageMlConverter.convert(TestOb4.class, to4, ButtonList.of(submit), true, ErrorHelp.createErrorHolder(), empty);
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testNewWeirdFieldsEdit.ml"), actual); 
-		Assert.assertEquals(loadJson("testNewWeirdFieldsEdit.json"), json); 	}
+		compareJson(loadJson("testNewWeirdFieldsEdit.json"), json); 	}
 	
 	
 	@Test
@@ -92,6 +96,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		TestOb4 to4 = new TestOb4();
 		to4.setB(true);
 		to4.setC(Choice.B);
+		to4.setA(null);
 		to4.setSomeUser(new UserDef("2678", "bob", "bob@example.com"));
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		Button submit = new Button("submit", Type.ACTION, "GO");
@@ -101,7 +106,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testNewWeirdFieldsView.ml"), actual); 
-		Assert.assertEquals(loadJson("testNewWeirdFieldsView.json"), json); 
+		compareJson(loadJson("testNewWeirdFieldsView.json"), json); 
 	}
 	
 	@Test
@@ -117,7 +122,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testAxeFormEditMessageML1.ml"), out); 
-		Assert.assertEquals(loadJson("testAxeFormEditMessageML1.json"), json); 
+		compareJson(loadJson("testAxeFormEditMessageML1.json"), json); 
 
 		// new form
 		empty = new EntityJson();
@@ -126,7 +131,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testAxeFormEditMessageML2.ml"), out); 
-		Assert.assertEquals(loadJson("testAxeFormEditMessageML2.json"), json); 
+		compareJson(loadJson("testAxeFormEditMessageML2.json"), json); 
 
 	}
 
@@ -143,7 +148,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testAxeFormViewMessageML.ml"), out); 
-		Assert.assertEquals(loadJson("testAxeFormViewMessageML.json"), json); 					
+		compareJson(loadJson("testAxeFormViewMessageML.json"), json); 					
 	}
 
 	@Test
@@ -163,7 +168,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testAxesTableEditMessageML.ml"), out); 
-		Assert.assertEquals(loadJson("testAxesTableEditMessageML.json"), json); 
+		compareJson(loadJson("testAxesTableEditMessageML.json"), json); 
 	}
 
 	@Test
@@ -183,9 +188,15 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String json = ejc.writeValue(empty);
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
 		Assert.assertEquals(loadML("testAxesTableViewMessageML.ml"), out); 
-		Assert.assertEquals(loadJson("testAxesTableViewMessageML.json"), json); 
+		compareJson(loadJson("testAxesTableViewMessageML.json"), json); 
 	}
 	
+	private void compareJson(String loadJson, String json) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper om = new ObjectMapper();
+		Assert.assertEquals(om.readTree(loadJson), om.readTree(json));
+	}
+
+
 	@Test
 	public void testValidation() throws Exception {
 		TestObject a = new TestObject("83274239874", true, true, "rob", 234786, 2138);
@@ -203,6 +214,6 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		String expectedJson = loadJson("testValidation.json");
 		System.out.println("<messageML>" + expectedOut + "</messageML>\n"+expectedJson);
 		Assert.assertEquals(expectedOut, out); 
-		Assert.assertEquals(expectedJson, json); 
+		compareJson(expectedJson, json); 
 	}
 }

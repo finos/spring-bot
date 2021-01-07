@@ -20,6 +20,7 @@ This project contains the following:
 - A TeamCity Build Notifier
 - Symphony Shared Stream
 - Chat Workflow
+- KoreAI Connector
 - Tutorials for getting started
 - Demo bots and apps
 
@@ -75,7 +76,7 @@ This provides you with an out-of-the-box way to get started and build an app wit
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
  - [View Demo App Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-app)
 
-## Symphony JSON Support
+## Entity JSON - Symphony JSON Support
 
 This is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON data payload of a Symphony Message, using Jackson.
 
@@ -106,21 +107,22 @@ Allows you to report your TeamCity builds into Symphony chat rooms, using a bot.
 
 The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
 
- - [View the README](shared-stream/README.md)
+ - [View the README](shared-stream-spring-boot-starter/README.md)
  
 ## Chat Workflow
 
-This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ Symphony APIs to build initial proof-of-concept work-flows and have them run in Symphony.
+This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
 
- - [View the README](chat-workflow/README.md)
+ - [View the README](chat-workflow-spring-boot-starter/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
- - [To-Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-todo-bot)
- - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-claim-bot)
- - [Poll Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-poll-bot)
+ - [Demo Poll Bot](demos/poll-bot/README.md)
+ - [Demo To-Do List Bot](demos/todo-bot/README.md)
+ - [Demo Claim Bot](demos/claim-bot/README.md)
+  
 
 ## License
 
-This project is licensed under the [Apache 2.0 License](License).
+This project is licensed under the [Apache 2.0 License](LICENSE).
 
 ## Releasing This Project (For Maintainers)
 
@@ -133,7 +135,7 @@ In order to do a release:
 2. On Releaser's machine:
 
 ```
-mvn test integration-test
+mvn test integration-test -P symphony-ci
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=\*  -DgroupId=\*
 mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/claim-bot,!demos/poll-bot,!demos/todo-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
