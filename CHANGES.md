@@ -84,3 +84,8 @@
  - Fixing missing links
  - Better factoring of Shared Streams
  - Minor fixes to chat workflow
+
+## 7th January 2021
+
+ - Some improvements to POM struture to close whitesource issues
+ - Bumped spring dependencies

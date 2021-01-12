@@ -68,7 +68,9 @@ public class PublicBotIT extends AbstractBotIT {
 								.streamId("ABC123").streamType("ROOM")))));
 
 		ssh.get(0).sendToConsumer(in);
-		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
+		
+		// we shouldn't see a message sent
+		wireMockRule.verify(0, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
 	}
 	
 	@Test
