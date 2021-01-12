@@ -3,8 +3,6 @@ package org.finos.symphony.toolkit.workflow;
 import java.util.Arrays;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.CommandPerformer;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
@@ -16,8 +14,8 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.messages.Presentatio
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -57,7 +55,7 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 	@Autowired
 	ResourceLoader rl;
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		SimpleMessageParser smp = new SimpleMessageParser();
 		EntityJsonConverter ejc = new EntityJsonConverter(wf);

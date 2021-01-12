@@ -7,13 +7,13 @@ import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyBot;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.symphony.api.agent.DatafeedApi;
@@ -24,7 +24,8 @@ import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+
 @SpringBootTest(classes = { 
 		PerformerConfig.class,
 		ResolverConfig.class,

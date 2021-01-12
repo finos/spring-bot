@@ -1,15 +1,14 @@
 package org.finos.symphony.toolkit.workflow;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb3;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
+import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
@@ -18,9 +17,9 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FreemarkerF
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -47,7 +46,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	@Autowired
 	ResourceLoader rl;
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		responseHandler = new SymphonyResponseHandler(messagesApi, new FreemarkerFormMessageMLConverter(rooms, rl), entityJsonConverter, rooms, ah);
 		responseHandler.setOutputTemplates(true);
@@ -57,9 +56,9 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	public void testSendMessage() {
 		Mockito.when(messagesApi.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(),Mockito.isNull(), Mockito.isNull()))
 		.then(a -> {
-			Assert.assertEquals(TestWorkflowConfig.room.getId(), a.getArgument(1));
-			Assert.assertEquals("<messageML> - <hash tag=\"testobjects-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-symphonyp-workflow-testobject\" /> testing</messageML>", a.getArgument(2));
-			Assert.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals(TestWorkflowConfig.room.getId(), a.getArgument(1));
+			Assertions.assertEquals("<messageML> - <hash tag=\"testobjects-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-symphonyp-workflow-testobject\" /> testing</messageML>", a.getArgument(2));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		
@@ -71,12 +70,12 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	public void testSendEmptyForm() {
 		Mockito.when(messagesApi.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(),Mockito.isNull(), Mockito.isNull()))
 		.then(a -> {
-			Assert.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
-			Assert.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />"+
+			Assertions.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
+			Assertions.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />"+
 			" <form id=\"com.db.symphonyp.workflow.TestObject\" ><text-field name=\"isin.\" placeholder=\"isin\" ></text-field><checkbox name=\"bidAxed.\" value=\"true\" >bidAxed</checkbox><checkbox name=\"askAxed.\" value=\"true\" >askAxed</checkbox>"+
 			"<text-field name=\"creator.\" placeholder=\"creator\" ></text-field><text-field name=\"bidQty.\" placeholder=\"bidQty\" ></text-field><text-field name=\"askQty.\" placeholder=\"askQty\" ></text-field>"
 			+"<button name=\"OK\" type=\"action\" >Click me</button></form></messageML>", a.getArgument(2));
-			Assert.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		
@@ -88,9 +87,9 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	public void testSendFormWithError() {
 		Mockito.when(messagesApi.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(),Mockito.isNull(), Mockito.isNull()))
 		.then(a -> {
-			Assert.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
-			Assert.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-axes-axe\" /> testing</messageML>", a.getArgument(2));
-			Assert.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
+			Assertions.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-axes-axe\" /> testing</messageML>", a.getArgument(2));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		
@@ -105,9 +104,9 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	public void testSendWithNestedWorflowObjects() {
 		Mockito.when(messagesApi.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(),Mockito.isNull(), Mockito.isNull()))
 		.then(a -> {
-			Assert.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
-			Assert.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-axes-axe\" /> testing</messageML>", a.getArgument(2));
-			Assert.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
+			Assertions.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-axes-axe\" /> testing</messageML>", a.getArgument(2));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		

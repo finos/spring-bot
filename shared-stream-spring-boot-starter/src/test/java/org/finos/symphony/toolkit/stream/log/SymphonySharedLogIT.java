@@ -7,17 +7,19 @@ import java.util.Random;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.fixture.TestApplication;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.symphony.api.agent.MessagesApi;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+
 @SpringBootTest(classes={TestApplication.class})
 @ActiveProfiles("develop")
 public class SymphonySharedLogIT  {
@@ -37,8 +39,8 @@ public class SymphonySharedLogIT  {
 		ssl.writeParticipantMessage(p2);
 		
 		List<Participant> returned = ssl.getRegisteredParticipants(p1);
-		Assert.assertTrue(returned.contains(p1));
-		Assert.assertTrue(returned.contains(p2));
+		Assertions.assertTrue(returned.contains(p1));
+		Assertions.assertTrue(returned.contains(p2));
 	}
 	
 	@Test
@@ -53,12 +55,12 @@ public class SymphonySharedLogIT  {
 			// sometimes takes a few tries to get the thing back
 			Optional<Participant> returned = ssl.getLeader(p1);
 			if (returned.isPresent()) {
-				Assert.assertEquals(p2, returned.get());
+				Assertions.assertEquals(p2, returned.get());
 				return;
 			}
 		}
 		
-		Assert.fail("Didn't find leader");
+		Assertions.fail("Didn't find leader");
 	}
 	
 	

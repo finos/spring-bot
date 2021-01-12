@@ -18,9 +18,12 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableA
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestTableEdit extends AbstractMockSymphonyTest {
@@ -43,7 +46,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 	EntityJsonConverter ejc; 
 	
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		to = TestWorkflowConfig.createTestObjects();
 		toWrapper = EntityJsonConverter.newWorkflow(to);
@@ -54,8 +57,8 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 	public void testAddRow() {
 		ElementsAction ea = new ElementsAction(wf, room, u, null, "items."+TableAddRow.ACTION_SUFFIX, toWrapper);
 		FormResponse fr = (FormResponse) addRows.apply(ea).get(0);
-		Assert.assertEquals(TestObject.class, fr.getFormClass());
-		Assert.assertEquals("New Test Object", fr.getName());
+		Assertions.assertEquals(TestObject.class, fr.getFormClass());
+		Assertions.assertEquals("New Test Object", fr.getName());
 		
 		// ok, make changes and post back
 		TestObject newTo = (TestObject) fr.getFormObject();
@@ -67,18 +70,18 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 		fr = (FormResponse) addRows.apply(ea).get(0);
 		TestObjects to = (TestObjects) ejc.readWorkflow(fr.getData());
 		
-		Assert.assertEquals(3, to.getItems().size()); 
-		Assert.assertEquals(newTo, to.getItems().get(2)); 
+		Assertions.assertEquals(3, to.getItems().size()); 
+		Assertions.assertEquals(newTo, to.getItems().get(2)); 
 	}
 	
 	@Test
 	public void testEditRow() {
 		ElementsAction ea = new ElementsAction(wf, room, u, null, "items.[0]."+TableEditRow.EDIT_SUFFIX, toWrapper);
 		FormResponse fr = (FormResponse) editRow.apply(ea).get(0);
-		Assert.assertEquals(TestObject.class, fr.getFormClass());
-		Assert.assertEquals("Edit Test Object", fr.getName());
+		Assertions.assertEquals(TestObject.class, fr.getFormClass());
+		Assertions.assertEquals("Edit Test Object", fr.getName());
 		TestObject formObject2 = (TestObject) fr.getFormObject();
-		Assert.assertEquals(to.getItems().get(0), formObject2);
+		Assertions.assertEquals(to.getItems().get(0), formObject2);
 		
 		TestObject newTo = new TestObject();
 		newTo.setCreator("newb@thing.com");
@@ -88,9 +91,9 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 		
 		ea = new ElementsAction(wf, room, u, newTo, "items.[0]."+TableEditRow.UPDATE_SUFFIX, toWrapper);
 		fr = (FormResponse) editRow.apply(ea).get(0);
-		Assert.assertEquals(TestObjects.class, fr.getFormClass());
+		Assertions.assertEquals(TestObjects.class, fr.getFormClass());
 		TestObjects out = (TestObjects) fr.getFormObject();
-		Assert.assertEquals(out.getItems().get(0), newTo);
+		Assertions.assertEquals(out.getItems().get(0), newTo);
 	}
 	
 	@Test
@@ -99,8 +102,8 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 		UnconvertedContent uc = new UnconvertedContent(TestObjects.class, selects);
 		ElementsAction ea = new ElementsAction(wf, room, u, uc, "items."+TableDeleteRows.ACTION_SUFFIX, toWrapper);
 		FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
-		Assert.assertEquals(TestObjects.class, fr.getFormClass());
+		Assertions.assertEquals(TestObjects.class, fr.getFormClass());
 		TestObjects formObject2 = (TestObjects) fr.getFormObject();
-		Assert.assertEquals(1, formObject2.getItems().size());
+		Assertions.assertEquals(1, formObject2.getItems().size());
 	}
 }

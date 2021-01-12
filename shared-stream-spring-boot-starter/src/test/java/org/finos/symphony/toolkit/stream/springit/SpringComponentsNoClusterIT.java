@@ -7,15 +7,16 @@ import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.stream.springit.SpringComponentsNoClusterIT.TestContext;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.MessagesApi;
@@ -28,7 +29,8 @@ import com.symphony.api.id.SymphonyIdentity;
  * @author Rob Moffat
  *
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+
 @SpringBootTest(
 	properties = { 
 			"logging.level.org.finos.symphony.toolkit=debug"}, 

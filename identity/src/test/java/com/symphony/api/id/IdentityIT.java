@@ -2,10 +2,9 @@ package com.symphony.api.id;
 
 import javax.net.ssl.X509KeyManager;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
-import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 
 public class IdentityIT {
@@ -19,23 +18,23 @@ public class IdentityIT {
 	@Test
 	public void testIdentityExists() {
 		SymphonyIdentity id = TestIdentityProvider.getTestIdentity();
-		Assert.assertNotNull(id);
-		Assert.assertNotNull(id.getCommonName());
-		Assert.assertNotNull(id.getEmail());
-		Assert.assertNotNull(id.getPrivateKey());
+		Assertions.assertNotNull(id);
+		Assertions.assertNotNull(id.getCommonName());
+		Assertions.assertNotNull(id.getEmail());
+		Assertions.assertNotNull(id.getPrivateKey());
 		
 		id = TestIdentityProvider.getIdentity("symphony-develop-bot2-identity");
-		Assert.assertNotNull(id);
-		Assert.assertNotNull(id.getCommonName());
-		Assert.assertNotNull(id.getEmail());
-		Assert.assertNotNull(id.getPrivateKey());
+		Assertions.assertNotNull(id);
+		Assertions.assertNotNull(id.getCommonName());
+		Assertions.assertNotNull(id.getEmail());
+		Assertions.assertNotNull(id.getPrivateKey());
 		
 		X509KeyManager km1 = (X509KeyManager) id.getKeyManagers()[0];
 		
-		Assert.assertEquals(km1.getPrivateKey("dsfsd"), id.getPrivateKey());
-		Assert.assertEquals(km1.getCertificateChain("dsfsd")[0], id.getCertificateChain()[0]);
-		Assert.assertEquals("ALIAS", km1.getClientAliases(null, null)[0]);
-		Assert.assertEquals("ALIAS", km1.getServerAliases(null, null)[0]);
+		Assertions.assertEquals(km1.getPrivateKey("dsfsd"), id.getPrivateKey());
+		Assertions.assertEquals(km1.getCertificateChain("dsfsd")[0], id.getCertificateChain()[0]);
+		Assertions.assertEquals("ALIAS", km1.getClientAliases(null, null)[0]);
+		Assertions.assertEquals("ALIAS", km1.getServerAliases(null, null)[0]);
 		
 	}
 }

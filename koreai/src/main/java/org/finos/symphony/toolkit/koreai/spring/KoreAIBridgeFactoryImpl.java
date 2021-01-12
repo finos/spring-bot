@@ -63,9 +63,11 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 
 	@Override
 	public SymphonyStreamHandler buildBridge(KoreAIInstanceProperties props) {
+		String email = "--no email--";
 		try {
 			// build KoreAI pipeline
 			ApiInstance apiInstance = symphonyAPIInstance(props);
+			email = apiInstance.getIdentity().getEmail();
 			KoreAIResponseBuilder koreAIResponseBuilder = koreAIResponseBuilder();
 			KoreAIResponseHandler koreAIResponseHandler = responseMessageAdapter(apiInstance, props);
 			KoreAIRequester requester = koreAIRequester(props, koreAIResponseHandler, koreAIResponseBuilder);
@@ -75,7 +77,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 			SymphonyStreamHandler out = sshf.createBean(apiInstance, koreAISymphonyConsumer);
 			return out;
 		} catch (Exception e) {
-			LOG.error("Couldn't construct Kore/Symphony bridge bean", e);
+			LOG.error("Couldn't construct Kore/Symphony bridge bean for "+email, e);
 			return null;
 		}
 		

@@ -4,9 +4,10 @@ import java.util.Collection;
 import java.util.concurrent.TimeUnit;
 
 import org.finos.symphony.toolkit.spring.api.TestApplication;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.HealthComponent;
 import org.springframework.boot.actuate.health.HealthEndpoint;
@@ -16,7 +17,7 @@ import org.springframework.boot.actuate.metrics.MetricsEndpoint.ListNamesRespons
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.symphony.api.agent.SystemApi;
 
@@ -24,7 +25,8 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+
 @SpringBootTest(classes={TestApplication.class})
 @ActiveProfiles("develop")
 @TestPropertySource(properties = {"management.endpoints.web.exposure.include=*"})
@@ -47,18 +49,18 @@ public class HealthEndpointIT {
 		System.out.println(api.v2HealthCheckGet(false,false,false,false,false,false,false,false, null, null));
 		
 		HealthComponent h = he.health();
-		Assert.assertEquals(Status.UP, h.getStatus());
-		Assert.assertNotNull(he.healthForPath("symphony-api-symphony.practice.bot1-develop"));
+		Assertions.assertEquals(Status.UP, h.getStatus());
+		Assertions.assertNotNull(he.healthForPath("symphony-api-symphony.practice.bot1-develop"));
 		
 		ListNamesResponse lnr = me.listNames();
 		String symphonyName = lnr.getNames().stream().filter(n -> n.startsWith("symphony")).findFirst().orElseThrow(() -> new RuntimeException("Couldn't find timer"));
-		Assert.assertEquals("symphony.api-call", symphonyName);
+		Assertions.assertEquals("symphony.api-call", symphonyName);
 		Collection<Timer> timers = mr.get(symphonyName).timers();
-		Assert.assertTrue(timers.size() >=3);
+		Assertions.assertTrue(timers.size() >=3);
 		Timer agentCallTImer = timers.stream().filter(t -> t.getId().toString().contains("agent")).findFirst().orElse(null);
-		Assert.assertEquals("symphony.practice.bot1", agentCallTImer.getId().getTag("id"));
-		Assert.assertEquals("v2HealthCheckGet", agentCallTImer.getId().getTag("method"));
-		Assert.assertEquals("develop", agentCallTImer.getId().getTag("pod"));
-		Assert.assertTrue(agentCallTImer.totalTime(TimeUnit.NANOSECONDS) > 1);
+		Assertions.assertEquals("symphony.practice.bot1", agentCallTImer.getId().getTag("id"));
+		Assertions.assertEquals("v2HealthCheckGet", agentCallTImer.getId().getTag("method"));
+		Assertions.assertEquals("develop", agentCallTImer.getId().getTag("pod"));
+		Assertions.assertTrue(agentCallTImer.totalTime(TimeUnit.NANOSECONDS) > 1);
 	}
 }

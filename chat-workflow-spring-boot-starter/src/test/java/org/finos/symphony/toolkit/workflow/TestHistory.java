@@ -2,19 +2,17 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.Arrays;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -36,7 +34,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 	
 	EntityJsonConverter ejc;
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		ejc = new EntityJsonConverter(wf);
 		mh = new MessageHistory(wf, ejc, messagesApi, ru);
@@ -58,8 +56,8 @@ public class TestHistory extends AbstractMockSymphonyTest {
 		TestObjects out = mh.getLastFromHistory(TestObjects.class, new RoomDef("someroom", "", true, "abc123"))
 			.orElseThrow(() -> new RuntimeException());
 		
-		Assert.assertEquals(out, to);
-		Assert.assertFalse(out == to);
+		Assertions.assertEquals(out, to);
+		Assertions.assertFalse(out == to);
 	}
 	
 	@Test
@@ -84,10 +82,10 @@ public class TestHistory extends AbstractMockSymphonyTest {
 				new RoomDef("someroom", "", true, "abc123"),
 				Instant.now().minus(10, ChronoUnit.DAYS));
 		
-		Assert.assertEquals(3, out.size());
-		Assert.assertEquals(one, out.get(0));
-		Assert.assertEquals(two, out.get(1));
-		Assert.assertEquals(three, out.get(2));
+		Assertions.assertEquals(3, out.size());
+		Assertions.assertEquals(one, out.get(0));
+		Assertions.assertEquals(two, out.get(1));
+		Assertions.assertEquals(three, out.get(2));
 		
 		Mockito.verify(messagesApi).v1MessageSearchPost(
 			Mockito.argThat(e -> {

@@ -1,12 +1,13 @@
 package org.finos.symphony.toolkit.spring.api.endpoints;
 
 import org.finos.symphony.toolkit.spring.api.TestApplication;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.pod.UsersApi;
@@ -17,7 +18,8 @@ import com.symphony.api.pod.UsersApi;
  * @author Rob Moffat
  *
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+
 @SpringBootTest(classes={TestApplication.class})
 @ActiveProfiles("develop")
 public class PodEndpointIT {
