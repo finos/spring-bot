@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
+import com.symphony.api.model.User;
 import com.symphony.api.pod.UsersApi;
 
 public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
@@ -103,7 +104,14 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	}
 	
 	public StreamEventConsumer koreAIEventHandler(KoreAIRequester requester, ApiInstance api, KoreAIInstanceProperties props) {
-		return new KoreAIEventHandler(api.getIdentity(), api.getPodApi(UsersApi.class), requester, om, props.isOnlyAddressed());
+		UsersApi usersApi = api.getPodApi(UsersApi.class);
+		User u = usersApi.v1UserGet(api.getIdentity().getEmail(), null, true);
+		long id = 0;
+		if (u != null) {
+			id = u.getId();
+		}
+		
+		return new KoreAIEventHandler(api.getIdentity(), id, requester, om, props.isOnlyAddressed());
 	}
 	
 	public ApiInstance symphonyAPIInstance(KoreAIInstanceProperties props) {
