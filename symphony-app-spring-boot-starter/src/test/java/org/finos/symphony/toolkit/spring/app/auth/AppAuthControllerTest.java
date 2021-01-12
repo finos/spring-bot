@@ -6,7 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
 import org.finos.symphony.toolkit.spring.app.tokens.app.AppTokenStrategy;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;

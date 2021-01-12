@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.Ignore;
 import org.junit.experimental.theories.Theory;
 
@@ -36,7 +36,7 @@ public class AgentIT extends AbstractTest {
 		}	
 	}
 	
-	@Theory
+	@Theor
 	public void testDataPost(TestClientStrategy s) throws Exception {
 		
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
@@ -143,9 +143,9 @@ public class AgentIT extends AbstractTest {
 		SystemApi systemApi = s.getAgentApi(SystemApi.class);
 		V2HealthCheckResponse resp = systemApi.v2HealthCheckGet(false, null, null, null, null, null, null, null, null, null);
 		String json = new ObjectMapper().writeValueAsString(resp);
-		Assert.assertTrue(resp.isPodConnectivity());
-		Assert.assertTrue(resp.isKeyManagerConnectivity());
-		Assert.assertTrue(resp.isAgentServiceUser());
+		Assertions.assertTrue(resp.isPodConnectivity());
+		Assertions.assertTrue(resp.isKeyManagerConnectivity());
+		Assertions.assertTrue(resp.isAgentServiceUser());
 		System.out.println(json);
 	}
 	
@@ -154,10 +154,10 @@ public class AgentIT extends AbstractTest {
 		try {
 			MessagesApi messageAPI = s.getAgentApi(MessagesApi.class);
 			messageAPI.v4StreamSidMessageGet("sfjkd", 100l, null, null, 100, 100);
-			Assert.fail("Shouldn't get here - the stream is invalid");
+			Assertions.fail("Shouldn't get here - the stream is invalid");
 		} catch (Exception e) {
-			Assert.assertTrue(e.getMessage().contains("Bad Request"));
-			Assert.assertTrue(e.getMessage().contains("\"message\":\"This thread doesn't exist.\""));
+			Assertions.assertTrue(e.getMessage().contains("Bad Request"));
+			Assertions.assertTrue(e.getMessage().contains("\"message\":\"This thread doesn't exist.\""));
 		}
 	}
 	

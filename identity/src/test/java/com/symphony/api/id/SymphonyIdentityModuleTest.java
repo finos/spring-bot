@@ -7,11 +7,10 @@ import java.security.cert.X509Certificate;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.api.id.P12SymphonyIdentity;
 import com.symphony.api.id.json.SymphonyIdentityModule;
 
 public class SymphonyIdentityModuleTest {
@@ -34,7 +33,7 @@ public class SymphonyIdentityModuleTest {
 		//System.out.println(written);
 		
 		String expected = StreamHelp.asString(this.getClass().getResourceAsStream("/map.json"));
-		Assert.assertEquals(expected, written);
+		Assertions.assertEquals(expected, written);
 		
 		// test individually
 		String certs = om.writeValueAsString(p12.getCertificateChain());
@@ -42,13 +41,13 @@ public class SymphonyIdentityModuleTest {
 		String pk = om.writeValueAsString(p12.getPrivateKey());
 		PrivateKey pkReloaded = om.readValue(pk, PrivateKey.class);
 		
-		Assert.assertEquals(p12.getPrivateKey(), pkReloaded);
-		Assert.assertEquals(p12.getCertificateChain()[0], reloaded[0]);
+		Assertions.assertEquals(p12.getPrivateKey(), pkReloaded);
+		Assertions.assertEquals(p12.getCertificateChain()[0], reloaded[0]);
 		
 		// check deserializing public keys
 		String serd = om.writeValueAsString(p12.getPublicKey());
 		PublicKey back = om.readValue(serd, PublicKey.class);
-		Assert.assertEquals(p12.getPublicKey(), back);
+		Assertions.assertEquals(p12.getPublicKey(), back);
 		
 	}
 }

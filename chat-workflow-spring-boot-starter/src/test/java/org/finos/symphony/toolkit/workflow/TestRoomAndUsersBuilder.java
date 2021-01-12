@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.workflow;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
@@ -8,22 +8,21 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.symphony.api.model.RoomSpecificStreamAttributes;
 import com.symphony.api.model.RoomSystemInfo;
@@ -40,7 +39,7 @@ import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = {  TestWorkflowConfig.class })
 public class TestRoomAndUsersBuilder {
 	
@@ -58,7 +57,7 @@ public class TestRoomAndUsersBuilder {
 	@Autowired
 	Workflow wf;
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		
 		// just returns a single real user
@@ -111,7 +110,7 @@ public class TestRoomAndUsersBuilder {
 		assertEquals(1, ruBuilder.getAllRooms().size());
 		
 		String someStream = ruBuilder.getStreamFor(out);
-		Assert.assertEquals("abc123", someStream);
+		Assertions.assertEquals("abc123", someStream);
 	}
 	
 	@Test
@@ -121,6 +120,6 @@ public class TestRoomAndUsersBuilder {
 		
 		UserDef rd = new UserDef("123", "Robski mo", "rob@example.com");
 		String someStream = ruBuilder.getStreamFor(rd);
-		Assert.assertEquals("123", someStream);
+		Assertions.assertEquals("123", someStream);
 	}
 }

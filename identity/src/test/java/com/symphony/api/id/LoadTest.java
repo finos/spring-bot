@@ -1,15 +1,10 @@
 package com.symphony.api.id;
 
 import java.io.InputStream;
-import java.security.PublicKey;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.symphony.api.id.P12SymphonyIdentity;
-import com.symphony.api.id.PemSymphonyIdentity;
-import com.symphony.api.id.SymphonyIdentity;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class LoadTest {
 	public static final String EMAIL = "thing@thang.com";
@@ -19,7 +14,7 @@ public class LoadTest {
 	SymphonyIdentity pem2; 
 	String publicKey;
 	
-	@Before
+	@BeforeEach
 	public void loadPemAndP12() {
 		InputStream is = this.getClass().getResourceAsStream("/example.p12");
 		String password = "abc123";
@@ -35,35 +30,35 @@ public class LoadTest {
 
 	@Test
 	public void p12LoadTest() {
-		Assert.assertEquals("bob", p12.getCommonName());
-		Assert.assertNotNull(p12.getPrivateKey());
-		Assert.assertEquals(1, p12.getCertificateChain().length);
-		Assert.assertEquals(EMAIL, p12.getEmail());
+		Assertions.assertEquals("bob", p12.getCommonName());
+		Assertions.assertNotNull(p12.getPrivateKey());
+		Assertions.assertEquals(1, p12.getCertificateChain().length);
+		Assertions.assertEquals(EMAIL, p12.getEmail());
 	}
 	
 	@Test
 	public void testPemLoad() {
-		Assert.assertEquals("bob", pem.getCommonName());
-		Assert.assertNotNull(pem.getPrivateKey());
-		Assert.assertEquals(1, pem.getCertificateChain().length);
-		Assert.assertEquals(EMAIL, pem.getEmail());
+		Assertions.assertEquals("bob", pem.getCommonName());
+		Assertions.assertNotNull(pem.getPrivateKey());
+		Assertions.assertEquals(1, pem.getCertificateChain().length);
+		Assertions.assertEquals(EMAIL, pem.getEmail());
 	}
 	
 	@Test
 	public void testSame() {
-		Assert.assertEquals(pem.getPrivateKey(), p12.getPrivateKey());
-		Assert.assertEquals(pem.getCertificateChain()[0], p12.getCertificateChain()[0]);
+		Assertions.assertEquals(pem.getPrivateKey(), p12.getPrivateKey());
+		Assertions.assertEquals(pem.getCertificateChain()[0], p12.getCertificateChain()[0]);
 	}
 	
 	@Test
 	public void testPublicKeyLoad() {
-		Assert.assertNotNull(PemSymphonyIdentity.createPublicKeyFromString(publicKey));
+		Assertions.assertNotNull(PemSymphonyIdentity.createPublicKeyFromString(publicKey));
 	}
 	
 	@Test
 	public void testPRivateKeyRsa() throws Exception {
-		Assert.assertNotNull(pem2.getPrivateKey());
-		Assert.assertNotNull(pem2.getPublicKey());
+		Assertions.assertNotNull(pem2.getPrivateKey());
+		Assertions.assertNotNull(pem2.getPublicKey());
 		
 	}
 }

@@ -6,9 +6,9 @@ import java.util.List;
 import javax.ws.rs.BadRequestException;
 
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.id.SymphonyIdentity;
@@ -30,7 +30,7 @@ public class TestSymphonyStreamHandler {
 	List<V4Event> events = new ArrayList<V4Event>();
 	List<Exception> exceptions = new ArrayList<Exception>();
 	
-	@Before
+	@BeforeEach
 	public void clear() {
 		events.clear();
 		exceptions.clear();
@@ -167,8 +167,8 @@ public class TestSymphonyStreamHandler {
 				v -> events.add(v), 
 				e -> exceptions.add(e), true);
 		Thread.sleep(50);
-		Assert.assertEquals(1, events.size());
-		Assert.assertEquals(0, exceptions.size());
+		Assertions.assertEquals(1, events.size());
+		Assertions.assertEquals(0, exceptions.size());
 		ssh.stop();
 	}
 	
@@ -184,14 +184,14 @@ public class TestSymphonyStreamHandler {
 		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> events.add(v), e -> exceptions.add(e), false);
 		ssh.start();
 		Thread t = ssh.runThread;
-		Assert.assertEquals(true, t.isAlive());
+		Assertions.assertEquals(true, t.isAlive());
 		Thread.sleep(50);
 		ssh.stop();
 		Thread.sleep(50);
-		Assert.assertEquals(0, events.size());
-		Assert.assertEquals(1, exceptions.size());
-		Assert.assertEquals(false, t.isAlive());
-		Assert.assertTrue(exceptions.get(0) instanceof RuntimeInterruptedException);
+		Assertions.assertEquals(0, events.size());
+		Assertions.assertEquals(1, exceptions.size());
+		Assertions.assertEquals(false, t.isAlive());
+		Assertions.assertTrue(exceptions.get(0) instanceof RuntimeInterruptedException);
 	}
 	
 	@Test
@@ -224,13 +224,13 @@ public class TestSymphonyStreamHandler {
 		ssh.stop();
 		
 		// we should still be on the first datafeed
-		Assert.assertEquals(869, df.currentId);
+		Assertions.assertEquals(869, df.currentId);
 		
 		// assert no back-off for user errors
-		Assert.assertTrue(events.size() > 20);
+		Assertions.assertTrue(events.size() > 20);
 		
 		// assert that there are errors in the log
-		Assert.assertFalse(exceptions.isEmpty());
+		Assertions.assertFalse(exceptions.isEmpty());
 	}
 	
 	@Test
@@ -262,31 +262,33 @@ public class TestSymphonyStreamHandler {
 		ssh.stop();
 		
 		// we should be after the first datafeed
-		Assert.assertTrue(df.currentId > 869);
+		Assertions.assertTrue(df.currentId > 869);
 		
 		// check we've read lots of events
-		Assert.assertTrue(events.size() > 5);
+		Assertions.assertTrue(events.size() > 5);
 		
 		// should be errors from the datafeed dying
-		Assert.assertFalse(exceptions.isEmpty());
-		Assert.assertTrue(exceptions.get(0) instanceof BadRequestException);
+		Assertions.assertFalse(exceptions.isEmpty());
+		Assertions.assertTrue(exceptions.get(0) instanceof BadRequestException);
 	}
 	
-	@Test(expected = BadRequestException.class)
+	@Test
 	public void testSymphonyDeadOnStartup() {
-		DummyDatafeedApi df = new DummyDatafeedApi() {
-
-			/**
-			 * Stream handler should throw exception on startup
-			 */
-			@Override
-			public Datafeed v4DatafeedCreatePost(String sessionToken, String keyManagerToken) {
-				throw new BadRequestException();
-			}
-		};
-		
-		SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> events.add(v), e -> exceptions.add(e), true);
-		ssh.stop();
+		Assertions.assertThrows(BadRequestException.class, () -> {
+			DummyDatafeedApi df = new DummyDatafeedApi() {
+	
+				/**
+				 * Stream handler should throw exception on startup
+				 */
+				@Override
+				public Datafeed v4DatafeedCreatePost(String sessionToken, String keyManagerToken) {
+					throw new BadRequestException();
+				}
+			};
+			
+			SymphonyStreamHandler ssh = new SymphonyStreamHandler(dummyApiInstance(df), v -> events.add(v), e -> exceptions.add(e), true);
+			ssh.stop();
+		});
 	}
 	
 	@Test
@@ -305,7 +307,7 @@ public class TestSymphonyStreamHandler {
 		Thread.sleep(10000);
 		ssh.stop();
 		// initial back-off is 2 secs, but we should only see 3 exceptions in the log.
-		Assert.assertTrue(exceptions.size() == 3);
+		Assertions.assertTrue(exceptions.size() == 3);
 		
 	}
 }

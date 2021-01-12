@@ -8,13 +8,11 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.test.ClassWithEnum;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.symphonyoss.fin.Security;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
@@ -33,7 +31,7 @@ public class TestSerialization {
 
 	static ObjectMapper om;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void setupMapper() {
 		VersionSpace[] vs = ObjectMapperFactory.extendedSymphonyVersionSpace(
 				new VersionSpace("com.symphony", "1.0"),
@@ -59,7 +57,7 @@ public class TestSerialization {
 		String json = om.writeValueAsString(ej);
 		System.out.println(json);
 		EntityJson out = om.readValue(json, EntityJson.class);
-		Assert.assertEquals(ej, out);
+		Assertions.assertEquals(ej, out);
 	
 	}
 	
@@ -67,11 +65,11 @@ public class TestSerialization {
 	public void testJiraExample1() throws Exception {
 		String json = getExpected("jira-example-1.json");
 		EntityJson ej = om.readValue(json, EntityJson.class);
-		Assert.assertEquals("test@symphony.com", ((State) ej.get("jiraIssue")).issue.assignee.emailAddress);
-		Assert.assertEquals("production", ((State) ej.get("jiraIssue")).issue.labels.get(0).text);
+		Assertions.assertEquals("test@symphony.com", ((State) ej.get("jiraIssue")).issue.assignee.emailAddress);
+		Assertions.assertEquals("production", ((State) ej.get("jiraIssue")).issue.labels.get(0).text);
 		EntityJson ej2 = om.readValue(json, EntityJson.class);
-		Assert.assertEquals(ej, ej2);
-		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
+		Assertions.assertEquals(ej, ej2);
+		Assertions.assertEquals(ej.hashCode(), ej2.hashCode());
 		// ok, convert back into json
 		convertBackAndCompare(json, ej, "target/testJiraExample1.json");
 		
@@ -87,19 +85,19 @@ public class TestSerialization {
 		JsonNode t1 = om.readTree(json);
 		JsonNode t2 = om.readTree(done);
 		
-		Assert.assertEquals(t1, t2);
+		Assertions.assertEquals(t1, t2);
 	}
 	
 	@Test
 	public void testJiraExample2() throws Exception {
 		String json = getExpected("jira-example-2.json");
 		EntityJson ej = om.readValue(json, EntityJson.class);
-		Assert.assertEquals("Issue Test", ((Created) ej.get("jiraIssueCreated")).issue.subject);
-		Assert.assertEquals("123456", ((Mention) ej.get("mention123")).getId().get(0).getValue());
+		Assertions.assertEquals("Issue Test", ((Created) ej.get("jiraIssueCreated")).issue.subject);
+		Assertions.assertEquals("123456", ((Mention) ej.get("mention123")).getId().get(0).getValue());
 		
 		EntityJson ej2 = om.readValue(json, EntityJson.class);
-		Assert.assertEquals(ej, ej2);
-		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
+		Assertions.assertEquals(ej, ej2);
+		Assertions.assertEquals(ej.hashCode(), ej2.hashCode());
 
 		convertBackAndCompare(json, ej, "target/testJiraExample2.json");
 	}
@@ -108,11 +106,11 @@ public class TestSerialization {
 	public void testJiraExample3() throws Exception {
 		String json = getExpected("jira-example-3.json");
 		EntityJson ej = om.readValue(json, EntityJson.class);
-		Assert.assertEquals("production", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.labels.get(0).text);
-		Assert.assertEquals("bot.user2", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.assignee.username);
+		Assertions.assertEquals("production", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.labels.get(0).text);
+		Assertions.assertEquals("bot.user2", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.assignee.username);
 		EntityJson ej2 = om.readValue(json, EntityJson.class);
-		Assert.assertEquals(ej, ej2);
-		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
+		Assertions.assertEquals(ej, ej2);
+		Assertions.assertEquals(ej.hashCode(), ej2.hashCode());
 
 		convertBackAndCompare(json, ej, "target/testJiraExample3.json");
 	}
@@ -122,33 +120,37 @@ public class TestSerialization {
 		String jsonIn = getExpected("securities-in.json");
 		String jsonOut = getExpected("securities-out.json");
 		EntityJson ej = om.readValue(jsonIn, EntityJson.class);
-		Assert.assertEquals("US0378331005", ((Security) ej.get("123")).getId().get(0).getValue());
-		Assert.assertEquals("BBG00CSTXNX6", ((Security) ej.get("321")).getId().get(0).getValue());
+		Assertions.assertEquals("US0378331005", ((Security) ej.get("123")).getId().get(0).getValue());
+		Assertions.assertEquals("BBG00CSTXNX6", ((Security) ej.get("321")).getId().get(0).getValue());
 		EntityJson ej2 = om.readValue(jsonIn, EntityJson.class);
-		Assert.assertEquals(ej, ej2);
-		Assert.assertEquals(ej.hashCode(), ej2.hashCode());
+		Assertions.assertEquals(ej, ej2);
+		Assertions.assertEquals(ej.hashCode(), ej2.hashCode());
 
 		convertBackAndCompare(jsonOut, ej, "target/testSecuritiesExample.json");
 	}
 	
-	@Test(expected=JsonMappingException.class)
+	@Test
 	public void testSecuritiesBrokenExample() throws Exception {
-		// bad version numbers
-		String json = getExpected("securities-wrong.json");
-		om.readValue(json, EntityJson.class);
+		Assertions.assertThrows(JsonMappingException.class, () -> {
+			// bad version numbers
+		
+			String json = getExpected("securities-wrong.json");
+			om.readValue(json, EntityJson.class);
+	
+		});
 	}
 	
 	@Test
 	public void testVersionMatching() {
 		VersionSpace vs = new VersionSpace("", "2.0", "1.*");
-		Assert.assertTrue(vs.matches("1.1"));
-		Assert.assertTrue(vs.matches("1.5"));
-		Assert.assertTrue(vs.matches("2.0"));
+		Assertions.assertTrue(vs.matches("1.1"));
+		Assertions.assertTrue(vs.matches("1.5"));
+		Assertions.assertTrue(vs.matches("2.0"));
 	
 		VersionSpace vs2 = new VersionSpace("", "2.0", "1.[0-4]");
-		Assert.assertTrue(vs2.matches("1.1"));
-		Assert.assertFalse(vs2.matches("1.5"));
-		Assert.assertTrue(vs2.matches("2.0"));
+		Assertions.assertTrue(vs2.matches("1.1"));
+		Assertions.assertFalse(vs2.matches("1.5"));
+		Assertions.assertTrue(vs2.matches("2.0"));
 	}
 	
 	private String getExpected(String name) {

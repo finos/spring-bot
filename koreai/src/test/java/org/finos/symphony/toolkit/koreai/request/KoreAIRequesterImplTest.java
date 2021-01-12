@@ -8,30 +8,29 @@ import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandler;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilderImpl;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.google.common.base.Charsets;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+
 public class KoreAIRequesterImplTest {
 	
-	@Rule
-	public WireMockRule wireMockRule = new WireMockRule(9998);
+	public WireMockServer wireMockRule = new WireMockServer(9998);
 	
 	public KoreAIRequester requester;
 	
@@ -47,7 +46,7 @@ public class KoreAIRequesterImplTest {
 	ArgumentCaptor<Address> a;
 	
 	
-	@Before
+	@BeforeEach
 	public void setupWireMock() throws Exception {
 		String response = StreamUtils.copyToString(KoreAIRequesterImplTest.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
 		wireMockRule.stubFor(post(urlEqualTo("/kore"))
@@ -60,9 +59,10 @@ public class KoreAIRequesterImplTest {
 				new KoreAIResponseBuilderImpl(om, JsonNodeFactory.instance),
 				"http://localhost:9998/kore", JsonNodeFactory.instance, "some-jwt");
 		((KoreAIRequesterImpl) requester).afterPropertiesSet();
+		wireMockRule.start();
 	}
 	
-	@After
+	@AfterEach
 	public void closeWiremock() {
 		wireMockRule.shutdown();
 	}
@@ -72,8 +72,8 @@ public class KoreAIRequesterImplTest {
     	Address a = new Address(1l, "alf", "angstrom", "alf@example.com", "abc1234");
 		requester.send(a, "Send me the answers");
 		Mockito.verify(responseHandler).handle(this.a.capture(), this.response.capture());
-		Assert.assertEquals(a, this.a.getValue());
-		Assert.assertTrue(this.response.getValue().getProcessed().get(0).toPrettyString().contains("Looks like your application"));
+		Assertions.assertEquals(a, this.a.getValue());
+		Assertions.assertTrue(this.response.getValue().getProcessed().get(0).toPrettyString().contains("Looks like your application"));
 		
 	}
 }

@@ -13,8 +13,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.quickfix.QuickfixjModule;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -104,13 +105,13 @@ public class TestJacksonFixMessages {
 		String out = om.writeValueAsString(in);
 		String expected = getExpected("expected1.json");
 		System.out.println(out);
-		Assert.assertEquals(expected, out);
+		Assertions.assertEquals(expected, out);
 
 		// let's go round again, and check they match
 		TypeReference<Map<String, IOI>> ref = new TypeReference<Map<String, IOI>>() {};
 		Map<String, IOI> stage = om.readValue(out, ref);
 		String out2 = om.writeValueAsString(stage);
-		Assert.assertEquals(out, out2);
+		Assertions.assertEquals(out, out2);
 	}
 	
 	@Test
@@ -124,13 +125,13 @@ public class TestJacksonFixMessages {
 		String out = om.writeValueAsString(in);
 		String expected = getExpected("expected2.json");
 		System.out.println(out);
-		Assert.assertEquals(expected, out);
+		Assertions.assertEquals(expected, out);
 		
 		// let's go round again, and check they match
 		TypeReference<Map<String, IOI>> ref = new TypeReference<Map<String, IOI>>() {};
 		Object stage = om.readValue(out, ref);
 		String out2 = om.writeValueAsString(stage);
-		Assert.assertEquals(out, out2);
+		Assertions.assertEquals(out, out2);
 	}
 
 	
@@ -144,36 +145,36 @@ public class TestJacksonFixMessages {
 		
 		// header
 		Header h = o.getHeader();
-		Assert.assertEquals("FIX.5.0", h.getField(new BeginString()).getObject());
-		Assert.assertEquals("W", h.getField(new MsgType()).getObject());
-		Assert.assertEquals("SENDER", h.getField(new SenderCompID()).getObject());
-		Assert.assertEquals("TARGET", h.getField(new TargetCompID()).getObject());	
+		Assertions.assertEquals("FIX.5.0", h.getField(new BeginString()).getObject());
+		Assertions.assertEquals("W", h.getField(new MsgType()).getObject());
+		Assertions.assertEquals("SENDER", h.getField(new SenderCompID()).getObject());
+		Assertions.assertEquals("TARGET", h.getField(new TargetCompID()).getObject());	
 		LocalDateTime utc = h.getField(new SendingTime()).getObject();
 		LocalDateTime fromTime =UtcTimestampConverter.convertToLocalDateTime("20160802-21:14:38.717");
-		Assert.assertEquals(fromTime, utc);
+		Assertions.assertEquals(fromTime, utc);
 		
 		// body
 		NoMDEntries noMDEntries = o.getNoMDEntries();
-		Assert.assertEquals(2, noMDEntries.getValue());
+		Assertions.assertEquals(2, noMDEntries.getValue());
 		List<Group> groups = o.getGroups(noMDEntries.getField());
-		Assert.assertEquals(2, groups.size());
+		Assertions.assertEquals(2, groups.size());
 		quickfix.fix50sp2.MarketDataSnapshotFullRefresh.NoMDEntries g1 = (quickfix.fix50sp2.MarketDataSnapshotFullRefresh.NoMDEntries) groups.get(0);
 		quickfix.fix50sp2.MarketDataSnapshotFullRefresh.NoMDEntries g2 = (quickfix.fix50sp2.MarketDataSnapshotFullRefresh.NoMDEntries) groups.get(1);
 		
 		
-		Assert.assertTrue('0'==g1.getMDEntryType().getValue());
-		Assert.assertTrue(1.5d==g1.getMDEntryPx().getValue());
-		Assert.assertTrue(75d==g1.getMDEntrySize().getValue());
+		Assertions.assertTrue('0'==g1.getMDEntryType().getValue());
+		Assertions.assertTrue(1.5d==g1.getMDEntryPx().getValue());
+		Assertions.assertTrue(75d==g1.getMDEntrySize().getValue());
 		LocalTime t1 = g1.getMDEntryTime().getValue();
 		LocalTime t2 = UtcTimeOnlyConverter.convertToLocalTime("21:14:38.688");		
-		Assert.assertEquals(t1, t2);
+		Assertions.assertEquals(t1, t2);
 
-		Assert.assertTrue('1'==g2.getMDEntryType().getValue());
-		Assert.assertTrue(1.75d==g2.getMDEntryPx().getValue());
-		Assert.assertTrue(25d==g2.getMDEntrySize().getValue());
+		Assertions.assertTrue('1'==g2.getMDEntryType().getValue());
+		Assertions.assertTrue(1.75d==g2.getMDEntryPx().getValue());
+		Assertions.assertTrue(25d==g2.getMDEntrySize().getValue());
 		t1 = g2.getMDEntryTime().getValue();
 		t2 = UtcTimeOnlyConverter.convertToLocalTime("21:14:38.688");		
-		Assert.assertEquals(t1, t2);
+		Assertions.assertEquals(t1, t2);
 
 	}
 
