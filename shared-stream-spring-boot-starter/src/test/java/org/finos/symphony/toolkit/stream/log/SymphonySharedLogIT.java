@@ -6,7 +6,6 @@ import java.util.Random;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.fixture.TestApplication;
-import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,7 +21,8 @@ import com.symphony.api.agent.MessagesApi;
 @ActiveProfiles("develop")
 public class SymphonySharedLogIT  {
 
-	private String streamId = "y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==";
+	// now using a room just for this purpose
+	private String streamId = "QTG/xBPcpYtbMbfhGrjK7X///okjuFBXdA==";
 	
 	@Autowired
 	MessagesApi messagesApi;
