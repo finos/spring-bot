@@ -125,8 +125,6 @@ This is a Spring Boot App that acts as a middleman between a Symphony bot and a 
 
  - [View the README](koreai/README.md)
 
-  
-
 ## License
 
 This project is licensed under the [Apache 2.0 License](LICENSE).
