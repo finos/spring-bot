@@ -2,10 +2,8 @@ package org.finos.symphony.toolkit.spring.api.endpoints;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
-import org.finos.symphony.toolkit.spring.api.TestApplication;
 import org.finos.symphony.toolkit.spring.api.builders.JerseyApiBuilderConfig;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
