@@ -72,6 +72,9 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 				if (!u.getEmail().equals(botIdentity.getEmail()) && (isAddressed(stream, ej, text))) {
 					try {
 						Address a = buildAddress(u, stream);
+						
+						text = normalizeText(text);
+						
 						requester.send(a, text);
 					} catch (Exception e) {
 						LOG.error("Couldn't handle message {}", ms);
@@ -99,6 +102,14 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 		} catch (Exception e) {
 			LOG.error("Couldn't handle stream event "+t, e);
 		}
+	}
+
+	private String normalizeText(String text) {
+		text = text.trim();
+		if (text.startsWith("/")) {
+			text = text.substring(1);
+		}
+		return text;
 	}
 
 	private String extractText(V4MessageSent ms) throws ParserConfigurationException, SAXException, IOException {

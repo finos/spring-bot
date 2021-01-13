@@ -52,11 +52,14 @@ public abstract class AbstractBotIT {
 		String response = StreamUtils.copyToString(PublicBotIT.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
 		wireMockRule
 				.stubFor(post(urlEqualTo("/kore")).withHeader("Authorization", new EqualToPattern("Bearer some-jwt"))
-						// .withRequestBody(new
-						// EqualToPattern("{\"entity\":{\"to\":\"\",\"session\":{\"new\":false},\"message\":{\"text\":\"Send
-						// me the
-						// answers\"},\"from\":{\"id\":\"1\",\"userInfo\":{\"firstName\":\"alf\",\"lastName\":\"angstrom\",\"email\":\"alf@example.com\"}}},\"variant\":{\"language\":null,\"mediaType\":{\"type\":\"application\",\"subtype\":\"json\",\"parameters\":{},\"wildcardType\":false,\"wildcardSubtype\":false},\"encoding\":null,\"languageString\":null},\"annotations\":[],\"language\":null,\"encoding\":null,\"mediaType\":{\"type\":\"application\",\"subtype\":\"json\",\"parameters\":{},\"wildcardType\":false,\"wildcardSubtype\":false}}"))
 						.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(response)));
+
+		wireMockRule.stubFor(
+				post(urlEqualTo("/kore2")).withHeader("Authorization", new EqualToPattern("Bearer some-other-jwt"))
+						.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(response)));
+
+		wireMockRule.stubFor(get(urlPathMatching("/pod/v1/user"))
+				.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("{\"id\":1234}")));
 
 		wireMockRule.stubFor(post(urlPathMatching("/login/pubkey/authenticate")).willReturn(
 				aResponse().withHeader("Content-Type", "application/json").withBody("{\"token\": \"session123\"}")));
@@ -81,12 +84,6 @@ public abstract class AbstractBotIT {
 
 		wireMockRule.start();
 
-		//
-		// Mockito.when(usersApi.v1UserGet(Mockito.anyString(), Mockito.isNull(),
-		// Mockito.anyBoolean()))
-		// .then((a) -> {
-		// return new User().emailAddress("some.bot@example.com");
-		// });*/
 	}
 
 	@BeforeEach
