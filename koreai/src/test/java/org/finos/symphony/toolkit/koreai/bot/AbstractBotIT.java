@@ -12,13 +12,14 @@ import javax.inject.Named;
 
 import org.finos.symphony.toolkit.koreai.KoreAIBot;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
+import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -32,7 +33,7 @@ import com.google.common.base.Charsets;
 @ExtendWith(SpringExtension.class)
 
 @ActiveProfiles({ "test" })
-@SpringBootTest(classes = { KoreAIBot.class })
+@SpringBootTest(classes = { KoreAIBot.class, KoreAIConfig.class })
 public abstract class AbstractBotIT {
 
 	static WireMockServer wireMockRule = new WireMockServer(9999);
@@ -46,10 +47,13 @@ public abstract class AbstractBotIT {
 
 	@Autowired
 	protected ObjectMapper symphonyObjectMapper;
+	
+	@MockBean
+	ExceptionConsumer ec;
 
 	@BeforeAll
 	public static void setupWireMock() throws Exception {
-		String response = StreamUtils.copyToString(PublicBotIT.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
+		String response = StreamUtils.copyToString(BotIT.class.getResourceAsStream("ans1.json"), Charsets.UTF_8);
 		wireMockRule
 				.stubFor(post(urlEqualTo("/kore")).withHeader("Authorization", new EqualToPattern("Bearer some-jwt"))
 						.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(response)));
@@ -86,11 +90,13 @@ public abstract class AbstractBotIT {
 
 	}
 
-	@BeforeEach
-	public void reset() {
-		wireMockRule.resetRequests();
+	public void littleSleep() {
+		try {
+			Thread.sleep(400);
+		} catch (InterruptedException e) {
+		}
 	}
-
+	
 	@AfterAll
 	public static void close() {
 		wireMockRule.shutdown();

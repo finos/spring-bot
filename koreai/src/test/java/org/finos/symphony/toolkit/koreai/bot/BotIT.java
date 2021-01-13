@@ -7,6 +7,7 @@ import java.util.Collections;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,8 +23,13 @@ import com.symphony.api.model.V4User;
 import com.symphony.user.Mention;
 import com.symphony.user.UserId;
 
-public class PublicBotIT extends AbstractBotIT {
+public class BotIT extends AbstractBotIT {
 
+
+	@BeforeEach
+	public void reset() {
+		wireMockRule.resetRequests();
+	}
 	
 	/**
 	 * When the user presses a button, we return a response.
@@ -38,6 +44,7 @@ public class PublicBotIT extends AbstractBotIT {
 						.stream(new V4Stream().streamId("ABC123"))));
 
 		getPublicBot().sendToConsumer(in);
+		littleSleep();
 		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
 	}
 
@@ -54,6 +61,7 @@ public class PublicBotIT extends AbstractBotIT {
 						new V4Message().message("<div>hello</div>").data("{}").stream(new V4Stream().streamId("ABC123").streamType("IM")))));
 
 		getPublicBot().sendToConsumer(in);
+		littleSleep();
 		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
 	}
 	
@@ -67,6 +75,7 @@ public class PublicBotIT extends AbstractBotIT {
 								.streamId("ABC123").streamType("ROOM")))));
 
 		getPublicBot().sendToConsumer(in);
+		littleSleep();
 		
 		// we shouldn't see a message sent
 		wireMockRule.verify(0, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
@@ -82,6 +91,7 @@ public class PublicBotIT extends AbstractBotIT {
 								.streamId("ABC123").streamType("ROOM")))));
 
 		getPublicBot().sendToConsumer(in);
+		littleSleep();
 		wireMockRule.verify(1, 
 			WireMock.postRequestedFor(urlPathMatching("/kore"))
 				.withRequestBody(matching(".*\"message\":\\{\"text\":\"hello\"\\}.*")));
@@ -106,6 +116,40 @@ public class PublicBotIT extends AbstractBotIT {
 					
 
 		getPublicBot().sendToConsumer(in);
+		littleSleep();
 		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
+	}
+	
+	private SymphonyStreamHandler getPrivateBot() {
+		return ssh.get(1);
+	}
+
+	@Test
+	public void testSendMessageIMPrivateBot() {
+		V4Event in = new V4Event()
+				.initiator(new V4Initiator()
+						.user(new V4User().email("rob@example.com").displayName("Rob Example").userId(2438923l)))
+				.payload(new V4Payload().messageSent(new V4MessageSent().message(
+						new V4Message().message("<div>hello</div>").data("{}").stream(new V4Stream().streamId("ABC123").streamType("IM")))));
+
+		getPrivateBot().sendToConsumer(in);
+		littleSleep();
+		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/kore2")));
+		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
+	}
+	
+	@Test
+	public void testSendMessageRoomWithSlashPrivateBot() {
+		// the direct bot won't talk in rooms
+		V4Event in = new V4Event()
+				.initiator(new V4Initiator()
+						.user(new V4User().email("rob@example.com").displayName("Rob Example").userId(2438923l)))
+				.payload(new V4Payload().messageSent(new V4MessageSent().message(
+						new V4Message().message("<div>/hello</div>").data("{}").stream(new V4Stream()
+								.streamId("ABC123").streamType("ROOM")))));
+
+		getPrivateBot().sendToConsumer(in);
+		littleSleep();
+		wireMockRule.verify(0, WireMock.postRequestedFor(urlPathMatching("/kore2")));
 	}
 }
