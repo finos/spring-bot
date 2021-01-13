@@ -17,7 +17,6 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.agent.SystemApi;
 
 @ExtendWith(SpringExtension.class)
-
 @SpringBootTest(classes={SymphonyApiConfig.class, SymphonyApiAutowireConfig.class, JerseyApiBuilderConfig.class, ObjectMapperConfig.class})
 @ActiveProfiles({"develop", "crt"})
 public class AgentEndpointJerseyIT {
