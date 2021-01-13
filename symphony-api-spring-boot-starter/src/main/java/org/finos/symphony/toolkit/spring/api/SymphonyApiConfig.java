@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.HealthContributorRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,6 +32,7 @@ import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.bindings.ApiBuilder;
+import com.symphony.api.id.IdentityConfigurationException;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 
@@ -73,15 +76,23 @@ public class SymphonyApiConfig {
 	
 	@Bean(name=SINGLE_BOT_IDENTITY_BEAN)
 	@ConditionalOnMissingBean
+	@ConditionalOnExpression("'${"+SINGLE_BOT_IDENTITY_PROPERTY+".email:}${"+SINGLE_BOT_IDENTITY_PROPERTY+".location:}' != ''" )
 	public SymphonyIdentity botIdentity() throws IOException {
 		SymphonyIdentity id = IdentityProperties.instantiateIdentityFromDetails(resourceLoader, identityDetails(), mapper);
 		
-		if (id != null) {
-			return id;
-		} else {
-			LOG.warn("No identity defined in spring configuration.  Resorting to test identity");
-			return TestIdentityProvider.getTestIdentity();
+		if (id == null) {
+			throw new IdentityConfigurationException("Couldn't create bot identity from properties", null);
 		}
+	
+		return id;
+	}	
+
+	@Bean(name=SINGLE_BOT_IDENTITY_BEAN)
+	@ConditionalOnMissingBean
+	@ConditionalOnExpression("#{T(com.symphony.api.id.testing.TestIdentityProvider).hasTestIdentity()}")
+	public SymphonyIdentity testBotIdentity() throws IOException {
+		LOG.warn("No identity defined in spring configuration.  Resorting to test identity");
+		return TestIdentityProvider.getTestIdentity();
 	}	
 	
 	@Bean(name=API_INSTANCE_FACTORY)

@@ -8,8 +8,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -50,8 +51,8 @@ public class PodAuthControllerByConfigTest extends AbstractTest {
 			@SuppressWarnings("unchecked")
 			@Override
 			public <X> X getApi(Class<X> c) {
-				Assert.assertEquals("http://blah.com/sessionauth", this.url);
-				Assert.assertEquals(AuthenticationApi.class, c);
+				Assertions.assertEquals("http://blah.com/sessionauth", this.url);
+				Assertions.assertEquals(AuthenticationApi.class, c);
 				return (X) authApi;
 			}
 		});

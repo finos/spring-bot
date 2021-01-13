@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>koreai</artifactId>
-	<name>Koreai Support Bridge</name>
+	<name>KoreAI Support Bridge</name>
 	<description>Supports Kore AI Bots Communicating On Symphony</description>
 	<packaging>jar</packaging>
 
@@ -85,11 +85,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
 
 		<!-- testing freemarker templates -->
 		<dependency>
@@ -104,7 +99,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot.version}</version>
         <executions>
             <execution>
                 <goals>

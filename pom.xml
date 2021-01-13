@@ -11,11 +11,11 @@
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
 	<url>https://github.com/finos/symphony-java-toolkit</url>
-	
+
 	<parent>
-	 <groupId>org.finos</groupId>
-	 <artifactId>finos</artifactId>
-	 <version>2</version>
+		<groupId>org.finos</groupId>
+		<artifactId>finos</artifactId>
+		<version>2</version>
 	</parent>
 
 	<modules>
@@ -23,7 +23,7 @@
 		<module>bindings</module>
 		<module>symphony-api-spring-boot-starter</module>
 		<module>symphony-app-spring-boot-starter</module>
-    <module>entity-json</module>
+		<module>entity-json</module>
 		<module>koreai</module>
 		<module>quickfix-json</module>
 		<module>shared-stream-spring-boot-starter</module>
@@ -34,7 +34,7 @@
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
 		<module>teamcity-symphony-integration</module>
-    <module>symphony-maven-build-reporter</module>
+		<module>symphony-maven-build-reporter</module>
 	</modules>
 
 	<properties>
@@ -43,7 +43,7 @@
 		<spring-boot-oauth.version>2.4.0</spring-boot-oauth.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-	  <java.version>1.8</java.version>
+		<java.version>1.8</java.version>
 
 		<!-- this must match the version from the spring boot pom -->
 		<jackson-databind.version>2.10.0</jackson-databind.version>
@@ -93,7 +93,7 @@
 	</developers>
 
 	<scm>
-	  	<developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
+		<developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
 		<connection>scm:git@github.com:finos/symphony-java-toolkit.git</connection>
 		<tag>HEAD</tag>
 		<url>https://github.com/finos/symphony-java-toolkit</url>
@@ -133,8 +133,8 @@
 								<goals>
 									<goal>jar</goal>
 								</goals>
-              </execution>
-            </executions>							
+							</execution>
+						</executions>
 						<configuration> <!-- add this to disable checking -->
 							<doclint>none</doclint>
 							<failOnError>false</failOnError>
@@ -158,65 +158,58 @@
 							<execution>
 								<goals>
 									<goal>prepare-agent</goal>
-                  <goal>prepare-agent-integration</goal>
+									<goal>prepare-agent-integration</goal>
 								</goals>
 							</execution>
- 							<execution>
+							<execution>
 								<id>report</id>
 								<phase>test</phase>
 								<goals>
 									<goal>report</goal>
 								</goals>
 							</execution>
-						  <execution>
-                <id>report-integration</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>report-integration</goal>
-                </goals>
-              </execution>
+							<execution>
+								<id>report-integration</id>
+								<phase>post-integration-test</phase>
+								<goals>
+									<goal>report-integration</goal>
+								</goals>
+							</execution>
 						</executions>
 					</plugin>
-				  <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.18.1</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-                <configuration>
-                 <systemPropertyVariables>
-                    <symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
-                    <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
-                    <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
-                    <proxy>${symphony-proxy}</proxy>
-                  </systemPropertyVariables>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.18.1</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+								<configuration>
+									<systemPropertyVariables>
+										<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
+										<symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
+										<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
+										<proxy>${symphony-proxy}</proxy>
+									</systemPropertyVariables>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
 
 
-  <!-- since we are building
-     the build reporter, this must refer to an earlier, built version -->
- 	<!-- <build>
-		<extensions>
-			<extension>
-				<groupId>org.finos.symphony.toolkit</groupId>
-				<artifactId>symphony-maven-build-reporter</artifactId>
+	<!-- since we are building the build reporter, this must refer to an earlier, 
+		built version -->
+	<!-- <build> <extensions> <extension> <groupId>org.finos.symphony.toolkit</groupId> 
+		<artifactId>symphony-maven-build-reporter</artifactId> <version>4.59.6</version> 
+		</extension> </extensions> </build> -->
 
-				<version>4.59.6</version>
-			</extension>
-		</extensions>
-	</build>  -->
-	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -225,14 +218,14 @@
 				<version>${jackson.version}</version>
 			</dependency>
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-dependencies</artifactId>
-        <version>${spring-boot.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-    </dependency>
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
-    </dependencies>
+		</dependencies>
 	</dependencyManagement>
 </project>

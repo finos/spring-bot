@@ -17,8 +17,9 @@ import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
 import org.finos.symphony.toolkit.spring.app.id.BCCertificateTools;
 import org.finos.symphony.toolkit.spring.app.id.CertificateTools;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -85,8 +86,8 @@ public abstract class AbstractUserDetailsControllerTest extends AbstractTest {
 			@SuppressWarnings("unchecked")
 			@Override
 			public <X> X getApi(Class<X> c) {
-				Assert.assertEquals("https://your.agent.domain:443/pod", this.url);
-				Assert.assertEquals(PodApi.class, c);
+				Assertions.assertEquals("https://your.agent.domain:443/pod", this.url);
+				Assertions.assertEquals(PodApi.class, c);
 				return (X) podApi;
 			}
 		});
