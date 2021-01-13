@@ -1,14 +1,13 @@
 package org.finos.symphony.toolkit.koreai.bot;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.jupiter.api.Test;
-
-import org.springframework.test.context.TestPropertySource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -23,10 +22,6 @@ import com.symphony.api.model.V4User;
 import com.symphony.user.Mention;
 import com.symphony.user.UserId;
 
-@TestPropertySource(properties = {
-	"symphony.koreai.only-addressed=true",
-	"symphony.stream.startImmediately=false"
-})
 public class PublicBotIT extends AbstractBotIT {
 
 	
@@ -42,8 +37,12 @@ public class PublicBotIT extends AbstractBotIT {
 						.formValues(Collections.singletonMap("action", "some button"))
 						.stream(new V4Stream().streamId("ABC123"))));
 
-		ssh.get(0).sendToConsumer(in);
+		getPublicBot().sendToConsumer(in);
 		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
+	}
+
+	private SymphonyStreamHandler getPublicBot() {
+		return ssh.get(0);
 	}
 
 	@Test
@@ -54,7 +53,7 @@ public class PublicBotIT extends AbstractBotIT {
 				.payload(new V4Payload().messageSent(new V4MessageSent().message(
 						new V4Message().message("<div>hello</div>").data("{}").stream(new V4Stream().streamId("ABC123").streamType("IM")))));
 
-		ssh.get(0).sendToConsumer(in);
+		getPublicBot().sendToConsumer(in);
 		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
 	}
 	
@@ -67,7 +66,7 @@ public class PublicBotIT extends AbstractBotIT {
 						new V4Message().message("<div>hello</div>").data("{}").stream(new V4Stream()
 								.streamId("ABC123").streamType("ROOM")))));
 
-		ssh.get(0).sendToConsumer(in);
+		getPublicBot().sendToConsumer(in);
 		
 		// we shouldn't see a message sent
 		wireMockRule.verify(0, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
@@ -82,15 +81,17 @@ public class PublicBotIT extends AbstractBotIT {
 						new V4Message().message("<div>/hello</div>").data("{}").stream(new V4Stream()
 								.streamId("ABC123").streamType("ROOM")))));
 
-		ssh.get(0).sendToConsumer(in);
-		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
+		getPublicBot().sendToConsumer(in);
+		wireMockRule.verify(1, 
+			WireMock.postRequestedFor(urlPathMatching("/kore"))
+				.withRequestBody(matching(".*\"message\":\\{\"text\":\"hello\"\\}.*")));
 	}
 	
 	@Test
 	public void testSendMessageRoomWithMention() throws JsonProcessingException {
 		Mention m = new Mention();
 		m.setId(new ArrayList<>());
-		m.getId().add(new UserId("123"));
+		m.getId().add(new UserId("1234"));
 		EntityJson ej = new EntityJson();
 		ej.put("m1", m);
 		String data = symphonyObjectMapper.writeValueAsString(ej);
@@ -104,7 +105,7 @@ public class PublicBotIT extends AbstractBotIT {
 								.data(data))));
 					
 
-		ssh.get(0).sendToConsumer(in);
+		getPublicBot().sendToConsumer(in);
 		wireMockRule.verify(1, WireMock.postRequestedFor(urlPathMatching("/agent/v4/stream/ABC123/message/create")));
 	}
 }

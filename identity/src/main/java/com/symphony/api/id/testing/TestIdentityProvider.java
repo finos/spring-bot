@@ -26,6 +26,14 @@ public class TestIdentityProvider {
 	public static SymphonyIdentity getTestIdentity() {
 		return getIdentity(TEST_IDENTITY_PROPERTY);
 	}
+	
+	public static boolean hasTestIdentity() {
+		try {
+			return getTestIdentity() != null;
+		} catch (IdentityConfigurationException ice) {
+			return false;
+		}
+	}
 
 	public static SymphonyIdentity getIdentity(String name) {
 		try {

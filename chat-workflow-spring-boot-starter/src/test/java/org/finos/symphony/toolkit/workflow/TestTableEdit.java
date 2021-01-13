@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
@@ -19,11 +18,8 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableD
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.Before;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestTableEdit extends AbstractMockSymphonyTest {
