@@ -27,6 +27,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
+import com.symphony.api.model.User;
 import com.symphony.api.pod.UsersApi;
 
 public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
@@ -62,9 +63,11 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 
 	@Override
 	public SymphonyStreamHandler buildBridge(KoreAIInstanceProperties props) {
+		String email = "--no email--";
 		try {
 			// build KoreAI pipeline
 			ApiInstance apiInstance = symphonyAPIInstance(props);
+			email = apiInstance.getIdentity().getEmail();
 			KoreAIResponseBuilder koreAIResponseBuilder = koreAIResponseBuilder();
 			KoreAIResponseHandler koreAIResponseHandler = responseMessageAdapter(apiInstance, props);
 			KoreAIRequester requester = koreAIRequester(props, koreAIResponseHandler, koreAIResponseBuilder);
@@ -74,7 +77,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 			SymphonyStreamHandler out = sshf.createBean(apiInstance, koreAISymphonyConsumer);
 			return out;
 		} catch (Exception e) {
-			LOG.error("Couldn't construct Kore/Symphony bridge bean", e);
+			LOG.error("Couldn't construct Kore/Symphony bridge bean for "+email, e);
 			return null;
 		}
 		
@@ -103,7 +106,14 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	}
 	
 	public StreamEventConsumer koreAIEventHandler(KoreAIRequester requester, ApiInstance api, KoreAIInstanceProperties props) {
-		return new KoreAIEventHandler(api.getIdentity(), api.getPodApi(UsersApi.class), requester, om, props.isOnlyAddressed());
+		UsersApi usersApi = api.getPodApi(UsersApi.class);
+		User u = usersApi.v1UserGet(api.getIdentity().getEmail(), null, true);
+		long id = 0;
+		if (u != null) {
+			id = u.getId();
+		}
+		
+		return new KoreAIEventHandler(api.getIdentity(), id, requester, om, props.isOnlyAddressed());
 	}
 	
 	public ApiInstance symphonyAPIInstance(KoreAIInstanceProperties props) {

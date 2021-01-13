@@ -1,11 +1,13 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.junit.experimental.theories.Theory;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class LeaderDeathClusterTest extends AbstractMajorityClusterTest {
 
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testClusterLeadership(Configuration c) throws InterruptedException {
 		System.out.println("--------------------------------------");
 		System.out.println("TEST: "+c.size+"  "+c.time+"ms");

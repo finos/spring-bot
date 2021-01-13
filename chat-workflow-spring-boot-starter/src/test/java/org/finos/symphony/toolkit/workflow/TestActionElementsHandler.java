@@ -2,14 +2,9 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.CommandPerformer;
-import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.fixture.TestOb3;
-import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
@@ -19,19 +14,12 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonC
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MethodCallMessageConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
@@ -39,7 +27,6 @@ import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4Initiator;
 import com.symphony.api.model.V4Message;
-import com.symphony.api.model.V4MessageSent;
 import com.symphony.api.model.V4Payload;
 import com.symphony.api.model.V4Stream;
 import com.symphony.api.model.V4SymphonyElementsAction;
@@ -76,7 +63,7 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 	@Autowired
 	CommandPerformer cp;
 	
-	@Before
+	@BeforeEach
 	public void setup() {
 		ejc = new EntityJsonConverter(wf);
 		FormConverter fc = new FormConverter(symphonyRooms);

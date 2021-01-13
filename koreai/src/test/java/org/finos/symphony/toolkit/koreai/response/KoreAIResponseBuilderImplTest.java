@@ -3,8 +3,9 @@ package org.finos.symphony.toolkit.koreai.response;
 import java.io.IOException;
 
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -69,7 +70,7 @@ public class KoreAIResponseBuilderImplTest {
 		String expected = symphonyMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedTree);
 		System.out.println(expected);
 				
-		Assert.assertEquals(expected, out);
+		Assertions.assertEquals(expected, out);
 	}
 
 	public String load(String name) throws IOException {

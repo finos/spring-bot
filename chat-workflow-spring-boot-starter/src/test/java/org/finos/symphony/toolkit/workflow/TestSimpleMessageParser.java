@@ -13,8 +13,9 @@ import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
@@ -30,15 +31,15 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 				"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p><table class=\"pasted-table\"><thead><tr><th>Name</th><th>Age</th><th>Alive</th></tr></thead><tbody><tr><td>Jim</td><td>5</td><td>FALSE</td></tr><tr><td>James</td><td>7</td><td>TRUE</td></tr></tbody></table></p></div>",
 				new EntityJson());
 		
-		Assert.assertEquals(Paragraph.of(Arrays.asList(Word.of("Age"))), c.getNth(PastedTable.class, 0).get().getColumnNames().get(1));
+		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("Age"))), c.getNth(PastedTable.class, 0).get().getColumnNames().get(1));
 
-		Assert.assertEquals(Paragraph.of(Arrays.asList(Word.of("TRUE"))), c.getNth(PastedTable.class, 0).get().getData().get(1).get(2));
+		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("TRUE"))), c.getNth(PastedTable.class, 0).get().getData().get(1).get(2));
 
 	}
 	
 	@Test
 	public void testSimpleMessage() throws Exception {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Message.of(
 				Arrays.asList(
 					Paragraph.of(
@@ -50,7 +51,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void testHelpMessage() throws Exception {
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Message.of(
 					Arrays.stream(new String[] {"help"})
 						.map(s -> Word.of(s))
@@ -61,7 +62,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 	@Test
 	public void testTaggedMessage() throws Exception {
 		EntityJson ej = entityJsonConverter.readValue("{\"0\":{\"id\":[{\"type\":\"com.symphony.user.userId\",\"value\":\"347583113331315\"}],\"type\":\"com.symphony.user.mention\"},\"1\":{\"id\":[{\"type\":\"com.symphony.user.userId\",\"value\":\"345315370604167\"}],\"type\":\"com.symphony.user.mention\"},\"2\":{\"id\":[{\"type\":\"com.symphony.user.userId\",\"value\":\"345315370598706\"}],\"type\":\"com.symphony.user.mention\"}}");
-		Assert.assertEquals(
+		Assertions.assertEquals(
 			Message.of(
 				Arrays.asList(
 					Paragraph.of(Collections.emptyList()),

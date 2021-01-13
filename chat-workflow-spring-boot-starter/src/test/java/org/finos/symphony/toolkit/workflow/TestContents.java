@@ -14,8 +14,9 @@ import org.finos.symphony.toolkit.workflow.content.TagDef;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.content.Tag.Type;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 
 public class TestContents {
 
@@ -61,13 +62,13 @@ public class TestContents {
 
 	protected void doAssertsOnContent(Content td1, Content td2) {
 		doAssertsOnObject(td1, td2);
-		Assert.assertEquals(td1.getText(), td2.getText());
+		Assertions.assertEquals(td1.getText(), td2.getText());
 	}
 
 	protected void doAssertsOnObject(Object td1, Object td2) {
-		Assert.assertEquals(td1, td2);
-		Assert.assertEquals(td1.hashCode(), td2.hashCode());
-		Assert.assertEquals(td1.toString(), td2.toString());
-		Assert.assertNotEquals(td1, "lemon");
+		Assertions.assertEquals(td1, td2);
+		Assertions.assertEquals(td1.hashCode(), td2.hashCode());
+		Assertions.assertEquals(td1.toString(), td2.toString());
+		Assertions.assertNotEquals(td1, "lemon");
 	}
 }

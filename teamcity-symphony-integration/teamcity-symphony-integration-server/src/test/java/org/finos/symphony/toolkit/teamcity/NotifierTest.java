@@ -17,11 +17,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,7 +45,7 @@ import jetbrains.buildServer.web.openapi.PagePlaces;
 import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class NotifierTest {
 
 
@@ -127,22 +130,22 @@ public class NotifierTest {
 	public void testController() throws Exception {
 		// test some load/save of the config properties
 		Config c = controller.getConfig();
-		Assert.assertEquals("symphony.practice.bot1@list.db.com", c.getIdentityProperties().getEmail());
-		Assert.assertEquals(c.getTemplate(), EXPECTED_TEMPLATE);
+		Assertions.assertEquals("symphony.practice.bot1@list.db.com", c.getIdentityProperties().getEmail());
+		Assertions.assertEquals(c.getTemplate(), EXPECTED_TEMPLATE);
 		
 		// test save
 		controller.setConfig(c);
 		Config c2 = controller.getConfig();
 		ObjectMapper om = new ObjectMapper();
-		Assert.assertEquals(om.writeValueAsString(c), om.writeValueAsString(c2));
+		Assertions.assertEquals(om.writeValueAsString(c), om.writeValueAsString(c2));
 		
 		// test doHandle
 		ModelAndView fail = controller.handleInternal(c);
-		Assert.assertNotNull(fail);
+		Assertions.assertNotNull(fail);
 		HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
 		fail.getView().render(fail.getModel(), request, response);
 		
-		Assert.assertTrue(baos.size() > 1000);
+		Assertions.assertTrue(baos.size() > 1000);
 	}
 	
 	@Test
@@ -158,7 +161,7 @@ public class NotifierTest {
 		HttpServletRequest req = Mockito.mock(HttpServletRequest.class);
 		Map<String, Object> model = new HashMap<>();
 		ap.fillModel(model, req);
-		Assert.assertEquals(c.getCertificates(), model.get("certificates"));
+		Assertions.assertEquals(c.getCertificates(), model.get("certificates"));
 	}
 	
 	@Test
