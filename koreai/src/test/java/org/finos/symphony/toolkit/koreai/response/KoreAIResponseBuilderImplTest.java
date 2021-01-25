@@ -56,6 +56,11 @@ public class KoreAIResponseBuilderImplTest {
 	public void test7() throws IOException {
 		cannedTest("7.json");
 	}
+	
+	@Test
+	public void test8() throws IOException {
+		cannedTest("8.json");
+	}
 
 	public void cannedTest(String input) throws IOException, JsonProcessingException, JsonMappingException {
 		// output
