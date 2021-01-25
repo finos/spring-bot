@@ -78,6 +78,7 @@ public class SymphonyApiConfig {
 	@ConditionalOnMissingBean
 	@ConditionalOnExpression("'${"+SINGLE_BOT_IDENTITY_PROPERTY+".email:}${"+SINGLE_BOT_IDENTITY_PROPERTY+".location:}' != ''" )
 	public SymphonyIdentity botIdentity() throws IOException {
+		LOG.warn("Loading identity from "+SINGLE_BOT_IDENTITY_PROPERTY);
 		SymphonyIdentity id = IdentityProperties.instantiateIdentityFromDetails(resourceLoader, identityDetails(), mapper);
 		
 		if (id == null) {
