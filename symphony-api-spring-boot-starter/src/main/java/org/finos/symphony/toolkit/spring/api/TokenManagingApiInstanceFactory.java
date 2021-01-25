@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.ApiWrapper;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
@@ -66,8 +67,8 @@ public class TokenManagingApiInstanceFactory extends AbstractApiInstanceFactory 
 	protected TokenManager createTokenManager(SymphonyIdentity id, PodProperties pp, ApiBuilder sessionAuth, ApiBuilder keyAuth, ApiBuilder relay, ApiBuilder login) {
 		TokenManager tm;
 		if (usingCertificates(id, pp)) {
-			tm = new TokenManager(() -> sessionAuth.getApi(AuthenticationApi.class).v1AuthenticatePost(),
-					() -> keyAuth.getApi(AuthenticationApi.class).v1AuthenticatePost());
+			tm = new TokenManager(() -> sessionAuth.getApi(CertificateAuthenticationApi.class).v1AuthenticatePost(),
+					() -> keyAuth.getApi(CertificateAuthenticationApi.class).v1AuthenticatePost());
 		} else {
 			tm = new TokenManager(
 					() -> login.getApi(com.symphony.api.login.AuthenticationApi.class)

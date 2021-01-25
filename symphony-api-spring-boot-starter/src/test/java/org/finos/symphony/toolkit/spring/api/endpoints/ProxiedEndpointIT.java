@@ -33,6 +33,6 @@ public class ProxiedEndpointIT {
 	@Test
 	public void testAutowire() throws Exception {
 		// enhance this with custom trust store. (maybe even have test with invalid trust store)
-		System.out.println(api.v3UsersGet(null, null, null, id.getCommonName(), true));
+		System.out.println(api.v3UsersGet(null, null, null, id.getCommonName(), true, true));
 	}
 }
