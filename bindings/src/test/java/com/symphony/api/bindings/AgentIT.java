@@ -96,17 +96,18 @@ public class AgentIT extends AbstractTest {
 		@Override
 		public List<V4Event> get() {
 			AckId ackId = new AckId().ackId(lastAck);
+			System.out.println("waiting for messages");
 			V5EventList el = api.readDatafeed(null, null, datafeed.getId(), ackId);
 			System.out.println("Recieved event list containing "+el.getEvents().size()+" events ackId "+el.getAckId());
-			this.lastAck = el.getAckId();
+			this.lastAck = el.getAckId()+"grf";
 			return el.getEvents();
 		}
 		
 		
 	}
 
-	@Ignore("Doesn't appear to work yet on develop pod")
 	@Theory
+	@Ignore
 	public void testStreamsV5(TestClientStrategy s) throws Exception {
 		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
@@ -127,13 +128,15 @@ public class AgentIT extends AbstractTest {
 		t.setDaemon(true);
 		t.start();
 
-		Thread.sleep(1000);
+		Thread.sleep(10000);
 		
 		String toSend = "Trigger Listener."+new Random().nextInt();
 		messageAPi.v4StreamSidMessageCreatePost(null, ROOM, "<messageML>"+toSend+"</messageML>", null, null, null, null, null);
+		System.out.println("Wrote message");
 		
 		// wait for roundtrip
 		while (count[0] == 0) {
+			messageAPi.v4StreamSidMessageCreatePost(null, ROOM, "<messageML>"+toSend+"</messageML>", null, null, null, null, null);
 			Thread.yield();
 		}
 	}

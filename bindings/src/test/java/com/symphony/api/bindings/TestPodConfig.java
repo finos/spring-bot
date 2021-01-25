@@ -3,11 +3,12 @@ package com.symphony.api.bindings;
 
 import org.glassfish.jersey.internal.util.Producer;
 
-import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.cxf.CXFApiBuilder;
 import com.symphony.api.bindings.jersey.JerseyApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
+import com.symphony.api.login.AuthenticationApi;
 import com.symphony.api.model.AuthenticateRequest;
 
 /**
@@ -37,12 +38,12 @@ public class TestPodConfig {
 		protected abstract TokenManager initializeTokenManager();
 
 		@Override
-		public AuthenticationApi getSessionAuthApi() {
+		public CertificateAuthenticationApi getSessionAuthApi() {
 			ConfigurableApiBuilder b = pab.call(); 
 			b.setUrl(SESSION_AUTH_URL);
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
 			b.setKeyManagers(id.getKeyManagers());
-			return b.getApi(AuthenticationApi.class);
+			return b.getApi(CertificateAuthenticationApi.class);
 		}
 
 		@Override
@@ -55,12 +56,12 @@ public class TestPodConfig {
 		}
 
 		@Override
-		public AuthenticationApi getKeyAuthApi() {
+		public CertificateAuthenticationApi getKeyAuthApi() {
 			ConfigurableApiBuilder b = pab.call();
 			b.setUrl(KEY_AUTH_URL);
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
 			b.setKeyManagers(id.getKeyManagers());
-			return b.getApi(AuthenticationApi.class);
+			return b.getApi(CertificateAuthenticationApi.class);
 		}
 
 		@Override
@@ -83,21 +84,21 @@ public class TestPodConfig {
 		}
 
 		@Override
-		public com.symphony.api.login.AuthenticationApi getRSASessionAuthApi() {
+		public AuthenticationApi getRSASessionAuthApi() {
 			ConfigurableApiBuilder b = pab.call();
 			b.setUrl(LOGIN_URL);
 			b.setKeyManagers(id.getKeyManagers());
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
-			return b.getApi(com.symphony.api.login.AuthenticationApi.class);
+			return b.getApi(AuthenticationApi.class);
 		}
 
 		@Override
-		public com.symphony.api.login.AuthenticationApi getRSAKeyAuthApi() {
+		public AuthenticationApi getRSAKeyAuthApi() {
 			ConfigurableApiBuilder b = pab.call();
 			b.setUrl(RELAY_URL);
 			b.setKeyManagers(id.getKeyManagers());
 			b.setProxyDetails(CI_PROXY, null, null, 8080);
-			return b.getApi(com.symphony.api.login.AuthenticationApi.class);
+			return b.getApi(AuthenticationApi.class);
 		}
 		
 		@Override
@@ -113,19 +114,19 @@ public class TestPodConfig {
 		}
 
 		protected TokenManager initializeTokenManager() {
-			AuthenticationApi sessionAuthApi = getSessionAuthApi();
-			AuthenticationApi keyAuthApi = getKeyAuthApi();
+			CertificateAuthenticationApi sessionAuthApi = getSessionAuthApi();
+			CertificateAuthenticationApi keyAuthApi = getKeyAuthApi();
 			TokenManager tm = new TokenManager(() -> sessionAuthApi.v1AuthenticatePost(), () -> keyAuthApi.v1AuthenticatePost()); 
 			return tm;
 		}
 
 		@Override
-		public com.symphony.api.login.AuthenticationApi getRSASessionAuthApi() {
+		public AuthenticationApi getRSASessionAuthApi() {
 			throw new UnsupportedOperationException("CertTestClientStrategy only allows cert Login");
 		}
 
 		@Override
-		public com.symphony.api.login.AuthenticationApi getRSAKeyAuthApi() {
+		public AuthenticationApi getRSAKeyAuthApi() {
 			throw new UnsupportedOperationException("CertTestClientStrategy only allows cert Login");
 		}
 	}
@@ -137,8 +138,8 @@ public class TestPodConfig {
 		}
 		
 		protected TokenManager initializeTokenManager() {
-			com.symphony.api.login.AuthenticationApi sessionAuthApi = getRSASessionAuthApi();
-			com.symphony.api.login.AuthenticationApi keyAuthApi = getRSAKeyAuthApi();
+			AuthenticationApi sessionAuthApi = getRSASessionAuthApi();
+			AuthenticationApi keyAuthApi = getRSAKeyAuthApi();
 			TokenManager tm = new TokenManager(
 					() -> sessionAuthApi.pubkeyAuthenticatePost(
 							new AuthenticateRequest().token(createToken())), 
@@ -157,13 +158,13 @@ public class TestPodConfig {
 		}
 
 		@Override
-		public AuthenticationApi getSessionAuthApi() {
+		public CertificateAuthenticationApi getSessionAuthApi() {
 			throw new UnsupportedOperationException("RSATestClientStrategy only allows RSA Login");
 		}
 
 
 		@Override
-		public AuthenticationApi getKeyAuthApi() {
+		public CertificateAuthenticationApi getKeyAuthApi() {
 			throw new UnsupportedOperationException("RSATestClientStrategy only allows RSA Login");
 		}
 
