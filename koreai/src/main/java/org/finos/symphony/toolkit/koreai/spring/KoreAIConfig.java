@@ -30,8 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Configuration
-//@AutoConfigureAfter({SharedStreamWebConfig.class, SymphonyApiTrustManagersConfig.class })
-//@AutoConfigureBefore({SymphonyApiConfig.class, SharedStreamSingleBotConfig.class})
 @EnableConfigurationProperties({KoreAIProperties.class, SymphonyApiProperties.class})
 @EnableWebMvc
 public class KoreAIConfig {
