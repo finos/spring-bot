@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.ListItem;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
@@ -40,6 +40,25 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 	}
 	
 	@Test
+	public void testWithout() {
+		Word one = Word.of("one");
+		Word two = Word.of("two");
+		Word three = Word.of("three");
+		Paragraph p1 = Paragraph.of(Arrays.asList(one, two, three));
+		Paragraph p2 = Paragraph.of(Arrays.asList(one, three));
+		Paragraph p1_ = Paragraph.of(Arrays.asList(one, two));
+		Paragraph p2_ = Paragraph.of(Arrays.asList(one));
+		Message m1 = Message.of(Arrays.asList(p1, p2));
+		Message m2 = Message.of(Arrays.asList(p1_, p2_));
+		
+		
+		Assertions.assertEquals(
+				m1.without(three),
+				m2);
+	}
+	
+
+	@Test
 	public void testSimpleMessage() throws Exception {
 		Assertions.assertEquals(
 			Message.of(
@@ -61,6 +80,18 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 							.map(s -> Paragraph.of(Collections.singletonList(Word.of(s))))
 							.collect(Collectors.toList())
 						))), smp.parseMessage("<messageML><ul><li>First</li><li>Second</li></ul></messageML>", null));
+	}
+	
+	@Test
+	public void testOrderedListMessage() throws Exception {
+		Assertions.assertEquals(
+			Message.of(
+				Arrays.asList(
+					OrderedList.of(
+						Arrays.stream(new String[] {"First", "Second"})
+							.map(s -> Paragraph.of(Collections.singletonList(Word.of(s))))
+							.collect(Collectors.toList())
+						))), smp.parseMessage("<messageML><ol><li>First</li><li>Second</li></ol></messageML>", null));
 	}
 	
 	@Test

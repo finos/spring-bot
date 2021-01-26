@@ -18,4 +18,5 @@ public interface OrderedContent<C extends Content> extends Content, Iterable<C> 
 		return getContents().iterator();
 	}
 
+	public OrderedContent<C> buildAnother(List<C> contents);
 }

@@ -38,6 +38,12 @@ public interface OrderedList extends OrderedContent<Paragraph> {
 					.map(e -> e.getText())
 					.reduce("", (a, b) -> a + " " + b);
 			}
+			
+
+			@Override
+			public OrderedList buildAnother(List<Paragraph> contents) {
+				return OrderedList.of(contents);
+			}
 		};
 	}
 }

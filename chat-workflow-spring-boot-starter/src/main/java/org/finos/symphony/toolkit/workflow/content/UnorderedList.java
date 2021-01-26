@@ -38,6 +38,12 @@ public interface UnorderedList extends OrderedContent<Paragraph> {
 					.map(e -> e.getText())
 					.reduce("", (a, b) -> a + " " + b);
 			}
+			
+
+			@Override
+			public UnorderedList buildAnother(List<Paragraph> contents) {
+				return UnorderedList.of(contents);
+			}
 		};
 	}
 }

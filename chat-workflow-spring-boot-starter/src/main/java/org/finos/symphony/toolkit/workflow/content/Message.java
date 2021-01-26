@@ -43,6 +43,11 @@ public interface Message extends Paragraph {
 						.map(e -> e.getText())
 						.reduce("", (a, b) -> a + "\n" + b);
 			}
+
+			@Override
+			public Message buildAnother(List<Content> contents) {
+				return of(contents);
+			}
 		};
 	}
 	
