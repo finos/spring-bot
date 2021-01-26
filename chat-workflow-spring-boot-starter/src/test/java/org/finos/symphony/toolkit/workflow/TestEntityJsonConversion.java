@@ -3,21 +3,15 @@ package org.finos.symphony.toolkit.workflow;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb3;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
