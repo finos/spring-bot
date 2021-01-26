@@ -143,7 +143,7 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 		}
 	}
 	
-	public static final Pattern OPTION = Pattern.compile("[a-z]\\) (.*)");
+	public static final Pattern OPTION = Pattern.compile("^[a-z]\\) (.*)$");
 
 	protected ObjectNode convertToMessageMlAndOptions(ObjectNode n) {
 		TextNode tn = (TextNode) n.get(TEXT);

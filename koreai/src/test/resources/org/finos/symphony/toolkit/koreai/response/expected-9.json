@@ -1,0 +1,13 @@
+{
+  "type" : "org.finos.symphony.toolkit.koreai.response.koreAIResponse",
+  "version" : "1.0",
+  "original" : {
+    "text" : "This is something that [easily](https://thing.com) gets turned into an option"
+  },
+  "processed" : [ {
+    "text" : "This is something that [easily](https://thing.com) gets turned into an option",
+    "template_type" : "message",
+    "options" : [ ],
+    "messageML" : "<p>This is something that <a href=\"https://thing.com\">easily</a> gets turned into an option</p>\n"
+  } ]
+}
