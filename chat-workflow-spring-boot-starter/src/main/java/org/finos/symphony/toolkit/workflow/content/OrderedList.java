@@ -2,13 +2,13 @@ package org.finos.symphony.toolkit.workflow.content;
 
 import java.util.List;
 
-public interface Paragraph extends OrderedContent<Content> {
+public interface OrderedList extends OrderedContent<Paragraph> {
 
-	public static Paragraph of(List<Content> c) {
-		return new Paragraph() {
+	public static OrderedList of(List<Paragraph> c) {
+		return new OrderedList() {
 
 			@Override
-			public List<Content> getContents() {
+			public List<Paragraph> getContents() {
 				return c;
 			}
 
@@ -19,8 +19,8 @@ public interface Paragraph extends OrderedContent<Content> {
 
 			@Override
 			public boolean equals(Object obj) {
-				if (obj instanceof Paragraph) {
-					return getContents().equals(((Paragraph) obj).getContents());
+				if (obj instanceof OrderedList) {
+					return getContents().equals(((OrderedList) obj).getContents());
 				} else {
 					return false;
 				}
@@ -28,7 +28,7 @@ public interface Paragraph extends OrderedContent<Content> {
 
 			@Override
 			public String toString() {
-				return "Paragraph ["+c.toString()+"]";
+				return "OrderedList ["+c.toString()+"]";
 			}
 
 

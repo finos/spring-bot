@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Content;
+import org.finos.symphony.toolkit.workflow.content.ListItem;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.PastedTable;
+import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
@@ -47,6 +49,18 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 							.map(s -> Word.of(s))
 							.collect(Collectors.toList())
 						))), smp.parseMessage("<messageML><p>this is it</p></messageML>", null));
+	}
+	
+	@Test
+	public void testUnorderedListMessage() throws Exception {
+		Assertions.assertEquals(
+			Message.of(
+				Arrays.asList(
+					UnorderedList.of(
+						Arrays.stream(new String[] {"First", "Second"})
+							.map(s -> Paragraph.of(Collections.singletonList(Word.of(s))))
+							.collect(Collectors.toList())
+						))), smp.parseMessage("<messageML><ul><li>First</li><li>Second</li></ul></messageML>", null));
 	}
 	
 	@Test
