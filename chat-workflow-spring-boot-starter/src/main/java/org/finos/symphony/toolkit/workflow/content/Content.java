@@ -16,8 +16,8 @@ public interface Content {
 	public default <X extends Content> List<X> only(Class<X> x) {
 		if (x.isAssignableFrom(this.getClass())) {
 			return Collections.singletonList((X) this);
-		} else if (this instanceof Iterable<?>) {
-			return StreamSupport.stream(((Iterable<Content>) this).spliterator(), false)
+		} else if (this instanceof OrderedContent) {
+			return StreamSupport.stream(((OrderedContent<Content>) this).spliterator(), false)
 				.flatMap(i -> i.only(x).stream())
 				.collect(Collectors.toList());
 		} else {
@@ -31,5 +31,13 @@ public interface Content {
 		} catch (Exception e) {
 			return Optional.empty();
 		}
+	}
+	
+	static class Parts<X> {
+		
+		X removed;
+		
+		
+		
 	}
 }
