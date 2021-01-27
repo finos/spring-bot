@@ -23,8 +23,9 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableE
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FieldConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
@@ -89,6 +90,9 @@ public class SymphonyWorkflowConfig {
 	
 	@Autowired
 	CommandPerformer cp;
+	
+	@Autowired
+	List<FieldConverter> converters;
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -160,7 +164,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public FormMessageMLConverter formMessageMLConverter() {
-		return new FreemarkerFormMessageMLConverter(symphonyRooms(), resourceLoader);
+		return new FreemarkerFormMessageMLConverter(resourceLoader, converters);
 	}
 	
 	@Bean

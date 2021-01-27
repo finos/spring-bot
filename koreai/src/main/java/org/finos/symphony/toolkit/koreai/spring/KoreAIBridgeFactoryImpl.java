@@ -86,6 +86,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	public KoreAIResponseHandler responseMessageAdapter(ApiInstance api, KoreAIInstanceProperties properties) throws IOException {
 		return new KoreAIResponseHandlerImpl(api.getAgentApi(MessagesApi.class), rl, 
 				properties.isSkipEmptyResponses(), 
+				properties.isSendErrorsToSymphony(),
 				om,
 				koreAIProperties.getTemplatePrefix());	
 	}

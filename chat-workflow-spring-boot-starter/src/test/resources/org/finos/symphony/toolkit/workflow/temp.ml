@@ -1,4 +1,4 @@
-
+<messageML>
 <#-- starting template -->
 <form 
  id="org.finos.symphony.toolkit.workflow.fixture.TestObjects">
@@ -10,9 +10,7 @@
    <td style="text-align:center;" ><b>askAxed</b></td>
    <td ><b>creator</b></td>
    <td style="text-align: right;"><b>bidQty</b></td>
-   <td style="text-align: right;"><b>askQty</b></td>
-  <td style="text-align:center;" ><button name="items.table-delete-rows">Delete</button></td>
-  <td style="text-align:center;" ><button name="items.table-add-row">New</button></td>
+   <td style="text-align: right;"><b>askQty</b></td><td style="text-align:center;" ><button name="items.table-delete-rows">Delete</button></td><td style="text-align:center;" ><button name="items.table-add-row">New</button></td>
  </tr></thead><tbody>
  <#list entity.formdata.items as iA>
  <tr>
@@ -47,9 +45,7 @@
   <span class="tempo-text-color--red">${entity.errors.contents['askQty']!''}</span>
   <text-field 
    name="askQty"
-   placeholder="ask qty">${iA.askQty!''}</text-field></td>
-  <td style="text-align:center;" ><checkbox name="items.${iA?index}.selected" /></td>
-  <td style="text-align:center;" ><button name="items[${iA?index}].table-edit-row">Edit</button></td>
+   placeholder="ask qty">${iA.askQty!''}</text-field></td><td style="text-align:center;" ><checkbox name="items.${iA?index}.selected" /></td><td style="text-align:center;" ><button name="items[${iA?index}].table-edit-row">Edit</button></td>
  </tr>
  </#list>
  </tbody></table>
@@ -62,3 +58,4 @@
   </#list></p>
 </form>
 <#-- ending template -->
+</messageML>

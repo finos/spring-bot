@@ -28,6 +28,16 @@ public class KoreAIInstanceProperties {
 	private Addressed onlyAddressed = Addressed.FALSE;
 	
 	private IdentityProperties symphonyBot;
+	
+	private boolean sendErrorsToSymphony = false;
+
+	public boolean isSendErrorsToSymphony() {
+		return sendErrorsToSymphony;
+	}
+
+	public void setSendErrorsToSymphony(boolean sendErrorsToSymphony) {
+		this.sendErrorsToSymphony = sendErrorsToSymphony;
+	}
 
 	public IdentityProperties getSymphonyBot() {
 		return symphonyBot;

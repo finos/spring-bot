@@ -30,6 +30,7 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
 
     private final MessagesApi messagesApi;
     private final boolean skipEmptyAnswers;
+    private final boolean sendErrorsToSymphony;
     private ResourceLoader rl;
     private ObjectMapper symphonyObjectMapper;
     private String templatePrefix;
@@ -37,10 +38,12 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
     public KoreAIResponseHandlerImpl(MessagesApi messagesApi, 
     		ResourceLoader rl, 
     		boolean skipEmptyAnswers, 
+    		boolean sendErrorsToSymphony,
     		ObjectMapper symphonyObjectMapper,
     		String templatePrefix) {
         this.messagesApi = messagesApi;
         this.skipEmptyAnswers = skipEmptyAnswers;
+        this.sendErrorsToSymphony = sendErrorsToSymphony;
         this.rl = rl;
         this.symphonyObjectMapper = symphonyObjectMapper;
         this.templatePrefix = templatePrefix;
@@ -98,11 +101,19 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
     	String json;
 		try {
 			json = symphonyObjectMapper.writeValueAsString(out);
-		} catch (JsonProcessingException e) {
+			messagesApi.v4StreamSidMessageCreatePost(null, to.getRoomStreamID(), template, json, null, null, null, null);
+		} catch (Exception e) {
+			if (sendErrorsToSymphony) {
+				sendErrorToSymphony(e, to.getRoomStreamID());
+			}
 			throw new RuntimeException("Couldn't prepare JSON", e);
 		}
 		
-		messagesApi.v4StreamSidMessageCreatePost(null, to.getRoomStreamID(), template, json, null, null, null, null);
+	}
+
+	private void sendErrorToSymphony(Exception e, String roomStreamID) {
+		String error = "<messageML><p>KoreAI Bridge Processing Error:</p><code>"+e.getMessage()+"</code></messageML>";
+		messagesApi.v4StreamSidMessageCreatePost(null, roomStreamID, error, null, null, null, null, null);
 	}
 
 	

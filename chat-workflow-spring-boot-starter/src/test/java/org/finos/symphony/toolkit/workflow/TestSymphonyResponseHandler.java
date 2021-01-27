@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.util.List;
+
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
@@ -13,8 +15,9 @@ import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FieldConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
 import org.junit.jupiter.api.Assertions;
@@ -46,9 +49,12 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	@Autowired
 	ResourceLoader rl;
 	
+	@Autowired
+	List<FieldConverter> fieldConverters;
+	
 	@BeforeEach
 	public void setup() {
-		responseHandler = new SymphonyResponseHandler(messagesApi, new FreemarkerFormMessageMLConverter(rooms, rl), entityJsonConverter, rooms, ah);
+		responseHandler = new SymphonyResponseHandler(messagesApi, new FreemarkerFormMessageMLConverter(rl, fieldConverters), entityJsonConverter, rooms, ah);
 		responseHandler.setOutputTemplates(true);
 	}
 	
