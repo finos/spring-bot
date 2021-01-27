@@ -2,7 +2,6 @@ package org.finos.symphony.toolkit.stream.single;
 
 import java.util.List;
 
-import org.finos.symphony.toolkit.spring.api.ApiBeanRegistration;
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.SharedStreamProperties;
@@ -12,21 +11,16 @@ import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig.Symph
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.SearchStrategy;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.symphony.api.pod.SystemApi;
-
 /**
- * This config applies when you are running with a single bot instance, and a 
- * single instance of {@link StreamEventConsumer}.
+ * This config applies when you are running with a single bot instance, and one or more instances of {@link StreamEventConsumer}.
  *   
  * This is not always the case, since symphony-api-spring-boot-starter is capable of supporting multiple bots too.
  * 
@@ -59,8 +53,8 @@ public class SharedStreamSingleBotConfig {
 		LOG.debug("StreamEventConsumers: "+(consumers == null ? 0 : consumers.size()));
 		LOG.debug("SymphonyAPIs: "+(symphonyApis == null ? 0 : symphonyApis.size()));
 		
-		if ((hasOne(consumers)) && (hasOne(symphonyApis))) {
-			SymphonyStreamHandler ssh = streamHandlerFactory.createBean(symphonyApis.get(0), consumers.get(0));
+		if ((hasAtLeastOne(consumers)) && (hasOne(symphonyApis))) {
+			SymphonyStreamHandler ssh = streamHandlerFactory.createBean(symphonyApis.get(0), consumers);
 			return ssh;
 		} else {
 			LOG.debug("Not initializing SharedStreamSingleBotConfig (needs to be one of each)");
@@ -70,6 +64,10 @@ public class SharedStreamSingleBotConfig {
 
 	private boolean hasOne(List<?> l) {
 		return (l != null) && (l.size() == 1);
+	}
+	
+	private boolean hasAtLeastOne(List<?> l) {
+		return (l != null) && (l.size() >= 1);
 	}
 
 }

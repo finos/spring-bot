@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.stream.handler;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.ws.rs.BadRequestException;
@@ -43,6 +44,28 @@ public class SymphonyStreamHandler {
 			start();
 		}
 		this.instance = api;
+	}
+	
+	public SymphonyStreamHandler(ApiInstance api,
+			List<? extends Consumer<V4Event>> eventConsumers, 
+			Consumer<Exception> exceptionHandler, boolean start) {
+		this(api, multiConsumer(eventConsumers), exceptionHandler, start);
+	}
+
+	/**
+	 * The multi-consumer passes each event to a list of consumers.  If any fails, the rest of the consumers in the
+	 * list will not get the message.
+	 */
+	private static Consumer<V4Event> multiConsumer(List<? extends Consumer<V4Event>> eventConsumers) {
+		return new Consumer<V4Event>() {
+
+			@Override
+			public void accept(V4Event t) {
+				for (Consumer<V4Event> consumer : eventConsumers) {
+					consumer.accept(t);
+				}
+			}
+		};
 	}
 
 	/**
