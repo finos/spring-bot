@@ -3,18 +3,17 @@ package org.finos.symphony.toolkit.stream.cluster;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.voting.MajorityDecider;
 import org.finos.symphony.toolkit.stream.fixture.TestClusterMember;
-import org.junit.experimental.theories.DataPoints;
 
 public abstract class AbstractMajorityClusterTest extends AbstractClusterTest {
 
 	private static final int LONGEST_TIMEOUT = 250;
 
-	@DataPoints
-	public static Configuration[] setupConfigurations() {
+	public static Stream<Configuration> setupConfigurations() {
 		List<Configuration> out = new ArrayList<>();
 		for (int i = 1; i <= 7; i=i+2) {
 			for (int j = 100; j < LONGEST_TIMEOUT; j=j+50) {
@@ -22,7 +21,7 @@ public abstract class AbstractMajorityClusterTest extends AbstractClusterTest {
 			}
 		}
 		
-		return (Configuration[]) out.toArray(new Configuration[out.size()]);
+		return out.stream();
 	}
 
 	@Override

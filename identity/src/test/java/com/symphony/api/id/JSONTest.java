@@ -2,13 +2,10 @@ package com.symphony.api.id;
 
 import java.io.IOException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.api.id.PemSymphonyIdentity;
-import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.id.json.SymphonyIdentityModule;
 
 public class JSONTest {
 
@@ -23,12 +20,12 @@ public class JSONTest {
 		
 		String json1 = om.writeValueAsString(in);
 		String expected = StreamHelp.asString(this.getClass().getResourceAsStream("/pemId.json"));
-		Assert.assertEquals(expected, json1);
+		Assertions.assertEquals(expected, json1);
 	
 		SymphonyIdentity out = om.readValue(json1, SymphonyIdentity.class);
-		Assert.assertEquals(in.getPrivateKey(), out.getPrivateKey());
-		Assert.assertEquals(in.getCertificateChain()[0], out.getCertificateChain()[0]);
-		Assert.assertEquals(in.getCommonName(), out.getCommonName());
-		Assert.assertEquals(in.getEmail(), out.getEmail());
+		Assertions.assertEquals(in.getPrivateKey(), out.getPrivateKey());
+		Assertions.assertEquals(in.getCertificateChain()[0], out.getCertificateChain()[0]);
+		Assertions.assertEquals(in.getCommonName(), out.getCommonName());
+		Assertions.assertEquals(in.getEmail(), out.getEmail());
 	}
 }

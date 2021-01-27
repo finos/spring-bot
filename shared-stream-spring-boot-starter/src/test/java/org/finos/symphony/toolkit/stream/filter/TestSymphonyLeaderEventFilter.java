@@ -11,8 +11,9 @@ import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.log.LogMessageHandlerImpl;
 import org.finos.symphony.toolkit.stream.log.LogMessageType;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4Message;
@@ -91,12 +92,12 @@ public class TestSymphonyLeaderEventFilter {
 		
 		// check that each consumer has the right number of messages
 		consumers.forEach(c -> {
-			Assert.assertEquals(50, c.collection.size());
+			Assertions.assertEquals(50, c.collection.size());
 		});
 		
 		// make sure we logged the participants correctly too
 		// this will receive one message from each leader change, by 4 listeners.
-		Assert.assertEquals(4 * 8, participantMessages.size());
+		Assertions.assertEquals(4 * 8, participantMessages.size());
 	}
 
 

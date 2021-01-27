@@ -8,14 +8,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.fixture.Connectivity;
 import org.finos.symphony.toolkit.stream.fixture.TestClusterMember;
 import org.finos.symphony.toolkit.stream.fixture.TestNetwork;
-import org.junit.Before;
-import org.junit.experimental.theories.Theories;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.LoggerFactory;
 
 import ch.qos.logback.classic.Level;
@@ -27,10 +24,9 @@ import ch.qos.logback.classic.Logger;
  * @author robmoffat
  *
  */
-@RunWith(Theories.class)
 public abstract class AbstractClusterTest {
 	
-	@Before
+	@BeforeEach
 	public void setupLogLevel() {
 		((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(Level.WARN);
 	}
@@ -65,6 +61,12 @@ public abstract class AbstractClusterTest {
 
 		int size;
 		int time;
+
+		@Override
+		public String toString() {
+			return "Configuration [size=" + size + ", time=" + time + "]";
+		}
+
 	}
 	
 	public Setup setupNetwork(Configuration c) {

@@ -9,8 +9,9 @@ import java.util.List;
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
 import org.finos.symphony.toolkit.spring.app.pods.info.PodInfo;
 import org.finos.symphony.toolkit.spring.app.pods.info.PodInfoStore;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -38,11 +39,11 @@ public class PodInfoControllerTest extends AbstractTest {
 		Mockito.verify(store).setPodInfo(args.capture());
 		
 		List<PodInfo> vals = args.getAllValues();
-		Assert.assertEquals(1, vals.size());
-		Assert.assertEquals("9999", vals.get(0).getCompanyId());
-		Assert.assertEquals("cert-app-auth-example", vals.get(0).getAppId());
-		Assert.assertEquals("https://your.pod.domain:8444/sessionauth", vals.get(0).getPayload().getSessionAuthUrl());
-		Assert.assertEquals("appEnabled", vals.get(0).getEventType());
+		Assertions.assertEquals(1, vals.size());
+		Assertions.assertEquals("9999", vals.get(0).getCompanyId());
+		Assertions.assertEquals("cert-app-auth-example", vals.get(0).getAppId());
+		Assertions.assertEquals("https://your.pod.domain:8444/sessionauth", vals.get(0).getPayload().getSessionAuthUrl());
+		Assertions.assertEquals("appEnabled", vals.get(0).getEventType());
 		
 	}
 	

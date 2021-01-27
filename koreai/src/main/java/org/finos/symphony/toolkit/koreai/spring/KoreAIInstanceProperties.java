@@ -9,6 +9,15 @@ import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
  *
  */
 public class KoreAIInstanceProperties {
+	
+	/**
+	 * TRUE : in a room, bot responds only to messages addressed to it <br/>
+	 * FALSE:  in a room, bot responds to all messages<br/>
+	 * DIRECT: bot doesn't respond to messages in a room <br/>
+	 */
+	enum Addressed { 
+		TRUE, FALSE, DIRECT 
+	}
 
 	private String jwt;
 
@@ -16,7 +25,7 @@ public class KoreAIInstanceProperties {
 
 	private boolean skipEmptyResponses = false;
 	
-	private boolean onlyAddressed = false;
+	private Addressed onlyAddressed = Addressed.FALSE;
 	
 	private IdentityProperties symphonyBot;
 
@@ -53,11 +62,11 @@ public class KoreAIInstanceProperties {
 		this.skipEmptyResponses = skipEmptyResponses;
 	}
 
-	public boolean isOnlyAddressed() {
+	public Addressed isOnlyAddressed() {
 		return onlyAddressed;
 	}
 
-	public void setOnlyAddressed(boolean onlyAddressed) {
+	public void setOnlyAddressed(Addressed onlyAddressed) {
 		this.onlyAddressed = onlyAddressed;
 	}
 	

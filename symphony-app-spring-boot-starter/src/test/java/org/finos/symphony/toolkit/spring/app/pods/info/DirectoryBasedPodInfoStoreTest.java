@@ -7,8 +7,9 @@ import java.util.Arrays;
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
 import org.finos.symphony.toolkit.spring.app.pods.info.PodInfo;
 import org.finos.symphony.toolkit.spring.app.pods.info.PodInfoStore;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
@@ -36,8 +37,8 @@ public class DirectoryBasedPodInfoStoreTest extends AbstractTest {
 		
 		PodInfo out = store.getPodInfo("9999");
 		
-		Assert.assertEquals(om.writeValueAsString(in), om.writeValueAsString(out));
-		Assert.assertEquals(Arrays.asList("9999"), store.getKnownPodIds());
+		Assertions.assertEquals(om.writeValueAsString(in), om.writeValueAsString(out));
+		Assertions.assertEquals(Arrays.asList("9999"), store.getKnownPodIds());
 		
 		
 	}

@@ -14,7 +14,6 @@ import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthContributorRegistry;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.HealthIndicatorRegistry;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.bindings.ApiBuilder;

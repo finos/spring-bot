@@ -84,3 +84,15 @@
  - Fixing missing links
  - Better factoring of Shared Streams
  - Minor fixes to chat workflow
+
+## 7th January 2021
+
+ - Some improvements to POM struture to close whitesource issues
+ - Bumped spring dependencies
+ 
+## 13th January 2021
+
+ - Upgraded to JUnit 5.
+ - Fixed Code Coverage Report.
+ - Fixed KoreAI Issues (#122)
+ - Fixed Chat Workflow Bug (#124)

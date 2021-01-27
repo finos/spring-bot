@@ -9,21 +9,23 @@ import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
 import org.finos.symphony.toolkit.spring.api.TestApplication;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
 import com.symphony.api.id.PemSymphonyIdentity;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
+
 @SpringBootTest(
 		classes={TestApplication.class})
-@ActiveProfiles("crt")
+@ActiveProfiles({"crt", "p12idtest"})
 public class PemTrustStoreConfigTest {
 
 	@Autowired
@@ -35,7 +37,7 @@ public class PemTrustStoreConfigTest {
 	@Test
 	public void checkPemCertificatesWork() throws Exception {
 		TrustManager[]  tm = tmf.getTrustManagers();
-		Assert.assertEquals(1, tm.length);
+		Assertions.assertEquals(1, tm.length);
 		X509TrustManager t = (X509TrustManager) tm[0];
 
 		InputStream so = this.getClass().getResourceAsStream("/stackoverflow.cer");

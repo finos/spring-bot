@@ -13,8 +13,9 @@ import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -45,7 +46,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 		compare(out, "{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObject\",\"version\":\"1.0\",\"isin\":\"83274239874\",\"bidAxed\":true,\"askAxed\":true,\"creator\":\"rob@example.com\",\"bidQty\":234786,\"askQty\":2138}}");
 		
 		TestObject b = (TestObject) converter.readWorkflowValue(out);
-		Assert.assertEquals(a, b);
+		Assertions.assertEquals(a, b);
 	}
 
 	private void compare(String out, String expected) throws JsonProcessingException, JsonMappingException {
@@ -55,7 +56,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 		JsonNode joOut = om.readTree(out);
 		JsonNode joExpected = om.readTree(expected);
 
-		Assert.assertEquals(joOut, joExpected);
+		Assertions.assertEquals(joOut, joExpected);
 	}
 
 	@Test
@@ -71,7 +72,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 				out);
 
 		TestObjects b = (TestObjects) converter.readWorkflowValue(out);
-		Assert.assertEquals(a, b);
+		Assertions.assertEquals(a, b);
 	}
 
 	@Test
@@ -83,7 +84,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 		compare(out, "{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testOb3\",\"version\":\"1.0\",\"r\":{\"type\":\"org.finos.symphony.toolkit.workflow.content.roomDef\",\"version\":\"1.0\",\"roomName\":\"abc\",\"roomDescription\":\"123\",\"pub\":true,\"id\":null},\"u\":{\"type\":\"org.finos.symphony.toolkit.workflow.content.userDef\",\"version\":\"1.0\",\"name\":\"Robert Moffat\",\"id\":null,\"tagType\":\"USER\",\"address\":\"rbo@kjite9.com\"},\"someText\":\"SOme message\"}}");
 
 		TestOb3 b = (TestOb3) converter.readWorkflowValue(out);
-		Assert.assertEquals(a1, b);
+		Assertions.assertEquals(a1, b);
 	}
 
 }

@@ -1,82 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.finos.symphony.toolkit</groupId>
-    <artifactId>teamcity-symphony-integration</artifactId>
-    <version>5.59.2-SNAPSHOT</version>
-  </parent>
-  
-  <artifactId>teamcity-symphony-integration-server</artifactId>
-  <packaging>jar</packaging>
-  <dependencies>
+	<parent>
+		<groupId>org.finos.symphony.toolkit</groupId>
+		<artifactId>teamcity-symphony-integration</artifactId>
+		<version>5.59.5-SNAPSHOT</version>
+	</parent>
 
-    <dependency>
-      <groupId>org.jetbrains.teamcity</groupId>
-      <artifactId>server-api</artifactId>
-      <version>${teamcity-version}</version>
-      <scope>provided</scope>
-    </dependency>
+	<artifactId>teamcity-symphony-integration-server</artifactId>
+	<packaging>jar</packaging>
+	<dependencies>
 
-    <dependency>
-      <groupId>org.jetbrains.teamcity</groupId>
-      <artifactId>tests-support</artifactId>
-      <version>${teamcity-version}</version>
-      <scope>test</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.apache.cxf</groupId>
-      <artifactId>cxf-rt-rs-client</artifactId>
-      <version>3.3.4</version>
-      <scope>compile</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.finos.symphony.toolkit</groupId>
-      <artifactId>entity-json</artifactId>
-      <version>5.59.2-SNAPSHOT</version>
-    </dependency>
-  
-    <dependency>
-      <groupId>org.finos.symphony.toolkit</groupId>
-      <artifactId>symphony-api-spring-boot-starter</artifactId>
-      <version>5.59.2-SNAPSHOT</version>
-      <!-- this stops us pulling in spring boot, which seems to cause
-           a classloading issue for teamcity -->
-      <exclusions>
-        <exclusion>
-          <groupId>org.springframework.boot</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
-    <!-- For Testing -->
-    <dependency>
+		<dependency>
+			<groupId>org.jetbrains.teamcity</groupId>
+			<artifactId>server-api</artifactId>
+			<version>${teamcity-version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jetbrains.teamcity</groupId>
+			<artifactId>tests-support</artifactId>
+			<version>${teamcity-version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-rs-client</artifactId>
+			<version>3.3.4</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>entity-json</artifactId>
+			<version>5.59.5-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>symphony-api-spring-boot-starter</artifactId>
+			<version>5.59.5-SNAPSHOT</version>
+			<!-- this stops us pulling in spring boot, which seems to cause a classloading 
+				issue for teamcity -->
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- For Testing -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
       <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>3.3.3</version>
+      <artifactId>mockito-junit-jupiter</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13.1</version>
-      <scope>test</scope>
-    </dependency>
-    
-    <!-- Fixes  -->
- 
-  </dependencies>
-  
-  <repositories>
-    <repository>
-      <id>JetBrains</id>
-      <url>https://download.jetbrains.com/teamcity-repository</url>
-    </repository>
-  </repositories>
-  
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- Fixes -->
+
+	</dependencies>
+
+	<repositories>
+		<repository>
+			<id>JetBrains</id>
+			<url>https://download.jetbrains.com/teamcity-repository</url>
+		</repository>
+	</repositories>
+
 
 </project>

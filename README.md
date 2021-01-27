@@ -118,7 +118,12 @@ This module provides a one-stop-shop for constructing work-flows in Java.  It is
  - [Demo Poll Bot](demos/poll-bot/README.md)
  - [Demo To-Do List Bot](demos/todo-bot/README.md)
  - [Demo Claim Bot](demos/claim-bot/README.md)
-  
+ 
+## Kore-AI Bridge
+
+This is a Spring Boot App that acts as a middleman between a Symphony bot and a KoreAI bot, allowing you to expose your KoreAI bot as a bot on Symphony.  [Kore.AI](https://kore.ai/) is a low code/no code environment for building chat bots.
+
+ - [View the README](koreai/README.md)
 
 ## License
 

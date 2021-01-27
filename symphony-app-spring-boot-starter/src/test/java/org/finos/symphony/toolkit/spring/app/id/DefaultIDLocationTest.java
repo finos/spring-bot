@@ -3,9 +3,9 @@ package org.finos.symphony.toolkit.spring.app.id;
 import java.io.File;
 
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.TestPropertySource;
@@ -21,7 +21,7 @@ import com.symphony.api.id.SymphonyIdentity;
 		"symphony.app.identity.commonName=crazyAppId"})
 public class DefaultIDLocationTest extends AbstractTest {
 
-	@BeforeClass
+	@BeforeAll
 	public static void cleanUp() {
 		deleteFile();
 	}
@@ -32,8 +32,8 @@ public class DefaultIDLocationTest extends AbstractTest {
 	
 	@Test
 	public void testIdentityGeneration() throws Exception {
-		Assert.assertEquals("crazyAppId", id.getCommonName());
-		Assert.assertTrue(new File("./crazyAppId.json").exists());
+		Assertions.assertEquals("crazyAppId", id.getCommonName());
+		Assertions.assertTrue(new File("./crazyAppId.json").exists());
 		deleteFile();
 	}
 

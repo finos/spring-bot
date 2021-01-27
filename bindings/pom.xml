@@ -9,7 +9,7 @@
   <parent>
     <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>symphony-java-toolkit</artifactId>
-    <version>5.59.2-SNAPSHOT</version>
+    <version>5.59.5-SNAPSHOT</version>
   </parent>
 
   <properties>
@@ -209,13 +209,11 @@ import com.symphony.api.model.AuthenticateRequest;
     <dependency>
       <groupId>com.fasterxml.jackson.jaxrs</groupId>
       <artifactId>jackson-jaxrs-json-provider</artifactId>
-      <version>${jackson.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>jakarta.ws.rs</groupId>
       <artifactId>jakarta.ws.rs-api</artifactId>
-      <version>2.1.5</version>
       <scope>compile</scope>
     </dependency>
 
@@ -231,25 +229,21 @@ import com.symphony.api.model.AuthenticateRequest;
     <dependency>
       <groupId>org.glassfish.jersey.core</groupId>
       <artifactId>jersey-client</artifactId>
-      <version>2.28</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.inject</groupId>
       <artifactId>jersey-hk2</artifactId>
-      <version>2.28</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.connectors</groupId>
       <artifactId>jersey-apache-connector</artifactId>
-      <version>2.28</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.media</groupId>
       <artifactId>jersey-media-multipart</artifactId>
-      <version>2.28</version>
       <scope>provided</scope>
     </dependency>
 
@@ -257,13 +251,19 @@ import com.symphony.api.model.AuthenticateRequest;
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>identity</artifactId>
-      <version>5.59.2-SNAPSHOT</version>
+      <version>5.59.5-SNAPSHOT</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- excluded by spring bom, but we need it for jersey-apache-connector -->
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.2</version>
       <scope>test</scope>
     </dependency>
 

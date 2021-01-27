@@ -9,7 +9,8 @@ import java.util.Map;
 import org.apache.maven.model.Developer;
 import org.finos.symphony.toolkit.maven.ProxyingWrapper;
 import org.finos.symphony.toolkit.maven.SymphonyMessageSender;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

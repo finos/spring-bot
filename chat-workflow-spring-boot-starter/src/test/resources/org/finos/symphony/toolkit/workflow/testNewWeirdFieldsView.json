@@ -9,12 +9,7 @@
     },
     "c" : "B",
     "b" : true,
-    "a" : {
-      "name" : "bbb",
-      "id" : "28374682376",
-      "tagType" : "USER",
-      "address" : "v@example.com"
-    },
+    "a" : null,
     "someUser" : {
       "type" : "org.finos.symphony.toolkit.workflow.content.userDef",
       "version" : "1.0",

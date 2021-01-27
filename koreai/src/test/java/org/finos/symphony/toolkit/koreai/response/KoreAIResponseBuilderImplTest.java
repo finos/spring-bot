@@ -3,16 +3,15 @@ package org.finos.symphony.toolkit.koreai.response;
 import java.io.IOException;
 
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
-import org.json.JSONObject;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.google.common.base.Charsets;
 
@@ -71,7 +70,7 @@ public class KoreAIResponseBuilderImplTest {
 		String expected = symphonyMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedTree);
 		System.out.println(expected);
 				
-		Assert.assertEquals(expected, out);
+		Assertions.assertEquals(expected, out);
 	}
 
 	public String load(String name) throws IOException {
