@@ -18,7 +18,8 @@
  <checkbox 
   name="b"
   checked="${entity.formdata.b?string('true', 'false')}"
-  value="true">b</checkbox>
+  value="true">b</checkbox><#if entity.formdata.a??><mention 
+  uid="${entity.formdata.a.id}" /></#if>
  <span class="tempo-text-color--red">${entity.errors.contents['someUser']!''}</span>
  <person-selector 
   name="someUser"

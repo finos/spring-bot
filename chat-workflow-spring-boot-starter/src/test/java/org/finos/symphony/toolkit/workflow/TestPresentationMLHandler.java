@@ -5,9 +5,8 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MethodCallMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
@@ -55,11 +54,13 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 	@Autowired
 	ResourceLoader rl;
 	
+	@Autowired
+	FreemarkerFormMessageMLConverter fmc;
+	
 	@BeforeEach
 	public void setup() {
 		SimpleMessageParser smp = new SimpleMessageParser();
 		EntityJsonConverter ejc = new EntityJsonConverter(wf);
-		FormMessageMLConverter fmc = new FreemarkerFormMessageMLConverter(symphonyRooms, rl);
 		List<SimpleMessageConsumer> consumers = Arrays.asList(new HelpMessageConsumer(), new MethodCallMessageConsumer(cp));
 		SymphonyResponseHandler srh = new SymphonyResponseHandler(messagesApi, fmc, ejc, symphonyRooms, ah);
 		handler = new PresentationMLHandler(wf, identity, usersApi, smp, ejc, consumers, srh, symphonyRooms);

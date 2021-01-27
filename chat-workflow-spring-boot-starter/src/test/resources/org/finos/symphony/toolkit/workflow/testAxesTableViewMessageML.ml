@@ -18,7 +18,8 @@
   <td style="text-align:center;" >${iA.askAxed?string("Y", "N")}</td>
   <td >${iA.creator!''}</td>
   <td style="text-align: right;">${iA.bidQty!''}</td>
-  <td style="text-align: right;">${iA.askQty!''}</td></tr>
+  <td style="text-align: right;">${iA.askQty!''}</td>
+ </tr>
  </#list>
  </tbody></table></td></tr>
 </table>
