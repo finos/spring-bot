@@ -17,7 +17,7 @@ import com.symphony.api.id.SymphonyIdentity;
 
 @SpringBootTest(
 		classes={TestApplication.class})
-@ActiveProfiles("pemidtest1")
+@ActiveProfiles({"pemidtest1", "develop"})
 public class PemIdentity1ConfigTest {
 
 	@Autowired
