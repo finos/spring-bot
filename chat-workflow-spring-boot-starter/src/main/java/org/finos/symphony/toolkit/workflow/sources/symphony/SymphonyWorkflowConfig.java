@@ -24,7 +24,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentH
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FieldConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
@@ -92,7 +92,7 @@ public class SymphonyWorkflowConfig {
 	CommandPerformer cp;
 	
 	@Autowired
-	List<FieldConverter> converters;
+	List<TypeConverter> converters;
 	
 	@Bean
 	@ConditionalOnMissingBean

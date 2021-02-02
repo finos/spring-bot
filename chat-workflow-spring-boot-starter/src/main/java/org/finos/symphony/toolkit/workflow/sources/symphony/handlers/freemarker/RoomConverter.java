@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Room;
@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RoomConverter extends AbstractClassFieldConverter implements ApplicationContextAware {
+public class RoomConverter extends AbstractClassConverter implements ApplicationContextAware {
 
 	public RoomConverter() {
 		super(LOW_PRIORITY, Room.class);
@@ -22,7 +22,7 @@ public class RoomConverter extends AbstractClassFieldConverter implements Applic
 	private ApplicationContext ctx;
 	
 	@Override
-	public String apply(Class<?> beanClass, Field f, boolean editMode, Variable v, EntityJson ej, WithField context) {
+	public String apply(Type t, boolean editMode, Variable v, EntityJson ej) {
 		
 		if (rooms == null) {
 			// this is done late-binding to avoid dependency loops in spring.
