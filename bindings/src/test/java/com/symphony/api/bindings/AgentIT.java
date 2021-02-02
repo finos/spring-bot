@@ -6,9 +6,10 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.function.Supplier;
 
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.experimental.theories.Theory;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.DatafeedApi;
@@ -28,7 +29,7 @@ import com.symphony.api.model.V5EventList;
  * @author moffrob
  *
  */
-public class AgentIT extends AbstractTest {
+public class AgentIT extends AbstractIT {
 
 	public static String asString(InputStream is) {
 		try (Scanner scanner = new Scanner(is, "UTF-8")) {
@@ -36,7 +37,8 @@ public class AgentIT extends AbstractTest {
 		}	
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testDataPost(TestClientStrategy s) throws Exception {
 		
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
@@ -50,7 +52,8 @@ public class AgentIT extends AbstractTest {
 				"</messageML>", in, null, null, null, null);
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testStreamsV4(TestClientStrategy s) throws Exception {
 		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
@@ -106,8 +109,9 @@ public class AgentIT extends AbstractTest {
 		
 	}
 
-	@Theory
-	@Ignore
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
+	@Disabled
 	public void testStreamsV5(TestClientStrategy s) throws Exception {
 		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
@@ -141,26 +145,28 @@ public class AgentIT extends AbstractTest {
 		}
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testHealthEndpoint(TestClientStrategy s) throws Exception {
 		SystemApi systemApi = s.getAgentApi(SystemApi.class);
 		V2HealthCheckResponse resp = systemApi.v2HealthCheckGet(false, null, null, null, null, null, null, null, null, null);
 		String json = new ObjectMapper().writeValueAsString(resp);
-		Assert.assertTrue(resp.isPodConnectivity());
-		Assert.assertTrue(resp.isKeyManagerConnectivity());
-		Assert.assertTrue(resp.isAgentServiceUser());
+		Assertions.assertTrue(resp.isPodConnectivity());
+		Assertions.assertTrue(resp.isKeyManagerConnectivity());
+		Assertions.assertTrue(resp.isAgentServiceUser());
 		System.out.println(json);
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testFailingCall(TestClientStrategy s) throws Exception {
 		try {
 			MessagesApi messageAPI = s.getAgentApi(MessagesApi.class);
 			messageAPI.v4StreamSidMessageGet("sfjkd", 100l, null, null, 100, 100);
-			Assert.fail("Shouldn't get here - the stream is invalid");
+			Assertions.fail("Shouldn't get here - the stream is invalid");
 		} catch (Exception e) {
-			Assert.assertTrue(e.getMessage().contains("Bad Request"));
-			Assert.assertTrue(e.getMessage().contains("\"message\":\"This thread doesn't exist.\""));
+			Assertions.assertTrue(e.getMessage().contains("Bad Request"));
+			Assertions.assertTrue(e.getMessage().contains("\"message\":\"This thread doesn't exist.\""));
 		}
 	}
 	
