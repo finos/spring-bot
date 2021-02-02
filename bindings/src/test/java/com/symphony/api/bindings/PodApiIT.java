@@ -2,8 +2,9 @@ package com.symphony.api.bindings;
 
 import java.util.Collections;
 
-import org.junit.Assert;
-import org.junit.experimental.theories.Theory;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.symphony.api.model.RoomSearchCriteria.SortOrderEnum;
 import com.symphony.api.model.UserV2;
@@ -19,17 +20,19 @@ import com.symphony.api.pod.UsersApi;
  * @author moffrob
  *
  */
-public class PodApiIT extends AbstractTest {
+public class PodApiIT extends AbstractIT {
 
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testUserLookup(TestClientStrategy client) throws Exception {
 		UsersApi uApi = client.getPodApi(UsersApi.class);
 		UserV2 u = uApi.v2UserGet(null, null, client.getIdentity().getEmail(), null, false);
 		System.out.println(u);
-		Assert.assertTrue(u.getDisplayName().contains("Symphony Practice"));
+		Assertions.assertTrue(u.getDisplayName().contains("Symphony Practice"));
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testRoomSearch(TestClientStrategy client) throws Exception {
 		StreamsApi sApi = client.getPodApi(StreamsApi.class);
 		V2RoomSearchCriteria criteria = new V2RoomSearchCriteria();

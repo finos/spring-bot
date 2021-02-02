@@ -158,7 +158,6 @@
 							<execution>
 								<goals>
 									<goal>prepare-agent</goal>
-									<goal>prepare-agent-integration</goal>
 								</goals>
 							</execution>
 							<execution>
@@ -168,35 +167,24 @@
 									<goal>report</goal>
 								</goals>
 							</execution>
-							<execution>
-								<id>report-integration</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>report-integration</goal>
-								</goals>
-							</execution>
 						</executions>
 					</plugin>
 					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.0.0-M5</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-								<configuration>
-									<systemPropertyVariables>
-										<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
-										<symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
-										<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
-										<proxy>${symphony-proxy}</proxy>
-									</systemPropertyVariables>
-								</configuration>
-							</execution>
-						</executions>
+	          <groupId>org.apache.maven.plugins</groupId>
+	          <artifactId>maven-surefire-plugin</artifactId>
+	          <version>3.0.0-M5</version>
+	        	<configuration>
+							<includes>
+							    <include>**/Test.java</include>
+							    <include>**/*IT.java</include>
+							</includes>
+							<systemPropertyVariables>
+								<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
+								<symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
+								<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
+								<proxy>${symphony-proxy}</proxy>
+							</systemPropertyVariables>
+            </configuration>						
 					</plugin>
 				</plugins>
 			</build>
