@@ -76,7 +76,7 @@ public class SymphonyStreamHandler {
 			running = true;
 			String initialDatafeedId = datafeedApi.v4DatafeedCreatePost(null, null).getId();
 			runThread = new Thread(() -> consumeLoop(initialDatafeedId));
-			runThread.setDaemon(true);
+			//runThread.setDaemon(true);
 			runThread.setName("SymphonyStream");
 			runThread.start();
 		}
