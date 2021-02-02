@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.Type;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,17 +28,17 @@ import org.springframework.validation.FieldError;
  * @author Rob Moffat
  *
  */
-public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter, WithField {
+public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter, WithType {
 
 	
 	public static final String JUST_BUTTONS_FORM = "just-buttons-form";
 
 	private ResourceLoader rl;
-	private List<FieldConverter> converters;
+	private List<TypeConverter> converters;
 	
-	public FreemarkerFormMessageMLConverter(ResourceLoader rl, List<FieldConverter> fieldConverters) {
+	public FreemarkerFormMessageMLConverter(ResourceLoader rl, List<TypeConverter> fieldConverters) {
 		this.rl = rl;
-		this.converters = new ArrayList<FieldConverter>(fieldConverters);
+		this.converters = new ArrayList<TypeConverter>(fieldConverters);
 		Collections.sort(this.converters, (a, b) -> Integer.compare(a.getPriority(), b.getPriority()));
 	}
 	
@@ -79,30 +79,20 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 		StringBuilder sb = new StringBuilder();
 		sb.append("\n<#-- starting template -->");
 		Mode m = editMode ? Mode.FORM : ((actions.size() > 0) ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
-		if (o instanceof String) {
-			sb.append(o.toString());
-		} else {
-			// convert to an object form
-			if (m == Mode.FORM) {
-				sb.append("\n<form " + AbstractFieldConverter.attribute(v, "id", c.getCanonicalName()) + ">");
-			} else {
-				sb.append("\n<table>");
-			}
-			if (m == Mode.FORM) {
-				sb.append(withFields(c, formField, true, v, work));
-			} else {
-				sb.append(withFields(c, formDisplay, false, v, work));
-			}
-			if (m == Mode.DISPLAY_WITH_BUTTONS) {
-				sb.append("\n</table>\n<form " + AbstractFieldConverter.attribute(v, "id", JUST_BUTTONS_FORM) + ">");
-				sb.append(handleButtons(actions, work));
-				sb.append("\n</form>");
-			} else if (m == Mode.FORM) {
-				sb.append(handleButtons(actions, work));
-				sb.append("\n</form>");
-			} else {
-				sb.append("\n</table>");
-			}
+		
+		if (m == Mode.FORM) {
+			sb.append("\n<form " + AbstractTypeConverter.attribute(v, "id", c.getCanonicalName()) + ">");
+		} 
+		
+		sb.append(apply(this, c, editMode, v, work, topLevelFieldOutput()));
+		
+		if (m == Mode.DISPLAY_WITH_BUTTONS) {
+			sb.append("\n<form " + AbstractTypeConverter.attribute(v, "id", JUST_BUTTONS_FORM) + ">");
+			sb.append(handleButtons(actions, work));
+			sb.append("\n</form>");
+		} else if (m == Mode.FORM) {
+			sb.append(handleButtons(actions, work));
+			sb.append("\n</form>");
 		} 
 
 		sb.append("\n<#-- ending template -->\n");
@@ -127,46 +117,35 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 		return sb.toString();
 	}
 
-	protected WithField formField = (beanClass, f, editMode, variable, ej, ctx) -> {
-		for(FieldConverter fc : converters) {
-			if (fc.canConvert(f)) {
-				return fc.apply(beanClass, f, editMode, variable, ej, ctx);
+	
+	@Override
+	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField context) {
+		for(TypeConverter fc : converters) {
+			if (fc.canConvert(t)) {
+				return fc.apply(controller, t, editMode, variable, ej, context);
 			}
 		} 
 		
-		throw new UnsupportedOperationException("Can't convert "+f);
+		throw new UnsupportedOperationException("Can't convert "+t);
+	}
+
+	/**
+	 * This is the with-field apply.  It doesn't add any wrapper onto the output.
+	 */
+	public WithField topLevelFieldOutput() {
 		
-	};
-
-	protected WithField formDisplay = (beanClass, f, editMode, variable, ej, action) -> {
-		return "<tr><td><b>" + f.getName() + ":</b></td><td>" + formField.apply(beanClass, f, editMode, variable, ej, action) + "</td></tr>";
-	};
-
-
-	private String withFields(Class<?> c, WithField action, boolean editMode, Variable variable, EntityJson ej) {
-		StringBuilder out = new StringBuilder();
-		if ((c != Object.class) && (c!=null)) {
-			out.append(withFields(c.getSuperclass(), action, editMode, variable, ej));
-
-			for (Field f : c.getDeclaredFields()) {
-				if (!Modifier.isStatic(f.getModifiers())) {
-					String text = action.apply(c, f, editMode, variable.field(f.getName()), ej, this);
-					out.append(text);
-				}
+		return new WithField() {
+			public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
+				Type t = f.getGenericType();
+				return contentHandler.apply(FreemarkerFormMessageMLConverter.this, t, editMode, variable, ej, topLevelFieldOutput());
 			}
-		}
 
-		return out.toString();
+			@Override
+			public boolean expand() {
+				return true;
+			}
+		};
+		
 	}
-
-	@Override
-	public String apply(Class<?> beanClass, Field f, boolean editMode, Variable variable, EntityJson ej, WithField context) {
-		if (f == null) {
-			return withFields(beanClass, context, editMode, variable, ej);
-		} else {
-			return formField.apply(beanClass, f, editMode, variable, ej, context);
-		}
-	}
-
 
 }

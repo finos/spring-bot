@@ -14,7 +14,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentH
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FieldConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.BeforeEach;
@@ -66,7 +66,7 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 	CommandPerformer cp;
 	
 	@Autowired
-	List<FieldConverter> fieldConverters;
+	List<TypeConverter> fieldConverters;
 	
 	@BeforeEach
 	public void setup() {

@@ -1,19 +1,19 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NumberConverter extends AbstractClassFieldConverter {
+public class NumberConverter extends AbstractClassConverter {
 
 	public NumberConverter() {
 		super(LOW_PRIORITY, Number.class);
 	}
 
 	@Override
-	public String apply(Class<?> beanClass, Field f, boolean editMode, Variable variable, EntityJson ej, WithField context) {
+	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
 		if (editMode) {
 			return formatErrorsAndIndent(variable) + "<text-field " 
 					+ attribute(variable, "name", variable.getFormFieldName())

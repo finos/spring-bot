@@ -13,7 +13,7 @@ public class Variable {
 	int depth = 0;
 	
 	public Variable(String name) {
-		this(0, name);
+		this(1, name);
 	}
 	
 	private Variable(int depth, String var) {

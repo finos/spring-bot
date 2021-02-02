@@ -1,28 +1,27 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnumConverter extends AbstractDropdownConverter {
+public class EnumConverter extends AbstractSimpleTypeConverter {
 
 	public EnumConverter() {
 		super(LOW_PRIORITY);
 	}
 
 	@Override
-	public boolean canConvert(Field f) {
-		return f.getType().isEnum();
+	public boolean canConvert(Type t) {
+		return (t instanceof Class) && ((Class<?>) t).isEnum();
 	}
 
 	@Override
-	public String apply(Class<?> beanClass, Field f, boolean editMode, Variable variable, EntityJson ej,
-			WithField context) {
+	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
 		if (editMode) {
-			Class<?> c = f.getType();
+			Class<?> c = (Class<?>) t;
 			return renderDropdown(variable, 
 					Arrays.asList(c.getEnumConstants()), variable.getFormFieldName(), 
 					(g) -> ((Enum<?>)g).name(), 

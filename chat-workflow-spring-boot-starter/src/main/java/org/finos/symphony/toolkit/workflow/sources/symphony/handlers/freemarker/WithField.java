@@ -9,7 +9,11 @@ import org.finos.symphony.toolkit.json.EntityJson;
  */
 public interface WithField {
 
-	public String apply(Class<?> beanClass, Field f, boolean editMode, Variable variable, EntityJson ej, WithField context);
-
+	public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler);
+	
+	/**
+	 * Return true if we are going to expand the contents of this field.
+	 */
+	public boolean expand();
 
 }

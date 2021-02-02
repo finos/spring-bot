@@ -1,20 +1,20 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserConverter extends AbstractClassFieldConverter {
+public class UserConverter extends AbstractClassConverter {
 
 	public UserConverter() {
 		super(LOW_PRIORITY, User.class);
 	}
 
 	@Override
-	public String apply(Class<?> beanClass, Field f, boolean editMode, Variable variable, EntityJson ej, WithField context) {
+	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
 		if (editMode) {
 			return formatErrorsAndIndent(variable) 
 					+ "<person-selector " 

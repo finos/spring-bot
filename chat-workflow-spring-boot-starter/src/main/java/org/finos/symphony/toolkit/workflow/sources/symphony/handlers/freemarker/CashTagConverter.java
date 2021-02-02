@@ -1,20 +1,20 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CashTagConverter extends AbstractClassFieldConverter {
+public class CashTagConverter extends AbstractClassConverter {
 
 	public CashTagConverter() {
 		super(LOW_PRIORITY, HashTag.class);
 	}
 
 	@Override
-	public String apply(Class<?> beanClass, Field f, boolean editMode, Variable variable, EntityJson ej, WithField context) {
+	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
 		if (editMode) {
 			return textField(variable);
 		} else {

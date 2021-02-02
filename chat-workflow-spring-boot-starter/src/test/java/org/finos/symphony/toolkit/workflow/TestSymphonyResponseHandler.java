@@ -16,7 +16,7 @@ import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FieldConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
@@ -50,7 +50,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	ResourceLoader rl;
 	
 	@Autowired
-	List<FieldConverter> fieldConverters;
+	List<TypeConverter> fieldConverters;
 	
 	@BeforeEach
 	public void setup() {

@@ -28,6 +28,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.symphony.api.model.V4User;
 
 @Configuration
 @EnableConfigurationProperties({KoreAIProperties.class, SymphonyApiProperties.class})
@@ -66,10 +67,12 @@ public class KoreAIConfig {
 	public static ObjectMapper koreAIObjectMapper() {
 		ObjectMapper out = new ObjectMapper();
 		ObjectMapperFactory.initialize(out, ObjectMapperFactory
-			.extendedSymphonyVersionSpace(
+			.extendedSymphonyVersionSpace( 
 				LogMessage.VERSION_SPACE,	
 				new VersionSpace(KoreAIResponse.class.getPackage().getName(), "1.0"),
-				new VersionSpace(ObjectNode.class.getPackage().getName(), "1.0")));
+				new VersionSpace(ObjectNode.class.getPackage().getName(), "1.0"),
+				new VersionSpace(V4User.class.getPackage().getName(), "1.0")));
+
 		return out;
 	}
 	
