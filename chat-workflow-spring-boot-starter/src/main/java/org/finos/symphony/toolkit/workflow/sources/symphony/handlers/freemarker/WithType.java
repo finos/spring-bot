@@ -9,6 +9,15 @@ import org.finos.symphony.toolkit.json.EntityJson;
  */
 public interface WithType {
 
+	/**
+	 * @param controller  Reference to the {@link FreemarkerFormMessageMLConverter} calling this.
+	 * @param t  Type being converted
+	 * @param editMode Whether we are in edit mode, or not.
+	 * @param variable  Used to place the type within the structure of the object it came from.
+	 * @param ej  {@link EntityJson} that will be returned in the mesage.
+	 * @param details Used to decorate the output of any fields produced by this converter.
+	 * @return Part of a FreeMarker template.
+	 */
 	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField details);
 
 

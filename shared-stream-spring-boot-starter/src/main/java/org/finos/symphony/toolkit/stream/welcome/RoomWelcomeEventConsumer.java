@@ -26,6 +26,11 @@ import com.symphony.api.pod.UsersApi;
 public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(RoomWelcomeEventConsumer.class);
+	
+	private static final String DEFAULT_WELCOME_MESSAGE = "<messageML>"
+			+ "<p>Hi, welcome to <b>${entity.stream.roomName}</b></p><br />"
+			+ "<p>You can address me here by affixing my name to the beginning of a message, like so:</p><br />"
+			+ "<p><mention email=\"${entity.bot.emailAddress}\" /> hi</p>" + "</messageML>";
 
 	MessagesApi messagesApi;
 	SymphonyIdentity botIdentity;
@@ -43,7 +48,11 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 		ObjectMapperFactory.initialize(om, ObjectMapperFactory.extendedSymphonyVersionSpace(
 			new VersionSpace(V4RoomCreated.class.getPackage().getName(), "1.0")));
 	}
-
+	
+	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity) {
+		this(messagesApi, usersApi, botIdentity, DEFAULT_WELCOME_MESSAGE);
+	}
+	
 	@Override
 	public void accept(V4Event t) {
 		V4RoomCreated roomCreated = t.getPayload().getRoomCreated();
