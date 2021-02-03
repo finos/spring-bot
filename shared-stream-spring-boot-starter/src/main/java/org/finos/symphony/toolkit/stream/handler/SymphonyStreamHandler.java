@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.stream.handler;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.ws.rs.BadRequestException;
@@ -44,6 +45,28 @@ public class SymphonyStreamHandler {
 		}
 		this.instance = api;
 	}
+	
+	public SymphonyStreamHandler(ApiInstance api,
+			List<? extends Consumer<V4Event>> eventConsumers, 
+			Consumer<Exception> exceptionHandler, boolean start) {
+		this(api, multiConsumer(eventConsumers), exceptionHandler, start);
+	}
+
+	/**
+	 * The multi-consumer passes each event to a list of consumers.  If any fails, the rest of the consumers in the
+	 * list will not get the message.
+	 */
+	private static Consumer<V4Event> multiConsumer(List<? extends Consumer<V4Event>> eventConsumers) {
+		return new Consumer<V4Event>() {
+
+			@Override
+			public void accept(V4Event t) {
+				for (Consumer<V4Event> consumer : eventConsumers) {
+					consumer.accept(t);
+				}
+			}
+		};
+	}
 
 	/**
 	 * Uses a daemon thread to start the process.  Use something else if you want
@@ -53,7 +76,7 @@ public class SymphonyStreamHandler {
 			running = true;
 			String initialDatafeedId = datafeedApi.v4DatafeedCreatePost(null, null).getId();
 			runThread = new Thread(() -> consumeLoop(initialDatafeedId));
-			runThread.setDaemon(true);
+			//runThread.setDaemon(true);
 			runThread.setName("SymphonyStream");
 			runThread.start();
 		}

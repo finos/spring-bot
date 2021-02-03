@@ -75,8 +75,8 @@ public class KoreAIResponseHandlerImplTest {
     			.extendedSymphonyVersionSpace(
     				new VersionSpace(KoreAIResponse.class.getPackage().getName(), "1.0")));
 
-    	this.builder = new KoreAIResponseBuilderImpl(new ObjectMapper(), JsonNodeFactory.instance);
-        this.output = new KoreAIResponseHandlerImpl(api, rl, true, om, "classpath:/test-templates");
+    	this.builder = new KoreAIResponseBuilderImpl(new ObjectMapper(), JsonNodeFactory.instance); 
+        this.output = new KoreAIResponseHandlerImpl(api, rl, true, true, om, "classpath:/test-templates");
         Mockito.when(api.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
         	.then((a) -> {
         		streamId.add(a.getArgument(1));

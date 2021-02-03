@@ -17,8 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 
 import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.AbstractApiBuilder;
 import com.symphony.api.model.AppAuthenticateRequest;
+import com.symphony.api.model.ExtensionAppAuthenticateRequest;
 import com.symphony.api.model.ExtensionAppTokens;
 
 
@@ -41,7 +43,7 @@ public class PodAuthControllerByConfigTest extends AbstractTest {
 	ApiBuilderFactory abf;
 	
 	@MockBean(name="someNewBean")
-	AuthenticationApi authApi;
+	CertificateAuthenticationApi authApi;
 	
 	@Test
 	public void testAuthentication() throws Exception {
@@ -52,14 +54,14 @@ public class PodAuthControllerByConfigTest extends AbstractTest {
 			@Override
 			public <X> X getApi(Class<X> c) {
 				Assertions.assertEquals("http://blah.com/sessionauth", this.url);
-				Assertions.assertEquals(AuthenticationApi.class, c);
+				Assertions.assertEquals(CertificateAuthenticationApi.class, c);
 				return (X) authApi;
 			}
 		});
 		
 		
 		Mockito.when(authApi.v1AuthenticateExtensionAppPost(Mockito.any())).thenAnswer(i -> {
-			AppAuthenticateRequest ar = (AppAuthenticateRequest) i.getArgument(0);
+			ExtensionAppAuthenticateRequest ar = (ExtensionAppAuthenticateRequest) i.getArgument(0);
 			return new ExtensionAppTokens().appId("appid123").appToken(ar.getAppToken()).symphonyToken("Sym123");
 		});
 		

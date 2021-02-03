@@ -160,7 +160,7 @@ Out-of-the-box support exists for:
 
 #### Extending Support To New Types
 
-TODO
+If you want to customize the way in which the Freemarker templates are created (for example, adding support for a new Java Class) you can do this by implementing `org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter`. There are plenty of examples of these in the source code.  `AbstractSimpleTypeConverter` is a good thing to extend for this.
 
 #### Limitations
 

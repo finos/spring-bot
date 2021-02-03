@@ -96,3 +96,12 @@
  - Fixed Code Coverage Report.
  - Fixed KoreAI Issues (#122)
  - Fixed Chat Workflow Bug (#124)
+ 
+## 2nd February 2021
+
+ - Plugable Freemarker templating for Chat workflow (#130)
+ - MessageML support in KoreAI Formatter (#125)
+ - Bot Welcome Messages (#119)
+ - Improvement for Content Class in Chat Workflow (#109)
+ - Fixing Whitesource security issue (#88)
+

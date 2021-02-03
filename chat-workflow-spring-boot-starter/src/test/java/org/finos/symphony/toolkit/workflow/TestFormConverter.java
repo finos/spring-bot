@@ -25,6 +25,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	private FormConverter fc;
 	private ObjectMapper om = new ObjectMapper();
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testSimpleForm() throws Exception {
 		Object o = om.readValue("{\"action\":\"add+0\",\"isin.\":\"fd3442\",\"bidAxed.\":\"true\",\"askAxed.\":\"true\",\"creator.\":\"tr\",\"bidQty.\":\"32432\",\"askQty.\":\"234\"}", Map.class);
@@ -35,6 +36,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testFormContainingList() throws Exception {
 		Object o = om.readValue("{\"action\":\"add+0\",\"items.[0].isin.\":\"fd3442\",\"items.[0].bidAxed.\":\"true\",\"items.[0].askAxed.\":\"true\",\"items.[0].creator.\":\"tr\",\"items.[0].bidQty.\":\"32432\",\"items.[0].askQty.\":\"234\"}", Map.class);
@@ -44,6 +46,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 		Assertions.assertEquals(32432, to.getItems().get(0).getBidQty());
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testUsersAndAuthors() throws Exception {
 		before();

@@ -1,43 +1,49 @@
 package com.symphony.api.bindings;
 
-import org.junit.Assert;
-import org.junit.experimental.theories.Theory;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-public class ProxyConnectionIT extends AbstractTest {
+public class ProxyConnectionIT extends AbstractIT {
 
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testConnectionToRandomUrl(TestClientStrategy tcs) {
 		ConfigurableApiBuilder b = tcs.getApiBuilder();
 		b.setProxyDetails(null, null, null, 8080);
-		Assert.assertTrue(b.testConnection("https://google.com"));
+		Assertions.assertTrue(b.testConnection("https://google.com"));
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testConnectionToSymphonyPod(TestClientStrategy tcs) {
 		ConfigurableApiBuilder b = tcs.getApiBuilder();
 		b.setProxyDetails(null, null, null, 8080);
-		Assert.assertTrue(b.testConnection(TestPodConfig.POD_URL));
+		Assertions.assertTrue(b.testConnection(TestPodConfig.POD_URL));
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testConnectionToSymphonyRelay(TestClientStrategy tcs) {
 		ConfigurableApiBuilder b = tcs.getApiBuilder();
 		b.setConnectTimeout(6000);
 		b.setProxyDetails(null, null, null, 8080);
-		Assert.assertTrue(b.testConnection(TestPodConfig.RELAY_URL));
+		Assertions.assertTrue(b.testConnection(TestPodConfig.RELAY_URL));
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testConnectionToSomethingBroken(TestClientStrategy tcs) {
 		ConfigurableApiBuilder b = tcs.getApiBuilder();
 		b.setProxyDetails(null, null, null, 8080);
-		Assert.assertFalse(b.testConnection("https://idontexist.co.uk"));
+		Assertions.assertFalse(b.testConnection("https://idontexist.co.uk"));
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testWithBrokenProxy(TestClientStrategy tcs) {
 		ConfigurableApiBuilder b = tcs.getApiBuilder();
 		b.setProxyDetails("idontexist.co.uk", null, null, 8080);
-		Assert.assertFalse(b.testConnection(TestPodConfig.POD_URL));
+		Assertions.assertFalse(b.testConnection(TestPodConfig.POD_URL));
 	}
 }

@@ -17,8 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 
 import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.AbstractApiBuilder;
 import com.symphony.api.model.AppAuthenticateRequest;
+import com.symphony.api.model.ExtensionAppAuthenticateRequest;
 import com.symphony.api.model.ExtensionAppTokens;
 
 
@@ -40,7 +42,7 @@ public class PodAuthControllerByFileTest extends AbstractTest {
 	ApiBuilderFactory abf;
 	
 	@MockBean(name="someNewBean")
-	AuthenticationApi authApi;
+	CertificateAuthenticationApi authApi;
 
 	
 	@Test
@@ -52,7 +54,7 @@ public class PodAuthControllerByFileTest extends AbstractTest {
 			@Override
 			public <X> X getApi(Class<X> c) {
 				Assertions.assertEquals("https://your.pod.domain:8444/sessionauth", this.url);
-				Assertions.assertEquals(AuthenticationApi.class, c);
+				Assertions.assertEquals(CertificateAuthenticationApi.class, c);
 				Assertions.assertEquals("myproxy.com", this.proxyHost);
 				return (X) authApi;
 			}
@@ -60,7 +62,7 @@ public class PodAuthControllerByFileTest extends AbstractTest {
 		
 		
 		Mockito.when(authApi.v1AuthenticateExtensionAppPost(Mockito.any())).thenAnswer(i -> {
-			AppAuthenticateRequest ar = (AppAuthenticateRequest) i.getArgument(0);
+			ExtensionAppAuthenticateRequest ar = (ExtensionAppAuthenticateRequest) i.getArgument(0);
 			return new ExtensionAppTokens().appId("appid123").appToken(ar.getAppToken()).symphonyToken("Sym123");
 		});
 		

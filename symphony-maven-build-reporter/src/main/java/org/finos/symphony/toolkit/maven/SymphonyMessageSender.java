@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.JWTHelper;
 import com.symphony.api.id.SymphonyIdentity;
@@ -64,11 +65,11 @@ public class SymphonyMessageSender {
     public void sendMessage(Map<String, Object> data) throws IOException {
 		// will use cert login if certs are provided
         String sessionToken = useCertLogin() ? 
-        	session.performWithAndWithoutProxies(ab -> ab.getApi(AuthenticationApi.class).v1AuthenticatePost().getToken()) : 
+        	session.performWithAndWithoutProxies(ab -> ab.getApi(CertificateAuthenticationApi.class).v1AuthenticatePost().getToken()) : 
         	login.performWithAndWithoutProxies(ab -> jwtAuth(ab)).getToken();
         	
         String keyManagerToken = useCertLogin() ? 
-        	key.performWithAndWithoutProxies(ab -> ab.getApi(AuthenticationApi.class).v1AuthenticatePost().getToken()) : 
+        	key.performWithAndWithoutProxies(ab -> ab.getApi(CertificateAuthenticationApi.class).v1AuthenticatePost().getToken()) : 
         	relay.performWithAndWithoutProxies(ab -> jwtAuth(ab)).getToken();
 
         Map<String, Object> event = (Map<String, Object>) data.get("event");
@@ -103,7 +104,7 @@ public class SymphonyMessageSender {
 
     private String findStreamForRecipient(String recip, String sessionToken) {
     	return pod.performWithAndWithoutProxies(ab -> {
-            Long userId = ab.getApi(UsersApi.class).v3UsersGet(sessionToken, null, recip, null, Boolean.TRUE)
+            Long userId = ab.getApi(UsersApi.class).v3UsersGet(sessionToken, null, recip, null, Boolean.TRUE, Boolean.TRUE)
                     .getUsers().stream()
                     .map(u -> u.getId()).findFirst().orElse(null);
 
@@ -131,7 +132,7 @@ public class SymphonyMessageSender {
         try {
             return pod.performWithAndWithoutProxies(ab -> {
                 UsersApi api = ab.getApi(UsersApi.class);
-                return api.v3UsersGet(sessionToken, null, email, null, Boolean.TRUE)
+                return api.v3UsersGet(sessionToken, null, email, null, Boolean.TRUE, Boolean.TRUE)
                         .getUsers().stream()
                         .map(u -> u.getId()).findFirst().orElse(null);
             });
