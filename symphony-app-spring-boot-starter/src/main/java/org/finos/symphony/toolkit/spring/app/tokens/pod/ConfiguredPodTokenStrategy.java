@@ -9,11 +9,11 @@ import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.springframework.util.StringUtils;
 
-import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.ApiWrapper;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.AppAuthenticateRequest;
+import com.symphony.api.model.ExtensionAppAuthenticateRequest;
 import com.symphony.api.model.ExtensionAppTokens;
 import com.symphony.api.pod.PodApi;
 
@@ -37,15 +37,15 @@ public class ConfiguredPodTokenStrategy extends AbstractPodTokenStrategy<PodProp
 	protected ExtensionAppTokens certBasedRequest(String appToken, PodProperties pod) throws Exception {
 		ConfigurableApiBuilder ab = abf.getObject();
 		pod.getSessionAuth().configure(ab, new ApiWrapper[] {}, appIdentity, trustManagers);
-		AuthenticationApi aa = ab.getApi(AuthenticationApi.class);
-		AppAuthenticateRequest ar = new AppAuthenticateRequest();
+		CertificateAuthenticationApi aa = ab.getApi(CertificateAuthenticationApi.class);
+		ExtensionAppAuthenticateRequest ar = new ExtensionAppAuthenticateRequest();
 		ar.setAppToken(appToken);
 		ExtensionAppTokens out = aa.v1AuthenticateExtensionAppPost(ar);
 		return out;
 	}
 
 	protected PodProperties getPodProperties(String id) {
-		if (!StringUtils.isEmpty(id)) {
+		if (StringUtils.hasText(id)) {
 			for (PodProperties pp : apiProperties.getApis()) {
 				if (id.equals(pp.getId())) {
 					return pp;

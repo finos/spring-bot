@@ -9,20 +9,20 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.CashTag;
 import org.finos.symphony.toolkit.workflow.content.CashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.OrderedContent;
+import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.Tag;
+import org.finos.symphony.toolkit.workflow.content.Tag.Type;
+import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.content.Tag.Type;
 import org.symphonyoss.Taxonomy;
-import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.SecId;
 import org.symphonyoss.taxonomy.Hashtag;
 import org.xml.sax.Attributes;
@@ -30,7 +30,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.symphony.user.Mention;
 import com.symphony.user.UserId;
 
 /**
@@ -109,6 +108,44 @@ public class SimpleMessageParser {
 		boolean hasContent() {
 			return true;
 		}
+	}
+	
+	static class ListFrame extends Frame<OrderedContent<?>> {
+
+		private String qName;
+		private List<Paragraph> contents = new ArrayList<>();
+		
+		public ListFrame(String qName) {
+			this.qName = qName;
+		}
+
+		public OrderedContent<?> getContents() {
+			if ("ol".equals(qName)) {
+				return OrderedList.of(contents);
+			} else {
+				return UnorderedList.of(contents);
+			}
+		}
+
+		@Override
+		boolean isEnding(String qName) {
+			return true;
+		}
+
+		@Override
+		void push(Content c) {
+			if (c instanceof Paragraph) {
+				contents.add((Paragraph) c);
+			} else {
+				throw new UnsupportedOperationException("Only <li> can appear in <"+qName+">");
+			}
+		}
+
+		@Override
+		boolean hasContent() {
+			return contents.size() > 0;
+		}
+		
 	}
 	
 	static class TableFrame extends Frame<PastedTable> {
@@ -233,17 +270,14 @@ public class SimpleMessageParser {
 	}
 	
 	static class ParagraphFrame extends TextRunFrame<Paragraph> {
-
-
 		public Paragraph getContents() {
 			consumeBuffer();
 			return Paragraph.of(stuffSoFar);
 				
 		}
-	
-		
 	}
 	
+
 	public Message parseMessage(String message, EntityJson jsonObjects) throws Exception {
 
 		Content [] out = { null };
@@ -264,10 +298,10 @@ public class SimpleMessageParser {
 						tf.deReference(o);
 					} else if (isStartTable(qName, attributes)) {
 						push(new TableFrame());
-					} else if (isStartParaOrCell(qName, attributes)) {
+					} else if (isStartParaListItemOrCell(qName, attributes)) {
 						push(new ParagraphFrame());
 					} else if (isStartList(qName, attributes)) {
-						//
+						push(new ListFrame(qName));
 					} else if (isStartRow(qName, attributes)) {
 						if (top instanceof TableFrame) {
 							((TableFrame)top).newRow();
@@ -305,7 +339,7 @@ public class SimpleMessageParser {
 					return "span".equals(qName) && attributes.getValue("class").contains("entity");
 				}
 				
-				private boolean isStartParaOrCell(String qName, Attributes attributes) {
+				private boolean isStartParaListItemOrCell(String qName, Attributes attributes) {
 					return "p".equals(qName) || "td".equals(qName) || "li".equals(qName) || "th".equals(qName);
 				}
 				

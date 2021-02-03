@@ -12,6 +12,7 @@ import org.finos.symphony.toolkit.workflow.content.ID;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb4;
+import org.finos.symphony.toolkit.workflow.fixture.TestOb5;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb4.Choice;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
@@ -69,10 +70,10 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testNewWeirdFieldsEdit() throws Exception {
+		Author.CURRENT_AUTHOR.set(new UserDef("28374682376", "bbb", "v@example.com"));
 		TestOb4 to4 = new TestOb4();
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		to4.setC(Choice.C);
-		to4.setA(null);
 		Button submit = new Button("submit", Type.ACTION, "GO");
 		EntityJson empty = new EntityJson();
 		String actual = messageMlConverter.convert(TestOb4.class, to4, ButtonList.of(submit), true, ErrorHelp.createErrorHolder(), empty);
@@ -88,7 +89,6 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		TestOb4 to4 = new TestOb4();
 		to4.setB(true);
 		to4.setC(Choice.B);
-		to4.setA(null);
 		to4.setSomeUser(new UserDef("2678", "bob", "bob@example.com"));
 		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
 		Button submit = new Button("submit", Type.ACTION, "GO");
@@ -99,6 +99,44 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
 		Assertions.assertEquals(loadML("testNewWeirdFieldsView.ml"), actual); 
 		compareJson(loadJson("testNewWeirdFieldsView.json"), json); 
+	}
+	
+	@Test
+	public void testNestedWeirdFieldsEdit() throws Exception {
+		TestOb4 to4 = new TestOb4();
+		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
+		to4.setC(Choice.C);
+		to4.setA(null);
+		TestOb5 ob5 = new TestOb5();
+		ob5.setOb4(to4);
+		Button submit = new Button("submit", Type.ACTION, "GO");
+		EntityJson empty = new EntityJson();
+		String actual = messageMlConverter.convert(TestOb5.class, ob5, ButtonList.of(submit), true, ErrorHelp.createErrorHolder(), empty);
+		String json = ejc.writeValue(empty);
+		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
+		Assertions.assertEquals(loadML("testNestedWeirdFieldsEdit.ml"), actual); 
+		compareJson(loadJson("testNestedWeirdFieldsEdit.json"), json); 	}
+	
+	
+	@Test
+	public void testNestedWeirdFieldsView() throws Exception {
+		Author.CURRENT_AUTHOR.set(new UserDef("28374682376", "bbb", "v@example.com"));
+		TestOb4 to4 = new TestOb4();
+		to4.setB(true);
+		to4.setC(Choice.B);
+		to4.setA(Author.CURRENT_AUTHOR.get());
+		to4.setSomeUser(new UserDef("2678", "bob", "bob@example.com"));
+		to4.setTheId(new ID(UUID.fromString("adf360dd-06fe-43a4-9a62-2c17fe2deefa")));
+		TestOb5 ob5 = new TestOb5();
+		ob5.setOb4(to4);
+		Button submit = new Button("submit", Type.ACTION, "GO");
+		EntityJson empty = new EntityJson();
+		
+		String actual = messageMlConverter.convert(TestOb5.class, ob5, ButtonList.of(submit), false, ErrorHelp.createErrorHolder(), empty);
+		String json = ejc.writeValue(empty);
+		System.out.println("<messageML>" + actual + "</messageML>\n"+json);
+		Assertions.assertEquals(loadML("testNestedWeirdFieldsView.ml"), actual); 
+		compareJson(loadJson("testNestedWeirdFieldsView.json"), json); 
 	}
 	
 	@Test
@@ -204,7 +242,6 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		System.out.println("<messageML>" + out + "</messageML>\n"+json);
 		String expectedOut = loadML("testValidation.ml");
 		String expectedJson = loadJson("testValidation.json");
-		System.out.println("<messageML>" + expectedOut + "</messageML>\n"+expectedJson);
 		Assertions.assertEquals(expectedOut, out); 
 		compareJson(expectedJson, json); 
 	}

@@ -1,16 +1,17 @@
 package com.symphony.api.bindings;
 
-import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.id.SymphonyIdentity;
+import com.symphony.api.login.AuthenticationApi;
 
 /**
  * Using a subclass of this will either give you Jersey or Apache CXF clients.
  */
 public interface TestClientStrategy {
 
-	public AuthenticationApi getSessionAuthApi();
+	public CertificateAuthenticationApi getSessionAuthApi();
 
-	public AuthenticationApi getKeyAuthApi();
+	public CertificateAuthenticationApi getKeyAuthApi();
 
 	public <X> X getAgentApi(Class<X> api) throws Exception;
 
@@ -20,9 +21,9 @@ public interface TestClientStrategy {
 	
 	public TokenManager getTokenManager();
 
-	public com.symphony.api.login.AuthenticationApi getRSASessionAuthApi();
+	public AuthenticationApi getRSASessionAuthApi();
 	
-	public com.symphony.api.login.AuthenticationApi getRSAKeyAuthApi();
+	public AuthenticationApi getRSAKeyAuthApi();
 
 	public ConfigurableApiBuilder getApiBuilder();
 

@@ -1,0 +1,22 @@
+{
+  "type" : "org.finos.symphony.toolkit.koreai.response.koreAIResponse",
+  "version" : "1.0",
+  "original" : {
+    "text" : [ "sample", "some _stuff_ \n another **line** \n some `inline preformat`\n\nSecond para\n\n```\nthis\nis\npreformatted\n```\n\n![image](https://www.fillmurray.com/200/300)" ],
+    "endOfTask" : true,
+    "endReason" : "Fulfilled",
+    "completedTaskId" : "dg-a51792e8-d346-5203-ac65-8597feb63f30",
+    "completedTaskName" : "manage dbrundev"
+  },
+  "processed" : [ {
+    "text" : "sample",
+    "template_type" : "message",
+    "options" : [ ],
+    "messageML" : "<p>sample</p>\n"
+  }, {
+    "text" : "some _stuff_ \n another **line** \n some `inline preformat`\n\nSecond para\n\n```\nthis\nis\npreformatted\n```\n\n![image](https://www.fillmurray.com/200/300)",
+    "template_type" : "message",
+    "options" : [ ],
+    "messageML" : "<p>some <i>stuff</i><br />another <b>line</b><br />some <code>inline preformat</code></p>\n<p>Second para</p>\n<code>this\nis\npreformatted\n</code>\n<p><img src=\"https://www.fillmurray.com/200/300\" /></p>\n"
+  } ]
+}

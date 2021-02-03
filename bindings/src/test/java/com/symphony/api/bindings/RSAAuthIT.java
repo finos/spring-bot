@@ -1,15 +1,18 @@
 package com.symphony.api.bindings;
 
-import org.junit.experimental.theories.Theory;
+
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.login.AuthenticationApi;
 import com.symphony.api.model.AuthenticateRequest;
 import com.symphony.api.model.Token;
 
-public class RSAAuthIT extends AbstractTest{
+public class RSAAuthIT extends AbstractIT{
 
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testSessionAuthWithRSA(TestClientStrategy s) throws Exception {
 		SymphonyIdentity id = s.getIdentity();
 		String jwt = JWTHelper.createSignedJwt(id.getCommonName(), id.getPrivateKey());
@@ -24,7 +27,8 @@ public class RSAAuthIT extends AbstractTest{
 		System.out.println(done);
 	}
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void testKeyManagerAuthWithRSA(TestClientStrategy s) throws Exception {
 		SymphonyIdentity id = s.getIdentity();
 		String jwt = JWTHelper.createSignedJwt(id.getCommonName(), id.getPrivateKey());

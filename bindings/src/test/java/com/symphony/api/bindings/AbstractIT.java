@@ -1,11 +1,9 @@
 package com.symphony.api.bindings;
 
-import org.junit.experimental.theories.DataPoint;
-import org.junit.experimental.theories.Theories;
-import org.junit.runner.RunWith;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
-@RunWith(Theories.class)
-public abstract class AbstractTest {
+public abstract class AbstractIT {
 	
 	// A room on Symphony called "DB Symphony Practice Bots Integration Test"
 	// on the develop pod.
@@ -15,10 +13,12 @@ public abstract class AbstractTest {
 //	@DataPoint
 //	public static TestClientStrategy cxf = TestPodConfig.CXF_CERT;
 //	
-	@DataPoint
 	public static TestClientStrategy jersey = TestPodConfig.JERSEY_RSA;
 
-	@DataPoint
 	public static TestClientStrategy cxf = TestPodConfig.CXF_RSA;
+	
+	public static Stream<TestClientStrategy> setupConfigurations() {
+		return Arrays.asList(jersey, cxf).stream();
+	} 
 
 }

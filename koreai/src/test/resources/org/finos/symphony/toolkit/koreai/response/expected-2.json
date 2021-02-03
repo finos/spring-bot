@@ -22,7 +22,7 @@
 			"text": "If there is anything else you need just ask and remember to use the *yoda* trigger word.",
 			"template_type": "message",
 			"options": [],
-			"messageML": "<p>If there is anything else you need just ask and remember to use the <em>yoda</em> trigger word.</p>\n"
+			"messageML": "<p>If there is anything else you need just ask and remember to use the <i>yoda</i> trigger word.</p>\n"
 		}
 	]
 }

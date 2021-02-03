@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.stream.springit;
 
+import java.util.Collections;
+
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
@@ -97,7 +99,7 @@ public class SpringComponentsWebClusterIT {
 		}
 		
 		// wait for the event to say it's leader.
-		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, noddyCallback).getFilter();
+		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, Collections.singletonList(noddyCallback)).getFilter();
 		while (!lef.isActive()) {
 			Thread.sleep(50);
 		}
