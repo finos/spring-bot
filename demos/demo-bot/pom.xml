@@ -18,6 +18,7 @@
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
+    <spring-boot.run.main-class>example.symphony.demobot.DemoApplication</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -71,13 +72,22 @@
 	</dependencies>
 
 	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-        <version>${spring-boot.version}</version>
-			</plugin>
-		</plugins>
-	</build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+            <execution>
+                <goals>
+                    <goal>repackage</goal>
+                </goals>
+                <configuration>
+                    <mainClass>${spring-boot.run.main-class}</mainClass>
+                </configuration>
+            </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 
 </project>
