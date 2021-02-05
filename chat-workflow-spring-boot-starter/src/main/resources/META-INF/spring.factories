@@ -1,6 +1,7 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
  org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig,\
+ org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerTypeConverterConfig,\
  org.finos.symphony.toolkit.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig,\
  org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig,\
  org.finos.symphony.toolkit.workflow.java.perform.PerformerConfig

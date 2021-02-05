@@ -4,9 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Arrays;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.springframework.stereotype.Component;
 
-@Component
 public class EnumConverter extends AbstractSimpleTypeConverter {
 
 	public EnumConverter() {

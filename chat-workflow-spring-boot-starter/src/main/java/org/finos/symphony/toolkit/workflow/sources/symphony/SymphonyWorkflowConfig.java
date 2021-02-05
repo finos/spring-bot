@@ -24,8 +24,8 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentH
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
@@ -35,12 +35,15 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessa
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
@@ -59,6 +62,8 @@ import com.symphony.api.pod.UsersApi;
 @Configuration
 @AutoConfigureBefore(SharedStreamSingleBotConfig.class)
 public class SymphonyWorkflowConfig {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(SymphonyWorkflowConfig.class);
 	
 	@Autowired
 	@Qualifier(SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
@@ -92,6 +97,7 @@ public class SymphonyWorkflowConfig {
 	CommandPerformer cp;
 	
 	@Autowired
+	@Lazy
 	List<TypeConverter> converters;
 	
 	@Bean
@@ -164,6 +170,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public FormMessageMLConverter formMessageMLConverter() {
+		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
 		return new FreemarkerFormMessageMLConverter(resourceLoader, converters);
 	}
 	
