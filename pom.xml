@@ -175,8 +175,9 @@
 	          <version>3.0.0-M5</version>
 	        	<configuration>
 							<includes>
-							    <include>**/Test.java</include>
-							    <include>**/*IT.java</include>
+							    <include>**/*Test.java</include>
+                  <include>**/*IT.java</include>
+							    <include>**/Test*.java</include>
 							</includes>
 							<systemPropertyVariables>
 								<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>

@@ -16,19 +16,18 @@ import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.ModelAndView;
-import org.testng.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.MessagesApi;
@@ -46,6 +45,7 @@ import jetbrains.buildServer.web.openapi.PluginDescriptor;
 import jetbrains.buildServer.web.openapi.WebControllerManager;
 
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class NotifierTest {
 
 
@@ -81,7 +81,7 @@ public class NotifierTest {
 	
 	Set<SUser> users;
 	
-	@Before
+	@BeforeEach
 	public void setup() throws IOException {
 		Mockito.when(response.getOutputStream()).thenReturn(new ServletOutputStream() {
 			
