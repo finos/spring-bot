@@ -101,14 +101,12 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <executions>
             <execution>
-                <id>repackage</id>
                 <goals>
                     <goal>repackage</goal>
                 </goals>
                 <configuration>
                     <mainClass>${spring-boot.run.main-class}</mainClass>
                 </configuration>
-                <phase>post-integration-test</phase>
             </execution>
         </executions>
       </plugin>

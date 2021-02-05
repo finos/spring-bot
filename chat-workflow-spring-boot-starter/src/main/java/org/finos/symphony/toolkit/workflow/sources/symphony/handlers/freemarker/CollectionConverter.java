@@ -8,9 +8,7 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
-import org.springframework.stereotype.Component;
 
-@Component
 public class CollectionConverter extends AbstractTableConverter {
 	
 	public CollectionConverter() {

@@ -4,9 +4,7 @@ import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.ID;
-import org.springframework.stereotype.Component;
 
-@Component
 public class IDConverter extends AbstractClassConverter {
 
 	public IDConverter() {
