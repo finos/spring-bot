@@ -99,6 +99,29 @@
 		<url>https://github.com/finos/symphony-java-toolkit</url>
 	</scm>
 
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration> <!-- add this to disable checking -->
+					<doclint>none</doclint>
+					<failOnError>false</failOnError>
+					<source>8</source>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<profiles>
 		<!-- using this profile creates Javadocs, etc. and signs the jars for upload 
 			to maven central -->
@@ -121,24 +144,6 @@
 						</executions>
 						<configuration>
 							<interactive>false</interactive>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.1.1</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-							</execution>
-						</executions>
-						<configuration> <!-- add this to disable checking -->
-							<doclint>none</doclint>
-							<failOnError>false</failOnError>
-							<source>8</source>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -170,14 +175,14 @@
 						</executions>
 					</plugin>
 					<plugin>
-	          <groupId>org.apache.maven.plugins</groupId>
-	          <artifactId>maven-surefire-plugin</artifactId>
-	          <version>3.0.0-M5</version>
-	        	<configuration>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>3.0.0-M5</version>
+						<configuration>
 							<includes>
-							    <include>**/*Test.java</include>
-                  <include>**/*IT.java</include>
-							    <include>**/Test*.java</include>
+								<include>**/*Test.java</include>
+								<include>**/*IT.java</include>
+								<include>**/Test*.java</include>
 							</includes>
 							<systemPropertyVariables>
 								<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
@@ -185,7 +190,7 @@
 								<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
 								<proxy>${symphony-proxy}</proxy>
 							</systemPropertyVariables>
-            </configuration>						
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>

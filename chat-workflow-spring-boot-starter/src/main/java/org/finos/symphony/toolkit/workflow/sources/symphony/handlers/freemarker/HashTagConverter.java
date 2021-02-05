@@ -4,9 +4,7 @@ import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
-import org.springframework.stereotype.Component;
 
-@Component
 public class HashTagConverter extends AbstractClassConverter {
 
 	public HashTagConverter() {
