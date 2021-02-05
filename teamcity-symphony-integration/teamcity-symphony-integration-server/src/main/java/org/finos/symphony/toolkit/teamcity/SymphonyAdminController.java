@@ -20,7 +20,6 @@ import org.finos.symphony.toolkit.spring.api.ApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.TokenManagingApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
-import org.finos.symphony.toolkit.spring.api.properties.TrustStoreProperties;
 import org.finos.symphony.toolkit.spring.api.properties.TrustStoreProperties.Type;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.io.ResourceLoader;
