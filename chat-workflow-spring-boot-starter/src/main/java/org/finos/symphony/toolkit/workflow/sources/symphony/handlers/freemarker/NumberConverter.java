@@ -3,9 +3,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.springframework.stereotype.Component;
 
-@Component
 public class NumberConverter extends AbstractClassConverter {
 
 	public NumberConverter() {

@@ -4,9 +4,7 @@ import java.lang.reflect.Type;
 import java.time.Instant;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.springframework.stereotype.Component;
 
-@Component
 public class InstantConverter extends AbstractClassConverter {
 
 	public InstantConverter() {

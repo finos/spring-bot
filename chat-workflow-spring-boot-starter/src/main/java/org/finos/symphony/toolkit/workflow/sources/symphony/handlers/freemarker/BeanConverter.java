@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.springframework.stereotype.Component;
 
 /**
  * This is the "fall-through" converter, used to convert user-beans when everything else fails.
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Component;
  * @author rob@kite9.com
  *
  */
-@Component
 public class BeanConverter extends AbstractComplexTypeConverter {
 
 	public BeanConverter() {
