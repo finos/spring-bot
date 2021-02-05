@@ -28,6 +28,36 @@ public class KoreAIInstanceProperties {
 	private Addressed onlyAddressed = Addressed.FALSE;
 	
 	private IdentityProperties symphonyBot;
+	
+	private boolean sendErrorsToSymphony = false;
+	
+	private boolean sendWelcomeMessage = true;
+	
+	private String welcomeMessageML = "<messageML>Welcome to the chatroom!</messageML>";
+
+	public String getWelcomeMessageML() {
+		return welcomeMessageML;
+	}
+
+	public void setWelcomeMessageML(String welcomeMessageML) {
+		this.welcomeMessageML = welcomeMessageML;
+	}
+
+	public boolean isSendWelcomeMessage() {
+		return sendWelcomeMessage;
+	}
+
+	public void setSendWelcomeMessage(boolean sendWelcomeMessage) {
+		this.sendWelcomeMessage = sendWelcomeMessage;
+	}
+
+	public boolean isSendErrorsToSymphony() {
+		return sendErrorsToSymphony;
+	}
+
+	public void setSendErrorsToSymphony(boolean sendErrorsToSymphony) {
+		this.sendErrorsToSymphony = sendErrorsToSymphony;
+	}
 
 	public IdentityProperties getSymphonyBot() {
 		return symphonyBot;

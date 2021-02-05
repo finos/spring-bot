@@ -5,15 +5,27 @@ import static org.finos.symphony.toolkit.koreai.response.KoreAIResponse.TEMPLATE
 import static org.finos.symphony.toolkit.koreai.response.KoreAIResponse.TEXT;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.commonmark.node.Emphasis;
+import org.commonmark.node.FencedCodeBlock;
+import org.commonmark.node.Image;
 import org.commonmark.node.Node;
+import org.commonmark.node.StrongEmphasis;
 import org.commonmark.parser.Parser;
+import org.commonmark.renderer.NodeRenderer;
+import org.commonmark.renderer.html.HtmlNodeRendererContext;
+import org.commonmark.renderer.html.HtmlNodeRendererFactory;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.renderer.html.HtmlWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,11 +40,75 @@ import com.fasterxml.jackson.databind.node.TextNode;
 public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIResponseBuilderImpl.class);
+	
+	static class SymphonyMessageMLNodeRenderer implements NodeRenderer {
+
+	    private final HtmlWriter html;
+	    private final HtmlNodeRendererContext context;
+
+	    SymphonyMessageMLNodeRenderer(HtmlNodeRendererContext context) {
+	        this.html = context.getWriter();
+	        this.context = context;
+	    }
+	    
+	    protected void visitChildren(Node parent) {
+	        Node node = parent.getFirstChild();
+	        while (node != null) {
+	            Node next = node.getNext();
+	            context.render(node);
+	            node = next;
+	        }
+	    }
+
+
+	    @Override
+	    public Set<Class<? extends Node>> getNodeTypes() {
+	        // Return the node types we want to use this renderer for.
+	        Set<Class<? extends Node>> out = new HashSet<Class<? extends Node>>();
+	        out.add(Emphasis.class);
+	        out.add(StrongEmphasis.class);
+	        out.add(Image.class);
+	        out.add(FencedCodeBlock.class);
+	        return out;
+	    }
+
+	    @Override
+	    public void render(Node node) {
+	    	
+	    	if (node.getClass() == Emphasis.class) {
+	    		html.tag("i");
+	    		visitChildren(node);
+	    		html.tag("/i");
+	    	} else if (node.getClass() == StrongEmphasis.class) {
+	    		html.tag("b");
+	    		visitChildren(node);
+	    		html.tag("/b");
+	    	} else if (node.getClass() == FencedCodeBlock.class) {
+	    		html.tag("code");
+	    		html.text(((FencedCodeBlock)node).getLiteral());
+	    		html.tag("/code");
+	    	} else if (node.getClass() == Image.class) {
+				String url = ((Image) node).getDestination();
+
+				Map<String, String> attrs = new LinkedHashMap<>();
+				if (context.shouldSanitizeUrls()) {
+					url = context.urlSanitizer().sanitizeImageUrl(url);
+				}
+
+				attrs.put("src", context.encodeUrl(url));
+				html.tag("img", attrs, true);
+			}
+	    }
+	}
 
 	JsonNodeFactory jnf;
 	ObjectMapper om;
 	Parser p = Parser.builder().build();
-
+	HtmlRenderer r = HtmlRenderer.builder().softbreak("<br />").nodeRendererFactory(new HtmlNodeRendererFactory() {
+			public NodeRenderer create(HtmlNodeRendererContext context) {
+				return new SymphonyMessageMLNodeRenderer(context);
+			}
+		}).build();
 
 	public KoreAIResponseBuilderImpl(ObjectMapper om, JsonNodeFactory instance) {
 		super();
@@ -67,7 +143,7 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 		}
 	}
 	
-	public static final Pattern OPTION = Pattern.compile("[a-z]\\) (.*)");
+	public static final Pattern OPTION = Pattern.compile("^[a-z]\\) (.*)$");
 
 	protected ObjectNode convertToMessageMlAndOptions(ObjectNode n) {
 		TextNode tn = (TextNode) n.get(TEXT);
@@ -75,7 +151,7 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 		n.set(KoreAIResponse.OPTIONS_ML, options);
 
 		if (tn != null) {
-			String[] multiline = tn.asText().split("\n");
+			String[] multiline = tn.asText().split("[\n|\\n]");
 			StringBuilder text = new StringBuilder();
 			for (String string : multiline) {
 				Matcher m = OPTION.matcher(string);
@@ -96,7 +172,6 @@ public class KoreAIResponseBuilderImpl implements KoreAIResponseBuilder {
 
 	public String toMarkup(String in) {
 		Node document = p.parse(in);
-		HtmlRenderer r = HtmlRenderer.builder().build();
 		String markup = r.render(document);
 		return markup;
 	}

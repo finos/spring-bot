@@ -17,7 +17,7 @@ import com.symphony.api.id.SymphonyIdentity;
 
 @SpringBootTest(
 		classes={TestApplication.class})
-@ActiveProfiles("jsonidtest2")
+@ActiveProfiles({"jsonidtest2", "develop"})
 public class JsonIdentity2ConfigTest {
 
 	@Autowired

@@ -11,8 +11,8 @@ import java.security.Signature;
 import java.security.SignatureException;
 import java.util.Base64;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
@@ -33,7 +33,7 @@ public class JWTHelperIT {
 		String[] parts = jwt.split("\\.");
 
 		verifySignature(id.getPublicKey(), parts);
-		Assert.assertEquals("{\"alg\":\"RS512\"}{\"sub\":\"supercomputa\",\"exp\":1562389592}", JWTHelper.decodeJwt(jwt));
+		Assertions.assertEquals("{\"alg\":\"RS512\"}{\"sub\":\"supercomputa\",\"exp\":1562389592}", JWTHelper.decodeJwt(jwt));
 	}
 	
 	@Test
@@ -63,8 +63,8 @@ public class JWTHelperIT {
 		String[] parts = jwt.split("\\.");
 		verifySignature(pub, parts);
 		
-		Assert.assertEquals(EXPECTED_PART1, parts[0]);
-		Assert.assertEquals(EXPECTED_PART2, parts[1]);
+		Assertions.assertEquals(EXPECTED_PART1, parts[0]);
+		Assertions.assertEquals(EXPECTED_PART2, parts[1]);
 	}
 
 	protected void verifySignature(PublicKey pub, String[] parts)
@@ -73,7 +73,7 @@ public class JWTHelperIT {
 		sigBuilder.initVerify(pub);
 		sigBuilder.update((parts[0]+"."+parts[1]).getBytes());
 	    byte[] sig = Base64.getUrlDecoder().decode(parts[2]);
-	    Assert.assertTrue(sigBuilder.verify(sig));
+	    Assertions.assertTrue(sigBuilder.verify(sig));
 	}
 
 	private void outputPart(String p) {

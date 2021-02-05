@@ -9,7 +9,12 @@
     },
     "c" : "C",
     "b" : false,
-    "a" : null,
+    "a" : {
+      "name" : "bbb",
+      "id" : "28374682376",
+      "tagType" : "USER",
+      "address" : "v@example.com"
+    },
     "someUser" : null
   },
   "errors" : {

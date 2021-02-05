@@ -1,12 +1,8 @@
 package org.finos.symphony.toolkit.workflow.content;
 
-import java.util.Iterator;
 import java.util.List;
 
-public interface Paragraph extends Content, Iterable<Content> {
-
-	List<Content> getContents();
-	
+public interface Paragraph extends OrderedContent<Content> {
 
 	public static Paragraph of(List<Content> c) {
 		return new Paragraph() {
@@ -35,16 +31,18 @@ public interface Paragraph extends Content, Iterable<Content> {
 				return "Paragraph ["+c.toString()+"]";
 			}
 
-			@Override
-			public Iterator<Content> iterator() {
-				return c.iterator();
-			}
 
 			@Override
 			public String getText() {
 				return getContents().stream()
 					.map(e -> e.getText())
 					.reduce("", (a, b) -> a + " " + b);
+			}
+			
+
+			@Override
+			public Paragraph buildAnother(List<Content> contents) {
+				return of(contents);
 			}
 		};
 	}

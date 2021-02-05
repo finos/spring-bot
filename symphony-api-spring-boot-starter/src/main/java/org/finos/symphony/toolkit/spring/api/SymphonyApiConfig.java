@@ -105,7 +105,6 @@ public class SymphonyApiConfig {
 	@Bean(name=SINGLE_BOT_INSTANCE_BEAN)
 	@ConditionalOnMissingBean
 	@ConditionalOnBean(name = SINGLE_BOT_IDENTITY_BEAN)
-	@Lazy
 	public ApiInstance singleBotApiInstance(ApiInstanceFactory bif, 
 			@Qualifier(SINGLE_BOT_IDENTITY_BEAN) SymphonyIdentity id,  
 			@Autowired(required=false) @Qualifier(SymphonyApiTrustManagersConfig.SYMPHONY_TRUST_MANAGERS_BEAN) TrustManagerFactory trustManagerFactory) 

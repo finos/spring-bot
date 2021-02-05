@@ -10,11 +10,11 @@ import org.finos.symphony.toolkit.spring.app.SymphonyAppProperties;
 import org.finos.symphony.toolkit.spring.app.pods.info.PodInfo;
 import org.finos.symphony.toolkit.spring.app.pods.info.PodInfoStore;
 
-import com.symphony.api.authenticator.AuthenticationApi;
+import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.AppAuthenticateRequest;
+import com.symphony.api.model.ExtensionAppAuthenticateRequest;
 import com.symphony.api.model.ExtensionAppTokens;
 import com.symphony.api.pod.PodApi;
 
@@ -45,8 +45,8 @@ public class PodInfoStoreTokenStrategy extends AbstractPodTokenStrategy<PodInfo>
 	@Override
 	protected ExtensionAppTokens certBasedRequest(String appToken, PodInfo pod) throws Exception {
 		ApiBuilder ab = setupApiBuilder(pod, pod.getPayload().getSessionAuthUrl());
-		AuthenticationApi aa = ab.getApi(AuthenticationApi.class);
-		AppAuthenticateRequest ar = new AppAuthenticateRequest();
+		CertificateAuthenticationApi aa = ab.getApi(CertificateAuthenticationApi.class);
+		ExtensionAppAuthenticateRequest ar = new ExtensionAppAuthenticateRequest();
 		ar.setAppToken(appToken);
 		ExtensionAppTokens out = aa.v1AuthenticateExtensionAppPost(ar);
 		return out;

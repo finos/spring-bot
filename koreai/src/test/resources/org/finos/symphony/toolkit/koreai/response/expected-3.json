@@ -30,7 +30,7 @@
 				}
 			],
 			"options": [],
-			"messageML": "<p>Hi.  You can ask me questions such as the following</p>\n<ul>\n<li>\n<p>how do I create groups</p>\n</li>\n<li>\n<p>how do I develop playbooks</p>\n</li>\n<li>\n<p>how do i promote playbooks</p>\n</li>\n</ul>\n<p>Just remember to use the '<em>yoda</em>' trigger word - or click on one of the following topics to get you started...</p>\n"
+			"messageML": "<p>Hi.  You can ask me questions such as the following</p>\n<ul>\n<li>\n<p>how do I create groups</p>\n</li>\n<li>\n<p>how do I develop playbooks</p>\n</li>\n<li>\n<p>how do i promote playbooks</p>\n</li>\n</ul>\n<p>Just remember to use the '<i>yoda</i>' trigger word - or click on one of the following topics to get you started...</p>\n"
 		}
 	]
 }

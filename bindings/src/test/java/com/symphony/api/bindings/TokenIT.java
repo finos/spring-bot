@@ -1,14 +1,16 @@
 package com.symphony.api.bindings;
 
-import org.junit.Assert;
-import org.junit.experimental.theories.Theory;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.V4MessageList;
 
-public class TokenIT extends AbstractTest {
+public class TokenIT extends AbstractIT {
 	
-	@Theory
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
 	public void checkTokenCreation(TestClientStrategy s) throws Exception  {
 		TokenManager tm = s.getTokenManager();
 		
@@ -16,7 +18,7 @@ public class TokenIT extends AbstractTest {
 		
 		// pull some messages back: look - no tokens are set
 		V4MessageList msg = messagesApi.v4StreamSidMessageGet(ROOM, 0l, null,  null, 0, 5);
-		Assert.assertTrue(msg.size() > 4);
+		Assertions.assertTrue(msg.size() > 4);
 		
 		String originalSessionToken = tm.getSessionToken().getToken();
 		String originalKeyManagerToken = tm.getKeyManagerToken().getToken();
@@ -32,8 +34,8 @@ public class TokenIT extends AbstractTest {
 		messagesApi.v4StreamSidMessageGet(ROOM, 0l, null,  null, 0, 100);
 		
 		// check that tokens actually did get refreshed
-		Assert.assertNotEquals(originalSessionToken, tm.getSessionToken());
-		Assert.assertNotEquals(originalKeyManagerToken, tm.getKeyManagerToken());
+		Assertions.assertNotEquals(originalSessionToken, tm.getSessionToken());
+		Assertions.assertNotEquals(originalKeyManagerToken, tm.getKeyManagerToken());
 		
 	}
 	

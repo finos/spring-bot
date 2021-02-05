@@ -1,6 +1,8 @@
 package org.finos.symphony.toolkit.koreai.spring;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -19,6 +21,7 @@ import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig.SymphonyStreamHandlerFactory;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ResourceLoader;
@@ -71,10 +74,20 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 			KoreAIResponseBuilder koreAIResponseBuilder = koreAIResponseBuilder();
 			KoreAIResponseHandler koreAIResponseHandler = responseMessageAdapter(apiInstance, props);
 			KoreAIRequester requester = koreAIRequester(props, koreAIResponseHandler, koreAIResponseBuilder);
-			StreamEventConsumer koreAISymphonyConsumer = koreAIEventHandler(requester, apiInstance, props);
+			List<StreamEventConsumer> consumers = new ArrayList<StreamEventConsumer>();
+			consumers.add(koreAIEventHandler(requester, apiInstance, props));
+			if (props.isSendWelcomeMessage()) {
+				consumers.add(new RoomWelcomeEventConsumer(
+					apiInstance.getAgentApi(MessagesApi.class), 
+					apiInstance.getPodApi(UsersApi.class),
+					apiInstance.getIdentity(),
+					props.getWelcomeMessageML()
+				));
+			}
+			
 			
 			// wire this up to a shared stream
-			SymphonyStreamHandler out = sshf.createBean(apiInstance, koreAISymphonyConsumer);
+			SymphonyStreamHandler out = sshf.createBean(apiInstance, consumers);
 			return out;
 		} catch (Exception e) {
 			LOG.error("Couldn't construct Kore/Symphony bridge bean for "+email, e);
@@ -86,6 +99,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	public KoreAIResponseHandler responseMessageAdapter(ApiInstance api, KoreAIInstanceProperties properties) throws IOException {
 		return new KoreAIResponseHandlerImpl(api.getAgentApi(MessagesApi.class), rl, 
 				properties.isSkipEmptyResponses(), 
+				properties.isSendErrorsToSymphony(),
 				om,
 				koreAIProperties.getTemplatePrefix());	
 	}

@@ -61,7 +61,7 @@ public class TestRoomAndUsersBuilder {
 	public void setup() {
 		
 		// just returns a single real user
-		when(usersApi.v3UsersGet(any(), any(), any(), any(), any()))
+		when(usersApi.v3UsersGet(any(), any(), any(), any(), any(), any()))
 			.then(a -> new V2UserList().users(Collections.singletonList(new UserV2().id(45l).displayName("Robert Moffat").emailAddress("rob@kite9.com"))));
 		
 		when(usersApi.v2UserGet(any(), any(), any(), any(), any()))

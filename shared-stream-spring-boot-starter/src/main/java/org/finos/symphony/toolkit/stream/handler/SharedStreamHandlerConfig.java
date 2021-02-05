@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.stream.handler;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
@@ -38,7 +39,7 @@ public class SharedStreamHandlerConfig {
 	
 	public static interface SymphonyStreamHandlerFactory {
 				
-		public SymphonyStreamHandler createBean(ApiInstance symphonyApi, StreamEventConsumer consumer);
+		public SymphonyStreamHandler createBean(ApiInstance symphonyApi, List<StreamEventConsumer> consumers);
 		
 		public Collection<SymphonyStreamHandler> getAllHandlers();
 		
@@ -53,12 +54,12 @@ public class SharedStreamHandlerConfig {
 		return new SymphonyStreamHandlerFactory() {
 			
 			@Override
-			public SymphonyStreamHandler createBean(ApiInstance symphonyApi, StreamEventConsumer consumer) {
+			public SymphonyStreamHandler createBean(ApiInstance symphonyApi, List<StreamEventConsumer> consumers) {
 				if (created.containsKey(symphonyApi)) {
 					return created.get(symphonyApi);
 				}
 				
-				SymphonyStreamHandler out = streamHandler(symphonyApi, consumer);
+				SymphonyStreamHandler out = streamHandler(symphonyApi, consumers);
 				created.put(symphonyApi, out);
 				return out;
 			}
@@ -71,9 +72,9 @@ public class SharedStreamHandlerConfig {
 	
 	@Bean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	protected SymphonyStreamHandler streamHandler(ApiInstance symphonyApi, StreamEventConsumer consumer) {
-		SymphonyStreamHandler out = new SymphonyStreamHandler(symphonyApi, consumer, ec, false);
-		LOG.info("Created SymphonyStreamHandler for "+symphonyApi.getIdentity().getEmail()+" with consumer "+consumer);
+	protected SymphonyStreamHandler streamHandler(ApiInstance symphonyApi, List<StreamEventConsumer> consumers){
+		SymphonyStreamHandler out = new SymphonyStreamHandler(symphonyApi, consumers, ec, false);
+		LOG.info("Created SymphonyStreamHandler for "+symphonyApi.getIdentity().getEmail()+" with consumers "+consumers);
 		
 		if (created.size() == 0) {
 			// first bot is expected to be the cluster-manager.

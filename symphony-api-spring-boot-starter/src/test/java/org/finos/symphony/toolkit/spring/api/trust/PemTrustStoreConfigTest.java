@@ -25,7 +25,7 @@ import com.symphony.api.id.PemSymphonyIdentity;
 
 @SpringBootTest(
 		classes={TestApplication.class})
-@ActiveProfiles({"crt", "p12idtest"})
+@ActiveProfiles({"crt", "p12idtest", "develop"})
 public class PemTrustStoreConfigTest {
 
 	@Autowired
