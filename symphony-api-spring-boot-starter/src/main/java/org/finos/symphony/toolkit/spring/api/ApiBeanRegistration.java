@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
-import org.springframework.beans.factory.annotation.AnnotatedGenericBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.ConstructorArgumentValues;
@@ -54,15 +53,19 @@ public class ApiBeanRegistration implements BeanDefinitionRegistryPostProcessor,
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
 		try {
-			Set<Class<?>> classesInPackage = getClassesInPackage(packageName);
-			
-			for (Class<?> c : classesInPackage) {
-				BeanDefinition bd = constructBeanDefintion(c);
-				registry.registerBeanDefinition("someprefix"+c.getName(), bd);
-				LOG.debug("Registered Symphony API Bean: {}", c.getName());
+			if (registry.containsBeanDefinition(apiBuilderBeanName)) {
+				Set<Class<?>> classesInPackage = getClassesInPackage(packageName);
+				
+				for (Class<?> c : classesInPackage) {
+					BeanDefinition bd = constructBeanDefintion(c);
+					registry.registerBeanDefinition("someprefix"+c.getName(), bd);
+					LOG.debug("Registered Symphony API Bean: {}", c.getName());
+				}
+				
+				LOG.info("Registered {} beans in package {}", classesInPackage.size(), packageName);
+			} else {
+				LOG.debug("Not autowiring symphony apis since there is no bean called "+apiBuilderBeanName);
 			}
-			
-			LOG.info("Registered {} beans in package {}", classesInPackage.size(), packageName);
 		} catch (Exception e) {
 			throw new FatalBeanException("Couldn't create bean definitions for "+packageName, e);
 		}

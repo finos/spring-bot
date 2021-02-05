@@ -17,7 +17,6 @@ import com.symphony.api.pod.SystemApi;
  */
 @Configuration
 @AutoConfigureAfter({SymphonyApiConfig.class})
-@ConditionalOnBean(name = {SymphonyApiConfig.SINGLE_BOT_INSTANCE_BEAN})
 public class SymphonyApiAutowireConfig {
 
 	@Bean
