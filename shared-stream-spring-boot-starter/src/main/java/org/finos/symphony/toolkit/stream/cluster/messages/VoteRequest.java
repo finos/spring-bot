@@ -1,13 +1,14 @@
 package org.finos.symphony.toolkit.stream.cluster.messages;
 
-import java.util.Objects;
-
 import org.finos.symphony.toolkit.stream.Participant;
 
 public class VoteRequest implements ClusterMessage {
 	
 	private long electionNumber;
 	private Participant candidate;
+	
+	public VoteRequest() {
+	}
 	
 	public VoteRequest(long electionNumber, Participant candidate) {
 		this.electionNumber = electionNumber;
@@ -29,27 +30,33 @@ public class VoteRequest implements ClusterMessage {
 	public void setCandidate(Participant candidate) {
 		this.candidate = candidate;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hash(candidate, electionNumber);
+		int result = 1;
+		result = prime * result + ((candidate == null) ? 0 : candidate.hashCode());
+		result = prime * result + (int) (electionNumber ^ (electionNumber >>> 32));
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!super.equals(obj)) {
+		if (obj == null)
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		VoteRequest other = (VoteRequest) obj;
-		return Objects.equals(candidate, other.candidate) && electionNumber == other.electionNumber;
+		if (candidate == null) {
+			if (other.candidate != null)
+				return false;
+		} else if (!candidate.equals(other.candidate))
+			return false;
+		if (electionNumber != other.electionNumber)
+			return false;
+		return true;
 	}
 
 	@Override

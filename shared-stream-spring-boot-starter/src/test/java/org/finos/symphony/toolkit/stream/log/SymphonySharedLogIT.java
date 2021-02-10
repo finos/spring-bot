@@ -61,5 +61,18 @@ public class SymphonySharedLogIT  {
 		Assertions.fail("Didn't find leader");
 	}
 	
+	@Test
+	public void testLocalLog() {
+		LocalConsoleOnlyLog ssl = new LocalConsoleOnlyLog();
+		
+		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
+		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());
+		ssl.writeParticipantMessage(p1);
+		ssl.writeLeaderMessage(p2);
+		
+		List<Participant> returned = ssl.getRegisteredParticipants(p1);
+		Assertions.assertTrue(returned.contains(p1));
+	}
+	
 	
 }

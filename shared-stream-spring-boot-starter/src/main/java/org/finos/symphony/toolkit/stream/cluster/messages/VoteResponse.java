@@ -10,6 +10,9 @@ public class VoteResponse implements ClusterMessage {
 	private Participant candidate;
 	private float votes;
 	
+	public VoteResponse() {
+	}
+	
 	public VoteResponse(long electionNumber, Participant candidate, float votes) {
 		this.electionNumber = electionNumber;
 		this.candidate = candidate;
