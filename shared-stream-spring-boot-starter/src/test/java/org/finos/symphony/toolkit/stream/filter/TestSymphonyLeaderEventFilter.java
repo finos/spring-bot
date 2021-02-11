@@ -8,6 +8,7 @@ import java.util.stream.IntStream;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
+import org.finos.symphony.toolkit.stream.handler.SymphonyLeaderEventFilter;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.log.LogMessageHandlerImpl;
 import org.finos.symphony.toolkit.stream.log.LogMessageType;
@@ -60,7 +61,7 @@ public class TestSymphonyLeaderEventFilter {
 		
 	}
 	
-	LogMessageHandlerImpl lmh = new LogMessageHandlerImpl("abc123", null, "UNIT");
+	LogMessageHandlerImpl lmh = new LogMessageHandlerImpl("test", "abc123", null, "UNIT");
 	
 	@Test
 	public void testMultipleStreamingConsumers() {

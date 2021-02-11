@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.filter;
+package org.finos.symphony.toolkit.stream.handler;
 
 import java.util.concurrent.TimeUnit;
 
@@ -10,6 +10,14 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.support.PeriodicTrigger;
 
+/**
+ * This class writes a message into the shared room on a given interval (default = 1 day).
+ * This means when a cluster member restarts, it can scan the room and find out who is in it,
+ * and therefore the size of the cluster.
+ * 
+ * @author rob@kite9.com
+ *
+ */
 public class ParticipationNotifier implements InitializingBean {
 	
 	private Logger LOG = LoggerFactory.getLogger(ParticipationNotifier.class);

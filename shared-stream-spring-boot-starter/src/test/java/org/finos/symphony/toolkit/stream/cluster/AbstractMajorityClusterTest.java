@@ -30,7 +30,7 @@ public abstract class AbstractMajorityClusterTest extends AbstractClusterTest {
 				p, 
 				c.time + r.nextInt(c.time), 
 				setup.n, 
-				new MajorityDecider(() -> c.size, p));
+				new MajorityDecider(p));
 	}
 
 	public AbstractMajorityClusterTest() {

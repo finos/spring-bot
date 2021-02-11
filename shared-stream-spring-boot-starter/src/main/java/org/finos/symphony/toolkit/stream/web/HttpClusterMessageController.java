@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -28,7 +29,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class HttpClusterMessageController implements Controller, ApplicationContextAware {
 	
-	private ClusterMember clusterMember;
 	private View symphonyJsonOutputView;
 	private ObjectMapper om;
 	private ApplicationContext ctx;
@@ -42,9 +42,9 @@ public class HttpClusterMessageController implements Controller, ApplicationCont
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		if ("POST".equals(request.getMethod()) && (MediaType.APPLICATION_JSON_VALUE.equals(request.getContentType()))) {
 			ClusterMessage in = (ClusterMessage) om.readValue(request.getInputStream(), ClusterMessage.class);
-			ClusterMember member = getClusterMember();
+			ClusterMember member = getClusterMember(in);
 			if (member != null) {
-				ClusterMessage out = getClusterMember().receiveMessage(in);
+				ClusterMessage out = member.receiveMessage(in);
 				Map<String, Object> map = new HashMap<>();
 				map.put("response", out);
 				ModelAndView r = new ModelAndView(symphonyJsonOutputView, map);
@@ -61,12 +61,12 @@ public class HttpClusterMessageController implements Controller, ApplicationCont
 	 * dependency over the existence of custer member.
 	 * @return
 	 */
-	private ClusterMember getClusterMember() {
-		if (clusterMember == null) {
-			clusterMember = ctx.getBean(ClusterMember.class);
-		}
-		
-		return clusterMember;
+	private ClusterMember getClusterMember(ClusterMessage in) {
+		SymphonyStreamHandlerFactory f = ctx.getBean(SymphonyStreamHandlerFactory.class);
+		return f.allClusterMembers().stream()
+			.filter(cm -> cm.getClusterName().equals(in.getBotName()))
+			.findFirst()
+			.orElse(null);
 	}
 
 	@Override

@@ -22,8 +22,8 @@ public class SymphonyRaftClusterMember extends RaftClusterMember {
 	private final SharedLog sl;
 	private final BooleanSupplier healthStatus;
 	
-	public SymphonyRaftClusterMember(Participant self, long timeoutMs, Decider d, Multicaster multicaster, SharedLog sl, BooleanSupplier healthStatus) {
-		super(self, timeoutMs, d, multicaster);
+	public SymphonyRaftClusterMember(String clusterName, Participant self, long timeoutMs, Decider d, Multicaster multicaster, SharedLog sl, BooleanSupplier healthStatus) {
+		super(clusterName, self, timeoutMs, d, multicaster);
 		this.sl = sl;
 		this.healthStatus = healthStatus;
 	}

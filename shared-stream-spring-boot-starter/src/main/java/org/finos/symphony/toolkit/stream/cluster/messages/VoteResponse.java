@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import org.finos.symphony.toolkit.stream.Participant;
 
-public class VoteResponse implements ClusterMessage {
+public class VoteResponse extends AbstractClusterMessage {
 	
 	private long electionNumber;
 	private Participant candidate;
@@ -13,7 +13,8 @@ public class VoteResponse implements ClusterMessage {
 	public VoteResponse() {
 	}
 	
-	public VoteResponse(long electionNumber, Participant candidate, float votes) {
+	public VoteResponse(String clusterName, long electionNumber, Participant candidate, float votes) {
+		super(clusterName);
 		this.electionNumber = electionNumber;
 		this.candidate = candidate;
 		this.votes = votes;
@@ -42,33 +43,34 @@ public class VoteResponse implements ClusterMessage {
 	public void setVotes(float votes) {
 		this.votes = votes;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "VoteResponse [electionNumber=" + electionNumber + ", candidate=" + candidate + ", votes=" + votes
+				+ ", botName=" + botName + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(candidate, electionNumber);
+		result = prime * result + Objects.hash(candidate, electionNumber, votes);
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (!super.equals(obj)) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		VoteResponse other = (VoteResponse) obj;
-		return Objects.equals(candidate, other.candidate) && electionNumber == other.electionNumber;
+		return Objects.equals(candidate, other.candidate) && electionNumber == other.electionNumber
+				&& Float.floatToIntBits(votes) == Float.floatToIntBits(other.votes);
 	}
-
-	@Override
-	public String toString() {
-		return "VoteResponse [electionNumber=" + electionNumber + ", candidate=" + candidate + ", votes=" +votes  + "]";
-	}
-
+	
+	
 
 }

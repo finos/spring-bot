@@ -63,9 +63,15 @@ public class LocalConsoleOnlyLog implements SharedLog, LogMessageHandler {
 	}
 
 	@Override
+	public boolean isIgnorableMessage(V4Event e) {
+		return false;
+	}
+
+	@Override
 	public Optional<LogMessage> readMessage(V4Message e) {
 		return Optional.empty();
 	}
+
 	
 	
 	

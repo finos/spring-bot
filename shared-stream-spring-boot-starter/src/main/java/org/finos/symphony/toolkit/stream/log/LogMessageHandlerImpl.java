@@ -16,14 +16,17 @@ import com.symphony.api.model.V4MessageSent;
 
 public class LogMessageHandlerImpl implements LogMessageHandler {
 
+	private static final String SYMPHONY_SHARED_STREAM = "symphony-shared-stream";
 	private static final String SHARED_STREAM_JSON_KEY = "shared-stream-001";
 	private ObjectMapper om;
 	private String environmentSuffix;
 	private String streamId;
+	private String clusterName;
 	protected MessagesApi messagesApi;
 	
-	public LogMessageHandlerImpl(String streamId, MessagesApi messagesApi, String environmentSuffix) {
+	public LogMessageHandlerImpl(String clusterName, String streamId, MessagesApi messagesApi, String environmentSuffix) {
 		super();
+		this.clusterName = clusterName;
 		this.streamId = streamId;
 		this.om = ObjectMapperFactory.initialize(
 			ObjectMapperFactory.extendedSymphonyVersionSpace(MessagingVersionSpace.THIS));
@@ -39,6 +42,7 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 
 	public String createMessageML(LogMessage out) {
 		return "<messageML>"
+				+"<hash tag=\""+SYMPHONY_SHARED_STREAM+"\" />"
 				+getHashTag(out.getMessageType())
 				+out.getMessageType()
 				+" - "
@@ -47,7 +51,7 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 	}
 
 	public String getHashTagId(LogMessageType cmt) {
-		return "shared-stream-"+cmt.toString().toLowerCase()+"-"+environmentSuffix;
+		return "shared-stream-"+cmt.toString().toLowerCase()+"-"+clusterName+"-"+environmentSuffix;
 	}
 
 	public String getHashTag(LogMessageType t) {
@@ -83,6 +87,20 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 			V4Message m = messageSent.getMessage();
 			String messageML = m.getMessage();
 			return (messageML.contains(getHashTagId(LogMessageType.PARTICIPANT)));
+		}
+		
+		return false;
+	}
+	
+	
+
+	@Override
+	public boolean isIgnorableMessage(V4Event e) {
+		V4MessageSent messageSent = e.getPayload().getMessageSent();
+		if (messageSent != null) {
+			V4Message m = messageSent.getMessage();
+			String messageML = m.getMessage();
+			return (messageML.contains(SYMPHONY_SHARED_STREAM));
 		}
 		
 		return false;

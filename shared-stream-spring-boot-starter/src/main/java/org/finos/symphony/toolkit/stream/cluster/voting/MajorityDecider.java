@@ -1,9 +1,9 @@
 package org.finos.symphony.toolkit.stream.cluster.voting;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.stream.cluster.messages.VoteRequest;
@@ -19,12 +19,10 @@ import org.finos.symphony.toolkit.stream.cluster.messages.VoteResponse;
 public class MajorityDecider implements Decider {
 	
 	private final Participant self;
-	private final Supplier<Integer> quorumSize;
 	
-	public MajorityDecider(Supplier<Integer> quorumSize, Participant self) {
+	public MajorityDecider(Participant self) {
 		super();
 		this.self = self;
-		this.quorumSize = quorumSize;
 	}
 	
 	class MajorityConsumer implements Consumer<ClusterMessage> {
@@ -32,12 +30,14 @@ public class MajorityDecider implements Decider {
 		int votes = 1;
 		boolean finished = false;
 		Runnable r;
+		ClusterMember cm;
 		
-		public MajorityConsumer(int votes, boolean finished, Runnable r) {
+		public MajorityConsumer(ClusterMember cm, int votes, boolean finished, Runnable r) {
 			super();
 			this.votes = votes;
 			this.finished = finished;
 			this.r = r;
+			this.cm = cm;
 			checkWin();
 		}
 
@@ -50,7 +50,7 @@ public class MajorityDecider implements Decider {
 		}
 		
 		protected void checkWin() {
-			if (votes > (quorumSize.get() / 2f)) {
+			if (votes > (cm.getSizeOfCluster() / 2f)) {
 				if (!finished) {
 					finished = true;
 					r.run();
@@ -62,8 +62,8 @@ public class MajorityDecider implements Decider {
 	
 
 	@Override
-	public Consumer<ClusterMessage> createDecider(Runnable r) {
-		return new MajorityConsumer(1, false, r);
+	public Consumer<ClusterMessage> createDecider(ClusterMember cm, Runnable r) {
+		return new MajorityConsumer(cm, 1, false, r);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class MajorityDecider implements Decider {
 	}
 
 	@Override
-	public boolean canSuppressWith(SuppressionMessage sm) {
+	public boolean canSuppressWith(ClusterMember cm, SuppressionMessage sm) {
 		return true;
 	}
 }

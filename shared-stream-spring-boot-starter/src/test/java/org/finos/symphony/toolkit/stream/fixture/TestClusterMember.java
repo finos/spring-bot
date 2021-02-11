@@ -10,12 +10,12 @@ public class TestClusterMember extends RaftClusterMember {
 	
 	
 	public TestClusterMember(Participant self, long timeoutMs, Decider d, Multicaster multicaster) {
-		super(self, timeoutMs, d, multicaster);
+		super("test", self, timeoutMs, d, multicaster);
 	}
 
 
 	public TestClusterMember(Participant self, long timeoutMs, TestNetwork n, Decider d) {
-		super(self,timeoutMs, d, n);
+		super("test", self,timeoutMs, d, n);
 		n.register(self, this);
 		// System.out.println(self+" with timeout "+timeoutMs);
 	}

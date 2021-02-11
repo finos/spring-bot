@@ -20,9 +20,12 @@ public interface LogMessageHandler {
 
 	public boolean isParticipantMessage(V4Event e);
 	
+	public boolean isIgnorableMessage(V4Event e);
+
 	/**
 	 * Converts the {@link V4Message} into a {@link LogMessage} if it is possible.
 	 */
 	public Optional<LogMessage> readMessage(V4Message e);
+
 
 }

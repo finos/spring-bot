@@ -22,8 +22,8 @@ public class SymphonyRoomSharedLog extends LogMessageHandlerImpl implements Shar
 	
 	private long participationIntervalMillis;
 	
-	public SymphonyRoomSharedLog(String streamId, MessagesApi messagesApi, String environmentSuffix, long participationIntervalMillis) {
-		super(streamId, messagesApi, environmentSuffix);
+	public SymphonyRoomSharedLog(String clusterName, String streamId, MessagesApi messagesApi, String environmentSuffix, long participationIntervalMillis) {
+		super(clusterName, streamId, messagesApi, environmentSuffix);
 		this.participationIntervalMillis = participationIntervalMillis;
 	}
 

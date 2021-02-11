@@ -5,13 +5,14 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.stream.cluster.messages.VoteRequest;
-import org.finos.symphony.toolkit.stream.cluster.transport.HttpMulticaster;
+import org.finos.symphony.toolkit.stream.web.HttpMulticaster;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ public class TestTransport {
 	
 	Participant me = new Participant("http://localhost:9998/me");
 	Participant you = new Participant("http://localhost:9999/you");
-	VoteRequest vote = new VoteRequest(0, you);
+	VoteRequest vote = new VoteRequest("test", 0, you);
 
 	public WireMockServer wireMockRule = new WireMockServer(9999);
 	
@@ -42,10 +43,9 @@ public class TestTransport {
 	@Test
 	public void testHttpTransport() {
 		HttpMulticaster hm = new HttpMulticaster(me);
-		hm.accept(you);
-		ClusterMessage cm = new SuppressionMessage(me, 5);
+		ClusterMessage cm = new SuppressionMessage("test", me, 5);
 		List<ClusterMessage> messages = new ArrayList<ClusterMessage>();
-		hm.sendAsyncMessage(me, cm, e -> messages.add(e));
+		hm.sendAsyncMessage(me, Collections.singletonList(you),cm, e -> messages.add(e));
 		while (messages.size() == 0) {
 			try {
 				Thread.sleep(100);

@@ -1,27 +1,32 @@
-package org.finos.symphony.toolkit.stream.cluster.transport;
+package org.finos.symphony.toolkit.stream.web;
 
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.function.Consumer;
 
 import javax.ws.rs.core.HttpHeaders;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
+import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Simple implementation of the multicaster, which uses Http to talk with {@link HttpClusterMessageController}.
+ * 
+ * @author rob@kite9.com
+ *
+ */
 public class HttpMulticaster implements Multicaster {
 	
 	public static Logger LOG = LoggerFactory.getLogger(HttpMulticaster.class);
 	
-	protected Set<Participant> knownParticipants = new HashSet<Participant>();
 	protected Participant self;
 	protected ObjectMapper om;
 
@@ -32,43 +37,35 @@ public class HttpMulticaster implements Multicaster {
 	}
 
 	@Override
-	public void accept(Participant t) {
-		if (!self.equals(t)) {
-			knownParticipants.add(t);
-		}
-	}
-
-	@Override
-	public void sendAsyncMessage(Participant from, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
-		for (Participant participant : knownParticipants) {
+	public void sendAsyncMessage(Participant from, List<Participant> to, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
+		for (Participant participant : to) {
 			sendMessageTo(participant.getDetails(), cm, responsesConsumer);
 		}
 	}
 
 	private <R extends ClusterMessage> void sendMessageTo(String url, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
 		try {
+			String json = om.writeValueAsString(cm);
+			LOG.debug("Sending Cluster Communication Message {} to {}", json, url);
+			
 			URL u = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) u.openConnection();
 			con.setRequestMethod("POST");
 			con.setRequestProperty("Accept", MediaType.APPLICATION_JSON_VALUE);
 			con.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 			con.setDoOutput(true);
-			String json = om.writeValueAsString(cm);
 			
 			try (OutputStream os = con.getOutputStream()) {
 				os.write(json.getBytes());
 			}
 			
 			ClusterMessage response = om.readValue(con.getInputStream(), ClusterMessage.class);
+
+			LOG.debug("Received Response {}", response);
 			responsesConsumer.accept(response);
 		} catch (Exception e) {
-			LOG.error("Couldn't send message to "+url, e);
+			LOG.debug("Couldn't send message to "+url, e);
 		}
-	}
-
-	@Override
-	public int getQuorumSize() {
-		return knownParticipants.size() + 1;
 	}
 
 }
