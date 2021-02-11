@@ -40,10 +40,10 @@ public class SymphonyStreamHandler {
 		this.datafeedApi = api.getAgentApi(DatafeedApi.class);
 		this.consumer = eventConsumer;
 		this.exceptionHandler = exceptionHandler;
+		this.instance = api;
 		if (start) {
 			start();
 		}
-		this.instance = api;
 	}
 	
 	public SymphonyStreamHandler(ApiInstance api,
@@ -77,7 +77,7 @@ public class SymphonyStreamHandler {
 			String initialDatafeedId = datafeedApi.v4DatafeedCreatePost(null, null).getId();
 			runThread = new Thread(() -> consumeLoop(initialDatafeedId));
 			//runThread.setDaemon(true);
-			runThread.setName("SymphonyStream");
+			runThread.setName("SymphonyStream-"+instance.getIdentity().getEmail());
 			runThread.start();
 		}
 	}

@@ -23,13 +23,14 @@ public class SymphonySharedLogIT  {
 
 	// now using a room just for this purpose
 	private String streamId = "QTG/xBPcpYtbMbfhGrjK7X///okjuFBXdA==";
+	private String clusterName = "test";
 	
 	@Autowired
 	MessagesApi messagesApi;
 	
 	@Test
 	public void testParticipantWrite() {
-		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
+		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(clusterName ,streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
 		
 		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
 		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());
@@ -43,7 +44,7 @@ public class SymphonySharedLogIT  {
 	
 	@Test
 	public void testLeaderWrite() {
-		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
+		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(clusterName, streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
 		
 		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
 		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());

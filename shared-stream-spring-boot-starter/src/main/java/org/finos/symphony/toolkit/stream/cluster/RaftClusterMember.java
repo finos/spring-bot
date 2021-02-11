@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.stream.Participant;
@@ -54,14 +56,27 @@ public class RaftClusterMember implements ClusterMember {
 	 * Used for commmunicating with the rest of the cluster.
 	 */
 	protected Multicaster multicaster;
-
-	public RaftClusterMember(Participant self, long timeoutMs, Decider d, Multicaster multicaster) {
+	
+	/**
+	 * Which bot we are clustering for
+	 */
+	protected String clusterName;
+	
+	protected List<Participant> allKnownParticipants = new ArrayList<>();
+		
+	public RaftClusterMember(String clusterName, Participant self, long timeoutMs, Decider d, Multicaster multicaster) {
 		super();
 		this.self = self;
 		this.timeoutMs = timeoutMs;
 		this.state = State.STOPPED;
 		this.decider = d;
 		this.multicaster = multicaster;
+		this.clusterName = clusterName;
+	}
+
+	@Override
+	public String getClusterName() {
+		return clusterName;
 	}
 
 	@Override
@@ -69,7 +84,7 @@ public class RaftClusterMember implements ClusterMember {
 		state = State.SUPRESSED;
 		timer = new Thread(() -> doListenOperation());
 		timer.setDaemon(true);
-		timer.setName("ClusterMember");
+		timer.setName("ClusterMember-"+clusterName);
 		timer.start();
 	}
 
@@ -129,7 +144,7 @@ public class RaftClusterMember implements ClusterMember {
 			electionNumber = sm.getElectionNumber();
 			LOG.debug("{} received {}", self, sm);
 			
-			if (decider.canSuppressWith(sm)) {
+			if (decider.canSuppressWith(this, sm)) {
 				if (state == State.LEADER) {
 					LOG.debug("{} stepping down due to {}", self, sm);
 				}
@@ -150,13 +165,13 @@ public class RaftClusterMember implements ClusterMember {
 		votedFor = self;
 		LOG.debug("{} holding election {} ", self, electionNumber);
 		
-		Consumer<ClusterMessage> vc = decider.createDecider(() -> {
+		Consumer<ClusterMessage> vc = decider.createDecider(this, () -> {
 			becomeLeader();
 			checkPing();
 		});
 		
 		if (vc != null) {
-			multicaster.sendAsyncMessage(self, new VoteRequest(electionNumber, self), vc);
+			multicaster.sendAsyncMessage(self, allKnownParticipants, new VoteRequest(clusterName, electionNumber, self), vc);
 		}
 	}
 
@@ -173,7 +188,7 @@ public class RaftClusterMember implements ClusterMember {
 
 		LOG.debug("{} voting for {} in election {}", self, votedFor, electionNumber);
 
-		return new VoteResponse(electionNumber, votedFor, getVotes());
+		return new VoteResponse(clusterName, electionNumber, votedFor, getVotes());
 	}
 
 	protected void checkPing() {
@@ -187,7 +202,7 @@ public class RaftClusterMember implements ClusterMember {
 		if (elapsedSinceLastPing > timeoutMs / 2) {
 			lastPingTimeMs = timeNow;
 			LOG.debug("{} sending ping", self);
-			multicaster.sendAsyncMessage(self, new SuppressionMessage(self, electionNumber), c -> {});
+			multicaster.sendAsyncMessage(self, allKnownParticipants, new SuppressionMessage(clusterName, self, electionNumber), c -> {});
 		} else {
 			LOG.debug("{} omitting ping", self);
 		}
@@ -220,6 +235,18 @@ public class RaftClusterMember implements ClusterMember {
 		} else {
 			throw new UnsupportedOperationException("Unknown message type: "+cm.getClass());
 		}
+	}
+
+	@Override
+	public void accept(Participant t) {
+		if ((!allKnownParticipants.contains(t)) && (!self.equals(t))) {
+			allKnownParticipants.add(t);
+		}
+	}
+
+	@Override
+	public int getSizeOfCluster() {
+		return 1 + allKnownParticipants.size();
 	}
 
 }

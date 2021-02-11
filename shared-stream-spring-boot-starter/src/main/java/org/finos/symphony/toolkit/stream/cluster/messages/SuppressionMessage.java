@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import org.finos.symphony.toolkit.stream.Participant;
 
-public class SuppressionMessage implements ClusterMessage {
+public class SuppressionMessage extends AbstractClusterMessage {
 
 	private Participant leader;
 	private long electionNumber;
@@ -13,7 +13,8 @@ public class SuppressionMessage implements ClusterMessage {
 		super();
 	}
 
-	public SuppressionMessage(Participant leader, long electionNumber) {
+	public SuppressionMessage(String clusterName, Participant leader, long electionNumber) {
+		super(clusterName);
 		this.leader = leader;
 		this.electionNumber = electionNumber;
 	}
@@ -36,29 +37,32 @@ public class SuppressionMessage implements ClusterMessage {
 	}
 
 	@Override
+	public String toString() {
+		return "SuppressionMessage [leader=" + leader + ", electionNumber=" + electionNumber + ", botName=" + botName
+				+ "]";
+	}
+
+	@Override
 	public int hashCode() {
-		return Objects.hash(electionNumber, leader);
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(electionNumber, leader);
+		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if (obj == null) {
+		if (!super.equals(obj))
 			return false;
-		}
-		if (getClass() != obj.getClass()) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
 		SuppressionMessage other = (SuppressionMessage) obj;
 		return electionNumber == other.electionNumber && Objects.equals(leader, other.leader);
 	}
 
-	@Override
-	public String toString() {
-		return "SuppressionMessage [leader=" + leader + ", electionNumber=" + electionNumber + "]";
-	}
+	
 	
 	
 }

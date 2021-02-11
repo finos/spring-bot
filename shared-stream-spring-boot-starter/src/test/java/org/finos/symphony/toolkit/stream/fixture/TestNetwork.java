@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.stream.fixture;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -70,22 +71,12 @@ public class TestNetwork implements Multicaster {
 	}
 
 	@Override
-	public void accept(Participant t) {
-		// nothing here.
-	}
-
-	@Override
-	public void sendAsyncMessage(Participant self, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
-		for (Participant p : members.keySet()) {
+	public void sendAsyncMessage(Participant self, List<Participant> to, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
+		for (Participant p : to) {
 			if (p != self) {
 				sendMessage(self, p, cm, responsesConsumer);
 			}
 		}
 	} 
-
-	@Override
-	public int getQuorumSize() {
-		return members.size();
-	}
 
 }

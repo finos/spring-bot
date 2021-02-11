@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
+import java.util.function.Consumer;
+
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 
@@ -10,7 +12,7 @@ import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
  * @author robmoffat
  *
  */
-public interface ClusterMember {
+public interface ClusterMember extends Consumer<Participant> {
 	
 	public enum State { LEADER, SUPRESSED, PROPOSING_ELECTION, STOPPED }
 
@@ -25,4 +27,8 @@ public interface ClusterMember {
 	public Participant getSelfDetails();
 	
 	public State getState();
+	
+	public String getClusterName();
+	
+	public int getSizeOfCluster();
 }

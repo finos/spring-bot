@@ -1,11 +1,10 @@
-package org.finos.symphony.toolkit.stream.filter;
+package org.finos.symphony.toolkit.stream.handler;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
-import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.log.LogMessageHandler;
 import org.finos.symphony.toolkit.stream.log.LogMessageType;
@@ -58,6 +57,9 @@ public class SymphonyLeaderEventFilter implements StreamEventFilter {
 			if (slm.isPresent()) {
 				controlEventConsumer.accept(slm.get());
 			}
+			return false;
+		} else if (messageHandler.isIgnorableMessage(t)) {
+			// some other ignorable reason, could be for a different cluster.
 			return false;
 		} else {
 			return isActive();

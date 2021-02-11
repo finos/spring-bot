@@ -1,8 +1,10 @@
 package org.finos.symphony.toolkit.stream.cluster.messages;
 
+import java.util.Objects;
+
 import org.finos.symphony.toolkit.stream.Participant;
 
-public class VoteRequest implements ClusterMessage {
+public class VoteRequest extends AbstractClusterMessage {
 	
 	private long electionNumber;
 	private Participant candidate;
@@ -10,7 +12,8 @@ public class VoteRequest implements ClusterMessage {
 	public VoteRequest() {
 	}
 	
-	public VoteRequest(long electionNumber, Participant candidate) {
+	public VoteRequest(String clusterName, long electionNumber, Participant candidate) {
+		super(clusterName);
 		this.electionNumber = electionNumber;
 		this.candidate = candidate;
 	}
@@ -32,11 +35,16 @@ public class VoteRequest implements ClusterMessage {
 	}
 
 	@Override
+	public String toString() {
+		return "VoteRequest [electionNumber=" + electionNumber + ", candidate=" + candidate + ", botName=" + botName
+				+ "]";
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((candidate == null) ? 0 : candidate.hashCode());
-		result = prime * result + (int) (electionNumber ^ (electionNumber >>> 32));
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(candidate, electionNumber);
 		return result;
 	}
 
@@ -44,24 +52,13 @@ public class VoteRequest implements ClusterMessage {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		VoteRequest other = (VoteRequest) obj;
-		if (candidate == null) {
-			if (other.candidate != null)
-				return false;
-		} else if (!candidate.equals(other.candidate))
-			return false;
-		if (electionNumber != other.electionNumber)
-			return false;
-		return true;
+		return Objects.equals(candidate, other.candidate) && electionNumber == other.electionNumber;
 	}
 
-	@Override
-	public String toString() {
-		return "VoteRequest [electionNumber=" + electionNumber + ", candidate=" + candidate + "]";
-	}
 
 }

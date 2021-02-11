@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.stream.cluster.voting;
 import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.stream.cluster.messages.VoteRequest;
@@ -34,7 +35,7 @@ public class BullyDecider implements Decider {
 	}
 
 	@Override
-	public Consumer<ClusterMessage> createDecider(Runnable r) {
+	public Consumer<ClusterMessage> createDecider(ClusterMember cm, Runnable r) {
 		r.run();
 		return (vr) -> {};
 	}
@@ -45,10 +46,13 @@ public class BullyDecider implements Decider {
 	}
 
 	@Override
-	public boolean canSuppressWith(SuppressionMessage sm) {
+	public boolean canSuppressWith(ClusterMember cm, SuppressionMessage sm) {
 		int selfValue = Math.abs(self.hashCode());
 		int contenderValue = Math.abs(sm.getLeader().hashCode());
 		boolean out = contenderValue > selfValue;
+		
+		System.out.println("self: "+selfValue+" contender: "+contenderValue+" "+(out ? "WIN" : "LOSE"));
+		
 		return out;
 	}
 
