@@ -3,14 +3,13 @@ package org.finos.symphony.toolkit.stream.web;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.SharedStreamProperties;
-import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
+import org.finos.symphony.toolkit.stream.cluster.HealthSupplier;
+import org.finos.symphony.toolkit.stream.cluster.Multicaster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguratio
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;

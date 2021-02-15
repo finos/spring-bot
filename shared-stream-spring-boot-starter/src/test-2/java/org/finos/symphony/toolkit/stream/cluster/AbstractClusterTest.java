@@ -80,7 +80,7 @@ public abstract class AbstractClusterTest {
 		setup.members = setup.allParticipants.stream().map(p -> createClusterMember(p, c, setup, r))
 			.collect(Collectors.toList());
 		
-		setup.members.forEach(m -> setup.allParticipants.forEach(p -> m.accept(p)));
+		//setup.members.forEach(m -> setup.allParticipants.forEach(p -> m.accept(p)));
 		
 		setup.c.set(Collections.singleton(setup.allParticipants));
 		setup.size = c.size;
