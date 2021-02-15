@@ -7,16 +7,14 @@ import org.finos.symphony.toolkit.stream.Participant;
 public class SuppressionMessage extends AbstractClusterMessage {
 
 	private Participant leader;
-	private long electionNumber;
 	
 	public SuppressionMessage() {
 		super();
 	}
 
-	public SuppressionMessage(String clusterName, Participant leader, long electionNumber) {
+	public SuppressionMessage(String clusterName, Participant leader) {
 		super(clusterName);
 		this.leader = leader;
-		this.electionNumber = electionNumber;
 	}
 
 	public Participant getLeader() {
@@ -27,18 +25,9 @@ public class SuppressionMessage extends AbstractClusterMessage {
 		this.leader = leader;
 	}
 
-
-	public long getElectionNumber() {
-		return electionNumber;
-	}
-
-	public void setElectionNumber(long electionNumber) {
-		this.electionNumber = electionNumber;
-	}
-
 	@Override
 	public String toString() {
-		return "SuppressionMessage [leader=" + leader + ", electionNumber=" + electionNumber + ", botName=" + botName
+		return "SuppressionMessage [leader=" + leader + ", botName=" + botName
 				+ "]";
 	}
 
@@ -46,7 +35,7 @@ public class SuppressionMessage extends AbstractClusterMessage {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hash(electionNumber, leader);
+		result = prime * result + Objects.hash(leader);
 		return result;
 	}
 
@@ -59,7 +48,7 @@ public class SuppressionMessage extends AbstractClusterMessage {
 		if (getClass() != obj.getClass())
 			return false;
 		SuppressionMessage other = (SuppressionMessage) obj;
-		return electionNumber == other.electionNumber && Objects.equals(leader, other.leader);
+		return Objects.equals(leader, other.leader);
 	}
 
 	

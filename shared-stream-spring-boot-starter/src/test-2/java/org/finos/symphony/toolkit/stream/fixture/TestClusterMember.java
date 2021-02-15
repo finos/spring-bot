@@ -1,11 +1,11 @@
 package org.finos.symphony.toolkit.stream.fixture;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.cluster.RaftClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
+import org.finos.symphony.toolkit.stream.cluster.Multicaster;
+import org.finos.symphony.toolkit.stream.cluster.ClusterMemberImpl;
 import org.finos.symphony.toolkit.stream.cluster.voting.Decider;
 
-public class TestClusterMember extends RaftClusterMember {
+public class TestClusterMember extends ClusterMemberImpl {
 	
 	
 	

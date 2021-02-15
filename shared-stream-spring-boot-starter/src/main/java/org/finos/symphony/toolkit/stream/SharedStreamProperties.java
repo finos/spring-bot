@@ -5,7 +5,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("symphony.stream")
 public class SharedStreamProperties {
 
-	public static enum Algorithm { MAJORITY, BULLY };
 	public static enum EndpointScheme { HTTP, HTTPS };
 	
 	private EndpointScheme endpointScheme = EndpointScheme.HTTP;
@@ -13,7 +12,6 @@ public class SharedStreamProperties {
 
 	private String environmentIdentifier = "test";
 	private long participantWriteIntervalMillis = 24*60*60*1000;	// one day by default.
-	private Algorithm algorithm = Algorithm.BULLY;
 	private String endpointPath = "/symphony-api/cluster-communication";
 	private String endpointHostAndPort = null;
 	private long timeoutMs = 5000;
@@ -42,14 +40,6 @@ public class SharedStreamProperties {
 
 	public void setParticipantWriteIntervalMillis(long participantWriteIntervalMillis) {
 		this.participantWriteIntervalMillis = participantWriteIntervalMillis;
-	}
-
-	public Algorithm getAlgorithm() {
-		return algorithm;
-	}
-
-	public void setAlgorithm(Algorithm algorithm) {
-		this.algorithm = algorithm;
 	}
 
 	public String getEndpointPath() {

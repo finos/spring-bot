@@ -1,28 +1,25 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
-import java.util.function.Consumer;
-
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 
 /**
- * A cluster implements a raft-style algorithm, in which an election is held.  A
- * leader is elected with (1/2n+1) of participants.
+ * The cluster has only a single "active" member, which is defined as the last person to 
+ * have written a Leader message into the coordination room.  Other members of the cluster
+ * are "suppressed" by the leader, until the leader can no-longer communicate with symphony.
  * 
  * @author robmoffat
  *
  */
-public interface ClusterMember extends Consumer<Participant> {
+public interface ClusterMember {
 	
-	public enum State { LEADER, SUPRESSED, PROPOSING_ELECTION, STOPPED }
+	public enum State { LEADER, SUPRESSED, INOPERABLE, STOPPED }
 
 	public void startup();
 	
 	public void shutdown();
 	
 	public ClusterMessage receiveMessage(ClusterMessage cm);
-		
-	public void becomeLeader();
 	
 	public Participant getSelfDetails();
 	
@@ -30,5 +27,4 @@ public interface ClusterMember extends Consumer<Participant> {
 	
 	public String getClusterName();
 	
-	public int getSizeOfCluster();
 }

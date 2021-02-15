@@ -10,8 +10,8 @@ import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
+import org.finos.symphony.toolkit.stream.cluster.Multicaster;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
-import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
 
 public class TestNetwork implements Multicaster {
 	

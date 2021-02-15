@@ -9,8 +9,8 @@ import java.util.function.Consumer;
 import javax.ws.rs.core.HttpHeaders;
 
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.cluster.Multicaster;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
-import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -38,9 +38,9 @@ public class HttpMulticaster implements Multicaster {
 
 	@Override
 	public void sendAsyncMessage(Participant from, List<Participant> to, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
-		for (Participant participant : to) {
-			sendMessageTo(participant.getDetails(), cm, responsesConsumer);
-		}
+		to.stream()
+			.filter(participant -> !participant.equals(from))
+			.forEach(participant ->  sendMessageTo(participant.getDetails(), cm, responsesConsumer));
 	}
 
 	private <R extends ClusterMessage> void sendMessageTo(String url, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
@@ -64,7 +64,7 @@ public class HttpMulticaster implements Multicaster {
 			LOG.debug("Received Response {}", response);
 			responsesConsumer.accept(response);
 		} catch (Exception e) {
-			LOG.debug("Couldn't send message to "+url, e);
+			LOG.debug("Couldn't send message to {}, {}", url, e.getMessage());
 		}
 	}
 

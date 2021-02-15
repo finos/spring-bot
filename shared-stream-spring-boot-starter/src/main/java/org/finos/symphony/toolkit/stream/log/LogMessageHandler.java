@@ -15,12 +15,12 @@ import com.symphony.api.model.V4Message;
 public interface LogMessageHandler {
 	
 	public void writeLogMessage(LogMessage slm);
-	
-	public boolean isLeaderMessage(V4Event e);
 
-	public boolean isParticipantMessage(V4Event e);
-	
-	public boolean isIgnorableMessage(V4Event e);
+	/**
+	 * Handles the event, returning a LogMessage if the event refers to one of those.
+	 */
+	public Optional<LogMessage> handleEvent(V4Event e);
+
 
 	/**
 	 * Converts the {@link V4Message} into a {@link LogMessage} if it is possible.

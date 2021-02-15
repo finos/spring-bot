@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.web;
+package org.finos.symphony.toolkit.stream.cluster;
 
 import java.util.function.BooleanSupplier;
 

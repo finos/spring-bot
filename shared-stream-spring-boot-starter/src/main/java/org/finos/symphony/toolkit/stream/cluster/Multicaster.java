@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.stream.cluster.transport;
+package org.finos.symphony.toolkit.stream.cluster;
 
 import java.util.List;
 import java.util.function.Consumer;

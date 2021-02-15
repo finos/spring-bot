@@ -12,20 +12,17 @@ import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.SharedStreamProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.SymphonyRaftClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
-import org.finos.symphony.toolkit.stream.cluster.voting.BullyDecider;
-import org.finos.symphony.toolkit.stream.cluster.voting.Decider;
-import org.finos.symphony.toolkit.stream.cluster.voting.MajorityDecider;
+import org.finos.symphony.toolkit.stream.cluster.ClusterMemberImpl;
+import org.finos.symphony.toolkit.stream.cluster.HealthSupplier;
+import org.finos.symphony.toolkit.stream.cluster.LeaderService;
+import org.finos.symphony.toolkit.stream.cluster.Multicaster;
 import org.finos.symphony.toolkit.stream.log.SharedLog;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
-import org.finos.symphony.toolkit.stream.web.HealthSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -125,19 +122,18 @@ public class SharedStreamHandlerConfig {
 		}
 		
 		if (cluster) {
-			SymphonyRoomSharedLog sl = symphonySharedLog(symphonyApi);
+			SharedLog ls = symphonySharedLog(symphonyApi);
 			
 			LOG.info("Creating cluster using "+email);
-			Decider d = decider(self);
-			ClusterMember cm = clusterMember(email, d, mc, self, sl, health == null ? () -> true : health);
+			ClusterMember cm = clusterMember(email, mc, self, health == null ? () -> true : health, ls);
 			allClusterMembers.add(cm);
-			sl.getRegisteredParticipants(self).stream().forEach(p -> cm.accept(p));
-			LOG.info("Discovered cluster members: "+cm.getSizeOfCluster());
+			List<Participant> registeredParticipants = ls.getRecentParticipants();
+			LOG.info("Discovered cluster members: "+registeredParticipants.size());
 			
-			participationNotifier(symphonyApi, self, taskScheduler, sl);
+			participationNotifier(symphonyApi, self, taskScheduler, ls);
 			
 			// filter cluster events so user doesn't see them
-			SymphonyLeaderEventFilter f = leaderEventFilter(sl, cm);
+			SymphonyLeaderEventFilter f = leaderEventFilter(ls);
 			out.setFilter(f);				
 		} 
 		
@@ -150,7 +146,7 @@ public class SharedStreamHandlerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	protected ParticipationNotifier participationNotifier(ApiInstance api, Participant self, TaskScheduler taskScheduler, SymphonyRoomSharedLog sl) {
+	protected ParticipationNotifier participationNotifier(ApiInstance api, Participant self, TaskScheduler taskScheduler, SharedLog sl) {
 		LOG.info("Creating participation notifier for cluster "+api.getIdentity().getEmail());
 		return new ParticipationNotifier(
 				sl, 
@@ -162,13 +158,8 @@ public class SharedStreamHandlerConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	protected SymphonyLeaderEventFilter leaderEventFilter(SymphonyRoomSharedLog sl, ClusterMember cm) {
-		SymphonyLeaderEventFilter f = new SymphonyLeaderEventFilter( 
-				streamProperties.getCoordinationStreamId() == null, // if not defined, we are leader
-				self, 
-				sl, 
-				lm -> cm.accept(lm.getParticipant()));
-		
+	protected SymphonyLeaderEventFilter leaderEventFilter(SharedLog sl) {
+		SymphonyLeaderEventFilter f = new SymphonyLeaderEventFilter(self, sl);
 		return f;
 	}
 	
@@ -177,17 +168,16 @@ public class SharedStreamHandlerConfig {
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 	protected ClusterMember clusterMember(
 			String name, 
-			Decider d,  
 			Multicaster mc, 
 			Participant self, 
-			SharedLog sl, 
-			HealthSupplier health) {
+			HealthSupplier health,
+			LeaderService ls) {
 		Random r = new Random();
 		long timeoutMs = streamProperties.getTimeoutMs();
 		long randComp = Math.abs(r.nextLong() % (timeoutMs / 4));
 		long totalTimeout = timeoutMs + randComp;
 		LOG.info("Cluster starting up. Timeout is: {} ", totalTimeout);
-		ClusterMember out = new SymphonyRaftClusterMember(name, self, totalTimeout, d, mc, sl, health);
+		ClusterMember out = new ClusterMemberImpl(name, self, totalTimeout, mc, health, ls);
 		out.startup();
 		return out;
 	}
@@ -212,17 +202,4 @@ public class SharedStreamHandlerConfig {
 		return out;
 	}
 
-	@Bean
-	@ConditionalOnMissingBean
-	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	protected Decider decider(Participant self) {
-		switch (streamProperties.getAlgorithm()) { 
-		case BULLY: 	
-			return new BullyDecider(self);
-		case MAJORITY:
-			return new MajorityDecider(self);
-		default:
-			throw new IllegalArgumentException("Algorithm not found: "+streamProperties.getAlgorithm());
-		} 
-	}
 }

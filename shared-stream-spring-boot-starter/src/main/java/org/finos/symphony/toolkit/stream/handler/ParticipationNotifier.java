@@ -36,7 +36,6 @@ public class ParticipationNotifier implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		writeMessage();
 		scheduler.schedule(() -> writeMessage(), new PeriodicTrigger(interval, TimeUnit.MILLISECONDS));
 		LOG.info("Scheduled Participation Message every {} ms", interval);
 	}
