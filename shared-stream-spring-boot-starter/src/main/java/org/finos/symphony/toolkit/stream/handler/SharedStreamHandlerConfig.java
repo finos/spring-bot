@@ -137,7 +137,7 @@ public class SharedStreamHandlerConfig {
 			allClusterMembers.add(cm);
 			List<Participant> registeredParticipants = ls.getRecentParticipants();
 			LOG.info("Discovered cluster members: "+registeredParticipants.size());
-			
+						
 			participationNotifier(symphonyApi, self, taskScheduler, ls);
 			
 			// filter cluster events so user doesn't see them

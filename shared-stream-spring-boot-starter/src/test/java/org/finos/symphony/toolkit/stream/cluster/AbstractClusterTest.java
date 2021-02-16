@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.fixture.Connectivity;
-import org.finos.symphony.toolkit.stream.fixture.LeaderServiceImpl;
+import org.finos.symphony.toolkit.stream.fixture.DummyLeaderServiceImpl;
 import org.finos.symphony.toolkit.stream.fixture.TestClusterMember;
 import org.finos.symphony.toolkit.stream.fixture.TestNetwork;
 import org.junit.jupiter.api.BeforeEach;
@@ -87,7 +87,7 @@ public abstract class AbstractClusterTest {
 		Random r= new Random();
 		
 		setup.allParticipants = IntStream.range(0, c.size).mapToObj(i -> new Participant("P"+i)).collect(Collectors.toSet());
-		setup.ls = new LeaderServiceImpl(setup.allParticipants);
+		setup.ls = new DummyLeaderServiceImpl(setup.allParticipants);
 		
 		setup.members = setup.allParticipants.stream().map(p -> createClusterMember(p, c, setup, r))
 			.collect(Collectors.toList());

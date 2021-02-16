@@ -7,12 +7,12 @@ import java.util.Set;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 
-public class LeaderServiceImpl implements LeaderService {
+public class DummyLeaderServiceImpl implements LeaderService {
 
 	public List<Participant> leaderHistory = new ArrayList<Participant>();
 	Set<Participant> knownParticipants;
 	
-	public LeaderServiceImpl(Set<Participant> knownParticipants) {
+	public DummyLeaderServiceImpl(Set<Participant> knownParticipants) {
 		super();
 		this.knownParticipants = knownParticipants;
 	}

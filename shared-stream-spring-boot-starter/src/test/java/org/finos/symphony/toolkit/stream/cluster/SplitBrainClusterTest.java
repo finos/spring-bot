@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.fixture.LeaderServiceImpl;
+import org.finos.symphony.toolkit.stream.fixture.DummyLeaderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,7 +42,7 @@ public class SplitBrainClusterTest extends AbstractBullyClusterTest {
 		
 		s.shutdown();
 		
-		Assertions.assertTrue(((LeaderServiceImpl) s.ls).leaderHistory.size() < 10);
+		Assertions.assertTrue(((DummyLeaderServiceImpl) s.ls).leaderHistory.size() < 10);
 
 
 	}
