@@ -79,6 +79,7 @@ public class SymphonyStreamHandler {
 			//runThread.setDaemon(true);
 			runThread.setName("SymphonyStream-"+instance.getIdentity().getEmail());
 			runThread.start();
+			System.out.println(runThread.getName()+" Started");
 		}
 	}
 
@@ -131,6 +132,7 @@ public class SymphonyStreamHandler {
 			worker.shutdown();
 		}
 		runThread.interrupt();
+		System.out.println(runThread.getName()+" Stopped");
 	}
 
 	public StreamEventFilter getFilter() {
