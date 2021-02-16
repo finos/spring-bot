@@ -7,8 +7,10 @@ import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumerIT.TestContext;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -81,6 +83,9 @@ public class RoomWelcomeEventConsumerIT {
 	@MockBean
 	TaskScheduler taskScheduler;
 	
+	@Autowired
+	SymphonyStreamHandlerFactory fact;
+	
 	@Test
 	public void testRoomCreated() {
 		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot);
@@ -129,5 +134,10 @@ public class RoomWelcomeEventConsumerIT {
 			Mockito.isNull());
 	
 		Mockito.clearInvocations(messages);
+	}
+	
+	@AfterEach
+	public void tearDown() {
+		fact.stopAll();
 	}
 }
