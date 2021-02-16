@@ -35,10 +35,11 @@ public class TestTransport {
 	
 	
 	@Test
-	public void testHttpTransport() {
+	public void testHttpTransport() throws InterruptedException {
 		HttpMulticaster hm = new HttpMulticaster(me);
 		ClusterMessage cm = new SuppressionMessage("test", me);
 		hm.sendAsyncMessage(me, Collections.singletonList(you),cm);
+		Thread.sleep(1000);
 		wireMockRule.verify(1, RequestPatternBuilder.allRequests());
 	}
 	

@@ -1,7 +1,7 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.fixture.LeaderServiceImpl;
+import org.finos.symphony.toolkit.stream.fixture.DummyLeaderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -44,7 +44,7 @@ public class CantTalkToSymphonyTest extends AbstractBullyClusterTest {
 		}
 		
 		s.shutdown();
-		int changes = ((LeaderServiceImpl) s.ls).leaderHistory.size();
+		int changes = ((DummyLeaderServiceImpl) s.ls).leaderHistory.size();
 		Assertions.assertTrue(changes < 10, () -> "Expected <10 changes, got "+changes);
 
 	}

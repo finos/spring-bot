@@ -65,12 +65,19 @@ Beans implementing this interface are attached to the Symphony Datafeed, but onl
 
 ## Welcome Messages
 
-As an example of a `StreamEventConsumer` (and also useful functionality) you can configure a `RoomWelcomeEventConsumer` bean in your application. This responds to room-creation and user-added-to-room events, welcoming the users and explaining how to talk to your bot.  For example:
+As an example of a `StreamEventConsumer` (and also useful functionality) you can configure a `RoomWelcomeEventConsumer` bean in your application. This responds to room-creation and user-added-to-room events, welcoming the users and explaining how to talk to your bot.  For example, adding a Spring bean like this:
 
+```java
+@Bean
+  public StreamEventConsumer welcomeMessages() {
+    return new RoomWelcomeEventConsumer(messagesApi, usersApi, id);
+  }
+```
 
+Means that when a user is added to a chat, they get some (customizable) instructions on how to interact with the bot:
 
+![Welcome PNG](welcome.png)
  
-
 
 ## Underlying Assumptions
 

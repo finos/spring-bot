@@ -39,7 +39,7 @@ public class HttpMulticaster implements Multicaster {
 	public void sendAsyncMessage(Participant from, List<Participant> to, ClusterMessage cm) {
 		to.stream()
 			.filter(participant -> !participant.equals(from))
-			.forEach(participant ->  sendMessageTo(participant.getDetails(), cm));
+			.forEach(participant ->  new Thread(() -> sendMessageTo(participant.getDetails(), cm), "HttpMulticaster-Worker").start());
 	}
 
 	private <R extends ClusterMessage> void sendMessageTo(String url, ClusterMessage cm) {
@@ -50,6 +50,11 @@ public class HttpMulticaster implements Multicaster {
 			URL u = new URL(url);
 			HttpURLConnection con = (HttpURLConnection) u.openConnection();
 			con.setRequestMethod("POST");
+			
+			// anything longer than this will miss the ping interval anyway
+			con.setConnectTimeout(3000);
+			con.setReadTimeout(3000);
+			
 			con.setRequestProperty("Accept", MediaType.APPLICATION_JSON_VALUE);
 			con.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 			con.setDoOutput(true);
