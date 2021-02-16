@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -10,6 +11,7 @@ import java.util.stream.IntStream;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.fixture.Connectivity;
+import org.finos.symphony.toolkit.stream.fixture.LeaderServiceImpl;
 import org.finos.symphony.toolkit.stream.fixture.TestClusterMember;
 import org.finos.symphony.toolkit.stream.fixture.TestNetwork;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,8 +36,10 @@ public abstract class AbstractClusterTest {
 	static class Setup {
 		Connectivity c;
 		TestNetwork n;
+		LeaderService ls;
 		List<ClusterMember> members;
 		Set<Participant> allParticipants;
+		Set<Participant> canTalkToSymphony;
 		int size = 9;
 		int maxTimeout;
 		
@@ -47,6 +51,13 @@ public abstract class AbstractClusterTest {
 
 		public void startup() {
 			for (ClusterMember m : members) {
+				try {
+					//System.out.println("Starting "+m.getSelfDetails());
+					Thread.sleep(200);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				m.startup();
 			}
 		}
@@ -72,10 +83,11 @@ public abstract class AbstractClusterTest {
 	public Setup setupNetwork(Configuration c) {
 		Setup setup = new Setup();
 		setup.c = new Connectivity();
-		setup.n = new TestNetwork(setup.c, c.time / 6);
+		setup.n = new TestNetwork(setup.c, c.time / 10);
 		Random r= new Random();
 		
 		setup.allParticipants = IntStream.range(0, c.size).mapToObj(i -> new Participant("P"+i)).collect(Collectors.toSet());
+		setup.ls = new LeaderServiceImpl(setup.allParticipants);
 		
 		setup.members = setup.allParticipants.stream().map(p -> createClusterMember(p, c, setup, r))
 			.collect(Collectors.toList());
@@ -85,6 +97,8 @@ public abstract class AbstractClusterTest {
 		setup.c.set(Collections.singleton(setup.allParticipants));
 		setup.size = c.size;
 		setup.maxTimeout = c.time;
+		setup.canTalkToSymphony = new HashSet<Participant>(setup.allParticipants);
+		setup.members.forEach(m -> setup.n.register(m.getSelfDetails(), (TestClusterMember)m));
 		return setup;
 	}
 
@@ -101,15 +115,18 @@ public abstract class AbstractClusterTest {
 				.collect(Collectors.toSet());
 	}
 	
-	protected void waitForLeaderCount(Setup s, int c) throws InterruptedException {
+	protected void waitForLeaderCount(Setup s) throws InterruptedException {
 		Set<Participant> lastLeaders = null;
 		Set<Participant> newLeaders = null;
 		
 		do {
+			StringBuilder sb = new StringBuilder();
+			s.members.stream().forEach(m -> sb.append(m.getState().toString().charAt(0)));
+			System.out.println("STATUS:" +sb.toString());
 			lastLeaders = newLeaders;
 			newLeaders =  getLeaders(s);
-			Thread.sleep(s.maxTimeout+10);
-			if ((newLeaders.equals(lastLeaders)) && (newLeaders.size() == c)) {
+			Thread.sleep(s.maxTimeout*2+10);
+			if ((newLeaders.equals(lastLeaders))) {
 				return;
 			}
 		} while (true);

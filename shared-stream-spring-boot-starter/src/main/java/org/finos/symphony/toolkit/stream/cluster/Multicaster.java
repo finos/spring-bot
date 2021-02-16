@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
@@ -14,6 +13,6 @@ import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
  */
 public interface Multicaster {
 
-	public void sendAsyncMessage(Participant from, List<Participant> to, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer); 
+	public void sendAsyncMessage(Participant from, List<Participant> to, ClusterMessage cm); 
 	
 }

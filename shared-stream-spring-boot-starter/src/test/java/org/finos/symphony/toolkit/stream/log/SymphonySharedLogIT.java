@@ -37,7 +37,7 @@ public class SymphonySharedLogIT  {
 		ssl.writeParticipantMessage(p1);
 		ssl.writeParticipantMessage(p2);
 		
-		List<Participant> returned = ssl.getRegisteredParticipants(p1);
+		List<Participant> returned = ssl.getRecentParticipants();
 		Assertions.assertTrue(returned.contains(p1));
 		Assertions.assertTrue(returned.contains(p2));
 	}
@@ -52,7 +52,7 @@ public class SymphonySharedLogIT  {
 		ssl.writeLeaderMessage(p2);
 		for (int i = 0; i < 30; i++) {
 			// sometimes takes a few tries to get the thing back
-			Optional<Participant> returned = ssl.getLeader(p1);
+			Optional<Participant> returned = ssl.getLastRecordedLeader(p1);
 			if (returned.isPresent()) {
 				Assertions.assertEquals(p2, returned.get());
 				return;
@@ -71,8 +71,8 @@ public class SymphonySharedLogIT  {
 		ssl.writeParticipantMessage(p1);
 		ssl.writeLeaderMessage(p2);
 		
-		List<Participant> returned = ssl.getRegisteredParticipants(p1);
-		Assertions.assertTrue(returned.contains(p1));
+		List<Participant> returned = ssl.getRecentParticipants();
+		Assertions.assertTrue(returned.isEmpty());
 	}
 	
 	

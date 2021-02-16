@@ -309,7 +309,8 @@ public class SymphonyStreamHandlerIT {
 		Thread.sleep(10000);
 		ssh.stop();
 		// initial back-off is 2 secs, but we should only see 3 exceptions in the log.
-		Assertions.assertTrue(exceptions.size() == 3);
+		Assertions.assertTrue(exceptions.size() > 2);
+		Assertions.assertTrue(exceptions.size() < 6);
 		
 	}
 }

@@ -21,4 +21,6 @@ public interface SymphonyStreamHandlerFactory {
 	public Collection<SymphonyStreamHandler> getAllHandlers();
 	
 	public Collection<ClusterMember> allClusterMembers();
+	
+	public void stopAll();
 }

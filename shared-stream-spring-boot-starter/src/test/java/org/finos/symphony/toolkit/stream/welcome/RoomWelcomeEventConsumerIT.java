@@ -83,7 +83,7 @@ public class RoomWelcomeEventConsumerIT {
 	
 	@Test
 	public void testRoomCreated() {
-		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, WELCOME_MESSAGE);
+		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot);
 
 		V4Event event = new V4Event().payload(
 				new V4Payload().roomCreated(
@@ -96,7 +96,7 @@ public class RoomWelcomeEventConsumerIT {
 		Mockito.verify(messages, Mockito.times(1)).v4StreamSidMessageCreatePost(
 			Mockito.isNull(), 
 			Mockito.matches(Pattern.quote(NEW_ROOM_STREAM_ID)), 
-			Mockito.matches(Pattern.quote(WELCOME_MESSAGE)), 
+			Mockito.isNotNull(), 
 			Mockito.isNotNull(), 
 			Mockito.isNull(), 
 			Mockito.isNull(), 
