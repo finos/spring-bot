@@ -2,15 +2,15 @@ package org.finos.symphony.toolkit.stream.fixture;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
+import org.finos.symphony.toolkit.stream.cluster.Multicaster;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
-import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
 
 public class TestNetwork implements Multicaster {
 	
@@ -28,7 +28,7 @@ public class TestNetwork implements Multicaster {
 		members.put(p, tcm);
 	}
 
-	public void sendMessage(Participant from, Participant to, ClusterMessage r, Consumer<ClusterMessage> consumer) {
+	public void sendMessage(Participant from, Participant to, ClusterMessage r) {
 		if (members.containsKey(to)) {
 			ClusterMember tcm = members.get(to);
 						
@@ -38,12 +38,13 @@ public class TestNetwork implements Multicaster {
 				//System.out.println("Attempting to send message from "+from+" to "+to);
 				
 				if (c.canTalkTo(from, to)) {
-					ClusterMessage vr = tcm.receiveMessage(r);
+					//ClusterMessage vr = 
+							tcm.receiveMessage(r);
 					randomDelay();
 
-					//System.out.println("Sent message from "+from+" to "+to);
-
-					consumer.accept(vr);
+				//	System.out.println("Sent message from "+from+" to "+to);
+				} else {
+				//	System.out.println(from+" can't suppress "+to);
 				}
 				
 			});
@@ -70,22 +71,12 @@ public class TestNetwork implements Multicaster {
 	}
 
 	@Override
-	public void accept(Participant t) {
-		// nothing here.
-	}
-
-	@Override
-	public void sendAsyncMessage(Participant self, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
-		for (Participant p : members.keySet()) {
+	public void sendAsyncMessage(Participant self, List<Participant> to, ClusterMessage cm) {
+		for (Participant p : to) {
 			if (p != self) {
-				sendMessage(self, p, cm, responsesConsumer);
+				sendMessage(self, p, cm);
 			}
 		}
 	} 
-
-	@Override
-	public int getQuorumSize() {
-		return members.size();
-	}
 
 }

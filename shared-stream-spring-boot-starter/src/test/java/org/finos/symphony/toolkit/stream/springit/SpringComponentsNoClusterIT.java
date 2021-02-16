@@ -5,6 +5,7 @@ import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.stream.springit.SpringComponentsNoClusterIT.TestContext;
 import org.junit.jupiter.api.Test;
@@ -75,6 +76,9 @@ public class SpringComponentsNoClusterIT {
 	
 	@Autowired
 	NoddyCallback noddyCallback;
+	
+	@Autowired
+	SymphonyStreamHandlerFactory factory;
 		
 	@Test
 	public void testDummyCluster() throws Exception {
@@ -86,5 +90,7 @@ public class SpringComponentsNoClusterIT {
 		while (noddyCallback.getReceived().size() == 0) {
 			Thread.sleep(50);
 		}
+		
+		factory.stopAll();
 	}
 }

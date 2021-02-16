@@ -17,7 +17,7 @@ import com.symphony.api.model.V4Message;
  * @author moffrob
  */
 		
-public class LocalConsoleOnlyLog implements SharedLog, LogMessageHandler {
+public class LocalConsoleOnlyLog implements SharedLog {
 
 	private static final Logger LOG = LoggerFactory.getLogger(LocalConsoleOnlyLog.class);
 
@@ -38,13 +38,8 @@ public class LocalConsoleOnlyLog implements SharedLog, LogMessageHandler {
 	}
 
 	@Override
-	public List<Participant> getRegisteredParticipants(Participant me) {
-		return Collections.singletonList(me);
-	}
-
-	@Override
-	public Optional<Participant> getLeader(Participant me) {
-		return Optional.of(me);
+	public List<Participant> getRecentParticipants() {
+		return Collections.emptyList();
 	}
 
 	@Override
@@ -53,21 +48,27 @@ public class LocalConsoleOnlyLog implements SharedLog, LogMessageHandler {
 	}
 
 	@Override
-	public boolean isLeaderMessage(V4Event e) {
-		return false;
-	}
-
-	@Override
-	public boolean isParticipantMessage(V4Event e) {
-		return false;
-	}
-
-	@Override
 	public Optional<LogMessage> readMessage(V4Message e) {
 		return Optional.empty();
 	}
-	
-	
-	
+
+	@Override
+	public void becomeLeader(Participant cm) {
+	}
+
+	@Override
+	public boolean isLeader(Participant cm) {
+		return true;
+	}
+
+	@Override
+	public Optional<Participant> getLastRecordedLeader(Participant me) {
+		return Optional.of(me);
+	}
+
+	@Override
+	public Optional<LogMessage> handleEvent(V4Event e) {
+		return Optional.empty();
+	}
 	
 }

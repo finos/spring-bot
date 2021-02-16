@@ -12,6 +12,7 @@ import javax.inject.Named;
 
 import org.finos.symphony.toolkit.koreai.KoreAIBot;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
+import org.finos.symphony.toolkit.stream.cluster.HealthSupplier;
 import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.jupiter.api.AfterAll;
@@ -85,6 +86,13 @@ public abstract class AbstractBotIT {
 
 		wireMockRule.stubFor(post(urlPathMatching("/agent/v4/stream/ABC123/message/create"))
 				.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("{}")));
+		
+		wireMockRule.stubFor(get(urlPathMatching("/agent/v2/HealthCheck"))
+				.willReturn(aResponse().withHeader("Content-Type", "application/json").withStatus(200).withBody(
+			"{\"keyManagerConnectivity\" : true,\"encryptDecryptSuccess\" : true,\"podConnectivity\": true,\"agentServiceUser\": true }")));
+		
+		wireMockRule.stubFor(post(urlPathMatching("/agent/v1/message/search"))
+				.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("[]")));
 
 		wireMockRule.start();
 

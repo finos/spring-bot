@@ -8,11 +8,13 @@ public class LogMessage {
 	public static final VersionSpace VERSION_SPACE = 
 		new VersionSpace(LogMessage.class.getPackage().getName(), "1.0", "1.0");
 
+	String cluster;
 	Participant participant;
 	LogMessageType messageType;
 
-	public LogMessage(Participant p, LogMessageType mt) {
+	public LogMessage(String cluster, Participant p, LogMessageType mt) {
 		super();
+		this.cluster = cluster;
 		this.participant = p;
 		this.messageType = mt;
 	}
@@ -23,7 +25,7 @@ public class LogMessage {
 
 	@Override
 	public String toString() {
-		return "Message [p=" + participant + ", mt=" + messageType + "]";
+		return "LogMessage [cluster=" + cluster + ", participant=" + participant + ", messageType=" + messageType + "]";
 	}
 
 	public Participant getParticipant() {
@@ -40,5 +42,13 @@ public class LogMessage {
 
 	public void setMessageType(LogMessageType messageType) {
 		this.messageType = messageType;
+	}
+
+	public String getCluster() {
+		return cluster;
+	}
+
+	public void setCluster(String cluster) {
+		this.cluster = cluster;
 	}
 }

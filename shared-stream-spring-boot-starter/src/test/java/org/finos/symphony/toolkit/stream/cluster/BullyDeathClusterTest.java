@@ -1,6 +1,8 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.fixture.DummyLeaderServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -16,7 +18,7 @@ public class BullyDeathClusterTest extends AbstractBullyClusterTest {
 		Setup s = setupNetwork(c);
 		s.startup();
 		
-		waitForLeaderCount(s, 1);
+		waitForLeaderCount(s);
 		
 		if (c.size > 1) {
 
@@ -24,8 +26,10 @@ public class BullyDeathClusterTest extends AbstractBullyClusterTest {
 			Participant oldLeader = getLeaders(s).stream().findFirst().orElseThrow(() -> new IllegalStateException("Should be a leader"));
 			System.out.println("--------------------------------------");
 			s.c.isolate(oldLeader);
+			s.canTalkToSymphony.remove(oldLeader);
+
 		
-			waitForLeaderCount(s, 2);
+			waitForLeaderCount(s);
 	
 			getLeaders(s).stream()
 				.filter(l -> !l.equals(oldLeader))
@@ -35,11 +39,13 @@ public class BullyDeathClusterTest extends AbstractBullyClusterTest {
 			// when we heal the network, we should go back to a single leader
 			System.out.println("--------------------------------------");
 			s.c.connect(oldLeader);
-			waitForLeaderCount(s, 1);
+			waitForLeaderCount(s);
 			getLeaders(s).stream().findFirst().orElseThrow(() -> new IllegalStateException("Should be a leader"));
 		
 		}
 		
 		s.shutdown();
+		
+		Assertions.assertTrue(((DummyLeaderServiceImpl) s.ls).leaderHistory.size() < 10);
 	}
 }

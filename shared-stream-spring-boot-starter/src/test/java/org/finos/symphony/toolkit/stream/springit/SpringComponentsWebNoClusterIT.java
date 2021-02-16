@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.stream.springit;
 
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.fixture.TestApplication;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,6 +48,9 @@ public class SpringComponentsWebNoClusterIT {
 	
 	@Autowired
 	NoddyCallback noddyCallback;
+	
+	@Autowired
+	SymphonyStreamHandlerFactory factory;
 		
 	@Test
 	public void testWithoutCluster() throws Exception {
@@ -57,5 +61,7 @@ public class SpringComponentsWebNoClusterIT {
 		while (noddyCallback.getReceived().size() == 0) {
 			Thread.sleep(50);
 		}
+		
+		factory.stopAll();
 	}
 }

@@ -23,27 +23,28 @@ public class SymphonySharedLogIT  {
 
 	// now using a room just for this purpose
 	private String streamId = "QTG/xBPcpYtbMbfhGrjK7X///okjuFBXdA==";
+	private String clusterName = "test";
 	
 	@Autowired
 	MessagesApi messagesApi;
 	
 	@Test
 	public void testParticipantWrite() {
-		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
+		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(clusterName ,streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
 		
 		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
 		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());
 		ssl.writeParticipantMessage(p1);
 		ssl.writeParticipantMessage(p2);
 		
-		List<Participant> returned = ssl.getRegisteredParticipants(p1);
+		List<Participant> returned = ssl.getRecentParticipants();
 		Assertions.assertTrue(returned.contains(p1));
 		Assertions.assertTrue(returned.contains(p2));
 	}
 	
 	@Test
 	public void testLeaderWrite() {
-		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
+		SymphonyRoomSharedLog ssl = new SymphonyRoomSharedLog(clusterName, streamId, messagesApi, "test", SymphonyRoomSharedLog.ONE_HOUR);
 		
 		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
 		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());
@@ -51,7 +52,7 @@ public class SymphonySharedLogIT  {
 		ssl.writeLeaderMessage(p2);
 		for (int i = 0; i < 30; i++) {
 			// sometimes takes a few tries to get the thing back
-			Optional<Participant> returned = ssl.getLeader(p1);
+			Optional<Participant> returned = ssl.getLastRecordedLeader(p1);
 			if (returned.isPresent()) {
 				Assertions.assertEquals(p2, returned.get());
 				return;
@@ -59,6 +60,19 @@ public class SymphonySharedLogIT  {
 		}
 		
 		Assertions.fail("Didn't find leader");
+	}
+	
+	@Test
+	public void testLocalLog() {
+		LocalConsoleOnlyLog ssl = new LocalConsoleOnlyLog();
+		
+		Participant p1 = new Participant("testing-participant-"+new Random(122).nextLong());
+		Participant p2 = new Participant("testing-participant-"+new Random(122).nextLong());
+		ssl.writeParticipantMessage(p1);
+		ssl.writeLeaderMessage(p2);
+		
+		List<Participant> returned = ssl.getRecentParticipants();
+		Assertions.assertTrue(returned.isEmpty());
 	}
 	
 	
