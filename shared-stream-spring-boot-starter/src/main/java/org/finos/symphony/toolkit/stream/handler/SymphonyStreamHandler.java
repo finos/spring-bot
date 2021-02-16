@@ -127,7 +127,9 @@ public class SymphonyStreamHandler {
 	
 	public void stop() {
 		running = false;
-		worker.shutdown();
+		if (worker!= null) {
+			worker.shutdown();
+		}
 		runThread.interrupt();
 	}
 

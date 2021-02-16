@@ -97,6 +97,14 @@ public class SharedStreamHandlerConfig {
 			public Collection<ClusterMember> allClusterMembers() {
 				return allClusterMembers;
 			}
+
+			@Override
+			public void stopAll() {
+				created.values().forEach(v -> v.stop());
+				created.clear();
+				allClusterMembers.forEach(cm -> cm.shutdown());
+				allClusterMembers.clear();
+			}
 		};
 	}
 	

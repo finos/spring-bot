@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Minimal implementation of Raft's Cluster Member, where 
+ * This operates on a first-man-wins system.  Once the old leader is assumed dead, a new leader takes it's 
+ * place, and then tries to suppress all further attempts at taking over.
+ * 
  * @author robmoffat
  *
  */
@@ -92,9 +94,10 @@ public class ClusterMemberImpl implements ClusterMember {
 					if (health.getAsBoolean()) {
 						// no recent pings - take over
 						becomeLeader();
+						nextSleepTime = (timeoutMs / 2);
+					} else {
+						nextSleepTime = timeoutMs;
 					}
-					
-					nextSleepTime = timeoutMs;
 				} else {
 					nextSleepTime = timeoutMs - elapsedSinceLastPing;
 				}
@@ -130,26 +133,14 @@ public class ClusterMemberImpl implements ClusterMember {
 		}
 	}
 
-	public synchronized void receivePing(SuppressionMessage sm) {
-		LOG.debug("{} received {}", self, sm);	
-		lastPingTimeMs = System.currentTimeMillis();
-	}
-
 	protected void sendSuppressionMessage() {
-		long timeNow = System.currentTimeMillis();
-		long elapsedSinceLastPing = timeNow - lastPingTimeMs;
-
-		if (elapsedSinceLastPing > timeoutMs / 2) {
-			lastPingTimeMs = timeNow;
-			LOG.debug("{} sending ping", self);
-			multicaster.sendAsyncMessage(self, leaderService.getRecentParticipants(), new SuppressionMessage(clusterName, self), c -> {});
-		} else {
-			LOG.debug("{} omitting ping", self);
-		}
+		LOG.debug("{} sending ping", self);
+		multicaster.sendAsyncMessage(self, leaderService.getRecentParticipants(), new SuppressionMessage(clusterName, self));
 	}
 
 	public synchronized void becomeLeader() {
 		leaderService.becomeLeader(this.self);
+		sendSuppressionMessage();
 	}
 
 	@Override
@@ -175,9 +166,10 @@ public class ClusterMemberImpl implements ClusterMember {
 	}
 
 	@Override
-	public ClusterMessage receiveMessage(ClusterMessage cm) {
+	public synchronized ClusterMessage receiveMessage(ClusterMessage cm) {
 		if (cm instanceof SuppressionMessage) {
-			receivePing((SuppressionMessage) cm);
+			LOG.debug("{} received {}", self, cm);	
+			lastPingTimeMs = System.currentTimeMillis();
 			return null;
 		} else {
 			throw new UnsupportedOperationException("Unknown message type: "+cm.getClass());

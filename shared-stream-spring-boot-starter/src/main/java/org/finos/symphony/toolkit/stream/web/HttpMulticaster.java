@@ -4,7 +4,6 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.ws.rs.core.HttpHeaders;
 
@@ -37,13 +36,13 @@ public class HttpMulticaster implements Multicaster {
 	}
 
 	@Override
-	public void sendAsyncMessage(Participant from, List<Participant> to, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
+	public void sendAsyncMessage(Participant from, List<Participant> to, ClusterMessage cm) {
 		to.stream()
 			.filter(participant -> !participant.equals(from))
-			.forEach(participant ->  sendMessageTo(participant.getDetails(), cm, responsesConsumer));
+			.forEach(participant ->  sendMessageTo(participant.getDetails(), cm));
 	}
 
-	private <R extends ClusterMessage> void sendMessageTo(String url, ClusterMessage cm, Consumer<ClusterMessage> responsesConsumer) {
+	private <R extends ClusterMessage> void sendMessageTo(String url, ClusterMessage cm) {
 		try {
 			String json = om.writeValueAsString(cm);
 			LOG.debug("Sending Cluster Communication Message {} to {}", json, url);
@@ -62,7 +61,6 @@ public class HttpMulticaster implements Multicaster {
 			ClusterMessage response = om.readValue(con.getInputStream(), ClusterMessage.class);
 
 			LOG.debug("Received Response {}", response);
-			responsesConsumer.accept(response);
 		} catch (Exception e) {
 			LOG.debug("Couldn't send message to {}, {}", url, e.getMessage());
 		}

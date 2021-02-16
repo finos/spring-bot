@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.finos.symphony.toolkit.stream.Participant;
+import org.finos.symphony.toolkit.stream.fixture.LeaderServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class SplitBrainClusterTest extends AbstractMajorityClusterTest {
+public class SplitBrainClusterTest extends AbstractBullyClusterTest {
 
 	@ParameterizedTest
 	@MethodSource("setupConfigurations")
@@ -20,25 +22,28 @@ public class SplitBrainClusterTest extends AbstractMajorityClusterTest {
 		Setup s = setupNetwork(c);
 		s.startup();
 			
-		waitForLeaderCount(s, 1);
+		waitForLeaderCount(s);
 		
 		splitTheBrain(s, getLeaders(s).stream().findFirst().get());
 		
 		if (c.size > 1) {
 		
-			waitForLeaderCount(s, 2);
+			waitForLeaderCount(s);
 				
 			getLeaders(s).stream().findFirst().orElseThrow(() -> new IllegalStateException("Should be a leader"));
 			
 			healTheBrain(s);
 			
-			waitForLeaderCount(s, 1);
+			waitForLeaderCount(s);
 	
 			getLeaders(s).stream().findFirst().orElseThrow(() -> new IllegalStateException("Should be a leader"));
 
 		}
 		
 		s.shutdown();
+		
+		Assertions.assertTrue(((LeaderServiceImpl) s.ls).leaderHistory.size() < 10);
+
 
 	}
 
@@ -65,6 +70,8 @@ public class SplitBrainClusterTest extends AbstractMajorityClusterTest {
 		Set<Set<Participant>> out = new HashSet<Set<Participant>>();
 		out.add(a);
 		out.add(b);
+		s.canTalkToSymphony.removeAll(b);
+		
 		System.out.println("Splitting: "+out);
 		s.c.set(out);
 		Thread.sleep(500);
@@ -73,6 +80,7 @@ public class SplitBrainClusterTest extends AbstractMajorityClusterTest {
 	private void healTheBrain(Setup s) throws InterruptedException {
 		System.out.println("healing: "+s.allParticipants);
 		s.c.set(Collections.singleton(s.allParticipants));
+		s.canTalkToSymphony.addAll(s.allParticipants);
 		Thread.sleep(500);
 	}
 }

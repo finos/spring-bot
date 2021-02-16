@@ -4,13 +4,10 @@ import java.util.Collections;
 
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.fixture.TestApplication;
 import org.finos.symphony.toolkit.stream.handler.SymphonyLeaderEventFilter;
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -78,12 +75,13 @@ public class SpringComponentsWebClusterIT {
 
 		int sc = WebClient.create(self.getDetails())
 			.post()
-			.bodyValue(new SuppressionMessage(apiInstance.getIdentity().getEmail(), self, 102))
+			.bodyValue(new SuppressionMessage(apiInstance.getIdentity().getEmail(), self))
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
 			.block()
 			.rawStatusCode();
 		Assertions.assertEquals(200, sc);
+		handlerFactory.stopAll();
 	}
 	
 	@Test
@@ -102,5 +100,6 @@ public class SpringComponentsWebClusterIT {
 		while (noddyCallback.getReceived().size() == 0) {
 			Thread.sleep(50);
 		}
+		handlerFactory.stopAll();
 	}
 }
