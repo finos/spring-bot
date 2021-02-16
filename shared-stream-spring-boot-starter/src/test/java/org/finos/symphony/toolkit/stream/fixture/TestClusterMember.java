@@ -1,31 +1,39 @@
 package org.finos.symphony.toolkit.stream.fixture;
 
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.cluster.RaftClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.transport.Multicaster;
-import org.finos.symphony.toolkit.stream.cluster.voting.Decider;
+import org.finos.symphony.toolkit.stream.cluster.ClusterMemberImpl;
+import org.finos.symphony.toolkit.stream.cluster.HealthSupplier;
+import org.finos.symphony.toolkit.stream.cluster.LeaderService;
+import org.finos.symphony.toolkit.stream.cluster.Multicaster;
+import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 
-public class TestClusterMember extends RaftClusterMember {
+public class TestClusterMember extends ClusterMemberImpl {
 	
-	
-	
-	public TestClusterMember(Participant self, long timeoutMs, Decider d, Multicaster multicaster) {
-		super(self, timeoutMs, d, multicaster);
+	public TestClusterMember(Participant self, long timeoutMs, Multicaster multicaster, HealthSupplier hs,  LeaderService ls) {
+		super("test", self, timeoutMs, multicaster, hs, ls);
+		System.out.println("Created "+self+" with timeout "+timeoutMs);
 	}
 
-
-	public TestClusterMember(Participant self, long timeoutMs, TestNetwork n, Decider d) {
-		super(self,timeoutMs, d, n);
-		n.register(self, this);
-		// System.out.println(self+" with timeout "+timeoutMs);
-	}
-	
-	
-	@Override
-	public synchronized void becomeLeader() {
-		System.out.println("Voted leader: "+self+" in election "+electionNumber);
-		super.becomeLeader();
-	}
-
+//	
+//	@Override
+//	public synchronized void becomeLeader() {
+//		super.becomeLeader();
+//	}
+//
+//
+//	@Override
+//	public State getState() {
+//		State out = super.getState();
+//		return out;
+//	}
+//
+//
+//	@Override
+//	public synchronized ClusterMessage receiveMessage(ClusterMessage cm) {
+//		//System.out.println(self+" Received ping from "+cm);
+//		return super.receiveMessage(cm);
+//	}
+//
+//	
 	
 }

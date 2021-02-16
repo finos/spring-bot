@@ -4,25 +4,18 @@ import java.util.Collections;
 
 import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
-import org.finos.symphony.toolkit.stream.cluster.ClusterMember.State;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
-import org.finos.symphony.toolkit.stream.filter.LeaderElectionInjector;
-import org.finos.symphony.toolkit.stream.filter.SymphonyLeaderEventFilter;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.fixture.TestApplication;
-import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig.SymphonyStreamHandlerFactory;
-import org.finos.symphony.toolkit.stream.handler.StreamEventFilter;
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.symphony.toolkit.stream.handler.SymphonyLeaderEventFilter;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
@@ -74,30 +67,26 @@ public class SpringComponentsWebClusterIT {
 	NoddyCallback noddyCallback;
 	
 	@Autowired
-	ClusterMember cm;
-	
-	@Autowired
 	SymphonyStreamHandlerFactory handlerFactory;
 	
 	@Test
 	public void testCallEndpoint() throws Exception {
+		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, Collections.singletonList(noddyCallback)).getFilter();
+
 		int sc = WebClient.create(self.getDetails())
 			.post()
-			.bodyValue(new SuppressionMessage(self, 102))
+			.bodyValue(new SuppressionMessage(apiInstance.getIdentity().getEmail(), self))
 			.accept(MediaType.APPLICATION_JSON)
 			.exchange()
 			.block()
 			.rawStatusCode();
 		Assertions.assertEquals(200, sc);
+		handlerFactory.stopAll();
 	}
 	
 	@Test
 	public void testCallbackGetsCalled() throws Exception {
-		// wait for this cluster to become leader
-		while (cm.getState() != State.LEADER) {
-			Thread.sleep(50);
-		}
-		
+			
 		// wait for the event to say it's leader.
 		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, Collections.singletonList(noddyCallback)).getFilter();
 		while (!lef.isActive()) {
@@ -111,5 +100,6 @@ public class SpringComponentsWebClusterIT {
 		while (noddyCallback.getReceived().size() == 0) {
 			Thread.sleep(50);
 		}
+		handlerFactory.stopAll();
 	}
 }

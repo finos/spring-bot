@@ -7,8 +7,8 @@ import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.SharedStreamProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
-import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig.SymphonyStreamHandlerFactory;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,6 @@ public class SharedStreamSingleBotConfig {
 	@Autowired
 	SymphonyStreamHandlerFactory streamHandlerFactory;
 	
-
 	@Bean
 	@ConditionalOnMissingBean
 	public ExceptionConsumer exceptionConsumer() {

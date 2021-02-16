@@ -62,7 +62,7 @@ public class DemoApplication {
 	
 	@Bean
 	public StreamEventConsumer welcomeMessages() {
-		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id, "<messageML>Hello From The Bot</messageML>");
+		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id);
 	}
 
 }

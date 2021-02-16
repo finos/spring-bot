@@ -6,6 +6,8 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.stream.MessagingVersionSpace;
 import org.finos.symphony.toolkit.stream.SharedStreamException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,14 +18,18 @@ import com.symphony.api.model.V4MessageSent;
 
 public class LogMessageHandlerImpl implements LogMessageHandler {
 
+	private static final String SYMPHONY_SHARED_STREAM = "symphony-shared-stream";
 	private static final String SHARED_STREAM_JSON_KEY = "shared-stream-001";
-	private ObjectMapper om;
-	private String environmentSuffix;
-	private String streamId;
+	protected static final Logger LOG = LoggerFactory.getLogger(LogMessageHandlerImpl.class);
+	protected ObjectMapper om;
+	protected String environmentSuffix;
+	protected String streamId;
+	protected String clusterName;
 	protected MessagesApi messagesApi;
 	
-	public LogMessageHandlerImpl(String streamId, MessagesApi messagesApi, String environmentSuffix) {
+	public LogMessageHandlerImpl(String clusterName, String streamId, MessagesApi messagesApi, String environmentSuffix) {
 		super();
+		this.clusterName = clusterName;
 		this.streamId = streamId;
 		this.om = ObjectMapperFactory.initialize(
 			ObjectMapperFactory.extendedSymphonyVersionSpace(MessagingVersionSpace.THIS));
@@ -39,19 +45,21 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 
 	public String createMessageML(LogMessage out) {
 		return "<messageML>"
-				+getHashTag(out.getMessageType())
+				+"<hash tag=\""+SYMPHONY_SHARED_STREAM+"\" />"
+				+getHashTag()
 				+out.getMessageType()
 				+" - "
 				+out.getParticipant().getDetails()
 				+"</messageML>"; 
 	}
 
-	public String getHashTagId(LogMessageType cmt) {
-		return "shared-stream-"+cmt.toString().toLowerCase()+"-"+environmentSuffix;
+	public String getHashTagId() {
+		String normd = clusterName.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+		return "shared-stream-"+normd+"-"+environmentSuffix;
 	}
 
-	public String getHashTag(LogMessageType t) {
-		return "<hash tag=\""+getHashTagId(t)+"\" /> ";
+	public String getHashTag() {
+		return "<hash tag=\""+getHashTagId()+"\" /> ";
 	}
 	
 	public String serializeJson(LogMessage out) {
@@ -65,34 +73,33 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 	}
 
 	@Override
-	public boolean isLeaderMessage(V4Event e) {
+	public Optional<LogMessage> handleEvent(V4Event e) {
 		V4MessageSent messageSent = e.getPayload().getMessageSent();
 		if (messageSent != null) {
 			V4Message m = messageSent.getMessage();
 			String messageML = m.getMessage();
-			return (messageML.contains(getHashTagId(LogMessageType.LEADER)));
+			if  (messageML.contains(getHashTagId())) {
+				Optional<LogMessage> lm = readMessage(m);
+				if ((lm.isPresent()) && (lm.get().getCluster().equals(clusterName))) {
+					return lm;
+				}
+			}
+			
 		}
 		
-		return false;
-	}
-	
-	@Override
-	public boolean isParticipantMessage(V4Event e) {
-		V4MessageSent messageSent = e.getPayload().getMessageSent();
-		if (messageSent != null) {
-			V4Message m = messageSent.getMessage();
-			String messageML = m.getMessage();
-			return (messageML.contains(getHashTagId(LogMessageType.PARTICIPANT)));
-		}
-		
-		return false;
+		return Optional.empty();
 	}
 
 	@Override
 	public Optional<LogMessage> readMessage(V4Message e) {
 		String json = e.getData();
-		LogMessage o = deserializeJson(json);
-		return Optional.of(o);
+		try {
+			LogMessage o = deserializeJson(json);
+			return Optional.of(o);
+		} catch (Exception e1) {
+			LOG.error("Couldn't deserialize: {}", json, e);
+			return Optional.empty();
+		}
 	}
 
 	public LogMessage deserializeJson(String json) {

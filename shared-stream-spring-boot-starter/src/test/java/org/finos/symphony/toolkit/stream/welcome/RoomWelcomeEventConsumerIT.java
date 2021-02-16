@@ -7,8 +7,10 @@ import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig;
+import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumerIT.TestContext;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -16,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -77,9 +80,15 @@ public class RoomWelcomeEventConsumerIT {
 	@Autowired
 	SymphonyIdentity bot;
 	
+	@MockBean
+	TaskScheduler taskScheduler;
+	
+	@Autowired
+	SymphonyStreamHandlerFactory fact;
+	
 	@Test
 	public void testRoomCreated() {
-		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, WELCOME_MESSAGE);
+		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot);
 
 		V4Event event = new V4Event().payload(
 				new V4Payload().roomCreated(
@@ -92,7 +101,7 @@ public class RoomWelcomeEventConsumerIT {
 		Mockito.verify(messages, Mockito.times(1)).v4StreamSidMessageCreatePost(
 			Mockito.isNull(), 
 			Mockito.matches(Pattern.quote(NEW_ROOM_STREAM_ID)), 
-			Mockito.matches(Pattern.quote(WELCOME_MESSAGE)), 
+			Mockito.isNotNull(), 
 			Mockito.isNotNull(), 
 			Mockito.isNull(), 
 			Mockito.isNull(), 
@@ -125,5 +134,10 @@ public class RoomWelcomeEventConsumerIT {
 			Mockito.isNull());
 	
 		Mockito.clearInvocations(messages);
+	}
+	
+	@AfterEach
+	public void tearDown() {
+		fact.stopAll();
 	}
 }
