@@ -104,4 +104,8 @@
  - Bot Welcome Messages (#119)
  - Improvement for Content Class in Chat Workflow (#109)
  - Fixing Whitesource security issue (#88)
+ 
+## 22nd February 2021
+
+ - Fixing Shared Stream issue, removed multiple algorithms from shared stream (#128)
 
