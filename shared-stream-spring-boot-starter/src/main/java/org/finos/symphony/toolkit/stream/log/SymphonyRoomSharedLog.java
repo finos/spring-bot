@@ -63,6 +63,7 @@ public class SymphonyRoomSharedLog extends LogMessageHandlerImpl implements Shar
 			.map(m -> readMessage(m))
 			.filter(o -> o.isPresent())
 			.map(o -> o.get())
+			.filter(cm -> cm.messageType == messageType)
 			.map(cm -> cm.getParticipant())
 			.distinct()
 			.collect(Collectors.toList());
