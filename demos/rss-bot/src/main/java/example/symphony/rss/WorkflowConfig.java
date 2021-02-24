@@ -8,12 +8,13 @@ import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import example.symphony.rss.feed.Article;
 import example.symphony.rss.feed.Feed;
 import example.symphony.rss.feed.FeedList;
 import example.symphony.rss.feed.SubscribeRequest;
 
 @Configuration
-public class WorkflowConfig {
+public class WorkflowConfig  {
 
 	@Bean
 	public Workflow appWorkflow() {
@@ -21,6 +22,9 @@ public class WorkflowConfig {
 		wf.addClass(FeedList.class);
 		wf.addClass(Feed.class);
 		wf.addClass(SubscribeRequest.class);
+		wf.addClass(Article.class);
 		return wf;
 	}
+	
+	
 }

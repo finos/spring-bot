@@ -15,6 +15,7 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 
 import example.symphony.rss.alerter.Alerter;
+import example.symphony.rss.alerter.TimedAlerter;
 
 @Work(editable = true, instructions = "Feeds being reported in this chat")
 public class FeedList {
@@ -37,13 +38,11 @@ public class FeedList {
 	
 	@Exposed(addToHelp = true, description = "Subscribe to a feed. e.g. /subscribe &lt;url&gt;", isButton = false, isMessage = true)
 	public static FeedList subscribe(SubscribeRequest sr, Alerter alerter, Addressable a, MessageHistory hist) throws Exception {
-		URL u = new URL(sr.url);
-		SyndFeedInput input = new SyndFeedInput();
-		SyndFeed feed = input.build(new XmlReader(u));
+		SyndFeed feed = Feed.createSyndFeed(sr.url);
 		Feed f = new Feed();
 		f.setName(feed.getTitle());
 		f.setDescription(feed.getDescription());
-		f.setUrl(feed.getLink());
+		f.setUrl(sr.url);
 		FeedList existing = subscriptions(a, hist);
 		if (!existing.feeds.contains(f)) {
 			existing.feeds.add(f);
@@ -51,5 +50,10 @@ public class FeedList {
 		}
 		
 		return existing;
+	}
+	
+	@Exposed(addToHelp = true, description = "Write out all RSS Feed Items to this chat", isButton = false, isMessage = true) 
+	public static void latest(Addressable a, TimedAlerter ta, FeedList fl) {
+		ta.allItems(a, fl);
 	}
 }
