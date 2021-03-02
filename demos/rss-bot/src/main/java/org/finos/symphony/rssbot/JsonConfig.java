@@ -1,4 +1,4 @@
-package example.symphony.rss;
+package org.finos.symphony.rssbot;
 
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.springframework.beans.factory.InitializingBean;

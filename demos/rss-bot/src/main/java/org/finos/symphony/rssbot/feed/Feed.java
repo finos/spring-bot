@@ -1,4 +1,4 @@
-package example.symphony.rss.feed;
+package org.finos.symphony.rssbot.feed;
 
 import java.io.IOException;
 import java.net.MalformedURLException;

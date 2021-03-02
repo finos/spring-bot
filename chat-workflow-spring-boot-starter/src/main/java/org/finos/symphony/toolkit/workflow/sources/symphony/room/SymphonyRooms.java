@@ -6,7 +6,8 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.room.Rooms;
 
 /**
- * Increases the 
+ * Increases the api-surface area, allowing you to create rooms/users from symphony objects.
+ * 
  * @author Rob Moffat
  *
  */

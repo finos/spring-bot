@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.workflow.content;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * This defines a Room as a collection of people.   Whenm 
+ * This defines a Room as a collection of people.  
  * @author Rob Moffat
  *
  */

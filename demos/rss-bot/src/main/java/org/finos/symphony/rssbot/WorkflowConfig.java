@@ -1,17 +1,16 @@
 /**
  * 
  */
-package example.symphony.rss;
+package org.finos.symphony.rssbot;
 
+import org.finos.symphony.rssbot.feed.Article;
+import org.finos.symphony.rssbot.feed.Feed;
+import org.finos.symphony.rssbot.feed.FeedList;
+import org.finos.symphony.rssbot.feed.SubscribeRequest;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import example.symphony.rss.feed.Article;
-import example.symphony.rss.feed.Feed;
-import example.symphony.rss.feed.FeedList;
-import example.symphony.rss.feed.SubscribeRequest;
 
 @Configuration
 public class WorkflowConfig  {
