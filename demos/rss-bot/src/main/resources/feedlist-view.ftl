@@ -14,6 +14,7 @@
   </tbody></table>
   
   <p><i>${entity.workflow_001.paused?string("Currently Paused", "Feeding Every Hour")}</i></p>
+  <p>Created by Rob @ DB Symphony Practice</p>
   <hr />
 <form 
   id="just-buttons-form">

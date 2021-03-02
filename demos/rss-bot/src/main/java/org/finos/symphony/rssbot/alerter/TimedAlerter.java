@@ -55,7 +55,7 @@ public class TimedAlerter implements Alerter {
 	@Autowired
 	StreamsApi streams;
 	
-	@Scheduled(initialDelay = 10, fixedDelay = 1000000) // = "0 0 * * * MON-FRI")
+	@Scheduled(initialDelay = 10, fixedDelay = 10000) // = "0 0 * * * MON-FRI")
 	public void everyWeekdayHour() {
 		LOG.info("TimedAlerter waking");
 
@@ -118,7 +118,7 @@ public class TimedAlerter implements Alerter {
 		for (SyndEntry e : f.downloadFeedItems()) {
 			if (e.getPublishedDate().toInstant().isAfter(since)) {
 				EntityJson ej = new EntityJson();
-				Article article = new Article(e.getTitle(), e.getAuthor(), e.getPublishedDate().toInstant(), e.getUri(), startTime, fl);
+				Article article = new Article(e.getTitle(), e.getAuthor(), e.getPublishedDate().toInstant(), e.getLink(), startTime, fl);
 				String titleStr = "<a href=\"" + article.getUri()+"\">" + article.getTitle()+"</a>";
 				String description = f.getName()+ " | <i>"+article.getAuthor()+"</i>";
 				ej.put(EntityJsonConverter.WORKFLOW_001, article);

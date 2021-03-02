@@ -7,6 +7,7 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -101,7 +102,7 @@ public class ResolverConfig {
 	 * Allows you to pull back previous exchanges in the history to use as parameters
 	 */
 	@Bean
-	public MessageHistoryWorkflowResolverFactory historyResolver(@Lazy MessageHistory hist) {
+	public MessageHistoryWorkflowResolverFactory historyResolver(@Lazy History hist) {
 		return new MessageHistoryWorkflowResolverFactory(hist);
 	}
 	
