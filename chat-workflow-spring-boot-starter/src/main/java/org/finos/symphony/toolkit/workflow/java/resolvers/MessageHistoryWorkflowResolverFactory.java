@@ -4,17 +4,21 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.Action;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.ConfigurableWorkflow;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
 
 public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFactory {
 	
-	MessageHistory hist;
+	History hist;
 	
-	public MessageHistoryWorkflowResolverFactory(MessageHistory hist) {
+	public MessageHistoryWorkflowResolverFactory(History hist) {
 		this.hist = hist;
 	}
-	
+
+	@Override
+	public int priority() {
+		return WorkflowResolverFactory.LOW_PRIORITY;
+	}
 
 	@Override
 	public WorkflowResolver createResolver(Action originatingAction) {
@@ -23,7 +27,11 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 			@SuppressWarnings("unchecked")
 			@Override
 			public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget) {
-				return (Optional<Object>) hist.getLastFromHistory(c, a);
+				if (isTarget) {
+					 return (Optional<Object>) hist.getLastFromHistory(c, a);
+				} else {
+					return Optional.empty();
+				}
 			}
 			
 			@Override

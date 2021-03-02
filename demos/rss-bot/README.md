@@ -1,7 +1,4 @@
-# Demo To-Do Bot
+# RSS Bot
 
-This provides a "todo list" bot in Symphony, which is covered in the [Tutorial](../../tutorials/Chat-Workflow.md).
-
-If you don't want to go through the tutorial and assemble the code yourself, you can download this instead and build it on your desktop.
-
+This provides a simple bot that is able to publish RSS news articles into a chatroom, by consuming RSS feeds.  The RSS feeds are configurable by the members of the room.  As usual, type /help to get the bot to provide help information.  This is standalone, and just requires `application.yml` to run.
 

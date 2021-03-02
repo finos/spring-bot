@@ -36,7 +36,7 @@ public class TestTransport {
 	
 	@Test
 	public void testHttpTransport() throws InterruptedException {
-		HttpMulticaster hm = new HttpMulticaster(me);
+		HttpMulticaster hm = new HttpMulticaster(me, 5000);
 		ClusterMessage cm = new SuppressionMessage("test", me);
 		hm.sendAsyncMessage(me, Collections.singletonList(you),cm);
 		Thread.sleep(1000);
