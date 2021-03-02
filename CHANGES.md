@@ -109,3 +109,6 @@
 
  - Fixing Shared Stream issue, removed multiple algorithms from shared stream (#128)
 
+## March 2021
+
+ - Fixing issue #123 to allow shared-stream bots to start even without a listener.

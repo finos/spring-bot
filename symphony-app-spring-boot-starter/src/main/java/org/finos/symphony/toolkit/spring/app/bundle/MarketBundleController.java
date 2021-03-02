@@ -14,7 +14,9 @@ import org.finos.symphony.toolkit.spring.app.pods.info.PodInfoController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.id.SymphonyIdentity;
+import com.symphony.api.id.json.SymphonyIdentityModule;
 
 /**
  * Constructs the Symphony Bundle File for when you are supplying a bundle file to be uploaded into 
@@ -53,12 +55,17 @@ public class MarketBundleController extends AbstractBundleController {
 	}
 
 	protected void addIdentity(Map<String, Object> out) throws Exception {
+		ObjectMapper om = new ObjectMapper();
+		om.registerModule(new SymphonyIdentityModule());
+
 		if (appIdentity.getCertificateChain().length == 1) {
 			X509Certificate singleCert = appIdentity.getCertificateChain()[0];
-			out.put("certificate", singleCert);
+			String encCert = om.writeValueAsString(singleCert);
+			out.put("certificate", encCert);
 		}
-
-		out.put("rsaKey", appIdentity.getPublicKey());
+		
+		String encoded = om.writeValueAsString(appIdentity.getPublicKey());
+		out.put("rsaKey", encoded);
 	}
 
 	protected Object getNotification(HttpServletRequest request) throws URISyntaxException {
