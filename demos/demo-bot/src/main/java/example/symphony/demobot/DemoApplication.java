@@ -43,26 +43,26 @@ public class DemoApplication {
 	@Autowired
 	SymphonyIdentity id;
 	
-	@Bean
-	public StreamEventConsumer consumer() {
-		return event -> {
-			V4MessageSent ms = event.getPayload().getMessageSent();
-			if ((ms != null) && (!ms.getMessage().getUser().getEmail().equals(id.getEmail()))) {
-				
-				// echo the message back
-				messagesApi.v4StreamSidMessageCreatePost(null, 
-					ms.getMessage().getStream().getStreamId(), 		// reply to the room the message came from
-					ms.getMessage().getMessage(), 					// reply with original content
-				null, null, null, null, null);	
-				
-			}
-			
-		};
-	}
+//	@Bean
+//	public StreamEventConsumer consumer() {
+//		return event -> {
+//			V4MessageSent ms = event.getPayload().getMessageSent();
+//			if ((ms != null) && (!ms.getMessage().getUser().getEmail().equals(id.getEmail()))) {
+//				
+//				// echo the message back
+//				messagesApi.v4StreamSidMessageCreatePost(null, 
+//					ms.getMessage().getStream().getStreamId(), 		// reply to the room the message came from
+//					ms.getMessage().getMessage(), 					// reply with original content
+//				null, null, null, null, null);	
+//				
+//			}
+//			
+//		};
+//	}
 	
-	@Bean
-	public StreamEventConsumer welcomeMessages() {
-		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id);
-	}
+//	@Bean
+//	public StreamEventConsumer welcomeMessages() {
+//		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id);
+//	}
 
 }

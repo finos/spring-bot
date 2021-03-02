@@ -18,6 +18,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessage
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
@@ -63,7 +64,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
 		
-		if (templateName != null) {
+		if (StringUtils.hasText(templateName)) {
 			Resource r = rl.getResource(templateName);
 			if (!r.exists()) {
 				throw new UnsupportedOperationException("Template not available: "+templateName);

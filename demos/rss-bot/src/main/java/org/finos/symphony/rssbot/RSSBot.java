@@ -1,10 +1,11 @@
-package example.symphony.rss;
+package org.finos.symphony.rssbot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class RSSBot 
 {
     public static void main( String[] args )

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -10,39 +11,26 @@
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>com.github.finos.symphony.examples</groupId>
-	<artifactId>rss-bot</artifactId>
-	<name>RSS Publications Bot</name>
-	<description>Sends RSS Feeds to Symphony Rooms</description>
+	<groupId>com.db.symphony</groupId>
+	<artifactId>rsa-nag</artifactId>
+	<name>RSA Nag Tool</name>
+	<description>Uses Symphony Admin API to tell you how old your bot's RSA keys are</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-    <spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.symphony.practice.rsanag.Main</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
-			<artifactId>chat-workflow-spring-boot-starter</artifactId>
-			<version>6.20.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<dependency>
-		  <groupId>com.rometools</groupId>
-		  <artifactId>rome</artifactId>
-		  <version>1.15.0</version>
-		</dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.datatype</groupId>
-      <artifactId>jackson-datatype-jsr310</artifactId>
-    </dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>symphony-api-spring-boot-starter</artifactId>
+			<version>6.20.0-SNAPSHOT</version>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
@@ -64,6 +52,10 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-multipart</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -84,4 +76,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

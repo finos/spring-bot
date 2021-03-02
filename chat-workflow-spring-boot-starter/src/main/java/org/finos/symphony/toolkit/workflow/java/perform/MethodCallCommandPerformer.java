@@ -103,6 +103,9 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 
 		try {
 			Object out = m.invoke(o.orElse(null), args);
+			if (out == null) {
+				return Collections.emptyList();
+			}
 			Class<?> cc = out.getClass();
 			
 			if (Response.class.isAssignableFrom(cc)) {
