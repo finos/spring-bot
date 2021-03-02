@@ -49,9 +49,6 @@ public class SharedStreamHandlerConfig {
 	public static final String SYMPHONY_STREAM_HANDLER_FACTORY_BEAN = "SymphonyStreamHandlerFactoryBean";
 	
 	@Autowired
-	ExceptionConsumer ec;
-	
-	@Autowired
 	TaskScheduler taskScheduler;
 	
 	@Autowired
@@ -66,6 +63,12 @@ public class SharedStreamHandlerConfig {
 	@Autowired(required = false)
 	Multicaster mc;
 	
+	@Bean
+	@ConditionalOnMissingBean
+	public ExceptionConsumer exceptionConsumer() {
+		return (e) -> LOG.error("StreamException: ", e);
+	}
+	
 	private List<ClusterMember> allClusterMembers = new ArrayList<>();
 	private Map<ApiInstance, SymphonyStreamHandler> created = new HashMap<>();
 		
@@ -74,17 +77,16 @@ public class SharedStreamHandlerConfig {
 	 */
 	@Bean(name = SYMPHONY_STREAM_HANDLER_FACTORY_BEAN)
 	@ConditionalOnMissingBean
-	public SymphonyStreamHandlerFactory symphonyStreamHandlerFactory() {
+	public SymphonyStreamHandlerFactory symphonyStreamHandlerFactory(ExceptionConsumer ec) {
 		return new SymphonyStreamHandlerFactory() {
 
-			
 			@Override
 			public SymphonyStreamHandler createBean(ApiInstance symphonyApi, List<StreamEventConsumer> consumers) {
 				if (created.containsKey(symphonyApi)) {
 					return created.get(symphonyApi);
 				}
 				
-				SymphonyStreamHandler out = streamHandler(symphonyApi, consumers);
+				SymphonyStreamHandler out = streamHandler(symphonyApi, consumers, ec);
 				created.put(symphonyApi, out);
 				return out;
 			}
@@ -111,7 +113,7 @@ public class SharedStreamHandlerConfig {
 	@Bean
 	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
 	@ConditionalOnMissingBean
-	protected SymphonyStreamHandler streamHandler(ApiInstance symphonyApi, List<StreamEventConsumer> consumers){
+	protected SymphonyStreamHandler streamHandler(ApiInstance symphonyApi, List<StreamEventConsumer> consumers, ExceptionConsumer ec){
 		SymphonyStreamHandler out = new SymphonyStreamHandler(symphonyApi, consumers, ec, false);
 		String email = symphonyApi.getIdentity().getEmail();
 		LOG.info("Created SymphonyStreamHandler for "+email+" with consumers "+consumers);
