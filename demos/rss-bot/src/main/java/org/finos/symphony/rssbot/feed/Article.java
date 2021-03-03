@@ -4,6 +4,12 @@ import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.workflow.content.HashTag;
+import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
+
+@Work(editable = false, instructions = "News")
+@Template(view = "classpath:/article-view.ftl")
 public class Article {
 
 	private String title;
@@ -12,8 +18,9 @@ public class Article {
 	private String uri;
 	private Instant startTime; 
 	private List<String> feedUrls;
+	private HashTag feedHashTag;
 	
-	public Article(String title, String author, Instant Instant, String uri, Instant startTime, FeedList fl) {
+	public Article(String title, String author, Instant Instant, String uri, Instant startTime, FeedList fl, HashTag feedHashTag) {
 		super();
 		this.title = title;
 		this.author = author;
@@ -21,6 +28,7 @@ public class Article {
 		this.uri = uri;
 		this.startTime = startTime;
 		this.feedUrls = fl.feeds.stream().map(f -> f.getUrl()).collect(Collectors.toList());
+		this.feedHashTag = feedHashTag;
 	}
 
 	public Article() {
@@ -75,5 +83,12 @@ public class Article {
 		this.feedUrls = feedUrls;
 	}
 
-	
+	public HashTag getFeedHashTag() {
+		return feedHashTag;
+	}
+
+	public void setFeedHashTag(HashTag feedHashTag) {
+		this.feedHashTag = feedHashTag;
+	}
+
 }

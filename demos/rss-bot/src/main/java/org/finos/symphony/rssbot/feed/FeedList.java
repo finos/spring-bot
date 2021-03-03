@@ -59,7 +59,7 @@ public class FeedList {
 		return fl.orElseGet(() -> new FeedList()).add(sr);
 	}
 	
-	@Exposed(addToHelp = true, description = "Add Subscription", isButton = true, isMessage = false) 
+	@Exposed(addToHelp = false, description = "Add Subscription", isButton = true, isMessage = false) 
 	public FeedList add(SubscribeRequest sr) throws Exception {
 		SyndFeed feed = Feed.createSyndFeed(sr.url);
 		Feed f = new Feed();
