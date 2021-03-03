@@ -118,6 +118,7 @@ This module provides a one-stop-shop for constructing work-flows in Java.  It is
  - [Demo Poll Bot](demos/poll-bot/README.md)
  - [Demo To-Do List Bot](demos/todo-bot/README.md)
  - [Demo Claim Bot](demos/claim-bot/README.md)
+ - [RSS News Bot](demos/rss-bot/README.md)
  
 ## Kore-AI Bridge
 
@@ -146,7 +147,7 @@ In order to do a release:
 ```
 mvn test -P symphony-ci
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=\*  -DgroupId=\*
-mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/claim-bot,!demos/poll-bot,!demos/todo-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release
+mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/claim-bot,!demos/poll-bot,!demos/todo-bot,!demos/rss-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then push to git
 ```
