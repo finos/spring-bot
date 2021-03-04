@@ -19,14 +19,17 @@ import com.symphony.api.model.V2UserDetailList;
 import com.symphony.api.model.V2UserKeyRequest;
 import com.symphony.api.pod.UserApi;
 
-public class RSANagCommand implements CommandLineRunner {
+public class RSANagCommand2 implements CommandLineRunner {
 	
-	public static final Logger LOG = LoggerFactory.getLogger(RSANagCommand.class);
+	public static final Logger LOG = LoggerFactory.getLogger(RSANagCommand2.class);
 	public static final long ONE_DAY_MILLIS = 24*60*60*1000;
 	
 	boolean list = false;
 	boolean mail = false;
 	boolean revoke = false;
+	
+	@Value("${auditRoomStreamId}")
+	String auditRoomStreamId;
 	
 	/**
 	 * Allows you to process a single bot, rather than all of them
@@ -64,17 +67,17 @@ public class RSANagCommand implements CommandLineRunner {
 		List<V2UserDetail> actOn = getAllAccounts();
 		
 		for (V2UserDetail v2UserDetail : actOn) {
-			Report r = getAuditDetail(v2UserDetail);
+			UserRecord r = withDetail(v2UserDetail);
 		}
 		
 		
 	}
 
-	private Report withDetail(V2UserDetail v2UserDetail) {
+	private UserRecord withDetail(V2UserDetail v2UserDetail) {
 		UserSystemInfo info = v2UserDetail.getUserSystemInfo();
 		V2UserAttributes atts = v2UserDetail.getUserAttributes();
 		V2UserKeyRequest ukr = atts.getCurrentKey();
-		
+		return new UserRecord();
 	}
 
 	private List<V2UserDetail> getAllAccounts() {

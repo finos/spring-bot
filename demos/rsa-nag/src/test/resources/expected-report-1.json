@@ -1,0 +1,28 @@
+{
+  "reportDate" : 1612656000.000000000,
+  "records" : [ {
+    "botId" : 5647,
+    "email" : "bot1@example.com",
+    "botDisplayName" : "Bot 1",
+    "userLastUpdated" : 1610000000.000000000,
+    "keyLastUpdated" : null,
+    "explanation" : null,
+    "status" : "ENABLED"
+  }, {
+    "botId" : 999,
+    "email" : "bot2@example.com",
+    "botDisplayName" : "Bot 2",
+    "userLastUpdated" : 1514321549.000000000,
+    "keyLastUpdated" : null,
+    "explanation" : null,
+    "status" : "ENABLED"
+  }, {
+    "botId" : 123,
+    "email" : "bot3@example.com",
+    "botDisplayName" : "Bot 3",
+    "userLastUpdated" : 1510000000.000000000,
+    "keyLastUpdated" : null,
+    "explanation" : null,
+    "status" : "DISABLED"
+  } ]
+}
