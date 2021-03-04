@@ -39,7 +39,7 @@ import com.symphony.api.model.StreamList;
 import com.symphony.api.pod.StreamsApi;
 
 @Component
-public class TimedAlerter implements Alerter {
+public class TimedAlerter {
 	
 	public static Logger LOG =  LoggerFactory.getLogger(TimedAlerter.class);
 		
