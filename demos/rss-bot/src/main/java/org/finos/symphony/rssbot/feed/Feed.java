@@ -1,17 +1,6 @@
 package org.finos.symphony.rssbot.feed;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
-
 import org.finos.symphony.toolkit.workflow.java.Work;
-
-import com.rometools.rome.feed.synd.SyndEntry;
-import com.rometools.rome.feed.synd.SyndFeed;
-import com.rometools.rome.io.FeedException;
-import com.rometools.rome.io.SyndFeedInput;
-import com.rometools.rome.io.XmlReader;
 
 @Work(editable = false, instructions = "RSS Feed")
 public class Feed {
@@ -68,16 +57,5 @@ public class Feed {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
-	public List<SyndEntry> downloadFeedItems() throws Exception {
-		SyndFeed feed = createSyndFeed(url);
-		return feed.getEntries();
-	}
 
-	public static SyndFeed createSyndFeed(String url) throws FeedException, IOException, MalformedURLException {
-		SyndFeedInput input = new SyndFeedInput();
-		input.setAllowDoctypes(true);
-		SyndFeed feed = input.build(new XmlReader(new URL(url)));
-		return feed;
-	}
 }

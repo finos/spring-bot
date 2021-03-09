@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.finos.symphony.rssbot.feed.Article;
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
+import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
@@ -67,6 +68,9 @@ public class TimedAlerter {
 	
 	@Autowired
 	Participant self;
+	
+	@Autowired
+	FeedLoader loader;
 	
 	@Scheduled(cron="0 0 * * * MON-FRI")
 	public void everyWeekdayHour() {
@@ -157,7 +161,7 @@ public class TimedAlerter {
 
 	private int allItemsSince(Instant startTime, Feed f, Addressable a, Instant since, FeedList fl) throws Exception {
 		int count = 0;
-		for (SyndEntry e : f.downloadFeedItems()) {
+		for (SyndEntry e : loader.createSyndFeed(f.getUrl()).getEntries()) {
 			if (e.getPublishedDate().toInstant().isAfter(since)) {
 				EntityJson ej = new EntityJson();
 				HashTag ht = createHashTag(f);
@@ -175,7 +179,7 @@ public class TimedAlerter {
 	Pattern p = Pattern.compile("[^\\w]");
 
 	private HashTag createHashTag(Feed f) {
-		String simplified = f.getName().replaceAll("[^\\w]","-");
+		String simplified = f.getName().replaceAll("[^\\w]","");
 		return new HashTagDef(simplified);
 	}
 	

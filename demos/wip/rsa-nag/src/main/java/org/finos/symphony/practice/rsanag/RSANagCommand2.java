@@ -3,6 +3,7 @@ package org.finos.symphony.practice.rsanag;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.finos.symphony.practice.rsanag.report.UserRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
