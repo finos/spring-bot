@@ -146,15 +146,13 @@ public class TimedAlerter {
 	}
 
 	public boolean feedCovered(Optional<Article> lastArticle, Feed f) {
-		if (lastArticle.isEmpty()) {
-			return false;
-		} else {
+		if (lastArticle.isPresent()) {
 			List<String> urls = lastArticle.get().getFeedUrls();
 			
 			if ((urls != null) && (urls.contains(f.getUrl()))) {
 				return true;
 			}
-		}
+		} 
 		
 		return false;
 	}
