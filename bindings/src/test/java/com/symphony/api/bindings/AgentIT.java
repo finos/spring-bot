@@ -1,6 +1,7 @@
 package com.symphony.api.bindings;
 
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -81,6 +82,36 @@ public class AgentIT extends AbstractIT {
 		while (count[0] == 0) {
 			Thread.yield();
 		}
+	}
+	
+	@ParameterizedTest
+	@MethodSource("setupConfigurations")
+	public void testBlastAPI(TestClientStrategy s) throws Exception {
+		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
+		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
+		Datafeed datafeed = dfApi.v4DatafeedCreatePost(null, null);
+		System.out.println("Datafeed ID: "+datafeed.getId());
+
+		Supplier<List<V4Event>> supplier = () -> dfApi.v4DatafeedIdReadGet(datafeed.getId(), null, null, 100);
+
+		final int[] count = { 0 };
+		final Worker<V4Event> w = Streams.createWorker(supplier, e -> e.printStackTrace());
+		
+		Thread t = new Thread(() -> {
+			w.stream().forEach(e -> count[0]++);
+		});
+
+		t.setDaemon(true);
+		t.start();
+
+		String toSend = "Trigger Listener."+new Random().nextInt();
+		messageAPi.v4MessageBlastPost(ROOM+","+ROOM, "<messageML>"+toSend+"</messageML>", null, null, null, null, null, null);
+
+		// wait for roundtrip
+		while (count[0] == 0) {
+			Thread.yield();
+		}
+		
 	}
 	
 	class V5Supplier implements Supplier<List<V4Event>> {

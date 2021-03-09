@@ -54,7 +54,7 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		return buildProxy(c, wt);
 	}
 	
-	protected WebTarget newWebTarget(String url) {
+	public WebTarget newWebTarget(String url) {
 		try {
 			JerseyClientBuilder jcb = new JerseyClientBuilder();
 			jcb.sslContext(createSSLContext());
