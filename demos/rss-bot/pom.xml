@@ -17,7 +17,7 @@
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-    <spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
+    <spring-boot.run.main-class>org.finos.symphony.rssbot.RSSBot</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
