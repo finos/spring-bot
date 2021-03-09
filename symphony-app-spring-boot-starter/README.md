@@ -69,7 +69,7 @@ Once you have the basic app running, you can configure it with the following pro
 |`symphony.app.description`    |Description for Symphony Market.                                                             |
 |`symphony.app.apiKey`          |Come up with a url-safe combination of characters unique to your application.                |
 |`symphony.app.publisher`      |Publisher for Symphony Market (your organisation)                                            |
-|`symphony.app.permissions`   |List of app on-behalf-of permissions.  See [here](https://developers.symphony.com/restapi/docs/get-started-with-obo).  |
+|`symphony.app.permissions`   |List of app on-behalf-of permissions.  See [here](https://docs.developers.symphony.com/building-extension-applications-on-symphony/app-authentication/obo-authentication).  |
 |`symphony.app.baseUrl`        |Base Url for your application.  Use if you are behind a load-balancer or something.          |
 |`symphony.app.allowOrigins`  |Will be auto-generated, but you can override if you want.                                    |
 |`symphony.app.appPath`        |Sets the path of symphony endpoints under baseUrl.  Default is "/symphony-app"               |
