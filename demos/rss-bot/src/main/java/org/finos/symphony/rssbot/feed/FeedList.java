@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.finos.symphony.rssbot.alerter.TimedAlerter;
+import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
@@ -54,14 +56,14 @@ public class FeedList {
 	}
 
 	@Exposed(addToHelp = true, description = "Subscribe to a feed. ", isButton = false, isMessage = true)
-	public static FeedList subscribe(SubscribeRequest sr, Addressable a, MessageHistory hist, Workflow wf) throws Exception {
+	public static FeedList subscribe(SubscribeRequest sr, Addressable a, MessageHistory hist, Workflow wf, FeedLoader loader) throws Exception {
 		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
-		return fl.orElseGet(() -> new FeedList()).add(sr);
+		return fl.orElseGet(() -> new FeedList()).add(sr, loader);
 	}
 	
 	@Exposed(addToHelp = false, description = "Add Subscription", isButton = true, isMessage = false) 
-	public FeedList add(SubscribeRequest sr) throws Exception {
-		SyndFeed feed = Feed.createSyndFeed(sr.url);
+	public FeedList add(SubscribeRequest sr, FeedLoader loader) throws Exception {
+		SyndFeed feed = loader.createSyndFeed(sr.url);
 		Feed f = new Feed();
 		f.setName(feed.getTitle());
 		f.setDescription(feed.getDescription());
@@ -86,5 +88,10 @@ public class FeedList {
 		this.paused = false;
 		this.lastUpdated = Instant.now();
 		return this;
+	}
+	
+	@Exposed(addToHelp = true, description = "Report latest news now (normally every hour)", isButton = true, isMessage = true) 
+	public void latest(TimedAlerter ta) {
+		ta.everyWeekdayHour();
 	}
 }

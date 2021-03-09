@@ -1,4 +1,4 @@
-package org.finos.symphony.practice.rsanag;
+package org.finos.symphony.practice.rsanag.report;
 
 import java.time.Instant;
 import java.util.ArrayList;

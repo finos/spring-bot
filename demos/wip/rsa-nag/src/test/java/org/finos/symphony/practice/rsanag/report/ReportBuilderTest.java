@@ -1,4 +1,4 @@
-package org.finos.symphony.practice.rsanag;
+package org.finos.symphony.practice.rsanag.report;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
+import org.finos.symphony.practice.rsanag.Config;
+import org.finos.symphony.practice.rsanag.report.Report;
+import org.finos.symphony.practice.rsanag.report.ReportBuilder;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.junit.jupiter.api.Assertions;
@@ -72,7 +75,7 @@ public class ReportBuilderTest {
 				new UserSystemInfo()
 					.id(5647l)
 					.status(StatusEnum.ENABLED)
-					.lastUpdatedDate(1610000000000l))); // 7/1/2021 (still in date as of 4/3/2021)
+					.createdDate(1610000000000l))); // 7/1/2021 (still in date as of 4/3/2021)
  		
 		out.add(new V2UserDetail()
 				.userAttributes(
@@ -84,6 +87,7 @@ public class ReportBuilderTest {
 					new UserSystemInfo()
 						.id(999l)
 						.status(StatusEnum.ENABLED)
+						.createdDate(1514321549000l)
 						.lastUpdatedDate(1514321549000l))); // 26/12/2017 (expired, but renewed recently)
 			
 		out.add(new V2UserDetail()
@@ -96,6 +100,7 @@ public class ReportBuilderTest {
 					new UserSystemInfo()
 						.id(123l)
 						.status(StatusEnum.DISABLED)
+						.createdDate(1510000000000l)
 						.lastUpdatedDate(1510000000000l))); //6/11/2017 (expired, not renewed)
 		
 		out.add(new V2UserDetail()
@@ -107,6 +112,18 @@ public class ReportBuilderTest {
 					new UserSystemInfo()
 						.status(StatusEnum.ENABLED)
 						.id(666l))); //6/11/2017 - no RSA key
+		
+		out.add(new V2UserDetail()
+				.userAttributes(
+					new V2UserAttributes()
+						.emailAddress("bot5@example.com")
+						.displayName("Bot 5")
+						.currentKey(new V2UserKeyRequest().key("hhhh")))
+				.userSystemInfo(
+					new UserSystemInfo()
+						.id(777l)
+						.status(StatusEnum.ENABLED)
+						.createdDate(1583860463000l))); //10/3/2020 (expiring soon)
 		
 		V1AuditTrailInitiatorList firstAuditPage = new V1AuditTrailInitiatorList();
 		firstAuditPage.items(Arrays.asList(
@@ -151,6 +168,12 @@ public class ReportBuilderTest {
 				Mockito.anyLong(), Mockito.anyLong(), 
 				Mockito.isNull(), Mockito.isNull(), 
 				Mockito.anyInt(), Mockito.isNull(), Mockito.isNull());
+		Mockito.verify(auditTrailApi, Mockito.times(53)).v1AudittrailPrivilegeduserGet(
+				Mockito.isNull(), Mockito.isNull(), 
+				Mockito.anyLong(), Mockito.anyLong(), 
+				Mockito.isNull(), Mockito.matches("1"), 
+				Mockito.anyInt(), Mockito.isNull(), Mockito.isNull());
+		
 		Mockito.reset(history);
 	}
 

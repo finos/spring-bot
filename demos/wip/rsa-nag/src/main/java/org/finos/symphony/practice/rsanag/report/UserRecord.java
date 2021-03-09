@@ -1,8 +1,10 @@
-package org.finos.symphony.practice.rsanag;
+package org.finos.symphony.practice.rsanag.report;
 
 import java.time.Instant;
 
 public class UserRecord {
+	
+	enum Action { OK, WARN, EXPIRE }
 	
 	Long botId;
 	String email;
@@ -11,7 +13,21 @@ public class UserRecord {
 	Instant keyLastUpdated;
 	String explanation;
 	String status;
+	int keyAgeDays;
+	Action action;
 	
+	public int getKeyAgeDays() {
+		return keyAgeDays;
+	}
+	public void setKeyAgeDays(int keyAgeDays) {
+		this.keyAgeDays = keyAgeDays;
+	}
+	public Action getAction() {
+		return action;
+	}
+	public void setAction(Action action) {
+		this.action = action;
+	}
 	public String getStatus() {
 		return status;
 	}

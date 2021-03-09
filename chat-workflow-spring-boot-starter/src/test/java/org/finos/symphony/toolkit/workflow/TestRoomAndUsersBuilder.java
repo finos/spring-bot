@@ -24,6 +24,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.symphony.api.model.MemberInfo;
+import com.symphony.api.model.MembershipList;
 import com.symphony.api.model.RoomSpecificStreamAttributes;
 import com.symphony.api.model.RoomSystemInfo;
 import com.symphony.api.model.Stream;
@@ -59,40 +61,14 @@ public class TestRoomAndUsersBuilder {
 	
 	@BeforeEach
 	public void setup() {
-		
-		// just returns a single real user
-		when(usersApi.v3UsersGet(any(), any(), any(), any(), any(), any()))
-			.then(a -> new V2UserList().users(Collections.singletonList(new UserV2().id(45l).displayName("Robert Moffat").emailAddress("rob@kite9.com"))));
-		
-		when(usersApi.v2UserGet(any(), any(), any(), any(), any()))
-		.then(a -> new UserV2().id(45l).displayName("Robert Moffat").emailAddress("rob@kite9.com"));
-	
-		
-		// one room
-		when(streamsApi.v1StreamsListPost(any(), any(), any(), any()))
-			.then(a -> {
-				StreamList out = new StreamList();
-				out.add(new StreamAttributes().id("123"));
-				return out;
-			});
-		
-		when(streamsApi.v2RoomIdInfoGet(eq("123"), any()))
-			.then(a -> new V2RoomDetail().roomAttributes(new V2RoomAttributes()._public(true).name("Initial Room").description("Bogus")));
-		
-		when(streamsApi.v3RoomCreatePost(any(), isNull()))
-			.then(a -> new V3RoomDetail()
-					.roomSystemInfo(new RoomSystemInfo().id("456"))
-					.roomAttributes(new V3RoomAttributes()._public(false).name("Some Test Room").description("Still Bogus")));
-		
-		when(streamsApi.v3RoomIdInfoGet(any(), any()))
-			.then(a -> new V3RoomDetail().roomAttributes(new V3RoomAttributes().name("Some Room").description("Bogus Room")._public(true)));
-		
+
 		ruBuilder = new SymphonyRoomsImpl(wf, rmApi, streamsApi, usersApi);
 		
 	}
 	
 	@Test
 	public void testCreateRoom() {
+		// create room
 		when(streamsApi.v1StreamsListPost(Mockito.isNull(), Mockito.any(), Mockito.eq(0), Mockito.eq(0)))
 			.thenAnswer(c -> {
 				StreamList out = new StreamList();
@@ -104,13 +80,31 @@ public class TestRoomAndUsersBuilder {
 				return out;
 			});
 		
+		when(streamsApi.v3RoomCreatePost(any(), isNull()))
+			.then(a -> new V3RoomDetail()
+				.roomSystemInfo(new RoomSystemInfo().id("456"))
+				.roomAttributes(new V3RoomAttributes()._public(false).name("Some Test Room").description("Still Bogus")));
+	
+		
 		RoomDef rd = new RoomDef("Some Test Room", "Automated Test Room Created", true, null);
 		Room out = ruBuilder.ensureRoom(rd);
 		assertEquals("Some Test Room", out.getRoomName());
 		assertEquals(1, ruBuilder.getAllRooms().size());
 		
 		String someStream = ruBuilder.getStreamFor(out);
-		Assertions.assertEquals("abc123", someStream);
+		Assertions.assertEquals("456", someStream);
+
+		// return members
+		MembershipList ml = new MembershipList();
+		ml.add(new MemberInfo().id(123l).owner(true));
+		when(rmApi.v1RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull())).thenReturn(ml);
+
+		when(usersApi.v2UserGet(any(), any(), any(), any(), any()))
+			.then(a -> new UserV2().id(45l).displayName("Roberto Banquet").emailAddress("r@example.com"));
+	
+		Assertions.assertEquals(
+			Collections.singletonList(new UserDef("123", "Roberto Banquet", "r@example.com")), 
+					ruBuilder.getRoomMembers(out));
 	}
 	
 	@Test

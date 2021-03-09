@@ -7,9 +7,12 @@ import org.finos.symphony.rssbot.feed.Article;
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
 import org.finos.symphony.rssbot.feed.SubscribeRequest;
+import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +21,11 @@ import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.pod.UsersApi;
 
 @Configuration
-public class WorkflowConfig  {
+@EnableConfigurationProperties(RSSProperties.class)
+public class RSSConfig  {
+	
+	@Autowired
+	RSSProperties properties;
 	
 	public static final String WELCOME_MESSAGE = "<messageML>"
 			+ "<p>Hi, welcome to <b>${entity.stream.roomName}</b></p><br />"
@@ -26,7 +33,7 @@ public class WorkflowConfig  {
 
 	@Bean
 	public Workflow appWorkflow() {
-		ClassBasedWorkflow wf = new ClassBasedWorkflow(WorkflowConfig.class.getCanonicalName());
+		ClassBasedWorkflow wf = new ClassBasedWorkflow(RSSConfig.class.getCanonicalName());
 		wf.addClass(FeedList.class);
 		wf.addClass(Feed.class);
 		wf.addClass(SubscribeRequest.class);
@@ -39,4 +46,8 @@ public class WorkflowConfig  {
 		return new RoomWelcomeEventConsumer(ma, ua, id, WELCOME_MESSAGE);
 	}
 	
+	@Bean
+	FeedLoader feedLoader() {
+		return new FeedLoader(properties.getProxy());
+	}
 }

@@ -1,5 +1,7 @@
 package org.finos.symphony.practice.rsanag;
 
+import org.finos.symphony.practice.rsanag.report.Report;
+import org.finos.symphony.practice.rsanag.report.ReportBuilder;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,14 @@ public class Config {
 	
 	@Bean
 	public ReportBuilder reportBuilder() {
-		return new ReportBuilder();
+		return new ReportBuilder(rsaNagProperties.isSendEmails(), rsaNagProperties.isExpireBots());
+	}
+	
+	@Bean
+	public SpringTemplateEngine thymeleafTemplateEngine(ITemplateResolver templateResolver) {
+	    SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+	    templateEngine.setTemplateResolver(templateResolver);
+	    templateEngine.setTemplateEngineMessageSource(emailMessageSource());
+	    return templateEngine;
 	}
 }
