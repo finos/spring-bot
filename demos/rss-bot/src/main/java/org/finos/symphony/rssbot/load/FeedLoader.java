@@ -28,12 +28,25 @@ public class FeedLoader {
 		SyndFeed feed = input.build(new XmlReader(downloadContent(url)));
 		return feed;
 	}
+	
+	public class JaxRSJerseyApiBuilder extends JerseyApiBuilder {
+		
+		public JaxRSJerseyApiBuilder(String url) {
+			super(url);
+		}
+
+		public WebTarget newWebTarget(String uri) {
+			return super.newWebTarget(uri);
+		}
+	}
 
 	public InputStream downloadContent(String url) throws MalformedURLException {
-		JerseyApiBuilder jab = new JerseyApiBuilder(url);
+		JaxRSJerseyApiBuilder jab = new JaxRSJerseyApiBuilder(url);
+		
 		if (pp != null) {
 			pp.configure(jab);
 		}
+		
 		WebTarget wt = jab.newWebTarget(url);
 		InputStream out = wt.request().get().readEntity(InputStream.class);
 		return out;
