@@ -1,7 +1,5 @@
 package org.finos.symphony.toolkit.spring.app.config;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.finos.symphony.toolkit.spring.app.SymphonyController;
@@ -33,14 +31,12 @@ public class SymphonyAppWebMvcConfigurer implements WebMvcConfigurer {
 
 	/**
 	 * See https://stackoverflow.com/questions/40418441/spring-security-cors-filter
+	 * This just updates cors for SymphonyController objects, allowing Symphony to load the controller javascript, etc.
 	 */
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 	    final CorsConfiguration configuration = new CorsConfiguration();
-	    configuration.setAllowedOrigins(Collections.singletonList("*"));
-	    configuration.setAllowedMethods(Arrays.asList(ALLOWED_METHODS));
-	    configuration.setAllowCredentials(true);
-	    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+	    configuration.applyPermitDefaultValues();
 	    final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 	    controllers.stream().map(c -> c.getPath()).forEach(p -> source.registerCorsConfiguration("/**", configuration));
 	    return source;
