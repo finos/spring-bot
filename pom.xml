@@ -7,7 +7,6 @@
 	<artifactId>symphony-java-toolkit</artifactId>
 	<version>6.20.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
 	<url>https://github.com/finos/symphony-java-toolkit</url>
