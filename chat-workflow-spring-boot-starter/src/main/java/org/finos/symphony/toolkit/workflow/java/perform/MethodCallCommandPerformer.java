@@ -93,7 +93,9 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 						wf.getName(cl), wf.getInstructions(cl), cl.newInstance(), true, 
 							ButtonList.of(new Button(commandName+"+0", Type.ACTION, m.getName()))));
 				} catch (Exception e) {
-					throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
+					if (cl.isPrimitive()) {
+						throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
+					}
 				} 
 			}
 		}
@@ -101,6 +103,9 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 
 		try {
 			Object out = m.invoke(o.orElse(null), args);
+			if (out == null) {
+				return Collections.emptyList();
+			}
 			Class<?> cc = out.getClass();
 			
 			if (Response.class.isAssignableFrom(cc)) {

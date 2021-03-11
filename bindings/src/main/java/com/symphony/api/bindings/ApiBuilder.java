@@ -12,5 +12,5 @@ package com.symphony.api.bindings;
 public interface ApiBuilder {
 	
 	public <X> X getApi(Class<X> c); 
-		
+			
 }

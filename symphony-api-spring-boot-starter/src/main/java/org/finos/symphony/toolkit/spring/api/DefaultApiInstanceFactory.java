@@ -85,11 +85,19 @@ public class DefaultApiInstanceFactory extends TokenManagingApiInstanceFactory {
 				}
 				
 				public Object timerInvoke(Object proxy, Method method, Object[] args) throws Throwable {
-					Timer t = mr.timer("symphony.api-call", "pod", pp.getId(), "id", id.getCommonName(), "method", method.getName(), "url", host);
+					Timer t = mr.timer("symphony.api-call", "pod", safePodId(), "id", safeCommonName(), "method", method.getName(), "url", host);
 					Sample s = Timer.start();
 					Object out = internalInvoke(proxy, method, args);
 					s.stop(t);
 					return out;
+				}
+
+				private String safeCommonName() {
+					return id.getCommonName()  == null ? "" : id.getCommonName();
+				}
+
+				private String safePodId() {
+					return pp.getId() == null ? "" : pp.getId();
 				}
 				
 				public Object internalInvoke(Object proxy, Method method, Object[] args) throws Throwable {

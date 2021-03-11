@@ -80,7 +80,7 @@ public class SharedStreamWebConfig {
 	@ConditionalOnMissingBean
 	public Multicaster multicaster() {
 		Participant me = selfParticipant();
-		Multicaster out = new HttpMulticaster(me);
+		Multicaster out = new HttpMulticaster(me, (int) streamProperties.getTimeoutMs() / 2);
 		return out;
 	}
 	
