@@ -28,11 +28,13 @@ public class HttpMulticaster implements Multicaster {
 	
 	protected Participant self;
 	protected ObjectMapper om;
+	protected int timeoutMs;
 
-	public HttpMulticaster(Participant self) {
+	public HttpMulticaster(Participant self, int timeoutMs) {
 		super();
 		this.self = self;
 		this.om = new ObjectMapper();
+		this.timeoutMs = timeoutMs;
 	}
 
 	@Override
@@ -52,8 +54,8 @@ public class HttpMulticaster implements Multicaster {
 			con.setRequestMethod("POST");
 			
 			// anything longer than this will miss the ping interval anyway
-			con.setConnectTimeout(3000);
-			con.setReadTimeout(3000);
+			con.setConnectTimeout(timeoutMs);
+			con.setReadTimeout(timeoutMs);
 			
 			con.setRequestProperty("Accept", MediaType.APPLICATION_JSON_VALUE);
 			con.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);

@@ -7,7 +7,6 @@
 	<artifactId>symphony-java-toolkit</artifactId>
 	<version>6.20.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
 	<url>https://github.com/finos/symphony-java-toolkit</url>
@@ -33,6 +32,7 @@
 		<module>demos/poll-bot</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
+		<module>demos/rss-bot</module>
 		<module>teamcity-symphony-integration</module>
 		<module>symphony-maven-build-reporter</module>
 	</modules>

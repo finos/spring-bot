@@ -31,6 +31,7 @@ public class WorkflowResolversFactory implements ApplicationContextAware {
 	public WorkflowResolvers createResolvers(Action originatingAction) {
 		final List<WorkflowResolver> resolvers = beanFactory.getBeansOfType(WorkflowResolverFactory.class)
 				.values().stream()
+				.sorted((a,b) -> Integer.compare(a.priority(), b.priority()))
 				.map(wrf -> wrf.createResolver(originatingAction))
 				.collect(Collectors.toList());
 		

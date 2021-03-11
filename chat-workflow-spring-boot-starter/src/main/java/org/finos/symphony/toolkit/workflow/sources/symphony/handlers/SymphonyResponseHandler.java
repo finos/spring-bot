@@ -47,6 +47,10 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	@Value("${symphony.chat-workflow.header.template:classpath:/templates/response-header.ftl}")
 	private Resource responseHeader;
 	
+	@Value("${symphony.chat-workflow.header.template:classpath:/templates/response-footer.ftl}")
+	private Resource responseFooter;
+	
+	
 	public SymphonyResponseHandler(MessagesApi api, 
 			FormMessageMLConverter fmc, 
 			EntityJsonConverter ejc, 
@@ -94,7 +98,8 @@ public class SymphonyResponseHandler implements ResponseHandler {
 
 	private void processDataResponse(String messageBody, DataResponse t, Object attachment) {
 		String header = createWorkflowHeader(t);
-		String outMessage = "<messageML>"+header+messageBody+"</messageML>";
+		String footer = createWorkflowFooter(t);
+		String outMessage = "<messageML>"+header+messageBody+footer+"</messageML>";
 		String json = jsonConverter.writeValue(t.getData());
 		String streamId = ru.getStreamFor(t.getAddress());
 		if (isOutputTemplates()) {
@@ -119,6 +124,20 @@ public class SymphonyResponseHandler implements ResponseHandler {
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("Couldn't download / parse header template at "+responseHeader.getDescription(), e);
+		}
+	}
+	
+	protected String createWorkflowFooter(DataResponse dr)  {
+		try {
+			HeaderDetails hd = new HeaderDetails(dr.getName(), dr.getInstructions(), getDataTags(dr));
+			dr.getData().putIfAbsent("header", hd);
+			if (responseFooter != null) {
+				return StreamUtils.copyToString(responseFooter.getInputStream(), Charset.forName("UTF-8"));
+			} else {
+				return "";
+			}
+		} catch (IOException e) {
+			throw new RuntimeException("Couldn't download / parse header template at "+responseFooter.getDescription(), e);
 		}
 	}
 	

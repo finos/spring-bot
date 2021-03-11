@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.symphony.api.agent.DatafeedApi;
-import com.symphony.api.id.PemSymphonyIdentity;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 import com.symphony.api.model.AckId;

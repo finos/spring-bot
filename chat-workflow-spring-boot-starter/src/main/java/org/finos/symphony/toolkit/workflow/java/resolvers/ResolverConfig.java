@@ -7,11 +7,14 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.history.History;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 @Configuration
 public class ResolverConfig {
@@ -21,6 +24,8 @@ public class ResolverConfig {
 	
 	@Autowired
 	BeanFactory context;
+	
+
 	
 	/**
 	 * Allows you to put any beans you like as parameters of the workflow
@@ -90,6 +95,15 @@ public class ResolverConfig {
 			}
 			
 		};
+	}
+	
+	
+	/**
+	 * Allows you to pull back previous exchanges in the history to use as parameters
+	 */
+	@Bean
+	public MessageHistoryWorkflowResolverFactory historyResolver(@Lazy History hist) {
+		return new MessageHistoryWorkflowResolverFactory(hist);
 	}
 	
 	@Bean
