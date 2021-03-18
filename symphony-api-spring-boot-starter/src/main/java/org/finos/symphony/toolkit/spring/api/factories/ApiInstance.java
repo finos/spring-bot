@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.spring.api;
+package org.finos.symphony.toolkit.spring.api.factories;
 
 import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 
