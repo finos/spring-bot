@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.spring.api;
+package org.finos.symphony.toolkit.spring.api.factories;
 
 import java.util.ArrayList;
 import java.util.List;

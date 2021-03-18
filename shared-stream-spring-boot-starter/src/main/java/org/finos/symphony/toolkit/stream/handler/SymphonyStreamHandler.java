@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 import javax.ws.rs.BadRequestException;
 
-import org.finos.symphony.toolkit.spring.api.ApiInstance;
+import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.bindings.Streams;
