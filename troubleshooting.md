@@ -14,4 +14,4 @@ Here are clues to solving common issues:
  
  - `No message body reader has been found for class ...` : Check your stream Id doesn't have spaces/new lines in it.
  
- - `No qualifying bean of type 'com.symphony.api.id.SymphonyIdentity'`: This means you have not correctly either created a test identity (see [Test Identies](identity/README.md) or you haven't defined `symphony.bot.identity` in your `application.yml` (see [symphony-api-spring-boot-starter](symphony-api-spring-boot-starter/README.md)
+ - `No qualifying bean of type 'com.symphony.api.id.SymphonyIdentity'`: This means you have not correctly either created a test identity (see [Test Identies](identity/README.md)) or you haven't defined `symphony.bot.identity` in your `application.yml` (see [symphony-api-spring-boot-starter](symphony-api-spring-boot-starter/README.md))
