@@ -128,7 +128,7 @@ See example below:
 </profiles>
 ``` 
 
-Having done this, you can refer to this variable within your project's `pom.xml` file like below (this is taken from the [Demo App](../demos/demo-app/pom.xml).
+Having done this, you can refer to this variable within your project's `pom.xml` file like below (this is taken from the [Demo App](../../demos/demo-app/pom.xml).
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -147,7 +147,7 @@ Having done this, you can refer to this variable within your project's `pom.xml`
 
 ```
 
-**NB:** This JSON format is defined by the [Symphony Identity Module](../identity/README.md).  
+**NB:** This JSON format is defined by the [Symphony Identity Module](../../libs/identity/README.md).  
 
 
 ### Build Details
@@ -255,5 +255,5 @@ You can set a list of proxies which will be used by all of the endpoints in turn
 
 # Example
 
-The [Demo App](../demos/demo-app) uses the build reporter to write a build result to Symphony.  You can see how it's configured there.
+The [Demo App](../../demos/demo-app) uses the build reporter to write a build result to Symphony.  You can see how it's configured there.
 
