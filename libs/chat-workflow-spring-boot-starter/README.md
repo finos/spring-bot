@@ -184,7 +184,7 @@ public class Poll {
 
 Here we use the `@Template` annotation to tell `chat-workflow-spring-boot-starter` to use a template rather than build it's own.  To get you started, the forms that `chat-workflow-spring-boot-starter` produces for your classes are shown in the log file, along with the JSON that powers them, so you can easily [edit them in Symphony's PresentationML Tool](https://renderer-tool.app.symphony.com/).
 
-![Using PresentationML Editor](../tutorials/chat-workflow/media/image18.png)
+![Using PresentationML Editor](../../tutorials/chat-workflow/media/image18.png)
  
 #### Validation
 

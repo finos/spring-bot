@@ -8,7 +8,7 @@ Because it is a [TeamCity Custom Notifier](http://confluence.jetbrains.com/displ
 
 ## Installation
 
-1. Download the [plugin zip package](https://github.com/finos/symphony-java-toolkit/releases/download/6.20.1/teamcity-symphony-integration.zip).
+1. Download the [plugin zip package](https://github.com/finos/symphony-java-toolkit/releases/download/5.59.1/teamcity-symphony-integration.zip).
 
 2. Follow the TeamCity [plugin installation directions](http://confluence.jetbrains.com/display/TCD8/Installing+Additional+Plugins).
 
