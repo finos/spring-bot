@@ -10,6 +10,7 @@
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
 		<version>6.20.2-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
 	</parent>
 
 	<dependencies>

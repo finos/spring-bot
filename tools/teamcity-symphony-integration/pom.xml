@@ -8,8 +8,10 @@
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
 		<version>6.20.2-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
 	</parent>
-
+	
+	<groupId>org.finos.symphony.toolkit.tools</groupId>
 	<artifactId>teamcity-symphony-integration</artifactId>
 	<packaging>pom</packaging>
 
