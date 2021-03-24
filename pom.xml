@@ -18,23 +18,25 @@
 	</parent>
 
 	<modules>
-		<module>identity</module>
-		<module>bindings</module>
-		<module>symphony-api-spring-boot-starter</module>
-		<module>symphony-app-spring-boot-starter</module>
-		<module>entity-json</module>
-		<module>koreai</module>
-		<module>quickfix-json</module>
-		<module>shared-stream-spring-boot-starter</module>
-		<module>chat-workflow-spring-boot-starter</module>
+		<module>libs/identity</module>
+		<module>libs/bindings</module>
+		<module>libs/symphony-api-spring-boot-starter</module>
+		<module>libs/symphony-app-spring-boot-starter</module>
+		<module>libs/entity-json</module>
+		<module>libs/shared-stream-spring-boot-starter</module>
+		<module>libs/chat-workflow-spring-boot-starter</module>
+		<module>libs/quickfix-json</module>
+		
+		<module>tools/koreai</module>
+		<module>tools/rss-bot</module>
+		<module>tools/teamcity-symphony-integration</module>
+		<module>tools/symphony-maven-build-reporter</module>
+		<module>tools/poll-bot</module>		
+		
 		<module>demos/demo-bot</module>
-		<module>demos/demo-app</module>
-		<module>demos/poll-bot</module>
+		<module>demos/demo-app</module>		
 		<module>demos/todo-bot</module>
-		<module>demos/claim-bot</module>
-		<module>demos/rss-bot</module>
-		<module>teamcity-symphony-integration</module>
-		<module>symphony-maven-build-reporter</module>
+		<module>demos/claim-bot</module>		
 	</modules>
 
 	<properties>

@@ -10,14 +10,14 @@
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>com.db.symphony</groupId>
-	<artifactId>demo-poll-bot</artifactId>
-	<name>Poll Bot (Demo)</name>
-	<description>Demo Chat Workflow bot for creating polls</description>
+	<groupId>org.finos.symphony.toolkit.tools</groupId>
+	<artifactId>rss-bot</artifactId>
+	<name>RSS Publications Bot</name>
+	<description>Sends RSS Feeds to Symphony Rooms</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-    <spring-boot.run.main-class>example.symphony.demoworkflow.PollBot</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.symphony.rssbot.RSSBot</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -30,16 +30,14 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-
-		<!-- allow for instant persistence -->
+		<dependency>
+			<groupId>com.rometools</groupId>
+			<artifactId>rome</artifactId>
+			<version>1.15.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -65,11 +63,6 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-multipart</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

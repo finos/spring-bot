@@ -5,15 +5,15 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
+		<groupId>org.finos.symphony.toolkit.tools</groupId>
 		<artifactId>teamcity-symphony-integration</artifactId>
 		<version>6.20.2-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>teamcity-symphony-integration-server</artifactId>
 	<packaging>jar</packaging>
-	<dependencies>
 
+	<dependencies>
 		<dependency>
 			<groupId>org.jetbrains.teamcity</groupId>
 			<artifactId>server-api</artifactId>
@@ -62,10 +62,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-junit-jupiter</artifactId>
-      <scope>test</scope>
-    </dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
@@ -73,7 +73,6 @@
 		</dependency>
 
 		<!-- Fixes -->
-
 	</dependencies>
 
 	<repositories>
@@ -82,6 +81,4 @@
 			<url>https://download.jetbrains.com/teamcity-repository</url>
 		</repository>
 	</repositories>
-
-
 </project>
