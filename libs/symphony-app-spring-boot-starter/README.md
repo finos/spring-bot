@@ -211,7 +211,7 @@ You can see this working in the `UserDetailsController`, which returns JSON cont
 
 ## Tutorial
 
- - [Read the App-Building Tutorial](../tutorials/Spring-Boot-App.md)
+ - [Read the App-Building Tutorial](../../tutorials/Spring-Boot-App.md)
 
 
 

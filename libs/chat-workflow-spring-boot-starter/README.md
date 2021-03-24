@@ -7,10 +7,10 @@ This module provides a one-stop-shop for constructing workflows in Java.  It is 
 ## Example Use-Cases
 
 - Below, we concentrate on building an _Expense Claim_ workflow.
-- In the [Tutorial](../tutorials/Chat-Workflow.md), we show how to build a _To Do List_.
-- In the [Demo ToDo Bot](../demos/todo-bot/README.md), we have the code for the above
-- In the [Demo Claim Bot](../demos/claim-bot/README.md), the claims bot, described below.
-- in the [Demo Poll Bot](../demos/poll-bot/README.md), a working poll bot that can be deployed on Symphony.
+- In the [Tutorial](../../tutorials/Chat-Workflow.md), we show how to build a _To Do List_.
+- In the [Demo ToDo Bot](../../demos/todo-bot/README.md), we have the code for the above
+- In the [Demo Claim Bot](../../demos/claim-bot/README.md), the claims bot, described below.
+- in the [Poll Bot](../../tools/poll-bot/README.md), a working poll bot that can be deployed on Symphony.
 
 Each use-case is a couple of classes in size, and relies on zero understanding of the Symphony APIs.
 
@@ -73,7 +73,7 @@ There are three steps to building a workflow using `chat-workflow-spring-boot-st
 2. **Add Properties:** Properties of the Java bean will be rendered as _elements_ in Symphony, so that users can set their values.
 3. **Add Methods:** Methods are commands that users can invoke, either by pressing a button (again, using Symphony _elements_) or typing a message (e.g. /command).
  
-The [Tutorial](../tutorials/Chat-Workflow.md) shows how to get Symphony to host to-do lists in chat rooms, and is a good place to start.  The rest of this README will focus on breaking down the steps described above, detailing all the options.
+The [Tutorial](../../tutorials/Chat-Workflow.md) shows how to get Symphony to host to-do lists in chat rooms, and is a good place to start.  The rest of this README will focus on breaking down the steps described above, detailing all the options.
 
 ### 1.  Add Classes
 
@@ -170,7 +170,7 @@ At the moment, the forms are displayed by walking the class structure and inspec
 
 `chat-workflow-spring-boot-starter` does a serviceable job of creating a form for the user to fill in, or a display of the properties in a workflow object.  However, it won't win any design awards as-is.   Luckily, Symphony supports the use of Apache Freemarker templates for styling your workflow objects.  
 
-The [Poll Bot](../demos/poll-bot/README.md) example uses this a lot.  Have a look at the `Poll` class below:
+The [Poll Bot](../../tools/poll-bot/README.md) example uses this a lot.  Have a look at the `Poll` class below:
 
 
 ```

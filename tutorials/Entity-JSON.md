@@ -84,7 +84,7 @@ Finally, you can see that the `data` and the `message` have different _contents_
 
 ## Some Code
 
-With the [Symphony Entity JSON](../entity-json/README.md) project, you can easily parse this JSON into Java Objects.   The project contains a Jackson module which understands Structured Objects format.
+With the [Symphony Entity JSON](../libs/entity-json/README.md) project, you can easily parse this JSON into Java Objects.   The project contains a Jackson module which understands Structured Objects format.
 
 In addition, it contains classes such as `Mention` and `UserID` to deserialize hashtags, cashtags and mentions.  So, you can write this:
 

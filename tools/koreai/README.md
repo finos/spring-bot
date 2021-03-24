@@ -5,7 +5,7 @@ This is a Spring Boot App that acts as a middleman between a Symphony bot and a 
 
 ![KoreAI Architecture](images/koreai.png)
 
-It is intended that you can deploy this bot as-is, either standalone or clustered (see configuration of [Shared Stream](../shared-stream-spring-boot-starter/README.md)), providing just configuration to get it to talk with Kore AI.
+It is intended that you can deploy this bot as-is, either standalone or clustered (see configuration of [Shared Stream](../../libs/shared-stream-spring-boot-starter/README.md)), providing just configuration to get it to talk with Kore AI.
 
 It is possible to include multiple KoreAI bot/symphony bot pairs in the configuration, allowing the bridge to wire up multiple bot-pairs.
 

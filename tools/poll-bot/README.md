@@ -1,6 +1,6 @@
 # Poll Bot
 
-This provides a Poll bot, to demonstrate the [Chat Workflow](../../chat-workflow-spring-boot-starter/README.md) module.
+This provides a Poll bot, to demonstrate the [Chat Workflow](../../libs/chat-workflow-spring-boot-starter/README.md) module.
 
 Here are some images of it working:
 
