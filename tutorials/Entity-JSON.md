@@ -106,7 +106,7 @@ It's possible to configure for each class you want to serialize:
  - The version number that will be _written_ when serialization occurs.
  - The version range that is allowed when deserialization occurs.
  
-This is all described further in the [Readme](../entity-json/README.md).
+This is all described further in the [Readme](../libs/entity-json/README.md).
 
 ## Conclusion
 
