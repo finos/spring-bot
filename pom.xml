@@ -41,8 +41,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>2.4.0</spring-boot.version>
-		<spring-boot-oauth.version>2.4.0</spring-boot-oauth.version>
+		<spring-boot.version>2.4.4</spring-boot.version>
+		<spring-boot-oauth.version>2.4.4</spring-boot-oauth.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
