@@ -92,6 +92,14 @@
 				<role>developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>sureshrupnar</id>
+			<name>Suresh Rupnar</name>
+			<email>suresh.rupnar@db.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<scm>
