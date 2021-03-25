@@ -60,8 +60,6 @@ Symphony is perfect for workflows like this:
 3.  You will need to configure the `application.yml` for a bot as described in [Spring Boot Starter for Symphony Api](../symphony-api-spring-boot-starter/README.md).  NB:  Chat workflow will bring in the other Symphony Spring Boot Starters transitively, so you don't need to specify those.
 
 4.  Add the dependency for a JAX-RS implementation, as described [here](../symphony-api-spring-boot-starter/README.md).
-5.  You will need to add resources/META-INF/spring-devtools.properties under resources folder with following content
-restart.include.chat-workflow=/chat-workflow-[\w\d-.]+.jar
 
 ## Implementing A Workflow
 
