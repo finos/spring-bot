@@ -42,7 +42,7 @@ This diagram demonstrates how these different components interact:
 
 ![Components of an app](./app/media/image2.png)
 
-The [symphony-app-spring-boot-starter](../symphony-app-spring-boot-starter/README.md) takes care of providing all this boilerplate for you.
+The [symphony-app-spring-boot-starter](../libs/symphony-app-spring-boot-starter/README.md) takes care of providing all this boilerplate for you.
 
 ## Security
 
@@ -111,7 +111,7 @@ It looks like this for me:
 
 JAX-RS provides the code to call REST endpoints.  You can either add Jersey, or CXF.  
 
-Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
+Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../libs/symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
 
 #### CXF
 
@@ -265,7 +265,7 @@ We're going to change the application in the following way:
 
 ## 11. Customizing the Bundle
 
-[The App Starter Readme](../symphony-app-spring-boot-starter/README.md) provides
+[The App Starter Readme](../libs/symphony-app-spring-boot-starter/README.md) provides
 details on how to customize the contents of the bundle file.  
 
 You can set a description for the application, name, permissions, whether it is
@@ -435,6 +435,6 @@ If you are running in public, you'll probably want to enable pod registration (s
 
 This can be done by configuring a `PodInfoStore` bean.  You can enable the default (file-system based) store by configuring a location to store to with `symphony.app.store.location`
  
-More on this in the [Readme](../symphony-app-spring-boot-starter/README.md)
+More on this in the [Readme](../libs/symphony-app-spring-boot-starter/README.md)
 
   

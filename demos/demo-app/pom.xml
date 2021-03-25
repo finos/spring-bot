@@ -11,7 +11,7 @@
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>com.db.symphony.example-app</groupId>
+	<groupId>org.finos.symphony.toolkit.demos</groupId>
 	<artifactId>demo-app</artifactId>
 	<name>Symphony Demo App</name>
 	<description>Demo App for creation of Symphony App</description>
@@ -61,21 +61,21 @@
 	</dependencies>
 
 	<build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-            <execution>
-                <goals>
-                    <goal>repackage</goal>
-                </goals>
-                <configuration>
-                    <mainClass>${spring-boot.run.main-class}</mainClass>
-                </configuration>
-            </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<mainClass>${spring-boot.run.main-class}</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>

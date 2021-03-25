@@ -10,14 +10,14 @@
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.demos</groupId>
-	<artifactId>todo-bot</artifactId>
-	<name>To-Do Bot (Demo)</name>
-	<description>Demo Bot for Managing a Todo List</description>
+	<groupId>org.finos.symphony.toolkit.tools</groupId>
+	<artifactId>poll-bot</artifactId>
+	<name>Poll Bot (Demo)</name>
+	<description>Demo Chat Workflow bot for creating polls</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
+		<spring-boot.run.main-class>example.symphony.demoworkflow.PollBot</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -32,6 +32,10 @@
 		</dependency>
 
 		<!-- allow for instant persistence -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
