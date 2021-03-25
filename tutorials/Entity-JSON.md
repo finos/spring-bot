@@ -84,7 +84,7 @@ Finally, you can see that the `data` and the `message` have different _contents_
 
 ## Some Code
 
-With the [Symphony Entity JSON](../entity-json/README.md) project, you can easily parse this JSON into Java Objects.   The project contains a Jackson module which understands Structured Objects format.
+With the [Symphony Entity JSON](../libs/entity-json/README.md) project, you can easily parse this JSON into Java Objects.   The project contains a Jackson module which understands Structured Objects format.
 
 In addition, it contains classes such as `Mention` and `UserID` to deserialize hashtags, cashtags and mentions.  So, you can write this:
 
@@ -106,7 +106,7 @@ It's possible to configure for each class you want to serialize:
  - The version number that will be _written_ when serialization occurs.
  - The version range that is allowed when deserialization occurs.
  
-This is all described further in the [Readme](../entity-json/README.md).
+This is all described further in the [Readme](../libs/entity-json/README.md).
 
 ## Conclusion
 

@@ -4,21 +4,21 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>org.finos.symphony.toolkit</groupId>
-    <artifactId>symphony-java-toolkit</artifactId>
-    <version>6.20.2-SNAPSHOT</version>
-    <relativePath>../..</relativePath>
-  </parent>	
+	<parent>
+		<groupId>org.finos.symphony.toolkit</groupId>
+		<artifactId>symphony-java-toolkit</artifactId>
+		<version>6.20.2-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
+	</parent>
 
-	<groupId>com.db.symphony.example-bot</groupId>
+	<groupId>org.finos.symphony.toolkit.demos</groupId>
 	<artifactId>demo-bot</artifactId>
 	<name>Symphony Demo Bot</name>
 	<description>Demo Bot Using Spring Boot Starter</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-    <spring-boot.run.main-class>example.symphony.demobot.DemoApplication</spring-boot.run.main-class>
+		<spring-boot.run.main-class>example.symphony.demobot.DemoApplication</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -27,16 +27,16 @@
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 		<dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.finos.symphony.toolkit</groupId>
-      <artifactId>symphony-api-spring-boot-starter</artifactId>
-      <version>6.20.2-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
- 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>symphony-api-spring-boot-starter</artifactId>
+			<version>6.20.2-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
 			<version>6.20.2-SNAPSHOT</version>
@@ -76,22 +76,22 @@
 	</dependencies>
 
 	<build>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <executions>
-            <execution>
-                <goals>
-                    <goal>repackage</goal>
-                </goals>
-                <configuration>
-                    <mainClass>${spring-boot.run.main-class}</mainClass>
-                </configuration>
-            </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<mainClass>${spring-boot.run.main-class}</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
