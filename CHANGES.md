@@ -115,3 +115,4 @@
  - Fix for #140, using dedicated object mapper for bundles.
  - Configurable timeout for shared-stream HttpMulticaster (#138)
  - Added RSS Bot
+ - Fixed #146, #144, #142

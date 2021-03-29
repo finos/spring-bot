@@ -6,25 +6,25 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>6.20.1-SNAPSHOT</version>
+		<version>6.20.2-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>com.github.finos.symphony.examples</groupId>
-	<artifactId>demo-claim-bot</artifactId>
+	<groupId>org.finos.symphony.toolkit.demos</groupId>
+	<artifactId>claim-bot</artifactId>
 	<name>Expense Claim Bot (Demo)</name>
 	<description>Symphony chat workflow demo for expense claim processing</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-    <spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
+		<spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>chat-workflow-spring-boot-starter</artifactId>
-			<version>6.20.1-SNAPSHOT</version>
+			<version>6.20.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
