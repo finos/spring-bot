@@ -5,11 +5,8 @@ import java.io.File;
 import java.util.Arrays;
 
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
-import org.finos.symphony.toolkit.spring.app.pods.info.PodInfo;
-import org.finos.symphony.toolkit.spring.app.pods.info.PodInfoStore;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.TestPropertySource;
 
