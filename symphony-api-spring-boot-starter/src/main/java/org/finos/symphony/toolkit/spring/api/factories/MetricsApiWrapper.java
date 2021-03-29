@@ -16,13 +16,13 @@ import io.micrometer.core.instrument.Timer.Sample;
 public class MetricsApiWrapper implements ApiWrapper {
 	
 	private PodProperties pp;
-	private SymphonyIdentity id;
+	private String commonName;
 	private String host;
 	private MeterRegistry mr;
 	
-	public MetricsApiWrapper(MeterRegistry mr, PodProperties pp, SymphonyIdentity id, String host) {
+	public MetricsApiWrapper(MeterRegistry mr, PodProperties pp, String commonName, String host) {
 		this.pp = pp;
-		this.id = id;
+		this.commonName = commonName;
 		this.host = host;
 		this.mr = mr;
 	}
@@ -49,7 +49,7 @@ public class MetricsApiWrapper implements ApiWrapper {
 			}
 
 			private String safeCommonName() {
-				return id.getCommonName()  == null ? "" : id.getCommonName();
+				return commonName  == null ? "" : commonName;
 			}
 
 			private String safePodId() {

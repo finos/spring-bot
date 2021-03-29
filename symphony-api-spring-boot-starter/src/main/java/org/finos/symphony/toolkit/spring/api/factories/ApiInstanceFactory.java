@@ -1,9 +1,5 @@
 package org.finos.symphony.toolkit.spring.api.factories;
 
-import javax.net.ssl.TrustManager;
-
-import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
-
 import com.symphony.api.id.SymphonyIdentity;
 
 /**
@@ -12,8 +8,7 @@ import com.symphony.api.id.SymphonyIdentity;
  * @author robmoffat
  *
  */
-public interface ApiInstanceFactory {
+public interface ApiInstanceFactory extends GenericInstanceFactory<SymphonyIdentity> {
 
-	public ApiInstance createApiInstance(SymphonyIdentity id, PodProperties pp, TrustManager[] trustManagers) throws Exception;
-	
+	 
 }

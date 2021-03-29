@@ -38,7 +38,7 @@ public class DefaultApiInstanceFactory extends TokenManagingApiInstanceFactory {
 	@Override
 	protected List<ApiWrapper> buildApiWrappers(PodProperties pp, SymphonyIdentity id, EndpointProperties ep) {
 		List<ApiWrapper> out = super.buildApiWrappers(pp, id, ep);
-		out.add(new MetricsApiWrapper(mr, pp, id, ep.getUrl()));
+		out.add(new MetricsApiWrapper(mr, pp, id.getCommonName(), ep.getUrl()));
 		return out;
 	}
 	
@@ -58,6 +58,4 @@ public class DefaultApiInstanceFactory extends TokenManagingApiInstanceFactory {
 		
 		return out;
 	}
-
-	
 }
