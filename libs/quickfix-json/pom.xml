@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>jackson-quickfix-module</artifactId>
+    <packaging>jar</packaging>
+    <name>Jackson QuickFix Module</name>
+    
+    <parent>
+        <groupId>org.finos.symphony.toolkit</groupId>
+        <artifactId>symphony-java-toolkit</artifactId>
+        <version>6.20.2-SNAPSHOT</version>
+        <relativePath>../..</relativePath>
+    </parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.quickfixj</groupId>
+			<artifactId>quickfixj-messages-fix50sp2</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+	 <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+	</dependencies>
+
+</project>

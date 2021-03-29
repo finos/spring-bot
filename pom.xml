@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>6.20.1-SNAPSHOT</version>
+	<version>6.20.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
@@ -18,29 +18,31 @@
 	</parent>
 
 	<modules>
-		<module>identity</module>
-		<module>bindings</module>
-		<module>symphony-api-spring-boot-starter</module>
-		<module>symphony-app-spring-boot-starter</module>
-		<module>entity-json</module>
-		<module>koreai</module>
-		<module>quickfix-json</module>
-		<module>shared-stream-spring-boot-starter</module>
-		<module>chat-workflow-spring-boot-starter</module>
+		<module>libs/identity</module>
+		<module>libs/bindings</module>
+		<module>libs/symphony-api-spring-boot-starter</module>
+		<module>libs/symphony-app-spring-boot-starter</module>
+		<module>libs/entity-json</module>
+		<module>libs/shared-stream-spring-boot-starter</module>
+		<module>libs/chat-workflow-spring-boot-starter</module>
+		<module>libs/quickfix-json</module>
+		
+		<module>tools/koreai</module>
+		<module>tools/rss-bot</module>
+		<module>tools/teamcity-symphony-integration</module>
+		<module>tools/symphony-maven-build-reporter</module>
+		<module>tools/poll-bot</module>		
+		
 		<module>demos/demo-bot</module>
-		<module>demos/demo-app</module>
-		<module>demos/poll-bot</module>
+		<module>demos/demo-app</module>		
 		<module>demos/todo-bot</module>
-		<module>demos/claim-bot</module>
-		<module>demos/rss-bot</module>
-		<module>teamcity-symphony-integration</module>
-		<module>symphony-maven-build-reporter</module>
+		<module>demos/claim-bot</module>		
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>2.4.0</spring-boot.version>
-		<spring-boot-oauth.version>2.4.0</spring-boot-oauth.version>
+		<spring-boot.version>2.4.4</spring-boot.version>
+		<spring-boot-oauth.version>2.4.4</spring-boot-oauth.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
@@ -75,9 +77,9 @@
 		<developer>
 			<id>robmoffat</id>
 			<name>Rob Moffat</name>
-			<email>rob@kite9.com</email>
-			<url>https://robmoff.at</url>
-			<organization>Kite9 Ltd</organization>
+			<email>robert.moffat@db.com</email>
+			<url>https://www.db.com</url>
+			<organization>Deutsche Bank</organization>
 			<roles>
 				<role>developer</role>
 			</roles>
@@ -86,6 +88,14 @@
 			<id>vladimirpar</id>
 			<name>Vladimir Parnashvili</name>
 			<email>vladimir.parnashvili@db.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>sureshrupnar</id>
+			<name>Suresh Rupnar</name>
+			<email>suresh.rupnar@db.com</email>
 			<roles>
 				<role>developer</role>
 			</roles>
