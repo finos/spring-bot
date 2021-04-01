@@ -2,8 +2,13 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.Optional;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.DisableAttribute;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.DisplayAttribute;
+
+import static java.util.Optional.ofNullable;
 
 /**
  * This is the "fall-through" converter, used to convert user-beans when everything else fails.
@@ -41,7 +46,13 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 
 			@Override
 			public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType controller) {
-				return "<tr><td><b>" + f.getName() + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>";
+
+				Boolean isAttributeEnabled = ofNullable(f.getAnnotation(DisableAttribute.class)).map(DisableAttribute::isEnabled).orElse(false);
+
+				return !isAttributeEnabled ? ofNullable(f.getAnnotation(DisplayAttribute.class)).map(
+						displayAttribute -> "<tr><td><b>" + ofNullable(displayAttribute.name()).orElse(f.getName()) + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>"
+				).orElse("<tr><td><b>" + f.getName() + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>") : "";
+
 			}
 
 			@Override
