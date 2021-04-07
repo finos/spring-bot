@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Show;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.DisplayAttribute;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
 import static java.util.Optional.ofNullable;
 
@@ -48,8 +48,8 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 
                 Boolean isShow = ofNullable(f.getAnnotation(Show.class)).map(Show::isEnabled).orElse(true);
 
-                return !isShow ? "" : ofNullable(f.getAnnotation(DisplayAttribute.class)).map(
-                        displayAttribute -> "<tr><td><b>" + ofNullable(displayAttribute.name()).orElse(f.getName()) + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>"
+                return !isShow ? "" : ofNullable(f.getAnnotation(Display.class)).map(
+						display -> "<tr><td><b>" + ofNullable(display.name()).orElse(f.getName()) + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>"
                 ).orElse("<tr><td><b>" + f.getName() + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>");
 
             }
