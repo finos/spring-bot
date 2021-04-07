@@ -2,8 +2,8 @@ package org.finos.symphony.toolkit.stream.single;
 
 import java.util.List;
 
-import org.finos.symphony.toolkit.spring.api.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.stream.SharedStreamProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;

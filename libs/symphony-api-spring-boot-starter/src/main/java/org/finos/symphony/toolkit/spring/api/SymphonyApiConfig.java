@@ -5,6 +5,9 @@ import java.io.IOException;
 import javax.net.ssl.TrustManagerFactory;
 
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
+import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
+import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
+import org.finos.symphony.toolkit.spring.api.factories.DefaultApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.properties.IdentityProperties;
 import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
