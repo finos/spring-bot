@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface Show {
     public final static boolean ENABLED = true;
 
-    boolean isEnabled() default ENABLED;
+    boolean enabled() default ENABLED;
 }
