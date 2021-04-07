@@ -46,7 +46,7 @@ public class BeanConverter extends AbstractComplexTypeConverter {
             @Override
             public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType controller) {
 
-                Boolean isShow = ofNullable(f.getAnnotation(Show.class)).map(Show::isEnabled).orElse(true);
+                Boolean isShow = ofNullable(f.getAnnotation(Show.class)).map(Show::enabled).orElse(true);
 
                 return !isShow ? "" : ofNullable(f.getAnnotation(Display.class)).map(
 						display -> "<tr><td><b>" + ofNullable(display.name()).orElse(f.getName()) + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>"
