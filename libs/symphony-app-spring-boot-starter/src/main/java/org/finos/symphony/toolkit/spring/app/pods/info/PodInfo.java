@@ -23,7 +23,21 @@ public class PodInfo {
 		private String agentUrl;
 		private String podUrl;
 		private String sessionAuthUrl;
+		private String baseUrl;
+		private String loginUrl;
 		
+		public String getBaseUrl() {
+			return baseUrl;
+		}
+		public void setBaseUrl(String baseUrl) {
+			this.baseUrl = baseUrl;
+		}
+		public String getLoginUrl() {
+			return loginUrl;
+		}
+		public void setLoginUrl(String loginUrl) {
+			this.loginUrl = loginUrl;
+		}
 		public String getAgentUrl() {
 			return agentUrl;
 		}
@@ -42,6 +56,7 @@ public class PodInfo {
 		public void setSessionAuthUrl(String sessionAuthUrl) {
 			this.sessionAuthUrl = sessionAuthUrl;
 		}
+		
 	}
 
 	private String appId;

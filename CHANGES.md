@@ -116,3 +116,8 @@
  - Configurable timeout for shared-stream HttpMulticaster (#138)
  - Added RSS Bot
  - Fixed #146, #144, #142
+
+## April 2021
+
+ - More logical package structure #148
+ - OBO Functionality #35
