@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface DisableAttribute {
+public @interface Show {
     public final static boolean ENABLED = true;
 
     boolean isEnabled() default ENABLED;

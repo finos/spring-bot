@@ -2,17 +2,16 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.Optional;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.DisableAttribute;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Show;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.DisplayAttribute;
 
 import static java.util.Optional.ofNullable;
 
 /**
  * This is the "fall-through" converter, used to convert user-beans when everything else fails.
- * 
+ *
  * @author rob@kite9.com
  *
  */
@@ -44,16 +43,16 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 	protected WithField wrapInTableCells(WithField inner) {
 		return new WithField() {
 
-			@Override
-			public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType controller) {
+            @Override
+            public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType controller) {
 
-				Boolean isAttributeEnabled = ofNullable(f.getAnnotation(DisableAttribute.class)).map(DisableAttribute::isEnabled).orElse(false);
+                Boolean isShow = ofNullable(f.getAnnotation(Show.class)).map(Show::isEnabled).orElse(true);
 
-				return !isAttributeEnabled ? ofNullable(f.getAnnotation(DisplayAttribute.class)).map(
-						displayAttribute -> "<tr><td><b>" + ofNullable(displayAttribute.name()).orElse(f.getName()) + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>"
-				).orElse("<tr><td><b>" + f.getName() + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>") : "";
+                return !isShow ? "" : ofNullable(f.getAnnotation(DisplayAttribute.class)).map(
+                        displayAttribute -> "<tr><td><b>" + ofNullable(displayAttribute.name()).orElse(f.getName()) + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>"
+                ).orElse("<tr><td><b>" + f.getName() + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>");
 
-			}
+            }
 
 			@Override
 			public boolean expand() {
