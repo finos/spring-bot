@@ -32,5 +32,10 @@ public interface OboInstanceFactory extends GenericInstanceFactory<OboIdentity> 
 	 * Symphony's JWT tokens.
 	 */
 	public ApiInstance createApiInstance(Principal p) throws Exception;
+	
+	public Long getSymphonyUserIdFromPrincipal(Principal p) throws Exception;
+	
+	public String getSymphonyCompanyIdFromPrincipal(Principal p) throws Exception;
+	
 
 }
