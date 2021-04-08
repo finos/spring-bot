@@ -126,9 +126,8 @@ public class TokenManagingOboApiInstanceFactory extends AbstractGenericInstanceT
 
 	@Override
 	public ApiInstance createApiInstance(Principal p) throws Exception {
-		Map<String, String> requestParameters = getRequestParameters(p);
-		Long userId = Long.parseLong(requestParameters.get("id"));
-		String companyid = requestParameters.get("companyId");
+		Long userId = getSymphonyUserIdFromPrincipal(p);
+		String companyid = getSymphonyCompanyIdFromPrincipal(p);
 		return createApiInstance(userId, companyid);
 	}
 
@@ -138,5 +137,20 @@ public class TokenManagingOboApiInstanceFactory extends AbstractGenericInstanceT
 		Map<String, String> requestParameters = req.getRequestParameters();
 		return requestParameters;
 	}
+
+	@Override
+	public Long getSymphonyUserIdFromPrincipal(Principal p) throws Exception {
+		Map<String, String> requestParameters = getRequestParameters(p);
+		Long userId = Long.parseLong(requestParameters.get("id"));
+		return userId;
+	}
+
+	@Override
+	public String getSymphonyCompanyIdFromPrincipal(Principal p) throws Exception {
+		Map<String, String> requestParameters = getRequestParameters(p);
+		String companyid = requestParameters.get("companyId");
+		return companyid;
+	}
+	
 
 }
