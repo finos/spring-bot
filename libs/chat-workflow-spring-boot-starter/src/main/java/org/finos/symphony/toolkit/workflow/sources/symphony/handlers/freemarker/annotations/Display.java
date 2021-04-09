@@ -8,7 +8,11 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Display {
-    public final static String DEFAULT_NAME = "";
+    String name() default "";
 
-    String name() default DEFAULT_NAME;
+    boolean visible() default true;
+
+    String labelStyle() default "font-weight:bold";
+
+    String dataStyle() default "";
 }
