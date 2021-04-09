@@ -12,7 +12,7 @@ public @interface Display {
 
     boolean visible() default true;
 
-    String labelStyle() default "font-weight:bold";
+    String labelStyle() default "";
 
     String dataStyle() default "";
 }

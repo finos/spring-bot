@@ -32,9 +32,9 @@ public interface WithField {
 				sb.append(labelStyle);
 				sb.append("\"");
 			}
-			sb.append(">");
+			sb.append("><b>");
 			sb.append(fieldNameOrientation);
-			sb.append(":</td>");
+			sb.append(":</b></td>");
 
 			sb.append("<td");
 			String dataStyle = getDataStyle(f);
@@ -72,7 +72,7 @@ public interface WithField {
 			} else {
 				return "";
 			}
-		}).orElse("font-weight:bold;");
+		}).orElse("");
 	}
 
 	default String getDataStyle(Field f) {
