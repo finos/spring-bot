@@ -1,9 +1,9 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import org.finos.symphony.toolkit.json.EntityJson;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-
-import org.finos.symphony.toolkit.json.EntityJson;
 
 public abstract class AbstractTableConverter extends AbstractComplexTypeConverter {
 	
@@ -19,7 +19,12 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
 			@Override
 			public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
 				String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
-				return indent(variable.depth+1) + "<td " + align + "><b>" + f.getName() + "</b></td>";
+				String fieldNameOrientation = getFieldNameOrientation(f);
+				if( null != fieldNameOrientation && !fieldNameOrientation.trim().isEmpty()){
+					return indent(variable.depth+1) + "<td " + align + "><b>" + fieldNameOrientation + "</b></td>";
+				}else {
+					return "";
+				}
 			}
 		};		
 	}
@@ -44,7 +49,13 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
 			public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
 				String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
 				Type t = f.getGenericType();
-				return indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(contentHandler, t, editMode, variable, ej, null) + "</td>";
+				String fieldNameOrientation = getFieldNameOrientation(f);
+				if( null != fieldNameOrientation && !fieldNameOrientation.trim().isEmpty()){
+					return indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(contentHandler, t, editMode, variable, ej, null) + "</td>";
+				}else {
+					return "";
+				}
+
 			}
 		};
 		
