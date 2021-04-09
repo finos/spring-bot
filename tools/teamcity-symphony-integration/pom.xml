@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>6.20.2-SNAPSHOT</version>
+		<version>7.20.1-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 	
