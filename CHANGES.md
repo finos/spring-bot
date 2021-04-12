@@ -121,3 +121,4 @@
 
  - More logical package structure #148
  - OBO Functionality #35
+ - Fix for #149
