@@ -16,7 +16,6 @@
 	<description>Demo Chat Workflow bot for creating polls</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>example.symphony.demoworkflow.PollBot</spring-boot.run.main-class>
 	</properties>
 
