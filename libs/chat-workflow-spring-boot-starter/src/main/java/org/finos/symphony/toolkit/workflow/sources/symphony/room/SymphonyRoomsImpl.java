@@ -158,6 +158,4 @@ public class SymphonyRoomsImpl extends AbstractNeedsWorkflow implements Symphony
 			.collect(Collectors.toList());
 	}
 
-
-
 }
