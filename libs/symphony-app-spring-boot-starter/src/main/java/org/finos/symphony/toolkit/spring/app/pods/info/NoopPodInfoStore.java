@@ -20,7 +20,7 @@ public class NoopPodInfoStore implements PodInfoStore {
 	
 	@Override
 	public PodInfo getPodInfo(String podId) {
-		return null;
+		throw new PodStoreException(podId, null);
 	}
 
 	@Override

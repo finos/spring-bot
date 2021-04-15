@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
 
-import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
@@ -24,6 +24,10 @@ import org.finos.symphony.toolkit.spring.app.controller.ControllerPageController
 import org.finos.symphony.toolkit.spring.app.controller.ThymeleafPageController;
 import org.finos.symphony.toolkit.spring.app.id.GeneratingAppIdentityProvider;
 import org.finos.symphony.toolkit.spring.app.jwt.UserDetailsController;
+import org.finos.symphony.toolkit.spring.app.obo.DefaultOboInstanceFactory;
+import org.finos.symphony.toolkit.spring.app.obo.DefaultPodInfoConverter;
+import org.finos.symphony.toolkit.spring.app.obo.OboInstanceFactory;
+import org.finos.symphony.toolkit.spring.app.obo.PodInfoConverter;
 import org.finos.symphony.toolkit.spring.app.pods.info.DirectoryBasedPodInfoStore;
 import org.finos.symphony.toolkit.spring.app.pods.info.NoopPodInfoStore;
 import org.finos.symphony.toolkit.spring.app.pods.info.PodInfo;
@@ -56,6 +60,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.json.SymphonyIdentityModule;
 
+import io.micrometer.core.instrument.MeterRegistry;
+
 @Configuration
 @EnableConfigurationProperties(SymphonyAppProperties.class)
 @AutoConfigureAfter({WebMvcAutoConfiguration.EnableWebMvcConfiguration.class})
@@ -64,6 +70,8 @@ public class SymphonyAppConfig  {
 	
 	public static final String APP_IDENTITY_BEAN = "appIdentity";
 
+	public static final String OBO_INSTANCE_FACTORY = "oboInstanceFactory";
+	
 	@Bean
 	@ConfigurationProperties("symphony.app")
 	public SymphonyAppProperties appProperties() {
@@ -84,7 +92,11 @@ public class SymphonyAppConfig  {
 	
 	@Qualifier(SymphonyApiTrustManagersConfig.SYMPHONY_TRUST_MANAGERS_BEAN)
 	@Autowired(required=false)
-	private TrustManager[] trustManagers;
+	private TrustManagerFactory trustManagerFactory;
+	
+	private TrustManager[] getTrustManagers() {
+		return trustManagerFactory == null ? null : trustManagerFactory.getTrustManagers();
+	}
 	
 	@Bean(name=APP_IDENTITY_BEAN)
 	@ConditionalOnMissingBean(name=APP_IDENTITY_BEAN)
@@ -140,13 +152,13 @@ public class SymphonyAppConfig  {
 	@Bean
 	@ConditionalOnMissingBean
 	public ConfiguredPodTokenStrategy configuredPodTokenStrategy(@Qualifier(APP_IDENTITY_BEAN) SymphonyIdentity appId) {
-		return new ConfiguredPodTokenStrategy(apiProperties, appId, apiBuilderFactory, trustManagers);
+		return new ConfiguredPodTokenStrategy(apiProperties, appId, apiBuilderFactory, getTrustManagers());
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
 	public PodInfoStoreTokenStrategy podInfoStoreTokenStrategy(@Qualifier(APP_IDENTITY_BEAN) SymphonyIdentity appId, PodInfoStore store) {
-		return new PodInfoStoreTokenStrategy(appProperties(), appId, apiBuilderFactory, trustManagers, store);
+		return new PodInfoStoreTokenStrategy(appProperties(), appId, apiBuilderFactory, getTrustManagers(), store);
 	}
 	
 	/**
@@ -221,4 +233,22 @@ public class SymphonyAppConfig  {
 	public Module symphonyIdentityModule() {
 		return new SymphonyIdentityModule();
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public PodInfoConverter podInfoConverter() {
+		return new DefaultPodInfoConverter();
+	}
+	
+	@Bean(name=OBO_INSTANCE_FACTORY)
+	@ConditionalOnMissingBean
+	public OboInstanceFactory oboInstanceFactory(
+			ApiBuilderFactory abf, 
+			@Autowired(required=false) PodInfoStore ps,
+			@Autowired(required=false) MeterRegistry mr,
+			@Qualifier(APP_IDENTITY_BEAN) SymphonyIdentity appId,
+			PodInfoConverter c
+			) {
+		return new DefaultOboInstanceFactory(abf, ps, apiProperties.getApis(), appId, getTrustManagers(), c, mr, objectMapper);
+	}	
 }

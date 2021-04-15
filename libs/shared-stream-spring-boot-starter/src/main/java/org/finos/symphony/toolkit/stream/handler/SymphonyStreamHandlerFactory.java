@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.stream.handler;
 import java.util.Collection;
 import java.util.List;
 
-import org.finos.symphony.toolkit.spring.api.ApiInstance;
+import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.cluster.ClusterMember;
 
