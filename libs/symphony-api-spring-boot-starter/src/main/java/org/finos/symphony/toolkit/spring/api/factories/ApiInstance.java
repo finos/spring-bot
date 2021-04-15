@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.spring.api;
+package org.finos.symphony.toolkit.spring.api.factories;
 
 import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 
@@ -31,5 +31,5 @@ public interface ApiInstance {
 	public <X> X getLoginApi(Class<X> c);
 	
 	public SymphonyIdentity getIdentity();
-	
+		
 }

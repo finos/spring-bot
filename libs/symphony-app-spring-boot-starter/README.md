@@ -201,6 +201,29 @@ You can see this working in the `UserDetailsController`, which returns JSON cont
 
 `spring-boot-starter-symphony-app` imports `spring-boot-starter-security`.  That's because you can't create symphony apps which _don't_ use `https`.  However, you will need to further customize your security settings within your own app.
 
+## On-Behalf-Of
+
+Symphony allows you to act "on-behalf-of" users using the application, if they are correctly authenticated.  This means things like sending messages, joining rooms, etc.
+
+You can `@Autowire` the `OboInstanceFactory` into your application, and then call various methods on it to get back an `ApiInstance` which allows you to act as the user.
+
+If you are using JWT Authentication, then you can pass through the `Authentication` like so:
+
+```java
+
+  @Autowired
+  OboInstanceFactory obo;
+
+  @Override
+  public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    Authentication a = SecurityContextHolder.getContext().getAuthentication();
+    ApiInstance instance = obo.createApiInstance(a);
+    MessageApi messagesApiWillWorkAsLoggedInUser = instance.getAgentApi(MessagesApi.class);
+    
+    // send messages, etc.
+  }    
+```
+
 ## Extending the Starter
 
 - All of the setup for this starter is in `SymphonyAppConfig`.  

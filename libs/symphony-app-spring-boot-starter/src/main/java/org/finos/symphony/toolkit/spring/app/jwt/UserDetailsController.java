@@ -41,7 +41,7 @@ public class UserDetailsController extends AbstractJsonController {
 
 	@Override
 	public ModelAndView handleRequest(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		Authentication a = SecurityContextHolder.getContext().getAuthentication();
+		Authentication a = SecurityContextHolder.getContext(). getAuthentication();
 		
 		if (a instanceof OAuth2Authentication) {
 			OAuth2Authentication aa = (OAuth2Authentication) a;

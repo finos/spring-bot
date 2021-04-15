@@ -116,6 +116,10 @@
  - Configurable timeout for shared-stream HttpMulticaster (#138)
  - Added RSS Bot
  - Fixed #146, #144, #142
- 
+
 ## April 2021
-  - Fix for #165, @Display annotation to choose how fields are shown.
+
+ - More logical package structure #148
+ - OBO Functionality #35
+ - Fix for #149
+ - Fix for #165, @Display annotation to choose how fields are shown.

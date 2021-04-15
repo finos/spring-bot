@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.stream.springit;
 
 import java.util.Collections;
 
-import org.finos.symphony.toolkit.spring.api.ApiInstance;
+import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
