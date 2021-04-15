@@ -1,13 +1,10 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import org.finos.symphony.toolkit.json.EntityJson;
+import org.springframework.util.StringUtils;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Show;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
-
-import static java.util.Optional.ofNullable;
 
 /**
  * This is the "fall-through" converter, used to convert user-beans when everything else fails.
@@ -45,14 +42,9 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 
             @Override
             public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType controller) {
-
-                Boolean isShow = ofNullable(f.getAnnotation(Show.class)).map(Show::enabled).orElse(true);
-
-                return !isShow ? "" : ofNullable(f.getAnnotation(Display.class)).map(
-						display -> "<tr><td><b>" + ofNullable(display.name()).orElse(f.getName()) + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>"
-                ).orElse("<tr><td><b>" + f.getName() + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>");
-
-            }
+				String fieldNameOrientation = getFieldNameOrientation(f);
+				return StringUtils.hasText(fieldNameOrientation) ? "<tr><td><b>" + fieldNameOrientation + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>" : "";
+			}
 
 			@Override
 			public boolean expand() {
