@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>chat-workflow-spring-boot-starter</artifactId>
-			<version>6.20.2-SNAPSHOT</version>
+			<version>7.20.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -60,6 +60,13 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-multipart</artifactId>
 		</dependency>
+		
+		<!--  contains webclient -->
+		<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-webflux</artifactId>
+        <scope>test</scope>
+    </dependency>
 	</dependencies>
 
 	<build>

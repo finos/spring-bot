@@ -9,6 +9,7 @@ import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Tag;
+import org.finos.symphony.toolkit.workflow.java.Work;
 import org.springframework.util.StringUtils;
 
 public class TagSupport {
@@ -72,6 +73,8 @@ public class TagSupport {
 	
 	public static Set<HashTag> toHashTags(Class<?> c) {
 		if ((c == Object.class) || (c == null)) {
+			return Collections.emptySet();
+		} else if (c.getAnnotationsByType(Work.class).length== 0) {
 			return Collections.emptySet();
 		} else {
 			Set<HashTag> out = new HashSet<>();

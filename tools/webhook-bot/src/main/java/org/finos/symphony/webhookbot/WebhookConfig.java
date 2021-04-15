@@ -8,6 +8,7 @@ import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.finos.symphony.webhookbot.domain.WebHook;
 import org.finos.symphony.webhookbot.domain.WebHookOps;
+import org.finos.symphony.webhookbot.domain.WebhookPayload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -28,7 +29,7 @@ public class WebhookConfig  {
 	@Value("${webhook.article:https://zapier.com/blog/what-are-webhooks}")
 	private String articleUrl;
 	
-	@Value("${webhook.baseUrl:http://localhost:${server.port}}")
+	@Value("${webhook.baseUrl:http://localhost:${server.port:8080}}")
 	private String baseUrl;
 	
 	public String getWelcomeMessage() {
@@ -44,6 +45,7 @@ public class WebhookConfig  {
 		ClassBasedWorkflow wf = new ClassBasedWorkflow(WebhookConfig.class.getCanonicalName());
 		wf.addClass(WebHookOps.class);
 		wf.addClass(WebHook.class);
+		wf.addClass(WebhookPayload.class);
 		return wf;
 	}
 	

@@ -2,9 +2,11 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.history;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -32,15 +34,17 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 		this.ru = ru;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <X> Optional<X> getLastFromHistory(Class<X> type, Addressable address) {
 		MessageSearchQuery msq = createMessageSearchQuery(type, address, null, null);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 1, null, null);
-		
+		return convertToOptionalInstance(type, out);
+	}
+
+	protected <X> Optional<X> convertToOptionalInstance(Class<X> type, V4MessageList out) {
 		for (V4Message msg : out) {
-			Object o = jsonConverter.readWorkflowValue(msg.getData());
-			if ((o != null) && (type.isAssignableFrom(o.getClass()))) {
+			X o = getRelevantObject(msg, type);
+			if (o != null) {
 				return Optional.of((X) o);
 			}
 		}
@@ -50,6 +54,13 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 	
 
 	@Override
+	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, Addressable address) {
+		MessageSearchQuery msq = createMessageSearchQuery(null, address, null, t);
+		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 1, null, null);
+		return convertToOptionalInstance(type, out);
+	}
+
+	@Override
 	public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
 		MessageSearchQuery msq = createMessageSearchQuery(null, address, since, t);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 50, null, null);
@@ -57,7 +68,7 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 		return out.stream()
 				.map(msg -> {
 					try {
-						return jsonConverter.readWorkflowValue(msg.getData());
+						return getRelevantObject(msg, Object.class);
 					} catch (Exception e1) {
 						e1.printStackTrace();
 						return null;
@@ -68,6 +79,25 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 	}
 
 	@SuppressWarnings("unchecked")
+	protected <T> T getRelevantObject(V4Message msg, Class<T> required) {
+		EntityJson ej = jsonConverter.readValue(msg.getData());
+		Object out = jsonConverter.readWorkflow(ej);
+		if (out == null) {
+			return null;
+		} else if (required == null) {
+			return (T) out;
+		} else if (required.isAssignableFrom(out.getClass())) {
+			return (T) out;
+		} else {
+			for (Entry<String, Object> ent : ej.entrySet()) {
+				if (required.isAssignableFrom(ent.getValue().getClass())) {
+					return (T) ent.getValue();
+				}
+			}
+			return null;
+		} 
+	}
+
 	@Override
 	public <X> List<X> getFromHistory(Class<X> type, Addressable address, Instant since) {
 		MessageSearchQuery msq = createMessageSearchQuery(type, address, since, null);
@@ -76,12 +106,7 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 		return out.stream()
 			.map(msg -> {
 				try {
-					Object done = jsonConverter.readWorkflowValue(msg.getData());
-					if (type.isAssignableFrom(done.getClass())) {
-						return (X) done;
-					} else {
-						return null;
-					}
+					return getRelevantObject(msg, type);
 				} catch (Exception e1) {
 					e1.printStackTrace();
 					return null;
@@ -120,5 +145,6 @@ public class MessageHistory extends AbstractNeedsWorkflow implements History {
 		
 		return msq;
 	}
+
 
 }
