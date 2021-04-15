@@ -1,22 +1,22 @@
 
 <#-- starting template -->
  <table>
- <tr><td><b>items:</b></td><td>
+ <tr><td><b>Items:</b></td><td>
   <span class="tempo-text-color--red">${entity.errors.contents['items']!''}</span>
   
   <table><thead><tr>
   
-    <td ><b>isin</b></td>
+    <td ><b>Isin</b></td>
   
-    <td style="text-align:center;" ><b>bidAxed</b></td>
+    <td style="text-align:center;" ><b>Bid Axed</b></td>
   
-    <td style="text-align:center;" ><b>askAxed</b></td>
+    <td style="text-align:center;" ><b>Ask Axed</b></td>
   
-    <td ><b>creator</b></td>
+    <td ><b>Creator</b></td>
   
-    <td style="text-align: right;"><b>bidQty</b></td>
+    <td style="text-align: right;"><b>Bid Qty</b></td>
   
-    <td style="text-align: right;"><b>askQty</b></td>
+    <td style="text-align: right;"><b>Ask Qty</b></td>
   </tr></thead><tbody>
   <#list entity.workflow_001.items as iB>
   <tr>

@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -41,9 +42,9 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 
             @Override
             public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType controller) {
-
-               return getFieldOrientation(f, editMode, variable, ej, controller, inner);
-            }
+				String fieldNameOrientation = getFieldNameOrientation(f);
+				return StringUtils.hasText(fieldNameOrientation) ? "<tr><td><b>" + fieldNameOrientation + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>" : "";
+			}
 
 			@Override
 			public boolean expand() {

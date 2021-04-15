@@ -11,8 +11,4 @@ public @interface Display {
     String name() default "";
 
     boolean visible() default true;
-
-    String labelStyle() default "";
-
-    String dataStyle() default "";
 }
