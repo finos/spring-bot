@@ -76,6 +76,11 @@ public class TestWorkflowConfig {
 			public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
 				return Collections.EMPTY_LIST;
 			}
+
+			@Override
+			public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, Addressable address) {
+				return Optional.empty();
+			}
 		};
 		
 		return h;
