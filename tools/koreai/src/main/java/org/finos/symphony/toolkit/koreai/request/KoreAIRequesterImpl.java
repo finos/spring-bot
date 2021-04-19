@@ -1,9 +1,12 @@
 package org.finos.symphony.toolkit.koreai.request;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 
@@ -11,6 +14,7 @@ import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandler;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;
+import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -34,26 +38,37 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
     protected JsonNodeFactory jnf;
     protected String jwt;
     protected String url;
+    protected TrustManagerFactory tmf;
     
     public KoreAIRequesterImpl(KoreAIResponseHandler koreaiResponseParser, 
     		KoreAIResponseBuilder koreAIResponseBuilder, 
     		String url, 
     		JsonNodeFactory jsonNodeFactory, 
-    		String jwt) {
+    		String jwt, 
+    		TrustManagerFactory tmf) throws Exception {
         this.koreaiResponseParser = koreaiResponseParser;
         this.koreAIResponseBuilder = koreAIResponseBuilder;
         this.url = url;
         this.jnf = jsonNodeFactory;
         this.jwt = jwt;
+        this.tmf = tmf;
         this.client = createClient();
     }
     
-    protected Client createClient() {
-    	return ClientBuilder.newBuilder()
+    protected Client createClient() throws Exception {
+    	JerseyClientBuilder jcb = new JerseyClientBuilder();
+		Client out = jcb.sslContext(createSSLContext())
     		.connectTimeout(15, TimeUnit.SECONDS)
     		.readTimeout(15, TimeUnit.SECONDS)
     		.build();
+		return out;
     }
+    
+    protected SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyManagementException {
+		SSLContext ctx = SSLContext.getInstance("SSL");
+		ctx.init(null, tmf == null ? null : tmf.getTrustManagers(), null);
+		return ctx;
+	}
 
     public void send(Address a, String symphonyQuery) {
     	LOG.info("Request to Kore AI:\n Address={}\n url={}\n Message={} \n jwt={}", a, url, symphonyQuery, jwt);
