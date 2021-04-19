@@ -1,8 +1,10 @@
 package org.finos.symphony.webhookbot.domain;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.Charsets;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
@@ -82,15 +84,14 @@ public class WebHook {
 		this.hookId = hookId;
 	}
 
-//	@Exposed(description = "Provide a download of the template used by the webhook")
-//	public Response template(Workflow wf, Addressable a, ObjectMapper om) {
-//		if (!StringUtils.hasText(template)) {
-//			return new MessageResponse(wf, a, null, getDisplayName(),"", "No template set for webhook.  Please upload one");
-//		} else {
-//			byte[] contents = 
-//			
-//			return new AttachmentResponse(wf, a, null, getDisplayName(), template, null, ".ml"{)
-//		}
-//	}
+	@Exposed(description = "Provide a download of the template used by the webhook")
+	public Response template(Workflow wf, Addressable a, ObjectMapper om) {
+		if (!StringUtils.hasText(template)) {
+			return new MessageResponse(wf, a, null, getDisplayName(),"", "No template set for webhook.  Please upload one or call the webhook first");
+		} else {
+			byte[] contents = template.getBytes(Charset.forName("UTF-8"));
+			return new AttachmentResponse(wf, a, null, getDisplayName(), template, contents, ".txt");
+		}
+	}
 	
 }

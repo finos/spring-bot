@@ -57,7 +57,7 @@ public class WebHookOps {
 		if (hook.isPresent()) {
 			WebhookPayload th = hook.get();
 			byte[] contents = om.writerWithDefaultPrettyPrinter().writeValueAsBytes(th.getContents());
-			return new AttachmentResponse(wf, a, null, wh.get().getDisplayName(), "", contents, ".json");
+			return new AttachmentResponse(wf, a, null, wh.get().getDisplayName(), "", contents, ".txt");
 		} else {
 			return new ErrorResponse(wf, a, "Couldn't find this webhook in the room - does it exist?  Has it been called before?");
 		}

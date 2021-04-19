@@ -76,22 +76,24 @@ public class ReceiveController {
 			
 		if (ho.isPresent()) {
 			WebHook hook = ho.get();
-			// ok, we've found the webhook for this call.  
-			EntityJson out = createEntityJson(body, hook);
-			
-			String template = hook.getTemplate();
-			if (!StringUtils.hasText(template)) {
-				template = createDefaultTemplate(body, ho.get().getDisplayName());
-				hook.setTemplate(template);
+			if (hook.isActive()) {
+				// ok, we've found the webhook for this call.  
+				EntityJson out = createEntityJson(body, hook);
+				
+				String template = hook.getTemplate();
+				if (!StringUtils.hasText(template)) {
+					template = createDefaultTemplate(body, ho.get().getDisplayName());
+					hook.setTemplate(template);
+				}
+				
+				MessageResponse mr = new MessageResponse(wf, r, out, "" , "", template);
+				handler.accept(mr);
+				return new ResponseEntity<Void>(HttpStatus.OK);
 			}
-			
-			MessageResponse mr = new MessageResponse(wf, r, out, "" , "", template);
-			handler.accept(mr);
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-		}
+		} 
 		
+		
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 	}
 
 	protected EntityJson createEntityJson(JsonNode body, WebHook webhook) throws JsonProcessingException {
