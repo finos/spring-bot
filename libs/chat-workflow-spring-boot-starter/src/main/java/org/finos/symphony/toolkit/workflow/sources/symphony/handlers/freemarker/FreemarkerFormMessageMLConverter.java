@@ -117,17 +117,25 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 		sb.append("\n  </#list></p>");
 		return sb.toString();
 	}
+	
+	
 
 	
 	@Override
-	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField context) {
+	public TypeConverter getConverter(Type t, WithType ownerController) {
 		for(TypeConverter fc : converters) {
 			if (fc.canConvert(t)) {
-				return fc.apply(controller, t, editMode, variable, ej, context);
+				return fc;
 			}
 		} 
 		
-		throw new UnsupportedOperationException("Can't convert "+t);
+		throw new UnsupportedOperationException("No converter found for "+t);
+	}
+
+	@Override
+	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField context) {
+		TypeConverter tc = getConverter(t, controller);
+		return tc.apply(controller, t, editMode, variable, ej, context);
 	}
 
 	/**
