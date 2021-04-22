@@ -40,16 +40,16 @@ public class CollectionConverter extends AbstractTableConverter {
 	@Override
 	protected Object rowDetails(Type t, boolean editMode, Variable variable, EntityJson ej, WithField cellDetail, WithType controller) {
 		Class<?> elementClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
-		
+
 		TypeConverter elementTypeConverter = controller.getConverter(elementClass, controller);
-		
+
 		StringBuilder sb = new StringBuilder();
 		Variable subVar = variable.index();
 
 		// handle each field
 		sb.append(beginIterator(variable, subVar));
 		sb.append(indent(subVar.depth) + "<tr>");
-		
+
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
 			sb.append("<td>");
 			sb.append(((SimpleTypeConverter)elementTypeConverter).apply(controller, elementClass, false, subVar, ej, cellDetail));
@@ -59,7 +59,7 @@ public class CollectionConverter extends AbstractTableConverter {
 		} else {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		
 		if (editMode) {
 			sb.append(indent(subVar.depth+1) + "<td " + CENTER_AND_WIDTH_ALIGN + "><checkbox name=\""+ variable.getFormFieldName() + ".${" + subVar.getDataPath() + "?index}." + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
@@ -74,8 +74,8 @@ public class CollectionConverter extends AbstractTableConverter {
 	@Override
 	protected Object rowHeaders(Type t, boolean editMode, Variable variable, EntityJson ej, WithField cellDetail, WithType controller) {
 		Class<?> elementClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
-		TypeConverter elementTypeConverter = controller.getConverter(elementClass, controller); 
-		
+		TypeConverter elementTypeConverter = controller.getConverter(elementClass, controller);
+
 		StringBuilder sb = new StringBuilder();
 
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
@@ -85,7 +85,7 @@ public class CollectionConverter extends AbstractTableConverter {
 		} else {
 			throw new UnsupportedOperationException();
 		}
-		
+
 		if (editMode) {
 			sb.append(indent(variable.depth+1) + "<td " + CENTER_ALIGN + "><button name=\"" + variable.getFormFieldName() + "." + TableDeleteRows.ACTION_SUFFIX
 					+ "\">Delete</button></td>");
