@@ -1,13 +1,13 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Collection;
-
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 public class CollectionConverter extends AbstractTableConverter {
 	
@@ -27,6 +27,7 @@ public class CollectionConverter extends AbstractTableConverter {
 
 	@Override
 	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField showDetail) {
+		if(null ==showDetail) return  "...";
 		if (showDetail.expand()) {
 			return createTable(t, editMode, variable, ej, tableColumnNames(), tableColumnValues(), controller);
 		} else {
@@ -50,7 +51,9 @@ public class CollectionConverter extends AbstractTableConverter {
 		sb.append(indent(subVar.depth) + "<tr>");
 		
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
+			sb.append("<td>");
 			sb.append(((SimpleTypeConverter)elementTypeConverter).apply(controller, elementClass, false, subVar, ej, cellDetail));
+			sb.append("</td>");
 		} else if (elementTypeConverter instanceof ComplexTypeConverter) {
 			sb.append(((ComplexTypeConverter)elementTypeConverter).withFields(controller, elementClass, false, subVar, ej, cellDetail));
 		} else {
@@ -91,6 +94,6 @@ public class CollectionConverter extends AbstractTableConverter {
 		}
 		
 		return sb.toString();
-	};
+	}
 
 }

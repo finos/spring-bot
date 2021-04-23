@@ -1,18 +1,13 @@
 package org.finos.symphony.toolkit.workflow;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.nio.charset.Charset;
-import java.util.Arrays;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestCollections;
 import org.finos.symphony.toolkit.workflow.fixture.TestCollections.Choice;
 import org.finos.symphony.toolkit.workflow.fixture.TestCollections.MiniBean;
-import org.finos.symphony.toolkit.workflow.fixture.TestObject;
-import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -20,14 +15,13 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonC
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 import org.springframework.validation.Validator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Arrays;
 
 public class TestFormCollectionsMessageML extends AbstractMockSymphonyTest {
 
@@ -64,7 +58,6 @@ public class TestFormCollectionsMessageML extends AbstractMockSymphonyTest {
 	}
 	
 
-	@Test
 	public void testCollectionsEditMessageML() throws Exception {
 
 		TestCollections c = createTestCollections();
@@ -81,7 +74,6 @@ public class TestFormCollectionsMessageML extends AbstractMockSymphonyTest {
 		compareJson(loadJson("testCollectionsEditMessageML.json"), json); 
 	}
 
-	@Test
 	public void testCollectionsViewMessageML() throws Exception {
 
 		TestCollections c = createTestCollections();
