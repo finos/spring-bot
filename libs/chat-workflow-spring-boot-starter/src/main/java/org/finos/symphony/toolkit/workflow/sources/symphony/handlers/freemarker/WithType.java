@@ -20,5 +20,9 @@ public interface WithType {
 	 */
 	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField details);
 
+	
+	public default TypeConverter getConverter(Type t, WithType ownerController) {
+		return ownerController.getConverter(t, ownerController);
+	}
 
 }
