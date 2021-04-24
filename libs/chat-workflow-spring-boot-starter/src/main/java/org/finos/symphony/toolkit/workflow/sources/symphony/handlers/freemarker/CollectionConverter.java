@@ -27,7 +27,7 @@ public class CollectionConverter extends AbstractTableConverter {
 
 	@Override
 	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField showDetail) {
-		if(null ==showDetail) return  "...";
+		if (null == showDetail) return "...";
 		if (showDetail.expand()) {
 			return createTable(t, editMode, variable, ej, tableColumnNames(), tableColumnValues(), controller);
 		} else {
@@ -79,7 +79,7 @@ public class CollectionConverter extends AbstractTableConverter {
 		StringBuilder sb = new StringBuilder();
 
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
-			sb.append("<td>Value</td>");
+			sb.append("<td><b>Value</b></td>");
 		} else if (elementTypeConverter instanceof ComplexTypeConverter) {
 			sb.append(((ComplexTypeConverter)elementTypeConverter).withFields(controller, elementClass, editMode, variable, ej, cellDetail));
 		} else {
