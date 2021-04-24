@@ -5,7 +5,6 @@ import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.Optional;
 
 public abstract class AbstractTableConverter extends AbstractComplexTypeConverter {
 
@@ -20,9 +19,9 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
 
             @Override
             public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
-                String align = numberClass(f.getType()) ? RIGHT_ALIGN : boolClass(f.getType()) ? CENTER_ALIGN : "";
+                String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : CENTER_AND_WIDTH_ALIGN);
                 String fieldNameOrientation = getFieldNameOrientation(f);
-                return StringUtils.hasText(fieldNameOrientation) ? indent(variable.depth + 1) + Optional.ofNullable(align).map(style -> StringUtils.hasText(style) ? "<td " + style + "><b>" : "<td><b>").get() + fieldNameOrientation + "</b></td>" : "";
+                return StringUtils.hasText(fieldNameOrientation) ? indent(variable.depth+1) + "<td " + align + "><b>" + fieldNameOrientation + "</b></td>" : "";
             }
         };
     }
@@ -47,7 +46,7 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
             public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
                 String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
                 Type t = f.getGenericType();
-                return StringUtils.hasText(getFieldNameOrientation(f)) ? indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(contentHandler, t, editMode, variable, ej, null) + "</td>" : "";
+                return StringUtils.hasText(getFieldNameOrientation(f))? indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(contentHandler, t, editMode, variable, ej, null) + "</td>" : "";
             }
         };
 
