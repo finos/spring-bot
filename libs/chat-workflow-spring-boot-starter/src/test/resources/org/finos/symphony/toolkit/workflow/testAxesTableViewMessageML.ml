@@ -6,13 +6,13 @@
   
   <table><thead><tr>
   
-    <td><b>Isin</b></td>
+    <td style="text-align:center; width:10%" ><b>Isin</b></td>
   
     <td style="text-align:center;" ><b>Bid Axed</b></td>
   
     <td style="text-align:center;" ><b>Ask Axed</b></td>
   
-    <td><b>Creator</b></td>
+    <td style="text-align:center; width:10%" ><b>Creator</b></td>
   
     <td style="text-align: right;"><b>Bid Qty</b></td>
   
