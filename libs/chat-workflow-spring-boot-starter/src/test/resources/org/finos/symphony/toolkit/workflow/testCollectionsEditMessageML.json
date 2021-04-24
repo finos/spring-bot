@@ -1,0 +1,45 @@
+{
+  "formdata" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.testCollections",
+    "stringList" : [ "a", "b", "c" ],
+    "enumList" : [ "A", "B" ],
+    "minBeanList" : [ {
+      "someString" : "A String",
+      "someInteger" : 4973,
+      "someMoreStrings" : [ "Amsidh", "Rob" ]
+    }, {
+      "someString" : "Another String",
+      "someInteger" : 45,
+      "someMoreStrings" : [ "Terry", "James" ]
+    }, {
+      "someString" : "Thing 3",
+      "someInteger" : 8787,
+      "someMoreStrings" : null
+    } ],
+    "someHashTags" : [ {
+      "name" : "abc",
+      "id" : "abc",
+      "tagType" : "HASH"
+    }, {
+      "name" : "def",
+      "id" : "def",
+      "tagType" : "HASH"
+    } ]
+  },
+  "errors" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  },
+  "buttons" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.form.button",
+      "version" : "1.0",
+      "name" : "submit",
+      "buttonType" : "ACTION",
+      "text" : "GO"
+    } ]
+  }
+}
