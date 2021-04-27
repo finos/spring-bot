@@ -36,11 +36,11 @@
   
   <table><thead><tr>
   
-    <td><b>Some String</b></td>
+    <td style="text-align:center; width:10%" ><b>Some String</b></td>
   
     <td style="text-align: right;"><b>Some Integer</b></td>
   
-    <td><b>Some More Strings</b></td>
+    <td style="text-align:center; width:10%" ><b>Some More Strings</b></td>
    <td style="text-align:center;" ><button name="minBeanList.table-delete-rows">Delete</button></td>
    <td style="text-align:center;" ><button name="minBeanList.table-add-row">New</button></td>
   </tr></thead><tbody>

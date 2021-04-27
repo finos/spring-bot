@@ -26,11 +26,11 @@
   
   <table><thead><tr>
   
-    <td><b>Some String</b></td>
+    <td style="text-align:center; width:10%" ><b>Some String</b></td>
   
     <td style="text-align: right;"><b>Some Integer</b></td>
   
-    <td><b>Some More Strings</b></td>
+    <td style="text-align:center; width:10%" ><b>Some More Strings</b></td>
   </tr></thead><tbody>
   <#list entity.workflow_001.minBeanList as iB>
   <tr>
