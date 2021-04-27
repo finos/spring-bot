@@ -6,6 +6,9 @@ package org.finos.symphony.webhookbot;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
+import org.finos.symphony.webhookbot.domain.ActiveWebHooks;
+import org.finos.symphony.webhookbot.domain.Filter;
+import org.finos.symphony.webhookbot.domain.Template;
 import org.finos.symphony.webhookbot.domain.WebHook;
 import org.finos.symphony.webhookbot.domain.WebHookOps;
 import org.finos.symphony.webhookbot.domain.WebhookPayload;
@@ -45,7 +48,11 @@ public class WebhookConfig  {
 		ClassBasedWorkflow wf = new ClassBasedWorkflow(WebhookConfig.class.getCanonicalName());
 		wf.addClass(WebHookOps.class);
 		wf.addClass(WebHook.class);
+		wf.addClass(ActiveWebHooks.class);
 		wf.addClass(WebhookPayload.class);
+		wf.addClass(Template.class);
+		wf.addClass(Filter.class);
+		
 		return wf;
 	}
 	
@@ -57,6 +64,11 @@ public class WebhookConfig  {
 	@Bean
 	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
 		return new RoomWelcomeEventConsumer(ma, ua, id, getWelcomeMessage());
+	}
+	
+	@Bean
+	UpdateTemplateConsumer updateTemplateConsumer() {
+		return new UpdateTemplateConsumer();
 	}
 	
 }

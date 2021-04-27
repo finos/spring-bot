@@ -1,31 +1,16 @@
 package org.finos.symphony.webhookbot.domain;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.codec.Charsets;
-import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
-import org.finos.symphony.toolkit.workflow.java.Work;
-import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
-import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.Response;
-import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-@Work(editable = true, instructions = "", name = "WebHook Definition")
 public class WebHook {
 
 	private HashTag hookId;
 	private HashTag hashTag;
 	private String displayName;
 	private String url;
-	private List<Filter> filters = new ArrayList<Filter>();
-	private String template = "";
+	//private List<Filter> filters = new ArrayList<Filter>();
+	
+	private Template template;
 	private boolean active = true;
 	
 	public boolean isActive() {
@@ -60,19 +45,19 @@ public class WebHook {
 		this.url = url;
 	}
 	
-	public List<Filter> getFilters() {
-		return filters;
-	}
+//	public List<Filter> getFilters() {
+//		return filters;
+//	}
+//	
+//	public void setFilters(List<Filter> filters) {
+//		this.filters = filters;
+//	}
 	
-	public void setFilters(List<Filter> filters) {
-		this.filters = filters;
-	}
-	
-	public String getTemplate() {
+	public Template getTemplate() {
 		return template;
 	}
 	
-	public void setTemplate(String template) {
+	public void setTemplate(Template template) {
 		this.template = template;
 	}
 	
@@ -82,16 +67,6 @@ public class WebHook {
 	
 	public void setHookId(HashTag hookId) {
 		this.hookId = hookId;
-	}
-
-	@Exposed(description = "Provide a download of the template used by the webhook")
-	public Response template(Workflow wf, Addressable a, ObjectMapper om) {
-		if (!StringUtils.hasText(template)) {
-			return new MessageResponse(wf, a, null, getDisplayName(),"", "No template set for webhook.  Please upload one or call the webhook first");
-		} else {
-			byte[] contents = template.getBytes(Charset.forName("UTF-8"));
-			return new AttachmentResponse(wf, a, null, getDisplayName(), template, contents, ".txt");
-		}
 	}
 	
 }

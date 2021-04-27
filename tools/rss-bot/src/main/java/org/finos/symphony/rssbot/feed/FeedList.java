@@ -12,7 +12,7 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 
 import com.rometools.rome.feed.synd.SyndFeed;
 
@@ -49,14 +49,14 @@ public class FeedList {
 	}
 
 	@Exposed(addToHelp = true, description = "Show RSS Feeds Published In This Room", isButton = true, isMessage = true)
-	public static FeedList subscriptions(Addressable a, MessageHistory hist, Workflow wf) {
+	public static FeedList subscriptions(Addressable a, SymphonyHistoryImpl hist, Workflow wf) {
 		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
 		FeedList ob = fl.orElse(new FeedList());
 		return ob;
 	}
 
 	@Exposed(addToHelp = true, description = "Subscribe to a feed. ", isButton = false, isMessage = true)
-	public static FeedList subscribe(SubscribeRequest sr, Addressable a, MessageHistory hist, Workflow wf, FeedLoader loader) throws Exception {
+	public static FeedList subscribe(SubscribeRequest sr, Addressable a, SymphonyHistoryImpl hist, Workflow wf, FeedLoader loader) throws Exception {
 		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
 		return fl.orElseGet(() -> new FeedList()).add(sr, loader);
 	}

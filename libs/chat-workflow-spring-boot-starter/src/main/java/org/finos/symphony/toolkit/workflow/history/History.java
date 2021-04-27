@@ -15,6 +15,6 @@ public interface History {
 	
 	public <X> List<X> getFromHistory(Class<X> type, Addressable address, Instant since);
 
-	public List<Object> getFromHistory(Tag t, Addressable address, Instant since);
+	public <X> List<X> getFromHistory(Class<X> type, Tag t, Addressable address, Instant since);
 
 }
