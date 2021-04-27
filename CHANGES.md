@@ -122,8 +122,9 @@
  - More logical package structure #148
  - OBO Functionality #35
  - Fix for #149
+ - #176 devtool properties moved to parent chat-workflow dependency
  
 ## April 28, 2021 
- - Fix for #165, @Display annotation to choose how fields are shown.
- - Fix for #163, Error Reporting Could Be Better.
- - Fix for #176 devtool properties moved to parent chat-workflow dependency
+ - #165, @Display annotation to override field name.
+ - Fix for #163 Error Reporting Could Be Better.
+ 
