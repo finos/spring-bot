@@ -23,6 +23,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHan
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.webhookbot.Helpers;
+import org.glassfish.jersey.internal.guava.Sets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -107,5 +108,39 @@ public class WebHookOps {
 
 		return new FormResponse(wf, a, ej.get(), "Template Edit", "Update the template used by "+activeHook.get().getDisplayName(), t, true, bl);
 
+	}
+	
+	@Exposed(description = "Sets the last called webhook to inactive", addToHelp = true, isButton = true, isMessage = true) 
+	public static Object deactivate(Workflow wf, Addressable a, SymphonyHistory hist) {
+		return setState(wf, a, hist, false);
+	}
+
+	protected static Object setState(Workflow wf, Addressable a, SymphonyHistory hist, boolean newState) {
+		Optional<ActiveWebHooks> active = hist.getLastFromHistory(ActiveWebHooks.class, a);
+		if (active.isEmpty()) {
+			return new ErrorResponse(wf, a, "No webhooks defined");
+		}
+		
+		Optional<WebHook> activeHook = hist.getLastFromHistory(WebHook.class, a);
+		if (activeHook.isEmpty()) {
+			return new ErrorResponse(wf, a, "Active Hook not set");
+		}
+				
+		Optional<WebHook> toChange = active.get().getWebhooks().stream()
+			.filter(w -> w.getHookId().getId().equals(activeHook.get().getHookId().getId())) 
+			.findFirst();
+		
+		if (toChange.isEmpty()) {
+			return new ErrorResponse(wf, a, "Active Hook not set");
+		}
+		
+		toChange.get().setActive(newState);
+		
+		return active.get();
+	}
+	
+	@Exposed(description = "Set last-called webhook to active", addToHelp = true, isButton = true, isMessage = true) 
+	public static Object activate(Workflow wf, Addressable a, SymphonyHistory hist) {
+		return setState(wf, a, hist, true);
 	}
 }
