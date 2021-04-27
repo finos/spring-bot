@@ -137,7 +137,7 @@ public class SymphonyHistoryImpl extends AbstractNeedsWorkflow implements Sympho
 	}
 	
 	protected <T> Optional<T> getRelevantObject(Optional<EntityJson> ej, Class<T> required) {
-		if ((ej == null) || (ej.isEmpty())) {
+		if ((ej == null) || (!ej.isPresent())) {
 			return Optional.empty();
 		}
 		
