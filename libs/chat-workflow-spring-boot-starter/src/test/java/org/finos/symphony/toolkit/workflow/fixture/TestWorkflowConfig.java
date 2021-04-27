@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Room;
@@ -17,6 +18,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,8 +46,8 @@ public class TestWorkflowConfig {
 	public static final Room room = new RoomDef("Test Room",  "Test Room Desc", false, null);
 	
 	@Bean
-	public History symphonyHistory(Workflow wf) {
-		History h = new History() {
+	public SymphonyHistory symphonyHistory(Workflow wf) {
+		SymphonyHistory h = new SymphonyHistory() {
 			
 			@SuppressWarnings("unchecked")
 			@Override
@@ -73,13 +75,43 @@ public class TestWorkflowConfig {
 
 			@SuppressWarnings("unchecked")
 			@Override
-			public List<Object> getFromHistory(Tag t, Addressable address, Instant since) {
+			public <X> List<X> getFromHistory(Class<X> c, Tag t, Addressable address, Instant since) {
 				return Collections.EMPTY_LIST;
 			}
 
 			@Override
 			public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, Addressable address) {
 				return Optional.empty();
+			}
+
+			@Override
+			public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Addressable address) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Tag t, Addressable address) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public <X> List<EntityJson> getEntityJsonFromHistory(Class<X> type, Addressable address, Instant since) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public List<EntityJson> getEntityJsonFromHistory(Tag t, Addressable address, Instant since) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public <X> Optional<X> getFromEntityJson(EntityJson ej, Class<X> c) {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public <X> List<X> getFromEntityJson(List<EntityJson> ej, Class<X> c) {
+				throw new UnsupportedOperationException();
 			}
 		};
 		
