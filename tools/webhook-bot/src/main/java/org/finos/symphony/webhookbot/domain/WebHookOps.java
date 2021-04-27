@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -20,7 +19,6 @@ import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
@@ -70,16 +68,17 @@ public class WebHookOps {
 	}
 	
 	@Exposed(description = "Create an attachment of the last run webhook payload.  e.g. <b>/payload</b>")
-	public static Response payload(Workflow wf, Addressable a, History h, ObjectMapper om) throws JsonProcessingException {
-		Optional<WebHook> wh = h.getLastFromHistory(WebHook.class, a);
+	public static Response payload(Workflow wf, Addressable a, SymphonyHistory h, ObjectMapper om) throws JsonProcessingException {
+		Optional<EntityJson> wh = h.getLastEntityJsonFromHistory(WebhookPayload.class, a);
 		if (wh.isEmpty()) {
-			return new ErrorResponse(wf, a, "No webhooks defined");
+			return new ErrorResponse(wf, a, "No webhooks called");
 		}
-		Optional<WebhookPayload> hook = h.getLastFromHistory(WebhookPayload.class, wh.get().getHookId(), a);
-		if (hook.isPresent()) {
-			WebhookPayload th = hook.get();
-			byte[] contents = om.writerWithDefaultPrettyPrinter().writeValueAsBytes(th.getContents());
-			return new AttachmentResponse(wf, a, null, wh.get().getDisplayName(), "", contents, ".txt");
+		
+		Optional<WebhookPayload> pl = h.getFromEntityJson(wh.get(), WebhookPayload.class);
+		Optional<WebHook> hook = h.getFromEntityJson(wh.get(), WebHook.class);
+		if (hook.isPresent() && pl.isPresent()) {
+			byte[] contents = om.writerWithDefaultPrettyPrinter().writeValueAsBytes(pl.get().getContents());
+			return new AttachmentResponse(wf, a, null, hook.get().getDisplayName(), "", contents, ".txt");
 		} else {
 			return new ErrorResponse(wf, a, "Couldn't find this webhook in the room - does it exist?  Has it been called before?");
 		}

@@ -4,7 +4,7 @@ import org.finos.symphony.toolkit.workflow.java.Work;
 
 @Work(editable = false, instructions = "Create a new template for a webhook", name="New Template")
 @org.finos.symphony.toolkit.workflow.sources.symphony.Template(edit="classpath:/templates/TemplateEdit.ftl")
-public class Template {
+public final class Template {
 
 	String name;
 	

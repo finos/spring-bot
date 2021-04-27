@@ -1,7 +1,9 @@
 package org.finos.symphony.webhookbot.domain;
 
 import org.finos.symphony.toolkit.workflow.content.HashTag;
+import org.finos.symphony.toolkit.workflow.java.Work;
 
+@Work
 public class WebHook {
 
 	private HashTag hookId;

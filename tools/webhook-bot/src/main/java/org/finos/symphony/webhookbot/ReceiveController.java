@@ -115,8 +115,9 @@ public class ReceiveController {
 		Set<HashTag> tags = new HashSet<>();
 		tags.add(webhook.getHashTag());
 		tags.add(webhook.getHookId());
-		tags.addAll(TagSupport.classHashTags(WebHook.class));
-		tags.addAll(TagSupport.classHashTags(ActiveWebHooks.class));
+		tags.addAll(TagSupport.classHashTags(webhook));
+		tags.addAll(TagSupport.classHashTags(active));
+		tags.addAll(TagSupport.classHashTags(payload));
 		HeaderDetails hd = new HeaderDetails(webhook.getDisplayName(), "", tags);
 		out.put("header", hd);
 		return out;
