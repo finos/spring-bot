@@ -117,13 +117,13 @@
  - Added RSS Bot
  - Fixed #146, #144, #142
 
-## April 2021
+## April 09, 2021
 
  - More logical package structure #148
  - OBO Functionality #35
  - Fix for #149
  
-## May 2021 
+## April 28, 2021 
  - Fix for #165, @Display annotation to choose how fields are shown.
  - Fix for #163, Error Reporting Could Be Better.
  - Fix for #176 devtool properties moved to parent chat-workflow dependency
