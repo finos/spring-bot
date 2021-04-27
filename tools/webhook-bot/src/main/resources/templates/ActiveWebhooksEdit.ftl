@@ -11,7 +11,6 @@
   
     <td style="text-align:center;" ><b>active</b></td>
    <td style="text-align:center;" ><button name="webhooks.table-delete-rows">Delete</button></td>
-   <td style="text-align:center;" ></td>
   </tr></thead><tbody>
   <#list entity.formdata.webhooks as iB>
   <tr>
@@ -27,7 +26,6 @@
   
    <td style="text-align:center;" >${iB.active?string("Y", "N")}</td>
    <td style="text-align:center;" ><checkbox name="webhooks.${iB?index}.selected" /></td>
-   <td style="text-align:center;" ><button name="webhooks[${iB?index}].table-edit-row">Edit</button></td>
   </tr>
   </#list>
   </tbody></table>

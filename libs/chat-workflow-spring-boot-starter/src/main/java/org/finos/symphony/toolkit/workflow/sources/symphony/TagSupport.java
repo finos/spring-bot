@@ -55,6 +55,10 @@ public class TagSupport {
 	}
 	
 	public static Set<HashTag> classHashTags(Object in) {
+		if (in instanceof Class<?>) {
+			return toHashTags((Class<?>) in).stream()
+					.collect(Collectors.toSet());
+		}
 		if (in != null) {
 			return toHashTags(in.getClass()).stream()
 				.collect(Collectors.toSet());
