@@ -13,7 +13,7 @@ public class Claim {
 	
 	enum Status { OPEN, APPROVED, PAID };
 
-	@Display(name = "Deescription")
+	@Display(name = "Description")
 	String description;
 	
 	Author author = Author.CURRENT_AUTHOR.get();
