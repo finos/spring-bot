@@ -46,7 +46,7 @@ public class HealthEndpointIT {
 	
 	@Test
 	public void testAutowire() throws Exception {
-		System.out.println(api.v2HealthCheckGet(false,false,false,false,false,false,false,false, null, null));
+		System.out.println(api.v3ExtendedHealth());
 		
 		HealthComponent h = he.health();
 		Assertions.assertEquals(Status.UP, h.getStatus());
@@ -56,10 +56,10 @@ public class HealthEndpointIT {
 		String symphonyName = lnr.getNames().stream().filter(n -> n.startsWith("symphony")).findFirst().orElseThrow(() -> new RuntimeException("Couldn't find timer"));
 		Assertions.assertEquals("symphony.api-call", symphonyName);
 		Collection<Timer> timers = mr.get(symphonyName).timers();
-		Assertions.assertTrue(timers.size() >=3);
+		Assertions.assertTrue(timers.size() ==1);
 		Timer agentCallTImer = timers.stream().filter(t -> t.getId().toString().contains("agent")).findFirst().orElse(null);
 		Assertions.assertEquals("symphony.practice.bot1", agentCallTImer.getId().getTag("id"));
-		Assertions.assertEquals("v2HealthCheckGet", agentCallTImer.getId().getTag("method"));
+		Assertions.assertEquals("v3ExtendedHealth", agentCallTImer.getId().getTag("method"));
 		Assertions.assertEquals("develop", agentCallTImer.getId().getTag("pod"));
 		Assertions.assertTrue(agentCallTImer.totalTime(TimeUnit.NANOSECONDS) > 1);
 	}
