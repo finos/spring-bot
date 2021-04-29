@@ -121,9 +121,13 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 			}
 			
 		} catch (Throwable throwable) {
-			if(null != throwable && null == throwable.getMessage()) throwable = throwable.getCause();
 			LOG.error("Couldn't perform command: ", throwable);
-			return Collections.singletonList(new ErrorResponse(wf, a, throwable.getMessage()));
+			String exceptionMessage = Optional.ofNullable(throwable.getMessage())
+					.orElse(Optional.ofNullable(throwable.getCause())
+							.map(cause -> Optional.ofNullable(cause.getMessage())
+									.orElse("Exception thrown with no message"))
+							.orElse("Exception thrown with no exception details"));
+			return Collections.singletonList(new ErrorResponse(wf, a, exceptionMessage));
 		}
 	}
 	
