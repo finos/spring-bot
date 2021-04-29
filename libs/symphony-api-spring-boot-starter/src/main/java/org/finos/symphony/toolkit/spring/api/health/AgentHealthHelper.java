@@ -8,7 +8,8 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.SystemApi;
 import com.symphony.api.bindings.ApiBuilder;
-import com.symphony.api.model.V2HealthCheckResponse;
+import com.symphony.api.model.V3Health;
+import com.symphony.api.model.V3HealthStatus;
 
 
 /**
@@ -30,11 +31,10 @@ public class AgentHealthHelper implements HealthIndicator {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Health health() {
-		V2HealthCheckResponse resp = api.v2HealthCheckGet(false, false, false, false, false, false, false, false, null, null);
-		Health.Builder hb = (resp.isAgentServiceUser() && resp.isEncryptDecryptSuccess()
-				&& resp.isKeyManagerConnectivity() && resp.isPodConnectivity()) ? Health.up() : Health.down();
+		V3Health resp = api.v3ExtendedHealth();
+		Health.Builder hb = resp.getStatus() == V3HealthStatus.UP ? Health.up() : Health.down();
 				
-		Map<String, Object> reasons = om.convertValue(resp, Map.class);
+		Map<String, Object> reasons = om.convertValue(resp.getServices(), Map.class);
 		hb.withDetails(reasons);
 
 		return hb.build();
