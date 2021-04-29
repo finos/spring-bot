@@ -1,13 +1,12 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.Valid;
-
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
+
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Work(editable=true, instructions="basket of stuff", name = "List of Test Objects")
 public class TestObjects {
@@ -81,6 +80,36 @@ public class TestObjects {
 		return new TestObjects(chg);
 	}
 
+	@Exposed(description="Throwable exception thrown")
+	public TestObjects throwable(Word w1, Word w2) throws Throwable {
+		throw new Throwable("Throwable exception thrown");
+	}
+
+	@Exposed(description="Exception exception thrown")
+	public TestObjects exception(Word w1, Word w2) throws Throwable {
+		throw new Exception("Exception exception thrown");
+	}
+
+	@Exposed(description="RuntimeException exception thrown")
+	public TestObjects runtime(Word w1, Word w2) throws Throwable {
+		throw new RuntimeException("RuntimeException exception thrown");
+	}
+
+	@Exposed(description="Exception thrown with no message")
+	public TestObjects exceptionnomessage(Word w1, Word w2) throws Throwable {
+		throw new Exception();
+	}
+	@Exposed(description="Exception thrown with no exception details")
+	public TestObjects exceptionnullcause(Word w1, Word w2) throws Throwable {
+		throw new Throwable(null, null);
+	}
+
+	@Exposed(description="Null pointer exception thrown")
+	public TestObjects exceptionnullpointercause(Word w1, Word w2) throws Exception {
+		Exception causeException = new Exception();
+		throw new Exception("Null pointer exception thrown", causeException);
+	}
+	
 	@Override
 	public String toString() {
 		return "TestObjects [items=" + items + "]";

@@ -1,13 +1,10 @@
 package org.finos.symphony.toolkit.workflow;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
+import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsAction;
@@ -18,6 +15,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 
@@ -81,5 +82,59 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		Assertions.assertEquals(TestObjects.class, ((FormResponse) r.get(0)).getFormClass());
 		Assertions.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
 	}
-	
+
+	@Test
+	public void testParameterizedMethodCallWithThrowableReturn() {
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "throwable", new EntityJson());
+		List<Response> r = cp.applyCommand("throwable", sma);
+
+		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
+		Assertions.assertEquals("Throwable exception thrown", ((ErrorResponse) r.get(0)).getMessage());
+	}
+
+	@Test
+	public void testParameterizedMethodCallWithExceptionReturn() {
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exception", new EntityJson());
+		List<Response> r = cp.applyCommand("exception", sma);
+
+		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
+		Assertions.assertEquals("Exception exception thrown", ((ErrorResponse) r.get(0)).getMessage());
+	}
+
+	@Test
+	public void testParameterizedMethodCallWithRuntimeReturn() {
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "runtime", new EntityJson());
+		List<Response> r = cp.applyCommand("runtime", sma);
+
+		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
+		Assertions.assertEquals("RuntimeException exception thrown", ((ErrorResponse) r.get(0)).getMessage());
+	}
+
+	@Test
+	public void testParameterizedMethodCallWithNoMessageException() {
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnomessage", new EntityJson());
+		List<Response> r = cp.applyCommand("exceptionnomessage", sma);
+
+		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
+		Assertions.assertEquals("Exception thrown with no message", ((ErrorResponse) r.get(0)).getMessage());
+	}
+
+	@Test
+	public void testParameterizedMethodCallWithNullCause() {
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnullcause", new EntityJson());
+		List<Response> r = cp.applyCommand("exceptionnullcause", sma);
+
+		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
+		Assertions.assertEquals("Exception thrown with no message", ((ErrorResponse) r.get(0)).getMessage());
+	}
+
+	@Test
+	public void testParameterizedMethodCallWithNullPointerCause() {
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnullpointercause", new EntityJson());
+		List<Response> r = cp.applyCommand("exceptionnullpointercause", sma);
+
+		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
+		Assertions.assertEquals("Null pointer exception thrown", ((ErrorResponse) r.get(0)).getMessage());
+	}
+
 }
