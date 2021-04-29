@@ -1,20 +1,12 @@
 package org.finos.symphony.toolkit.workflow.java.perform;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Action;
 import org.finos.symphony.toolkit.workflow.CommandPerformer;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
+import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolvers;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
@@ -24,6 +16,14 @@ import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Implements command performer by using method calls on workflow classes.
@@ -120,9 +120,14 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 						wf.getInstructions(cc), out, false, wf.gatherButtons(out, a)));
 			}
 			
-		} catch (Exception e) {
-			LOG.error("Couldn't perform command: ", e);
-			return Collections.singletonList(new ErrorResponse(wf, a, e.getMessage()));
+		} catch (Exception exception) {
+			LOG.error("Couldn't perform command: ", exception);
+			String exceptionMessage = Optional.ofNullable(exception.getMessage())
+					.orElse(Optional.ofNullable(exception.getCause())
+							.map(cause -> Optional.ofNullable(cause.getMessage())
+									.orElse("Exception thrown with no message"))
+							.orElse("Exception thrown with no exception details"));
+			return Collections.singletonList(new ErrorResponse(wf, a, exceptionMessage));
 		}
 	}
 	
