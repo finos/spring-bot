@@ -127,7 +127,7 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 	}
 
 	@Test
-	public void testMethodCallFor() {
+	public void testMethodCallForHandlingErrorResponse() {
 
 		V4Event e = new V4Event()
 				.payload(new V4Payload()
