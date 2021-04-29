@@ -120,10 +120,10 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 						wf.getInstructions(cc), out, false, wf.gatherButtons(out, a)));
 			}
 			
-		} catch (Throwable throwable) {
-			LOG.error("Couldn't perform command: ", throwable);
-			String exceptionMessage = Optional.ofNullable(throwable.getMessage())
-					.orElse(Optional.ofNullable(throwable.getCause())
+		} catch (Exception exception) {
+			LOG.error("Couldn't perform command: ", exception);
+			String exceptionMessage = Optional.ofNullable(exception.getMessage())
+					.orElse(Optional.ofNullable(exception.getCause())
 							.map(cause -> Optional.ofNullable(cause.getMessage())
 									.orElse("Exception thrown with no message"))
 							.orElse("Exception thrown with no exception details"));
