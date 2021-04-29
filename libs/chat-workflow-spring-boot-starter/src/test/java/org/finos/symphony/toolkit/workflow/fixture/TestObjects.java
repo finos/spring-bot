@@ -103,6 +103,13 @@ public class TestObjects {
 	public TestObjects exceptionnullcause(Word w1, Word w2) throws Throwable {
 		throw new Throwable(null, null);
 	}
+
+	@Exposed(description="Null pointer exception thrown")
+	public TestObjects exceptionnullpointercause(Word w1, Word w2) throws Exception {
+		Exception causeException = new Exception();
+		throw new Exception("Null pointer exception thrown", causeException);
+	}
+	
 	@Override
 	public String toString() {
 		return "TestObjects [items=" + items + "]";
