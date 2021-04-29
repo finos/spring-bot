@@ -104,11 +104,12 @@ public class KoreAIConfig {
 	public List<SymphonyStreamHandler> bridgeRegistrations() {
 		List<SymphonyStreamHandler> out = koreProperties.getInstances().stream()
 			.map(i -> koreAIBridgeFactory().buildBridge(i))
+			.filter(e -> e!=null)
 			.collect(Collectors.toList());
 		
 		LOG.info("Constructed {} bridges", out.size());
 		out.forEach(c -> LOG.debug(c.getInstance().getIdentity().getEmail()));
 		return out;
-	};
+	}
 	
 }
