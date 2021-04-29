@@ -125,5 +125,26 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 				Mockito.anyString(),
 				Mockito.anyString(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull());
 	}
-	
+
+	@Test
+	public void testMethodCallFor() {
+
+		V4Event e = new V4Event()
+				.payload(new V4Payload()
+						.messageSent(new V4MessageSent()
+								.message(new V4Message()
+										.message("<div data-format=\"PresentationML\"><p>/throwable 1</p></div>")
+										.user(new V4User().email("rob@example.com"))
+										.stream(new V4Stream()
+												.streamId("abc123")
+												.streamType("ROOM")
+										))));
+
+		handler.accept(e);
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.isNull(), Mockito.isNull(),
+				Mockito.argThat(s ->
+						s.contains("<messageML> - Throwable exception thrown</messageML>")),
+				Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull());
+	}
 }
