@@ -45,7 +45,7 @@ public class HealthEndpointIT {
 	MeterRegistry mr;
 	
 	@Test
-	public void testAutowire() throws Exception {
+	public void testAutowire() {
 		System.out.println(api.v3ExtendedHealth());
 		
 		HealthComponent h = he.health();
