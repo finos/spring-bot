@@ -127,4 +127,5 @@
 ## April 28, 2021 
  - #165, @Display annotation to override field name.
  - Fix for #163 Error Reporting Could Be Better.
+ - Fix for KoreAI Health Reporting #180
  
