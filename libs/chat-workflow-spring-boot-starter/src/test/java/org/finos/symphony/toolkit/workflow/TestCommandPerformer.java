@@ -128,4 +128,13 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		Assertions.assertEquals("Exception thrown with no message", ((ErrorResponse) r.get(0)).getMessage());
 	}
 
+	@Test
+	public void testParameterizedMethodCallWithNullPointerCause() {
+		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnullpointercause", new EntityJson());
+		List<Response> r = cp.applyCommand("exceptionnullpointercause", sma);
+
+		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
+		Assertions.assertEquals("Null pointer exception thrown", ((ErrorResponse) r.get(0)).getMessage());
+	}
+
 }
