@@ -110,6 +110,6 @@ public class KoreAIConfig {
 		LOG.info("Constructed {} bridges", out.size());
 		out.forEach(c -> LOG.debug(c.getInstance().getIdentity().getEmail()));
 		return out;
-	};
+	}
 	
 }
