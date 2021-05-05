@@ -128,4 +128,8 @@
  - #165, @Display annotation to override field name.
  - Fix for #163 Error Reporting Could Be Better.
  - Fix for KoreAI Health Reporting #180
+
+## May 06, 2021
+ - #171 Checkbox and Delete button Alignment
+ - #163 Error Reporting Could Be Better with some update
  
