@@ -48,7 +48,7 @@ public class CollectionConverter extends AbstractTableConverter {
 		sb.append(withFields(controller, elementClass, false, subVar, ej, cellDetail));
 		
 		if (editMode) {
-			sb.append(indent(subVar.depth+1) + "<td " + CENTER_ALIGN + "><checkbox name=\""+ variable.getFormFieldName() + ".${" + subVar.getDataPath() + "?index}." + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
+			sb.append(indent(subVar.depth+1) + "<td " + CENTER_AND_WIDTH_ALIGN + "><checkbox name=\""+ variable.getFormFieldName() + ".${" + subVar.getDataPath() + "?index}." + TableDeleteRows.SELECT_SUFFIX + "\" /></td>");
 			sb.append(indent(subVar.depth+1) + "<td " + CENTER_ALIGN + "><button name=\"" + variable.getFormFieldName() + "[${" + subVar.getDataPath() + "?index}]." + TableEditRow.EDIT_SUFFIX + "\">Edit</button></td>");
 		}
 
