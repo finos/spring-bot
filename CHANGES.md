@@ -132,4 +132,6 @@
 ## May 06, 2021
  - #171 Checkbox and Delete button Alignment
  - #163 Error Reporting Could Be Better with some update
+ - #182 Symphony Chat Workflow Annotations Documentation
+
  
