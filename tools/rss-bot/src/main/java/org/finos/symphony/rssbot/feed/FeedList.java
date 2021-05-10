@@ -63,13 +63,9 @@ public class FeedList {
 	
 	@Exposed(addToHelp = false, description = "Add Subscription", isButton = true, isMessage = false) 
 	public FeedList add(SubscribeRequest sr, FeedLoader loader) throws Exception {
-		SyndFeed feed = loader.createSyndFeed(sr.url);
-		Feed f = new Feed();
-		f.setName(feed.getTitle());
-		f.setDescription(feed.getDescription());
-		f.setUrl(sr.url);
-		if (!this.feeds.contains(f)) {
-			this.feeds.add(f);
+		Feed feed = loader.createFeed(sr.url);
+		if (!this.feeds.contains(feed)) {
+			this.feeds.add(feed);
 		}
 		this.lastUpdated = Instant.now();
 		return this;
