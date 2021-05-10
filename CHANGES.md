@@ -117,8 +117,15 @@
  - Added RSS Bot
  - Fixed #146, #144, #142
 
-## April 2021
+## April 09, 2021
 
  - More logical package structure #148
  - OBO Functionality #35
  - Fix for #149
+ - #176 devtool properties moved to parent chat-workflow dependency
+ 
+## April 28, 2021 
+ - #165, @Display annotation to override field name.
+ - Fix for #163 Error Reporting Could Be Better.
+ - Fix for KoreAI Health Reporting #180
+ 

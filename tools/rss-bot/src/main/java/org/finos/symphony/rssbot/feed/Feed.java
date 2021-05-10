@@ -1,5 +1,6 @@
 package org.finos.symphony.rssbot.feed;
 
+import org.finos.symphony.toolkit.spring.api.properties.ProxyProperties;
 import org.finos.symphony.toolkit.workflow.java.Work;
 
 @Work(editable = false, instructions = "RSS Feed")
@@ -8,7 +9,8 @@ public class Feed {
 	String name;
 	String description;
 	String url;
-	
+	ProxyProperties proxy;
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -56,6 +58,15 @@ public class Feed {
 	
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	
+	
+	public ProxyProperties getProxy() {
+		return proxy;
+	}
+
+	public void setProxy(ProxyProperties proxy) {
+		this.proxy = proxy;
 	}
 
 }
