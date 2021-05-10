@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 import org.finos.symphony.rssbot.feed.Article;
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
+import org.finos.symphony.rssbot.feed.Filter;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.Participant;
@@ -72,7 +73,7 @@ public class TimedAlerter {
 	@Autowired
 	FeedLoader loader;
 	
-	@Scheduled(cron="0 0 * * * MON-FRI")
+	@Scheduled(cron="${symphony.rss.cron:0 0 * * * MON-FRI}")
 	public void everyWeekdayHour() {
 		onAllStreams(s -> handleFeed(temporaryRoomDef(s)));
 	}
@@ -161,12 +162,14 @@ public class TimedAlerter {
 		int count = 0;
 		for (SyndEntry e : loader.createSyndFeed(f).getEntries()) {
 			if (e.getPublishedDate().toInstant().isAfter(since)) {
-				EntityJson ej = new EntityJson();
-				HashTag ht = createHashTag(f);
-				Article article = new Article(e.getTitle(), e.getAuthor(), e.getPublishedDate().toInstant(), e.getLink(), startTime, fl, ht);
-				ej.put(EntityJsonConverter.WORKFLOW_001, article);
-				responseHandler.accept(new FormResponse(w, a, ej, f.getName(), e.getAuthor(), article, false, w.gatherButtons(article, a)));
-				count ++;
+				if (passesFilter(e, fl)) {
+					EntityJson ej = new EntityJson();
+					HashTag ht = createHashTag(f);
+					Article article = new Article(e.getTitle(), e.getAuthor(), e.getPublishedDate().toInstant(), e.getLink(), startTime, fl, ht);
+					ej.put(EntityJsonConverter.WORKFLOW_001, article);
+					responseHandler.accept(new FormResponse(w, a, ej, f.getName(), e.getAuthor(), article, false, w.gatherButtons(article, a)));
+					count ++;
+				}
 			}
 			
 		}
@@ -174,6 +177,16 @@ public class TimedAlerter {
 		return count;
 	}
 	
+	private boolean passesFilter(SyndEntry e, FeedList fl) {
+		for (Filter f : fl.getFilters()) {
+			if (!f.test(e.getTitle())) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
 	Pattern p = Pattern.compile("[^\\w]");
 
 	private HashTag createHashTag(Feed f) {
