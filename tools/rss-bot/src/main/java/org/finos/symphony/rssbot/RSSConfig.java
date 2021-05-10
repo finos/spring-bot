@@ -48,6 +48,6 @@ public class RSSConfig  {
 	
 	@Bean
 	FeedLoader feedLoader() {
-		return new FeedLoader(properties.getProxy());
+		return new FeedLoader(properties.getProxies());
 	}
 }

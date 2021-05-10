@@ -159,7 +159,7 @@ public class TimedAlerter {
 
 	private int allItemsSince(Instant startTime, Feed f, Addressable a, Instant since, FeedList fl) throws Exception {
 		int count = 0;
-		for (SyndEntry e : loader.createSyndFeed(f.getUrl()).getEntries()) {
+		for (SyndEntry e : loader.createSyndFeed(f).getEntries()) {
 			if (e.getPublishedDate().toInstant().isAfter(since)) {
 				EntityJson ej = new EntityJson();
 				HashTag ht = createHashTag(f);
