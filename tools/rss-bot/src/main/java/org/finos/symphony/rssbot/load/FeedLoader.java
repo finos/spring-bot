@@ -25,7 +25,7 @@ public class FeedLoader {
 	List<ProxyProperties> pp;
 	
 	public FeedLoader(List<ProxyProperties> proxy) {
-		if (proxy.size() == 0) {
+		if ((proxy == null) ||  (proxy.size() == 0)) {
 			ProxyProperties noProxy = new ProxyProperties();
 			noProxy.setHost(ProxyProperties.NO_PROXY);
 			this.pp = Collections.singletonList(noProxy);
