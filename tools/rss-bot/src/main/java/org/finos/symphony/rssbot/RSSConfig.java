@@ -6,6 +6,7 @@ package org.finos.symphony.rssbot;
 import org.finos.symphony.rssbot.feed.Article;
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
+import org.finos.symphony.rssbot.feed.Filter;
 import org.finos.symphony.rssbot.feed.SubscribeRequest;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
@@ -38,6 +39,8 @@ public class RSSConfig  {
 		wf.addClass(Feed.class);
 		wf.addClass(SubscribeRequest.class);
 		wf.addClass(Article.class);
+		wf.addClass(Filter.class);
+		wf.addClass(Filter.Type.class);
 		return wf;
 	}
 	

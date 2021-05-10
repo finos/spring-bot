@@ -9,9 +9,9 @@ public class Filter implements Predicate<String> {
 	
 	String toMatch;
 	
-	enum Type { INCLUDE, EXCLUDE }
+	public enum Type { INCLUDE, EXCLUDE }
 
-	Type type = Type.EXCLUDE;
+	private Type usage = Type.EXCLUDE;
 
 	public String getToMatch() {
 		return toMatch;
@@ -21,18 +21,18 @@ public class Filter implements Predicate<String> {
 		this.toMatch = toMatch;
 	}
 
-	public Type getType() {
-		return type;
+	public Type getUsage() {
+		return usage;
 	}
 
-	public void setType(Type type) {
-		this.type = type;
+	public void setUsage(Type type) {
+		this.usage = type;
 	}
 
 	@Override
 	public boolean test(String t) {
 		boolean contains = t.toLowerCase().contains(toMatch.toLowerCase());
-		switch (getType()) {
+		switch (getUsage()) {
 		case INCLUDE:
 			return contains;
 		case EXCLUDE:
