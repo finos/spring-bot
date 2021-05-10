@@ -15,7 +15,9 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 
 @Work(editable = true, instructions = "Feeds being reported in this chat")
-@Template(edit = "classpath:/feedlist-edit.ftl", view = "classpath:/feedlist-view.ftl")
+@Template(
+		/*edit = "classpath:/feedlist-edit.ftl", */
+		view = "classpath:/feedlist-view.ftl")
 public class FeedList {
 
 	List<Feed> feeds = new ArrayList<Feed>();
