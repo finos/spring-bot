@@ -1,18 +1,25 @@
 package org.finos.symphony.webhookbot.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.java.Work;
 
 @Work
 public class WebHook {
+	
+	enum TemplateMode { CHICLET, TABLE, CUSTOM }
 
 	private HashTag hookId;
 	private HashTag hashTag;
 	private String displayName;
 	private String url;
-	//private List<Filter> filters = new ArrayList<Filter>();
+	private List<String> fields = new ArrayList<String>();
+	private String template;
+	private TemplateMode mode = TemplateMode.TABLE;
+	private List<Filter> filters = new ArrayList<Filter>();
 	
-	private Template template;
 	private boolean active = true;
 	
 	public boolean isActive() {
@@ -70,5 +77,34 @@ public class WebHook {
 	public void setHookId(HashTag hookId) {
 		this.hookId = hookId;
 	}
+	
+	public List<String> getFields() {
+		return fields;
+	}
+
+	public void setFields(List<String> fields) {
+		this.fields = fields;
+	}
+
+	public TemplateMode getMode() {
+		return mode;
+	}
+
+	public void setMode(TemplateMode mode) {
+		this.mode = mode;
+	}
+
+	public List<Filter> getFilters() {
+		return filters;
+	}
+
+	public void setFilters(List<Filter> filters) {
+		this.filters = filters;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
 	
 }
