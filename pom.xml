@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>7.20.1-SNAPSHOT</version>
+	<version>7.20.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
@@ -97,6 +97,14 @@
 			<id>sureshrupnar</id>
 			<name>Suresh Rupnar</name>
 			<email>suresh.rupnar@db.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>amsidhlokhande</id>
+			<name>Amsidh Lokhande</name>
+			<email>amsidh-babasha.lokhande@db.com</email>
 			<roles>
 				<role>developer</role>
 			</roles>

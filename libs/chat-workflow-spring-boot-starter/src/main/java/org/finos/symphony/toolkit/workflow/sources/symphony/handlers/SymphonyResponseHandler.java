@@ -1,20 +1,10 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import com.symphony.api.agent.MessagesApi;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.form.HeaderDetails;
-import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
-import org.finos.symphony.toolkit.workflow.response.DataResponse;
-import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.Response;
+import org.finos.symphony.toolkit.workflow.response.*;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
@@ -23,7 +13,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.util.StreamUtils;
 
-import com.symphony.api.agent.MessagesApi;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * This is responsible for taking {@link Response} objects and pushing them back to Symphony.
@@ -83,7 +77,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	}
 
 	private void processErrorResponse(MessageResponse t) {
-		processDataResponse("!"+t.getMessage(), t, null);
+		processDataResponse(" - " + t.getMessage(), t, null);
 	}
 
 	private void processMessageResponse(MessageResponse t) {
