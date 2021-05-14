@@ -1,7 +1,7 @@
 
 <#-- starting template -->
 <form 
-  id="org.finos.symphony.toolkit.workflow.Person">
+  id="org.finos.symphony.toolkit.workflow.fixture.Person">
  <table>
  <tr><td><b>Names:</b></td><td>
   <span class="tempo-text-color--red">${entity.errors.contents['names']!''}</span>
