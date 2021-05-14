@@ -1,6 +1,6 @@
 {
   "workflow_001" : {
-    "type" : "org.finos.symphony.toolkit.workflow.person",
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.person",
     "names" : [ "abc", "pqr" ],
     "addresses" : [ {
       "city" : "Pune"
