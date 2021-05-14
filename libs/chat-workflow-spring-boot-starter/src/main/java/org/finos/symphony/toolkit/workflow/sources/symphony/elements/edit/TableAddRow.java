@@ -49,7 +49,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 			try {
 				out = c.newInstance(); 
 			} catch (Exception e1) {
-				throw new UnsupportedOperationException("Can't instantiate", e1);
+				return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", c, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 			}
 			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 		} else if (verb.endsWith(DO_SUFFIX)) {
