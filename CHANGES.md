@@ -134,4 +134,7 @@
  - Fix for #163, Error Reporting Could Be Better with some update
  - Fix for #182, Symphony Chat Workflow Annotations Documentation
 
+## May 21, 2021
+ - Fix for #190, Documentation and Images for Chat Workflow all in root of project
+
  

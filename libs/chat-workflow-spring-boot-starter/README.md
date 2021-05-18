@@ -361,4 +361,4 @@ Depending on the arguments of the command, they may be shows as buttons, or sugg
 
 ## Symphony Chat Workflow Annotations:
 You can find more details about the annotations used in Symphony Chat Workflow in below link
-  - [View Chat Workflow Annotations](../../ANNOTATIONS.md)
+  - [View Chat Workflow Annotations](ANNOTATIONS.md)
