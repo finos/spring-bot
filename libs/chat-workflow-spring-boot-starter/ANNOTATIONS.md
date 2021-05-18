@@ -20,7 +20,7 @@ When editable is True , UI renders as :
 
 ![Dependency Work Annotation2](images/Work-Annotation2.png) 
  
-Click on the � to get the Edit button
+Click on the … to get the Edit button
 
 
 ## @Template
@@ -127,5 +127,5 @@ Typing in /help in any room fetches the help Items the bot can support in . Resu
             private String email;
         ```
 
-   ![Dependency Display Annotation2](images/Display-Annotation2.png) 
+   ![Dependency Display Annotation2](images/Display-Annotation3.png) 
    
