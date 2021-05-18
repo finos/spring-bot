@@ -19,7 +19,7 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
 
             @Override
             public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
-                String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
+                String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : CENTER_AND_WIDTH_ALIGN);
                 String fieldNameOrientation = getFieldNameOrientation(f);
                 return StringUtils.hasText(fieldNameOrientation) ? indent(variable.depth+1) + "<td " + align + "><b>" + fieldNameOrientation + "</b></td>" : "";
             }

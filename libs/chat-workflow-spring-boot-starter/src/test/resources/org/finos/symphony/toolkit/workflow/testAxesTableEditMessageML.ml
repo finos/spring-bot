@@ -8,13 +8,13 @@
   
   <table><thead><tr>
   
-    <td ><b>Isin</b></td>
+    <td style="text-align:center; width:10%" ><b>Isin</b></td>
   
     <td style="text-align:center;" ><b>Bid Axed</b></td>
   
     <td style="text-align:center;" ><b>Ask Axed</b></td>
   
-    <td ><b>Creator</b></td>
+    <td style="text-align:center; width:10%" ><b>Creator</b></td>
   
     <td style="text-align: right;"><b>Bid Qty</b></td>
   
@@ -36,7 +36,7 @@
    <td style="text-align: right;">${iB.bidQty!''}</td>
   
    <td style="text-align: right;">${iB.askQty!''}</td>
-   <td style="text-align:center;" ><checkbox name="items.${iB?index}.selected" /></td>
+   <td style="text-align:center; width:10%" ><checkbox name="items.${iB?index}.selected" /></td>
    <td style="text-align:center;" ><button name="items[${iB?index}].table-edit-row">Edit</button></td>
   </tr>
   </#list>

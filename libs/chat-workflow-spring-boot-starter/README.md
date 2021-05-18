@@ -359,3 +359,6 @@ The bot _always_ supports the user typing `/help`, which will reveal the command
 
 Depending on the arguments of the command, they may be shows as buttons, or suggestions of what to type.
 
+## Symphony Chat Workflow Annotations:
+You can find more details about the annotations used in Symphony Chat Workflow in below link
+  - [View Chat Workflow Annotations](../../ANNOTATIONS.md)

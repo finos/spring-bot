@@ -11,6 +11,7 @@ public abstract class AbstractTypeConverter implements TypeConverter {
 	public static final int BOTTOM_PRIORITY = 2000;
 	
 	public static final String CENTER_ALIGN = "style=\"text-align:center;\" ";
+	public static final String CENTER_AND_WIDTH_ALIGN = "style=\"text-align:center; width:10%\" ";
 	public static final String RIGHT_ALIGN = "style=\"text-align: right;\"";
 	
 
