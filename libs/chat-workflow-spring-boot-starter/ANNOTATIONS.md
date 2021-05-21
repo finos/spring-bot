@@ -139,12 +139,6 @@ By doing this /approve or approve button will no longer be visible in Help page.
 ![Dependency Exposed Annotation2](images/Exposed-Annotation2.png)
 
 
-3) @Exposed Annotation governs the /help
-Typing in /help in any room fetches the help Items the bot can support in . Result may render buttons or suggestions depending on method definition  Ex :
-
-![Dependency Exposed Annotation2](images/Exposed-Annotation2.png)    
-
-
 ## @Display Annotation:
    This annotation is used to customize the workflow attribute properties to display in symphony bot application. We can override the name, show/hide the attribute.
     
