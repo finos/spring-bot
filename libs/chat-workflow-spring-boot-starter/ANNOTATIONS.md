@@ -1,5 +1,5 @@
 ## Symphony Chat Workflow Annotations
-This Document provides a detailed insight for the following Annotations: 
+This Document provides a detailed insight for the following Annotations:
 
 ## @Work
 
@@ -12,27 +12,27 @@ Syntax :
 
 Here editable says whether the bean is editable by Symphony user
 Depending on the value of editable field, edit screen is available / hidden in UI
-When editable = false , UI renders as : 
+When editable = false , UI renders as :
 
-![Dependency Work Annotation1](images/Work-Annotation1.png)  
+![Dependency Work Annotation1](images/Work-Annotation1.png)
 
-When editable is True , UI renders as : 
+When editable is True , UI renders as :
 
-![Dependency Work Annotation2](images/Work-Annotation2.png) 
- 
-Click on the … to get the Edit button
+![Dependency Work Annotation2](images/Work-Annotation2.png)
+
+Click on the � to get the Edit button
 
 
 ## @Template
 
-This Annotation conveys the chat-workflow-spring-boot-starter to use a template rather than build its 
+This Annotation conveys the chat-workflow-spring-boot-starter to use a template rather than build its
 Own
 
 
 ## @Exposed
 This Annotation enables a method to be exposed to the user in a chat room
 
-Syntax : 
+Syntax :
 ```
 @Exposed(description="Begin New Expense Claim")
   public static Claim open(StartClaim c) {
@@ -42,11 +42,11 @@ Syntax :
     return out;
   }
 ```
-UI renders as : 
+UI renders as :
 
-![Dependency Exposed Annotation2](images/Exposed-Annotation1.png)  
+![Dependency Exposed Annotation2](images/Exposed-Annotation1.png)
 
-Explanation : 
+Explanation :
 When user types /open in the Room where this bot is added, Open() is called .
 This Method requires an object of StartClaim class , Hence User is provided with a form to create object of StartClaim
 The values passed to Description and amount are in turn passed to Claim class properties
@@ -61,29 +61,102 @@ Syntax  :
 ```
 If the room is not the one mentioned in rooms parameter , An exception will be thrown
 
-3) @Exposed Annotation governs the /help
-Typing in /help in any room fetches the help Items the bot can support in . Result may render buttons or suggestions depending on method definition  Ex :
+3) @Exposed Annotation also has the option of enabling the Items that Bot can support can be available as Button format or by Command.
 
-![Dependency Exposed Annotation2](images/Exposed-Annotation2.png)    
+   @Exposed takes isButton parameter which is a Boolean with by default value "true". It works in the following way-
+
+Syntax:
+```
+        @Exposed(description="Begin New Expense Claim" , isButton = false)
+	public static Claim open() {
+	..
+	}
+
+	@Exposed(description = "Approve an expense claim", isButton = false )
+	public Claim approve() {
+	..	
+	}
+	
+	@Exposed(description = "New Full Expense Form") 
+	public static Claim full() {
+	..		
+	}
+
+```
+This results in unavailability of the buttons for /approve and /open.
+
+![Dependency Exposed Annotation2](images/Exposed-Annotation3.png)
+
+4) Next is isMessage Parameter which is also a Boolean type with default of "true". This helps to allow the bot work by typing the commands in the chat room.
+
+Syntax:
+```
+        @Exposed(description="Begin New Expense Claim")
+	public static Claim open() {
+	..
+	}
+
+	@Exposed(description = "Approve an expense claim" , isMessage = false)
+	public Claim approve() {
+	..	
+	}
+	
+	@Exposed(description = "New Full Expense Form") 
+	public static Claim full() {
+	..		
+	}
+	
+```
+By adding like this /approve command no longer is available to talk with bot.
+
+![Dependency Exposed Annotation2](images/Exposed-Annotation4.png)
+
+5) @Exposed also have addToHelp Parameter which is a boolean by default true that allows the function to be visible in Help page or not.
+```
+        @Exposed(description="Begin New Expense Claim")
+	public static Claim open() {
+	..
+	}
+
+	@Exposed(description = "Approve an expense claim" , addToButton = false)
+	public Claim approve() {
+	..	
+	}
+	
+	@Exposed(description = "New Full Expense Form") 
+	public static Claim full() {
+	..	
+	}
+```
+
+By doing this /approve or approve button will no longer be visible in Help page.But we can still avail its feature by typing the command in chat.
+
+![Dependency Exposed Annotation2](images/Exposed-Annotation5.png)
+
+6) @Exposed Annotation governs the /help
+   Typing in /help in any room fetches the help Items the bot can support in . Result may render buttons or suggestions depending on method definition  Ex :
+
+![Dependency Exposed Annotation2](images/Exposed-Annotation2.png)
+
 
 
 ## @Display Annotation:
-   This annotation is used to customize the workflow attribute properties to display in symphony bot application. We can override the name, show/hide the attribute.
-    
-   This is an optional annotation. If you haven't used this annotation then workflow attribute will be displayed with default syntax of camel case having space between words.
-    ```
-    Syntax:
-    @Display(name = "Amount", visible = true)
-    Number amt;
-    ```
-    
-   Properties of @Display annotation:
-    Name -> This property is used to override the name of the attribute to display on symphony bot. 
-    Visible -> This property is used to show or hide the workflow attribute to be displayed on symphony bot. Default value is true.
+This annotation is used to customize the workflow attribute properties to display in symphony bot application. We can override the name, show/hide the attribute.
+
+This is an optional annotation. If you haven't used this annotation then workflow attribute will be displayed with default syntax of camel case having space between words.
+```
+Syntax:
+@Display(name = "Amount", visible = true)
+Number amt;
+```
+
+Properties of @Display annotation:
+Name -> This property is used to override the name of the attribute to display on symphony bot.
+Visible -> This property is used to show or hide the workflow attribute to be displayed on symphony bot. Default value is true.
 
 ## Examples of Display Annotation:
-   --	Without Display Annotation:
-   
+--	Without Display Annotation:
+
         ```
         @Work(name = "Person Form", editable = true, instructions = "Person Template")
         public class Person {
@@ -93,10 +166,10 @@ Typing in /help in any room fetches the help Items the bot can support in . Resu
             private String emailId;
         ```    
 
-   ![Dependency Display Annotation1](images/Display-Annotation1.png) 
+![Dependency Display Annotation1](images/Display-Annotation1.png)
 
 
-   --	Display Annotation with name and visible parameters:
+--	Display Annotation with name and visible parameters:
 
         ```
         @Work(editable = true, instructions = "Person Form", name = "Person")
@@ -110,10 +183,10 @@ Typing in /help in any room fetches the help Items the bot can support in . Resu
             private String email;
         ```
 
-   ![Dependency Display Annotation2](images/Display-Annotation2.png) 
+![Dependency Display Annotation2](images/Display-Annotation2.png)
 
 
-   --	Display annotation with visible true/false:
+--	Display annotation with visible true/false:
 
         ```
         @Work(editable = true, instructions = "Person Form", name = "Person")
@@ -127,5 +200,14 @@ Typing in /help in any room fetches the help Items the bot can support in . Resu
             private String email;
         ```
 
-   ![Dependency Display Annotation2](images/Display-Annotation3.png) 
-   
+![Dependency Display Annotation2](images/Display-Annotation3.png)
+
+Finally here's a small table for quicker understanding or reference for the above discussed Annotations.
+
+@Work is associated with Class.
+
+@Exposed is associated with Method.
+
+@Display is associated with the attributes we declare in class.
+
+![Dependency Display Annotation2](images/QuickView.png) 
