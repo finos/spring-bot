@@ -50,7 +50,7 @@ Explanation :
 When user types /open in the Room where this bot is added, Open() is called .
 This Method requires an object of StartClaim class , Hence User is provided with a form to create object of StartClaim
 The values passed to Description and amount are in turn passed to Claim class properties
-2) @Exposed annotation can also be employed to verify the Workflow is applicable to specific room Only 
+2) @Exposed' annotation can also be employed to verify the Workflow is applicable to specific room Only 
 
 Syntax  :
 ```
@@ -85,7 +85,7 @@ Syntax:
 ```
 This results in unavailability of the buttons for /approve and /open.
 
-![Dependency Exposed Annotation2](images/Exposed-Annotation3.png)
+![Dependency Exposed Annotation3](images/Exposed-Annotation3.png)
 
 4) Next is isMessage Parameter which is also a Boolean type with default of "true". This helps to allow the bot work by typing the commands in the chat room.
 
@@ -109,7 +109,7 @@ Syntax:
 ```
 By adding like this /approve command no longer is available to talk with bot.
 
-![Dependency Exposed Annotation3](images/Exposed-Annotation4.png)
+![Dependency Exposed Annotation4](images/Exposed-Annotation4.png)
 
 5) @Exposed also have addToHelp Parameter which is a boolean by default true that allows the function to be visible in Help page or not.
 ```
@@ -131,7 +131,7 @@ By adding like this /approve command no longer is available to talk with bot.
 
 By doing this /approve or approve button will no longer be visible in Help page.But we can still avail its feature by typing the command in chat.
 
-![Dependency Exposed Annotation2](images/Exposed-Annotation5.png)
+![Dependency Exposed Annotation5](images/Exposed-Annotation5.png)
 
 6) @Exposed Annotation governs the /help
    Typing in /help in any room fetches the help Items the bot can support in . Result may render buttons or suggestions depending on method definition  Ex :
@@ -199,9 +199,9 @@ By doing this /approve or approve button will no longer be visible in Help page.
             private String email;
         ```
 
-   ![Dependency Display Annotation2](images/Display-Annotation3.png) 
+   ![Dependency Display Annotation3](images/Display-Annotation3.png) 
 
-Finally here's a small table for quicker understanding or reference for the above discussed Annotations.
+Finally, here's a small table for quicker understanding or reference for the above discussed Annotations.
 
 @Work is associated with Class.
 
@@ -209,4 +209,4 @@ Finally here's a small table for quicker understanding or reference for the abov
 
 @Display is associated with the attributes we declare in class.
 
-![Dependency Display Annotation2](images/QuickView.png)
+![Dependency Quick View](images/QuickView.png)
