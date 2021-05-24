@@ -3,7 +3,17 @@ This Document provides a detailed insight for the following Annotations:
 
 ## @Work
 
-The @Work annotation, which provides a human-readable name and instructions for people to perform a specific set of actions
+The @Work annotation, which provides a human-readable name and instructions for people to perform a specific set of actions.
+Following are the available arguments we can pass into this annotation.
+
+|Sl No.|Attribute|Type|Default|Value|
+|:---- |  :---- |:-----|:-----|:-----|
+|1.|name|String|NA|-|
+|2.|instructions|String|NA|-|
+|3.|editable|Boolean|YES|False|
+|4.|rooms|String[]|NA|-|
+
+
 
 Syntax :
    ```
@@ -31,6 +41,14 @@ Own
 
 ## @Exposed
 This Annotation enables a method to be exposed to the user in a chat room
+
+|Sl No.|Attribute|Type|Default|Value|
+|:---- |:---- |:-----|:-----|:-----|
+|1.|description|String|NA|-|
+|2.|addToHelp|Boolean|YES|True|
+|3.|isMessage|Boolean|YES|True|
+|4.|isButton|Boolean|YES|True|
+|5.|rooms|String[]|NA|-|
 
 Syntax : 
 ```
@@ -141,7 +159,12 @@ By doing this /approve or approve button will no longer be visible in Help page.
 
 ## @Display Annotation:
    This annotation is used to customize the workflow attribute properties to display in symphony bot application. We can override the name, show/hide the attribute.
-    
+
+|Sl No.|Attribute|Type|Default|Value|
+|:---- |:---- |:-----|:-----|:-----|
+|1.|name|String|NA|-|
+|2.|visible|Boolean|YES|True|
+
    This is an optional annotation. If you haven't used this annotation then workflow attribute will be displayed with default syntax of camel case having space between words.
     ```
     Syntax:
@@ -201,12 +224,3 @@ By doing this /approve or approve button will no longer be visible in Help page.
 
    ![Dependency Display Annotation3](images/Display-Annotation3.png) 
 
-Finally, here's a small table for quicker understanding or reference for the above discussed Annotations.
-
-@Work is associated with Class.
-
-@Exposed is associated with Method.
-
-@Display is associated with the attributes we declare in class.
-
-![Dependency Quick View](images/QuickView.png)
