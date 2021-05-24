@@ -22,7 +22,7 @@
   
   <table><thead><tr>
   
-    <td style="text-align:center; width:10%" ><b>City</b></td>
+    <td><b>City</b></td>
    <td style="text-align:center;" ><button name="addresses.table-delete-rows">Delete</button></td>
    <td style="text-align:center;" ><button name="addresses.table-add-row">New</button></td>
   </tr></thead><tbody>
