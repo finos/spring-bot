@@ -16,7 +16,7 @@
   
   <table><thead><tr>
   
-    <td style="text-align:center; width:10%" ><b>City</b></td>
+    <td><b>City</b></td>
   </tr></thead><tbody>
   <#list entity.workflow_001.addresses as iB>
   <tr>
