@@ -112,8 +112,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 				responseBuilder,
 				properties.getUrl(), 
 				JsonNodeFactory.instance, 
-				properties.getJwt(),
-				tmf);
+				properties.getJwt());
 	}
 	
 	public KoreAIResponseBuilder koreAIResponseBuilder() {

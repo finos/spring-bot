@@ -57,7 +57,7 @@ public class KoreAIRequesterImplTest {
 				.withBody(response)));
 		requester = new KoreAIRequesterImpl(responseHandler, 
 				new KoreAIResponseBuilderImpl(om, JsonNodeFactory.instance),
-				"http://localhost:9998/kore", JsonNodeFactory.instance, "some-jwt", null);
+				"http://localhost:9998/kore", JsonNodeFactory.instance, "some-jwt");
 		((KoreAIRequesterImpl) requester).afterPropertiesSet();
 		wireMockRule.start();
 	}
