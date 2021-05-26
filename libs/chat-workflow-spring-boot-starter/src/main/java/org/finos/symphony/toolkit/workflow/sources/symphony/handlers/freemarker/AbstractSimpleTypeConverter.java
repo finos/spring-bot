@@ -10,7 +10,7 @@ import org.finos.symphony.toolkit.json.EntityJson;
  * @author rob@kite9.com
  *
  */
-public abstract class AbstractSimpleTypeConverter extends AbstractTypeConverter {
+public abstract class AbstractSimpleTypeConverter extends AbstractTypeConverter implements SimpleTypeConverter {
 
 	public AbstractSimpleTypeConverter(int priority) {
 		super(priority);

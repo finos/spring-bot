@@ -2,6 +2,8 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 
@@ -11,27 +13,43 @@ import org.finos.symphony.toolkit.json.EntityJson;
  * @author rob@kite9.com
  *
  */
-public abstract class AbstractComplexTypeConverter extends AbstractTypeConverter {
+public abstract class AbstractComplexTypeConverter extends AbstractTypeConverter implements ComplexTypeConverter {
 
 	public AbstractComplexTypeConverter(int priority) {
 		super(priority);
 	}
 
-	public static String withFields(WithType controller, Class<?> c, boolean editMode, Variable variable, EntityJson ej, WithField displayer) {
+	public String withFields(WithType controller, Class<?> c, boolean editMode, Variable variable, EntityJson ej, WithField displayer) {
 		StringBuilder out = new StringBuilder();
-		if ((c != Object.class) && (c!=null)) {
-			out.append(withFields(controller, c.getSuperclass(), editMode, variable, ej, displayer));
-	
-			for (Field f : c.getDeclaredFields()) {
-				if (!Modifier.isStatic(f.getModifiers())) {
-					String text = displayer.apply(f, editMode, variable.field(f.getName()), ej, controller);
-					out.append(indent(variable.depth));
-					out.append(text);
-				}
-			}
+		
+		List<Field> fields = getFields(c);
+		
+		for (Field f : fields) {
+			String text = displayer.apply(f, editMode, variable.field(f.getName()), ej, controller);
+			out.append(indent(variable.depth));
+			out.append(text);
 		}
 	
 		return out.toString();
 	}
 
+	@Override
+	public List<Field> getFields(Class<?> c) {
+		List<Field> out = new ArrayList<Field>();
+		
+		if ((c != Object.class) && (c!=null)) {
+			
+			out.addAll(getFields(c.getSuperclass()));
+			
+			for (Field f : c.getDeclaredFields()) {
+				if (!Modifier.isStatic(f.getModifiers())) {
+					out.add(f);
+				}
+			}
+		} 
+		
+		return out;
+	}
+
+	
 }
