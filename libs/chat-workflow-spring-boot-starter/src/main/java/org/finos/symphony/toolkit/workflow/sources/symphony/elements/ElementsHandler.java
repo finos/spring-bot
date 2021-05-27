@@ -11,10 +11,10 @@ import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter.UnconvertedContent;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
@@ -103,7 +103,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 	}
 
 	private boolean validated(Object currentForm, Errors e) {
-		if ((currentForm != null) && (!(currentForm instanceof UnconvertedContent))) {
+		if ((currentForm != null) && (!(currentForm instanceof FormSubmission))) {
 			v.validate(currentForm, e);
 			return !e.hasErrors();
 		} else {

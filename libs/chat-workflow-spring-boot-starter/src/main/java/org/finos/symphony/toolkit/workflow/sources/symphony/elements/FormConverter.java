@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,19 +24,6 @@ public class FormConverter {
 	
 	private static Logger LOG = LoggerFactory.getLogger(FormConverter.class);
 	
-	public static class UnconvertedContent {
-		
-		public final Class<?> expected;
-		public final Object structure;
-		
-		public UnconvertedContent(Class<?> expected, Object structure) {
-			super();
-			this.expected = expected;
-			this.structure = structure;
-		}
-	}
-
-
 	private ObjectMapper om = new ObjectMapper();
 	
 	
@@ -83,7 +71,7 @@ public class FormConverter {
 			LOG.debug("Couldn't convert primitive {} ",formValues, e);
 		}
 		
-		return new UnconvertedContent(c, out);
+		return new FormSubmission(c, out);
 	}
 
 	private Object placeInStructure(Object ctx, String[] parts, int p, Object object, String originalKey) {

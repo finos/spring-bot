@@ -35,6 +35,11 @@ public interface Word extends Content {
 			public String toString() {
 				return "Word ["+s+"]";
 			}
+
+			@Override
+			public boolean matches(String chatSpec) {
+				return s.equalsIgnoreCase(chatSpec);
+			}
 			
 			
 		};

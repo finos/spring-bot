@@ -9,12 +9,12 @@ import java.util.stream.IntStream;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.AbstractElementsConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsAction;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -46,7 +46,7 @@ public class TableDeleteRows extends AbstractElementsConsumer {
 			tableLocation = TableEditRow.fixSpel(tableLocation);
 			Expression e = spel.parseExpression(tableLocation);
 			List<Object> table = (List<Object>) e.getValue(data);
-			Object deleteStructure = ((FormConverter.UnconvertedContent)ea.getFormData()).structure;
+			Object deleteStructure = ((FormSubmission)ea.getFormData()).structure;
 			
 			String mapLocation = convertSpelToMapSpel(tableLocation);
 			e = spel.parseExpression(mapLocation);
