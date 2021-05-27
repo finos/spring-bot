@@ -5,9 +5,9 @@ import org.finos.symphony.toolkit.workflow.fixture.TestOb6;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
+import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsAction;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter.UnconvertedContent;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
@@ -96,7 +96,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
     @Test
     public void testDeleteRows() {
         Map<String, Object> selects = Collections.singletonMap("items", Collections.singletonList(Collections.singletonMap("selected", "true")));
-        UnconvertedContent uc = new UnconvertedContent(TestObjects.class, selects);
+        FormSubmission uc = new FormSubmission(TestObjects.class, selects);
         ElementsAction ea = new ElementsAction(wf, room, u, uc, "items." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestObjects.class, fr.getFormClass());
@@ -195,7 +195,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         ejc = new EntityJsonConverter(wf);
 
         Map<String, Object> selects = Collections.singletonMap("names", Collections.singletonList(Collections.singletonMap("selected", "true")));
-        UnconvertedContent uc = new UnconvertedContent(TestOb6.class, selects);
+        FormSubmission uc = new FormSubmission(TestOb6.class, selects);
         ElementsAction ea = new ElementsAction(wf, room, u, uc, "names." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
@@ -213,7 +213,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         ejc = new EntityJsonConverter(wf);
 
         Map<String, Object> selects = Collections.singletonMap("integerList", Collections.singletonList(Collections.singletonMap("selected", "true")));
-        UnconvertedContent uc = new UnconvertedContent(TestOb6.class, selects);
+        FormSubmission uc = new FormSubmission(TestOb6.class, selects);
         ElementsAction ea = new ElementsAction(wf, room, u, uc, "integerList." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
@@ -231,7 +231,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         ejc = new EntityJsonConverter(wf);
 
         Map<String, Object> selects = Collections.singletonMap("numberList", Collections.singletonList(Collections.singletonMap("selected", "true")));
-        UnconvertedContent uc = new UnconvertedContent(TestOb6.class, selects);
+        FormSubmission uc = new FormSubmission(TestOb6.class, selects);
         ElementsAction ea = new ElementsAction(wf, room, u, uc, "numberList." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());

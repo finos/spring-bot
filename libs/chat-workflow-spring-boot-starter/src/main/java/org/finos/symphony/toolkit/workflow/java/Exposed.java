@@ -6,9 +6,16 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Exposed {
 
+	String[] value();
+		
 	String description() default "";
 	
 	String[] rooms() default {};
+	
+	/**
+	 * This means that the exposed method only applies buttons on a given form.
+	 */
+	String formName() default ""; 
 	
 	boolean addToHelp() default true;
 	

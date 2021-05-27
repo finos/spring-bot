@@ -68,7 +68,8 @@ public interface Content {
 		
 		X removed;
 		
-		
-		
 	}
+	
+	
+	boolean matches(String chatSpec);
 }
