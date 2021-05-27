@@ -5,11 +5,11 @@ import org.finos.symphony.toolkit.workflow.java.Work;
 @Work(editable = true, instructions = "Decide which webhooks are reported in Symphony")
 public class Filter {
 
-	enum Type { INCLUDE, EXCLUDE }
+	enum Usage { INCLUDE, EXCLUDE }
 	
 	enum Part { HEADER, BODY }
 	
-	private Type type;
+	private Usage type;
 	
 	private Part part;
 	
@@ -17,11 +17,11 @@ public class Filter {
 	
 	private String value;
 
-	public Type getType() {
+	public Usage getUsage() {
 		return type;
 	}
 
-	public void setType(Type type) {
+	public void setUsage(Usage type) {
 		this.type = type;
 	}
 
