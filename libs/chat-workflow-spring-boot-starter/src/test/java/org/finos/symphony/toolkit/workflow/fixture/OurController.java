@@ -10,12 +10,30 @@ import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 
 public class OurController {
+	
+	// todo: do we need any other kinds of wildcards?
+	@Exposed("*") 
+	public void listenToEverything(Message m) {
+		// guarav's reminder bot should do this - it needs to parse the date out of every
+		// message
+	}
+	
+	@Exposed(value = "call", formClass=Person.class)
+	public void callPerson(Person arg) {
+		// do your own form processing
+	}
+	
+	@Exposed(value = "new claim", isButton = true)
+	public void startNewClaim(StartClaim sc) {
+		// can't run without StartClaim, returns form to begin a process..
+		// user fills it in and this runs.
+	}
+	
 
-	
-	
-	@Exposed(value = "ok", isButton = true, formName="someFormName")
+	@Exposed(value = "process", isButton = true, formName = "process-form")
 	public void processForm(FormSubmission f) {
 		// do your own form processing
+		// is this needed?
 	}
 	
 	
@@ -49,6 +67,11 @@ public class OurController {
 		// provide some processing for a block of code
 	}
 	
+	
+	@Exposed(admin = true, value = "delete {user}")
+	public void removeUserFromRoom(@ChatVariable("user") User u, Room r) {
+		
+	}
 	
 
 }
