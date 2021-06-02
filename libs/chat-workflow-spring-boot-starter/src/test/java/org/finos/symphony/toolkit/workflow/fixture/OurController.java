@@ -8,7 +8,9 @@ import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.springframework.stereotype.Controller;
 
+@Controller
 public class OurController {
 	
 	// todo: do we need any other kinds of wildcards?

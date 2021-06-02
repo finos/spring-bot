@@ -13,4 +13,5 @@ import org.finos.symphony.toolkit.workflow.Action;
 public interface HandlerMapping {
 
 	public List<HandlerExecutor> getHandlers(Action a);
+	
 }
