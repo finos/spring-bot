@@ -4,8 +4,13 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Action;
+import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsAction;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.method.HandlerMethod;
@@ -47,8 +52,56 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 
 			@Override
 			public boolean matches(Action a) {
-				// TODO Auto-generated method stub
+				if (a instanceof ElementsAction) {
+					return matchesElementsAction((ElementsAction)a);
+				}
+				
+				if (a instanceof SimpleMessageAction) {
+					return matchesSimpleMessageAction((SimpleMessageAction)a);
+				}
+				
 				return false;
+			}
+
+			private boolean matchesSimpleMessageAction(SimpleMessageAction a) {
+				Exposed e = getMapping();
+				
+				if (!e.isMessage()) {
+					return false;
+				}
+				
+				for (String path : e.value()) {
+					if (pathMatches(path, a.getWords(), e)) {
+						return true;
+					}
+				}
+				
+				return false;
+			}
+
+			private boolean pathMatches(String path, Message words, Exposed e) {
+				try {
+					SimpleMessageParser parser = new SimpleMessageParser();
+					Message m = parser.parseNaked(path);
+					return words.matches(m);
+				} catch (Exception e1) {
+					throw new IllegalArgumentException(path);
+				}
+			}
+
+			private boolean matchesElementsAction(ElementsAction a) {
+				Exposed e = getMapping();
+				
+				if (!e.isButton()) {
+					return false;
+				}
+				
+				if (e.formClass() != null) {
+					Class<?> expectedFormClass = e.formClass();
+					if (!expectedFormClass.isAssignableFrom(a.getFormData().getClass())) {
+						return false;
+					}
+				}
 			}
 		};
 	}

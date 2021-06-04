@@ -5,8 +5,10 @@ import java.util.List;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
+import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.HandlerExecutor;
+import org.finos.symphony.toolkit.workflow.java.mapping.Mapping;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
@@ -52,15 +54,12 @@ public class TestHandlerMapping {
 	@Test
 	public void checkMappings() throws Exception {
 		Assertions.assertTrue(hm.getHandlerMethods().size() == 10);
-		
-		getMappingsFor("new claim");
-		
-		
+		getMappingsFor("list");
 	}
 
-	private List<HandlerExecutor> getMappingsFor(String s) throws Exception {
+	private List<Mapping<Exposed>> getMappingsFor(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		Message m = smp.parse(s, jsonObjects);
+		Message m = smp.parseNaked(s);
 		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
 		return hm.getHandlers(a);
 	}
