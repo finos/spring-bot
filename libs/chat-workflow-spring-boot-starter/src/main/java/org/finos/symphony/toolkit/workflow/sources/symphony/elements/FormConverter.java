@@ -75,6 +75,13 @@ public class FormConverter {
 		} catch (Exception e) {
 			LOG.debug("Couldn't convert {} ",formValues, e);
 		}
+		try {
+			if(formValues.containsKey("entity.formdata")){
+				return om.convertValue(formValues.get("entity.formdata"), c);
+			}
+		} catch (Exception e) {
+			LOG.debug("Couldn't convert primitive {} ",formValues, e);
+		}
 		
 		return new UnconvertedContent(c, out);
 	}
