@@ -125,6 +125,7 @@ public class TestWorkflowConfig {
 		basicWorkflow.addClass(TestObject.class);
 		basicWorkflow.addClass(TestOb3.class);
 		basicWorkflow.addClass(TestOb4.class);
+		basicWorkflow.addClass(TestOb6.class);
 		basicWorkflow.addClass(TestTemplatedObject.class);
 		return basicWorkflow;
 	}
