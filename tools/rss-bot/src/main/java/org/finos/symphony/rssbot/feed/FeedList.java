@@ -7,18 +7,27 @@ import java.util.Optional;
 
 import org.finos.symphony.rssbot.alerter.TimedAlerter;
 import org.finos.symphony.rssbot.load.FeedLoader;
+import org.finos.symphony.rssbot.notify.Notifier;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.rometools.rome.io.FeedException;
 
 @Work(editable = true, instructions = "Feeds being reported in this chat")
 @Template(
 		edit = "classpath:/feedlist-edit.ftl", 
 		view = "classpath:/feedlist-view.ftl")
 public class FeedList {
+	
+	public static final Logger LOG = LoggerFactory.getLogger(FeedList.class);
+
 
 	List<Feed> feeds = new ArrayList<Feed>();
 	boolean paused = false ;
@@ -66,21 +75,27 @@ public class FeedList {
 	}
 
 	@Exposed(addToHelp = true, description = "Subscribe to a feed. ", isButton = false, isMessage = true)
-	public static FeedList subscribe(SubscribeRequest sr, Addressable a, SymphonyHistoryImpl hist, Workflow wf, FeedLoader loader) throws Exception {
+	public static Object subscribe(SubscribeRequest sr, Addressable a, SymphonyHistoryImpl hist, FeedLoader loader, Author author, Notifier n) throws Exception {
 		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
-		return fl.orElseGet(() -> new FeedList()).add(sr, loader);
+		return fl.orElseGet(() -> new FeedList()).add(sr, loader, a, author, n);
 	}
 	
 	@Exposed(addToHelp = false, description = "Add Subscription", isButton = true, isMessage = false) 
-	public FeedList add(SubscribeRequest sr, FeedLoader loader) throws Exception {
-		Feed feed = loader.createFeed(sr.url);
-		if (!this.feeds.contains(feed)) {
-			this.feeds.add(feed);
+	public Object add(SubscribeRequest sr, FeedLoader loader, Addressable a, Author author, Notifier n) throws Exception {
+		try {
+			Feed feed = loader.createFeed(sr.url);
+			if (!this.feeds.contains(feed)) {
+				this.feeds.add(feed);
+			}
+			this.lastUpdated = Instant.now();
+			n.sendSuccessNotification(sr, a, author);
+			return this;
+		} catch (FeedException e) {
+			n.sendFailureNotification(sr, a, e, author);
+			LOG.error("Couldn't add feed: ", e);
+			return null;
 		}
-		this.lastUpdated = Instant.now();
-		return this;
 	}
-	
 
 	@Exposed(addToHelp = true, description = "Stop Feeding (can be resumed later)", isButton = true, isMessage = true)
 	public FeedList pause() {
