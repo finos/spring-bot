@@ -64,12 +64,4 @@ public interface Content {
 		}
 	}
 	
-	static class Parts<X> {
-		
-		X removed;
-		
-	}
-	
-	
-	boolean matches(String chatSpec);
 }

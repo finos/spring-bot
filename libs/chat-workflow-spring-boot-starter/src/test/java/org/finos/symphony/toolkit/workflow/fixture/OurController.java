@@ -25,7 +25,7 @@ public class OurController {
 		// do your own form processing
 	}
 	
-	@Exposed(value = "new claim", isButton = true)
+	@Exposed(value = "new claim", isButton = true, isMessage = false)
 	public void startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
