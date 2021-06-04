@@ -29,7 +29,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 		
 	@Test
 	public void testMessageWithTable() throws Exception {
-		Content c = smp.parseMessage(
+		Content c = smp.parse(
 				"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p><table class=\"pasted-table\"><thead><tr><th>Name</th><th>Age</th><th>Alive</th></tr></thead><tbody><tr><td>Jim</td><td>5</td><td>FALSE</td></tr><tr><td>James</td><td>7</td><td>TRUE</td></tr></tbody></table></p></div>",
 				new EntityJson());
 		
@@ -67,7 +67,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 						Arrays.stream(new String[] {"this", "is", "it"})
 							.map(s -> Word.of(s))
 							.collect(Collectors.toList())
-						))), smp.parseMessage("<messageML><p>this is it</p></messageML>", null));
+						))), smp.parse("<messageML><p>this is it</p></messageML>", null));
 	}
 	
 	@Test
@@ -79,7 +79,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 						Arrays.stream(new String[] {"First", "Second"})
 							.map(s -> Paragraph.of(Collections.singletonList(Word.of(s))))
 							.collect(Collectors.toList())
-						))), smp.parseMessage("<messageML><ul><li>First</li><li>Second</li></ul></messageML>", null));
+						))), smp.parse("<messageML><ul><li>First</li><li>Second</li></ul></messageML>", null));
 	}
 	
 	@Test
@@ -91,7 +91,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 						Arrays.stream(new String[] {"First", "Second"})
 							.map(s -> Paragraph.of(Collections.singletonList(Word.of(s))))
 							.collect(Collectors.toList())
-						))), smp.parseMessage("<messageML><ol><li>First</li><li>Second</li></ol></messageML>", null));
+						))), smp.parse("<messageML><ol><li>First</li><li>Second</li></ol></messageML>", null));
 	}
 	
 	@Test
@@ -101,7 +101,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 					Arrays.stream(new String[] {"help"})
 						.map(s -> Word.of(s))
 						.collect(Collectors.toList())
-						), smp.parseMessage("<messageML>Help</messageML>", null));
+						), smp.parse("<messageML>Help</messageML>", null));
 	}
 	
 	@Test
@@ -116,7 +116,7 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 							new UserDef("347583113331315", "Rob Moffat", null),
 							new UserDef("345315370604167", "Mark Mainwood", null),
 							new UserDef("345315370598706", "James Tan", null))))), 
-			smp.parseMessage(
+			smp.parse(
 				"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p> </p><p>/help <span class=\"entity\" data-entity-id=\"0\">@Rob Moffat</span> <span class=\"entity\" data-entity-id=\"1\">@Mark Mainwood</span> <span class=\"entity\" data-entity-id=\"2\">@James Tan</span> </p></div>",
 				ej));
 	}

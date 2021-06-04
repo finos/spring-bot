@@ -71,7 +71,7 @@ public class FormConverter {
 			LOG.debug("Couldn't convert primitive {} ",formValues, e);
 		}
 		
-		return new FormSubmission(c, out);
+		return new FormSubmission(type, out);
 	}
 
 	private Object placeInStructure(Object ctx, String[] parts, int p, Object object, String originalKey) {

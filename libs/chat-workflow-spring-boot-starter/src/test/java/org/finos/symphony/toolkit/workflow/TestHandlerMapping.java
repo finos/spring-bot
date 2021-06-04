@@ -1,7 +1,14 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.util.List;
+
+import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.HandlerExecutor;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,9 +47,22 @@ public class TestHandlerMapping {
 	@Autowired
 	ExposedHandlerMapping hm;
 	
+	SimpleMessageParser smp = new SimpleMessageParser();
+	
 	@Test
-	public void checkMappings() {
+	public void checkMappings() throws Exception {
 		Assertions.assertTrue(hm.getHandlerMethods().size() == 10);
+		
+		getMappingsFor("new claim");
+		
+		
+	}
+
+	private List<HandlerExecutor> getMappingsFor(String s) throws Exception {
+		EntityJson jsonObjects = new EntityJson();
+		Message m = smp.parse(s, jsonObjects);
+		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
+		return hm.getHandlers(a);
 	}
 
 }

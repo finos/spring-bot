@@ -63,7 +63,7 @@ public class PresentationMLHandler extends AbstractNeedsWorkflow implements Init
 				// ok, this is a message, and it's from a third party.  Parse it.
 				
 				EntityJson ej = jsonConverter.readValue(ms.getMessage().getData());
-				Message words = messageParser.parseMessage(ms.getMessage().getMessage(), ej);
+				Message words = messageParser.parse(ms.getMessage().getMessage(), ej);
 				TypeEnum streamType = TypeEnum.fromValue(ms.getMessage().getStream().getStreamType());
 				if (isForThisBot(words, streamType)) {
 					Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());

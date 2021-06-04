@@ -13,6 +13,7 @@ import org.finos.symphony.toolkit.workflow.content.CashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.MessageParser;
 import org.finos.symphony.toolkit.workflow.content.OrderedContent;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
@@ -39,7 +40,7 @@ import com.symphony.user.UserId;
  * @author Rob Moffat
  *
  */
-public class SimpleMessageParser {
+public class SimpleMessageParser implements MessageParser {
 	
 	private SAXParserFactory factory = SAXParserFactory.newInstance();
 	
@@ -194,6 +195,11 @@ public class SimpleMessageParser {
 				public String getText() {
 					return "<pastedTable />";
 				}
+
+				@Override
+				public boolean matches(String chatSpec) {
+					return false;
+				}
 			};
 		}
 
@@ -278,7 +284,7 @@ public class SimpleMessageParser {
 	}
 	
 
-	public Message parseMessage(String message, EntityJson jsonObjects) throws Exception {
+	public Message parse(String message, EntityJson jsonObjects) throws Exception {
 
 		Content [] out = { null };
 		

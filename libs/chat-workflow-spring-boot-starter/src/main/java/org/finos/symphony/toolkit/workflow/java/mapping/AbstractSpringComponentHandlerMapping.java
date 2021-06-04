@@ -4,15 +4,11 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.Action;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -21,17 +17,13 @@ import org.springframework.core.MethodIntrospector;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.server.ServerWebExchange;
 
-public abstract class AbstractSpringComponentHandlerMapping<T> extends ApplicationObjectSupport implements HandlerMapping, InitializingBean {
+public abstract class AbstractSpringComponentHandlerMapping<T> extends ApplicationObjectSupport implements HandlerMapping<T>, InitializingBean {
 
 	private boolean detectHandlerMethodsInAncestorContexts = false;
 	
-	private MappingRegistry mappingRegistry = new MappingRegistry();
+	protected MappingRegistry mappingRegistry = new MappingRegistry();
 	
 	/**
 	 * 
@@ -187,10 +179,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 				.collect(Collectors.joining("\n\t", "\n\t" + formattedType + ":" + "\n\t", ""));
 	}
 	
-
-	public abstract Set<String> getPaths(T mapping);
-	
-	
 	
 	/**
 	 * A registry that maintains all mappings to handler methods, exposing methods
@@ -202,10 +190,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 
 		private final Map<T, MappingRegistration<T>> registry = new HashMap<>();
 
-		private final MultiValueMap<String, T> pathLookup = new LinkedMultiValueMap<>();
-
-		private final Map<HandlerMethod, CorsConfiguration> corsLookup = new ConcurrentHashMap<>();
-
 		private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
 
 		/**
@@ -214,26 +198,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		 */
 		public Map<T, MappingRegistration<T>> getRegistrations() {
 			return this.registry;
-		}
-
-		/**
-		 * Return matches for the given URL path. Not thread-safe.
-		 * @since 5.3
-		 * @see #acquireReadLock()
-		 */
-		@Nullable
-		public List<T> getMappingsByDirectPath(ServerWebExchange exchange) {
-			String path = exchange.getRequest().getPath().pathWithinApplication().value();
-			return this.pathLookup.get(path);
-		}
-
-		/**
-		 * Return CORS configuration. Thread-safe for concurrent use.
-		 */
-		@Nullable
-		public CorsConfiguration getCorsConfiguration(HandlerMethod handlerMethod) {
-			HandlerMethod original = handlerMethod.getResolvedFromHandlerMethod();
-			return this.corsLookup.get(original != null ? original : handlerMethod);
 		}
 
 		/**
@@ -255,14 +219,8 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 			try {
 				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
 				validateMethodMapping(handlerMethod, mapping);
-
-				Set<String> directPaths = getPaths(mapping);
-				for (String path : directPaths) {
-					this.pathLookup.add(path, mapping);
-				}
-
-				this.registry.put(mapping,
-						new MappingRegistration<>(mapping, handlerMethod, directPaths));
+				
+				this.registry.put(mapping, createMappingRegistration(mapping, handlerMethod));
 			}
 			finally {
 				this.readWriteLock.writeLock().unlock();
@@ -279,7 +237,7 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		
 
 		private void validateMethodMapping(HandlerMethod handlerMethod, T mapping) {
-			MappingRegistration<T> registration = this.registry.get(mapping);
+			Mapping<T> registration = this.registry.get(mapping);
 			HandlerMethod existingHandlerMethod = (registration != null ? registration.getHandlerMethod() : null);
 			if (existingHandlerMethod != null && !existingHandlerMethod.equals(handlerMethod)) {
 				throw new IllegalStateException(
@@ -292,22 +250,7 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		public void unregister(T mapping) {
 			this.readWriteLock.writeLock().lock();
 			try {
-				MappingRegistration<T> registration = this.registry.remove(mapping);
-				if (registration == null) {
-					return;
-				}
-
-				for (String path : registration.getDirectPaths()) {
-					List<T> mappings = this.pathLookup.get(path);
-					if (mappings != null) {
-						mappings.remove(registration.getMapping());
-						if (mappings.isEmpty()) {
-							this.pathLookup.remove(path);
-						}
-					}
-				}
-
-				this.corsLookup.remove(registration.getHandlerMethod());
+				this.registry.remove(mapping);
 			}
 			finally {
 				this.readWriteLock.writeLock().unlock();
@@ -316,84 +259,34 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	}
 
 
-	static class MappingRegistration<T> {
+	abstract static class MappingRegistration<T> implements Mapping<T> {
 
 		private final T mapping;
 
 		private final HandlerMethod handlerMethod;
 
-		private final Set<String> directPaths;
-
-
 		public MappingRegistration(
-				T mapping, HandlerMethod handlerMethod, @Nullable Set<String> directPaths) {
+				T mapping, HandlerMethod handlerMethod) {
 
 			Assert.notNull(mapping, "Mapping must not be null");
 			Assert.notNull(handlerMethod, "HandlerMethod must not be null");
 			this.mapping = mapping;
 			this.handlerMethod = handlerMethod;
-			this.directPaths = (directPaths != null ? directPaths : Collections.emptySet());
 		}
 
+		@Override
 		public T getMapping() {
 			return this.mapping;
 		}
 
+		@Override
 		public HandlerMethod getHandlerMethod() {
 			return this.handlerMethod;
 		}
-
-		public Set<String> getDirectPaths() {
-			return this.directPaths;
-		}
 	}
+
+
+	protected abstract MappingRegistration<T> createMappingRegistration(T mapping, HandlerMethod handlerMethod);
 
 	
-	@Override
-	public List<HandlerExecutor> getHandlers(Action a) {
-//		Object handler = getHandlerInternal(request);
-//		if (handler == null) {
-//			handler = getDefaultHandler();
-//		}
-//		if (handler == null) {
-//			return null;
-//		}
-//		// Bean name or resolved handler?
-//		if (handler instanceof String) {
-//			String handlerName = (String) handler;
-//			handler = obtainApplicationContext().getBean(handlerName);
-//		}
-//
-//		// Ensure presence of cached lookupPath for interceptors and others
-//		if (!ServletRequestPathUtils.hasCachedPath(request)) {
-//			initLookupPath(request);
-//		}
-//
-//		HandlerExecutionChain executionChain = getHandlerExecutionChain(handler, request);
-//
-//		if (logger.isTraceEnabled()) {
-//			logger.trace("Mapped to " + handler);
-//		}
-//		else if (logger.isDebugEnabled() && !DispatcherType.ASYNC.equals(request.getDispatcherType())) {
-//			logger.debug("Mapped to " + executionChain.getHandler());
-//		}
-//
-//		if (hasCorsConfigurationSource(handler) || CorsUtils.isPreFlightRequest(request)) {
-//			CorsConfiguration config = getCorsConfiguration(handler, request);
-//			if (getCorsConfigurationSource() != null) {
-//				CorsConfiguration globalConfig = getCorsConfigurationSource().getCorsConfiguration(request);
-//				config = (globalConfig != null ? globalConfig.combine(config) : config);
-//			}
-//			if (config != null) {
-//				config.validateAllowCredentials();
-//			}
-//			executionChain = getCorsHandlerExecutionChain(request, executionChain, config);
-//		}
-//
-//		return executionChain;
-		
-		return null;
-	}
-
-
 }

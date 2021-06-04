@@ -1,13 +1,14 @@
 package org.finos.symphony.toolkit.workflow.java.mapping;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.workflow.Action;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.method.HandlerMethod;
 
 public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
 
@@ -27,8 +28,30 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 	}
 
 	@Override
-	public Set<String> getPaths(Exposed mapping) {
-		return new HashSet<String>(Arrays.asList(mapping.value()));
+	public List<Mapping<Exposed>> getHandlers(Action a) {
+		mappingRegistry.acquireReadLock();
+		
+		List<Mapping<Exposed>> out = mappingRegistry.getRegistrations().values().stream()
+			.filter(m -> m.matches(a))
+			.collect(Collectors.toList());
+		
+		mappingRegistry.releaseReadLock();
+		return out;
 	}
+
+	@Override
+	protected MappingRegistration<Exposed> createMappingRegistration(Exposed mapping, HandlerMethod handlerMethod) {
+		
+		
+		return new MappingRegistration<Exposed>(mapping, handlerMethod) {
+
+			@Override
+			public boolean matches(Action a) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
+	}
+
 
 }
