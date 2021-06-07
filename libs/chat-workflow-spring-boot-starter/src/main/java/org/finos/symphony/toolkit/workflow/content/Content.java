@@ -2,10 +2,7 @@ package org.finos.symphony.toolkit.workflow.content;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,10 +19,6 @@ public interface Content {
 	public default <X extends Content> List<X> only(Class<X> x) {
 		if (x.isAssignableFrom(this.getClass())) {
 			return Collections.singletonList((X) this);
-		} else if (this instanceof OrderedContent) {
-			return StreamSupport.stream(((OrderedContent<Content>) this).spliterator(), false)
-				.flatMap(i -> i.only(x).stream())
-				.collect(Collectors.toList());
 		} else {
 			return Collections.emptyList();
 		}
@@ -36,17 +29,8 @@ public interface Content {
 	 * or a new copy without item, or null (if item was the current content item).
 	 */
 	public default Content without(Content item) {
-		if (item.equals(this)) {
+		if (item.matches(this)) {
 			return null;
-		} else if (this instanceof OrderedContent<?>) {
-			@SuppressWarnings("unchecked")
-			OrderedContent<Content> oc = (OrderedContent<Content>) this;
-			List<Content> elements = oc.getContents().stream()
-				.map(e -> (Content) e.without(item))
-				.filter(Objects::nonNull)
-				.collect(Collectors.toList());
-			
-			return oc.buildAnother(elements);
 		} else {
 			return this;
 		}
