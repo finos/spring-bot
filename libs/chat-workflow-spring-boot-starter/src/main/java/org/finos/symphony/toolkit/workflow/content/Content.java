@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow.content;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -78,4 +79,10 @@ public interface Content {
 		return this.equals(other);
 	}
 	
+	/**
+	 * Visitor pattern
+	 */
+	public default void visit(Consumer<Content> visitor) {
+		visitor.accept(this);
+	}
 }
