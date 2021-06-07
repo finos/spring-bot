@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -89,6 +90,14 @@ public interface OrderedContent<C extends Content> extends Content, Iterable<C> 
 				.collect(Collectors.toList());
 			
 		return buildAnother(elements);
+	}
+	
+	/**
+	 * Visitor pattern - visits the container and all the child objects, depth-first. 
+	 */
+	public default void visit(Consumer<Content> visitor) {
+		visitor.accept(this);
+		getContents().stream().forEach(i -> visitor.accept(i));
 	}
 	 
 }
