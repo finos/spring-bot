@@ -196,10 +196,6 @@ public class SimpleMessageParser implements MessageParser {
 					return "<pastedTable />";
 				}
 
-				@Override
-				public boolean matches(String chatSpec) {
-					return false;
-				}
 			};
 		}
 

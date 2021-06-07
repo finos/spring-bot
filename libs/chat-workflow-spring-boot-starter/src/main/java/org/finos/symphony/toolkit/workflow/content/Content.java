@@ -53,6 +53,29 @@ public interface Content {
 	}
 	
 	/**
+	 * Returns content without item at the start. Returns the original object if the item at the start doesn't
+	 * match, or returns a changed / null content if a match was made.
+	 */
+	public default Content removeAtStart(Content item) {
+		if (this.matches(item)) {
+			return null;
+		} else {
+			return this;
+		}
+	}
+	
+	/**
+	 * Checks whether this content starts with item. 
+	 */
+	public default boolean startsWith(Content item) {
+		if (this.matches(item)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/**
 	 * Navigates through the content structure and returns a list of all Content objects
 	 * of class x, and returns solely the nth one.
 	 */
@@ -62,6 +85,13 @@ public interface Content {
 		} catch (Exception e) {
 			return Optional.empty();
 		}
+	}
+	
+	/**
+	 * Returns true if this content is the same as another piece of content.
+	 */
+	public default boolean matches(Content other) {
+		return this.equals(other);
 	}
 	
 }

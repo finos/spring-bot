@@ -44,6 +44,11 @@ public interface OrderedList extends OrderedContent<Paragraph> {
 			public OrderedList buildAnother(List<Paragraph> contents) {
 				return OrderedList.of(contents);
 			}
+
+			@Override
+			public int size() {
+				return c.size();
+			}
 		};
 	}
 }
