@@ -7,7 +7,7 @@ import org.finos.symphony.toolkit.workflow.content.Content;
 
 public class MessageMatcher {
 	
-	public boolean match(Content shape, Content exact, Map<ChatVariable, Content> out) {
+	public boolean consume(Content item, Content from, Map<ChatVariable, Content> out) {
 		
 		if (shape.equals(exact)) {
 			return true;
