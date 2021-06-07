@@ -1,8 +1,12 @@
 package org.finos.symphony.toolkit.workflow.content;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * For any content where it is constructed of multiple sub-elements, 
@@ -59,6 +63,32 @@ public interface OrderedContent<C extends Content> extends Content, Iterable<C> 
 		}
 		
 		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public default <X extends Content> List<X> only(Class<X> x) {
+		if (x.isAssignableFrom(this.getClass())) {
+			return Collections.singletonList((X) this);
+		} 
+		
+		return StreamSupport.stream(this.spliterator(), false)
+				.flatMap(i -> i.only(x).stream())
+				.collect(Collectors.toList());
+	}
+	
+	
+	public default Content without(Content item) {
+		if (item.matches(this)) {
+			return null;
+		} 
+		
+		@SuppressWarnings("unchecked")
+		List<C> elements = (List<C>) getContents().stream()
+				.map(e -> e.without(item))
+				.filter(Objects::nonNull)
+				.collect(Collectors.toList());
+			
+		return buildAnother(elements);
 	}
 	 
 }
