@@ -123,8 +123,11 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	
 	protected String createWorkflowFooter(DataResponse dr)  {
 		try {
-			HeaderDetails hd = new HeaderDetails(dr.getName(), dr.getInstructions(), getDataTags(dr));
+			Set<HashTag> dataTags = getDataTags(dr);
+			HeaderDetails hd = (HeaderDetails) dr.getData().get("header");
+			hd = hd == null ? new HeaderDetails(dr.getName(), dr.getInstructions(), dataTags) : hd;
 			dr.getData().putIfAbsent("header", hd);
+			hd.getTags().addAll(dataTags);
 			if (responseFooter != null) {
 				return StreamUtils.copyToString(responseFooter.getInputStream(), Charset.forName("UTF-8"));
 			} else {
