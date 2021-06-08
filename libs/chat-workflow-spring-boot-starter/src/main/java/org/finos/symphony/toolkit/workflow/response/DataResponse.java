@@ -14,7 +14,7 @@ public class DataResponse implements Response {
 
 	public DataResponse(Workflow wf, Addressable stream, EntityJson data, String name, String instructions) {
 		super();
-		this.data = data;
+		this.data = data == null ? new EntityJson() : data;
 		this.stream = stream;
 		this.workflow = wf;
 		this.name = name;

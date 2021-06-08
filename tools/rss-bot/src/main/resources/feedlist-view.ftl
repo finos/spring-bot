@@ -26,8 +26,6 @@
     </#list>
     </tbody></table>
     <#if entity.workflow_001.paused == false>
-      <i>Feeding Every Hour</i>
-    <hr />
       <form id="just-buttons-form"><p>
         <button name="add" type="action">Add</button>
         <button name="wf-edit" type="action">Edit</button>
