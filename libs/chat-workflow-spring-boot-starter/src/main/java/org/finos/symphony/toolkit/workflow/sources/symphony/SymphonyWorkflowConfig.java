@@ -26,7 +26,8 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessage
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MethodCallMessageConsumer;
@@ -176,8 +177,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public History symphonyHistory() {
-		return new MessageHistory(wf, entityJsonConverter(), messagesApi, symphonyRooms());
+	public SymphonyHistory symphonyHistory() {
+		return new SymphonyHistoryImpl(wf, entityJsonConverter(), messagesApi, symphonyRooms());
 	}
 	
 	@Bean 
