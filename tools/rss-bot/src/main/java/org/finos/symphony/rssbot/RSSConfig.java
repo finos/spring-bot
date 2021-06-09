@@ -6,8 +6,10 @@ package org.finos.symphony.rssbot;
 import org.finos.symphony.rssbot.feed.Article;
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
+import org.finos.symphony.rssbot.feed.Filter;
 import org.finos.symphony.rssbot.feed.SubscribeRequest;
 import org.finos.symphony.rssbot.load.FeedLoader;
+import org.finos.symphony.rssbot.notify.Notifier;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
@@ -38,6 +40,8 @@ public class RSSConfig  {
 		wf.addClass(Feed.class);
 		wf.addClass(SubscribeRequest.class);
 		wf.addClass(Article.class);
+		wf.addClass(Filter.class);
+		wf.addClass(Filter.Type.class);
 		return wf;
 	}
 	
@@ -48,6 +52,11 @@ public class RSSConfig  {
 	
 	@Bean
 	FeedLoader feedLoader() {
-		return new FeedLoader(properties.getProxy());
+		return new FeedLoader(properties.getProxies());
+	}
+	
+	@Bean
+	public Notifier notifier() {
+		return new Notifier();
 	}
 }

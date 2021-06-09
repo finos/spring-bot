@@ -25,6 +25,9 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 
 	@Override
 	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField showDetails) {
+		if (showDetails == null) {
+			return "";
+		}
 		if (showDetails.expand()) {
 			Class<?> element = (Class<?>) t;
 			StringBuilder sb = new StringBuilder();

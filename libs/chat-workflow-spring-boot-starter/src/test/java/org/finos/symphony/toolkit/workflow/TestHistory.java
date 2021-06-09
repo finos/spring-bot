@@ -8,7 +8,7 @@ import java.util.List;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.MessageHistory;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +24,7 @@ import com.symphony.api.model.V4MessageList;
 public class TestHistory extends AbstractMockSymphonyTest {
 	
 	
-	MessageHistory mh;
+	SymphonyHistoryImpl mh;
 	
 	@Autowired
 	Workflow wf;
@@ -37,7 +37,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 	@BeforeEach
 	public void setup() {
 		ejc = new EntityJsonConverter(wf);
-		mh = new MessageHistory(wf, ejc, messagesApi, ru);
+		mh = new SymphonyHistoryImpl(wf, ejc, messagesApi, ru);
 	}
 	
 
