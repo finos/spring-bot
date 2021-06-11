@@ -2,9 +2,11 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
@@ -13,6 +15,7 @@ import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.java.mapping.MessageMatcher;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
@@ -73,6 +76,23 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 				m2);
 	}
 	
+	@Test
+	public void testMessageMatcherExact() throws Exception {
+		Content c = smp.parseNaked("hello some words");
+		MessageMatcher m1 = new MessageMatcher(c);
+		Assertions.assertTrue(m1.consume(c, new HashMap<ChatVariable, Content>()));
+	}
+	
+	@Test
+	public void testMessageMatcherMore() throws Exception {
+		Content pattern = smp.parseNaked("hello some words");
+		Content c2 = smp.parseNaked("hello some words and some more words");
+		MessageMatcher m1 = new MessageMatcher(pattern);
+		Assertions.assertTrue(m1.consume(c2, new HashMap<ChatVariable, Content>()));
+		
+		Content c3 = smp.parseNaked("hello some different words");
+		Assertions.assertFalse(m1.consume(c3, new HashMap<ChatVariable, Content>()));
+	}
 
 	@Test
 	public void testSimpleMessage() throws Exception {

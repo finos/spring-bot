@@ -6,6 +6,7 @@ import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.springframework.stereotype.Controller;
@@ -75,5 +76,9 @@ public class OurController {
 		
 	}
 	
+	@Exposed(value="ban {word}")
+	public void banWord(@ChatVariable("word") Word w) {
+		
+	}
 
 }
