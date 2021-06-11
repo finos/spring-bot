@@ -1,14 +1,18 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.HandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.Mapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.MessageMatcher;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
@@ -63,5 +67,26 @@ public class TestHandlerMapping {
 		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
 		return hm.getHandlers(a);
 	}
+	
+
+	private List<HandlerExecutor> getExecutorsFor(String s) throws Exception {
+		EntityJson jsonObjects = new EntityJson();
+		Message m = smp.parseNaked(s);
+		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
+		return hm.getExecutors(a);
+	}
+	
+	@Test
+	public void checkWildcardMapping() throws Exception {
+		List<Mapping<Exposed>> mapped = getMappingsFor("ban zebedee");
+		Assertions.assertTrue(mapped.size()  == 1);
+	}
+	
+	@Test
+	public void checkHandlerExecutors() throws Exception {
+		List<HandlerExecutor> mapped = getExecutorsFor("ban zebedee");
+		Assertions.assertTrue(mapped.size()  == 1);
+	}
+	
 
 }

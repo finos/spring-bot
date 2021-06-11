@@ -15,7 +15,7 @@ public class WildcardContent implements Content {
 	
 	enum Arity { ONE, OPTIONAL, LIST }
 	
-	public WildcardContent(ChatVariable chatVariable, Class<? extends Content> expected, Arity a) {
+	public WildcardContent(ChatVariable chatVariable, Type expected, Arity a) {
 		super();
 		this.chatVariable = chatVariable;
 		this.expected = expected;
@@ -31,4 +31,11 @@ public class WildcardContent implements Content {
 		return "{"+chatVariable.name()+"}";
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Override
+	public boolean matches(Content other) {
+		return ((Class)expected).isAssignableFrom(other.getClass());
+	}
+
+	
 }

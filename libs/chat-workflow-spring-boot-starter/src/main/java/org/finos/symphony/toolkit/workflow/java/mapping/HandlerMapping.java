@@ -14,4 +14,6 @@ public interface HandlerMapping<T> {
 
 	public List<Mapping<T>> getHandlers(Action a);
 	
+	public List<HandlerExecutor> getExecutors(Action a);
+	
 }

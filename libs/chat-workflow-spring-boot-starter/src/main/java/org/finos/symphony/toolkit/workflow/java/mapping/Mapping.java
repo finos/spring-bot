@@ -9,6 +9,6 @@ public interface Mapping<T> {
 
 	HandlerMethod getHandlerMethod();
 	
-	boolean matches(Action a);
+	HandlerExecutor matches(Action a);
 
 }
