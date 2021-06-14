@@ -14,6 +14,7 @@ import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,7 +75,7 @@ public class FeedList {
 		return ob;
 	}
 
-	@Exposed(addToHelp = true, description = "Subscribe to a feed. ", isButton = false, isMessage = true)
+	@Exposed(addToHelp = true, description = "Subscribe to a feed. ", isButton = true, isMessage = true)
 	public static Object subscribe(SubscribeRequest sr, Addressable a, SymphonyHistoryImpl hist, FeedLoader loader, Author author, Notifier n) throws Exception {
 		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
 		return fl.orElseGet(() -> new FeedList()).add(sr, loader, a, author, n);
@@ -112,8 +113,8 @@ public class FeedList {
 	}
 	
 	@Exposed(addToHelp = true, description = "Fetch latest news now", isButton = true, isMessage = true) 
-	public void latest(TimedAlerter ta) {
-		ta.everyWeekdayHour();
+	public void latest(TimedAlerter ta, ResponseHandler rh) {
+		int count = ta.regularly();
 	}
 	
 	@Exposed(addToHelp = true, description = "Add A New Filter", isButton = true, isMessage = true) 

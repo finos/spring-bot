@@ -3,9 +3,11 @@ package org.finos.symphony.rssbot.alerter;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import org.finos.symphony.rssbot.feed.Article;
@@ -74,16 +76,18 @@ public class TimedAlerter {
 	FeedLoader loader;
 	
 	@Scheduled(cron="${symphony.rss.cron:0 0 * * * MON-FRI}")
-	public void everyWeekdayHour() {
-		onAllStreams(s -> handleFeed(temporaryRoomDef(s)));
+	public int regularly() {
+		int count = onAllStreams(s -> handleFeed(temporaryRoomDef(s)));
+		return count;
 	}
 
 	public RoomDef temporaryRoomDef(StreamAttributes s) {
 		return new RoomDef("", "", false, s.getId());
 	}
 
-	public void onAllStreams(Consumer<StreamAttributes> action) {
+	public int onAllStreams(Function<StreamAttributes, Integer> action) {
 		LOG.info("TimedAlerter waking");
+		int[] count = { 0 };
 
 		if (leaderService.isLeader(self)) {
 			StreamFilter filter = new StreamFilter();
@@ -92,7 +96,7 @@ public class TimedAlerter {
 			StreamList sl;
 			do {
 				sl = streams.v1StreamsListPost(null, null, skip, 50);
-				sl.forEach(s -> action.accept(s));
+				sl.forEach(s -> count[0] += action.apply(s));
 				skip += sl.size();
 			} while (sl.size() == 50);
 			
@@ -101,6 +105,8 @@ public class TimedAlerter {
 		} else {
 			LOG.info("Not leader, sleeping");
 		}
+		
+		return count[0];
 	}
 	
 	@Scheduled(cron = "0 0 0 4 * *")
@@ -108,7 +114,7 @@ public class TimedAlerter {
 		onAllStreams(s -> pauseRunningStreams(temporaryRoomDef(s)));
 	}
 
-	private void pauseRunningStreams(Addressable a) {
+	private int pauseRunningStreams(Addressable a) {
 		Optional<FeedList> fl = h.getLastFromHistory(FeedList.class, a); 
 		if ((fl.isPresent()) && (!fl.get().isPaused())) {
 			FeedList active = fl.get();
@@ -116,14 +122,19 @@ public class TimedAlerter {
 			EntityJson ej = EntityJsonConverter.newWorkflow(active);
 			responseHandler.accept(new FormResponse(w, a, ej, "Renew Feed Subscriptions", "Please select RESUME to continue feeds in this chat room", active, false, 
 				w.gatherButtons(active, a)));
+			return 1;
 		}
+		
+		return 0;
 	}
 
-	public void handleFeed(Addressable a) {
+	public int handleFeed(Addressable a) {
+		int count = 0;
 		Optional<FeedList> fl = h.getLastFromHistory(FeedList.class, a); 
 		if ((fl.isPresent()) && (!fl.get().isPaused())) {
-			allItems(a, fl.get());
+			count += allItems(a, fl.get());
 		}
+		return count;
 	}
 
 	public int allItems(Addressable a, FeedList fl) {
@@ -158,22 +169,26 @@ public class TimedAlerter {
 		return false;
 	}
 
-	private int allItemsSince(Instant startTime, Feed f, Addressable a, Instant since, FeedList fl) throws Exception {
+	private int allItemsSince(Instant startTime, Feed f, Addressable a, Instant since, FeedList fl) {
 		int count = 0;
-		for (SyndEntry e : loader.createSyndFeed(f).getEntries()) {
-			if (e.getPublishedDate().toInstant().isAfter(since)) {
-				if (passesFilter(e, fl)) {
-					EntityJson ej = new EntityJson();
-					HashTag ht = createHashTag(f);
-					Article article = new Article(e.getTitle(), e.getAuthor(), e.getPublishedDate().toInstant(), e.getLink(), startTime, fl, ht);
-					ej.put(EntityJsonConverter.WORKFLOW_001, article);
-					responseHandler.accept(new FormResponse(w, a, ej, f.getName(), e.getAuthor(), article, false, w.gatherButtons(article, a)));
-					count ++;
+		try {
+			for (SyndEntry e : loader.createSyndFeed(f).getEntries()) {
+				Date publishedDate = e.getPublishedDate();
+				if ((publishedDate != null) && (publishedDate.toInstant().isAfter(since))) {
+					if (passesFilter(e, fl)) {
+						EntityJson ej = new EntityJson();
+						HashTag ht = createHashTag(f);
+						Article article = new Article(e.getTitle(), e.getAuthor(), publishedDate.toInstant(), e.getLink(), startTime, fl, ht);
+						ej.put(EntityJsonConverter.WORKFLOW_001, article);
+						responseHandler.accept(new FormResponse(w, a, ej, f.getName(), e.getAuthor(), article, false, w.gatherButtons(article, a)));
+						count ++;
+					}
 				}
-			}
-			
+				
+			}			
+		} catch (Exception e) {
+			LOG.error("Coulnd't process feed" + f.getName(), e);
 		}
-		
 		return count;
 	}
 	

@@ -2,10 +2,14 @@ package org.finos.symphony.rssbot.load;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.Response.Status.Family;
 
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.toolkit.spring.api.properties.ProxyProperties;
@@ -84,6 +88,11 @@ public class FeedLoader {
 		}
 		
 		WebTarget wt = jab.newWebTarget(url);
-		InputStream out = wt.request().get().readEntity(InputStream.class);
-		return out;
+		Response r = wt.request().get();
+		Status.Family fam = r.getStatusInfo().getFamily();
+		if (fam == Family.SUCCESSFUL) {
+			return r.readEntity(InputStream.class);
+		}
+		
+		throw new MalformedURLException("Couldn't download: "+url+" status: "+r.getStatus());
 	}}
