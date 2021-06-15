@@ -8,16 +8,19 @@ import java.util.Optional;
 import org.finos.symphony.rssbot.alerter.TimedAlerter;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.rssbot.notify.Notifier;
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.HtmlUtils;
 
 import com.rometools.rome.io.FeedException;
 
@@ -113,8 +116,11 @@ public class FeedList {
 	}
 	
 	@Exposed(addToHelp = true, description = "Fetch latest news now", isButton = true, isMessage = true) 
-	public void latest(TimedAlerter ta, ResponseHandler rh) {
+	public void latest(TimedAlerter ta, ResponseHandler rh, Addressable a, Workflow wf) {
 		int count = ta.regularly();
+		if (count == 0) {
+			rh.accept(new MessageResponse(wf, a, new EntityJson(), "No New News Items", "", "All recent news has already been reported"));
+		}
 	}
 	
 	@Exposed(addToHelp = true, description = "Add A New Filter", isButton = true, isMessage = true) 

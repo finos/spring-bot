@@ -3,6 +3,8 @@
  */
 package org.finos.symphony.rssbot;
 
+import java.lang.reflect.Field;
+
 import org.finos.symphony.rssbot.feed.Article;
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
@@ -13,18 +15,20 @@ import org.finos.symphony.rssbot.notify.Notifier;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.rometools.rome.io.impl.DateParser;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.pod.UsersApi;
 
 @Configuration
 @EnableConfigurationProperties(RSSProperties.class)
-public class RSSConfig  {
+public class RSSConfig implements InitializingBean {
 	
 	@Autowired
 	RSSProperties properties;
@@ -58,5 +62,15 @@ public class RSSConfig  {
 	@Bean
 	public Notifier notifier() {
 		return new Notifier();
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if ((properties.getTimeFormats() != null) && (properties.getTimeFormats().size() > 0)) {
+			Field f = DateParser.class.getDeclaredField("ADDITIONAL_MASKS");
+			f.setAccessible(true);
+			String[] array = (String[]) properties.getTimeFormats().toArray(new String[properties.getTimeFormats().size()]);
+			f.set(null, array);
+		}
 	}
 }
