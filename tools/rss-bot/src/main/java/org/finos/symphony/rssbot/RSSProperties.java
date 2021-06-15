@@ -9,7 +9,16 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RSSProperties {
 
 	List<ProxyProperties> proxies;
+	List<String> timeFormats;
 	
+	public List<String> getTimeFormats() {
+		return timeFormats;
+	}
+
+	public void setTimeFormats(List<String> timeFormats) {
+		this.timeFormats = timeFormats;
+	}
+
 	public void setProxies(List<ProxyProperties> proxies) {
 		this.proxies = proxies;
 	}
