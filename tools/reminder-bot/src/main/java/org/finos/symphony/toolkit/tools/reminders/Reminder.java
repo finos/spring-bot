@@ -3,7 +3,6 @@
  */
 package org.finos.symphony.toolkit.tools.reminders;
 
-import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
 
 import java.time.Instant;

@@ -6,6 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +45,11 @@ public class FormConverter {
 	
 	public FormConverter(SymphonyRooms r) {
 		super();
-		
+		om.registerModule(new JavaTimeModule());
+		om.enable(SerializationFeature.INDENT_OUTPUT)
+		.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+		.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
+		.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		om.registerModule(new WorkflowModule(r));
 	}
 

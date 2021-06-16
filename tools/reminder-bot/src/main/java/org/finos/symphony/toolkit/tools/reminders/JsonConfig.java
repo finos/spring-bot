@@ -22,6 +22,7 @@ public class JsonConfig implements InitializingBean {
     	.enable(SerializationFeature.INDENT_OUTPUT)
 		.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 		.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
-    	.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    	.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+		.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
 	}
 }

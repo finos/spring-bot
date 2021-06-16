@@ -64,7 +64,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	@BeforeEach
 	public void before() {
 		Mockito.when(rooms.loadUserById(Mockito.eq(345315370602462l))).thenReturn(new UserDef("345315370602462", "Some Guy", "sg@example.com"));
-		fc = new FormConverter(rooms);
+		fc = new FormConverter(null);
 	}
 	
 }
