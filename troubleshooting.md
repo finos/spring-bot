@@ -2,7 +2,7 @@
 
 Here are clues to solving common issues:
 
- - `PKIX Pathbuilding Failed`: Usually indicates a problem with your trust store.  That is, your server doesn't recognise the certificates provided by the symphony pod, key manager or agent servers.  See [Trust Store Configuration](libs/symphony-api-spring-boot-starter/README.md#step-5-trust-store-configuration-optional)
+ - `PKIX Pathbuilding Failed` or `certificate unknown`: Usually indicates a problem with your trust store.  That is, your bot's server doesn't recognise the certificates provided by the symphony pod, key manager or agent servers.  See [Trust Store Configuration](libs/symphony-api-spring-boot-starter/README.md#step-5-trust-store-configuration-optional)
  
  - `NotFoundException` (404):  Could be that your bot is configured for certificate authentication, but you're only providing a private key, or vice-versa.
  

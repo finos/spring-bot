@@ -116,15 +116,7 @@ public class Poll {
 
 	@Exposed
 	public Result end(Room r, History h) {
-		List<Answer> responses = new ArrayList<>();
-
-		List<Object> results = h.getFromHistory(id, null, null);
-
-		for (Object o : results) {
-			if (o instanceof Answer) {
-				responses.add((Answer) o);
-			}
-		}
+		List<Answer> responses = h.getFromHistory(Answer.class, id, null, null);
 
 		List<Integer> counts = new ArrayList<>(options.size());
 		int totalResponses = 0;
