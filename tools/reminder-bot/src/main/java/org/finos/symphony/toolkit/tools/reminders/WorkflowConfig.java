@@ -17,7 +17,6 @@ public class WorkflowConfig {
 		ClassBasedWorkflow wf = new ClassBasedWorkflow(WorkflowConfig.class.getCanonicalName());
 		wf.addClass(Reminder.class);
 		wf.addClass(ReminderList.class);
-		//wf.addClass(Reminder.class);
 		return wf;
 	}
 	@Bean

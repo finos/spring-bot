@@ -29,6 +29,7 @@ import org.springframework.scheduling.TaskScheduler;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.function.Consumer;
@@ -92,8 +93,8 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
                     Reminder reminder = new Reminder();
                     reminder.setDescription(messageInString);
                     reminder.setAuthor(currentUser);
-                    Instant instantTimeForReminder = dateToInstant(timex);
-                    reminder.setInstant(instantTimeForReminder);
+                    //Instant instantTimeForReminder = dateToInstant(timex);
+                    reminder.setInstant(dateToInstant(timex));
                     Room r =symphonyRooms.loadRoomById(v4MessageSent.getMessage().getStream().getStreamId());
                     FormResponse formResponse = new FormResponse(workflow, r , new EntityJson(), "Create Reminder",
                             "do you want to be reminded about this time" ,
@@ -117,6 +118,7 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         Instant instantTimeForReminder =sdf.parse(timex.value()).toInstant();
+        //Instant displayReminderAt = instantTimeForReminder.minus(10, ChronoUnit.MINUTES);
         return instantTimeForReminder;
 
     }
