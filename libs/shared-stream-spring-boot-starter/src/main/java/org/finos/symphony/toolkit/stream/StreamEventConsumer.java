@@ -10,6 +10,6 @@ import com.symphony.api.model.V4Event;
  * @author robmoffat
  *
  */
-public interface StreamEventConsumer extends Consumer<V4Event>{
+public interface StreamEventConsumer extends Consumer<V4Event> {
 
 }

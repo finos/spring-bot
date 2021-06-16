@@ -61,6 +61,31 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 		
 	}
 
+	@Test
+	public void testListOfStringAddValue() throws Exception {
+		before();
+		Object o = om.readValue("{\"action\": \"names.table-add-done\", \"entity.formdata\": \"Amsidh\"}", Map.class);
+		String to = (String) fc.convert((Map<String, Object>) o, String.class.getCanonicalName());
+		Assertions.assertEquals("Amsidh", to);
+	}
+
+
+	@Test
+	public void testListOfStringUpdateValue() throws Exception {
+		before();
+		Object o = om.readValue("{\"action\": \"names[0].table-update\", \"entity.formdata\": \"AmsidhLokhande\"}", Map.class);
+		String to = (String) fc.convert((Map<String, Object>) o, String.class.getCanonicalName());
+		Assertions.assertEquals("AmsidhLokhande", to);
+	}
+
+	@Test
+	public void testListOfIntegerAddValue() throws Exception {
+		before();
+		Object o = om.readValue("{\"action\": \"names.table-add-done\", \"entity.formdata\": 40}", Map.class);
+		Integer to = (Integer) fc.convert((Map<String, Object>) o, Integer.class.getCanonicalName());
+		Assertions.assertEquals(40, to);
+	}
+
 	@BeforeEach
 	public void before() {
 		Mockito.when(rooms.loadUserById(Mockito.eq(345315370602462l))).thenReturn(new UserDef("345315370602462", "Some Guy", "sg@example.com"));

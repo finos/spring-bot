@@ -17,7 +17,7 @@ import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 
 
-public class TableEditRow  extends AbstractElementsConsumer {
+public class TableEditRow extends AbstractElementsConsumer {
 	
 	SpelExpressionParser spel = new SpelExpressionParser();
 
