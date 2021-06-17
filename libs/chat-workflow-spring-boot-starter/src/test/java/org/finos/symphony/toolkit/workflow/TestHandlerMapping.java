@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
@@ -86,6 +88,12 @@ public class TestHandlerMapping {
 	public void checkHandlerExecutors() throws Exception {
 		List<HandlerExecutor> mapped = getExecutorsFor("ban zebedee");
 		Assertions.assertTrue(mapped.size()  == 1);
+		
+		HandlerExecutor first = mapped.get(0);
+		ChatVariable firstKey = first.getReplacements().keySet().iterator().next();
+		
+		Assertions.assertEquals("word", firstKey.value());
+		Assertions.assertEquals(Word.of("zebedee"),first.getReplacements().get(firstKey));
 	}
 	
 

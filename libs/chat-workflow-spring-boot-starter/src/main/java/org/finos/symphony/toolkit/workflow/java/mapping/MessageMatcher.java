@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.workflow.java.mapping;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
@@ -27,9 +28,21 @@ public class MessageMatcher {
 			@SuppressWarnings("unchecked")
 			OrderedContent<Content> rest = rest((OrderedContent<Content>) pattern);
 			if (message.startsWith(first)) {
+				
+				if (first instanceof WildcardContent) {
+					WildcardContent wc = (WildcardContent) first;
+					Class<? extends Content> contentClass = (Class<? extends Content>) wc.expected;
+					Optional<? extends Content> matchingFirst = message.getNth(contentClass, 0);
+					if (matchingFirst.isPresent()) {
+						out.put(wc.chatVariable, matchingFirst.get());
+					}
+				}
+
 				message = message.removeAtStart(first);
 				return consumeCurrentPattern(rest, message, out);
 			} 	
+			
+			
 		}
 		
 		return false;
