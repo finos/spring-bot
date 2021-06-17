@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.java.perform;
+package org.finos.symphony.toolkit.workflow.java.mapping;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Action;
@@ -16,6 +16,8 @@ import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.MethodParameter;
+import org.springframework.web.method.HandlerMethod;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -31,94 +33,80 @@ import java.util.Optional;
  * @author moffrob
  *
  */
-public class MethodCallCommandPerformer implements CommandPerformer {
+public abstract class AbstractHandlerExecutor implements HandlerExecutor {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(MethodCallCommandPerformer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractHandlerExecutor.class);
 
 	
 	private WorkflowResolversFactory wrf;
 	
-	public MethodCallCommandPerformer(WorkflowResolversFactory wrf) {
+	public AbstractHandlerExecutor(WorkflowResolversFactory wrf) {
 		super();
 		this.wrf = wrf;
 	}
-
-	@SuppressWarnings("unchecked")
+	
 	@Override
-	public List<Response> applyCommand(String commandName, Action originatingAction) {
-		ClassBasedWorkflow wf = originatingAction.getWorkflow() instanceof ClassBasedWorkflow ? 
-			(ClassBasedWorkflow) originatingAction.getWorkflow() : null;
-		
-		if (wf == null) {
-			// this instance can only work with ClassBasedWorkflow instances.
-			return Collections.emptyList();
-		}
-		
-		Method m = wf.getMethodFor(commandName);
-		
-		if (m == null) {
-			return Collections.emptyList();
-		}
-		
-		Addressable a = originatingAction.getAddressable();
-		
-		if (!wf.validCommandInAddressable(m, a)) {
-			return Collections.singletonList(new ErrorResponse(wf, a, "'"+commandName+"' can't be used in this room"));
-		}
-		
-		WorkflowResolvers wr = buildWorkflowResolvers(originatingAction);
-		
+	public void execute() {
+		Method m = method().getMethod(); 
+		Addressable a = action().getAddressable();
+	
+		WorkflowResolvers wr = buildWorkflowResolvers(action());
+	
 		Class<?> c = m.getDeclaringClass();
 		Optional<?> o = Optional.empty();
 		if (!Modifier.isStatic(m.getModifiers())) {
 			// load the current object
 			o = wr.resolve(c, a, true);
 			
-			if ((!o.isPresent()) || (o.get().getClass() != c)) {
-				return Collections.singletonList(new ErrorResponse(wf, a, "Couldn't find work for "+commandName));
-			}
+//			if ((!o.isPresent()) || (o.get().getClass() != c)) {
+//				return Collections.singletonList(new ErrorResponse(wf, a, "Couldn't find work for "+commandName));
+//			}
 		}
 			
 	
 		Object[] args = new Object[m.getParameterCount()];
-		for (int i = 0; i < args.length; i++) {
-			Class<?> cl = m.getParameters()[i].getType();
-			Optional<Object> oo = wr.resolve(cl, a, false);
-			if (oo.isPresent()) {
-				args[i] = oo.get();
-			} else {
-				// missing parameter
-				try {
-					return  Collections.singletonList(new FormResponse(wf, a,  new EntityJson(), "Enter "+
-						wf.getName(cl), wf.getInstructions(cl), cl.newInstance(), true, 
-							ButtonList.of(new Button(commandName+"+0", Type.ACTION, m.getName()))));
-				} catch (Exception e) {
-					if (cl.isPrimitive()) {
-						throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
-					}
-				} 
-			}
-		}
+//		for (int i = 0; i < args.length; i++) {
+//			MethodParameter mp = method().getMethodParameters()[i];
+//	
+//			
+//			
+//			Class<?> cl = m.getParameters()[i].getType();
+//			Optional<Object> oo = wr.resolve(cl, a, false);
+//			if (oo.isPresent()) {
+//				args[i] = oo.get();
+//			} else {
+//				// missing parameter
+//				try {
+//					return  Collections.singletonList(new FormResponse(wf, a,  new EntityJson(), "Enter "+
+//						wf.getName(cl), wf.getInstructions(cl), cl.newInstance(), true, 
+//							ButtonList.of(new Button(commandName+"+0", Type.ACTION, m.getName()))));
+//				} catch (Exception e) {
+//					if (cl.isPrimitive()) {
+//						throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
+//					}
+//				} 
+//			}
+//		}
 		
 
 		try {
 			Object out = m.invoke(o.orElse(null), args);
-			if (out == null) {
-				return Collections.emptyList();
-			}
-			Class<?> cc = out.getClass();
-			
-			if (Response.class.isAssignableFrom(cc)) {
-				return  Collections.singletonList((Response) out);
-			} else if (listOfResponses(m)) {
-				return (List<Response>) out;
-			} else {
-				EntityJson ej = EntityJsonConverter.newWorkflow(out);
-				return  Collections.singletonList(
-					new FormResponse(wf, a, ej, 
-						wf.getName(cc), 
-						wf.getInstructions(cc), out, false, wf.gatherButtons(out, a)));
-			}
+//			if (out == null) {
+//				return Collections.emptyList();
+//			}
+//			Class<?> cc = out.getClass();
+//			
+//			if (Response.class.isAssignableFrom(cc)) {
+//				return  Collections.singletonList((Response) out);
+//			} else if (listOfResponses(m)) {
+//				return (List<Response>) out;
+//			} else {
+//				EntityJson ej = EntityJsonConverter.newWorkflow(out);
+//				return  Collections.singletonList(
+//					new FormResponse(wf, a, ej, 
+//						wf.getName(cc), 
+//						wf.getInstructions(cc), out, false, wf.gatherButtons(out, a)));
+//			}
 			
 		} catch (Exception exception) {
 			LOG.error("Couldn't perform command: ", exception);
@@ -127,7 +115,7 @@ public class MethodCallCommandPerformer implements CommandPerformer {
 							.map(cause -> Optional.ofNullable(cause.getMessage())
 									.orElse("Exception thrown with no message"))
 							.orElse("Exception thrown with no exception details"));
-			return Collections.singletonList(new ErrorResponse(wf, a, exceptionMessage));
+			//return Collections.singletonList(new ErrorResponse(wf, a, exceptionMessage));
 		}
 	}
 	

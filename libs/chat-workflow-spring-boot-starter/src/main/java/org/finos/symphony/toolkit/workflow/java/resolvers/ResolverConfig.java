@@ -2,13 +2,10 @@ package org.finos.symphony.toolkit.workflow.java.resolvers;
 
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +17,7 @@ import org.springframework.context.annotation.Lazy;
 public class ResolverConfig {
 
 	@Autowired
-	Workflow wf;
-	
-	@Autowired
 	BeanFactory context;
-	
-
 	
 	/**
 	 * Allows you to put any beans you like as parameters of the workflow
@@ -47,10 +39,6 @@ public class ResolverConfig {
 
 				@Override
 				public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget) {
-					if (isTarget) {
-						return Optional.empty();
-					}
-					
 					try {
 						Object bean = context.getBean(c);
 						return Optional.of(bean);
