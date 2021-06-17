@@ -15,6 +15,7 @@ import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.mapping.WildcardContent.Arity;
+import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsAction;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
 import org.springframework.core.MethodParameter;
@@ -24,6 +25,11 @@ import org.springframework.web.method.HandlerMethod;
 
 public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
 
+	private WorkflowResolversFactory wrf;
+	
+	public ExposedHandlerMapping(WorkflowResolversFactory wrf) {
+		this.wrf = wrf;
+	}
 
 	@Override
 	protected boolean isHandler(Class<?> beanType) {
@@ -150,14 +156,14 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 					return null;
 				}
 				
-				return pathMatches(a.getWords());
+				return pathMatches(a.getWords(), a);
 			}
 
-			private HandlerExecutor pathMatches(Message words) {
+			private HandlerExecutor pathMatches(Message words, Action a) {
 				for (MessageMatcher messageMatcher : matchers) {
 					Map<ChatVariable, Content> map = new HashMap<>();
 					if (messageMatcher.consume(words, map)) {
-						return new HandlerExecutor() {
+						return new AbstractHandlerExecutor(wrf) {
 
 							@Override
 							public Map<ChatVariable, Content> getReplacements() {
@@ -168,8 +174,12 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 							public HandlerMethod method() {
 								return handlerMethod;
 							}
-							
-							
+
+							@Override
+							public Action action() {
+								return a;
+							}
+
 						};
 					}
 				}
