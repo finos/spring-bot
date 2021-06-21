@@ -5,9 +5,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.Action;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.MethodParameter;
 
 /**
  * Returns the {@link WorkflowResolvers}, which chains together lots of {@link WorkflowResolver} calls into a single one.
@@ -36,11 +36,11 @@ public class WorkflowResolversFactory implements ApplicationContextAware {
 				.collect(Collectors.toList());
 		
 		return new WorkflowResolvers() {
-			
+
 			@Override
-			public Optional<Object> resolve(Class<?> arg0, Addressable arg1, boolean isTarget) {
+			public Optional<Object> resolve(MethodParameter mp) {
 				for (WorkflowResolver workflowResolver : resolvers) {
-					Optional<Object> oo = workflowResolver.resolve(arg0, arg1, isTarget);
+					Optional<Object> oo = workflowResolver.resolve(mp);
 					if (oo.isPresent()) {
 						return oo;
 					}
@@ -50,9 +50,9 @@ public class WorkflowResolversFactory implements ApplicationContextAware {
 			}
 
 			@Override
-			public boolean canResolve(Class<?> c) {
+			public boolean canResolve(MethodParameter t) {
 				for (WorkflowResolver workflowResolver : resolvers) {
-					boolean b = workflowResolver.canResolve(c);
+					boolean b = workflowResolver.canResolve(t);
 					if (b) {
 						return true;
 					}

@@ -1,31 +1,17 @@
 package org.finos.symphony.toolkit.workflow.java.mapping;
 
-import org.finos.symphony.toolkit.json.EntityJson;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+import java.util.Optional;
+
 import org.finos.symphony.toolkit.workflow.Action;
-import org.finos.symphony.toolkit.workflow.CommandPerformer;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.Button.Type;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolvers;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
-import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
-import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
-import org.springframework.web.method.HandlerMethod;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Implements command performer by using method calls on workflow classes.
@@ -33,7 +19,7 @@ import java.util.Optional;
  * @author moffrob
  *
  */
-public abstract class AbstractHandlerExecutor implements HandlerExecutor {
+public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(AbstractHandlerExecutor.class);
 
@@ -47,35 +33,20 @@ public abstract class AbstractHandlerExecutor implements HandlerExecutor {
 	
 	@Override
 	public void execute() {
-		Method m = method().getMethod(); 
-		Addressable a = action().getAddressable();
-	
+		ChatHandlerMethod hm = getChatHandlerMethod();
+		Method m = hm.getMethod(); 
+		
+		Object o = hm.getBean();
+		
 		WorkflowResolvers wr = buildWorkflowResolvers(action());
-	
-		Class<?> c = m.getDeclaringClass();
-		Optional<?> o = Optional.empty();
-		if (!Modifier.isStatic(m.getModifiers())) {
-			// load the current object
-			o = wr.resolve(c, a, true);
-			
-//			if ((!o.isPresent()) || (o.get().getClass() != c)) {
-//				return Collections.singletonList(new ErrorResponse(wf, a, "Couldn't find work for "+commandName));
-//			}
-		}
-			
-	
-		Object[] args = new Object[m.getParameterCount()];
-//		for (int i = 0; i < args.length; i++) {
-//			MethodParameter mp = method().getMethodParameters()[i];
-//	
-//			
-//			
-//			Class<?> cl = m.getParameters()[i].getType();
-//			Optional<Object> oo = wr.resolve(cl, a, false);
-//			if (oo.isPresent()) {
-//				args[i] = oo.get();
-//			} else {
-//				// missing parameter
+		Object[] args = new Object[hm.getMethodParameters().length];
+		for (int i = 0; i < args.length; i++) {
+			MethodParameter mp = hm.getMethodParameters()[i];
+			Optional<Object> oo = wr.resolve(mp); 
+			if (oo.isPresent()) {
+				args[i] = oo.get();
+			} else {
+				// missing parameter
 //				try {
 //					return  Collections.singletonList(new FormResponse(wf, a,  new EntityJson(), "Enter "+
 //						wf.getName(cl), wf.getInstructions(cl), cl.newInstance(), true, 
@@ -85,12 +56,12 @@ public abstract class AbstractHandlerExecutor implements HandlerExecutor {
 //						throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
 //					}
 //				} 
-//			}
-//		}
+			}
+		}
 		
 
 		try {
-			Object out = m.invoke(o.orElse(null), args);
+			Object out = m.invoke(o, args);
 //			if (out == null) {
 //				return Collections.emptyList();
 //			}

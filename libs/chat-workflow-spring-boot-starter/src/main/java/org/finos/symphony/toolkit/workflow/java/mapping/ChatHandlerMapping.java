@@ -10,10 +10,10 @@ import org.finos.symphony.toolkit.workflow.Action;
  * @author rob@kite9.com
  *
  */
-public interface HandlerMapping<T> {
+public interface ChatHandlerMapping<T> {
 
-	public List<Mapping<T>> getHandlers(Action a);
+	public List<ChatMapping<T>> getHandlers(Action a);
 	
-	public List<HandlerExecutor> getExecutors(Action a);
+	public List<ChatHandlerExecutor> getExecutors(Action a);
 	
 }

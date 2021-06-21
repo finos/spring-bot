@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.messages;
 
+import java.lang.reflect.Type;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -7,7 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.Action;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.CashTag;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
@@ -19,6 +19,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
+import org.springframework.core.MethodParameter;
 
 /**
  * Provides a resolver for parts of a message, e.g. words, paragraphs, tags.
@@ -38,33 +39,31 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 			return new WorkflowResolver() {
 				
 				@Override
-				public Optional<Object> resolve(Class<?> cl, Addressable a, boolean isTarget) {
-					if (isTarget) {
-						return Optional.empty();
-					}
-					
-					if (parameterBuckets.containsKey(cl)) {
-						return Optional.of(parameterBuckets.get(cl).pop());
+				public Optional<Object> resolve(MethodParameter mp) {
+					Type t = mp.getGenericParameterType();
+					if (parameterBuckets.containsKey(t)) {
+						return Optional.of(parameterBuckets.get(t).pop());
 					} else {
 						return Optional.empty();
 					}
 				}
 				
 				@Override
-				public boolean canResolve(Class<?> cl) {
-					return parameterBuckets.containsKey(cl);
+				public boolean canResolve(MethodParameter mp) {
+					Type t = mp.getGenericParameterType();
+					return parameterBuckets.containsKey(t);
 				}
 			};
 		} else {
 			return new WorkflowResolver() {
 				
 				@Override
-				public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget) {
+				public Optional<Object> resolve(MethodParameter mp) {
 					return Optional.empty();
 				}
 				
 				@Override
-				public boolean canResolve(Class<?> c) {
+				public boolean canResolve(MethodParameter mp) {
 					return false;
 				}
 			};
