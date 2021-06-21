@@ -12,14 +12,14 @@ import java.util.stream.Collectors;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ApplicationObjectSupport;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
-import org.springframework.web.method.HandlerMethod;
 
-public abstract class AbstractSpringComponentHandlerMapping<T> extends ApplicationObjectSupport implements HandlerMapping<T>, InitializingBean {
+public abstract class AbstractSpringComponentHandlerMapping<T> extends ApplicationObjectSupport implements ChatHandlerMapping<T>, InitializingBean {
 
 	private boolean detectHandlerMethodsInAncestorContexts = false;
 	
@@ -54,7 +54,7 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	 * Invoked after all handler methods have been detected.
 	 * @param handlerMethods a read-only map with handler methods and mappings.
 	 */
-	protected void handlerMethodsInitialized(Map<T, HandlerMethod> handlerMethods) {
+	protected void handlerMethodsInitialized(Map<T, ChatHandlerMethod> handlerMethods) {
 		// Total includes detected mappings + explicit registrations via registerMapping
 		int total = handlerMethods.size();
 		if ((logger.isTraceEnabled() && total == 0) || (logger.isDebugEnabled() && total > 0) ) {
@@ -86,9 +86,12 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	 * @see #detectHandlerMethods
 	 */
 	protected void processCandidateBean(String beanName) {
-		Class<?> beanType = null;
+		Object bean = null;
+		Class<?> type = null;
 		try {
-			beanType = obtainApplicationContext().getType(beanName);
+			ApplicationContext ctx = obtainApplicationContext();
+			bean = ctx.getBean(beanName);
+			type = ctx.getType(beanName);
 		}
 		catch (Throwable ex) {
 			// An unresolvable bean type, probably from a lazy bean - let's ignore it.
@@ -96,8 +99,9 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 				logger.trace("Could not resolve type for bean '" + beanName + "'", ex);
 			}
 		}
-		if (beanType != null && isHandler(beanType)) {
-			detectHandlerMethods(beanName);
+		if (bean != null && isHandler(type)) {
+			
+			detectHandlerMethods(bean);
 		}
 	}
 	
@@ -111,7 +115,7 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	/**
 	 * Return a (read-only) map with all mappings and HandlerMethod's.
 	 */
-	public Map<T, HandlerMethod> getHandlerMethods() {
+	public Map<T, ChatHandlerMethod> getHandlerMethods() {
 		this.mappingRegistry.acquireReadLock();
 		try {
 			return Collections.unmodifiableMap(
@@ -217,7 +221,7 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		public void register(T mapping, Object handler, Method method) {
 			this.readWriteLock.writeLock().lock();
 			try {
-				HandlerMethod handlerMethod = createHandlerMethod(handler, method);
+				ChatHandlerMethod handlerMethod = createHandlerMethod(handler, method);
 				validateMethodMapping(handlerMethod, mapping);
 				
 				this.registry.put(mapping, createMappingRegistration(mapping, handlerMethod));
@@ -227,18 +231,18 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 			}
 		}
 		
-		protected HandlerMethod createHandlerMethod(Object handler, Method method) {
+		protected ChatHandlerMethod createHandlerMethod(Object handler, Method method) {
 			if (handler instanceof String) {
-				return new HandlerMethod((String) handler,
+				return new ChatHandlerMethod((String) handler,
 						obtainApplicationContext().getAutowireCapableBeanFactory(), method);
 			}
-			return new HandlerMethod(handler, method);
+			return new ChatHandlerMethod(handler, method);
 		}
 		
 
-		private void validateMethodMapping(HandlerMethod handlerMethod, T mapping) {
-			Mapping<T> registration = this.registry.get(mapping);
-			HandlerMethod existingHandlerMethod = (registration != null ? registration.getHandlerMethod() : null);
+		private void validateMethodMapping(ChatHandlerMethod handlerMethod, T mapping) {
+			ChatMapping<T> registration = this.registry.get(mapping);
+			ChatHandlerMethod existingHandlerMethod = (registration != null ? registration.getHandlerMethod() : null);
 			if (existingHandlerMethod != null && !existingHandlerMethod.equals(handlerMethod)) {
 				throw new IllegalStateException(
 						"Ambiguous mapping. Cannot map '" + handlerMethod.getBean() + "' method \n" +
@@ -259,14 +263,14 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	}
 
 
-	abstract static class MappingRegistration<T> implements Mapping<T> {
+	abstract static class MappingRegistration<T> implements ChatMapping<T> {
 
 		private final T mapping;
 
-		private final HandlerMethod handlerMethod;
+		private final ChatHandlerMethod handlerMethod;
 
 		public MappingRegistration(
-				T mapping, HandlerMethod handlerMethod) {
+				T mapping, ChatHandlerMethod handlerMethod) {
 
 			Assert.notNull(mapping, "Mapping must not be null");
 			Assert.notNull(handlerMethod, "HandlerMethod must not be null");
@@ -280,13 +284,13 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		}
 
 		@Override
-		public HandlerMethod getHandlerMethod() {
+		public ChatHandlerMethod getHandlerMethod() {
 			return this.handlerMethod;
 		}
 	}
 
 
-	protected abstract MappingRegistration<T> createMappingRegistration(T mapping, HandlerMethod handlerMethod);
+	protected abstract MappingRegistration<T> createMappingRegistration(T mapping, ChatHandlerMethod handlerMethod);
 
 	
 }

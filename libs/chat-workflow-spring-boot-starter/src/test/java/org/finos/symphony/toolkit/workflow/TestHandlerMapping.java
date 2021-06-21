@@ -10,16 +10,18 @@ import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
-import org.finos.symphony.toolkit.workflow.java.mapping.HandlerExecutor;
-import org.finos.symphony.toolkit.workflow.java.mapping.Mapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -57,6 +59,12 @@ public class TestHandlerMapping {
 			return new ExposedHandlerMapping(wrf);
 		}
 		
+		@Bean
+		public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
+			return new MessagePartWorkflowResolverFactory();
+		}
+
+		
 	}
 	
 	
@@ -68,7 +76,7 @@ public class TestHandlerMapping {
 		getMappingsFor("list");
 	}
 
-	private List<Mapping<Exposed>> getMappingsFor(String s) throws Exception {
+	private List<ChatMapping<Exposed>> getMappingsFor(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
 		Message m = smp.parseNaked(s);
 		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
@@ -76,7 +84,7 @@ public class TestHandlerMapping {
 	}
 	
 
-	private List<HandlerExecutor> getExecutorsFor(String s) throws Exception {
+	private List<ChatHandlerExecutor> getExecutorsFor(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
 		Message m = smp.parseNaked(s);
 		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
@@ -85,16 +93,16 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void checkWildcardMapping() throws Exception {
-		List<Mapping<Exposed>> mapped = getMappingsFor("ban zebedee");
+		List<ChatMapping<Exposed>> mapped = getMappingsFor("ban zebedee");
 		Assertions.assertTrue(mapped.size()  == 1);
 	}
 	
 	@Test
 	public void checkHandlerExecutors() throws Exception {
-		List<HandlerExecutor> mapped = getExecutorsFor("ban zebedee");
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("ban zebedee");
 		Assertions.assertTrue(mapped.size()  == 1);
 		
-		HandlerExecutor first = mapped.get(0);
+		ChatHandlerExecutor first = mapped.get(0);
 		ChatVariable firstKey = first.getReplacements().keySet().iterator().next();
 		
 		Assertions.assertEquals("word", firstKey.value());
@@ -103,11 +111,14 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void checkMethodCall() throws Exception {
-		List<HandlerExecutor> mapped = getExecutorsFor("list");
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("list");
 		Assertions.assertTrue(mapped.size()  == 1);
 		mapped.stream().forEach(e -> e.execute());
 		
 		Assertions.assertEquals("doCommand", oc.lastMethod);
+		Assertions.assertEquals(1,  oc.lastArguments.size());
+		Assertions.assertTrue(Message.class.isAssignableFrom(oc.lastArguments.get(0).getClass()));
+		
 	}
 	
 

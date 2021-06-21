@@ -1,11 +1,13 @@
 package org.finos.symphony.toolkit.workflow.java.resolvers;
 
+import java.lang.reflect.Type;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.Action;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.ConfigurableWorkflow;
+import org.springframework.core.MethodParameter;
 
 public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFactory {
 	
@@ -24,21 +26,21 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 	public WorkflowResolver createResolver(Action originatingAction) {
 		return new WorkflowResolver() {
 			
-			@SuppressWarnings("unchecked")
 			@Override
-			public Optional<Object> resolve(Class<?> c, Addressable a, boolean isTarget) {
-				if (isTarget) {
-					 return (Optional<Object>) hist.getLastFromHistory(c, a);
-				} else {
+			public Optional<Object> resolve(MethodParameter mp) {
+//				if (isTarget) {
+//					 return (Optional<Object>) hist.getLastFromHistory(c, a);
+//				} else {
 					return Optional.empty();
-				}
+//				}
 			}
 			
 			@Override
-			public boolean canResolve(Class<?> c) {
+			public boolean canResolve(MethodParameter mo) {
+				Type t = mo.getGenericParameterType();
 				if (originatingAction.getWorkflow() instanceof ConfigurableWorkflow) {
 					return ((ConfigurableWorkflow)originatingAction.getWorkflow()).getDataTypes().stream()
-							.filter(dt -> dt.isAssignableFrom(c))
+							.filter(dt -> dt.isAssignableFrom((Class<?>) t))
 							.findFirst()
 							.isPresent();
 				} else {

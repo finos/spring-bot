@@ -21,7 +21,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessa
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.method.HandlerMethod;
 
 public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
 
@@ -46,10 +45,10 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 	}
 
 	@Override
-	public List<Mapping<Exposed>> getHandlers(Action a) {
+	public List<ChatMapping<Exposed>> getHandlers(Action a) {
 		mappingRegistry.acquireReadLock();
 		
-		List<Mapping<Exposed>> out = mappingRegistry.getRegistrations().values().stream()
+		List<ChatMapping<Exposed>> out = mappingRegistry.getRegistrations().values().stream()
 			.filter(m -> m.matches(a) != null)
 			.collect(Collectors.toList());
 		
@@ -59,10 +58,10 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 	
 
 	@Override
-	public List<HandlerExecutor> getExecutors(Action a) {
+	public List<ChatHandlerExecutor> getExecutors(Action a) {
 		mappingRegistry.acquireReadLock();
 		
-		List<HandlerExecutor> out = mappingRegistry.getRegistrations().values().stream()
+		List<ChatHandlerExecutor> out = mappingRegistry.getRegistrations().values().stream()
 			.map(m -> m.matches(a))
 			.filter(f -> f != null)
 			.collect(Collectors.toList());
@@ -115,7 +114,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 		return Message.of(items);
 	}
 	
-	private List<WildcardContent> createWildcardContent(Exposed mapping, HandlerMethod method) {
+	private List<WildcardContent> createWildcardContent(Exposed mapping, ChatHandlerMethod method) {
 		MethodParameter[] params = method.getMethodParameters();
 		return Arrays.stream(params)
 				.filter(m -> m.getParameterAnnotation(ChatVariable.class) != null)
@@ -128,7 +127,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 	}
 
 	@Override
-	protected MappingRegistration<Exposed> createMappingRegistration(Exposed mapping, HandlerMethod handlerMethod) {
+	protected MappingRegistration<Exposed> createMappingRegistration(Exposed mapping, ChatHandlerMethod handlerMethod) {
 	
 		List<WildcardContent> wildcards = createWildcardContent(mapping, handlerMethod);
 		List<MessageMatcher> matchers = createMessageMatchers(mapping, wildcards); 
@@ -137,7 +136,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 		return new MappingRegistration<Exposed>(mapping, handlerMethod) {
 			
 			@Override
-			public HandlerExecutor matches(Action a) {
+			public ChatHandlerExecutor matches(Action a) {
 				if (a instanceof ElementsAction) {
 					return matchesElementsAction((ElementsAction)a);
 				}
@@ -149,7 +148,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 				return null;
 			}
 
-			private HandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {
+			private ChatHandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {
 				Exposed e = getMapping();
 				
 				if (!e.isMessage()) {
@@ -159,7 +158,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 				return pathMatches(a.getWords(), a);
 			}
 
-			private HandlerExecutor pathMatches(Message words, Action a) {
+			private ChatHandlerExecutor pathMatches(Message words, Action a) {
 				for (MessageMatcher messageMatcher : matchers) {
 					Map<ChatVariable, Content> map = new HashMap<>();
 					if (messageMatcher.consume(words, map)) {
@@ -171,7 +170,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 							}
 
 							@Override
-							public HandlerMethod method() {
+							public ChatHandlerMethod getChatHandlerMethod() {
 								return handlerMethod;
 							}
 
@@ -187,7 +186,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 				return null;
 			}
 
-			private HandlerExecutor matchesElementsAction(ElementsAction a) {
+			private ChatHandlerExecutor matchesElementsAction(ElementsAction a) {
 				Exposed e = getMapping();
 				
 				if (!e.isButton()) {
