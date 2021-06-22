@@ -192,24 +192,32 @@ public class SharedStreamHandlerConfig {
 		return out;
 	}
 
-	@Bean
-	@ConditionalOnMissingBean
-	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	protected SymphonyRoomSharedLog symphonySharedLog(ApiInstance api) {
-		if (!StringUtils.hasText(streamProperties.getCoordinationStreamId())) {
-			throw new IllegalArgumentException("Shared Log needs a stream ID to write to.  Please set symphony.stream.coordination-stream-id");
-		}
-		
-		String clusterName = api.getIdentity().getEmail();
-		SymphonyRoomSharedLog out = new SymphonyRoomSharedLog(
-				clusterName,
-				streamProperties.getCoordinationStreamId(), 
-				api.getAgentApi(MessagesApi.class), 
-				streamProperties.getEnvironmentIdentifier(),
-				streamProperties.getParticipantWriteIntervalMillis());
-		
-		LOG.info("Building Shared Log for "+clusterName);
-		return out;
-	}
+    private Map<ApiInstance, SymphonyRoomSharedLog> createdLogs = new HashMap<>();
+    
+    @Bean
+    @ConditionalOnMissingBean
+    @Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
+    protected synchronized SymphonyRoomSharedLog symphonySharedLog(ApiInstance api) {
+           if (!StringUtils.hasText(streamProperties.getCoordinationStreamId())) {
+                  throw new IllegalArgumentException("Shared Log needs a stream ID to write to.  Please set symphony.stream.coordination-stream-id");
+           }
+           
+           if (createdLogs.containsKey(api)) {
+                  return createdLogs.get(api);
+           }
+           
+           String clusterName = api.getIdentity().getEmail();
+           SymphonyRoomSharedLog out = new SymphonyRoomSharedLog(
+                        clusterName,
+                        streamProperties.getCoordinationStreamId(), 
+                        api.getAgentApi(MessagesApi.class), 
+                        streamProperties.getEnvironmentIdentifier(),
+                        streamProperties.getParticipantWriteIntervalMillis());
+           
+           createdLogs.put(api, out);
+           
+           LOG.info("Building Shared Log for "+clusterName);
+           return out;
+    }
 
 }

@@ -9,7 +9,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RSSProperties {
 
 	List<ProxyProperties> proxies;
-	
+
+	public void setProxies(List<ProxyProperties> proxies) {
+		this.proxies = proxies;
+	}
+
 	String successMessage = "Feed loaded and configured successfully.";
 	
 	public String getSuccessMessage() {
