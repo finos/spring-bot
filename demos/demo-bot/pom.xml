@@ -3,20 +3,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.3.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>org.finos.symphony.toolkit</groupId>
+		<artifactId>symphony-java-toolkit</artifactId>
+		<version>7.20.3-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
 	</parent>
-	<groupId>com.db.symphony.example-bot</groupId>
+
+	<groupId>org.finos.symphony.toolkit.demos</groupId>
 	<artifactId>demo-bot</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>Symphony Demo Bot</name>
 	<description>Demo Bot Using Spring Boot Starter</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
+		<spring-boot.run.main-class>example.symphony.demobot.DemoApplication</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -24,16 +26,20 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
-    <dependency>
-      <groupId>org.finos.symphony.toolkit</groupId>
-      <artifactId>symphony-api-spring-boot-starter</artifactId>
-      <version>5.59.2-SNAPSHOT</version>
-      <scope>compile</scope>
-    </dependency>
- 		<dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.symphony.toolkit</groupId>
+			<artifactId>symphony-api-spring-boot-starter</artifactId>
+			<version>7.20.3-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
-			<version>5.59.2-SNAPSHOT</version>
+			<version>7.20.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -69,23 +75,21 @@
 		</dependency>
 	</dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.glassfish.jersey</groupId>
-				<artifactId>jersey-bom</artifactId>
-				<version>2.28</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<mainClass>${spring-boot.run.main-class}</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

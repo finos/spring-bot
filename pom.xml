@@ -5,43 +5,48 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>5.59.2-SNAPSHOT</version>
+	<version>7.20.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
 	<url>https://github.com/finos/symphony-java-toolkit</url>
-	
+
 	<parent>
-	 <groupId>org.finos</groupId>
-	 <artifactId>finos</artifactId>
-	 <version>2</version>
+		<groupId>org.finos</groupId>
+		<artifactId>finos</artifactId>
+		<version>2</version>
 	</parent>
 
 	<modules>
-		<module>identity</module>
-		<module>bindings</module>
-		<module>symphony-api-spring-boot-starter</module>
-		<module>symphony-app-spring-boot-starter</module>
-    <module>entity-json</module>
-		<!--module>koreai</module-->
-		<module>quickfix-json</module>
-		<module>shared-stream-spring-boot-starter</module>
-		<module>chat-workflow-spring-boot-starter</module>
+		<module>libs/identity</module>
+		<module>libs/bindings</module>
+		<module>libs/symphony-api-spring-boot-starter</module>
+		<module>libs/symphony-app-spring-boot-starter</module>
+		<module>libs/entity-json</module>
+		<module>libs/shared-stream-spring-boot-starter</module>
+		<module>libs/chat-workflow-spring-boot-starter</module>
+		<module>libs/quickfix-json</module>
+		
+		<module>tools/koreai</module>
+		<module>tools/rss-bot</module>
+		<module>tools/teamcity-symphony-integration</module>
+		<module>tools/symphony-maven-build-reporter</module>
+		<module>tools/poll-bot</module>		
+		<!-- <module>tools/webhook-bot</module>  -->
+		
 		<module>demos/demo-bot</module>
-		<module>demos/demo-app</module>
-		<module>demos/poll-bot</module>
+		<module>demos/demo-app</module>		
 		<module>demos/todo-bot</module>
-		<module>demos/claim-bot</module>
-		<module>teamcity-symphony-integration</module>
-    <module>symphony-maven-build-reporter</module>
+		<module>demos/claim-bot</module>		
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>2.3.4.RELEASE</spring-boot.version>
+		<spring-boot.version>2.4.4</spring-boot.version>
+		<spring-boot-oauth.version>2.4.4</spring-boot-oauth.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<java.version>1.8</java.version>
 
 		<!-- this must match the version from the spring boot pom -->
 		<jackson-databind.version>2.10.0</jackson-databind.version>
@@ -73,9 +78,9 @@
 		<developer>
 			<id>robmoffat</id>
 			<name>Rob Moffat</name>
-			<email>rob@kite9.com</email>
-			<url>https://robmoff.at</url>
-			<organization>Kite9 Ltd</organization>
+			<email>robert.moffat@db.com</email>
+			<url>https://www.db.com</url>
+			<organization>Deutsche Bank</organization>
 			<roles>
 				<role>developer</role>
 			</roles>
@@ -88,14 +93,53 @@
 				<role>developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>sureshrupnar</id>
+			<name>Suresh Rupnar</name>
+			<email>suresh.rupnar@db.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>amsidhlokhande</id>
+			<name>Amsidh Lokhande</name>
+			<email>amsidh-babasha.lokhande@db.com</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<scm>
-	  	<developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
+		<developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
 		<connection>scm:git@github.com:finos/symphony-java-toolkit.git</connection>
 		<tag>HEAD</tag>
 		<url>https://github.com/finos/symphony-java-toolkit</url>
 	</scm>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration> <!-- add this to disable checking -->
+					<doclint>none</doclint>
+					<failOnError>false</failOnError>
+					<source>8</source>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 	<profiles>
 		<!-- using this profile creates Javadocs, etc. and signs the jars for upload 
@@ -121,24 +165,6 @@
 							<interactive>false</interactive>
 						</configuration>
 					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>3.1.1</version>
-						<executions>
-							<execution>
-								<id>attach-javadocs</id>
-								<goals>
-									<goal>jar</goal>
-								</goals>
-              </execution>
-            </executions>							
-						<configuration> <!-- add this to disable checking -->
-							<doclint>none</doclint>
-							<failOnError>false</failOnError>
-							<source>8</source>
-						</configuration>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -156,65 +182,47 @@
 							<execution>
 								<goals>
 									<goal>prepare-agent</goal>
-                  <goal>prepare-agent-integration</goal>
 								</goals>
 							</execution>
- 							<execution>
+							<execution>
 								<id>report</id>
 								<phase>test</phase>
 								<goals>
 									<goal>report</goal>
 								</goals>
 							</execution>
-						  <execution>
-                <id>report-integration</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>report-integration</goal>
-                </goals>
-              </execution>
 						</executions>
 					</plugin>
-				  <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>2.18.1</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>integration-test</goal>
-                  <goal>verify</goal>
-                </goals>
-                <configuration>
-                 <systemPropertyVariables>
-                    <symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
-                    <symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
-                    <symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
-                    <proxy>${symphony-proxy}</proxy>
-                  </systemPropertyVariables>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>3.0.0-M5</version>
+						<configuration>
+							<includes>
+								<include>**/*Test.java</include>
+								<include>**/*IT.java</include>
+								<include>**/Test*.java</include>
+							</includes>
+							<systemPropertyVariables>
+								<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
+								<symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
+								<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
+								<proxy>${symphony-proxy}</proxy>
+							</systemPropertyVariables>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
 	</profiles>
 
 
-  <!-- since we are building
-     the build reporter, this must refer to an earlier, built version -->
- 	<!-- <build>
-		<extensions>
-			<extension>
-				<groupId>org.finos.symphony.toolkit</groupId>
-				<artifactId>symphony-maven-build-reporter</artifactId>
+	<!-- since we are building the build reporter, this must refer to an earlier, 
+		built version -->
+	<!-- <build> <extensions> <extension> <groupId>org.finos.symphony.toolkit</groupId> 
+		<artifactId>symphony-maven-build-reporter</artifactId> <version>4.59.6</version> 
+		</extension> </extensions> </build> -->
 
-				<version>4.59.6</version>
-			</extension>
-		</extensions>
-	</build>  -->
-	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -222,6 +230,15 @@
 				<artifactId>jackson-core</artifactId>
 				<version>${jackson.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-dependencies</artifactId>
+				<version>${spring-boot.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 </project>

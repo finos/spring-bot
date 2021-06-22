@@ -1,6 +1,7 @@
 package example.symphony.demobot;
 
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
+import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -13,6 +14,7 @@ import org.springframework.context.event.EventListener;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.V4MessageSent;
+import com.symphony.api.pod.UsersApi;
 
 @SpringBootApplication
 @Configuration
@@ -20,6 +22,9 @@ public class DemoApplication {
 		
 	@Autowired
 	MessagesApi messagesApi;
+	
+	@Autowired
+	UsersApi usersApi;
 	
 	@Value("${room}")
 	String streamId;
@@ -53,6 +58,11 @@ public class DemoApplication {
 			}
 			
 		};
+	}
+	
+	@Bean
+	public StreamEventConsumer welcomeMessages() {
+		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id);
 	}
 
 }

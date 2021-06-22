@@ -1,7 +1,7 @@
 # Building A Bot in Java with Spring Boot
 
 This guide is based on a presentation I've written, creating a
-fully-functional Java bot, using the [Symphony API Spring Boot Starter ](../symphony-api-spring-boot-starter/README.md) component.  
+fully-functional Java bot, using the [Symphony API Spring Boot Starter ](../libs/symphony-api-spring-boot-starter/README.md) component.  
 
 By following this, you will end up with a fully functioning bot which
 will "echo back" what you tell it in a given room.
@@ -76,7 +76,7 @@ same messages.
 
 JAX-RS provides the code to call REST endpoints.  You can either add Jersey, or CXF.  
 
-Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
+Both are detailed on this page under Step 2: [Choose a JAX-RS Implementation.](../libs/symphony-api-spring-boot-starter/README.md#Step-2-Choose-JAX-RS-Implementation)
 
 
 #### CXF
@@ -179,7 +179,7 @@ symphony:
     can get away with just the first one.
 
 -   You can use a p12 file if you want to.  Review the docs in [Symphony API Spring
-    Boot Starter](../symphony-api-spring-boot-starter/README.md) for details.
+    Boot Starter](../libs/symphony-api-spring-boot-starter/README.md) for details.
 
 -   Column formatting is very important in yaml!  Make sure everything
     lines up.
@@ -214,7 +214,7 @@ symphony:
 ### Some Notes
 
 -   This configuration is also described in [Symphony API Spring
-    Boot Starter](../symphony-api-spring-boot-starter/README.md)
+    Boot Starter](../libs/symphony-api-spring-boot-starter/README.md)
 
 -   You can have separate proxy entries for each of the main
     endpoints, **pod, sessionauth, keyauth, relay, login** and **agent.**
@@ -299,7 +299,7 @@ public class DemoApplication {
 
 Notes:
 
-- At (1) we are auto-wiring one of the Symphony REST APIs.  - The apis are provided by the [symphony-java-client-bindings](../bindings/README.md) project.
+- At (1) we are auto-wiring one of the Symphony REST APIs.  - The apis are provided by the [symphony-java-client-bindings](../libs/bindings/README.md) project.
 - At (2) we are getting the stream ID of the room we configured
 - (3) is automatically called when the application starts, and it writes the message to Symphony using the API we auto-wired.
 
@@ -342,12 +342,12 @@ public class DemoApplication {
 ```
 Notes:
 
-- At (1), the bot's ID is autowired.  This is a bean exposed by the [Symphony API Spring Boot Starter](../symphony-api-spring-boot-starter/README.md) containing the id of your bot.
-- The ID is a `SymphonyIdentity` object, defined by the [symphony-java-client-identity](../identity/README.md) project.
+- At (1), the bot's ID is autowired.  This is a bean exposed by the [Symphony API Spring Boot Starter](../libs/symphony-api-spring-boot-starter/README.md) containing the id of your bot.
+- The ID is a `SymphonyIdentity` object, defined by the [symphony-java-client-identity](../libs/identity/README.md) project.
 - At (2) we are telling our StreamEventConsumer to only care about `V4MessageSent` events.
 - At (3) we check that the sender is not the bot itself (otherwise you'll get infinite echoing of messages)
 - At (4), we are calling the same method as we used on startup.  This is the method we are calling from Symphony: [Create Message v4](https://developers.symphony.com/restapi/reference#create-message-v4)
-- [Symphony-Java-Client-Bindings](../bindings/README.md) will handle **sessionTokens** and **keyManagerTokens**, so you can leave those parameters blank.
+- [Symphony-Java-Client-Bindings](../libs/bindings/README.md) will handle **sessionTokens** and **keyManagerTokens**, so you can leave those parameters blank.
 
 ## 11. Run It
 

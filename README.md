@@ -43,7 +43,7 @@ This provides a JAX-RS standard, **Type-Safe** means of interacting with [Sympho
 
 This is used in preference to Symphony's own API as the configuration can be left to spring boot, and you can use Spring's starters for JAX-RS to build your application.
 
-[View The README](bindings/README.md)
+[View The README](libs/bindings/README.md)
 
 ## Symphony Java Client Identity
 
@@ -56,13 +56,13 @@ This is used in preference to Symphony's own API as the configuration can be lef
 
 This is a highly convenient abstraction which works with Spring Boot's use of [Jackson](https://github.com/FasterXML/jackson) and [YAML](https://yaml.org) to describe Bot and App identities in Java.
 
-[View The README](identity/README.md)
+[View The README](libs/identity/README.md)
 
 ## Symphony API Spring Boot Starter
 
 Provides Spring-Based configuration and auto-wiring for Symphony APIs.  This is perfect if you are building a Symphony Bot using Spring Boot.
 
- - [View the README](symphony-api-spring-boot-starter/README.md)
+ - [View the README](libs/symphony-api-spring-boot-starter/README.md)
  - [Read the Bot-Building Tutorial](tutorials/Spring-Boot-Bot.md)
  - [View Demo Bot Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-bot)
 
@@ -72,7 +72,7 @@ If you are building a Symphony App, there are multiple concerns around app secur
 
 This provides you with an out-of-the-box way to get started and build an app with all of these concerns taken care of.
 
- - [View the README](symphony-app-spring-boot-starter/README.md)
+ - [View the README](libs/symphony-app-spring-boot-starter/README.md)
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
  - [View Demo App Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-app)
 
@@ -80,7 +80,7 @@ This provides you with an out-of-the-box way to get started and build an app wit
 
 This is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON data payload of a Symphony Message, using Jackson.
 
- - [View the README](entity-json/README.md)
+ - [View the README](libs/entity-json/README.md)
  - [Read the Tutorial](tutorials/Entity-JSON.md)
  
 ## QuickFIX Support
@@ -89,47 +89,50 @@ This is a utility that helps you serialize/deserialize QuickFIX messages into JS
 
 Although this is not reliant on Symphony code, it is adjacent tech and so might be useful for sending FIX payloads within Symphony.
 
- - [View the README](quickfix-json/README.md)
+ - [View the README](libs/quickfix-json/README.md)
  
 ## Maven Build Reporter
 
 Provides a maven extension that allows you to report build results into a Symphony chat room.  
 
- - [View the README](symphony-maven-build-reporter/README.md)
+ - [View the README](tools/symphony-maven-build-reporter/README.md)
  
 ## TeamCity Build Notifier
 
 Allows you to report your TeamCity builds into Symphony chat rooms, using a bot.
 
- - [View the README](teamcity-symphony-integration/README.md)
+ - [View the README](tools/teamcity-symphony-integration/README.md)
  
 ## Symphony Shared Stream
 
 The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
 
- - [View the README](shared-stream/README.md)
+ - [View the README](libs/shared-stream-spring-boot-starter/README.md)
  
 ## Chat Workflow
 
 This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
 
- - [View the README](chat-workflow/README.md)
+ - [View the README](libs/chat-workflow-spring-boot-starter/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
-<<<<<<< HEAD
- - [To-Do List Tutorial](tutorials/Chat-Workflow.md)
- - [Demo Poll Bot](demos/demo-poll-bot)
- - [Demo To-Do List Bot](demos/demo-todo-bot)
- - [Demo Claim Bot](demos/demo-claim-bot)
-  
-=======
- - [To-Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-todo-bot)
- - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-claim-bot)
- - [Poll Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-poll-bot)
->>>>>>> master
+ - [Demo To-Do List Bot](demos/todo-bot/README.md)
+ - [Demo Claim Bot](demos/claim-bot/README.md)
+ - [RSS News Bot](tools/rss-bot/README.md)
+ - [Poll Bot](tools/poll-bot/README.md)
+ 
+## Kore-AI Bridge
+
+This is a Spring Boot App that acts as a middleman between a Symphony bot and a KoreAI bot, allowing you to expose your KoreAI bot as a bot on Symphony.  [Kore.AI](https://kore.ai/) is a low code/no code environment for building chat bots.
+
+ - [View the README](tools/koreai/README.md)
 
 ## License
 
-This project is licensed under the [Apache 2.0 License](License).
+This project is licensed under the [Apache 2.0 License](LICENSE).
+
+## Running The Demo Bots
+
+
 
 ## Releasing This Project (For Maintainers)
 
@@ -142,9 +145,9 @@ In order to do a release:
 2. On Releaser's machine:
 
 ```
-mvn test integration-test
+mvn clean test -P symphony-ci
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=\*  -DgroupId=\*
-mvn -DskipTests -pl '!demos/demo-bot,!demos/demo-app,!demos/claim-bot,!demos/poll-bot,!demos/todo-bot' clean test source:jar javadoc:javadoc deploy -P symphony-release
+mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then push to git
 ```
