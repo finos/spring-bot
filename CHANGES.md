@@ -77,3 +77,61 @@
 ## 25th November 2020
 
  - Added TeamCity Integration
+
+## 16th December 2020
+ 
+ - KoreAI Mult-Tennant Support
+ - Fixing missing links
+ - Better factoring of Shared Streams
+ - Minor fixes to chat workflow
+
+## 7th January 2021
+
+ - Some improvements to POM struture to close whitesource issues
+ - Bumped spring dependencies
+ 
+## 13th January 2021
+
+ - Upgraded to JUnit 5.
+ - Fixed Code Coverage Report.
+ - Fixed KoreAI Issues (#122)
+ - Fixed Chat Workflow Bug (#124)
+ 
+## 2nd February 2021
+
+ - Plugable Freemarker templating for Chat workflow (#130)
+ - MessageML support in KoreAI Formatter (#125)
+ - Bot Welcome Messages (#119)
+ - Improvement for Content Class in Chat Workflow (#109)
+ - Fixing Whitesource security issue (#88)
+ 
+## 22nd February 2021
+
+ - Fixing Shared Stream issue, removed multiple algorithms from shared stream (#128)
+
+## March 2021
+
+ - Fixing issue #123 to allow shared-stream bots to start even without a listener.
+ - Fix for #140, using dedicated object mapper for bundles.
+ - Configurable timeout for shared-stream HttpMulticaster (#138)
+ - Added RSS Bot
+ - Fixed #146, #144, #142
+
+## April 09, 2021
+
+ - More logical package structure #148
+ - OBO Functionality #35
+ - Fix for #149
+ - Fix for #176, devtool properties moved to parent chat-workflow dependency
+ 
+## April 28, 2021 
+ - Fix for #165, @Display annotation to override field name.
+ - Fix for #163 Error Reporting Could Be Better.
+ - Fix for KoreAI Health Reporting #180
+
+## May 06, 2021
+ - Fix for #171, Checkbox and Delete button Alignment
+ - Fix for #163, Error Reporting Could Be Better with some update
+ - Fix for #182, Symphony Chat Workflow Annotations Documentation
+
+ 

@@ -1,14 +1,17 @@
 package example.symphony.demoworkflow.expenses;
 
-import javax.validation.constraints.Min;
-
 import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
+
+import javax.validation.constraints.Min;
 
 @Work(name = "New Claim Details")
 public class StartClaim {
 
+	@Display(name = "Description")
 	String description;
-	
+
+	@Display(name = "Amount")
 	@Min(0)
 	Number amount;
 
