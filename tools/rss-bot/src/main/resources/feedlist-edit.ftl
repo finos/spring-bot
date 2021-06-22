@@ -15,7 +15,7 @@
   <#list entity.formdata.feeds as iB>
   <tr>
   
-    <td ><a href="${iB.url!''}">${iB.name!''}</a></td>
+    <td >${iB.name!''}</td>
   
    <td >${iB.description!''}</td>
   

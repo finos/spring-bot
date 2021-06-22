@@ -36,6 +36,16 @@ You can filter in/out keywords from the news articles
 
 Just drop in the URL of a feed to configure it.
 
+## Other Features
+
+### Schedule       
+       
+You can set the schedule (in minutes) for each room the bot is in by typing '/every {x}'.  
+
+### Room-Admins Only
+
+You can type '/makeAdminOnly' to permit only room admins to change the feeds.  '/notAdminOnly' will reverse this.
+
 ## Configuration
 
 ### Proxies
@@ -55,17 +65,6 @@ symphony:
 
 The RSS bot will initially try each proxy in turn to set up the feed, and then store the correct proxy with the feed for later use.       
        
-### Schedule       
-       
-You can also configure how often the bot will check for messages.  Note, there is an overhead here - it has to download a list of streams that the bot is a member of, and then look in each stream to find out what the RSS settings are in that stream.  So, n+1 API calls to Symphony, where n is the number of rooms/chats containing the bot.   
-
-```
-symphony:
-  rss:
-    cron: 0 0 * * * MON-FRI  # Means once an hour, monday-friday
-```
-
-Check the Spring `@Scheduled` documentation for the format of this expression (it follows `cron`). 
     
 ### Success / Failure Messages
 
