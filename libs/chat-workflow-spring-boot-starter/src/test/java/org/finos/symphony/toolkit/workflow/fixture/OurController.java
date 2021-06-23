@@ -23,7 +23,7 @@ public class OurController {
 	
 	
 	// todo: do we need any other kinds of wildcards?
-	@Exposed("*") 
+	@Exposed("*")
 	public void listenToEverything(Message m) {
 		// guarav's reminder bot should do this - it needs to parse the date out of every
 		// message

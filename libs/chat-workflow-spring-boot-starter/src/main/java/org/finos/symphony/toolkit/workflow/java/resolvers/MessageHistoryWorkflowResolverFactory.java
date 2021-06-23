@@ -7,6 +7,7 @@ import org.finos.symphony.toolkit.workflow.Action;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.ConfigurableWorkflow;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.core.MethodParameter;
 
 public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFactory {
@@ -23,7 +24,7 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 	}
 
 	@Override
-	public WorkflowResolver createResolver(Action originatingAction) {
+	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
 		return new WorkflowResolver() {
 			
 			@Override

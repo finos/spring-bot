@@ -17,6 +17,7 @@ import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
 import org.springframework.core.MethodParameter;
@@ -28,15 +29,25 @@ import org.springframework.core.MethodParameter;
  *
  */
 public class MessagePartWorkflowResolverFactory implements WorkflowResolverFactory {
+	
 
 	@Override
-	public WorkflowResolver createResolver(Action a) {
+	public int priority() {
+		return LOW_PRIORITY;
+	}
+
+
+	@Override
+	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
+		Action a = che.action();
 		
 		if (a instanceof SimpleMessageAction) {
 		
 			final Map<Class<?>, Deque<Object>> parameterBuckets = setupParameterBuckets(((SimpleMessageAction) a).getWords());
 			
 			return new WorkflowResolver() {
+				
+				
 				
 				@Override
 				public Optional<Object> resolve(MethodParameter mp) {

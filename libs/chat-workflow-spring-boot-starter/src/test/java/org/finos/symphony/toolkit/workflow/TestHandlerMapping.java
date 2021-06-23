@@ -12,6 +12,7 @@ import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatVariableWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
@@ -62,6 +63,11 @@ public class TestHandlerMapping {
 		@Bean
 		public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
 			return new MessagePartWorkflowResolverFactory();
+		}
+		
+		@Bean
+		public ChatVariableWorkflowResolverFactory chatVariableWorkflowResolverFactory() {
+			return new ChatVariableWorkflowResolverFactory();
 		}
 
 		
@@ -118,6 +124,22 @@ public class TestHandlerMapping {
 		Assertions.assertEquals("doCommand", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Assertions.assertTrue(Message.class.isAssignableFrom(oc.lastArguments.get(0).getClass()));
+		
+	}
+	
+	
+	@Test
+	public void checkMethodCallWithChatVariables() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("ban gaurav");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		
+		Assertions.assertEquals("banWord", oc.lastMethod);
+		Assertions.assertEquals(1,  oc.lastArguments.size());
+		Object firstArgument = oc.lastArguments.get(0);
+		Assertions.assertTrue(Word.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("gaurav", ((Word)firstArgument).getText());
+		
 		
 	}
 	
