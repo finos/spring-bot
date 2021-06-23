@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.workflow.java.resolvers;
 
-import org.finos.symphony.toolkit.workflow.Action;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 
 /**
  * Returns a new workflow resolver, based on given arguments.
@@ -17,5 +17,5 @@ public interface WorkflowResolverFactory {
 		return NORMAL_PRIORITY;
 	}
 
-	public WorkflowResolver createResolver(Action originatingAction);
+	public WorkflowResolver createResolver(ChatHandlerExecutor che);
 }

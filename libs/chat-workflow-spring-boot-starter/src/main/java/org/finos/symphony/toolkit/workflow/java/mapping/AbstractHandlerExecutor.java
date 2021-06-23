@@ -91,7 +91,7 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 	}
 	
 	private WorkflowResolvers buildWorkflowResolvers(Action originatingAction) {
-		return wrf.createResolvers(originatingAction);
+		return wrf.createResolvers(this);
 	}
 
 	private boolean listOfResponses(Method m) {

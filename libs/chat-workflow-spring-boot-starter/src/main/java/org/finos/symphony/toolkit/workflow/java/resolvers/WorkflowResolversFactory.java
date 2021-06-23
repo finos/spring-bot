@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.Action;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.MethodParameter;
@@ -28,11 +28,11 @@ public class WorkflowResolversFactory implements ApplicationContextAware {
 	}
 	
 
-	public WorkflowResolvers createResolvers(Action originatingAction) {
+	public WorkflowResolvers createResolvers(ChatHandlerExecutor che) {
 		final List<WorkflowResolver> resolvers = beanFactory.getBeansOfType(WorkflowResolverFactory.class)
 				.values().stream()
 				.sorted((a,b) -> Integer.compare(a.priority(), b.priority()))
-				.map(wrf -> wrf.createResolver(originatingAction))
+				.map(wrf -> wrf.createResolver(che))
 				.collect(Collectors.toList());
 		
 		return new WorkflowResolvers() {
