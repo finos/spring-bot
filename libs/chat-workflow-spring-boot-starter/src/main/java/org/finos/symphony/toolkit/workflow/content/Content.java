@@ -42,7 +42,7 @@ public interface Content {
 	 * match, or returns a changed / null content if a match was made.
 	 */
 	public default Content removeAtStart(Content item) {
-		if (this.matches(item)) {
+		if (startsWith(item)) {
 			return null;
 		} else {
 			return this;
