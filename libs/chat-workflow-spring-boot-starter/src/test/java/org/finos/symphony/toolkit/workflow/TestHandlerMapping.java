@@ -4,7 +4,13 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.content.HashTag;
+import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.history.History;
@@ -13,6 +19,7 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatVariableWorkflowResolverFactory;
+import org.finos.symphony.toolkit.workflow.java.resolvers.AddressableWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
@@ -70,6 +77,10 @@ public class TestHandlerMapping {
 			return new ChatVariableWorkflowResolverFactory();
 		}
 
+		@Bean
+		public AddressableWorkflowResolverFactory addressableWorkflowResolverFactory() {
+			return new AddressableWorkflowResolverFactory();
+		}
 		
 	}
 	
@@ -84,7 +95,7 @@ public class TestHandlerMapping {
 
 	private List<ChatMapping<Exposed>> getMappingsFor(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		Message m = smp.parseNaked(s);
+		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
 		return hm.getHandlers(a);
 	}
@@ -92,8 +103,12 @@ public class TestHandlerMapping {
 
 	private List<ChatHandlerExecutor> getExecutorsFor(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		Message m = smp.parseNaked(s);
-		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
+		jsonObjects.put("1", new UserDef("1", "gaurav", "gaurav@example.com"));
+		jsonObjects.put("2", new HashTagDef("SomeTopic"));
+		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
+		Room r = new RoomDef("The Room Where It Happened", "Some description", true, "abc123");
+		User author = new UserDef("user123", "Rob Moffat", "rob.moffat@example.com");
+		Action a = new SimpleMessageAction(null, r, author, m, jsonObjects);
 		return hm.getExecutors(a);
 	}
 	
@@ -139,8 +154,40 @@ public class TestHandlerMapping {
 		Object firstArgument = oc.lastArguments.get(0);
 		Assertions.assertTrue(Word.class.isAssignableFrom(firstArgument.getClass()));
 		Assertions.assertEquals("gaurav", ((Word)firstArgument).getText());
+	}
+	
+	@Test
+	public void testUserChatVariable() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("delete <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
 		
+		Assertions.assertEquals("removeUserFromRoom", oc.lastMethod);
+		Assertions.assertEquals(2,  oc.lastArguments.size());
+		Object firstArgument = oc.lastArguments.get(0);
+		Assertions.assertTrue(User.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("gaurav", ((User)firstArgument).getName());
 		
+		Object secondArgument = oc.lastArguments.get(1);
+		Assertions.assertTrue(Room.class.isAssignableFrom(secondArgument.getClass()));
+		Assertions.assertEquals("The Room Where It Happened", ((Room)secondArgument).getRoomName());
+	}
+	
+	@Test
+	public void testHashtagMapping() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("add <span class=\"entity\" data-entity-id=\"1\">@gaurav</span> to <span class=\"entity\" data-entity-id=\"2\">#SomeTopic</span>");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		
+		Assertions.assertEquals("addUserToHashtag", oc.lastMethod);
+		Assertions.assertEquals(2,  oc.lastArguments.size());
+		Object firstArgument = oc.lastArguments.get(0);
+		Assertions.assertTrue(User.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("gaurav", ((User)firstArgument).getName());
+		
+		Object secondArgument = oc.lastArguments.get(1);
+		Assertions.assertTrue(HashTag.class.isAssignableFrom(secondArgument.getClass()));
+		Assertions.assertEquals("SomeTopic", ((HashTag)secondArgument).getName());
 	}
 	
 

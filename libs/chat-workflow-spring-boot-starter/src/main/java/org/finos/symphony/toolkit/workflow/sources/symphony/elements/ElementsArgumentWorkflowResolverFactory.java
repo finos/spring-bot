@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.Action;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
 import org.springframework.core.MethodParameter;
@@ -18,7 +18,8 @@ import org.springframework.core.MethodParameter;
 public class ElementsArgumentWorkflowResolverFactory implements WorkflowResolverFactory {
 
 	@Override
-	public WorkflowResolver createResolver(Action originatingAction) {
+	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
+		Action originatingAction = che.action();
 		if ((originatingAction instanceof ElementsAction) && (((ElementsAction) originatingAction).getFormData() != null)) {
 			
 			return new WorkflowResolver() {

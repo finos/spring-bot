@@ -279,11 +279,6 @@ public class SimpleMessageParser implements MessageParser {
 		}
 	}
 	
-	public Message parseNaked(String message) throws Exception {
-		return parse("<messageML>"+message+"</messageML>", new EntityJson());
-	}
-	
-
 	public Message parse(String message, EntityJson jsonObjects) throws Exception {
 
 		Content [] out = { null };
