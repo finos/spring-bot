@@ -10,6 +10,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.CashTagDef;
+import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -109,6 +110,71 @@ public class SimpleMessageParser implements MessageParser {
 		boolean hasContent() {
 			return true;
 		}
+	}
+	
+	static class IgnoredFrame extends TextFrame<Content> {
+		
+		String tag;
+
+		public IgnoredFrame(String tag) {
+			super();
+			this.tag = tag;
+		}
+		
+		@Override
+		boolean isEnding(String qName) {
+			return tag.equals(qName);
+		}
+
+
+		@Override
+		Content getContents() {
+			return null;
+		}
+
+		@Override
+		void push(Content c) {			
+		}
+
+		@Override
+		boolean hasContent() {
+			return false;
+		}
+		
+	}
+	
+	static class CodeBlockFrame extends TextFrame<CodeBlock> {
+		
+		String tag;
+
+		public CodeBlockFrame(String tag) {
+			super();
+			this.tag = tag;
+		}
+
+		@Override
+		CodeBlock getContents() {
+			return CodeBlock.of(buf.toString());
+		}
+
+		@Override
+		boolean isEnding(String qName) {
+			return tag.equals(qName);
+		}
+
+		@Override
+		void push(Content c) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		boolean hasContent() {
+			return buf.length() > 0;
+		}
+		
+		
+		
 	}
 	
 	static class ListFrame extends Frame<OrderedContent<?>> {
@@ -292,7 +358,11 @@ public class SimpleMessageParser implements MessageParser {
 				public void startElement(String uri, String localName, String qName, Attributes attributes)
 						throws SAXException {
 					
-					if (isStartTag(qName, attributes)) {
+					if (top instanceof CodeBlockFrame) {
+						push(new IgnoredFrame(qName));
+					} else if (isStartCodeBlock(qName, attributes)) {
+						push(new CodeBlockFrame(qName));
+					} else if (isStartTag(qName, attributes)) {
 						TagFrame tf = push(new TagFrame());
 						String dataEntityId = attributes.getValue("data-entity-id");
 						Object o = jsonObjects.get(dataEntityId);
@@ -324,6 +394,10 @@ public class SimpleMessageParser implements MessageParser {
 
 				private boolean isStartRow(String qName, Attributes attributes) {
 					return "tr".equals(qName);
+				}
+				
+				private boolean isStartCodeBlock(String qName, Attributes attributes) {
+					return "pre".equals(qName) || "code".equals(qName);
 				}
 
 				private <X extends Frame<?>> X push(X newFrame) {

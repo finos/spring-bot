@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -189,6 +190,36 @@ public class TestHandlerMapping {
 		Assertions.assertTrue(HashTag.class.isAssignableFrom(secondArgument.getClass()));
 		Assertions.assertEquals("SomeTopic", ((HashTag)secondArgument).getName());
 	}
+	
+	
+	@Test
+	public void testCodeblockMapping() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("update <pre>public static void main(String[] args) {}</pre>");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		
+		Assertions.assertEquals("process2", oc.lastMethod);
+		Assertions.assertEquals(1,  oc.lastArguments.size());
+		Object firstArgument = oc.lastArguments.get(0);
+		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
+	}
+	
+
+	@Test
+	public void testCodeblockMapping2() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("update <code>public <a href=\"sfdkjfh\">nonsense</a>static void main(String[] args) {}</code>");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		
+		Assertions.assertEquals("process2", oc.lastMethod);
+		Assertions.assertEquals(1,  oc.lastArguments.size());
+		Object firstArgument = oc.lastArguments.get(0);
+		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
+	}
+	
+
 	
 
 }
