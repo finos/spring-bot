@@ -133,33 +133,33 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
 
     }
 
-    private void assignTimeZoneToRoom(V4Event t){
-
-        V4RoomCreated v4RoomCreated = t.getPayload().getRoomCreated();
-        Room r =symphonyRooms.loadRoomById(t.getPayload().getMessageSent().getMessage().getStream().getStreamId());
-//        V4User v4User = t.getPayload().getMessageSent().getMessage().getUser();
-//        String userMailId = v4User.getEmail();
-//        User u=usersApi.v1UserGet(userMailId,"",true);
+//    private void assignTimeZoneToRoom(V4Event t){
 //
-        //TimeZone.getTimeZone(u.timeZoneId());
-
-        if(v4RoomCreated != null) {
-            //TimeZone tz = TimeZone.getDefault();
-            v4RoomCreated.setRoomTimeZone(TimeZone.getDefault());
-        }
-        else if(v4RoomCreated.getRoomTimeZone()==null){
-            v4RoomCreated.setRoomTimeZone(TimeZone.getDefault());
-        }
-        else if(r.getTimeZone()==null){
-            r.setTimeZone();
-
-        }
-        else
-        {}
-
-
-
-    }
+//        V4RoomCreated v4RoomCreated = t.getPayload().getRoomCreated();
+//        Room r =symphonyRooms.loadRoomById(t.getPayload().getMessageSent().getMessage().getStream().getStreamId());
+////        V4User v4User = t.getPayload().getMessageSent().getMessage().getUser();
+////        String userMailId = v4User.getEmail();
+////        User u=usersApi.v1UserGet(userMailId,"",true);
+////
+//        //TimeZone.getTimeZone(u.timeZoneId());
+//
+//        if(v4RoomCreated != null) {
+//            //TimeZone tz = TimeZone.getDefault();
+//            v4RoomCreated.setRoomTimeZone(TimeZone.getDefault());
+//        }
+//        else if(v4RoomCreated.getRoomTimeZone()==null){
+//            v4RoomCreated.setRoomTimeZone(TimeZone.getDefault());
+//        }
+//        else if(r.getTimeZone()==null){
+//            r.setTimeZone();
+//
+//        }
+//        else
+//        {}
+//
+//
+//
+//    }
 
     private String getUser(V4Event t){
 

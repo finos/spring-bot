@@ -1,9 +1,12 @@
 package org.finos.symphony.toolkit.tools.reminders.alerter;
 
-import com.symphony.api.model.StreamAttributes;
-import com.symphony.api.model.StreamFilter;
-import com.symphony.api.model.StreamList;
-import com.symphony.api.pod.StreamsApi;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+import java.util.Optional;
+import java.util.function.Consumer;
+
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
@@ -24,12 +27,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.util.Optional;
-import java.util.function.Consumer;
+import com.symphony.api.model.StreamAttributes;
+import com.symphony.api.model.StreamFilter;
+import com.symphony.api.model.StreamList;
+import com.symphony.api.pod.StreamsApi;
 
 @Component
 public class Scheduler {
