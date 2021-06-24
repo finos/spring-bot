@@ -25,7 +25,7 @@ import org.springframework.stereotype.Controller;
 public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
 
 	private WorkflowResolversFactory wrf;
-	
+
 	public ExposedHandlerMapping(WorkflowResolversFactory wrf) {
 		this.wrf = wrf;
 	}
@@ -47,90 +47,74 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 	@Override
 	public List<ChatMapping<Exposed>> getHandlers(Action a) {
 		mappingRegistry.acquireReadLock();
-		
+
 		List<ChatMapping<Exposed>> out = mappingRegistry.getRegistrations().values().stream()
-			.filter(m -> m.matches(a) != null)
-			.collect(Collectors.toList());
-		
+				.filter(m -> m.matches(a) != null).collect(Collectors.toList());
+
 		mappingRegistry.releaseReadLock();
 		return out;
 	}
-	
 
 	@Override
 	public List<ChatHandlerExecutor> getExecutors(Action a) {
 		mappingRegistry.acquireReadLock();
-		
-		List<ChatHandlerExecutor> out = mappingRegistry.getRegistrations().values().stream()
-			.map(m -> m.matches(a))
-			.filter(f -> f != null)
-			.collect(Collectors.toList());
-		
+
+		List<ChatHandlerExecutor> out = mappingRegistry.getRegistrations().values().stream().map(m -> m.matches(a))
+				.filter(f -> f != null).collect(Collectors.toList());
+
 		mappingRegistry.releaseReadLock();
 		return out;
 	}
 
 	protected List<MessageMatcher> createMessageMatchers(Exposed mapping, List<WildcardContent> chatVariables) {
-		List<MessageMatcher> parts = Arrays.stream(mapping.value())
-				.map(str -> createContentPattern(str, chatVariables))
-				.map(cp -> new MessageMatcher(cp))
-				.collect(Collectors.toList());
-		
+		List<MessageMatcher> parts = Arrays.stream(mapping.value()).map(str -> createContentPattern(str, chatVariables))
+				.map(cp -> new MessageMatcher(cp)).collect(Collectors.toList());
+
 		return parts;
 	}
-	
+
 	private static WildcardContent ANY_CONTENT = new WildcardContent(null, Content.class, Arity.ONE);
-	
-	
+
 	private Content createContentPattern(String str, List<WildcardContent> chatVariables) {
-		List<Content> items = Arrays.stream(str.split("\\s")) 
-			.map(word -> {
-				if (word.startsWith("{") && word.endsWith("}")) {
-					String pathVariableName = word.substring(1, word.length()-1);
-					WildcardContent out = chatVariables.stream()
-						.filter(cv -> cv.chatVariable.name().equals(pathVariableName))
-						.findFirst()
-						.orElse(ANY_CONTENT);
-					return out;
-				} else {
-					String trimmedWord = word.trim();
-					return new Word() {
+		List<Content> items = Arrays.stream(str.split("\\s")).map(word -> {
+			if (word.startsWith("{") && word.endsWith("}")) {
+				String pathVariableName = word.substring(1, word.length() - 1);
+				WildcardContent out = chatVariables.stream()
+						.filter(cv -> cv.chatVariable.name().equals(pathVariableName)).findFirst().orElse(ANY_CONTENT);
+				return out;
+			} else {
+				String trimmedWord = word.trim();
+				return new Word() {
 
-						@Override
-						public String getText() {
-							return trimmedWord;
-						}
-					
-						@Override
-						public String getIdentifier() {
-							return trimmedWord;
-						}
+					@Override
+					public String getText() {
+						return trimmedWord;
+					}
 
-						@Override
-						public String toString() {
-							return "Word ["+trimmedWord+"]";
-						}
-						
-						
-						
-					};
-				}
-			})
-			.collect(Collectors.toList());
-		
+					@Override
+					public String getIdentifier() {
+						return trimmedWord;
+					}
+
+					@Override
+					public String toString() {
+						return "Word [" + trimmedWord + "]";
+					}
+
+				};
+			}
+		}).collect(Collectors.toList());
+
 		return Message.of(items);
 	}
-	
+
 	private List<WildcardContent> createWildcardContent(Exposed mapping, ChatHandlerMethod method) {
 		MethodParameter[] params = method.getMethodParameters();
-		return Arrays.stream(params)
-				.filter(m -> m.getParameterAnnotation(ChatVariable.class) != null)
-				.map(m -> {
-					ChatVariable cv = m.getParameterAnnotation(ChatVariable.class);
-					Type t = m.getGenericParameterType();
-					return new WildcardContent(cv, t, Arity.ONE);
-				})
-				.collect(Collectors.toList());
+		return Arrays.stream(params).filter(m -> m.getParameterAnnotation(ChatVariable.class) != null).map(m -> {
+			ChatVariable cv = m.getParameterAnnotation(ChatVariable.class);
+			Type t = m.getGenericParameterType();
+			return new WildcardContent(cv, t, Arity.ONE);
+		}).collect(Collectors.toList());
 	}
 
 	@Override
@@ -166,31 +150,37 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 			}
 
 			private ChatHandlerExecutor pathMatches(Message words, Action a) {
+				ChatHandlerExecutor bestMatch = null;
+				
 				for (MessageMatcher messageMatcher : matchers) {
 					Map<ChatVariable, Content> map = new HashMap<>();
+					
 					if (messageMatcher.consume(words, map)) {
-						return new AbstractHandlerExecutor(wrf) {
-
-							@Override
-							public Map<ChatVariable, Content> getReplacements() {
-								return map;
-							}
-
-							@Override
-							public ChatHandlerMethod getChatHandlerMethod() {
-								return handlerMethod;
-							}
-
-							@Override
-							public Action action() {
-								return a;
-							}
-
-						};
+						if ((bestMatch == null) || (bestMatch.getReplacements().size() < map.size())) {
+							bestMatch = new AbstractHandlerExecutor(wrf) {
+	
+								@Override
+								public Map<ChatVariable, Content> getReplacements() {
+									return map;
+								}
+	
+								@Override
+								public ChatHandlerMethod getChatHandlerMethod() {
+									return handlerMethod;
+								}
+	
+								@Override
+								public Action action() {
+									return a;
+								}
+	
+							};
+						}
 					}
+					
 				}
-				
-				return null;
+					
+				return bestMatch;
 			}
 
 			private ChatHandlerExecutor matchesElementsAction(ElementsAction a) {
@@ -211,6 +201,5 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 			}
 		};
 	}
-
 
 }

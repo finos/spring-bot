@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
@@ -8,6 +9,8 @@ import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.Paragraph;
+import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -217,6 +220,32 @@ public class TestHandlerMapping {
 		Object firstArgument = oc.lastArguments.get(0);
 		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
 		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
+	}
+	
+	
+
+	@Test
+	public void testTableMapping() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("process <table>\n"
+				+ "      <tr>\n"
+				+ "        <th>Thing</th><th>Thang</th>\n"
+				+ "      </tr>\n"
+				+ "      <tr>\n"
+				+ "        <td>1</td><td>2</td>\n"
+				+ "      </tr>\n"
+				+ "      <tr>\n"
+				+ "        <td>3</td><td>4</td>\n"
+				+ "      </tr>\n"
+				+ "  </table> <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
+		Assertions.assertTrue(mapped.size()  == 2);
+		mapped.stream().forEach(e -> e.execute());
+		
+		Assertions.assertEquals("process1", oc.lastMethod);
+		Assertions.assertEquals(2,  oc.lastArguments.size());
+		PastedTable firstArgument = (PastedTable) oc.lastArguments.get(0);
+		List<Paragraph> expected = Arrays.asList(Paragraph.of(Arrays.asList(Word.of("thing"))), Paragraph.of(Arrays.asList(Word.of("thang"))));
+		Assertions.assertEquals(expected, firstArgument.getColumnNames());
+		Assertions.assertEquals(2, firstArgument.getData().size());
 	}
 	
 
