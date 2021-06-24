@@ -7,7 +7,6 @@ import com.symphony.api.pod.StreamsApi;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
-import org.finos.symphony.toolkit.tools.reminders.Reminder;
 import org.finos.symphony.toolkit.tools.reminders.ReminderList;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -28,14 +27,14 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.List;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 import java.util.function.Consumer;
 
 @Component
-public class TimedAlerter {
+public class Scheduler {
 
-    public static Logger LOG = LoggerFactory.getLogger(TimedAlerter.class);
+    public static Logger LOG = LoggerFactory.getLogger(Scheduler.class);
 
     @Autowired
     ResponseHandler responseHandler;
@@ -68,12 +67,8 @@ public class TimedAlerter {
     @Autowired
     Workflow workflow;
 
-
-//    @Autowired
-//    FeedLoader loader;
-
-    @Scheduled(cron = "0 0/5 * * * MON-FRI")
-    public void everyWeekdayHour() {
+    @Scheduled(cron = "0 0/2 * * * MON-FRI")
+    public void everyFiveMinutesWeekday() {
         onAllStreams(s -> handleFeed(temporaryRoomDef(s)));
     }
 
@@ -108,14 +103,15 @@ public class TimedAlerter {
         Optional<ReminderList> fl = h.getLastFromHistory(ReminderList.class, a);
         if (fl.isPresent()) {
 
-            fl.get().getRemList().stream().forEach((currentReminder) -> {
+            fl.get().getReminders().stream().forEach((currentReminder) -> {
                 Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
-                Instant timeForReminder = currentReminder.getInstant();
+                Instant timeForReminder = currentReminder.getInstant().minus(30, ChronoUnit.MINUTES);
+
                 if (timeForReminder.isBefore(currentTime)) {
 
                     EntityJson ej = EntityJsonConverter.newWorkflow(currentReminder);
                     ReminderList updatedList = fl.get();
-                    updatedList.getRemList().remove(currentReminder);
+                    updatedList.getReminders().remove(currentReminder);
                     ej.put("ReminderList", updatedList);
 
 

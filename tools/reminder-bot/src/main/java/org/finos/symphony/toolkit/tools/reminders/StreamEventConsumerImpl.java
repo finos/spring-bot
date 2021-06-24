@@ -1,8 +1,7 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
-import com.symphony.api.model.V4Event;
-import com.symphony.api.model.V4MessageSent;
-import com.symphony.api.model.V4User;
+import com.symphony.api.model.*;
+import com.symphony.api.pod.UsersApi;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreEntityMention;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -24,16 +23,15 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.TaskScheduler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.Properties;
 import java.util.TimeZone;
 import java.util.function.Consumer;
 
+//@Template(view = "classpath:/create-reminder.ftl")
 public class StreamEventConsumerImpl implements StreamEventConsumer {
     private static final Logger LOG = LoggerFactory.getLogger(StreamEventConsumerImpl.class);
 
@@ -50,7 +48,7 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
     Workflow workflow;
 
     @Autowired
-    TaskScheduler taskScheduler;
+    UsersApi usersApi;
 
     @Autowired
     SymphonyRooms symphonyRooms;
@@ -75,12 +73,12 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
         stanfordCoreNLP = new StanfordCoreNLP(props);
     }
 
-
     @Override
     public void accept(V4Event t) {
         try {
-                String messageInString = getMessageFromChatInString(t);
-                String currentUser = returnCurrentUser(t);
+                //assignTimeZoneToRoom(t);
+                String messageInString = extractMessage(t);
+                String currentUser = getUser(t);
                 V4MessageSent v4MessageSent = t.getPayload().getMessageSent();
 
                 CoreDocument document = new CoreDocument(messageInString);
@@ -93,7 +91,6 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
                     Reminder reminder = new Reminder();
                     reminder.setDescription(messageInString);
                     reminder.setAuthor(currentUser);
-                    //Instant instantTimeForReminder = dateToInstant(timex);
                     reminder.setInstant(dateToInstant(timex));
                     Room r =symphonyRooms.loadRoomById(v4MessageSent.getMessage().getStream().getStreamId());
                     FormResponse formResponse = new FormResponse(workflow, r , new EntityJson(), "Create Reminder",
@@ -114,15 +111,14 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
     public Consumer<V4Event> andThen(Consumer<? super V4Event> after) {
         return StreamEventConsumer.super.andThen(after);
     }
-    public Instant dateToInstant(Timex timex) throws ParseException {
+    private Instant dateToInstant(Timex timex) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         Instant instantTimeForReminder =sdf.parse(timex.value()).toInstant();
-        //Instant displayReminderAt = instantTimeForReminder.minus(10, ChronoUnit.MINUTES);
         return instantTimeForReminder;
 
     }
-    public String getMessageFromChatInString(V4Event t) throws Exception {
+    private String extractMessage(V4Event t) throws Exception {
         if (t.getPayload().getMessageSent() != null) {
             V4MessageSent v4MessageSent = t.getPayload().getMessageSent();
             String messageText = v4MessageSent.getMessage().getMessage();
@@ -137,13 +133,40 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
 
     }
 
-    public String returnCurrentUser(V4Event t){
-//        if(t.getPayload().getMessageSent().getMessage().getUser().getFirstName() !=null) {
+    private void assignTimeZoneToRoom(V4Event t){
+
+        V4RoomCreated v4RoomCreated = t.getPayload().getRoomCreated();
+        Room r =symphonyRooms.loadRoomById(t.getPayload().getMessageSent().getMessage().getStream().getStreamId());
+//        V4User v4User = t.getPayload().getMessageSent().getMessage().getUser();
+//        String userMailId = v4User.getEmail();
+//        User u=usersApi.v1UserGet(userMailId,"",true);
+//
+        //TimeZone.getTimeZone(u.timeZoneId());
+
+        if(v4RoomCreated != null) {
+            //TimeZone tz = TimeZone.getDefault();
+            v4RoomCreated.setRoomTimeZone(TimeZone.getDefault());
+        }
+        else if(v4RoomCreated.getRoomTimeZone()==null){
+            v4RoomCreated.setRoomTimeZone(TimeZone.getDefault());
+        }
+        else if(r.getTimeZone()==null){
+            r.setTimeZone();
+
+        }
+        else
+        {}
+
+
+
+    }
+
+    private String getUser(V4Event t){
+
             V4User v4User = t.getPayload().getMessageSent().getMessage().getUser();
 
             return v4User.getDisplayName();
-        //}
-        //return "Invalid user";
+
 
     }
 }

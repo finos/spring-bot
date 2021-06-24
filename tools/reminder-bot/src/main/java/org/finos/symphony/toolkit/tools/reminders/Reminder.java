@@ -4,6 +4,7 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
 import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
 import java.time.Instant;
 
@@ -13,6 +14,7 @@ import java.time.Instant;
  */
 
 @Work(name = "Create Reminder", instructions = "Add the new Reminder")
+@Template(view = "classpath:/create-reminder.ftl")
 public class Reminder {
 	
 	String description;
