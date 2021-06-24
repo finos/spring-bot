@@ -10,7 +10,8 @@
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.tools</groupId>
+	<groupId>com.db.symphony.toolkit.tools</groupId>
+	<version>7.20.9</version>
 	<artifactId>rss-bot</artifactId>
 	<name>RSS Publications Bot</name>
 	<description>Sends RSS Feeds to Symphony Rooms</description>
