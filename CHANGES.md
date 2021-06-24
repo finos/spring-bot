@@ -134,4 +134,8 @@
  - Fix for #163, Error Reporting Could Be Better with some update
  - Fix for #182, Symphony Chat Workflow Annotations Documentation
 
- 
+## Jun 24, 2021
+ - Fix for #190, Chat Workflow documentation in the wrong place
+ - Fix for #180, Kore AI Bot Health Unreliable
+ - Fix for #171, Chat Workflow Delete/Checkbox alignment display
+ - Fix for #141, Handle Primitives in Chat Workflow
