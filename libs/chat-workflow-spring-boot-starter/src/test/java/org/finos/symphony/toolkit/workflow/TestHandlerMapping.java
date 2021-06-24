@@ -179,7 +179,7 @@ public class TestHandlerMapping {
 		Assertions.assertTrue(mapped.size()  == 1);
 		mapped.stream().forEach(e -> e.execute());
 		
-		Assertions.assertEquals("addUserToHashtag", oc.lastMethod);
+		Assertions.assertEquals("addUserToTopic", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
 		Assertions.assertTrue(User.class.isAssignableFrom(firstArgument.getClass()));
