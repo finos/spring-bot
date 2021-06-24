@@ -4,11 +4,8 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.Work;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,56 +16,48 @@ import java.util.Optional;
  */
 
 @Work(name = "Reminder List", instructions = "List of Reminders to be conveyed", editable = true)
+//@Template(view = "classpath:/create-reminder.ftl")
+@Template(edit="classpath:/delete-reminder.ftl")
 public class ReminderList {
 
-	List<Reminder> remList = new ArrayList<>();
+	List<Reminder> reminders = new ArrayList<>();
 
-	public List<Reminder> getRemList() {
-		return remList;
+	public List<Reminder> getReminders() {
+		return reminders;
 	}
 
-	public void setRemList(List<Reminder> remList) {
-		this.remList = remList;
+	public void setReminders(List<Reminder> reminders) {
+		this.reminders = reminders;
 	}
 
-	@Exposed(description = "Add an Reminder")
-	public ReminderList addreminder(Reminder cr, History h, Addressable a) {
+	@Exposed(description = "Add an Reminder",addToHelp = false)
+	public static ReminderList addreminder(Reminder cr, History h, Addressable a) {
 		Optional<ReminderList> rl =h.getLastFromHistory(ReminderList.class,a);
-		//Optional<ReminderList> rl = timedAlerter.handleFeed(a);
+
 		if(rl.isPresent()){
 			//rl.get().remList.clear();
-			//Optional<ReminderList> fl = timedAlerter.handleFeed(a);
-//			Instant checkTimer = Instant.now().minus(7, ChronoUnit.MINUTES);
-//			rl.get().remList.forEach(temp ->{
-//				Instant tempTime = temp.getInstant();
-//				if(tempTime.isBefore(checkTimer)){
-//					rl.get().remList.remove(temp);
-//				}
-//			});
 			System.out.println(cr.getDescription());
-			rl.get().remList.add(cr);
+			rl.get().reminders.add(cr);
 			return rl.get();
 		   }
 		    else
 		   {
 			ReminderList out = new ReminderList();
-			out.remList.add(cr);
+			out.reminders.add(cr);
 			return out;
 		}
 	}
 
-//	public  static ReminderList deleteReminder(Optional<ReminderList> rl, Reminder reminder){
-//		if(rl.isPresent()){
-//		//	this.remList.remove(reminder);
-////			this.setRemList(rl.get().remList);
-////			rl.get().getRemList().remove(reminder);
-//		//	rl.get().setRemList(this.remList);
-//			rl.get().remList.remove(reminder);
-//
-//			//LOG.info("Inside remove method of Delete reminder - removed "+reminder);
-//		}
-//		return rl.get();
-//	}
+	@Exposed(description = "Show list of Reminders", isMessage = true)
+	public static ReminderList listReminders(History h,Addressable a){
+		Optional<ReminderList> rl =h.getLastFromHistory(ReminderList.class,a);
+		if(rl.isPresent()){
+         return rl.get();
+		}
+		else{
+			return new ReminderList();
+		}
 
+	}
 }
 
