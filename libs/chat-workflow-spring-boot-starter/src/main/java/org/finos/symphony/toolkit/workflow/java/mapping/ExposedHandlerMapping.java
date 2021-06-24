@@ -105,6 +105,13 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 						public String getIdentifier() {
 							return trimmedWord;
 						}
+
+						@Override
+						public String toString() {
+							return "Word ["+trimmedWord+"]";
+						}
+						
+						
 						
 					};
 				}

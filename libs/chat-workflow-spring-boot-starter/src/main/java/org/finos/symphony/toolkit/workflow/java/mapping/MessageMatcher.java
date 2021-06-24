@@ -28,7 +28,7 @@ public class MessageMatcher {
 			@SuppressWarnings("unchecked")
 			OrderedContent<Content> rest = rest((OrderedContent<Content>) pattern);
 			if (message.startsWith(first)) {
-				
+				System.out.println("Matched "+first + " with start of "+pattern);
 				if (first instanceof WildcardContent) {
 					WildcardContent wc = (WildcardContent) first;
 					Class<? extends Content> contentClass = (Class<? extends Content>) wc.expected;
@@ -45,6 +45,7 @@ public class MessageMatcher {
 			
 		}
 		
+		System.out.println("No Match "+message + " with start of "+pattern);
 		return false;
 	}
 	

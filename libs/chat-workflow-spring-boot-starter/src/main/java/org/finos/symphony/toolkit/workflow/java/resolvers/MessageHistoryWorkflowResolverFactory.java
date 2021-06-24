@@ -3,8 +3,6 @@ package org.finos.symphony.toolkit.workflow.java.resolvers;
 import java.lang.reflect.Type;
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.workflow.Action;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.ConfigurableWorkflow;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
@@ -39,8 +37,8 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 			@Override
 			public boolean canResolve(MethodParameter mo) {
 				Type t = mo.getGenericParameterType();
-				if (originatingAction.getWorkflow() instanceof ConfigurableWorkflow) {
-					return ((ConfigurableWorkflow)originatingAction.getWorkflow()).getDataTypes().stream()
+				if (che.action().getWorkflow() instanceof ConfigurableWorkflow) {
+					return ((ConfigurableWorkflow)che.action().getWorkflow()).getDataTypes().stream()
 							.filter(dt -> dt.isAssignableFrom((Class<?>) t))
 							.findFirst()
 							.isPresent();

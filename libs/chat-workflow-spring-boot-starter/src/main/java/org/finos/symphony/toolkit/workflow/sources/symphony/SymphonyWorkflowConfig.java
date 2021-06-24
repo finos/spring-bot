@@ -5,9 +5,8 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
+import org.finos.symphony.toolkit.workflow.Action;
 import org.finos.symphony.toolkit.workflow.CommandPerformer;
-import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
@@ -45,6 +44,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.MethodParameter;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
@@ -90,9 +90,6 @@ public class SymphonyWorkflowConfig {
 	
 	@Autowired
 	ResourceLoader resourceLoader;
-	
-	@Autowired
-	Workflow wf;
 	
 	@Autowired
 	CommandPerformer cp;
@@ -178,7 +175,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyHistory symphonyHistory() {
-		return new SymphonyHistoryImpl(wf, entityJsonConverter(), messagesApi, symphonyRooms());
+		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi, symphonyRooms());
 	}
 	
 	@Bean 
@@ -219,28 +216,29 @@ public class SymphonyWorkflowConfig {
 	@SuppressWarnings("unchecked")
 	@Bean
 	public WorkflowResolverFactory symphonyLastMessageResolver(History sh, EntityJsonConverter ejc) {
-		return action -> {
+		return che -> {
 			return new WorkflowResolver() {
 				
 				@Override
-				public Optional<Object> resolve(Class<?> cl, Addressable a, boolean isTarget) {
-					if (!isTarget) {
-						return Optional.empty();
-					}
+				public boolean canResolve(MethodParameter mp) {
+					Class<?> cl = mp.getParameterType();
+					return wf.getDataTypes().contains(cl);
+				}
+
+				@Override
+				public Optional<Object> resolve(MethodParameter mp) {
+					Action action =  che.action();
 					Object oo = ejc.readWorkflow(action.getData());
+					Class<?> cl = mp.getParameterType();
 					if ((oo != null) && (cl.isAssignableFrom(oo.getClass()))) {
 						return Optional.of(oo);
 					} else if (wf.getDataTypes().contains(cl)) {
-						return (Optional<Object>) sh.getLastFromHistory(cl, a);	
+						return (Optional<Object>) sh.getLastFromHistory(cl, che.action().getAddressable());	
 					} else {
 						return Optional.empty();
 					}
 				}
-				
-				@Override
-				public boolean canResolve(Class<?> c) {
-					return wf.getDataTypes().contains(c);
-				}
+
 			};
 		};
 	}

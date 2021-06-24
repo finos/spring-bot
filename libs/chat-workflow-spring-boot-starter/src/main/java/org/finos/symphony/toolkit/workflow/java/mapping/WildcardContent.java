@@ -37,5 +37,11 @@ public class WildcardContent implements Content {
 		return ((Class)expected).isAssignableFrom(other.getClass());
 	}
 
+	@Override
+	public String toString() {
+		return "WildcardContent ["+chatVariable.name()+", "+expected.getTypeName()+"]";
+	}
+
+	
 	
 }
