@@ -84,7 +84,7 @@ public class ReminderList {
 	}
 	
 	@Exposed(description = "List Time Zones", isMessage=true) 
-	public static Response listTimeZones(Workflow wf, Addressable a) {
+	public static Response timezones(Workflow wf, Addressable a) {
 		Map<String, List<String>> zoneMap = ZoneId.getAvailableZoneIds().stream()
 			.sorted()
 			.collect(Collectors.groupingBy(k -> {
@@ -114,14 +114,14 @@ public class ReminderList {
 
 		
 		return new MessageResponse(wf, a, new EntityJson(), "List of Time Zones", 
-				"Type \"setZone &lt;name&gt;\" from the options below. e.g \"setZone Europe/London\"", 
+				"Type \"/zone &lt;name&gt;\" from the options below. e.g \"/zone Europe/London\"", 
 				"<table><tr><th>Region</th><th>Zone</th></tr>"+zoneList+"</table>");
 		
 	
 	}
 	
-	@Exposed(description = "Set Time Zone. e.g \"setZone Europe/London\"", isMessage=true) 
-	public static ReminderList setZone(Workflow wf, History h, ReminderProperties rp, Addressable a, Word setZone, Word zoneName) {
+	@Exposed(description = "Set Time Zone. e.g \"zone Europe/London\"", isMessage=true) 
+	public static ReminderList zone(Workflow wf, History h, ReminderProperties rp, Addressable a, Word setZone, Word zoneName) {
 		ReminderList rl = listReminders(h, a, rp);
 		ZoneId newZone = ZoneId.of(zoneName.getText());
 		rl.setTimeZone(newZone);

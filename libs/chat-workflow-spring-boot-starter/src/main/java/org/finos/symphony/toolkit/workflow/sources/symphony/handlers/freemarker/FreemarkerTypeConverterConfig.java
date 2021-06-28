@@ -51,6 +51,11 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
+	public ZoneIdConverter zoneConverter() {
+		return new ZoneIdConverter();
+	}
+	
+	@Bean
 	public NumberConverter numberConverter() {
 		return new NumberConverter();
 	}
