@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
-import java.util.TimeZone;
+import java.time.ZoneId;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -20,13 +20,13 @@ public class ReminderProperties {
 		this.welcomeMessage = welcomeMessage;
 	}
 	
-	private TimeZone defaultTimeZone = TimeZone.getTimeZone("Europe/London");
+	private ZoneId defaultTimeZone = ZoneId.of("Europe/London");
 
-	public TimeZone getDefaultTimeZone() {
+	public ZoneId getDefaultTimeZone() {
 		return defaultTimeZone;
 	}
 
-	public void setDefaultTimeZone(TimeZone defaultTimeZone) {
+	public void setDefaultTimeZone(ZoneId defaultTimeZone) {
 		this.defaultTimeZone = defaultTimeZone;
 	}
 
