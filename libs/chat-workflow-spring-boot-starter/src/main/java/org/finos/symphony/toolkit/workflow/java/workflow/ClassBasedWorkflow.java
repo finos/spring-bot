@@ -184,7 +184,7 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 	}
 
 	public Method getMethodFor(String commandName) {
-		return methods.get(commandName);
+		return methods.get(commandName.toLowerCase());
 	}
 }
 
