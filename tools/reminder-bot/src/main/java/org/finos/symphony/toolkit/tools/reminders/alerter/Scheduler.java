@@ -102,34 +102,24 @@ public class Scheduler {
 
     public void handleFeed(Addressable a) {
         Optional<ReminderList> fl = h.getLastFromHistory(ReminderList.class, a);
+        
         if (fl.isPresent()) {
+            ReminderList updatedList = new ReminderList(fl.get());
 
             fl.get().getReminders().stream().forEach((currentReminder) -> {
                 Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
                 Instant timeForReminder = currentReminder.getInstant().minus(30, ChronoUnit.MINUTES);
 
                 if (timeForReminder.isBefore(currentTime)) {
-
                     EntityJson ej = EntityJsonConverter.newWorkflow(currentReminder);
-                    ReminderList updatedList = fl.get();
                     updatedList.getReminders().remove(currentReminder);
                     ej.put("ReminderList", updatedList);
 
-
                     responseHandler.accept(new FormResponse(w, a, ej, "Display Reminder", "This is regarding the reminder set by you", currentReminder, false,
                             w.gatherButtons(currentReminder, a)));
-
-
                 }
-
-
             });
-
-
         }
-
     }
-
-
 }
 
