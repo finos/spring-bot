@@ -22,7 +22,7 @@ public class JerseyAttachmentHandlerConfig  {
 			public Object formatAttachment(AttachmentResponse ar) {
 				File temp;
 				try {
-					temp = File.createTempFile("workflow", ar.getSuffix());
+					temp = File.createTempFile(ar.getName(), ar.getSuffix());
 					FileOutputStream fos = new FileOutputStream(temp);
 					fos.write(ar.getAttachment());
 					fos.close();

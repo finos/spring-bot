@@ -1,49 +1,39 @@
 package org.finos.symphony.toolkit.workflow.response;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 
 public class DataResponse implements Response {
 
 	private final EntityJson data;
-	private final Addressable stream;
-	private final Workflow workflow;
-	private final String name;
-	private final String instructions;
+	private final String template;
+	private final Addressable to;
 
-	public DataResponse(Workflow wf, Addressable stream, EntityJson data, String name, String instructions) {
+	public DataResponse(Addressable to, EntityJson data, String template) {
 		super();
+		this.to = to;
 		this.data = data == null ? new EntityJson() : data;
-		this.stream = stream;
-		this.workflow = wf;
-		this.name = name;
-		this.instructions = instructions;
+		this.template = template;
 	}
 
 	public EntityJson getData() {
 		return data;
 	}
 	
-	public Addressable getAddress() {
-		return stream;
-	}
-
-	public Workflow getWorkflow() {
-		return workflow;
-	}
 
 	@Override
 	public String toString() {
-		return "DataResponse [data=" + data + ", stream=" + stream + ", workflow=" + workflow + "]";
+		return "DataResponse [data=" + data + ", template=" + template + "]";
 	}
 
-	public String getName() {
-		return name;
+	@Override
+	public String getTemplate() {
+		return template;
 	}
 
-	public String getInstructions() {
-		return instructions;
+	@Override
+	public Addressable getAddress() {
+		return to;
 	}
-	
+
 }

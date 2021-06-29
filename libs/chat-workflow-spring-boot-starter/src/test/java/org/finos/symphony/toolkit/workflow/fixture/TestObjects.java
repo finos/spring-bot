@@ -30,11 +30,6 @@ public class TestObjects {
 	public void setItems(List<TestObject> items) {
 		this.items = items;
 	}
-	
-	@Exposed
-	public TestObjects show() {
-		return this;
-	}
 
 	@Override
 	public int hashCode() {
@@ -61,54 +56,6 @@ public class TestObjects {
 		return true;
 	}
 	
-	@Exposed(description="removes item by number. e.g. /remove 4")
-	public TestObjects remove(Word w1, Word w2) {
-		Integer i = Integer.parseInt(w2.getText());
-		items.remove((int) i);
-		return this;
-	}
-	
-	@Exposed(description= "creates a new test objects")
-	public static TestObjects testObjects() {
-		return TestWorkflowConfig.INITIAL_TEST_OBJECTS;
-	}
-	
-	@Exposed(description = "Add another test object")
-	public TestObjects add(TestObject o) {
-		List<TestObject> chg = new ArrayList<>(items);
-		chg.add(o);
-		return new TestObjects(chg);
-	}
-
-	@Exposed(description="Throwable exception thrown")
-	public TestObjects throwable(Word w1, Word w2) throws Throwable {
-		throw new Throwable("Throwable exception thrown");
-	}
-
-	@Exposed(description="Exception exception thrown")
-	public TestObjects exception(Word w1, Word w2) throws Throwable {
-		throw new Exception("Exception exception thrown");
-	}
-
-	@Exposed(description="RuntimeException exception thrown")
-	public TestObjects runtime(Word w1, Word w2) throws Throwable {
-		throw new RuntimeException("RuntimeException exception thrown");
-	}
-
-	@Exposed(description="Exception thrown with no message")
-	public TestObjects exceptionnomessage(Word w1, Word w2) throws Throwable {
-		throw new Exception();
-	}
-	@Exposed(description="Exception thrown with no exception details")
-	public TestObjects exceptionnullcause(Word w1, Word w2) throws Throwable {
-		throw new Throwable(null, null);
-	}
-
-	@Exposed(description="Null pointer exception thrown")
-	public TestObjects exceptionnullpointercause(Word w1, Word w2) throws Exception {
-		Exception causeException = new Exception();
-		throw new Exception("Null pointer exception thrown", causeException);
-	}
 	
 	@Override
 	public String toString() {

@@ -5,15 +5,21 @@ import java.util.Collections;
 import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.MessageParser;
 import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
+import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -21,6 +27,9 @@ public class OurController {
 	
 	public List<Object> lastArguments;
 	public String lastMethod;
+	
+	@Autowired
+	MessageParser mp;
 	
 	
 	// todo: do we need any other kinds of wildcards?
@@ -40,11 +49,12 @@ public class OurController {
 	}
 	
 	@Exposed(value = "new claim", isButton = true, isMessage = false)
-	public void startNewClaim(StartClaim sc) {
+	public TestObject startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
 		lastArguments = Collections.singletonList(sc);
 		lastMethod = "startNewClaim";
+		return new TestObject();
 	}
 	
 
@@ -104,9 +114,26 @@ public class OurController {
 	}
 	
 	@Exposed(value="ban {word}")
-	public void banWord(@ChatVariable("word") Word w) {
+	public MessageResponse banWord(@ChatVariable("word") Word w, Addressable a) {
 		lastArguments = Collections.singletonList(w);
 		lastMethod = "banWord";
+		return new MessageResponse(a, mp.parse("Banned Word"));
+	}
+	
+	@Exposed(value="attachment")
+	public AttachmentResponse attachment(Addressable a) {
+		lastArguments = Collections.emptyList();
+		lastMethod = "attachment";
+		byte[] bytes = { 1, 2, 3 };
+		return new AttachmentResponse(a, bytes, "somefile", "bin");
+	}
+	
+	@Exposed(value="form")
+	public FormResponse form(Addressable a) {
+		lastArguments = Collections.emptyList();
+		lastMethod = "attachment";
+		byte[] bytes = { 1, 2, 3 };
+		return new FormResponse(a, bytes, "somefile", "bin");
 	}
 
 }
