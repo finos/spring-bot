@@ -85,4 +85,15 @@ public interface Content {
 	public default void visit(Consumer<Content> visitor) {
 		visitor.accept(this);
 	}
+
+	public static Content empty() {
+		return new Content() {
+
+			@Override
+			public String getText() {
+				return "";
+			}
+			
+		};
+	}
 }

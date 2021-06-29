@@ -3,6 +3,8 @@ package org.finos.symphony.toolkit.workflow.content;
 import org.finos.symphony.toolkit.json.EntityJson;
 
 public interface MessageParser {
+	
+	public Message parse(String source);
 
-	public Message parse(String sourceFormat, EntityJson entityJson) throws Exception;
+	public Message parse(String sourceFormat, EntityJson entityJson);
 }

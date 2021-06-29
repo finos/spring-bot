@@ -133,13 +133,6 @@ public class TestObject {
 		return true;
 	}
 
-	@Exposed(description="wraps this testObject into the list")
-	public TestObjects wrap() {
-		List<TestObject> l = new ArrayList<>();
-		l.add(this);
-		return new TestObjects(l);
-	}
-
 	@Override
 	public String toString() {
 		return "TestObject [isin=" + isin + ", bidAxed=" + bidAxed + ", askAxed=" + askAxed + ", creator=" + creator

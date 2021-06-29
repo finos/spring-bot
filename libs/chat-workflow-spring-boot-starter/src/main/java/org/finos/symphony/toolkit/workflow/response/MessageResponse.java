@@ -1,27 +1,40 @@
 package org.finos.symphony.toolkit.workflow.response;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Content;
 
 public class MessageResponse extends DataResponse {
 	
-	private final String message;
-
-	public MessageResponse(Workflow wf, Addressable stream, EntityJson data, String name, String instructions, String message) {
-		super(wf, stream, data, name, instructions);
-		this.message = message;
+	private final Content m;
+	
+	public MessageResponse(Addressable stream, EntityJson data, Content m, String template) {
+		super(stream, data, template);
+		this.m = m;
 	}
 	
-	public String getMessage() {
-		return message;
+
+	public MessageResponse(Addressable stream, Content m) {
+		super(stream, null, null);
+		this.m = m;
+	}
+	
+
+	public MessageResponse(Addressable stream, Content m, String template) {
+		super(stream, null, template);
+		this.m = m;
+	}
+	
+	
+	public Content getMessage() {
+		return m;
 	}
 
 	@Override
 	public String toString() {
-		return "MessageResponse [message=" + message + ", getData()=" + getData() + ", getAddress()=" + getAddress()
-				+ ", getWorkflow()=" + getWorkflow() + "]";
+		return "MessageResponse [m=" + m + ", getData()=" + getData() + ", getTemplate()=" + getTemplate()
+				+ ", getAddress()=" + getAddress() + "]";
 	}
-	
+
 	
 }

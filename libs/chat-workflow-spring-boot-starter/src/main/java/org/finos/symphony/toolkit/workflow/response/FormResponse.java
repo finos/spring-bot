@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.response;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
@@ -15,8 +14,11 @@ public class FormResponse extends DataResponse {
 	private final ButtonList buttons;
 	private final Errors errors;
 		
-	public FormResponse(Workflow wf, Addressable stream, EntityJson data, String name, String instructions, Object formObject, boolean editable, ButtonList buttons, Errors e) {
-		super(wf, stream, data, name, instructions);
+	/**
+	 * This is for when users have filled the form wrong, and you want to tell them about validation errors.
+	 */
+	public FormResponse(Addressable stream, EntityJson data, String template, Object formObject, boolean editable, ButtonList buttons, Errors e) {
+		super(stream, data, template);
 		this.editable = editable;
 		this.formObject = formObject;
 		this.buttons = buttons;
@@ -24,12 +26,15 @@ public class FormResponse extends DataResponse {
 		this.errors = e;
 	}
 
-	public FormResponse(Workflow wf, Addressable stream, EntityJson data, String name, String instructions, Object formObject, boolean editable, ButtonList buttons) {
-		this(wf, stream, data, name, instructions, formObject, editable, buttons, ErrorHelp.createErrorHolder());
+	public FormResponse(Addressable stream, EntityJson data, String template, Object formObject, boolean editable, ButtonList buttons) {
+		this(stream, data, template, formObject, editable, buttons, ErrorHelp.createErrorHolder());
 	}
 	
-	public FormResponse(Workflow wf, Addressable stream, EntityJson data, String name, String instructions, Class<?> formClass, boolean editable, ButtonList buttons) {
-		super(wf, stream, data, name, instructions);
+	/**
+	 * This is for the empty form
+	 */
+	public FormResponse(Addressable stream, EntityJson data, String template, Class<?> formClass, boolean editable, ButtonList buttons) {
+		super(stream, data, template);
 		this.editable = editable;
 		this.formObject = null;
 		this.buttons = buttons;

@@ -345,6 +345,11 @@ public class SimpleMessageParser implements MessageParser {
 		}
 	}
 	
+	@Override
+	public Message parse(String source) throws Exception {
+		return parse(source, new EntityJson());
+	}
+
 	public Message parse(String message, EntityJson jsonObjects) throws Exception {
 
 		Content [] out = { null };
