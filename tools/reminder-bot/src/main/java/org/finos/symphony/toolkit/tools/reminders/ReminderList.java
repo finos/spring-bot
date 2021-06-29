@@ -61,8 +61,8 @@ public class ReminderList {
 
 	@Exposed(description = "Add an Reminder", addToHelp = false)
 	public static ReminderList addreminder(Reminder cr, History h, Addressable a, Author author, ReminderProperties rp) {
-		ReminderList rl = listReminders(h, author, rp);
-		cr.setAuthor(author.getName());
+		ReminderList rl = list(h, a, rp);
+		cr.setAuthor(author);
 		System.out.println(cr.getDescription());
 		rl.reminders.add(cr);
 		return rl;
@@ -70,7 +70,7 @@ public class ReminderList {
 	}
 
 	@Exposed(description = "Show list of Reminders", isMessage = true)
-	public static ReminderList listReminders(History h, Addressable a, ReminderProperties rp) {
+	public static ReminderList list(History h, Addressable a, ReminderProperties rp) {
 		Optional<ReminderList> rl = h.getLastFromHistory(ReminderList.class, a);
 
 		if (rl.isPresent()) {
@@ -122,7 +122,7 @@ public class ReminderList {
 	
 	@Exposed(description = "Set Time Zone. e.g \"zone Europe/London\"", isMessage=true) 
 	public static ReminderList zone(Workflow wf, History h, ReminderProperties rp, Addressable a, Word setZone, Word zoneName) {
-		ReminderList rl = listReminders(h, a, rp);
+		ReminderList rl = list(h, a, rp);
 		ZoneId newZone = ZoneId.of(zoneName.getText());
 		rl.setTimeZone(newZone);
 		return rl;	

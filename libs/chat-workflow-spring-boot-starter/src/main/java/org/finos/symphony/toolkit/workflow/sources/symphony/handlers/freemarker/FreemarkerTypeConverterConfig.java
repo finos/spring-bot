@@ -46,13 +46,8 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
-	public InstantConverter instantConverter() {
-		return new InstantConverter();
-	}
-	
-	@Bean
-	public ZoneIdConverter zoneConverter() {
-		return new ZoneIdConverter();
+	public TimeConverter timeConverter() {
+		return new TimeConverter();
 	}
 	
 	@Bean
