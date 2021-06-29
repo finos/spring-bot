@@ -8,7 +8,7 @@
 
     <td><b>Description</b></td>
 
-    <td><b>Instant</b></td>
+    <td><b>Local Time</b></td>
 
     <td><b>Author</b></td>
 
@@ -18,7 +18,7 @@
 
    <td >${iB.description!''}</td>
 
-   <td >${iB.instant!''}</td>
+   <td >${iB.localTime!''}</td>
 
    <td >${iB.author!''}</td>
    <td style="text-align:center; width:10%" ><checkbox name="reminders.${iB?index}.selected" /></td>

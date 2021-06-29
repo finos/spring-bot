@@ -3,7 +3,6 @@
  */
 package org.finos.symphony.toolkit.tools.reminders;
 
-import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
@@ -32,8 +31,8 @@ public class WorkflowConfig {
 	}
 
 	@Bean
-	public StreamEventConsumer consumer() {
-		return new StreamEventConsumerImpl();
+	public TimeFinder consumer() {
+		return new TimeFinder();
 	}
 
 	@Bean

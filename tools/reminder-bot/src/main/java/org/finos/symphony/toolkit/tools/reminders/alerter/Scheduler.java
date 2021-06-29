@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.tools.reminders.alerter;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -105,10 +106,12 @@ public class Scheduler {
         
         if (fl.isPresent()) {
             ReminderList updatedList = new ReminderList(fl.get());
-
+            ZoneId zone = updatedList.getTimeZone();
+            Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+            ZoneOffset zo = zone.getRules().getOffset(currentTime);
+            
             fl.get().getReminders().stream().forEach((currentReminder) -> {
-                Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
-                Instant timeForReminder = currentReminder.getInstant().minus(30, ChronoUnit.MINUTES);
+                Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo).minus(30, ChronoUnit.MINUTES);
 
                 if (timeForReminder.isBefore(currentTime)) {
                     EntityJson ej = EntityJsonConverter.newWorkflow(currentReminder);
