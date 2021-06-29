@@ -111,7 +111,7 @@ public class Scheduler {
             ZoneOffset zo = zone.getRules().getOffset(currentTime);
             
             fl.get().getReminders().stream().forEach((currentReminder) -> {
-                Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo).minus(30, ChronoUnit.MINUTES);
+                Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo);
 
                 if (timeForReminder.isBefore(currentTime)) {
                     EntityJson ej = EntityJsonConverter.newWorkflow(currentReminder);

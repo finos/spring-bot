@@ -3,22 +3,19 @@ package org.finos.symphony.toolkit.tools.reminders;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Properties;
-import java.util.TimeZone;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Action;
-import org.finos.symphony.toolkit.workflow.CommandPerformer;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
@@ -39,12 +36,9 @@ import edu.stanford.nlp.time.Timex;
 
 //@Template(view = "classpath:/create-reminder.ftl")
 public class TimeFinder implements SimpleMessageConsumer {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(TimeFinder.class);
 
-	@Autowired
-	ReminderProperties reminderProperties;
-	
 	@Autowired
 	Workflow workflow;
 
@@ -56,9 +50,6 @@ public class TimeFinder implements SimpleMessageConsumer {
 
 	@Autowired
 	SymphonyIdentity identity;
-
-	@Autowired
-	History h;
 
 	StanfordCoreNLP stanfordCoreNLP;
 	Properties props;
@@ -76,7 +67,14 @@ public class TimeFinder implements SimpleMessageConsumer {
 		props.setProperty("sutime.markTimeRanges", "true");
 		stanfordCoreNLP = new StanfordCoreNLP(props);
 	}
-	
+
+	/**
+	 * Bot listens to everything in the room
+	 */
+	@Override
+	public boolean requiresAddressing() {
+		return false;
+	}
 
 	@Override
 	public List<Response> apply(SimpleMessageAction action) {
@@ -86,56 +84,39 @@ public class TimeFinder implements SimpleMessageConsumer {
 		CoreDocument document = new CoreDocument(messageInString);
 		stanfordCoreNLP.annotate(document);
 		List<Response> responses = new ArrayList<Response>();
-		ZoneId id = null;
 		for (CoreEntityMention cem : document.entityMentions()) {
 			System.out.println("temporal expression: " + cem.text());
 			System.out.println("temporal value: " + cem.coreMap().get(TimeAnnotations.TimexAnnotation.class));
 			Timex timex = cem.coreMap().get(TimeAnnotations.TimexAnnotation.class);
 
-			if (id == null) {
-				id = getZoneId(action);
-			}
+			LocalDateTime ldt = toLocalTime(timex);
 
-			Instant instant = dateToInstant(timex, id);
-			
-			if (instant != null) {
+			if (ldt != null) {
 				Reminder reminder = new Reminder();
 				reminder.setDescription(messageInString);
 				reminder.setAuthor(currentUser);
-				reminder.setLocalTime(instant.atZone(id).toLocalDateTime());
-				
-				FormResponse formResponse = new FormResponse(workflow, action.getAddressable(), new EntityJson(), "Create Reminder",
-						"do you want to be reminded about this time", reminder, true,
+				reminder.setLocalTime(ldt);
+
+				FormResponse formResponse = new FormResponse(workflow, action.getAddressable(), new EntityJson(),
+						"Create Reminder", "do you want to be reminded about this time", reminder, true,
 						ButtonList.of(new Button("addreminder+0", Button.Type.ACTION, "create Reminder")), null);
-				
+
 				responses.add(formResponse);
 			}
 		}
-			
-		return responses;		
+
+		return responses;
 	}
 
-	private ZoneId getZoneId(SimpleMessageAction action) {
-		Optional<ReminderList> rl = h.getLastFromHistory(ReminderList.class, action.getAddressable());
-		if (rl.isPresent())  {
-			return rl.get().getTimeZone();
-		} else {
-			return reminderProperties.getDefaultTimeZone();
-		}
-		
-	}
-
-	private Instant dateToInstant(Timex timex, ZoneId zi) {
+	private LocalDateTime toLocalTime(Timex time) {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-			sdf.setTimeZone(TimeZone.getTimeZone(zi));
 			Instant instantTimeForReminder;
-			instantTimeForReminder = sdf.parse(timex.value()).toInstant();
-			return instantTimeForReminder;
+			instantTimeForReminder = sdf.parse(time.value()).toInstant();
+			return instantTimeForReminder.atZone(ZoneId.systemDefault()).toLocalDateTime();
 		} catch (ParseException e) {
-			LOG.warn("Couldn't parse time: "+timex.value(), e);
+			LOG.warn("Couldn't parse timex: " + time.value());
 			return null;
 		}
 	}
-
 }
