@@ -19,21 +19,26 @@ import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
-import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatVariableWorkflowResolverFactory;
+import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.resolvers.AddressableWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
+import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
+import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -56,6 +61,9 @@ public class TestHandlerMapping {
 	
 	@MockBean
 	History h;
+	
+	@MockBean
+	ResponseHandler rh;
 
 	@Configuration
 	static class TestConfig {
@@ -67,8 +75,8 @@ public class TestHandlerMapping {
 		}
 		
 		@Bean
-		public ExposedHandlerMapping handlerMapping(WorkflowResolversFactory wrf) {
-			return new ExposedHandlerMapping(wrf);
+		public ExposedHandlerMapping handlerMapping(WorkflowResolversFactory wrf, ResponseHandler rh, List<ResponseConverter> converters) {
+			return new ExposedHandlerMapping(wrf, rh, converters);
 		}
 		
 		@Bean
@@ -85,11 +93,16 @@ public class TestHandlerMapping {
 		public AddressableWorkflowResolverFactory addressableWorkflowResolverFactory() {
 			return new AddressableWorkflowResolverFactory();
 		}
+
+		@Bean
+		public SimpleMessageParser simpleMessageParser() {
+			return new SimpleMessageParser();
+		}
 		
 	}
 	
-	
-	SimpleMessageParser smp = new SimpleMessageParser();
+	@Autowired
+	SimpleMessageParser smp;
 	
 	@Test
 	public void checkMappings() throws Exception {
@@ -248,7 +261,46 @@ public class TestHandlerMapping {
 		Assertions.assertEquals(2, firstArgument.getData().size());
 	}
 	
-
+	@Test
+	public void testMessageResponse() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("ban rob");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		
+		Assertions.assertEquals("banWord", oc.lastMethod);
+		
+		Mockito.verify(rh).accept(Mockito.any(MessageResponse.class));
+		Mockito.clearInvocations();
+	}
 	
+	@Test
+	public void testAttachmentResponse() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("attachment");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+
+		Mockito.verify(rh).accept(Mockito.any(AttachmentResponse.class));
+		Mockito.clearInvocations();
+	}
+	
+	@Test
+	public void testFormResponse1() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("form1");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		Mockito.verify(rh).accept(Mockito.any(FormResponse.class));
+		Mockito.clearInvocations();
+	}
+	
+	@Test
+	public void testFormResponse2() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("form2");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		Mockito.verify(rh).accept(Mockito.any(FormResponse.class));
+		Mockito.clearInvocations();
+	}
+	
+
 
 }

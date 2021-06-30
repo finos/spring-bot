@@ -14,9 +14,11 @@ import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
+import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.WildcardContent.Arity;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsAction;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -25,9 +27,14 @@ import org.springframework.stereotype.Controller;
 public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
 
 	private WorkflowResolversFactory wrf;
-
-	public ExposedHandlerMapping(WorkflowResolversFactory wrf) {
+	private ResponseHandler rh;
+	private List<ResponseConverter> converters;
+	
+	public ExposedHandlerMapping(WorkflowResolversFactory wrf, ResponseHandler rh, List<ResponseConverter> converters) {
+		super();
 		this.wrf = wrf;
+		this.rh = rh;
+		this.converters = converters;
 	}
 
 	@Override
@@ -157,7 +164,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 					
 					if (messageMatcher.consume(words, map)) {
 						if ((bestMatch == null) || (bestMatch.getReplacements().size() < map.size())) {
-							bestMatch = new AbstractHandlerExecutor(wrf) {
+							bestMatch = new AbstractHandlerExecutor(wrf, rh, converters) {
 	
 								@Override
 								public Map<ChatVariable, Content> getReplacements() {
