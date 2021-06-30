@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
@@ -346,15 +347,16 @@ public class SimpleMessageParser implements MessageParser {
 	}
 	
 	@Override
-	public Message parse(String source) throws Exception {
+	public Message parse(String source) {
 		return parse(source, new EntityJson());
 	}
 
-	public Message parse(String message, EntityJson jsonObjects) throws Exception {
+	public Message parse(String message, EntityJson jsonObjects) {
 
 		Content [] out = { null };
 		
-		SAXParser saxParser = factory.newSAXParser();
+		try {
+			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(new InputSource(new StringReader(message)), new DefaultHandler() {
 
 				Frame<?> top = null;
@@ -451,6 +453,10 @@ public class SimpleMessageParser implements MessageParser {
 				
 			});
 		
+		} catch (Exception e) {
+			throw new RuntimeException("Couldn't parse message: "+message, e);
+		}
+
 		
 		return (Message) out[0];
 	}

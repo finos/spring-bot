@@ -1,14 +1,16 @@
 package org.finos.symphony.toolkit.workflow.java.mapping;
 
 import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.Action;
+import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolvers;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.Response;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -25,10 +27,14 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 
 	
 	private WorkflowResolversFactory wrf;
+	private ResponseHandler rh;
+	private List<ResponseConverter> converters;
 	
-	public AbstractHandlerExecutor(WorkflowResolversFactory wrf) {
+	public AbstractHandlerExecutor(WorkflowResolversFactory wrf, ResponseHandler rh, List<ResponseConverter> converters) {
 		super();
 		this.wrf = wrf;
+		this.rh = rh;
+		this.converters = converters;
 	}
 	
 	@Override
@@ -62,22 +68,26 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 
 		try {
 			Object out = m.invoke(o, args);
-//			if (out == null) {
-//				return Collections.emptyList();
-//			}
-//			Class<?> cc = out.getClass();
-//			
-//			if (Response.class.isAssignableFrom(cc)) {
-//				return  Collections.singletonList((Response) out);
-//			} else if (listOfResponses(m)) {
-//				return (List<Response>) out;
-//			} else {
-//				EntityJson ej = EntityJsonConverter.newWorkflow(out);
-//				return  Collections.singletonList(
-//					new FormResponse(wf, a, ej, 
-//						wf.getName(cc), 
-//						wf.getInstructions(cc), out, false, wf.gatherButtons(out, a)));
-//			}
+			
+			if (out instanceof Response) {
+				rh.accept((Response) out);
+			} else if (out instanceof Collection) {
+				for (Object object : (List<?>) out) {
+					if (object instanceof Response) {
+						rh.accept((Response) object);
+					} else {
+						Response r = convert(object);
+						if (r != null) {
+							rh.accept(r);
+						}
+					}
+				}
+			} else {
+				Response r = convert(out);
+				if (r != null) {
+					rh.accept(r);
+				}
+			}
 			
 		} catch (Exception exception) {
 			LOG.error("Couldn't perform command: ", exception);
@@ -90,21 +100,18 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 		}
 	}
 	
-	private WorkflowResolvers buildWorkflowResolvers(Action originatingAction) {
-		return wrf.createResolvers(this);
-	}
-
-	private boolean listOfResponses(Method m) {
-		java.lang.reflect.Type out = m.getGenericReturnType();
-		if (out instanceof ParameterizedType) {
-			if (Collection.class.isAssignableFrom((Class<?>) ((ParameterizedType) out).getRawType())) {
-				if (Response.class.isAssignableFrom((Class<?>) ((ParameterizedType) out).getActualTypeArguments()[0])) {
-					return true;
-				}
+	private Response convert(Object object) {
+		for (ResponseConverter responseConverter : converters) {
+			if (responseConverter.canConvert(object)) {
+				return responseConverter.convert(object, this);
 			}
 		}
 		
-		return false;
+		return null;
+	}
+
+	private WorkflowResolvers buildWorkflowResolvers(Action originatingAction) {
+		return wrf.createResolvers(this);
 	}
 
 }

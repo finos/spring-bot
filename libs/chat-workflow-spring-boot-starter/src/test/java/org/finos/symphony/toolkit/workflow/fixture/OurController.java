@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
@@ -14,11 +15,13 @@ import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -117,7 +120,7 @@ public class OurController {
 	public MessageResponse banWord(@ChatVariable("word") Word w, Addressable a) {
 		lastArguments = Collections.singletonList(w);
 		lastMethod = "banWord";
-		return new MessageResponse(a, mp.parse("Banned Word"));
+		return new MessageResponse(a, mp.parse("<messageML>Banned Word</messageML>"));
 	}
 	
 	@Exposed(value="attachment")
@@ -128,12 +131,21 @@ public class OurController {
 		return new AttachmentResponse(a, bytes, "somefile", "bin");
 	}
 	
-	@Exposed(value="form")
-	public FormResponse form(Addressable a) {
+	@Exposed(value="form1")
+	public FormResponse form1(Addressable a) {
 		lastArguments = Collections.emptyList();
 		lastMethod = "attachment";
-		byte[] bytes = { 1, 2, 3 };
-		return new FormResponse(a, bytes, "somefile", "bin");
+		EntityJson json = new EntityJson();
+		json.put(EntityJsonConverter.WORKFLOW_001, new TestObject());
+		ButtonList bl = new ButtonList();		
+		return new FormResponse(a, json,  null, TestObject.class, false, bl);
+	}
+	
+	@Exposed(value="form2")
+	public TestObject form2(Addressable a) {
+		lastArguments = Collections.emptyList();
+		lastMethod = "attachment";
+		return new TestObject();
 	}
 
 }
