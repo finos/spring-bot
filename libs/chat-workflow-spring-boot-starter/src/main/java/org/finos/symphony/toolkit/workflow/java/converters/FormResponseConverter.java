@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.workflow.java.converters;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;

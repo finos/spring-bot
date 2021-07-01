@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
@@ -18,13 +19,12 @@ import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
-import org.finos.symphony.toolkit.workflow.java.mapping.ChatVariableWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.resolvers.AddressableWorkflowResolverFactory;
+import org.finos.symphony.toolkit.workflow.java.resolvers.ChatVariableWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
@@ -106,7 +106,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(11, hm.getHandlerMethods().size());
+		Assertions.assertEquals(14, hm.getHandlerMethods().size());
 		getMappingsFor("list");
 	}
 
@@ -239,7 +239,7 @@ public class TestHandlerMapping {
 
 	@Test
 	public void testTableMapping() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("process <table>\n"
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("process-table <table>\n"
 				+ "      <tr>\n"
 				+ "        <th>Thing</th><th>Thang</th>\n"
 				+ "      </tr>\n"
@@ -250,10 +250,10 @@ public class TestHandlerMapping {
 				+ "        <td>3</td><td>4</td>\n"
 				+ "      </tr>\n"
 				+ "  </table> <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
-		Assertions.assertTrue(mapped.size()  == 2);
+		Assertions.assertTrue(mapped.size()  == 1);
 		mapped.stream().forEach(e -> e.execute());
 		
-		Assertions.assertEquals("process1", oc.lastMethod);
+		Assertions.assertEquals("process-table", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		PastedTable firstArgument = (PastedTable) oc.lastArguments.get(0);
 		List<Paragraph> expected = Arrays.asList(Paragraph.of(Arrays.asList(Word.of("thing"))), Paragraph.of(Arrays.asList(Word.of("thang"))));

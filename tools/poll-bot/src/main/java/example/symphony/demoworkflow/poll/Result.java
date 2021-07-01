@@ -2,9 +2,9 @@ package example.symphony.demoworkflow.poll;
 
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.ID;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
 @Work(editable = false, name = "The Results Are In!")

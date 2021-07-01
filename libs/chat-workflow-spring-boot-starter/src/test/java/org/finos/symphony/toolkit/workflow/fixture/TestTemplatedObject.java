@@ -1,9 +1,9 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
-import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
 @Work(name="Test Templated", instructions="blah")

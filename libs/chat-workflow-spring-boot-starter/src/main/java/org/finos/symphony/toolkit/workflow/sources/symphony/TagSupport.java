@@ -6,10 +6,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Tag;
-import org.finos.symphony.toolkit.workflow.java.Work;
 import org.springframework.util.StringUtils;
 
 public class TagSupport {

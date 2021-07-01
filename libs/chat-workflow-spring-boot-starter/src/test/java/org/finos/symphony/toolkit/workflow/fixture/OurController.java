@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
@@ -17,7 +18,6 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
@@ -85,11 +85,11 @@ public class OurController {
 		lastMethod = "userDetails";
 	}
 
-	@Exposed("process {sometable} {user}") 
+	@Exposed("process-table {sometable} {user}") 
 	public void process1(@ChatVariable("sometable") PastedTable t, @ChatVariable(required = false, value="user") User u) {
 		// provide some processing for a table.
 		lastArguments = Arrays.asList(t, u);
-		lastMethod = "process1";
+		lastMethod = "process-table";
 	}
 	
 

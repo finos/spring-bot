@@ -6,8 +6,8 @@ import java.util.List;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-import org.finos.symphony.toolkit.workflow.java.Exposed;
-import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 @Work(name="Test Object", instructions="blah")
 public class TestObject {

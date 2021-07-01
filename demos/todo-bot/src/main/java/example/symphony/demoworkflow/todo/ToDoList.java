@@ -13,14 +13,14 @@ import java.util.stream.Stream;
 
 import javax.validation.Valid;
 
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
-import org.finos.symphony.toolkit.workflow.java.Work;
 
 import example.symphony.demoworkflow.todo.ToDoItem.Status;
 

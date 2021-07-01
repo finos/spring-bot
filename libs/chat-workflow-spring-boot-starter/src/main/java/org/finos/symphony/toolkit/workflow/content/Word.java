@@ -2,15 +2,16 @@ package org.finos.symphony.toolkit.workflow.content;
 
 public interface Word extends Content {
 
-	public String getIdentifier();
+	/**
+	 * This allows us to do relaxed word matching, where the user is free to change
+	 * case or punctuate between the words. 
+	 */
+	public default String getIdentifier() {
+		return getText().replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+	}
 	
 	public static Word of(String s) {
 		return new Word() {
-
-			@Override
-			public String getIdentifier() {
-				return s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-			}
 
 			@Override
 			public String getText() {

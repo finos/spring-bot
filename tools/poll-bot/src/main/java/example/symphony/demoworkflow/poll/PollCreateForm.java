@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
 @Work(name = "Poll Setup", editable = true)

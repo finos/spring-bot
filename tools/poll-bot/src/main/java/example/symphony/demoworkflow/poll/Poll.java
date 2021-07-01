@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.ID;
 import org.finos.symphony.toolkit.workflow.content.Room;
@@ -17,8 +19,6 @@ import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
-import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.room.Rooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;

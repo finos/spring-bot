@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.java.Work;
 
 @Work(editable = false, instructions = "Expenses Claim")
 public class Claim {
