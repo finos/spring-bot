@@ -2,8 +2,8 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
-import org.finos.symphony.toolkit.workflow.java.Work;
 
 @Work(name="Test Object 4", instructions="sundry other fields")
 public class TestCollections {

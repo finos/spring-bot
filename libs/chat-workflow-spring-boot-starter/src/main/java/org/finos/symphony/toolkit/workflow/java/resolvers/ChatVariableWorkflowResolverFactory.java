@@ -1,11 +1,10 @@
-package org.finos.symphony.toolkit.workflow.java.mapping;
+package org.finos.symphony.toolkit.workflow.java.resolvers;
 
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.core.MethodParameter;
 
 public class ChatVariableWorkflowResolverFactory implements WorkflowResolverFactory {

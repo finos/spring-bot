@@ -3,6 +3,12 @@ package org.finos.symphony.toolkit.workflow.response;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 
+/**
+ * A Response that contains some JSON data to be included in the message.
+ * 
+ * @author rob@kite9.com
+ *
+ */
 public class DataResponse implements Response {
 
 	private final EntityJson data;
@@ -27,7 +33,7 @@ public class DataResponse implements Response {
 	}
 
 	@Override
-	public String getTemplate() {
+	public String getTemplateName() {
 		return template;
 	}
 

@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.java;
+package org.finos.symphony.toolkit.workflow.annotations;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

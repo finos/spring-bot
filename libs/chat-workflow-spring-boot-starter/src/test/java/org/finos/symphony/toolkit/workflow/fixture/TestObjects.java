@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
-import org.finos.symphony.toolkit.workflow.java.Work;
 
 import javax.validation.Valid;
 import java.util.ArrayList;

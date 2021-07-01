@@ -1,9 +1,9 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import org.finos.symphony.toolkit.workflow.java.Work;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 @Work(name = "Test Object 6", instructions = "Test Object 6 instructions")
 public class TestOb6 {

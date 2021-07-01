@@ -2,7 +2,7 @@ package org.finos.symphony.rssbot.feed;
 
 import java.util.function.Predicate;
 
-import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 @Work(editable = true, instructions = "Create new filter for bot's messages in this room", name = "Filter")
 public class Filter implements Predicate<String> {

@@ -78,7 +78,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 				Errors e = ErrorHelp.createErrorHolder();
 				
 				if (validated(currentForm, e)) {
-					ElementsAction ea = new ElementsAction(wf, rr, u, currentForm, verb, data);
+					ElementsAction ea = new ElementsAction(rr, u, currentForm, verb, data);
 					for (ElementsConsumer c : elementsConsumers) {
 						try {
 							List<Response> ra = c.apply(ea);

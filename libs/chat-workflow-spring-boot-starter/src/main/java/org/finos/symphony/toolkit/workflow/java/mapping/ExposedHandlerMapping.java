@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.Action;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.WildcardContent.Arity;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
@@ -95,11 +95,6 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 
 					@Override
 					public String getText() {
-						return trimmedWord;
-					}
-
-					@Override
-					public String getIdentifier() {
 						return trimmedWord;
 					}
 

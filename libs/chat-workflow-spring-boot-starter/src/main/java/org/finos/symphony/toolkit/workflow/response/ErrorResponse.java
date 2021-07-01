@@ -6,7 +6,7 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 
 public class ErrorResponse extends MessageResponse {
 
-	public ErrorResponse(Workflow wf, Addressable stream, String messageML) {
+	public ErrorResponse(Addressable stream, Exception e) {
 		super(wf, stream, new EntityJson(), "Error", "Please Investigate", messageML);
 	}
 
