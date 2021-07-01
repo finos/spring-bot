@@ -12,14 +12,14 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 public class DataResponse implements Response {
 
 	private final EntityJson data;
-	private final String template;
+	private final String templateName;
 	private final Addressable to;
 
-	public DataResponse(Addressable to, EntityJson data, String template) {
+	public DataResponse(Addressable to, EntityJson data, String templateName) {
 		super();
 		this.to = to;
 		this.data = data == null ? new EntityJson() : data;
-		this.template = template;
+		this.templateName = templateName;
 	}
 
 	public EntityJson getData() {
@@ -29,12 +29,12 @@ public class DataResponse implements Response {
 
 	@Override
 	public String toString() {
-		return "DataResponse [data=" + data + ", template=" + template + "]";
+		return "DataResponse [data=" + data + ", template=" + templateName + "]";
 	}
 
 	@Override
 	public String getTemplateName() {
-		return template;
+		return templateName;
 	}
 
 	@Override

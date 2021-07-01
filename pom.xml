@@ -25,6 +25,7 @@
 		<module>libs/entity-json</module>
 		<module>libs/shared-stream-spring-boot-starter</module>
 		<module>libs/chat-workflow-spring-boot-starter</module>
+		<module>libs/symphony-chat-workflow-spring-boot-starter</module>
 		<module>libs/quickfix-json</module>
 		
 		<module>tools/koreai</module>

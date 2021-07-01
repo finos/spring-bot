@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.response.Response;
 
 /** 
