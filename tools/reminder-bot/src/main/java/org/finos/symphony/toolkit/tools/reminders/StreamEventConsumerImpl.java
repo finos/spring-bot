@@ -32,7 +32,7 @@ import java.util.Properties;
 import java.util.TimeZone;
 import java.util.function.Consumer;
 
-//@Template(view = "classpath:/create-reminder.ftl")
+
 public class StreamEventConsumerImpl implements StreamEventConsumer {
 	private static final Logger LOG = LoggerFactory.getLogger(StreamEventConsumerImpl.class);
 
@@ -81,7 +81,7 @@ public class StreamEventConsumerImpl implements StreamEventConsumer {
 	public void accept(V4Event t) {
 		if (!t.getInitiator().getUser().getEmail().equals(identity.getEmail())) {
 			try {
-				// assignTimeZoneToRoom(t);
+
 				String messageInString = extractMessage(t);
 				String currentUser = getUser(t);
 
