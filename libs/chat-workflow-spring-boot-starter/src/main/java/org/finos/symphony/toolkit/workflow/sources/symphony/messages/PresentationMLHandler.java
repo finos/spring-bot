@@ -65,15 +65,19 @@ public class PresentationMLHandler extends AbstractNeedsWorkflow implements Init
 				EntityJson ej = jsonConverter.readValue(ms.getMessage().getData());
 				Message words = messageParser.parseMessage(ms.getMessage().getMessage(), ej);
 				TypeEnum streamType = TypeEnum.fromValue(ms.getMessage().getStream().getStreamType());
-				if (isForThisBot(words, streamType)) {
-					Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
-					User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());
+				boolean forThisBot = isForThisBot(words, streamType);
+				Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
+				User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());
+				
+				// TODO: multi-user chat (not room)
+				rr = rr == null ? u : rr;
+				SimpleMessageAction sma = new SimpleMessageAction(wf, rr, u, words, ej);
+				for (SimpleMessageConsumer c : messageConsumers) {
 					
-					// TODO: multi-user chat (not room)
-					rr = rr == null ? u : rr;
-					SimpleMessageAction sma = new SimpleMessageAction(wf, rr, u, words, ej);
-					for (SimpleMessageConsumer c : messageConsumers) {
-						try {
+					boolean requiresAddressing = c.requiresAddressing();
+					
+					if ((!requiresAddressing) || forThisBot) {
+						try { 
 							
 							List<Response> r = c.apply(sma);
 							if (r != null) {
