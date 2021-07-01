@@ -18,22 +18,22 @@
   </properties>
   
   <dependencies>
-    <dependency>
+    <!-- <dependency>
       <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>symphony-api-spring-boot-starter</artifactId>
       <version>7.20.3-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.finos.symphony.toolkit</groupId>
+      <artifactId>shared-stream-spring-boot-starter</artifactId>
+      <version>7.20.3-SNAPSHOT</version>
+    </dependency> -->
+    <!-- needed for formatting messageml -->   
+    <dependency>
+      <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>entity-json</artifactId>
       <version>7.20.3-SNAPSHOT</version>
     </dependency>
-    <dependency>
-      <groupId>org.finos.symphony.toolkit</groupId>
-      <artifactId>shared-stream-spring-boot-starter</artifactId>
-      <version>7.20.3-SNAPSHOT</version>
-    </dependency> 
-    <!-- needed for formatting messageml -->   
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>

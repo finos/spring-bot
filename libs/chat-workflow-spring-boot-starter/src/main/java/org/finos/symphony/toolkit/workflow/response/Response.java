@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.response;
 
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 
 /**
  * A general response to an addressable destination.  
