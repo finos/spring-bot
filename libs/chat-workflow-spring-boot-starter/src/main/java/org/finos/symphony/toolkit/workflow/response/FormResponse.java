@@ -26,6 +26,10 @@ public class FormResponse extends DataResponse {
 		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(editable, o), editable);
 	}
 	
+	public FormResponse(Addressable to, Object o, boolean editable) {
+		this(to, o, editable, null, null);
+	}
+	
 	public static EntityJson createEntityJson(Object o, ButtonList buttons, Errors errors) {
 		EntityJson json = new EntityJson();
 		json.put(BUTTONLIST_KEY, buttons);

@@ -28,13 +28,13 @@ import org.finos.symphony.toolkit.workflow.java.resolvers.AddressableWorkflowRes
 import org.finos.symphony.toolkit.workflow.java.resolvers.ChatVariableWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
+import org.finos.symphony.toolkit.workflow.message.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

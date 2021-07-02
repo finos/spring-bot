@@ -7,8 +7,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
@@ -20,14 +18,13 @@ import com.symphony.api.model.MessageSearchQuery;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageList;
 
-public class SymphonyHistoryImpl extends AbstractNeedsWorkflow implements SymphonyHistory {
+public class SymphonyHistoryImpl implements SymphonyHistory {
 
 	EntityJsonConverter jsonConverter;
 	MessagesApi messageApi;
 	SymphonyRooms ru;
 	
-	public SymphonyHistoryImpl(Workflow wf, EntityJsonConverter jsonConverter, MessagesApi messageApi, SymphonyRooms ru) {
-		super(wf);
+	public SymphonyHistoryImpl(EntityJsonConverter jsonConverter, MessagesApi messageApi, SymphonyRooms ru) {
 		this.jsonConverter = jsonConverter;
 		this.messageApi = messageApi;
 		this.ru = ru;

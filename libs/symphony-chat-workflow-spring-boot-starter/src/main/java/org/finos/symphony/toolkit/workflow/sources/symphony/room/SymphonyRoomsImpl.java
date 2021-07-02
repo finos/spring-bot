@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -35,14 +33,13 @@ import com.symphony.api.pod.UsersApi;
  * @author Rob Moffat
  *
  */
-public class SymphonyRoomsImpl extends AbstractNeedsWorkflow implements SymphonyRooms {
+public class SymphonyRoomsImpl implements SymphonyRooms {
 	
 	private RoomMembershipApi rmApi;
 	private StreamsApi streamsApi;
 	private UsersApi usersApi;
 	
-	public SymphonyRoomsImpl(Workflow wf, RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi) {
-		super(wf);
+	public SymphonyRoomsImpl(RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi) {
 		this.rmApi = rmApi;
 		this.streamsApi = streamsApi;
 		this.usersApi = usersApi;

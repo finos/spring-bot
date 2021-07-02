@@ -1,10 +1,15 @@
-package org.finos.symphony.toolkit.workflow;
+package org.finos.symphony.toolkit.workflow.help;
 
+import java.util.List;
+
+import org.finos.symphony.toolkit.workflow.annotations.Work;
+
+@Work
 public interface CommandDescription {
-	
-	public String getName();
-	
+		
 	public String getDescription();
+	
+	public List<String> getExamples();
 	
 	boolean addToHelp();
 	

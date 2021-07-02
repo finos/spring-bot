@@ -8,12 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @AutoConfigureBefore({SymphonyWorkflowConfig.class})
 public class FreemarkerTypeConverterConfig {
-
-	
-	@Bean
-	public AuthorConverter authorConverter() {
-		return new AuthorConverter();
-	}
 	
 	@Bean
 	public BeanConverter beanConverter() {

@@ -6,6 +6,7 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
+import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -33,12 +34,12 @@ public class PresentationMLHandler extends AbstractNeedsWorkflow implements Init
 	UsersApi usersApi;
 	SimpleMessageParser messageParser;
 	EntityJsonConverter jsonConverter;
-	List<SimpleMessageConsumer> messageConsumers;
+	List<ActionConsumer> messageConsumers;
 	ResponseHandler rh;
 	SymphonyRooms ruBuilder;
 		
 	public PresentationMLHandler(Workflow wf, SymphonyIdentity botIdentity, UsersApi usersApi, SimpleMessageParser messageParser,
-			EntityJsonConverter jsonConverter, List<SimpleMessageConsumer> messageConsumers, ResponseHandler rh, SymphonyRooms ruBuilder) {
+			EntityJsonConverter jsonConverter, List<ActionConsumer> messageConsumers, ResponseHandler rh, SymphonyRooms ruBuilder) {
 		super(wf);
 		this.botIdentity = botIdentity;
 		this.usersApi = usersApi;
@@ -73,7 +74,7 @@ public class PresentationMLHandler extends AbstractNeedsWorkflow implements Init
 					// TODO: multi-user chat (not room)
 					rr = rr == null ? u : rr;
 					SimpleMessageAction sma = new SimpleMessageAction(wf, rr, u, words, ej);
-					for (SimpleMessageConsumer c : messageConsumers) {
+					for (ActionConsumer c : messageConsumers) {
 						try {
 							
 							List<Response> r = c.apply(sma);

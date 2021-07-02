@@ -7,9 +7,13 @@ import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.workflow.CommandPerformer;
 import org.finos.symphony.toolkit.workflow.actions.Action;
+import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.help.HelpController;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
+import org.finos.symphony.toolkit.workflow.message.MessagePartWorkflowResolverFactory;
+import org.finos.symphony.toolkit.workflow.message.MethodCallMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsArgumentWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
@@ -28,10 +32,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHist
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MethodCallMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
@@ -92,17 +93,9 @@ public class SymphonyWorkflowConfig {
 	ResourceLoader resourceLoader;
 	
 	@Autowired
-	CommandPerformer cp;
-	
-	@Autowired
 	@Lazy
 	List<TypeConverter> converters;
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public HelpMessageConsumer helpConsumer() {
-		return new HelpMessageConsumer();
-	}
+
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -193,7 +186,7 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public PresentationMLHandler presentationMLHandler(List<SimpleMessageConsumer> messageConsumers) {
+	public PresentationMLHandler presentationMLHandler(List<ActionConsumer> messageConsumers) {
 		return new PresentationMLHandler(wf, botIdentity, usersApi, simpleMessageParser(), entityJsonConverter(), messageConsumers, symphonyResponseHandler(), symphonyRooms());
 	}
 	
