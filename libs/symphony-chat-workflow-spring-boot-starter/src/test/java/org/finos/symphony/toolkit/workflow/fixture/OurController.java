@@ -138,7 +138,7 @@ public class OurController {
 		return new AttachmentResponse(a, bytes, "somefile", "bin");
 	}
 	
-	@Exposed(value="form1")
+	@Exposed(description="Do blah with a form", value="form1")
 	public FormResponse form1(Addressable a) {
 		lastArguments = Collections.emptyList();
 		lastMethod = "attachment";

@@ -4,6 +4,8 @@ import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.*;
 import com.symphony.api.pod.UsersApi;
 
+import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.message.MethodCallMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
@@ -52,7 +54,7 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 	public void setup() {
 		SimpleMessageParser smp = new SimpleMessageParser();
 		EntityJsonConverter ejc = new EntityJsonConverter(wf);
-		List<SimpleMessageConsumer> consumers = Arrays.asList(new HelpMessageConsumer(), new MethodCallMessageConsumer(cp));
+		List<ActionConsumer> consumers = Arrays.asList(new HelpMessageConsumer(), new MethodCallMessageConsumer(cp));
 		SymphonyResponseHandler srh = new SymphonyResponseHandler(messagesApi, fmc, ejc, symphonyRooms, ah);
 		handler = new PresentationMLHandler(wf, identity, usersApi, smp, ejc, consumers, srh, symphonyRooms);
 	}

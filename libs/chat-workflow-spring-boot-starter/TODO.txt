@@ -1,5 +1,7 @@
-1.  Figure out EntityJsonConverter - needs to have version for Symphony
 3.  SymphonyResponseHandler - needs to handle templates properly.
 4.  We need to convert Message -> MessageML string.  
 6.  Adopt Spring's error handling / ThreadLocal / Author -> Action.  
 7.  Missing parameters - remove code that does this.
+8.  Optional/List parameters
+9.  Security on ExposedHandlerMapping
+10.  Write a test for /help

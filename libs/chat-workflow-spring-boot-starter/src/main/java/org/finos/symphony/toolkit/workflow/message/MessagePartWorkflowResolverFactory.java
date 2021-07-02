@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.messages;
+package org.finos.symphony.toolkit.workflow.message;
 
 import java.lang.reflect.Type;
 import java.util.Deque;

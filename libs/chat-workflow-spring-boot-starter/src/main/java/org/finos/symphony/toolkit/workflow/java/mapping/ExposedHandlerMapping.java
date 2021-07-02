@@ -13,8 +13,10 @@ import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.WildcardContent.Arity;
@@ -53,23 +55,37 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 
 	@Override
 	public List<ChatMapping<Exposed>> getHandlers(Action a) {
+		List<ChatMapping<Exposed>> out = getAllHandlers(a.getAddressable(), a.getUser()).stream()
+				.filter(m -> m.matches(a) != null)
+				.collect(Collectors.toList());
+
+		return out;
+	}
+	
+	@Override
+	public List<ChatMapping<Exposed>> getAllHandlers(Addressable a, User u) {
 		mappingRegistry.acquireReadLock();
 
 		List<ChatMapping<Exposed>> out = mappingRegistry.getRegistrations().values().stream()
-				.filter(m -> m.matches(a) != null).collect(Collectors.toList());
+				.filter(cm -> canBePerformedHere(cm, a, u))
+				.collect(Collectors.toList());
 
 		mappingRegistry.releaseReadLock();
 		return out;
 	}
 
+	private boolean canBePerformedHere(MappingRegistration<Exposed> cm, Addressable a, User u) {
+		return true;
+		//TODO: write this
+	}
+
 	@Override
 	public List<ChatHandlerExecutor> getExecutors(Action a) {
-		mappingRegistry.acquireReadLock();
+		List<ChatHandlerExecutor> out = getAllHandlers(a.getAddressable(), a.getUser()).stream()
+				.map(m -> m.matches(a))
+				.filter(f -> f != null)
+				.collect(Collectors.toList());
 
-		List<ChatHandlerExecutor> out = mappingRegistry.getRegistrations().values().stream().map(m -> m.matches(a))
-				.filter(f -> f != null).collect(Collectors.toList());
-
-		mappingRegistry.releaseReadLock();
 		return out;
 	}
 
