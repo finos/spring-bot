@@ -44,6 +44,8 @@ public class ReminderList {
 
 	ZoneId timeZone;
 
+	Integer remindBefore;
+
 	public ZoneId getTimeZone() {
 		return timeZone;
 	}
@@ -52,7 +54,6 @@ public class ReminderList {
 		this.timeZone = timeZone;
 	}
 
-	int remindBefore;
 
 	public int getRemindBefore() {
 		return remindBefore;
@@ -133,7 +134,7 @@ public class ReminderList {
 	
 	}
 	
-	@Exposed(description = "Set Time Zone. e.g \"zone Europe/London\"", isMessage=true) 
+	@Exposed(description = "Set Time Zone. e.g \"zone Europe/London\"", isMessage=true, isButton = false) 
 	public static ReminderList zone(Workflow wf, History h, ReminderProperties rp, Addressable a, Word setZone, Word zoneName) {
 		ReminderList rl = list(h, a, rp);
 		ZoneId newZone = ZoneId.of(zoneName.getText());
@@ -141,7 +142,7 @@ public class ReminderList {
 		return rl;	
 	}
 
-	@Exposed(description = "Set Remind Before Duration . e.g. remindbefore 30", isMessage = true, addToHelp = true)
+	@Exposed(description = "Set Remind Before Duration . e.g. remindbefore 30", isMessage = true, addToHelp = true, isButton = false)
 	public static ReminderList remindbefore(Workflow wf, History h, ReminderProperties rp, Addressable a, Word setBefore, Word duration){
 		ReminderList rl = list(h, a, rp);
 		int remindBefore = Integer.parseInt(duration.getText());
