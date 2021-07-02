@@ -31,3 +31,18 @@ symphony:
     defaultTimeZone:  "America/Los_Angeles" 
     
 ```
+
+### Set Remind-Before
+
+By default, if you chat to the bot "Remind me to go to town at 8pm" you'll get a reminder at 8pm.  You can change the exact time of the reminder when you create 
+
+However, if you want your reminders _earlier_ by default you can configure this site-wide for the bot:
+
+``` 
+symphony:
+  reminder:
+    defaultRemindBefore:  30  # 30 minutes before.
+```
+
+
+

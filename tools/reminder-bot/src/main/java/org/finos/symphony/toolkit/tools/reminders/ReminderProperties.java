@@ -30,7 +30,7 @@ public class ReminderProperties {
 		this.defaultTimeZone = defaultTimeZone;
 	}
 
-	private int defaultRemindBefore = 30;
+	private int defaultRemindBefore = 0;
 
 	public int getDefaultRemindBefore() {
 		return defaultRemindBefore;
