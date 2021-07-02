@@ -112,7 +112,8 @@ public class Scheduler {
             ZoneId zone = updatedList.getTimeZone();
             Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
             ZoneOffset zo = zone.getRules().getOffset(currentTime);
-            
+
+
             fl.get().getReminders().stream().forEach((currentReminder) -> {
                 //Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo);
                 Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo).minus(updatedList.getRemindBefore(),ChronoUnit.MINUTES);

@@ -74,6 +74,7 @@ public class ReminderList {
 	public static ReminderList addreminder(Reminder cr, History h, Addressable a, Author author, ReminderProperties rp) {
 		ReminderList rl = list(h, a, rp);
 		cr.setAuthor(author);
+
 		System.out.println(cr.getDescription());
 		rl.reminders.add(cr);
 		return rl;

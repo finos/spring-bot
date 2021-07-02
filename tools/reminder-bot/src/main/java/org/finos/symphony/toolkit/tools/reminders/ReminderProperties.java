@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
+import java.time.Instant;
 import java.time.ZoneId;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
