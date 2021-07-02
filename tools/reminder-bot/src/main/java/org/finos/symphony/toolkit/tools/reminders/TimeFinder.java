@@ -34,7 +34,6 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.time.TimeAnnotations;
 import edu.stanford.nlp.time.Timex;
 
-//@Template(view = "classpath:/create-reminder.ftl")
 public class TimeFinder implements SimpleMessageConsumer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TimeFinder.class);
