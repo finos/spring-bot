@@ -12,9 +12,9 @@ import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
 
 import com.symphony.api.model.MembershipList;
 import com.symphony.api.model.StreamAttributes;

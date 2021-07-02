@@ -13,7 +13,7 @@ import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

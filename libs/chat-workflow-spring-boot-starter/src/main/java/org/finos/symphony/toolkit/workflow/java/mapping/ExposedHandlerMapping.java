@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
@@ -130,8 +130,8 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 			
 			@Override
 			public ChatHandlerExecutor matches(Action a) {
-				if (a instanceof ElementsAction) {
-					return matchesElementsAction((ElementsAction)a);
+				if (a instanceof FormAction) {
+					return matchesElementsAction((FormAction)a);
 				}
 				
 				if (a instanceof SimpleMessageAction) {
@@ -185,7 +185,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 				return bestMatch;
 			}
 
-			private ChatHandlerExecutor matchesElementsAction(ElementsAction a) {
+			private ChatHandlerExecutor matchesElementsAction(FormAction a) {
 				Exposed e = getMapping();
 				
 				if (!e.isButton()) {

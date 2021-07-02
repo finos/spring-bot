@@ -3,8 +3,8 @@ package org.finos.symphony.toolkit.workflow.java.resolvers;
 import java.lang.reflect.Type;
 import java.util.Optional;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.java.ConfigurableWorkflow;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.core.MethodParameter;
 
@@ -17,7 +17,7 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 	}
 
 	@Override
-	public int priority() {
+	public int getOrder() {
 		return WorkflowResolverFactory.LOW_PRIORITY;
 	}
 
@@ -25,26 +25,31 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
 		return new WorkflowResolver() {
 			
+			@SuppressWarnings("unchecked")
 			@Override
 			public Optional<Object> resolve(MethodParameter mp) {
-//				if (isTarget) {
-//					 return (Optional<Object>) hist.getLastFromHistory(c, a);
-//				} else {
-					return Optional.empty();
-//				}
+				Type t = mp.getGenericParameterType();
+				
+				if (t instanceof Class<?>) {
+					return (Optional<Object>) hist.getLastFromHistory((Class<?>) t, che.action().getAddressable());
+				}
+				
+				return Optional.empty();
+				
 			}
 			
 			@Override
 			public boolean canResolve(MethodParameter mo) {
 				Type t = mo.getGenericParameterType();
-				if (che.action().getWorkflow() instanceof ConfigurableWorkflow) {
-					return ((ConfigurableWorkflow)che.action().getWorkflow()).getDataTypes().stream()
-							.filter(dt -> dt.isAssignableFrom((Class<?>) t))
-							.findFirst()
-							.isPresent();
-				} else {
-					return false;
+				
+				if (t instanceof Class<?>) {
+					Work w = ((Class<?>)t).getAnnotation(Work.class);
+					if (w != null) {
+						return true;
+					}					
 				}
+				
+				return false;
 			}
 		};
 	}

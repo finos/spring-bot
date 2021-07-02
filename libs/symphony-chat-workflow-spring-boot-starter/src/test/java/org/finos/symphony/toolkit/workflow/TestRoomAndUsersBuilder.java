@@ -9,9 +9,9 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 
 import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
 import org.junit.jupiter.api.Assertions;

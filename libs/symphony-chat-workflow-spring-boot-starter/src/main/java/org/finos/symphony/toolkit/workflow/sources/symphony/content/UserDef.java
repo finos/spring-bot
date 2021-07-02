@@ -1,6 +1,9 @@
-package org.finos.symphony.toolkit.workflow.content;
+package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
-public class UserDef extends TagDef implements Author {
+import org.finos.symphony.toolkit.workflow.content.TagDef;
+import org.finos.symphony.toolkit.workflow.content.User;
+
+public class UserDef extends TagDef implements User {
 	
 	protected String address;
 	

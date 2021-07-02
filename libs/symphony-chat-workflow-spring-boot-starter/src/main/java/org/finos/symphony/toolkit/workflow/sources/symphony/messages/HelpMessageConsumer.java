@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.Workflow.CommandDescription;
+import org.finos.symphony.toolkit.workflow.CommandDescription;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Word;
@@ -27,7 +26,7 @@ public class HelpMessageConsumer implements SimpleMessageConsumer {
 			.filter(w -> w.getIdentifier().equals("help"))
 			.map(w -> {
 				
-				List<Workflow.CommandDescription> commands = sma.getWorkflow()
+				List<CommandDescription> commands = sma.getWorkflow()
 					.getCommands(sma.getAddressable()).stream()
 					.filter(c -> c.addToHelp())
 					.collect(Collectors.toList());

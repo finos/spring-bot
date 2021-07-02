@@ -1,5 +1,8 @@
 package org.finos.symphony.toolkit.workflow.form;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
+
+@Work
 public class Button {
 	
 	public enum Type { ACTION, RESET };

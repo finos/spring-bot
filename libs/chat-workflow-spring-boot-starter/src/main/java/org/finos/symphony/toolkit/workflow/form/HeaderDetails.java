@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow.form;
 import java.util.Collection;
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 
 /**
@@ -11,6 +12,7 @@ import org.finos.symphony.toolkit.workflow.content.HashTag;
  * @author moffrob
  *
  */
+@Work
 public class HeaderDetails {
 
 	private String name;

@@ -3,8 +3,8 @@ package org.finos.symphony.toolkit.workflow.java.resolvers;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.core.MethodParameter;
 
@@ -26,8 +26,8 @@ public class AddressableWorkflowResolverFactory implements WorkflowResolverFacto
 				} else if (Addressable.class.isAssignableFrom(cl)) {
 					Addressable a = che.action().getAddressable();
 					return Optional.of(a);
-				} else if (Author.class.isAssignableFrom(cl)) {
-					return Optional.of((Author) che.action().getUser());
+				} else if (User.class.isAssignableFrom(cl)) {
+					return Optional.of(che.action().getUser());
 				}
 				
 				return Optional.empty();
@@ -40,7 +40,7 @@ public class AddressableWorkflowResolverFactory implements WorkflowResolverFacto
 					return true;
 				} else if (Addressable.class.isAssignableFrom(cl)) {
 					return true;
-				} else if (Author.class.isAssignableFrom(cl)) {
+				} else if (User.class.isAssignableFrom(cl)) {
 					return true;
 				} else {
 					return false;
@@ -50,7 +50,7 @@ public class AddressableWorkflowResolverFactory implements WorkflowResolverFacto
 	}
 
 	@Override
-	public int priority() {
+	public int getOrder() {
 		return LOW_PRIORITY;
 	}
 

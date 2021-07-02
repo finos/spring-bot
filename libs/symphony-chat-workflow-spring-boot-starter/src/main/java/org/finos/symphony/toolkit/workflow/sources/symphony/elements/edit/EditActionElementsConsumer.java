@@ -5,19 +5,19 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.AbstractElementsConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 
 public class EditActionElementsConsumer extends AbstractElementsConsumer {
 
 	
 	@Override
-	public List<Response> apply(ElementsAction u) {
+	public List<Response> apply(FormAction u) {
 		Workflow wf = u.getWorkflow();
 		if (u.getAction().equals(ClassBasedWorkflow.WF_EDIT)) {
 			EntityJson ej = u.getData();

@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.actions.Template;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
-import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;

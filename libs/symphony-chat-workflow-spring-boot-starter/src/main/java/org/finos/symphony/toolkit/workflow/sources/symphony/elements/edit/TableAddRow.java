@@ -5,14 +5,14 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.AbstractElementsConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -29,7 +29,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 
 
 	@Override
-	public List<Response> apply(ElementsAction ea) {
+	public List<Response> apply(FormAction ea) {
 		Workflow wf = ea.getWorkflow();
 		String verb = ea.getAction();
 		if (verb == null) {

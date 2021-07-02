@@ -1,7 +1,7 @@
 package org.finos.symphony.toolkit.workflow;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb6;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
@@ -11,7 +11,7 @@ import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +52,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 
     @Test
     public void testAddRow() {
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "items." + TableAddRow.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "items." + TableAddRow.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) addRows.apply(ea).get(0);
         Assertions.assertEquals(TestObject.class, fr.getFormClass());
         Assertions.assertEquals("New Test Object", fr.getName());
@@ -63,7 +63,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         newTo.setIsin("isiny");
         newTo.setBidAxed(true);
         newTo.setBidQty(324);
-        ea = new ElementsAction(wf, room, u, newTo, "items." + TableAddRow.DO_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, newTo, "items." + TableAddRow.DO_SUFFIX, toWrapper);
         fr = (FormResponse) addRows.apply(ea).get(0);
         TestObjects to = (TestObjects) ejc.readWorkflow(fr.getData());
 
@@ -73,7 +73,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 
     @Test
     public void testEditRow() {
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "items.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "items.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(TestObject.class, fr.getFormClass());
         Assertions.assertEquals("Edit Test Object", fr.getName());
@@ -86,7 +86,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         newTo.setBidAxed(true);
         newTo.setBidQty(324);
 
-        ea = new ElementsAction(wf, room, u, newTo, "items.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, newTo, "items.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
         fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(TestObjects.class, fr.getFormClass());
         TestObjects out = (TestObjects) fr.getFormObject();
@@ -97,7 +97,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
     public void testDeleteRows() {
         Map<String, Object> selects = Collections.singletonMap("items", Collections.singletonList(Collections.singletonMap("selected", "true")));
         FormSubmission uc = new FormSubmission(TestObjects.class, selects);
-        ElementsAction ea = new ElementsAction(wf, room, u, uc, "items." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, uc, "items." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestObjects.class, fr.getFormClass());
         TestObjects formObject2 = (TestObjects) fr.getFormObject();
@@ -113,7 +113,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         toWrapper = EntityJsonConverter.newWorkflow(entity);
         ejc = new EntityJsonConverter(wf);
         Integer initialSize = entity.getNames().size();
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "names." + TableAddRow.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "names." + TableAddRow.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) addRows.apply(ea).get(0);
 
         Assertions.assertEquals(String.class, fr.getFormClass());
@@ -123,7 +123,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         String newTo = (String) fr.getFormObject();
         newTo = "Suresh";
 
-        ea = new ElementsAction(wf, room, u, newTo, "names." + TableAddRow.DO_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, newTo, "names." + TableAddRow.DO_SUFFIX, toWrapper);
         fr = (FormResponse) addRows.apply(ea).get(0);
         TestOb6 to = (TestOb6) ejc.readWorkflow(fr.getData());
 
@@ -140,7 +140,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         toWrapper = EntityJsonConverter.newWorkflow(entity);
         ejc = new EntityJsonConverter(wf);
         Integer initialSize = entity.getIntegerList().size();
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "integerList." + TableAddRow.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "integerList." + TableAddRow.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) addRows.apply(ea).get(0);
 
         Assertions.assertEquals(Integer.class, fr.getFormClass());
@@ -150,7 +150,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         Integer newTo = (Integer) fr.getFormObject();
         newTo = 4;
 
-        ea = new ElementsAction(wf, room, u, newTo, "integerList." + TableAddRow.DO_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, newTo, "integerList." + TableAddRow.DO_SUFFIX, toWrapper);
         fr = (FormResponse) addRows.apply(ea).get(0);
         TestOb6 to = (TestOb6) ejc.readWorkflow(fr.getData());
 
@@ -167,7 +167,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         toWrapper = EntityJsonConverter.newWorkflow(entity);
         ejc = new EntityJsonConverter(wf);
         Integer initialSize = entity.getNumberList().size();
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "numberList." + TableAddRow.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "numberList." + TableAddRow.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) addRows.apply(ea).get(0);
 
         Assertions.assertEquals(Number.class, fr.getFormClass());
@@ -177,7 +177,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         Number newTo = (Number) fr.getFormObject();
         newTo = 4;
 
-        ea = new ElementsAction(wf, room, u, newTo, "numberList." + TableAddRow.DO_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, newTo, "numberList." + TableAddRow.DO_SUFFIX, toWrapper);
         fr = (FormResponse) addRows.apply(ea).get(0);
         TestOb6 to = (TestOb6) ejc.readWorkflow(fr.getData());
 
@@ -196,7 +196,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 
         Map<String, Object> selects = Collections.singletonMap("names", Collections.singletonList(Collections.singletonMap("selected", "true")));
         FormSubmission uc = new FormSubmission(TestOb6.class, selects);
-        ElementsAction ea = new ElementsAction(wf, room, u, uc, "names." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, uc, "names." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
         TestOb6 testOb6 = (TestOb6) fr.getFormObject();
@@ -214,7 +214,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 
         Map<String, Object> selects = Collections.singletonMap("integerList", Collections.singletonList(Collections.singletonMap("selected", "true")));
         FormSubmission uc = new FormSubmission(TestOb6.class, selects);
-        ElementsAction ea = new ElementsAction(wf, room, u, uc, "integerList." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, uc, "integerList." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
         TestOb6 testOb6 = (TestOb6) fr.getFormObject();
@@ -232,7 +232,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
 
         Map<String, Object> selects = Collections.singletonMap("numberList", Collections.singletonList(Collections.singletonMap("selected", "true")));
         FormSubmission uc = new FormSubmission(TestOb6.class, selects);
-        ElementsAction ea = new ElementsAction(wf, room, u, uc, "numberList." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, uc, "numberList." + TableDeleteRows.ACTION_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) deleteRows.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
         TestOb6 testOb6 = (TestOb6) fr.getFormObject();
@@ -248,7 +248,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         toWrapper = EntityJsonConverter.newWorkflow(entity);
         ejc = new EntityJsonConverter(wf);
 
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "names.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "names.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(String.class, fr.getFormClass());
         Assertions.assertEquals("Edit java.lang.String", fr.getName());
@@ -256,7 +256,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         Assertions.assertEquals(entity.getNames().get(0), formObject2);
 
         String updateName = "Rob";
-        ea = new ElementsAction(wf, room, u, updateName, "names.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, updateName, "names.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
         fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
         TestOb6 out = (TestOb6) fr.getFormObject();
@@ -271,7 +271,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         toWrapper = EntityJsonConverter.newWorkflow(entity);
         ejc = new EntityJsonConverter(wf);
 
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "integerList.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "integerList.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(Integer.class, fr.getFormClass());
         Assertions.assertEquals("Edit java.lang.Integer", fr.getName());
@@ -279,7 +279,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         Assertions.assertEquals(entity.getIntegerList().get(0), formObject2);
 
         Integer updateNumber = 500;
-        ea = new ElementsAction(wf, room, u, updateNumber, "integerList.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, updateNumber, "integerList.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
         fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
         TestOb6 out = (TestOb6) fr.getFormObject();
@@ -296,7 +296,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         toWrapper = EntityJsonConverter.newWorkflow(entity);
         ejc = new EntityJsonConverter(wf);
 
-        ElementsAction ea = new ElementsAction(wf, room, u, null, "numberList.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
+        FormAction ea = new FormAction(wf, room, u, null, "numberList.[0]." + TableEditRow.EDIT_SUFFIX, toWrapper);
         FormResponse fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(Integer.class, fr.getFormClass());
         Assertions.assertEquals("Edit java.lang.Integer", fr.getName());
@@ -304,7 +304,7 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         Assertions.assertEquals(entity.getNumberList().get(0), formObject2);
 
         Number updateNumber = 5;
-        ea = new ElementsAction(wf, room, u, updateNumber, "numberList.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
+        ea = new FormAction(wf, room, u, updateNumber, "numberList.[0]." + TableEditRow.UPDATE_SUFFIX, toWrapper);
         fr = (FormResponse) editRow.apply(ea).get(0);
         Assertions.assertEquals(TestOb6.class, fr.getFormClass());
         TestOb6 out = (TestOb6) fr.getFormObject();

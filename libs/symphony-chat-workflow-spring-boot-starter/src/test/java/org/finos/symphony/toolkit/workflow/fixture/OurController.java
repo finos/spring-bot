@@ -21,7 +21,7 @@ import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -84,6 +84,13 @@ public class OurController {
 		lastArguments = Collections.singletonList(u);
 		lastMethod = "userDetails";
 	}
+	
+	@Exposed("show2 {user}") 
+	public void userDetails2(@ChatVariable("user") User u, User author) {
+		// provide some user details, e.g. /show @Rob Moffat, also provides the person who typed the command
+		lastArguments = Collections.singletonList(u);
+		lastMethod = "userDetails2";
+	}
 
 	@Exposed("process-table {sometable} {user}") 
 	public void process1(@ChatVariable("sometable") PastedTable t, @ChatVariable(required = false, value="user") User u) {
@@ -138,7 +145,7 @@ public class OurController {
 		EntityJson json = new EntityJson();
 		json.put(EntityJsonConverter.WORKFLOW_001, new TestObject());
 		ButtonList bl = new ButtonList();		
-		return new FormResponse(a, json,  null, TestObject.class, false, bl);
+		return new FormResponse(a, new Object(), true, bl, null);
 	}
 	
 	@Exposed(value="form2")

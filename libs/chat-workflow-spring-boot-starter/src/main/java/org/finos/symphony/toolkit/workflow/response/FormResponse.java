@@ -1,49 +1,47 @@
 package org.finos.symphony.toolkit.workflow.response;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.actions.Template;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
 import org.springframework.validation.Errors;
 
 public class FormResponse extends DataResponse {
-
+	
+	public static final String BUTTONLIST_KEY = "buttons";
+	public static final String ERRORS_KEY = "errors";
+	public static final String FORMOBJECT_KEY = "form";
+	
 	private final boolean editable;
-	private final Object formObject;
-	private final Class<?> formClass;
-	private final ButtonList buttons;
-	private final Errors errors;
-		
-	
-	
-	
+			
+	public FormResponse(Addressable to, EntityJson data, String templateName, boolean editable) {
+		super(to, data, templateName);
+		this.editable = editable;
+	}
 	
 	/**
-	 * This is for when users have filled the form wrong, and you want to tell them about validation errors.
+	 * Call this contructor to create a basic form response using an object.
 	 */
-	public FormResponse(Addressable stream, EntityJson data, String template, Object formObject, boolean editable, ButtonList buttons, Errors e) {
-		super(stream, data, template);
-		this.editable = editable;
-		this.formObject = formObject;
-		this.buttons = buttons;
-		this.formClass = formObject.getClass();
-		this.errors = e;
+	public FormResponse(Addressable to, Object o, boolean editable, ButtonList buttons, Errors errors) {
+		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(editable, o), editable);
+	}
+	
+	public static EntityJson createEntityJson(Object o, ButtonList buttons, Errors errors) {
+		EntityJson json = new EntityJson();
+		json.put(BUTTONLIST_KEY, buttons);
+		json.put(ERRORS_KEY, errors);
+		json.put(FORMOBJECT_KEY, o);
+		return json;
 	}
 
-	public FormResponse(Addressable stream, EntityJson data, String template, Object formObject, boolean editable, ButtonList buttons) {
-		this(stream, data, template, formObject, editable, buttons, ErrorHelp.createErrorHolder());
+	public static String getTemplateNameForObject(boolean editable, Object o) {
+		return getTemplateNameForClass(editable, o.getClass());
 	}
 	
-	/**
-	 * This is for the empty form
-	 */
-	public FormResponse(Addressable stream, EntityJson data, String template, Class<?> formClass, boolean editable, ButtonList buttons) {
-		super(stream, data, template);
-		this.editable = editable;
-		this.formObject = null;
-		this.buttons = buttons;
-		this.formClass = formClass;
-		this.errors = ErrorHelp.createErrorHolder();
+	public static String getTemplateNameForClass(boolean editMode, Class<?> c) {
+		Template t = c.getAnnotation(Template.class);
+		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
+		return templateName;
 	}
 
 	public boolean isEditable() {
@@ -51,26 +49,22 @@ public class FormResponse extends DataResponse {
 	}
 
 	public Object getFormObject() {
-		return formObject;
+		return getData().get(FORMOBJECT_KEY);
 	}
 
 	public ButtonList getButtons() {
-		return buttons;
-	}
-	
-	public Class<?> getFormClass() {
-		return formClass;
+		return (ButtonList) getData().get(BUTTONLIST_KEY);
 	}
 
 	public Errors getErrors() {
-		return errors;
+		return (Errors) getData().get(ERRORS_KEY);
 	}
 
 	@Override
 	public String toString() {
-		return "FormResponse [editable=" + editable + ", formObject=" + formObject + ", formClass=" + formClass
-				+ ", buttons=" + buttons + ", errors=" + errors + "]";
+		return "FormResponse [editable=" + editable + ", getData()=" + getData() + ", getTemplateName()="
+				+ getTemplateName() + ", getAddress()=" + getAddress() + "]";
 	}
 
-
+	
 }

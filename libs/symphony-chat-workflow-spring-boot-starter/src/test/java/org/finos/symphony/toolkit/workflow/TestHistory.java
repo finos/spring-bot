@@ -5,10 +5,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

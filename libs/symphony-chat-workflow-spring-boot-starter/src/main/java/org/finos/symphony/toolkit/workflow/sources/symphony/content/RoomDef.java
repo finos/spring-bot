@@ -1,4 +1,6 @@
-package org.finos.symphony.toolkit.workflow.content;
+package org.finos.symphony.toolkit.workflow.sources.symphony.content;
+
+import org.finos.symphony.toolkit.workflow.content.Room;
 
 public class RoomDef implements Room {
 

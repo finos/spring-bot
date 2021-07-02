@@ -11,10 +11,10 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHan
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.MethodCallElementsConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.BeforeEach;

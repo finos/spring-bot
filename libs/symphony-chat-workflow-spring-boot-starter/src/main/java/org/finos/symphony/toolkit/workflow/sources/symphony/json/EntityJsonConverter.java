@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
+package org.finos.symphony.toolkit.workflow.sources.symphony.json;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,14 +10,14 @@ import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.form.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.form.RoomList;
+import org.finos.symphony.toolkit.workflow.sources.symphony.elements.RoomDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.elements.UserDef;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 /**
  * Converts workflow objects to/from JSON.
  */
-public class EntityJsonConverter extends AbstractNeedsWorkflow {
+public class EntityJsonConverter {
 
 	public static final String WORKFLOW_001 = "workflow_001";
 

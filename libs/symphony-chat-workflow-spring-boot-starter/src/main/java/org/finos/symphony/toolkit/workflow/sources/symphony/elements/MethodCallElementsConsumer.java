@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.CommandPerformer;
 import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.response.Response;
 
@@ -19,7 +19,7 @@ public class MethodCallElementsConsumer extends AbstractElementsConsumer impleme
 	}
 
 	@Override
-	public List<Response> apply(ElementsAction u) {
+	public List<Response> apply(FormAction u) {
 		String verb = u.getAction();
 		Workflow wf = u.getWorkflow();
 		Addressable a = u.getAddressable();
