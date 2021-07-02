@@ -5,10 +5,10 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import org.finos.symphony.toolkit.json.EntityJson;
@@ -16,6 +16,7 @@ import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
@@ -52,6 +53,12 @@ public class TimeFinder implements SimpleMessageConsumer {
 
 	StanfordCoreNLP stanfordCoreNLP;
 	Properties props;
+	
+	@Autowired
+	History h;
+	
+	@Autowired
+	ReminderProperties reminderProperties;
 
 	public TimeFinder() {
 		super();
@@ -91,6 +98,16 @@ public class TimeFinder implements SimpleMessageConsumer {
 			LocalDateTime ldt = toLocalTime(timex);
 
 			if (ldt != null) {
+				Optional<ReminderList> rl = h.getLastFromHistory(ReminderList.class, action.getAddressable());
+				int remindBefore;
+				if (rl.isPresent()) {
+					remindBefore = rl.get().getRemindBefore();
+				} else {
+					remindBefore = reminderProperties.getDefaultRemindBefore();
+				}
+				
+				ldt = ldt.minus(remindBefore, ChronoUnit.MINUTES);
+				
 				Reminder reminder = new Reminder();
 				reminder.setDescription(messageInString);
 				reminder.setAuthor(currentUser);

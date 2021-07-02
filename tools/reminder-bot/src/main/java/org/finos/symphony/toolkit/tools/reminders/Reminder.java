@@ -3,13 +3,12 @@
  */
 package org.finos.symphony.toolkit.tools.reminders;
 
+import java.time.LocalDateTime;
+
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
-
-import java.time.Instant;
-import java.time.LocalDateTime;
 
 /**
  * @author Gaurav Pancholi
