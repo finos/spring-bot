@@ -1,9 +1,7 @@
 package org.finos.symphony.toolkit.workflow.content;
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@JsonDeserialize(as = UserDef.class)
 @JsonSerialize()
 public interface User extends Addressable, Tag {
 	

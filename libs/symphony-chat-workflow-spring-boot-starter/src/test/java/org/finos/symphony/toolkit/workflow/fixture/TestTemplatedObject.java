@@ -1,10 +1,10 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
+import org.finos.symphony.toolkit.workflow.actions.Template;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 
 @Work(name="Test Templated", instructions="blah")
 @Template(view="classpath:/test-freemarker-view.ftl") 

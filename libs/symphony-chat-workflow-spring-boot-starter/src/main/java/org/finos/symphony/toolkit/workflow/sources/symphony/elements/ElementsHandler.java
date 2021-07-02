@@ -6,7 +6,7 @@ import java.util.Map;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
 import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -17,7 +17,7 @@ import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
 import org.slf4j.Logger;
@@ -79,7 +79,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 				Errors e = ErrorHelp.createErrorHolder();
 				
 				if (validated(currentForm, e)) {
-					ElementsAction ea = new ElementsAction(rr, u, currentForm, verb, data);
+					FormAction ea = new FormAction(rr, u, currentForm, verb, data);
 					for (ElementsConsumer c : elementsConsumers) {
 						try {
 							List<Response> ra = c.apply(ea);

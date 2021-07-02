@@ -1,7 +1,7 @@
 package org.finos.symphony.toolkit.workflow;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
@@ -36,7 +36,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void testHistoricMethodCall() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", new EntityJson());
 		List<Response> r = cp.applyCommand("wrap", sma);
 		Assertions.assertEquals(FormResponse.class, r.get(0).getClass());
 		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL_TEST_OBJECT));
@@ -46,7 +46,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void testStaticMethodCall() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "testObjects", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "testObjects", new EntityJson());
 		List<Response> r = cp.applyCommand("testObjects", sma);
 		Assertions.assertEquals(FormResponse.class, r.get(0).getClass());
 		Assertions.assertEquals(TestWorkflowConfig.INITIAL_TEST_OBJECTS, ((FormResponse) r.get(0)).getFormObject());
@@ -55,7 +55,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void testParameterizedMethodCall() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "add", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "add", new EntityJson());
 		List<Response> r = cp.applyCommand("add", sma);
 		
 		Assertions.assertEquals(FormResponse.class, r.get(0).getClass());
@@ -67,7 +67,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	@Test
 	public void testParameterizedMethodCallWithArgument() {
 		TestObject argument = new TestObject("dj", true, false, "me@rob.com", 23324323, 0);
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, argument,  "add", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, argument,  "add", new EntityJson());
 
 		List<Response> r = cp.applyCommand("add", sma);
 		
@@ -85,7 +85,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testParameterizedMethodCallWithThrowableReturn() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "throwable", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "throwable", new EntityJson());
 		List<Response> r = cp.applyCommand("throwable", sma);
 
 		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
@@ -94,7 +94,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testParameterizedMethodCallWithExceptionReturn() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exception", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exception", new EntityJson());
 		List<Response> r = cp.applyCommand("exception", sma);
 
 		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
@@ -103,7 +103,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testParameterizedMethodCallWithRuntimeReturn() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "runtime", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "runtime", new EntityJson());
 		List<Response> r = cp.applyCommand("runtime", sma);
 
 		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
@@ -112,7 +112,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testParameterizedMethodCallWithNoMessageException() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnomessage", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnomessage", new EntityJson());
 		List<Response> r = cp.applyCommand("exceptionnomessage", sma);
 
 		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
@@ -121,7 +121,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testParameterizedMethodCallWithNullCause() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnullcause", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnullcause", new EntityJson());
 		List<Response> r = cp.applyCommand("exceptionnullcause", sma);
 
 		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());
@@ -130,7 +130,7 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testParameterizedMethodCallWithNullPointerCause() {
-		ElementsAction sma = new ElementsAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnullpointercause", new EntityJson());
+		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "exceptionnullpointercause", new EntityJson());
 		List<Response> r = cp.applyCommand("exceptionnullpointercause", sma);
 
 		Assertions.assertEquals(ErrorResponse.class, r.get(0).getClass());

@@ -15,12 +15,11 @@ import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.content.UserDef;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.history.History;
+import org.finos.symphony.toolkit.workflow.java.converters.FormResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
@@ -33,6 +32,8 @@ import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
@@ -100,6 +101,11 @@ public class TestHandlerMapping {
 			return new SimpleMessageParser();
 		}
 		
+		@Bean
+		public FormResponseConverter frc() {
+			return new FormResponseConverter(); 
+		}
+		
 	}
 	
 	@Autowired
@@ -114,7 +120,7 @@ public class TestHandlerMapping {
 	private List<ChatMapping<Exposed>> getMappingsFor(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
-		Action a = new SimpleMessageAction(null, null, null, m, jsonObjects);
+		Action a = new SimpleMessageAction(null, null, m, jsonObjects);
 		return hm.getHandlers(a);
 	}
 	
@@ -126,7 +132,7 @@ public class TestHandlerMapping {
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Room r = new RoomDef("The Room Where It Happened", "Some description", true, "abc123");
 		User author = new UserDef("user123", "Rob Moffat", "rob.moffat@example.com");
-		Action a = new SimpleMessageAction(null, r, author, m, jsonObjects);
+		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		return hm.getExecutors(a);
 	}
 	
@@ -172,6 +178,23 @@ public class TestHandlerMapping {
 		Object firstArgument = oc.lastArguments.get(0);
 		Assertions.assertTrue(Word.class.isAssignableFrom(firstArgument.getClass()));
 		Assertions.assertEquals("gaurav", ((Word)firstArgument).getText());
+	}
+	
+	@Test
+	public void testAuthorChatVariable() throws Exception {
+		List<ChatHandlerExecutor> mapped = getExecutorsFor("show2 <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
+		Assertions.assertTrue(mapped.size()  == 1);
+		mapped.stream().forEach(e -> e.execute());
+		
+		Assertions.assertEquals("userDetails2", oc.lastMethod);
+		Assertions.assertEquals(2,  oc.lastArguments.size());
+		Object firstArgument = oc.lastArguments.get(0);
+		Assertions.assertTrue(User.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("gaurav", ((User)firstArgument).getName());
+		
+		Object secondArgument = oc.lastArguments.get(1);
+		Assertions.assertTrue(User.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("The Room Where It Happened", ((Room)secondArgument).getRoomName());
 	}
 	
 	@Test

@@ -1,23 +1,18 @@
 package org.finos.symphony.toolkit.workflow.java.converters;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.springframework.core.Ordered;
 
 public class FormResponseConverter implements ResponseConverter {
 
 	@Override
 	public Response convert(Object source, ChatHandlerExecutor creator) {
 		Addressable a = creator.action().getAddressable();
-		Work work = source.getClass().getAnnotation(Work.class);
-		EntityJson json = new EntityJson();
-		json.put(EntityJsonConverter.WORKFLOW_001, source);
-		
-		return new FormResponse(a, json, null, source.getClass(), false, null)
+		return new FormResponse(a, source, false, null, null);
 	}
 
 	@Override
@@ -29,6 +24,11 @@ public class FormResponseConverter implements ResponseConverter {
 		}
 		
 		return false;
+	}
+
+	@Override
+	public int getOrder() {
+		return Ordered.LOWEST_PRECEDENCE;
 	}
 
 }

@@ -8,6 +8,7 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.OrderComparator;
 
 /**
  * Returns the {@link WorkflowResolvers}, which chains together lots of {@link WorkflowResolver} calls into a single one.
@@ -31,7 +32,7 @@ public class WorkflowResolversFactory implements ApplicationContextAware {
 	public WorkflowResolvers createResolvers(ChatHandlerExecutor che) {
 		final List<WorkflowResolver> resolvers = beanFactory.getBeansOfType(WorkflowResolverFactory.class)
 				.values().stream()
-				.sorted((a,b) -> Integer.compare(a.priority(), b.priority()))
+				.sorted(OrderComparator.INSTANCE)
 				.map(wrf -> wrf.createResolver(che))
 				.collect(Collectors.toList());
 		

@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.actions;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.User;
 
@@ -11,19 +10,19 @@ public interface Action {
 	 * Where the action happened
 	 */
 	public Addressable getAddressable();
-
+ 
 	/**
 	 * Who performed the action.
 	 */
 	public User getUser();
-
-	/**
-	 * Workflow that the action belongs to.
-	 */
-	public Workflow getWorkflow();
 	
 	/**
 	 * Get the entity data underlying the request.
 	 */
 	public EntityJson getData();
+	
+	/**
+	 * Keeps track of the action being handled by the current thread
+	 */
+	public static final ThreadLocal<Action> CURRENT_ACTION = new ThreadLocal<>();
 }

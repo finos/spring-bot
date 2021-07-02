@@ -3,6 +3,9 @@ package org.finos.symphony.toolkit.workflow.form;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
+
+@Work
 public class ErrorMap {
 	
 	private Map<String, String> contents;

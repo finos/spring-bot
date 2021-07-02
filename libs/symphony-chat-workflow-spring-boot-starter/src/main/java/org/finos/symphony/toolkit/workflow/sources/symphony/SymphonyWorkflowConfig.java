@@ -20,13 +20,13 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableA
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MethodCallMessageConsumer;

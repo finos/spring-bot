@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
+
+@Work
 public class ButtonList {
 	
 	private Collection<Button> contents;

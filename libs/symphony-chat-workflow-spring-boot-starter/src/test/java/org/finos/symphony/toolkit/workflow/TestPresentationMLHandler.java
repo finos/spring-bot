@@ -3,10 +3,11 @@ package org.finos.symphony.toolkit.workflow;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.*;
 import com.symphony.api.pod.UsersApi;
+
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.*;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.BeforeEach;

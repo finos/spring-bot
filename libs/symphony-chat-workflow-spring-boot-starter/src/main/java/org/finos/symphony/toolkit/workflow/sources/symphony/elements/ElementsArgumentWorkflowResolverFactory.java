@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.ElementsAction;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
@@ -21,20 +21,20 @@ public class ElementsArgumentWorkflowResolverFactory implements WorkflowResolver
 	@Override
 	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
 		Action originatingAction = che.action();
-		if ((originatingAction instanceof ElementsAction) && (((ElementsAction) originatingAction).getFormData() != null)) {
+		if ((originatingAction instanceof FormAction) && (((FormAction) originatingAction).getFormData() != null)) {
 			
 			return new WorkflowResolver() {
 
 				@Override
 				public boolean canResolve(MethodParameter mp) {
 					Type t = mp.getGenericParameterType();
-					return ((Class<?>) t).isAssignableFrom(((ElementsAction) originatingAction).getFormData().getClass());
+					return ((Class<?>) t).isAssignableFrom(((FormAction) originatingAction).getFormData().getClass());
 				}
 
 				@Override
 				public Optional<Object> resolve(MethodParameter mp) {
 					if (canResolve(mp)) {
-						return Optional.of(((ElementsAction) originatingAction).getFormData());
+						return Optional.of(((FormAction) originatingAction).getFormData());
 					} else {
 						return Optional.empty();
 					}
