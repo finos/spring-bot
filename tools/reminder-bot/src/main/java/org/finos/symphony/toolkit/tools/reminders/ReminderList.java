@@ -36,6 +36,7 @@ public class ReminderList {
 		super();
 		reminders = new ArrayList<>(old.getReminders());
 		timeZone = old.timeZone;
+		remindBefore = old.remindBefore;
 	}
 
 	
@@ -49,6 +50,16 @@ public class ReminderList {
 
 	public void setTimeZone(ZoneId timeZone) {
 		this.timeZone = timeZone;
+	}
+
+	int remindBefore;
+
+	public int getRemindBefore() {
+		return remindBefore;
+	}
+
+	public void setRemindBefore(int remindBefore) {
+		this.remindBefore = remindBefore;
 	}
 
 	public List<Reminder> getReminders() {
@@ -78,6 +89,7 @@ public class ReminderList {
 		} else {
 			ReminderList out = new ReminderList();
 			out.setTimeZone(rp.getDefaultTimeZone());
+			out.setRemindBefore(rp.getDefaultRemindBefore());
 			return out;
 		}
 
@@ -127,4 +139,16 @@ public class ReminderList {
 		rl.setTimeZone(newZone);
 		return rl;	
 	}
+
+	@Exposed(description = "Set Remind Before Duration . e.g. remindbefore 30", isMessage = true, addToHelp = true)
+	public static ReminderList remindbefore(Workflow wf, History h, ReminderProperties rp, Addressable a, Word setBefore, Word duration){
+		ReminderList rl = list(h, a, rp);
+		int remindBefore = Integer.parseInt(duration.getText());
+		//rp.setDefaultRemindBefore(remindBefore);
+		rl.setRemindBefore(remindBefore);
+
+		return rl;
+	}
+
+
 }
