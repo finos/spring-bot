@@ -75,10 +75,10 @@ public class TimeFinder implements SimpleMessageConsumer {
 	/**
 	 * Bot listens to everything in the room
 	 */
-	@Override
-	public boolean requiresAddressing() {
-		return false;
-	}
+//	@Override
+//	public boolean requiresAddressing() {
+//		return false;
+//	}
 
 	@Override
 	public List<Response> apply(SimpleMessageAction action) {
