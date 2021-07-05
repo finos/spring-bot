@@ -85,7 +85,7 @@ public class OurController {
 		lastMethod = "userDetails";
 	}
 	
-	@Exposed("show2 {user}") 
+	@Exposed("userDetails2 {user}") 
 	public void userDetails2(@ChatVariable("user") User u, User author) {
 		// provide some user details, e.g. /show @Rob Moffat, also provides the person who typed the command
 		lastArguments = Arrays.asList(u, author);

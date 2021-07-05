@@ -12,8 +12,6 @@ import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolvers;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
 
 /**
@@ -23,9 +21,6 @@ import org.springframework.core.MethodParameter;
  *
  */
 public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractHandlerExecutor.class);
-
 	
 	private WorkflowResolversFactory wrf;
 	private ResponseHandler rh;

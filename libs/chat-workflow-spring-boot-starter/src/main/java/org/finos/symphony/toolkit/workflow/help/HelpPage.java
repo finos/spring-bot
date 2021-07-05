@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.help;
 
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.actions.Template;
+import org.finos.symphony.toolkit.workflow.annotations.Template;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 
