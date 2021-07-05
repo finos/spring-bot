@@ -14,5 +14,5 @@ public interface ChatHandlerExecutor {
 	
 	public Action action();
 	
-	public void execute();
+	public void execute() throws Throwable;
 }

@@ -31,8 +31,8 @@ public class MethodCallMessageConsumer implements ActionConsumer {
 			try {
 				e.execute();
 
-			} catch (Exception ex) {
-				LOG.error("Coulnd't process {}, error {}", t, e);
+			} catch (Throwable ex) {
+				LOG.error("Coulnd't process {}, error {}", t, ex.getLocalizedMessage());
 				errors.handleError(ex);
 			}
 
