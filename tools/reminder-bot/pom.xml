@@ -64,7 +64,7 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
-		<!--dependency>
+		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
 			<version>3.9.2</version>
@@ -79,7 +79,7 @@
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-parser</artifactId>
 			<version>3.9.2</version>
-		</dependency-->
+		</dependency>
 		<dependency>
 			<groupId>edu.washington.cs.knowitall.stanford-corenlp</groupId>
 			<artifactId>stanford-sutime-models</artifactId>
