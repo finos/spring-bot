@@ -14,7 +14,6 @@ import org.finos.symphony.toolkit.workflow.response.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-@Controller
 public class HelpController {
 
 	@Autowired

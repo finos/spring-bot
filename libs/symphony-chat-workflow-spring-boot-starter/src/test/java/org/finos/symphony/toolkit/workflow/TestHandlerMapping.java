@@ -19,16 +19,10 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.java.converters.FormResponseConverter;
-import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
-import org.finos.symphony.toolkit.workflow.java.resolvers.AddressableWorkflowResolverFactory;
-import org.finos.symphony.toolkit.workflow.java.resolvers.ChatVariableWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
-import org.finos.symphony.toolkit.workflow.message.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
@@ -50,6 +44,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest(classes = {
 		TestHandlerMapping.TestConfig.class	,
+		ChatWorkflowConfig.class,
 		ResolverConfig.class
 })
 @ExtendWith(SpringExtension.class)
@@ -75,35 +70,10 @@ public class TestHandlerMapping {
 		public OurController ourController() {
 			return new OurController();
 		}
-		
-		@Bean
-		public ExposedHandlerMapping handlerMapping(WorkflowResolversFactory wrf, ResponseHandler rh, List<ResponseConverter> converters) {
-			return new ExposedHandlerMapping(wrf, rh, converters);
-		}
-		
-		@Bean
-		public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
-			return new MessagePartWorkflowResolverFactory();
-		}
-		
-		@Bean
-		public ChatVariableWorkflowResolverFactory chatVariableWorkflowResolverFactory() {
-			return new ChatVariableWorkflowResolverFactory();
-		}
-
-		@Bean
-		public AddressableWorkflowResolverFactory addressableWorkflowResolverFactory() {
-			return new AddressableWorkflowResolverFactory();
-		}
 
 		@Bean
 		public SimpleMessageParser simpleMessageParser() {
 			return new SimpleMessageParser();
-		}
-		
-		@Bean
-		public FormResponseConverter frc() {
-			return new FormResponseConverter(); 
 		}
 		
 	}
@@ -113,7 +83,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(14, hm.getHandlerMethods().size());
+		Assertions.assertEquals(15, hm.getHandlerMethods().size());
 		getMappingsFor("list");
 	}
 
@@ -193,8 +163,8 @@ public class TestHandlerMapping {
 		Assertions.assertEquals("gaurav", ((User)firstArgument).getName());
 		
 		Object secondArgument = oc.lastArguments.get(1);
-		Assertions.assertTrue(User.class.isAssignableFrom(firstArgument.getClass()));
-		Assertions.assertEquals("The Room Where It Happened", ((Room)secondArgument).getRoomName());
+		Assertions.assertTrue(User.class.isAssignableFrom(secondArgument.getClass()));
+		Assertions.assertEquals("rob.moffat@example.com", ((User)secondArgument).getAddress());
 	}
 	
 	@Test

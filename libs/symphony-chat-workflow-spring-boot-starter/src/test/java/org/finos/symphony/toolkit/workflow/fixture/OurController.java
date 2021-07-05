@@ -88,7 +88,7 @@ public class OurController {
 	@Exposed("show2 {user}") 
 	public void userDetails2(@ChatVariable("user") User u, User author) {
 		// provide some user details, e.g. /show @Rob Moffat, also provides the person who typed the command
-		lastArguments = Collections.singletonList(u);
+		lastArguments = Arrays.asList(u, author);
 		lastMethod = "userDetails2";
 	}
 
