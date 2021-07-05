@@ -2,12 +2,11 @@ package org.finos.symphony.toolkit.workflow.java.resolvers;
 
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -52,42 +51,25 @@ public class ResolverConfig {
 			};
 		};
 	}
-	
-	/**
-	 * Allows parameters to include {@link Room} or {@link Author} .
-	 */
-	@Bean 
-	public WorkflowResolverFactory userRoomOrAddressableResolver() {
-		
-		return che -> new WorkflowResolver() {
 
-			@Override
-			public boolean canResolve(MethodParameter mp) {
-				Class<?> c = mp.getParameterType();
-				return (c.isAssignableFrom(Room.class))  || (c.isAssignableFrom(User.class)) ;
-			}
-
-			@Override
-			public Optional<Object> resolve(MethodParameter mp) {
-				Class<?> cl = mp.getParameterType();
-				
-				// handle room arg
-				if ((cl.isAssignableFrom(Room.class)) && (che.action().getAddressable() instanceof Room)) {
-					return Optional.of((Room) che.action().getAddressable());
-				}
-				
-				// handle user arg
-				if (cl.isAssignableFrom(User.class)) {
-					return Optional.of(che.action().getUser());
-				}
-				
-				return Optional.empty();
-			}
-			
-		};
+	@Bean
+	@ConditionalOnMissingBean
+	public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
+		return new MessagePartWorkflowResolverFactory();
 	}
-	
-//	
+
+	@Bean
+	@ConditionalOnMissingBean
+	public ChatVariableWorkflowResolverFactory chatVariableWorkflowResolverFactory() {
+		return new ChatVariableWorkflowResolverFactory();
+	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public AddressableWorkflowResolverFactory addressableWorkflowResolverFactory() {
+		return new AddressableWorkflowResolverFactory();
+	}
+
 	/**
 	 * Allows you to pull back previous exchanges in the history to use as parameters
 	 */

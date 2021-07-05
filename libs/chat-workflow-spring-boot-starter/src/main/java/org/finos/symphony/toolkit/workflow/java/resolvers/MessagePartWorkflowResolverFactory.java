@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.message;
+package org.finos.symphony.toolkit.workflow.java.resolvers;
 
 import java.lang.reflect.Type;
 import java.util.Deque;
@@ -20,8 +20,6 @@ import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
 import org.springframework.core.MethodParameter;
 
 /**

@@ -89,7 +89,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(15, hm.getHandlerMethods().size());
+		Assertions.assertEquals(16, hm.getHandlerMethods().size());
 		getMappingsFor("list");
 	}
 
@@ -148,7 +148,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void testAuthorChatVariable() throws Exception {
-		execute("show2 <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
+		execute("userDetails2 <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
 		Assertions.assertEquals("userDetails2", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);

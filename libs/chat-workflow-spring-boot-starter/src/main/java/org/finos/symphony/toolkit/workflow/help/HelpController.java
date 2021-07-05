@@ -11,13 +11,21 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
+/**
+ * Builds help menu from the @Exposed annotations.
+ * 
+ * @author rob@kite9.com
+ *
+ */
 public class HelpController {
 
-	@Autowired
-	ChatHandlerMapping<Exposed> exposedHandlers;
+	List<ChatHandlerMapping<Exposed>> exposedHandlers;
+
+	public HelpController(List<ChatHandlerMapping<Exposed>> exposedHandlers) {
+		super();
+		this.exposedHandlers = exposedHandlers;
+	}
 
 	public class AnnotationBasedCommandDescription implements CommandDescription {
 
@@ -56,8 +64,11 @@ public class HelpController {
 
 	@Exposed(value = "help")
 	public Response handleHelp(Addressable a, User u) {
-		List<CommandDescription> commands = exposedHandlers.getAllHandlers(a, u).stream()
-				.map(hm -> convertToCommandDescriptions(hm)).collect(Collectors.toList());
+		List<CommandDescription> commands = exposedHandlers
+				.stream()
+				.flatMap(ec -> ec.getAllHandlers(a, u).stream())
+				.map(hm -> convertToCommandDescriptions(hm))
+				.collect(Collectors.toList());
 
 		return new FormResponse(a, new HelpPage(commands), false);
 	}
