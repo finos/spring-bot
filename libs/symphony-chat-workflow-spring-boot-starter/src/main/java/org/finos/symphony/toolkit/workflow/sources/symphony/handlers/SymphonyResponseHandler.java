@@ -77,7 +77,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 		processDataResponse("", t, ah.formatAttachment(t));
 	}
 
-	private void processErrorResponse(MessageResponse t) {
+	private void processErrorResponse(ErrorResponse t) {
 		processDataResponse(" - " + t.getMessage(), t, null);
 	}
 

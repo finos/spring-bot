@@ -16,8 +16,9 @@ public class MethodCallMessageConsumer implements ActionConsumer {
 	private List<ChatHandlerMapping<?>> handlerMapping;
 	private ErrorHandler errors;
 
-	public MethodCallMessageConsumer(List<ChatHandlerMapping<?>> handlerMapping) {
+	public MethodCallMessageConsumer(List<ChatHandlerMapping<?>> handlerMapping, ErrorHandler eh) {
 		this.handlerMapping = handlerMapping;
+		this.errors = eh;
 	}
 
 	@Override
