@@ -16,7 +16,7 @@
 	<description>Reminder Bot for Managing Reminders</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
+		<maven.deploy.skip>false</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.symphony.toolkit.tools.reminders.ReminderBotApp</spring-boot.run.main-class>
 	</properties>
 
@@ -62,13 +62,9 @@
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-multipart</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
-		<dependency>
+		<!--dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
 			<version>3.9.2</version>
@@ -83,19 +79,12 @@
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-parser</artifactId>
 			<version>3.9.2</version>
-		</dependency>
+		</dependency-->
 		<dependency>
 			<groupId>edu.washington.cs.knowitall.stanford-corenlp</groupId>
 			<artifactId>stanford-sutime-models</artifactId>
 			<version>1.3.5</version>
 		</dependency>
-        <dependency>
-            <groupId>com.rometools</groupId>
-            <artifactId>rome</artifactId>
-            <version>1.15.0</version>
-            <scope>compile</scope>
-        </dependency>
-
 
     </dependencies>
 

@@ -1,7 +1,7 @@
-# Reminder Bot
+ # Reminder Bot
 
 Reminder Bot acts as your personal assistant by sending you reminders 
-To send a Reminder , type in a message in Symphony room with time component involved.
+To send a Reminder , add the Reminder bot to symphony room and type in a message in Symphony room with time component involved.
 Help options include : 
 Listing down the reminders for the room
 Listing down the timezones
@@ -14,32 +14,37 @@ Add reminder bot to a symphony room (referred to as THE ROOM going ahead)
 # Creating a reminder :
 
 Type in a message with time component.Create Reminder confirmation will be asked :
-Refer (images/Create-reminder.png)
+![Creating Reminder](images/createReminder.PNG)
 
 Clicking Create Reminder will add the reminder to the ReminderList of THE ROOM
-Refer (images/Clicking Create Reminder adds reminder to the reminder List.png)
+![Add reminder to list](images/clickingCreateReminderAddsReminderToTheReminderList.PNG)
+
 # Help options
 
 Type /help in THE ROOM . Options display .
-Refer (images/help options.png)
+![Help Menu](images/helpOptions.PNG)
 
 #Listing down reminders in the room 
 
 Type /list in THE ROOM. ReminderList for the room displays.
-Refer (images/Displaying reminder list.png)
+![Current Reminder List](images/displayingReminderList.PNG)
+
 
 #Listing down Available TimeZones
 
 Type /timezones in THE ROOM. Available TimeZones display.
-Refer (images/list Timezones.png)
+![List Time zones](images/listTimeZones.PNG)
+
 
 #Changing Timezone
 
 Type /zone Asia/Calcutta in THE ROOM. Timezone for the room updates.
-Refer (images/changing time zone.png)
+![Edit time zone](images/changingTimeZone.PNG)
 
+# Displaying Reminders
 
-## Configuration
+At the Stipulated time, User is notified with the reminder : 
+![Reminder Displayed](images/displayReminder.PNG)
 
 ### Override the Welcome Message
 
@@ -61,7 +66,7 @@ symphony:
     
 ```
 Type /zone Asia/Calcutta in THE ROOM. Timezone for the room updates.
-Refer (images/changing time zone.png)
+![Edit time zone](images/changingTimeZone.PNG)
 
 ### Set Remind-Before
 
@@ -77,5 +82,4 @@ symphony:
 updating remindbefore can be achieved by :
 
 /remindbefore 5
-
-
+![edit Remind Before](images/editRemindBeforeTime.PNG)

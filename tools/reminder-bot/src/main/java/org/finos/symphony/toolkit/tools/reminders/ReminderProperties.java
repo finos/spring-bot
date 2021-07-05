@@ -11,7 +11,7 @@ public class ReminderProperties {
 	private String welcomeMessage = "<messageML>"
 					+ "<p>Welcome to <b>${entity.stream.roomName}</b></p><br />"
 					+ "<p>I am the Reminder Bot. If you mention a date or time in your chat message , I will suggest creating a reminder for it.</p><br />"
-					+ "<p>type /help for help and to see existing reminders</p>" + "</messageML>";
+					+ "<p>type /help for help and /list to see existing reminders</p>" + "</messageML>";
 
 	public String getWelcomeMessage() {
 		return welcomeMessage;

@@ -69,8 +69,6 @@ public class TimeFinder implements SimpleMessageConsumer {
 		props = new Properties();
 		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
 		props.setProperty("ner.docdate.usePresent", "true");
-		props.setProperty("sutime.includeRange", "true");
-		props.setProperty("sutime.markTimeRanges", "true");
 		stanfordCoreNLP = new StanfordCoreNLP(props);
 	}
 
