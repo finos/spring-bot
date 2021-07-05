@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -19,7 +16,6 @@ import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
@@ -36,7 +32,7 @@ import com.symphony.api.model.V4SymphonyElementsAction;
  * @author Rob Moffat
  *
  */
-public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEventHandler {
+public class ElementsHandler implements SymphonyEventHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ElementsHandler.class);
 	
@@ -48,9 +44,8 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 	SymphonyRooms ruBuilder;
 	Validator v;
 	
-	public ElementsHandler(Workflow wf, MessagesApi messagesApi, EntityJsonConverter jsonConverter,
+	public ElementsHandler(MessagesApi messagesApi, EntityJsonConverter jsonConverter,
 			FormConverter formConverter, List<ElementsConsumer> elementsConsumers, ResponseHandler rh, SymphonyRooms ruBuilder, Validator v) {
-		super(wf);
 		this.messagesApi = messagesApi;
 		this.jsonConverter = jsonConverter;
 		this.formConverter = formConverter;
@@ -75,7 +70,6 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 				
 				// if we're not in a room, address the user directly.
 				rr = rr == null ? u : rr;
-				Author.CURRENT_AUTHOR.set((Author) u);
 				Errors e = ErrorHelp.createErrorHolder();
 				
 				if (validated(currentForm, e)) {
@@ -93,7 +87,7 @@ public class ElementsHandler extends AbstractNeedsWorkflow implements SymphonyEv
 						}
 					}
 				} else {
-					FormResponse fr = new FormResponse(wf, rr, data, "Error In Form", "Please Fix the validation errors below", currentForm, true, 
+					FormResponse fr = new FormResponse(rr, data, true, 
 						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), e);
 					rh.accept(fr);
 				}

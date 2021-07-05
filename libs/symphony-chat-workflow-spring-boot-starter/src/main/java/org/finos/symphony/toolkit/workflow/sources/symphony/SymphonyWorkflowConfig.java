@@ -1,24 +1,15 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
-import org.finos.symphony.toolkit.workflow.CommandPerformer;
-import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
-import org.finos.symphony.toolkit.workflow.help.HelpController;
-import org.finos.symphony.toolkit.workflow.history.History;
+import org.finos.symphony.toolkit.workflow.java.resolvers.FormDataArgumentWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.MessagePartWorkflowResolverFactory;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
-import org.finos.symphony.toolkit.workflow.message.MethodCallMessageConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsArgumentWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.MethodCallElementsConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.EditActionElementsConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
@@ -31,7 +22,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.HelpMessageConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
@@ -45,7 +35,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.MethodParameter;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
@@ -95,20 +84,7 @@ public class SymphonyWorkflowConfig {
 	@Autowired
 	@Lazy
 	List<TypeConverter> converters;
-
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public MethodCallMessageConsumer mcConsumer() {
-		return new MethodCallMessageConsumer(cp);
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public MethodCallElementsConsumer elementsMethodCallConsumer() {
-		return new MethodCallElementsConsumer(cp);
-	}
-
 	@Bean
 	@ConditionalOnMissingBean
 	public EditActionElementsConsumer editActionElementsConsumer() {
@@ -135,8 +111,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ElementsArgumentWorkflowResolverFactory elementsArgumentWorkflowResolverFactory() {
-		return new ElementsArgumentWorkflowResolverFactory();
+	public FormDataArgumentWorkflowResolverFactory elementsArgumentWorkflowResolverFactory() {
+		return new FormDataArgumentWorkflowResolverFactory();
 	}
 	
 	@Bean
@@ -174,66 +150,32 @@ public class SymphonyWorkflowConfig {
 	@Bean 
 	@ConditionalOnMissingBean
 	public SymphonyRooms symphonyRooms() {
-		return new SymphonyRoomsImpl(wf, roomMembershipApi, streamsApi, usersApi);
+		return new SymphonyRoomsImpl(roomMembershipApi, streamsApi, usersApi);
 	}
 	
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public EntityJsonConverter entityJsonConverter() {
-		return new EntityJsonConverter(wf);
+		return new EntityJsonConverter();
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public PresentationMLHandler presentationMLHandler(List<ActionConsumer> messageConsumers) {
-		return new PresentationMLHandler(wf, botIdentity, usersApi, simpleMessageParser(), entityJsonConverter(), messageConsumers, symphonyResponseHandler(), symphonyRooms());
+		return new PresentationMLHandler(botIdentity, usersApi, simpleMessageParser(), entityJsonConverter(), messageConsumers, symphonyResponseHandler(), symphonyRooms());
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public ElementsHandler elementsHandler(List<ElementsConsumer> elementsConsumers) {
-		return new ElementsHandler(wf, messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
+		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
 	}
 	
-
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyBot symphonyBot(List<SymphonyEventHandler> eventHandlers) {
 		return new SymphonyBot(botIdentity, eventHandlers);
 	}
-	
-	/**
-	 * Allows resolution of "this" or a parameter matching something in the workflow.
-	 */
-	@SuppressWarnings("unchecked")
-	@Bean
-	public WorkflowResolverFactory symphonyLastMessageResolver(History sh, EntityJsonConverter ejc) {
-		return che -> {
-			return new WorkflowResolver() {
-				
-				@Override
-				public boolean canResolve(MethodParameter mp) {
-					Class<?> cl = mp.getParameterType();
-					return wf.getDataTypes().contains(cl);
-				}
 
-				@Override
-				public Optional<Object> resolve(MethodParameter mp) {
-					Action action =  che.action();
-					Object oo = ejc.readWorkflow(action.getData());
-					Class<?> cl = mp.getParameterType();
-					if ((oo != null) && (cl.isAssignableFrom(oo.getClass()))) {
-						return Optional.of(oo);
-					} else if (wf.getDataTypes().contains(cl)) {
-						return (Optional<Object>) sh.getLastFromHistory(cl, che.action().getAddressable());	
-					} else {
-						return Optional.empty();
-					}
-				}
-
-			};
-		};
-	}
-	
 }
