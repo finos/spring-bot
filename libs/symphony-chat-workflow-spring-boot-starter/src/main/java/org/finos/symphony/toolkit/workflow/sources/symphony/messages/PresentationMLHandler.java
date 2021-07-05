@@ -3,15 +3,12 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.messages;
 import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
-import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
@@ -26,7 +23,7 @@ import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4MessageSent;
 import com.symphony.api.pod.UsersApi;
 
-public class PresentationMLHandler extends AbstractNeedsWorkflow implements InitializingBean, SymphonyEventHandler {
+public class PresentationMLHandler implements InitializingBean, SymphonyEventHandler {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(PresentationMLHandler.class);
 	
@@ -38,9 +35,8 @@ public class PresentationMLHandler extends AbstractNeedsWorkflow implements Init
 	ResponseHandler rh;
 	SymphonyRooms ruBuilder;
 		
-	public PresentationMLHandler(Workflow wf, SymphonyIdentity botIdentity, UsersApi usersApi, SimpleMessageParser messageParser,
+	public PresentationMLHandler(SymphonyIdentity botIdentity, UsersApi usersApi, SimpleMessageParser messageParser,
 			EntityJsonConverter jsonConverter, List<ActionConsumer> messageConsumers, ResponseHandler rh, SymphonyRooms ruBuilder) {
-		super(wf);
 		this.botIdentity = botIdentity;
 		this.usersApi = usersApi;
 		this.messageParser = messageParser;
@@ -73,16 +69,10 @@ public class PresentationMLHandler extends AbstractNeedsWorkflow implements Init
 					
 					// TODO: multi-user chat (not room)
 					rr = rr == null ? u : rr;
-					SimpleMessageAction sma = new SimpleMessageAction(wf, rr, u, words, ej);
+					SimpleMessageAction sma = new SimpleMessageAction(rr, u, words, ej);
 					for (ActionConsumer c : messageConsumers) {
-						try {
-							
-							List<Response> r = c.apply(sma);
-							if (r != null) {
-								r.stream()
-									.forEach(ri -> rh.accept(ri));
-							}
-							
+						try {							
+							c.accept(sma);
 						} catch (Exception e) {
 							LOG.error("Failed to handle consumer "+c, e);
 						}

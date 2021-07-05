@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.validation;
+package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
 
 import java.util.HashMap;
 

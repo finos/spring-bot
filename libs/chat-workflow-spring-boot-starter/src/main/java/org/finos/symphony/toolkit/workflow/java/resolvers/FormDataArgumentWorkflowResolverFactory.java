@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
+package org.finos.symphony.toolkit.workflow.java.resolvers;
 
 import java.lang.reflect.Type;
 import java.util.Optional;
@@ -6,8 +6,6 @@ import java.util.Optional;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolver;
-import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolverFactory;
 import org.springframework.core.MethodParameter;
 
 /**
@@ -16,7 +14,7 @@ import org.springframework.core.MethodParameter;
  * @author moffrob
  *
  */
-public class ElementsArgumentWorkflowResolverFactory implements WorkflowResolverFactory {
+public class FormDataArgumentWorkflowResolverFactory implements WorkflowResolverFactory {
 
 	@Override
 	public WorkflowResolver createResolver(ChatHandlerExecutor che) {

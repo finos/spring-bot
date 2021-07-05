@@ -57,6 +57,12 @@ public class ResolverConfig {
 	public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
 		return new MessagePartWorkflowResolverFactory();
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public FormDataArgumentWorkflowResolverFactory formDataArgumentWorkflowResolverFactory() {
+		return new FormDataArgumentWorkflowResolverFactory();
+	}
 
 	@Bean
 	@ConditionalOnMissingBean
