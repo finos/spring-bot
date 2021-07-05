@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.java.mapping;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
@@ -38,11 +39,12 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 	}
 	
 	@Override
-	public void execute() {
+	public void execute() throws Throwable {
 		ChatHandlerMethod hm = getChatHandlerMethod();
 		Method m = hm.getMethod(); 
-		
 		Object o = hm.getBean();
+		
+		Action.CURRENT_ACTION.set(action());
 		
 		WorkflowResolvers wr = buildWorkflowResolvers(action());
 		Object[] args = new Object[hm.getMethodParameters().length];
@@ -51,52 +53,35 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 			Optional<Object> oo = wr.resolve(mp); 
 			if (oo.isPresent()) {
 				args[i] = oo.get();
-			} else {
-				// missing parameter
-//				try {
-//					return  Collections.singletonList(new FormResponse(wf, a,  new EntityJson(), "Enter "+
-//						wf.getName(cl), wf.getInstructions(cl), cl.newInstance(), true, 
-//							ButtonList.of(new Button(commandName+"+0", Type.ACTION, m.getName()))));
-//				} catch (Exception e) {
-//					if (cl.isPrimitive()) {
-//						throw new UnsupportedOperationException("Couldn't identity missing parameters:" + cl.getName(), e);
-//					}
-//				} 
-			}
+			} 
 		}
-		
+
+		Object out;
 
 		try {
-			Object out = m.invoke(o, args);
-			
-			if (out instanceof Response) {
-				rh.accept((Response) out);
-			} else if (out instanceof Collection) {
-				for (Object object : (List<?>) out) {
-					if (object instanceof Response) {
-						rh.accept((Response) object);
-					} else {
-						Response r = convert(object);
-						if (r != null) {
-							rh.accept(r);
-						}
+			out = m.invoke(o, args);
+		} catch (InvocationTargetException ite) {
+			throw ite.getTargetException();
+		}
+		
+		if (out instanceof Response) {
+			rh.accept((Response) out);
+		} else if (out instanceof Collection) {
+			for (Object object : (List<?>) out) {
+				if (object instanceof Response) {
+					rh.accept((Response) object);
+				} else {
+					Response r = convert(object);
+					if (r != null) {
+						rh.accept(r);
 					}
 				}
-			} else {
-				Response r = convert(out);
-				if (r != null) {
-					rh.accept(r);
-				}
 			}
-			
-		} catch (Exception exception) {
-			LOG.error("Couldn't perform command: ", exception);
-			String exceptionMessage = Optional.ofNullable(exception.getMessage())
-					.orElse(Optional.ofNullable(exception.getCause())
-							.map(cause -> Optional.ofNullable(cause.getMessage())
-									.orElse("Exception thrown with no message"))
-							.orElse("Exception thrown with no exception details"));
-			//return Collections.singletonList(new ErrorResponse(wf, a, exceptionMessage));
+		} else {
+			Response r = convert(out);
+			if (r != null) {
+				rh.accept(r);
+			}
 		}
 	}
 	

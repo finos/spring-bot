@@ -25,6 +25,7 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.message.MethodCallMessageConsumer;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
+import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
@@ -34,6 +35,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessa
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -257,6 +259,18 @@ public class TestHandlerMapping {
 	public void testFormResponse2() throws Exception {
 		execute("form2");
 		Mockito.verify(rh).accept(Mockito.any(FormResponse.class));
+		Mockito.clearInvocations();
+	}
+	
+	
+	@Test
+	public void testThrowsError() throws Exception {
+		execute("throwsError");
+		ArgumentCaptor<ErrorResponse> argument = ArgumentCaptor.forClass(ErrorResponse.class);
+		Mockito.verify(rh)
+			.accept(argument.capture());
+
+		Assertions.assertEquals("Error123", argument.getValue().getData().get(ErrorResponse.MESSAGE_KEY));
 		Mockito.clearInvocations();
 	}
 	

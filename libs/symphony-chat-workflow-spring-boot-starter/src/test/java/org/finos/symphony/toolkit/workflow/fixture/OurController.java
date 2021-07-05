@@ -154,5 +154,10 @@ public class OurController {
 		lastMethod = "attachment";
 		return new TestObject();
 	}
+	
+	@Exposed(value="throwsError")
+	public TestObject throwsError() {
+		throw new RuntimeException("Error123");
+	}
 
 }
