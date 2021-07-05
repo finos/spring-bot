@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.content.CashTag;
+import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -31,9 +32,10 @@ import org.springframework.core.MethodParameter;
  */
 public class MessagePartWorkflowResolverFactory implements WorkflowResolverFactory {
 	
+	
 
 	@Override
-	public int priority() {
+	public int getOrder() {
 		return LOW_PRIORITY;
 	}
 
@@ -104,6 +106,7 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 				Tag.class, 
 				User.class, 
 				HashTag.class, 
-				CashTag.class};
+				CashTag.class,
+				CodeBlock.class};
 	}
 }
