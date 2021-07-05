@@ -75,8 +75,6 @@ public class ReminderList {
 	public static ReminderList addreminder(Reminder cr, History h, Addressable a, Author author, ReminderProperties rp) {
 		ReminderList rl = list(h, a, rp);
 		cr.setAuthor(author);
-
-		System.out.println(cr.getDescription());
 		rl.reminders.add(cr);
 		return rl;
 	
@@ -146,7 +144,6 @@ public class ReminderList {
 	public static ReminderList remindbefore(Workflow wf, History h, ReminderProperties rp, Addressable a, Word setBefore, Word duration){
 		ReminderList rl = list(h, a, rp);
 		int remindBefore = Integer.parseInt(duration.getText());
-		//rp.setDefaultRemindBefore(remindBefore);
 		rl.setRemindBefore(remindBefore);
 
 		return rl;
