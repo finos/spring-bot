@@ -7,8 +7,6 @@ import java.util.List;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
@@ -16,8 +14,8 @@ import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.form.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.form.RoomList;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,8 +30,8 @@ public class EntityJsonConverter {
 
 	ObjectMapper om;
 	
-	public EntityJsonConverter(Workflow wf) {
-		this(wf, instantiateObjectMapper());
+	public EntityJsonConverter() {
+		this(instantiateObjectMapper());
 	}
 
 	private static ObjectMapper instantiateObjectMapper() {
@@ -42,8 +40,7 @@ public class EntityJsonConverter {
 		return om;
 	}
 	
-	public EntityJsonConverter(Workflow wf, ObjectMapper objectMapper) {
-		super(wf);
+	public EntityJsonConverter(ObjectMapper objectMapper) {
 		List<Class<?>> extendedClassSpace = new ArrayList<Class<?>>();
 		extendedClassSpace.add(RoomDef.class);
 		extendedClassSpace.add(UserDef.class);

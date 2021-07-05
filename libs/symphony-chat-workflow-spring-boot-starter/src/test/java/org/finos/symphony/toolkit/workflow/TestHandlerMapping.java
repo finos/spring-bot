@@ -23,6 +23,7 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
+import org.finos.symphony.toolkit.workflow.message.MethodCallMessageConsumer;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
@@ -61,10 +62,13 @@ public class TestHandlerMapping {
 	
 	@MockBean
 	ResponseHandler rh;
+	
+	@Autowired
+	MethodCallMessageConsumer mc;
 
 	@Configuration
 	static class TestConfig {
-		
+		 
 		
 		@Bean
 		public OurController ourController() {
@@ -95,7 +99,7 @@ public class TestHandlerMapping {
 	}
 	
 
-	private List<ChatHandlerExecutor> getExecutorsFor(String s) throws Exception {
+	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
 		jsonObjects.put("1", new UserDef("1", "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTagDef("SomeTopic"));
@@ -103,7 +107,7 @@ public class TestHandlerMapping {
 		Room r = new RoomDef("The Room Where It Happened", "Some description", true, "abc123");
 		User author = new UserDef("user123", "Rob Moffat", "rob.moffat@example.com");
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
-		return hm.getExecutors(a);
+		mc.accept(a);
 	}
 	
 	@Test
@@ -114,22 +118,15 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void checkHandlerExecutors() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("ban zebedee");
-		Assertions.assertTrue(mapped.size()  == 1);
-		
-		ChatHandlerExecutor first = mapped.get(0);
-		ChatVariable firstKey = first.getReplacements().keySet().iterator().next();
-		
-		Assertions.assertEquals("word", firstKey.value());
-		Assertions.assertEquals(Word.of("zebedee"),first.getReplacements().get(firstKey));
+		execute("ban zebedee");
+		Assertions.assertEquals("banWord", oc.lastMethod);
+		Assertions.assertEquals(1,  oc.lastArguments.size());
+		Assertions.assertEquals(Word.of("zebedee"),oc.lastArguments.get(0));
 	}
 	
 	@Test
 	public void checkMethodCall() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("list");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("list");
 		Assertions.assertEquals("doCommand", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Assertions.assertTrue(Message.class.isAssignableFrom(oc.lastArguments.get(0).getClass()));
@@ -139,10 +136,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void checkMethodCallWithChatVariables() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("ban gaurav");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("ban gaurav");
 		Assertions.assertEquals("banWord", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -152,10 +146,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void testAuthorChatVariable() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("show2 <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("show2 <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
 		Assertions.assertEquals("userDetails2", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -169,10 +160,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void testUserChatVariable() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("delete <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("delete <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
 		Assertions.assertEquals("removeUserFromRoom", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -186,10 +174,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void testHashtagMapping() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("add <span class=\"entity\" data-entity-id=\"1\">@gaurav</span> to <span class=\"entity\" data-entity-id=\"2\">#SomeTopic</span>");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("add <span class=\"entity\" data-entity-id=\"1\">@gaurav</span> to <span class=\"entity\" data-entity-id=\"2\">#SomeTopic</span>");
 		Assertions.assertEquals("addUserToTopic", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -204,10 +189,7 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void testCodeblockMapping() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("update <pre>public static void main(String[] args) {}</pre>");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("update <pre>public static void main(String[] args) {}</pre>");
 		Assertions.assertEquals("process2", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -218,10 +200,7 @@ public class TestHandlerMapping {
 
 	@Test
 	public void testCodeblockMapping2() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("update <code>public <a href=\"sfdkjfh\">nonsense</a>static void main(String[] args) {}</code>");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("update <code>public <a href=\"sfdkjfh\">nonsense</a>static void main(String[] args) {}</code>");
 		Assertions.assertEquals("process2", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -233,7 +212,7 @@ public class TestHandlerMapping {
 
 	@Test
 	public void testTableMapping() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("process-table <table>\n"
+		execute("process-table <table>\n"
 				+ "      <tr>\n"
 				+ "        <th>Thing</th><th>Thang</th>\n"
 				+ "      </tr>\n"
@@ -244,9 +223,6 @@ public class TestHandlerMapping {
 				+ "        <td>3</td><td>4</td>\n"
 				+ "      </tr>\n"
 				+ "  </table> <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
 		Assertions.assertEquals("process-table", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		PastedTable firstArgument = (PastedTable) oc.lastArguments.get(0);
@@ -257,40 +233,29 @@ public class TestHandlerMapping {
 	
 	@Test
 	public void testMessageResponse() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("ban rob");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-		
+		execute("ban rob");
 		Assertions.assertEquals("banWord", oc.lastMethod);
-		
 		Mockito.verify(rh).accept(Mockito.any(MessageResponse.class));
 		Mockito.clearInvocations();
 	}
 	
 	@Test
 	public void testAttachmentResponse() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("attachment");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
-
+		execute("attachment");
 		Mockito.verify(rh).accept(Mockito.any(AttachmentResponse.class));
 		Mockito.clearInvocations();
 	}
 	
 	@Test
 	public void testFormResponse1() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("form1");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
+		execute("form1");
 		Mockito.verify(rh).accept(Mockito.any(FormResponse.class));
 		Mockito.clearInvocations();
 	}
 	
 	@Test
 	public void testFormResponse2() throws Exception {
-		List<ChatHandlerExecutor> mapped = getExecutorsFor("form2");
-		Assertions.assertTrue(mapped.size()  == 1);
-		mapped.stream().forEach(e -> e.execute());
+		execute("form2");
 		Mockito.verify(rh).accept(Mockito.any(FormResponse.class));
 		Mockito.clearInvocations();
 	}
