@@ -2,17 +2,17 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
 import org.finos.symphony.toolkit.workflow.content.Room;
 
-public class RoomDef implements Room {
+public class SymphonyRoom implements Room {
 
 	protected String roomName;
 	protected String roomDescription;
 	protected boolean pub;
 	protected String id;
 	
-	public RoomDef() {
+	public SymphonyRoom() {
 	}
 	
-	public RoomDef(String name, String description, boolean pub, String id) {
+	public SymphonyRoom(String name, String description, boolean pub, String id) {
 		super();
 		this.roomName = name;
 		this.roomDescription = description;
@@ -56,7 +56,7 @@ public class RoomDef implements Room {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		RoomDef other = (RoomDef) obj;
+		SymphonyRoom other = (SymphonyRoom) obj;
 		if (roomName == null) {
 			if (other.roomName != null)
 				return false;

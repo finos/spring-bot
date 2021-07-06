@@ -11,8 +11,8 @@ import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
@@ -116,7 +116,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 			return null;
 		});
 		
-		TestOb3 a = new TestOb3(new RoomDef("abc", "asds", true, null), new UserDef(null, "Graham Bobki", "graham@goodle.com"), "some text");
+		TestOb3 a = new TestOb3(new SymphonyRoom("abc", "asds", true, null), new SymphonyUser(null, "Graham Bobki", "graham@goodle.com"), "some text");
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
 		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);

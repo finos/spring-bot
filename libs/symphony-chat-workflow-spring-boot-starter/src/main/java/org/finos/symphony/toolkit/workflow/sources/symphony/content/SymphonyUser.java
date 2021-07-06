@@ -3,15 +3,15 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 import org.finos.symphony.toolkit.workflow.content.TagDef;
 import org.finos.symphony.toolkit.workflow.content.User;
 
-public class UserDef extends TagDef implements User {
+public class SymphonyUser extends TagDef implements User {
 	
 	protected String address;
 	
-	public UserDef() {
+	public SymphonyUser() {
 		super();
 	}
 
-	public UserDef(String id, String name, String address) {
+	public SymphonyUser(String id, String name, String address) {
 		super(id, name, Type.USER);
 		this.address = address;
 	}
@@ -43,7 +43,7 @@ public class UserDef extends TagDef implements User {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserDef other = (UserDef) obj;
+		SymphonyUser other = (SymphonyUser) obj;
 		if (address == null) {
 			if (other.address != null)
 				return false;

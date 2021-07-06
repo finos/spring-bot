@@ -16,8 +16,8 @@ import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,8 +42,8 @@ public class TestWorkflowConfig {
 				new TestObject("AUD274239874", true, false, "gregb@example.com", 2386, new BigDecimal("234823498.573")))));
 	}
 
-	public static final User u = new UserDef("123", "Testy McTestFace", "tmt@example.com");
-	public static final Room room = new RoomDef("Test Room",  "Test Room Desc", false, null);
+	public static final User u = new SymphonyUser("123", "Testy McTestFace", "tmt@example.com");
+	public static final Room room = new SymphonyRoom("Test Room",  "Test Room Desc", false, null);
 	
 	@Bean
 	public SymphonyHistory symphonyHistory(Workflow wf) {
