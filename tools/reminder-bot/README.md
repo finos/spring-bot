@@ -1,50 +1,68 @@
- # Reminder Bot
+# Reminder Bot
 
-Reminder Bot acts as your personal assistant by sending you reminders 
-To send a Reminder , add the Reminder bot to symphony room and type in a message in Symphony room with time component involved.
-Help options include : 
-Listing down the reminders for the room
-Listing down the timezones
-Changing time zone , remind before duration
+Reminder Bot acts as your personal assistant.  It will set up reminders for dates / times mentioned in a room, and send you a reminder message when those times occur, like so:
 
+![Creating a Reminder](images/creating-a-reminder.png)
 
-# How To Use
-Add reminder bot to a symphony room (referred to as THE ROOM going ahead)
+## Setup & Use
 
-# Creating a reminder :
+ - 1.   Simply add the Reminder Bot to any chat, and it will monitor all the messages for a date/time component.
+ - 2.   Chat with the bot. When you enter a date/time the bot will respond with a form allowing you to create a reminder:
 
-Type in a message with time component.Create Reminder confirmation will be asked :
 ![Creating Reminder](images/createReminder.PNG)
 
-Clicking Create Reminder will add the reminder to the ReminderList of THE ROOM
+ - 3.   Clicking Create Reminder will add the reminder to the list of reminders active in the room.
+
 ![Add reminder to list](images/clickingCreateReminderAddsReminderToTheReminderList.PNG)
 
-# Help options
+ - 4.  When the time arrives, the Reminder Bot will notify in the chat like so:
+ 
+![Reminder Displayed](images/displayReminder.PNG)
 
-Type /help in THE ROOM . Options display .
+## Chat-Level Configuration
+
+Options include : 
+
+- Listing down the reminders for the room
+- Listing down the timezones
+- Changing time zone , remind before duration
+- Changing the "remind before" / "travel time" for the room.
+
+Type `/help` in the room to display all the options, as shown below:
+
 ![Help Menu](images/helpOptions.PNG)
 
-#Listing down reminders in the room 
+### Showing reminders in the room 
 
-Type /list in THE ROOM. ReminderList for the room displays.
+Type `/list` in a chat to show the reminders set for the current room:
+
 ![Current Reminder List](images/displayingReminderList.PNG)
 
+### Changing Timezone
 
-#Listing down Available TimeZones
+Type `/timezones` in the room to show all the available timezones: 
 
-Type /timezones in THE ROOM. Available TimeZones display.
 ![List Time zones](images/listTimeZones.PNG)
 
+Type `/zone Asia/Calcutta` to update the timezone for the room.
 
-#Changing Timezone
-
-Type /zone Asia/Calcutta in THE ROOM. Timezone for the room updates.
 ![Edit time zone](images/changingTimeZone.PNG)
 
-# Displaying Reminders
+### Changing Remind Before
 
-At the Stipulated time, User is notified with the reminder : 
-![Reminder Displayed](images/displayReminder.PNG)
+You can set the lead-time for each reminder seperately, but you can set a default remind-before in each room like so:
+
+`/remindbefore 5`
+
+![Edit Remind Before](images/editRemindBeforeTime.PNG)
+
+This means, if later you enter "remind me at 6pm to make dinner", then the reminder will come up at 5:55pm, as you have set a 5 minute remind-before.
+
+
+
+## Bot-Wide Configuration
+
+This is done in the `application.yml` file.  
 
 ### Override the Welcome Message
 
@@ -55,9 +73,9 @@ symphony:
     
 ```
 
-### Set the Default TimeZone
+### Set the Default TimeZone For New Rooms / Chats
 
-By default, time-zone is set to london, but you can override with any Java timezone like so:
+By default, time-zone is set to London, but you can override with any Java timezone like so:
 
 ``` 
 symphony:
@@ -65,21 +83,14 @@ symphony:
     defaultTimeZone:  "America/Los_Angeles" 
     
 ```
-Type /zone Asia/Calcutta in THE ROOM. Timezone for the room updates.
-![Edit time zone](images/changingTimeZone.PNG)
 
-### Set Remind-Before
+Users can override this on a per-chat basis with `/zone` (descibed above).
 
-By default, if you chat to the bot "Remind me to go to town at 8pm" you'll get a reminder at 8pm.  You can change the exact time of the reminder when you create 
 
-However, if you want your reminders _earlier_ by default you can configure this site-wide for the bot:
+### Set Default Remind-Before
 
 ``` 
 symphony:
   reminder:
     defaultRemindBefore:  30  # 30 minutes before.
 ```
-updating remindbefore can be achieved by :
-
-/remindbefore 5
-![edit Remind Before](images/editRemindBeforeTime.PNG)
