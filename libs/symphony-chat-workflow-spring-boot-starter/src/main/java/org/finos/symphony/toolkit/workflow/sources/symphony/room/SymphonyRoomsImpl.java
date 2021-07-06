@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 
 import com.symphony.api.model.MembershipList;
 import com.symphony.api.model.StreamAttributes;
@@ -61,14 +61,14 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	@Override
 	public User loadUserById(Long userId) {
 		UserV2 user = usersApi.v2UserGet(null, userId, null, null, true);
-		return new UserDef(userId.toString(), user.getDisplayName(),user.getEmailAddress());
+		return new SymphonyUser(userId.toString(), user.getDisplayName(),user.getEmailAddress());
 	}
 
 	@Override
 	public Room loadRoomById(String streamId) {
 		try {
 			V3RoomDetail r = streamsApi.v3RoomIdInfoGet(streamId, null);
-			return new RoomDef(r.getRoomAttributes().getName(), r.getRoomAttributes().getDescription(), r.getRoomAttributes().isPublic(), streamId);
+			return new SymphonyRoom(r.getRoomAttributes().getName(), r.getRoomAttributes().getDescription(), r.getRoomAttributes().isPublic(), streamId);
 		} catch (Exception e) {
 			return null;
 		}
@@ -119,7 +119,7 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 			rmApi.v1RoomIdMembershipPromoteOwnerPost(u, null, detail.getRoomSystemInfo().getId());
 		}
 		
-		return new RoomDef(
+		return new SymphonyRoom(
 				detail.getRoomAttributes().getName(), 
 				detail.getRoomAttributes().getDescription(),
 				detail.getRoomAttributes().isPublic(),

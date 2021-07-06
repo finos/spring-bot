@@ -10,8 +10,8 @@ import java.util.Collections;
 
 import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
 import org.junit.jupiter.api.Assertions;
@@ -86,7 +86,7 @@ public class TestRoomAndUsersBuilder {
 				.roomAttributes(new V3RoomAttributes()._public(false).name("Some Test Room").description("Still Bogus")));
 	
 		
-		RoomDef rd = new RoomDef("Some Test Room", "Automated Test Room Created", true, null);
+		SymphonyRoom rd = new SymphonyRoom("Some Test Room", "Automated Test Room Created", true, null);
 		Room out = ruBuilder.ensureRoom(rd);
 		assertEquals("Some Test Room", out.getRoomName());
 		assertEquals(1, ruBuilder.getAllRooms().size());
@@ -103,7 +103,7 @@ public class TestRoomAndUsersBuilder {
 			.then(a -> new UserV2().id(45l).displayName("Roberto Banquet").emailAddress("r@example.com"));
 	
 		Assertions.assertEquals(
-			Collections.singletonList(new UserDef("123", "Roberto Banquet", "r@example.com")), 
+			Collections.singletonList(new SymphonyUser("123", "Roberto Banquet", "r@example.com")), 
 					ruBuilder.getRoomMembers(out));
 	}
 	
@@ -112,7 +112,7 @@ public class TestRoomAndUsersBuilder {
 		when(streamsApi.v1ImCreatePost(Mockito.any(),Mockito.isNull()))
 			.thenAnswer(c -> new Stream().id("123"));
 		
-		UserDef rd = new UserDef("123", "Robski mo", "rob@example.com");
+		SymphonyUser rd = new SymphonyUser("123", "Robski mo", "rob@example.com");
 		String someStream = ruBuilder.getStreamFor(rd);
 		Assertions.assertEquals("123", someStream);
 	}

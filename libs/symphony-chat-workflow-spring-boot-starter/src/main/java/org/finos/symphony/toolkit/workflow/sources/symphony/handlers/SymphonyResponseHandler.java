@@ -2,10 +2,10 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
 import com.symphony.api.agent.MessagesApi;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
-import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.form.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.response.*;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;

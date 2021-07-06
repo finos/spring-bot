@@ -6,8 +6,8 @@ import java.util.Arrays;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb3;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -72,7 +72,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 	@Test
 	public void testOb3() throws Exception {
 
-		TestOb3 a1 = new TestOb3(new RoomDef("abc", "123", true, null), new UserDef(null, "Robert Moffat", "rbo@kjite9.com"), "SOme message");
+		TestOb3 a1 = new TestOb3(new SymphonyRoom("abc", "123", true, null), new SymphonyUser(null, "Robert Moffat", "rbo@kjite9.com"), "SOme message");
 		String out = converter.toWorkflowJson(a1);
 
 		compare(out, "{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testOb3\",\"version\":\"1.0\",\"r\":{\"type\":\"org.finos.symphony.toolkit.workflow.content.roomDef\",\"version\":\"1.0\",\"roomName\":\"abc\",\"roomDescription\":\"123\",\"pub\":true,\"id\":null},\"u\":{\"type\":\"org.finos.symphony.toolkit.workflow.content.userDef\",\"version\":\"1.0\",\"name\":\"Robert Moffat\",\"id\":null,\"tagType\":\"USER\",\"address\":\"rbo@kjite9.com\"},\"someText\":\"SOme message\"}}");

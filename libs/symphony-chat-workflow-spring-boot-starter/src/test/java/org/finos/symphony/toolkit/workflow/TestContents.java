@@ -5,13 +5,13 @@ import java.util.UUID;
 
 import org.finos.symphony.toolkit.workflow.content.CashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.ID;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,16 +25,16 @@ public class TestContents {
 		doAssertsOnContent(new HashTagDef("id123"), new HashTagDef("id123"));
 		
 		// room def
-		doAssertsOnObject(new RoomDef("abc", "desc", true, "abc123"), new RoomDef("abc", "desc", true, "abc123"));
-		doAssertsOnObject(new RoomDef(null, "desc", true, "abc123"), new RoomDef(null, "desc", true, "abc123"));
-		doAssertsOnObject(new RoomDef("abc", null, true, "abc123"), new RoomDef("abc", null, true, "abc123"));
-		doAssertsOnObject(new RoomDef("abc", "desc", true, null), new RoomDef("abc", "desc", true, null));
+		doAssertsOnObject(new SymphonyRoom("abc", "desc", true, "abc123"), new SymphonyRoom("abc", "desc", true, "abc123"));
+		doAssertsOnObject(new SymphonyRoom(null, "desc", true, "abc123"), new SymphonyRoom(null, "desc", true, "abc123"));
+		doAssertsOnObject(new SymphonyRoom("abc", null, true, "abc123"), new SymphonyRoom("abc", null, true, "abc123"));
+		doAssertsOnObject(new SymphonyRoom("abc", "desc", true, null), new SymphonyRoom("abc", "desc", true, null));
 
 		// user def
-		doAssertsOnObject(new UserDef("abc", "rob", "rob@example.com"), new UserDef("abc", "rob", "rob@example.com"));
-		doAssertsOnObject(new UserDef(null, "rob", "rob@example.com"), new UserDef(null, "rob", "rob@example.com"));
-		doAssertsOnObject(new UserDef("abc", null, "rob@example.com"), new UserDef("abc", null, "rob@example.com"));
-		doAssertsOnObject(new UserDef("abc", "rob", null), new UserDef("abc", "rob", null));
+		doAssertsOnObject(new SymphonyUser("abc", "rob", "rob@example.com"), new SymphonyUser("abc", "rob", "rob@example.com"));
+		doAssertsOnObject(new SymphonyUser(null, "rob", "rob@example.com"), new SymphonyUser(null, "rob", "rob@example.com"));
+		doAssertsOnObject(new SymphonyUser("abc", null, "rob@example.com"), new SymphonyUser("abc", null, "rob@example.com"));
+		doAssertsOnObject(new SymphonyUser("abc", "rob", null), new SymphonyUser("abc", "rob", null));
 		
 		// id
 		UUID some = UUID.randomUUID();

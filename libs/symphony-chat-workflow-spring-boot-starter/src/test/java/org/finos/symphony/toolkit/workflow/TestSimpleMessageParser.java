@@ -15,7 +15,7 @@ import org.finos.symphony.toolkit.workflow.content.PastedTable;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.mapping.MessageMatcher;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
@@ -149,9 +149,9 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 					Paragraph.of(Collections.emptyList()),
 					Paragraph.of(Arrays.asList(
 							Word.of("/help"), 
-							new UserDef("347583113331315", "Rob Moffat", null),
-							new UserDef("345315370604167", "Mark Mainwood", null),
-							new UserDef("345315370598706", "James Tan", null))))), 
+							new SymphonyUser("347583113331315", "Rob Moffat", null),
+							new SymphonyUser("345315370604167", "Mark Mainwood", null),
+							new SymphonyUser("345315370598706", "James Tan", null))))), 
 			smp.parse(
 				"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p> </p><p>/help <span class=\"entity\" data-entity-id=\"0\">@Rob Moffat</span> <span class=\"entity\" data-entity-id=\"1\">@Mark Mainwood</span> <span class=\"entity\" data-entity-id=\"2\">@James Tan</span> </p></div>",
 				ej));

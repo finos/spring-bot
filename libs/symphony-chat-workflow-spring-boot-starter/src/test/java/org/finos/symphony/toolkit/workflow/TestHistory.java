@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
@@ -53,7 +53,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 				return out;
 			});
 		
-		TestObjects out = mh.getLastFromHistory(TestObjects.class, new RoomDef("someroom", "", true, "abc123"))
+		TestObjects out = mh.getLastFromHistory(TestObjects.class, new SymphonyRoom("someroom", "", true, "abc123"))
 			.orElseThrow(() -> new RuntimeException());
 		
 		Assertions.assertEquals(out, to);
@@ -79,7 +79,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 		
 		List<TestObjects> out = mh.getFromHistory(
 				TestObjects.class, 
-				new RoomDef("someroom", "", true, "abc123"),
+				new SymphonyRoom("someroom", "", true, "abc123"),
 				Instant.now().minus(10, ChronoUnit.DAYS));
 		
 		Assertions.assertEquals(3, out.size());

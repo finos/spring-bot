@@ -9,7 +9,6 @@ import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.HashTag;
-import org.finos.symphony.toolkit.workflow.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.PastedTable;
@@ -27,8 +26,9 @@ import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.UserDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -101,11 +101,11 @@ public class TestHandlerMapping {
 
 	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		jsonObjects.put("1", new UserDef("1", "gaurav", "gaurav@example.com"));
+		jsonObjects.put("1", new SymphonyUser("1", "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTagDef("SomeTopic"));
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
-		Room r = new RoomDef("The Room Where It Happened", "Some description", true, "abc123");
-		User author = new UserDef("user123", "Rob Moffat", "rob.moffat@example.com");
+		Room r = new SymphonyRoom("The Room Where It Happened", "Some description", true, "abc123");
+		User author = new SymphonyUser("user123", "Rob Moffat", "rob.moffat@example.com");
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		mc.accept(a);
 	}
