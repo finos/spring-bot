@@ -35,6 +35,8 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.time.TimeAnnotations;
 import edu.stanford.nlp.time.Timex;
 
+import javax.annotation.PostConstruct;
+
 public class TimeFinder implements SimpleMessageConsumer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TimeFinder.class);
@@ -51,20 +53,15 @@ public class TimeFinder implements SimpleMessageConsumer {
 	@Autowired
 	SymphonyIdentity identity;
 
-	StanfordCoreNLP stanfordCoreNLP;
 	Properties props;
 	
 	@Autowired
 	History h;
 	
-	@Autowired
-	ReminderProperties reminderProperties;
+	StanfordCoreNLP stanfordCoreNLP;
+    ReminderProperties reminderProperties;
 
-	public TimeFinder() {
-		super();
-		initializingStanfordProperties();
-	}
-
+    @PostConstruct
 	public void initializingStanfordProperties() {
 		props = new Properties();
 		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
@@ -75,10 +72,10 @@ public class TimeFinder implements SimpleMessageConsumer {
 	/**
 	 * Bot listens to everything in the room
 	 */
-//	@Override
-//	public boolean requiresAddressing() {
-//		return false;
-//	}
+	@Override
+	public boolean requiresAddressing() {
+		return false;
+	}
 
 	@Override
 	public List<Response> apply(SimpleMessageAction action) {
