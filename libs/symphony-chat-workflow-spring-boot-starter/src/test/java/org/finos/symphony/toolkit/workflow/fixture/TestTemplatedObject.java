@@ -3,21 +3,21 @@ package org.finos.symphony.toolkit.workflow.fixture;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Template;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 
 @Work(name="Test Templated", instructions="blah")
 @Template(view="classpath:/test-freemarker-view.ftl") 
 public class TestTemplatedObject {
 
-	private Room r;
+	private Chat r;
 	private User u;
 	private String someText;
 	
-	public Room getR() {
+	public Chat getR() {
 		return r;
 	}
-	public void setR(Room r) {
+	public void setR(Chat r) {
 		this.r = r;
 	}
 	public User getU() {
@@ -36,7 +36,7 @@ public class TestTemplatedObject {
 	public TestTemplatedObject() {
 	}
 	
-	public TestTemplatedObject(Room r, User u, String someText) {
+	public TestTemplatedObject(Chat r, User u, String someText) {
 		super();
 		this.r = r;
 		this.u = u;

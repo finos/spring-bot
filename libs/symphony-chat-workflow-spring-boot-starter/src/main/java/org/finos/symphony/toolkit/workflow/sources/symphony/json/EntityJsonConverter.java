@@ -7,13 +7,13 @@ import java.util.List;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
-import org.finos.symphony.toolkit.workflow.form.HeaderDetails;
-import org.finos.symphony.toolkit.workflow.form.RoomList;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HeaderDetails;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomList;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 
@@ -45,7 +45,7 @@ public class EntityJsonConverter {
 		extendedClassSpace.add(SymphonyRoom.class);
 		extendedClassSpace.add(SymphonyUser.class);
 		extendedClassSpace.add(User.class);
-		extendedClassSpace.add(Room.class);
+		extendedClassSpace.add(Chat.class);
 		extendedClassSpace.add(Button.class);
 		extendedClassSpace.add(ButtonList.class);
 		extendedClassSpace.add(RoomList.class);

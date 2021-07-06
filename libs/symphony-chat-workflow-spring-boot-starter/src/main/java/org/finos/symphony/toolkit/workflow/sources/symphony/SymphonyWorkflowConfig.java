@@ -7,6 +7,7 @@ import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.resolvers.FormDataArgumentWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.MessagePartWorkflowResolverFactory;
+import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
@@ -14,7 +15,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.EditAc
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
@@ -23,7 +23,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHist
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
 import org.slf4j.Logger;
@@ -124,8 +124,8 @@ public class SymphonyWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public SimpleMessageParser simpleMessageParser() {
-		return new SimpleMessageParser();
+	public MessageMLParser simpleMessageParser() {
+		return new MessageMLParser();
 	}
 	
 	@Bean

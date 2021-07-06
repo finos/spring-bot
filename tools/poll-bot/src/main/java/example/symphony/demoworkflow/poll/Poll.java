@@ -12,8 +12,7 @@ import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Author;
-import org.finos.symphony.toolkit.workflow.content.ID;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -22,6 +21,7 @@ import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.room.Rooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
 import org.springframework.scheduling.TaskScheduler;
@@ -57,7 +57,7 @@ public class Poll {
 	public static List<FormResponse> poll(
 			Workflow wf, 
 			PollCreateForm cf, 
-			Room r, 
+			Chat r, 
 			Author a, 
 			TaskScheduler taskScheduler, 
 			SymphonyIdentity botIdentity, 
@@ -100,7 +100,7 @@ public class Poll {
 		return out;
 	}
 
-	private static void doScheduling(Poll p, TaskScheduler taskScheduler, PollCreateForm cf, ResponseHandler rh, History h, Room r, Workflow wf) {
+	private static void doScheduling(Poll p, TaskScheduler taskScheduler, PollCreateForm cf, ResponseHandler rh, History h, Chat r, Workflow wf) {
 		if (cf.isEndAutomatically()) {
 			Instant endTime = Instant.now().plus(cf.getTime(), cf.getTimeUnit());
 			p.setEndTime(endTime);
@@ -115,7 +115,7 @@ public class Poll {
 	}
 
 	@Exposed
-	public Result end(Room r, History h) {
+	public Result end(Chat r, History h) {
 		List<Answer> responses = h.getFromHistory(Answer.class, id, null, null);
 
 		List<Integer> counts = new ArrayList<>(options.size());

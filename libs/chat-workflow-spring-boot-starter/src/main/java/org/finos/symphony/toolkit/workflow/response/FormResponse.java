@@ -8,22 +8,21 @@ import org.springframework.validation.Errors;
 
 public class FormResponse extends DataResponse {
 	
+	public static final String DEFAULT_FORM_TEMPLATE_EDIT = "default-edit";
+	public static final String DEFAULT_FORM_TEMPLATE_vIEW = "default-view";
 	public static final String BUTTONLIST_KEY = "buttons";
 	public static final String ERRORS_KEY = "errors";
 	public static final String FORMOBJECT_KEY = "form";
-	
-	private final boolean editable;
-			
-	public FormResponse(Addressable to, EntityJson data, String templateName, boolean editable) {
+				
+	public FormResponse(Addressable to, EntityJson data, String templateName) {
 		super(to, data, templateName);
-		this.editable = editable;
 	}
 	
 	/**
 	 * Call this contructor to create a basic form response using an object.
 	 */
 	public FormResponse(Addressable to, Object o, boolean editable, ButtonList buttons, Errors errors) {
-		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(editable, o), editable);
+		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(editable, o));
 	}
 	
 	public FormResponse(Addressable to, Object o, boolean editable) {
@@ -45,11 +44,13 @@ public class FormResponse extends DataResponse {
 	public static String getTemplateNameForClass(boolean editMode, Class<?> c) {
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
-		return templateName;
-	}
-
-	public boolean isEditable() {
-		return editable;
+		
+		if (templateName == null) {
+			return editMode ? DEFAULT_FORM_TEMPLATE_EDIT : DEFAULT_FORM_TEMPLATE_vIEW;
+		} else {
+			return templateName;
+		}
+		
 	}
 
 	public Object getFormObject() {
@@ -66,7 +67,7 @@ public class FormResponse extends DataResponse {
 
 	@Override
 	public String toString() {
-		return "FormResponse [editable=" + editable + ", getData()=" + getData() + ", getTemplateName()="
+		return "FormResponse [getData()=" + getData() + ", getTemplateName()="
 				+ getTemplateName() + ", getAddress()=" + getAddress() + "]";
 	}
 

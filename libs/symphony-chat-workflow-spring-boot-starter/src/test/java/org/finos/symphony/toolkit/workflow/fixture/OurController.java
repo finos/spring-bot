@@ -9,11 +9,10 @@ import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
-import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.MessageParser;
-import org.finos.symphony.toolkit.workflow.content.PastedTable;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Table;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -21,6 +20,7 @@ import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -93,7 +93,7 @@ public class OurController {
 	}
 
 	@Exposed("process-table {sometable} {user}") 
-	public void process1(@ChatVariable("sometable") PastedTable t, @ChatVariable(required = false, value="user") User u) {
+	public void process1(@ChatVariable("sometable") Table t, @ChatVariable(required = false, value="user") User u) {
 		// provide some processing for a table.
 		lastArguments = Arrays.asList(t, u);
 		lastMethod = "process-table";
@@ -118,7 +118,7 @@ public class OurController {
 	
 	
 	@Exposed(admin = true, value = "delete {user}")
-	public void removeUserFromRoom(@ChatVariable("user") User u, Room r) {
+	public void removeUserFromRoom(@ChatVariable("user") User u, Chat r) {
 		lastArguments = Arrays.asList(u, r);
 		lastMethod = "removeUserFromRoom";	
 	}

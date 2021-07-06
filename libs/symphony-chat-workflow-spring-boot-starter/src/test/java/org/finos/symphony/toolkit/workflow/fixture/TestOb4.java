@@ -3,8 +3,8 @@ package org.finos.symphony.toolkit.workflow.fixture;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Author;
-import org.finos.symphony.toolkit.workflow.content.ID;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
 
 @Work(name="Test Object 4", instructions="sundry other fields")
 public class TestOb4 {

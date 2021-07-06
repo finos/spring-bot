@@ -2,20 +2,20 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 
 @Work(name="Test Object 3", instructions="blah")
 public class TestOb3 {
 
-	private Room r;
+	private Chat r;
 	private User u;
 	private String someText;
 	
-	public Room getR() {
+	public Chat getR() {
 		return r;
 	}
-	public void setR(Room r) {
+	public void setR(Chat r) {
 		this.r = r;
 	}
 	public User getU() {
@@ -34,7 +34,7 @@ public class TestOb3 {
 	public TestOb3() {
 	}
 	
-	public TestOb3(Room r, User u, String someText) {
+	public TestOb3(Chat r, User u, String someText) {
 		super();
 		this.r = r;
 		this.u = u;

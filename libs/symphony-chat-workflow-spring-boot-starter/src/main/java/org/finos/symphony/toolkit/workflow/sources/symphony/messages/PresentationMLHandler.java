@@ -9,7 +9,7 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
@@ -29,13 +29,13 @@ public class PresentationMLHandler implements InitializingBean, SymphonyEventHan
 	
 	SymphonyIdentity botIdentity;
 	UsersApi usersApi;
-	SimpleMessageParser messageParser;
+	MessageMLParser messageParser;
 	EntityJsonConverter jsonConverter;
 	List<ActionConsumer> messageConsumers;
 	ResponseHandler rh;
 	SymphonyRooms ruBuilder;
 		
-	public PresentationMLHandler(SymphonyIdentity botIdentity, UsersApi usersApi, SimpleMessageParser messageParser,
+	public PresentationMLHandler(SymphonyIdentity botIdentity, UsersApi usersApi, MessageMLParser messageParser,
 			EntityJsonConverter jsonConverter, List<ActionConsumer> messageConsumers, ResponseHandler rh, SymphonyRooms ruBuilder) {
 		this.botIdentity = botIdentity;
 		this.usersApi = usersApi;

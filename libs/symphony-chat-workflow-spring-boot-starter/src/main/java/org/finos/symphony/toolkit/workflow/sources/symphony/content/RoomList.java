@@ -1,38 +1,38 @@
-package org.finos.symphony.toolkit.workflow.form;
+package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 
 @Work
 public class RoomList {
 	
-	private Collection<Room> contents;
+	private Collection<Chat> contents;
 
-	public Collection<Room> getContents() {
+	public Collection<Chat> getContents() {
 		return contents;
 	}
 
-	public void setContents(Collection<Room> contents) {
+	public void setContents(Collection<Chat> contents) {
 		this.contents = contents;
 	}
 
 	public RoomList() {
-		this.contents = new ArrayList<Room>();
+		this.contents = new ArrayList<Chat>();
 	}
 
-	public RoomList(Collection<Room> arg0) {
+	public RoomList(Collection<Chat> arg0) {
 		this.contents = arg0;
 	}
 
-	public static RoomList of(Room... Room) {
+	public static RoomList of(Chat... Room) {
 		return new RoomList(Arrays.asList(Room));
 	}
 
-	public void add(Room Room) {
+	public void add(Chat Room) {
 		contents.add(Room);
 	}
 
