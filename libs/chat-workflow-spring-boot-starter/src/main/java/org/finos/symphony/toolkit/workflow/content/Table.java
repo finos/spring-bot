@@ -8,7 +8,7 @@ import java.util.List;
  * @author Rob Moffat
  *
  */
-public interface PastedTable extends Content {
+public interface Table extends Content {
 
 	public List<Content> getColumnNames();
 	

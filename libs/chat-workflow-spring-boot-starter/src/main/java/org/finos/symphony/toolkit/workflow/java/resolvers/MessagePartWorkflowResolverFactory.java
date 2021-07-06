@@ -9,16 +9,8 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
-import org.finos.symphony.toolkit.workflow.content.CashTag;
-import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.HashTag;
 import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.PastedTable;
-import org.finos.symphony.toolkit.workflow.content.Tag;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.core.MethodParameter;
 
@@ -92,19 +84,5 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 		}
 		
 		return out;
-	}
-
-
-	@SuppressWarnings("unchecked")
-	protected Class<? extends Content>[] getResolvableClasses() {
-		return new Class[] { Message.class, 
-				Paragraph.class, 
-				PastedTable.class, 
-				Word.class, 
-				Tag.class, 
-				User.class, 
-				HashTag.class, 
-				CashTag.class,
-				CodeBlock.class};
 	}
 }

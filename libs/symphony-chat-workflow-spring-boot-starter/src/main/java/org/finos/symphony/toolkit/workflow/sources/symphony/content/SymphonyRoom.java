@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 
-public class SymphonyRoom implements Room {
+public class SymphonyRoom implements Chat {
 
 	protected String roomName;
 	protected String roomDescription;
@@ -21,7 +21,7 @@ public class SymphonyRoom implements Room {
 	}
 
 	@Override
-	public String getRoomName() {
+	public String getName() {
 		return roomName;
 	}
 
@@ -37,7 +37,7 @@ public class SymphonyRoom implements Room {
 
 	@Override
 	public String toString() {
-		return "RoomDef [name=" + getRoomName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
+		return "RoomDef [name=" + getName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
 	}
 
 	@Override

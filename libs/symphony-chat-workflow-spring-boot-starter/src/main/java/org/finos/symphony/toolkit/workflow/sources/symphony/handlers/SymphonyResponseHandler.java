@@ -1,11 +1,15 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
 import com.symphony.api.agent.MessagesApi;
-import org.finos.symphony.toolkit.workflow.content.HashTag;
-import org.finos.symphony.toolkit.workflow.form.HeaderDetails;
+
 import org.finos.symphony.toolkit.workflow.response.*;
+import org.finos.symphony.toolkit.workflow.response.handlers.AbstractResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
@@ -26,10 +30,8 @@ import java.util.stream.Collectors;
  * @author Rob Moffat
  *
  */
-public class SymphonyResponseHandler implements ResponseHandler {
+public class SymphonyResponseHandler extends AbstractResponseHandler<String> {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(SymphonyResponseHandler.class);
-
 	MessagesApi messagesApi;
 	FormMessageMLConverter formConverter;
 	EntityJsonConverter jsonConverter;

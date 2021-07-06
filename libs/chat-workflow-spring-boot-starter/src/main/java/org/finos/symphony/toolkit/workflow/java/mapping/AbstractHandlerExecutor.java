@@ -11,7 +11,7 @@ import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolvers;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
 import org.springframework.core.MethodParameter;
 
 /**

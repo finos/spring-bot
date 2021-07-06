@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.message;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
 import org.springframework.util.ErrorHandler;
 
 public class ChatWorkflowErrorHandler implements ErrorHandler {

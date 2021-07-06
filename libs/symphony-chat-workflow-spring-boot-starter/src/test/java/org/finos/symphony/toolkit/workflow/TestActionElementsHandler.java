@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
+import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.MethodCallElementsConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;

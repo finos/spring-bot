@@ -8,7 +8,6 @@ import java.util.UUID;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Author;
-import org.finos.symphony.toolkit.workflow.content.ID;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb4;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb5;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb4.Choice;
@@ -18,6 +17,7 @@ import org.finos.symphony.toolkit.workflow.fixture.TestTemplatedObject;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;

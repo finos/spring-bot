@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
+package org.finos.symphony.toolkit.workflow.response.handlers;
 
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 

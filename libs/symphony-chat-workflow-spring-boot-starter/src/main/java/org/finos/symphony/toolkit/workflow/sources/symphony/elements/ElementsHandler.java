@@ -12,7 +12,7 @@ import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;

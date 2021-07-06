@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
-import org.finos.symphony.toolkit.workflow.content.TagDef;
 import org.finos.symphony.toolkit.workflow.content.User;
 
 public class SymphonyUser extends TagDef implements User {

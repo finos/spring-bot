@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.core.MethodParameter;
@@ -26,10 +26,10 @@ public class AddressableWorkflowResolverFactory implements WorkflowResolverFacto
 			@Override
 			public Optional<Object> resolve(MethodParameter mp) {
 				Class<?> cl = mp.getParameterType();
-				if (Room.class.isAssignableFrom(cl)) {
+				if (Chat.class.isAssignableFrom(cl)) {
 					Addressable a = che.action().getAddressable();
-					if (a instanceof Room) {
-						return Optional.of((Room) a);
+					if (a instanceof Chat) {
+						return Optional.of((Chat) a);
 					}
 				} else if (User.class.isAssignableFrom(cl)) {
 					return Optional.of(che.action().getUser());

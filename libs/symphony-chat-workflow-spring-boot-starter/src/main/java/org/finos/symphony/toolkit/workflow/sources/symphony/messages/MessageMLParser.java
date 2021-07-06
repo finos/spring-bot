@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.CashTagDef;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -18,20 +16,24 @@ import org.finos.symphony.toolkit.workflow.content.MessageParser;
 import org.finos.symphony.toolkit.workflow.content.OrderedContent;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.PastedTable;
+import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.content.Tag.Type;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.symphonyoss.Taxonomy;
 import org.symphonyoss.fin.security.id.SecId;
 import org.symphonyoss.taxonomy.Hashtag;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.ext.DefaultHandler2;
 
 import com.symphony.user.UserId;
 
@@ -42,7 +44,9 @@ import com.symphony.user.UserId;
  * @author Rob Moffat
  *
  */
-public class SimpleMessageParser implements MessageParser {
+public class MessageMLParser implements MessageParser {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(PresentationMLHandler.class);
 	
 	private SAXParserFactory factory = SAXParserFactory.newInstance();
 	
@@ -216,7 +220,7 @@ public class SimpleMessageParser implements MessageParser {
 		
 	}
 	
-	static class TableFrame extends Frame<PastedTable> {
+	static class TableFrame extends Frame<Table> {
 		
 		private List<List<Content>> contents = new ArrayList<>();
 
@@ -225,8 +229,8 @@ public class SimpleMessageParser implements MessageParser {
 		}
 		
 		@Override
-		public PastedTable getContents() {
-			return new PastedTable() {
+		public Table getContents() {
+			return new Table() {
 				
 				@Override
 				public List<List<Content>> getData() {
@@ -245,9 +249,9 @@ public class SimpleMessageParser implements MessageParser {
 
 				@Override
 				public boolean equals(Object obj) {
-					if (obj instanceof PastedTable) {
-						return getData().equals(((PastedTable) obj).getData()) &&
-							getColumnNames().equals(((PastedTable) obj).getColumnNames());
+					if (obj instanceof Table) {
+						return getData().equals(((Table) obj).getData()) &&
+							getColumnNames().equals(((Table) obj).getColumnNames());
 					} else {
 						return false;
 					}
@@ -357,7 +361,7 @@ public class SimpleMessageParser implements MessageParser {
 		
 		try {
 			SAXParser saxParser = factory.newSAXParser();
-			saxParser.parse(new InputSource(new StringReader(message)), new DefaultHandler() {
+			saxParser.parse(new InputSource(new StringReader(message)), new DefaultHandler2() {
 
 				Frame<?> top = null;
 
@@ -413,6 +417,16 @@ public class SimpleMessageParser implements MessageParser {
 					return newFrame;
 				}
 
+				@Override
+				public void startEntity(String name) throws SAXException {
+					// do nothing 
+				}
+
+				@Override
+				public void endEntity(String name) throws SAXException {
+					// do nothing
+				}
+
 				private boolean isStartTable(String qName, Attributes attributes) {
 					return "table".equals(qName);
 				}
@@ -449,6 +463,21 @@ public class SimpleMessageParser implements MessageParser {
 							throw new UnsupportedOperationException("Wasn't expecting text: "+content);
 						}
 					}
+				}
+
+				@Override
+				public void warning(SAXParseException e) throws SAXException {
+					LOG.error("SAX warning: ", e);
+				}
+
+				@Override
+				public void error(SAXParseException e) throws SAXException {
+					LOG.error("SAX error: ", e);
+				}
+
+				@Override
+				public void fatalError(SAXParseException e) throws SAXException {
+					LOG.error("SAX fatal error: ", e);
 				}
 				
 			});

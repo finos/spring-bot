@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
@@ -87,8 +87,8 @@ public class TestRoomAndUsersBuilder {
 	
 		
 		SymphonyRoom rd = new SymphonyRoom("Some Test Room", "Automated Test Room Created", true, null);
-		Room out = ruBuilder.ensureRoom(rd);
-		assertEquals("Some Test Room", out.getRoomName());
+		Chat out = ruBuilder.ensureRoom(rd);
+		assertEquals("Some Test Room", out.getName());
 		assertEquals(1, ruBuilder.getAllRooms().size());
 		
 		String someStream = ruBuilder.getStreamFor(out);

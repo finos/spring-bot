@@ -3,8 +3,8 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.form.RoomList;
+import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomList;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContextAware;
 public class RoomConverter extends AbstractClassConverter implements ApplicationContextAware {
 
 	public RoomConverter() {
-		super(LOW_PRIORITY, Room.class);
+		super(LOW_PRIORITY, Chat.class);
 	}
 
 	private SymphonyRooms rooms;

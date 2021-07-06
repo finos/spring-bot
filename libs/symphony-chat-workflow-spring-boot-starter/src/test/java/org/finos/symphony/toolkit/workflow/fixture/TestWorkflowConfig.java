@@ -11,7 +11,7 @@ import java.util.Optional;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
@@ -43,7 +43,7 @@ public class TestWorkflowConfig {
 	}
 
 	public static final User u = new SymphonyUser("123", "Testy McTestFace", "tmt@example.com");
-	public static final Room room = new SymphonyRoom("Test Room",  "Test Room Desc", false, null);
+	public static final Chat room = new SymphonyRoom("Test Room",  "Test Room Desc", false, null);
 	
 	@Bean
 	public SymphonyHistory symphonyHistory(Workflow wf) {

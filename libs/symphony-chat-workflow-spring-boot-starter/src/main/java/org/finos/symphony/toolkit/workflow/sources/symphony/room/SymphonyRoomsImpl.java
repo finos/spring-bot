@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
@@ -46,12 +46,12 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	}
 	
 	@Override
-	public Set<Room> getAllRooms() {
+	public Set<Chat> getAllRooms() {
 		StreamType st = new StreamType().type(TypeEnum.ROOM);
 		StreamList list = streamsApi.v1StreamsListPost(null, new StreamFilter().streamTypes(Collections.singletonList(st)), 0, 0);
-		Set<Room> out = new HashSet<>();
+		Set<Chat> out = new HashSet<>();
 		for (StreamAttributes streamAttributes : list) {
-			Room r = loadRoomById(streamAttributes.getId());
+			Chat r = loadRoomById(streamAttributes.getId());
 			out.add(r);
 		}
 		
@@ -65,7 +65,7 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	}
 
 	@Override
-	public Room loadRoomById(String streamId) {
+	public Chat loadRoomById(String streamId) {
 		try {
 			V3RoomDetail r = streamsApi.v3RoomIdInfoGet(streamId, null);
 			return new SymphonyRoom(r.getRoomAttributes().getName(), r.getRoomAttributes().getDescription(), r.getRoomAttributes().isPublic(), streamId);
@@ -78,31 +78,31 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	public String getStreamFor(Addressable a) {
 		if (a instanceof User) {
 			return streamsApi.v1ImCreatePost(Collections.singletonList(getId((User) a)), null).getId();
-		} else if (a instanceof Room) {
-			if (((Room) a).getId() != null) {
-				return ((Room) a).getId();
+		} else if (a instanceof Chat) {
+			if (((Chat) a).getId() != null) {
+				return ((Chat) a).getId();
 			}
 			
 			StreamType st = new StreamType().type(TypeEnum.ROOM);
 			StreamList list = streamsApi.v1StreamsListPost(null, new StreamFilter().streamTypes(Collections.singletonList(st)), 0, 0);
-			Map<Room, String> out = new HashMap<>();
+			Map<Chat, String> out = new HashMap<>();
 			for (StreamAttributes streamAttributes : list) {
-				if (streamAttributes.getRoomAttributes().getName().equals(((Room) a).getRoomName())) {
+				if (streamAttributes.getRoomAttributes().getName().equals(((Chat) a).getName())) {
 					return streamAttributes.getId();
 				}
 			}
 			
 			// ok, need to create the room
-			return ensureRoom((Room) a).getId();
+			return ensureRoom((Chat) a).getId();
 		} else {
 			throw new UnsupportedOperationException("What is this? "+a);
 		}
 	}
 	
-	public Room ensureRoom(Room r) {
+	public Chat ensureRoom(Chat r) {
 		// create the room
 		V3RoomAttributes ra = new V3RoomAttributes()
-			.name(r.getRoomName())
+			.name(r.getName())
 			.description(r.getRoomDescription())
 			._public(r.isPub())
 			.discoverable(r.isPub());
@@ -139,7 +139,7 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	}
 
 	@Override
-	public List<User> getRoomMembers(Room r) {
+	public List<User> getRoomMembers(Chat r) {
 		MembershipList ml = rmApi.v1RoomIdMembershipListGet(r.getId(), null);
 		return ml.stream()
 			.map(m -> loadUserById(m.getId()))
@@ -147,7 +147,7 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	}
 
 	@Override
-	public List<User> getRoomAdmins(Room r) {
+	public List<User> getRoomAdmins(Chat r) {
 		MembershipList ml = rmApi.v1RoomIdMembershipListGet(r.getId(), null);
 		return ml.stream()
 			.filter(m -> m.isOwner())

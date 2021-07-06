@@ -3,13 +3,13 @@ package org.finos.symphony.toolkit.workflow;
 import java.util.Arrays;
 import java.util.UUID;
 
-import org.finos.symphony.toolkit.workflow.content.CashTagDef;
 import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.ID;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTagDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.junit.jupiter.api.Assertions;

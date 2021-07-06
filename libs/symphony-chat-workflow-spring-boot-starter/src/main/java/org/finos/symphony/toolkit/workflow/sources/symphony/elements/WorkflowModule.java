@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
 
 import java.io.IOException;
 
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 
@@ -75,11 +75,11 @@ public class WorkflowModule extends Module {
 							
 						}
 					};
-				} else if (Room.class.isAssignableFrom(type.getRawClass())) {
-					return new JsonDeserializer<Room>() {
+				} else if (Chat.class.isAssignableFrom(type.getRawClass())) {
+					return new JsonDeserializer<Chat>() {
 
 						@Override
-						public Room deserialize(JsonParser p, DeserializationContext ctxt)
+						public Chat deserialize(JsonParser p, DeserializationContext ctxt)
 								throws IOException, JsonProcessingException {
 							return rooms.loadRoomById(p.getValueAsString());
 						}

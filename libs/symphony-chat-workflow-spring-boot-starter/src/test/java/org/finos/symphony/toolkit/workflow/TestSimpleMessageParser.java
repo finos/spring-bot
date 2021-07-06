@@ -11,13 +11,13 @@ import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.PastedTable;
+import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.mapping.MessageMatcher;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageParser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 
-	SimpleMessageParser smp = new SimpleMessageParser();
+	MessageMLParser smp = new MessageMLParser();
 	
 	@Autowired
 	EntityJsonConverter entityJsonConverter;
@@ -36,9 +36,9 @@ public class TestSimpleMessageParser extends AbstractMockSymphonyTest {
 				"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p><table class=\"pasted-table\"><thead><tr><th>Name</th><th>Age</th><th>Alive</th></tr></thead><tbody><tr><td>Jim</td><td>5</td><td>FALSE</td></tr><tr><td>James</td><td>7</td><td>TRUE</td></tr></tbody></table></p></div>",
 				new EntityJson());
 		
-		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("Age"))), c.getNth(PastedTable.class, 0).get().getColumnNames().get(1));
+		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("Age"))), c.getNth(Table.class, 0).get().getColumnNames().get(1));
 
-		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("TRUE"))), c.getNth(PastedTable.class, 0).get().getData().get(1).get(2));
+		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("TRUE"))), c.getNth(Table.class, 0).get().getData().get(1).get(2));
 
 	}
 	

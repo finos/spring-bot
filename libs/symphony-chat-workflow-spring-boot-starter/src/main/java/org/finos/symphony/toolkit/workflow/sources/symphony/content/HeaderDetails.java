@@ -1,10 +1,10 @@
-package org.finos.symphony.toolkit.workflow.form;
+package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
 import java.util.Collection;
 import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.HashTag;
+import org.finos.symphony.toolkit.workflow.content.Tag;
 
 /**
  * Used for formatting the header of the bot's messages.
@@ -17,13 +17,13 @@ public class HeaderDetails {
 
 	private String name;
 	private String description;
-	private Collection<HashTag> tags;
+	private Collection<Tag> tags;
 	
 	public HeaderDetails() {
 		super();
 	}
 	
-	public HeaderDetails(String name, String description, Collection<HashTag> tags) {
+	public HeaderDetails(String name, String description, Collection<Tag> tags) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -35,10 +35,10 @@ public class HeaderDetails {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Collection<HashTag> getTags() {
+	public Collection<Tag> getTags() {
 		return tags;
 	}
-	public void setTags(List<HashTag> tags) {
+	public void setTags(List<Tag> tags) {
 		this.tags = tags;
 	}
 

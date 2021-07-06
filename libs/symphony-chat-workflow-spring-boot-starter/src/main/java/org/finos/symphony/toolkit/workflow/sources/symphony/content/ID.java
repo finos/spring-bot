@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.content;
+package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
 import java.util.UUID;
 
