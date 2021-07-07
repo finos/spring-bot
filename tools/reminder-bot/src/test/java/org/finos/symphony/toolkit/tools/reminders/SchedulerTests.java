@@ -1,16 +1,14 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
-import com.symphony.api.model.Stream;
 import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamList;
 import com.symphony.api.pod.StreamsApi;
 import nl.altindag.log.LogCaptor;
-import org.apache.juli.logging.Log;
-import org.assertj.core.api.Assertions;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
+import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -20,9 +18,11 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHan
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -31,7 +31,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,9 +49,6 @@ public class SchedulerTests {
     RoomDef roomDef;
 
     @Mock
-    SuppressionMessage suppressionMessage;
-
-    @Mock
     LeaderService leaderService;
 
     @Mock
@@ -61,29 +57,39 @@ public class SchedulerTests {
     @Mock
     StreamsApi streams;
 
+    @Mock
+    Workflow w;
+
     @InjectMocks
     Scheduler scheduler = new Scheduler();
 
-    LogCaptor logCaptor = LogCaptor.forClass(Scheduler.class);
+    LocalDateTime expectedTime = LocalDateTime.now();
 
     @Test
     public void handleFeedLeaderTest(){
-        when(history.getLastFromHistory(Mockito.any(ReminderList.class)),Mockito.any(Addressable.class))).thenReturn(reminderList());
-        roomDef = new RoomDef("Test room", "test description", false, Mockito.anyString());
-        when(leaderService.isLeader(self)).thenReturn(true);
+        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
+
+        when(leaderService.isLeader(Mockito.any())).thenReturn(true);
         when(streams.v1StreamsListPost(null, null, 0, 50)).thenReturn(createStreams());
 
         scheduler.everyFiveMinutesWeekday();
-        //verify(responseHandler).accept(Mockito.any(FormResponse.class));
-        Assertions.assertThat(logCaptor.getInfoLogs()).hasSize(2).contains("TimedAlerter waking","Not leader, sleeping");
-//        Assertions.assertThat(logCaptor.getDebugLogs()).hasSize(1).contains("Reminder are displayed via Form Response through response Handler");
+        verify(responseHandler).accept(Mockito.any(FormResponse.class));
+        ArgumentCaptor<FormResponse> argumentCaptor = ArgumentCaptor.forClass(FormResponse.class);
+        verify(responseHandler).accept(argumentCaptor.capture());
+        FormResponse fr = argumentCaptor.getValue();
+        Reminder r = (Reminder)fr.getFormObject();
+        Assert.assertEquals(r.getLocalTime(),expectedTime);
+
+        // reminder timefinder tests to chck formresponse
+
     }
     @Test
     public void handleFeedNonLeaderTest(){
-        when(history.getLastFromHistory(ReminderList.class,getAddressable())).thenReturn(reminderList());
-        roomDef = new RoomDef("Test room", "test description", false, Mockito.anyString());
+        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
+
+        when(leaderService.isLeader(Mockito.any())).thenReturn(false);
         scheduler.everyFiveMinutesWeekday();
-        verify(responseHandler).accept(Mockito.any(FormResponse.class));
+        verify(responseHandler, VerificationModeFactory.noInteractions()).accept(Mockito.any(FormResponse.class));
 
     }
 
@@ -130,11 +136,12 @@ public class SchedulerTests {
     private Optional<ReminderList> reminderList(){
         Reminder reminder = new Reminder();
         reminder.setDescription("Check at 9 pm");
-        reminder.setLocalTime(LocalDateTime.now());
+        reminder.setLocalTime(expectedTime);
         reminder.setAuthor(getUser());
         List<Reminder> reminders = new ArrayList<>();
         reminders.add(reminder);
         ReminderList rl = new ReminderList();
+        rl.setTimeZone(ZoneId.of("Europe/London"));
 
         rl.setReminders(reminders);
         Optional<ReminderList> rrl = Optional.of(rl);
