@@ -98,7 +98,6 @@ public class OurController {
 		lastArguments = Arrays.asList(t, u);
 		lastMethod = "process-table";
 	}
-	
 
 	@Exposed("update {code}") 
 	public void process2(@ChatVariable("code") CodeBlock cb) {
