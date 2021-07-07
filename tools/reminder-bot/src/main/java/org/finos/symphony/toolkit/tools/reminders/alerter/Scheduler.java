@@ -124,7 +124,7 @@ public class Scheduler {
 
                     responseHandler.accept(new FormResponse(w, a, ej, "Display Reminder", "This is regarding the reminder set by you", currentReminder, false,
                             w.gatherButtons(currentReminder, a)));
-                    LOG.debug("Reminder are displayed via Form Response through response Handler");
+
                 }
             });
         }
