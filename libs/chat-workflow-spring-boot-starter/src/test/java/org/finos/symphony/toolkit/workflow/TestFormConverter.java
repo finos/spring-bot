@@ -8,6 +8,7 @@ import org.finos.symphony.toolkit.workflow.fixture.TestOb4;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.elements.WorkflowModule;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -89,7 +90,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	@BeforeEach
 	public void before() {
 		Mockito.when(rooms.loadUserById(Mockito.eq(345315370602462l))).thenReturn(new UserDef("345315370602462", "Some Guy", "sg@example.com"));
-		fc = new FormConverter(null);
+		fc = new FormConverter(rooms);
 	}
 	
 }
