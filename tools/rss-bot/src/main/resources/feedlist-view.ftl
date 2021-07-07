@@ -20,7 +20,7 @@
     </tr></thead><tbody>
     <#list entity.workflow_001.feeds as iB>
     <tr>
-     <td ><a href="${iB.url!''}">${iB.name!''}</a></td>
+     <td >${iB.name!''}</td>
      <td >${iB.description!''}</td>
     </tr>
     </#list>
@@ -32,12 +32,23 @@
         <button name="pause" type="action">Pause</button>
     </p></form>  
     </#if>
+    
+    <#if entity.workflow_001.adminOnly == true>
+       <p><i>Only room admins can add feeds</i></p>
+       <hr />    
+    </#if>
+    
     <#if entity.workflow_001.paused == true>
       <b>Feeds are currently suspended. Click "resume" below to continue feeding in this room</b>
     <hr />
     <form id="just-buttons-form"><p>
         <button name="resume" type="action">Resume</button>
     </p></form>    
+    </#if>
+    
+    <#if entity.workflow_001.paused == false>
+      <b>Feeds news every ${entity.workflow_001.updateIntervalMinutes} minutes</b>
+      <hr />
     </#if>
     
   </#if>

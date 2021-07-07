@@ -43,7 +43,8 @@ import com.symphony.api.agent.MessagesApi;
 @Configuration
 @EnableScheduling
 @EnableConfigurationProperties(SharedStreamProperties.class)
-public class SharedStreamHandlerConfig {
+public class 
+ {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SharedStreamSingleBotConfig.class);
 	public static final String SYMPHONY_STREAM_HANDLER_FACTORY_BEAN = "SymphonyStreamHandlerFactoryBean";
