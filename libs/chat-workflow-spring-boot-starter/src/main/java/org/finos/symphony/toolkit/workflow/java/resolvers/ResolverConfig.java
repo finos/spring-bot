@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.java.resolvers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

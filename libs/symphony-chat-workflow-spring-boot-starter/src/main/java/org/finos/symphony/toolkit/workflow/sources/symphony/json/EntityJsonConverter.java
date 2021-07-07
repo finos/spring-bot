@@ -12,6 +12,8 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
+import org.finos.symphony.toolkit.workflow.response.DataResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.DataHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomList;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
@@ -24,7 +26,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 /**
  * Converts workflow objects to/from JSON.
  */
-public class EntityJsonConverter {
+public class EntityJsonConverter implements DataHandler {
 
 	public static final String WORKFLOW_001 = "workflow_001";
 
@@ -130,5 +132,10 @@ public class EntityJsonConverter {
 		} catch (Exception e) {
 			throw new UnsupportedOperationException("Map Fail", e);
 		}
+	}
+
+	@Override
+	public String formatData(DataResponse dr) {
+		return writeValue(dr.getData());
 	}
 }
