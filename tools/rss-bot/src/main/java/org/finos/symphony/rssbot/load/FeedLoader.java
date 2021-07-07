@@ -2,15 +2,20 @@ package org.finos.symphony.rssbot.load;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.Response.Status.Family;
 
 import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.toolkit.spring.api.properties.ProxyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -43,7 +48,7 @@ public class FeedLoader {
 		return feed;
 	}
 	
-	public Feed createFeed(String url) throws FeedException {
+	public Feed createFeed(String url, String name) throws FeedException {
 		Exception last = null;
 		for (ProxyProperties proxyProperties : pp) {
 			try {
@@ -51,7 +56,11 @@ public class FeedLoader {
 				input.setAllowDoctypes(true);
 				SyndFeed feed = input.build(new XmlReader(downloadContent(url, proxyProperties)));
 				Feed f = new Feed();
-				f.setName(feed.getTitle());
+				if (!StringUtils.hasText(name)) {
+					f.setName(feed.getTitle());
+				} else {
+					f.setName(name);
+				}
 				f.setDescription(feed.getDescription());
 				f.setUrl(url);
 				f.setProxy(proxyProperties);
@@ -84,6 +93,11 @@ public class FeedLoader {
 		}
 		
 		WebTarget wt = jab.newWebTarget(url);
-		InputStream out = wt.request().get().readEntity(InputStream.class);
-		return out;
+		Response r = wt.request().get();
+		Status.Family fam = r.getStatusInfo().getFamily();
+		if (fam == Family.SUCCESSFUL) {
+			return r.readEntity(InputStream.class);
+		}
+		
+		throw new MalformedURLException("Couldn't download: "+url+" status: "+r.getStatus());
 	}}

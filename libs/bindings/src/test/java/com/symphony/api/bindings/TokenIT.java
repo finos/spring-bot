@@ -31,7 +31,7 @@ public class TokenIT extends AbstractIT {
 		}
 
 		// this will perform a retry, since the original tokens are invalid.
-		messagesApi.v4StreamSidMessageGet(ROOM, 0l, null,  null, 0, 100);
+		messagesApi.v4StreamSidMessageGet(ROOM, 0l, null,  null, 0, 5);
 		
 		// check that tokens actually did get refreshed
 		Assertions.assertNotEquals(originalSessionToken, tm.getSessionToken());
