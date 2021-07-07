@@ -7,11 +7,11 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Table;
-import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
@@ -24,11 +24,12 @@ import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler2;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,11 +43,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.symphony.api.agent.MessagesApi;
+
 
 @SpringBootTest(classes = {
 		TestHandlerMapping.TestConfig.class	,
 		ChatWorkflowConfig.class,
-		ResolverConfig.class
+		ResolverConfig.class,
+		SymphonyWorkflowConfig.class
 })
 @ExtendWith(SpringExtension.class)
 public class TestHandlerMapping {
@@ -61,7 +65,10 @@ public class TestHandlerMapping {
 	History h;
 	
 	@MockBean
-	ResponseHandler rh;
+	MessagesApi messagesApi;
+	
+	@Autowired
+	SymphonyResponseHandler2 rh;
 	
 	@Autowired
 	MethodCallMessageConsumer mc;

@@ -5,6 +5,7 @@ import java.util.List;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.content.ContentWriter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.FormDataArgumentWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.java.resolvers.MessagePartWorkflowResolverFactory;
 import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
@@ -17,6 +18,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableD
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler2;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
@@ -130,8 +132,10 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyResponseHandler symphonyResponseHandler() {
-		return new SymphonyResponseHandler(messagesApi, formMessageMLConverter(), entityJsonConverter(), symphonyRooms(), attachmentHandler);
+	public SymphonyResponseHandler2 symphonyResponseHandler() {
+		ContentWriter cw = null;
+		return new SymphonyResponseHandler2(
+				cw, entityJsonConverter(), attachmentHandler, resourceLoader, messagesApi);
 	}
 	
 	@Bean
