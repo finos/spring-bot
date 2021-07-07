@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
+import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,9 @@ public class JsonConfig implements InitializingBean {
 
 	@Autowired
 	EntityJsonConverter ejc;
+	
+	@Autowired
+	FormConverter fc;
 		
 	@Override
 	public void afterPropertiesSet() throws Exception {
@@ -24,5 +28,7 @@ public class JsonConfig implements InitializingBean {
 		.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
     	.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
 		.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+		
+		fc.getObjectMapper().registerModule(new JavaTimeModule());
 	}
 }

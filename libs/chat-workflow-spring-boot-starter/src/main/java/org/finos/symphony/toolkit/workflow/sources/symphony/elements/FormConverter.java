@@ -142,5 +142,9 @@ public class FormConverter {
 		}
 	}
 
+	public ObjectMapper getObjectMapper() {
+		return om;
+	}
+
 
 }

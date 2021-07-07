@@ -88,7 +88,7 @@ public class ClassBasedWorkflow extends AbstractWorkflow implements Configurable
 				if (methods.containsKey(m.getName())) {
 					throw new UnsupportedOperationException("Methods clash: "+m+" with "+methods.get(m.getName()));					
 				} 
-				methods.put(m.getName(), m);
+				methods.put(m.getName().toLowerCase(), m);
 			});
 		workflowClasses.add(e);
 	}
