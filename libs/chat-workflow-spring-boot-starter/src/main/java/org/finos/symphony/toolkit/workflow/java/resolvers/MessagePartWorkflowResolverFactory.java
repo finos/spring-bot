@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,6 +24,14 @@ import org.springframework.core.MethodParameter;
 public class MessagePartWorkflowResolverFactory implements WorkflowResolverFactory {
 	
 	
+	private List<Class<? extends Content>> contentClasses;
+	
+
+	public MessagePartWorkflowResolverFactory(List<Class<? extends Content>> contentClasses) {
+		super();
+		this.contentClasses = contentClasses;
+	}
+
 
 	@Override
 	public int getOrder() {
@@ -77,7 +86,7 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 	
 	protected Map<Class<?>, Deque<Object>> setupParameterBuckets(Message m) {
 		Map<Class<?>, Deque<Object>> out = new HashMap<>();
-		for (Class<? extends Content> class1 : getResolvableClasses()) {
+		for (Class<? extends Content> class1 : contentClasses) {
 			Deque<Object> l = new LinkedList<Object>();
 			l.addAll(m.only(class1));
 			out.put(class1, l);
@@ -85,4 +94,5 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 		
 		return out;
 	}
+
 }

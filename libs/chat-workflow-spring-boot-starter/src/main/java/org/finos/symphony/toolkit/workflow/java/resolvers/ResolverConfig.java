@@ -1,7 +1,17 @@
 package org.finos.symphony.toolkit.workflow.java.resolvers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.Content;
+import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.OrderedList;
+import org.finos.symphony.toolkit.workflow.content.Paragraph;
+import org.finos.symphony.toolkit.workflow.content.UnorderedList;
+import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -55,7 +65,15 @@ public class ResolverConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
-		return new MessagePartWorkflowResolverFactory();
+		List<Class<? extends Content>> allowedTypes = new ArrayList<Class<? extends Content>>();
+		allowedTypes.add(CodeBlock.class);
+		allowedTypes.add(Message.class);
+		allowedTypes.add(OrderedList.class);
+		allowedTypes.add(Paragraph.class);
+		allowedTypes.add(Word.class);
+		allowedTypes.add(UnorderedList.class);
+		
+		return new MessagePartWorkflowResolverFactory(allowedTypes);
 	}
 	
 	@Bean

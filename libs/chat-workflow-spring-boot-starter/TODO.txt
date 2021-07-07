@@ -4,3 +4,4 @@
 9.  Security on ExposedHandlerMapping (certain actions for certain users)
 10.  Write a test for /help
 11.  EntityJson - fix dependency on this.
+12.  Create annotation for Content classes and scan for them inside ResolverConfig (maybe, we deleted the thing that would use this)
