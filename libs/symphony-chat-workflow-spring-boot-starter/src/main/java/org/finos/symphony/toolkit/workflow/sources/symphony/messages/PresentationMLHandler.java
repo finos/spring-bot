@@ -106,7 +106,8 @@ public class PresentationMLHandler implements InitializingBean, SymphonyEventHan
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		botUserId = usersApi.v1UserGet(botIdentity.getEmail(), null, true).getId().toString();
+		com.symphony.api.model.User user = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
+		botUserId = user.getId().toString();
 	}
 
 

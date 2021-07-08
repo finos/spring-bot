@@ -54,7 +54,7 @@ public class EntityJsonConverter implements DataHandler {
 		extendedClassSpace.add(ErrorMap.class);
 		extendedClassSpace.add(HeaderDetails.class);
 		
-		extendedClassSpace.addAll(wf.getDataTypes());
+		//extendedClassSpace.addAll(wf.getDataTypes());
 		VersionSpace[] vs = extendedClassSpace.stream().map(c -> new VersionSpace(c.getCanonicalName(), "1.0")).toArray(s -> new VersionSpace[s]);
 		om = ObjectMapperFactory.initialize(objectMapper, ObjectMapperFactory.extendedSymphonyVersionSpace(vs));		
 		om.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
