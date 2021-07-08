@@ -6,7 +6,7 @@ public class RoomDef implements Room {
 	protected String roomDescription;
 	protected boolean pub;
 	protected String id;
-	
+
 	public RoomDef() {
 	}
 	
@@ -32,6 +32,7 @@ public class RoomDef implements Room {
 	public boolean isPub() {
 		return pub;
 	}
+
 
 	@Override
 	public String toString() {
@@ -67,5 +68,7 @@ public class RoomDef implements Room {
 		return id;
 	}
 
-	
+
+
+
 }

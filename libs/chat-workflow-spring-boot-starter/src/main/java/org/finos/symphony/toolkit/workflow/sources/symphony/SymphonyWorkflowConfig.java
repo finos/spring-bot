@@ -199,11 +199,17 @@ public class SymphonyWorkflowConfig {
 	public PresentationMLHandler presentationMLHandler(List<SimpleMessageConsumer> messageConsumers) {
 		return new PresentationMLHandler(wf, botIdentity, usersApi, simpleMessageParser(), entityJsonConverter(), messageConsumers, symphonyResponseHandler(), symphonyRooms());
 	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public FormConverter formConverter() {
+		return new FormConverter(symphonyRooms());
+	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public ElementsHandler elementsHandler(List<ElementsConsumer> elementsConsumers) {
-		return new ElementsHandler(wf, messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
+		return new ElementsHandler(wf, messagesApi, entityJsonConverter(), formConverter(), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
 	}
 	
 

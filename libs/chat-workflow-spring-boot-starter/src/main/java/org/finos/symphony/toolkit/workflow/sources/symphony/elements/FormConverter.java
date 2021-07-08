@@ -42,7 +42,6 @@ public class FormConverter {
 	
 	public FormConverter(SymphonyRooms r) {
 		super();
-		
 		om.registerModule(new WorkflowModule(r));
 	}
 
@@ -141,6 +140,10 @@ public class FormConverter {
 		} else  {
 			throw new UnsupportedOperationException("Clash in "+ctx+" which should be map, "+originalKey);
 		}
+	}
+
+	public ObjectMapper getObjectMapper() {
+		return om;
 	}
 
 

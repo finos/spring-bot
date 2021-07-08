@@ -14,5 +14,9 @@ import org.finos.symphony.toolkit.workflow.response.Response;
  *
  */
 public interface SimpleMessageConsumer extends Function<SimpleMessageAction, List<Response>> {
+	
+	public default boolean requiresAddressing() {
+		return true;
+	}
 
 }

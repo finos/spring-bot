@@ -18,4 +18,5 @@ public interface Room extends Addressable {
 	public boolean isPub();
 	
 	public String getId();
+
 }
