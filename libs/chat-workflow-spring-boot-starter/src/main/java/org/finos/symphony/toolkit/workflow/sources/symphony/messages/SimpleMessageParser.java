@@ -336,7 +336,7 @@ public class SimpleMessageParser {
 				}
 
 				private boolean isStartTag(String qName, Attributes attributes) {
-					return "span".equals(qName) && attributes.getValue("class").contains("entity");
+					return "span".equals(qName) && (attributes.getValue("class") != null) && (attributes.getValue("class").contains("entity"));
 				}
 				
 				private boolean isStartParaListItemOrCell(String qName, Attributes attributes) {

@@ -31,9 +31,8 @@
 		<module>tools/rss-bot</module>
 		<module>tools/teamcity-symphony-integration</module>
 		<module>tools/symphony-maven-build-reporter</module>
-		<module>tools/poll-bot</module>		
-		<!-- <module>tools/webhook-bot</module>  -->
-		
+		<module>tools/poll-bot</module>
+		<module>tools/reminder-bot</module>
 		<module>demos/demo-bot</module>
 		<module>demos/demo-app</module>		
 		<module>demos/todo-bot</module>

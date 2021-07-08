@@ -14,7 +14,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.EnumConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.HashTagConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.IDConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.InstantConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TimeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.NumberConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.RoomConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.StringConverter;
@@ -48,7 +48,7 @@ import com.symphony.api.pod.UsersApi;
 		EnumConverter.class,
 		HashTagConverter.class,
 		IDConverter.class,
-		InstantConverter.class,
+		TimeConverter.class,
 		NumberConverter.class,
 		RoomConverter.class,
 		StringConverter.class,
