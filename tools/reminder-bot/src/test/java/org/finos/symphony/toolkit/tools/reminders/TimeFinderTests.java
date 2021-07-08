@@ -1,22 +1,7 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
 
-import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
-import org.finos.symphony.toolkit.workflow.content.*;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -25,9 +10,28 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.*;
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
+import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Content;
+import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.OrderedContent;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.history.History;
+import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.Response;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+
+@ExtendWith(MockitoExtension.class)
 public class TimeFinderTests {
 
     @Mock
@@ -42,34 +46,27 @@ public class TimeFinderTests {
     @InjectMocks
     TimeFinder timefinder = new TimeFinder();
 
-    String user = "Finos User 2";
-    String Message = "Check at 9 pm";
-    Workflow workflow ;
-    EntityJson ej;
-
-
 
     private SimpleMessageAction getAction(){
-        SimpleMessageAction simpleMessageAction = new SimpleMessageAction(workflow,getAddressable(),getUser(),getMessage(),ej);
+        SimpleMessageAction simpleMessageAction = new SimpleMessageAction(null,getAddressable(),getUser(),getMessage(),null);
         return simpleMessageAction;
 
     }
 
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void applyTest(){
-
-
-        when(history.getLastFromHistory(ReminderList.class,getAddressable())).thenReturn(reminderList());
+        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
         timefinder.initializingStanfordProperties();
         List<Response> responses = timefinder.apply(getAction());
-        Assert.assertEquals(responses.size(),1);
+        Assertions.assertEquals(responses.size(),1);
         FormResponse fr = (FormResponse)responses.get(0);
         Reminder r = (Reminder) fr.getFormObject();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
-        Assert.assertEquals(r.getLocalTime(),LocalDateTime.of(year,month+1,day,21,30,0));
+        Assertions.assertEquals(r.getLocalTime(),LocalDateTime.of(year,month+1,day,21,20,0));
 
     }
 
