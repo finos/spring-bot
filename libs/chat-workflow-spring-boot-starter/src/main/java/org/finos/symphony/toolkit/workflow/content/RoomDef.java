@@ -1,7 +1,5 @@
 package org.finos.symphony.toolkit.workflow.content;
 
-import java.util.TimeZone;
-
 public class RoomDef implements Room {
 
 	protected String roomName;

@@ -1,12 +1,16 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
-import com.symphony.api.model.StreamAttributes;
-import com.symphony.api.model.StreamList;
-import com.symphony.api.pod.StreamsApi;
-import nl.altindag.log.LogCaptor;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
-import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
 import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
 import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -15,28 +19,21 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.symphony.api.model.StreamAttributes;
+import com.symphony.api.model.StreamList;
+import com.symphony.api.pod.StreamsApi;
 
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-@RunWith(MockitoJUnitRunner.class)
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class SchedulerTests {
 
     @Mock
@@ -65,7 +62,9 @@ public class SchedulerTests {
 
     LocalDateTime expectedTime = LocalDateTime.now();
 
-    @Test
+
+    @SuppressWarnings("unchecked")
+	@Test
     public void handleFeedLeaderTest(){
         when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
 
@@ -78,15 +77,14 @@ public class SchedulerTests {
         verify(responseHandler).accept(argumentCaptor.capture());
         FormResponse fr = argumentCaptor.getValue();
         Reminder r = (Reminder)fr.getFormObject();
-        Assert.assertEquals(r.getLocalTime(),expectedTime);
+        Assertions.assertEquals(r.getLocalTime(),expectedTime);
 
         // reminder timefinder tests to chck formresponse
 
     }
-    @Test
+    @SuppressWarnings("unchecked")
+	@Test
     public void handleFeedNonLeaderTest(){
-        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
-
         when(leaderService.isLeader(Mockito.any())).thenReturn(false);
         scheduler.everyFiveMinutesWeekday();
         verify(responseHandler, VerificationModeFactory.noInteractions()).accept(Mockito.any(FormResponse.class));
@@ -102,37 +100,6 @@ public class SchedulerTests {
         return sl;
       }
 
-    private Addressable getAddressable(){
-        Addressable a = new Addressable() {
-
-            @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                return super.equals(obj);
-            }
-
-            @Override
-            protected Object clone() throws CloneNotSupportedException {
-                return super.clone();
-            }
-
-            @Override
-            public String toString() {
-                return super.toString();
-            }
-
-            @Override
-            protected void finalize() throws Throwable {
-                super.finalize();
-            }
-        };
-        return a;
-
-    }
     private Optional<ReminderList> reminderList(){
         Reminder reminder = new Reminder();
         reminder.setDescription("Check at 9 pm");

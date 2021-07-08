@@ -2,8 +2,6 @@ package org.finos.symphony.toolkit.workflow.content;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import java.util.TimeZone;
-
 /**
  * This defines a Room as a collection of people. 
  *  
