@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
@@ -24,33 +25,46 @@ import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler2;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerTypeConverterConfig;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.validation.Validator;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.MessagesApi;
+import com.symphony.api.id.SymphonyIdentity;
+import com.symphony.api.pod.RoomMembershipApi;
+import com.symphony.api.pod.StreamsApi;
+import com.symphony.api.pod.UsersApi;
 
 
 @SpringBootTest(classes = {
 		TestHandlerMapping.TestConfig.class	,
 		ChatWorkflowConfig.class,
 		ResolverConfig.class,
-		SymphonyWorkflowConfig.class
+		SymphonyWorkflowConfig.class,
+		FreemarkerTypeConverterConfig.class
 })
 @ExtendWith(SpringExtension.class)
 public class TestHandlerMapping {
@@ -64,8 +78,24 @@ public class TestHandlerMapping {
 	@MockBean
 	History h;
 	
+	@MockBean(name = SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
+	SymphonyIdentity botIdentity;
+	
 	@MockBean
-	MessagesApi messagesApi;
+	UsersApi usersApi;
+	
+	@MockBean
+	MessagesApi messagesApi; 
+	
+	@MockBean
+	RoomMembershipApi roomMembershipApi;
+	
+	@MockBean
+	StreamsApi streamsApi;
+	
+	@MockBean
+	Validator validator;
+
 	
 	@Autowired
 	SymphonyResponseHandler2 rh;
@@ -87,10 +117,40 @@ public class TestHandlerMapping {
 			return new MessageMLParser();
 		}
 		
+		@Bean
+		public ObjectMapper objectMapper() {
+			return new ObjectMapper();
+		}
+		
+		@Bean
+		public AttachmentHandler symphonyAttachmentHandler() {
+			return new AttachmentHandler() {
+				
+				@Override
+				public Object formatAttachment(AttachmentResponse ar) {
+					// TODO Auto-generated method stub
+					return null;
+				}
+			};
+		}
+		
+		
 	}
 	
 	@Autowired
 	MessageMLParser smp;
+	
+	@BeforeEach
+	public void setupMocks() {
+		Mockito.when(usersApi.v1UserGet(
+				Mockito.anyString(), 
+				Mockito.nullable(String.class), 
+				Mockito.anyBoolean()))
+			.thenAnswer(a -> {
+				Object out = new com.symphony.api.model.User().emailAddress("rob@example.com").id(1234l);
+				return out;
+			});
+	}
 	
 	@Test
 	public void checkMappings() throws Exception {
