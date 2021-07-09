@@ -1,22 +1,35 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
+import java.util.function.Supplier;
+
 import org.finos.symphony.toolkit.workflow.content.User;
 
-public class SymphonyUser extends TagDef implements User {
+public class SymphonyUser extends TagDef implements User, SymphonyContent, SymphonyAddressable {
 	
-	protected String address;
+	protected String emailAddress;
+	private transient String streamId;
+	private Supplier<String> streamIdSupplier;
 	
 	public SymphonyUser() {
 		super();
 	}
 
-	public SymphonyUser(String id, String name, String address) {
+	public SymphonyUser(String id, String name, String emailAddress, Supplier<String> streamIdSupplier) {
 		super(id, name, Type.USER);
-		this.address = address;
+		this.emailAddress = emailAddress;
+		this.streamIdSupplier = streamIdSupplier;
+	}	
+	
+	public SymphonyUser(long id, String name, String emailAddress, Supplier<String> streamIdSupplier) {
+		this(Long.toString(id), name, emailAddress, streamIdSupplier);
+	}
+	
+	public SymphonyUser(long id, String name, String emailAddress, String streamId) {
+		this(id, name, emailAddress, () -> streamId);
 	}
 
-	public String getAddress() {
-		return address;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 	
 	@Override
@@ -28,7 +41,7 @@ public class SymphonyUser extends TagDef implements User {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((address == null) ? 0 : address.hashCode());
+		result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
@@ -43,10 +56,10 @@ public class SymphonyUser extends TagDef implements User {
 		if (getClass() != obj.getClass())
 			return false;
 		SymphonyUser other = (SymphonyUser) obj;
-		if (address == null) {
-			if (other.address != null)
+		if (emailAddress == null) {
+			if (other.emailAddress != null)
 				return false;
-		} else if (!address.equals(other.address))
+		} else if (!emailAddress.equals(other.emailAddress))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -63,7 +76,13 @@ public class SymphonyUser extends TagDef implements User {
 
 	@Override
 	public String toString() {
-		return "UserDef [address=" + getAddress() + ", name=" + getName() + ", id=" + getId() + "]";
+		return "UserDef [emailAddress=" + getEmailAddress() + ", name=" + getName() + ", id=" + getId() + "]";
+	}
+
+	@Override
+	public String getStreamId() {
+		streamId = streamId == null ? streamIdSupplier.get() : streamId;
+		return streamId;
 	}
 
 	

@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;

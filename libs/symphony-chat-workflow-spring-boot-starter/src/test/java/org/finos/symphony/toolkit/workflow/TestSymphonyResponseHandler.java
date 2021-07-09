@@ -11,11 +11,11 @@ import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandlerOld;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
@@ -35,7 +35,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	SymphonyRooms rooms;
 	
 	@Autowired
-	SymphonyResponseHandler responseHandler;
+	SymphonyResponseHandlerOld responseHandler;
 	
 	@Autowired
 	EntityJsonConverter entityJsonConverter;
@@ -54,7 +54,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	
 	@BeforeEach
 	public void setup() {
-		responseHandler = new SymphonyResponseHandler(messagesApi, new FreemarkerFormMessageMLConverter(rl, fieldConverters), entityJsonConverter, rooms, ah);
+		responseHandler = new SymphonyResponseHandlerOld(messagesApi, new FreemarkerFormMessageMLConverter(rl, fieldConverters), entityJsonConverter, rooms, ah);
 		responseHandler.setOutputTemplates(true);
 	}
 	

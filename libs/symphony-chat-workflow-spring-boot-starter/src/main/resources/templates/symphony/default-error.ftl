@@ -2,10 +2,9 @@
   accent="tempo-bg-color--blue">
   <header>
     <p>
-    ${entity.message}
+      ${entity.message}
     </p>
-  
-   </header> 
+  </header> 
   <body>
     <ul>
       <#list entity.header.tags as tag>

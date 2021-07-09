@@ -3,8 +3,6 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-
 public class EnumConverter extends AbstractSimpleTypeConverter {
 
 	public EnumConverter() {
@@ -17,7 +15,7 @@ public class EnumConverter extends AbstractSimpleTypeConverter {
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
+	public String apply(Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			Class<?> c = (Class<?>) t;
 			return renderDropdown(variable, 

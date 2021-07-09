@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
@@ -16,92 +15,54 @@ import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
-import org.finos.symphony.toolkit.workflow.history.History;
+import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
-import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
-import org.finos.symphony.toolkit.workflow.message.MethodCallMessageConsumer;
-import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler2;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerTypeConverterConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.validation.Validator;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.api.agent.MessagesApi;
-import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.pod.RoomMembershipApi;
-import com.symphony.api.pod.StreamsApi;
-import com.symphony.api.pod.UsersApi;
 
 
 @SpringBootTest(classes = {
-		TestHandlerMapping.TestConfig.class	,
-		ChatWorkflowConfig.class,
-		ResolverConfig.class,
+		TestHandlerMapping.TestConfig.class,
+		AbstractMockSymphonyTest.MockConfiguration.class, 
 		SymphonyWorkflowConfig.class,
-		FreemarkerTypeConverterConfig.class
 })
 @ExtendWith(SpringExtension.class)
-public class TestHandlerMapping {
+public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	@Autowired
 	OurController oc;
 	
 	@Autowired
 	ExposedHandlerMapping hm;
-	
-	@MockBean
-	History h;
-	
-	@MockBean(name = SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
-	SymphonyIdentity botIdentity;
-	
-	@MockBean
-	UsersApi usersApi;
-	
-	@MockBean
-	MessagesApi messagesApi; 
-	
-	@MockBean
-	RoomMembershipApi roomMembershipApi;
-	
-	@MockBean
-	StreamsApi streamsApi;
-	
-	@MockBean
-	Validator validator;
-
+		
+	@Autowired
+	SymphonyResponseHandler rh;
 	
 	@Autowired
-	SymphonyResponseHandler2 rh;
+	ChatHandlerMappingActionConsumer mc;
 	
 	@Autowired
-	MethodCallMessageConsumer mc;
+	EntityJsonConverter ejc;
 
 	@Configuration
 	static class TestConfig {
@@ -111,47 +72,13 @@ public class TestHandlerMapping {
 		public OurController ourController() {
 			return new OurController();
 		}
-
-		@Bean
-		public MessageMLParser simpleMessageParser() {
-			return new MessageMLParser();
-		}
-		
-		@Bean
-		public ObjectMapper objectMapper() {
-			return new ObjectMapper();
-		}
-		
-		@Bean
-		public AttachmentHandler symphonyAttachmentHandler() {
-			return new AttachmentHandler() {
-				
-				@Override
-				public Object formatAttachment(AttachmentResponse ar) {
-					// TODO Auto-generated method stub
-					return null;
-				}
-			};
-		}
 		
 		
 	}
 	
 	@Autowired
 	MessageMLParser smp;
-	
-	@BeforeEach
-	public void setupMocks() {
-		Mockito.when(usersApi.v1UserGet(
-				Mockito.anyString(), 
-				Mockito.nullable(String.class), 
-				Mockito.anyBoolean()))
-			.thenAnswer(a -> {
-				Object out = new com.symphony.api.model.User().emailAddress("rob@example.com").id(1234l);
-				return out;
-			});
-	}
-	
+
 	@Test
 	public void checkMappings() throws Exception {
 		Assertions.assertEquals(16, hm.getHandlerMethods().size());
@@ -168,11 +95,11 @@ public class TestHandlerMapping {
 
 	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		jsonObjects.put("1", new SymphonyUser("1", "gaurav", "gaurav@example.com"));
+		jsonObjects.put("1", new SymphonyUser("1", "gaurav", "gaurav@example.com", () ->  ""));
 		jsonObjects.put("2", new HashTagDef("SomeTopic"));
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Chat r = new SymphonyRoom("The Room Where It Happened", "Some description", true, "abc123");
-		User author = new SymphonyUser("user123", "Rob Moffat", "rob.moffat@example.com");
+		User author = new SymphonyUser("user123", "Rob Moffat", "rob.moffat@example.com", () -> "");
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		mc.accept(a);
 	}
@@ -222,7 +149,7 @@ public class TestHandlerMapping {
 		
 		Object secondArgument = oc.lastArguments.get(1);
 		Assertions.assertTrue(User.class.isAssignableFrom(secondArgument.getClass()));
-		Assertions.assertEquals("rob.moffat@example.com", ((User)secondArgument).getAddress());
+		Assertions.assertEquals("rob.moffat@example.com", ((User)secondArgument).getEmailAddress());
 	}
 	
 	@Test
@@ -301,41 +228,97 @@ public class TestHandlerMapping {
 	@Test
 	public void testMessageResponse() throws Exception {
 		execute("ban rob");
+		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
 		Assertions.assertEquals("banWord", oc.lastMethod);
-		Mockito.verify(rh).accept(Mockito.any(MessageResponse.class));
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.nullable(String.class), 
+				Mockito.matches("abc123"),
+				msg.capture(),
+				Mockito.anyString(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
 		Mockito.clearInvocations();
+		
+		String message = msg.getValue();
+		System.out.println(message);
+		Assertions.assertTrue(message.contains("banned words: rob"));
 	}
+	
+	
 	
 	@Test
 	public void testAttachmentResponse() throws Exception {
 		execute("attachment");
-		Mockito.verify(rh).accept(Mockito.any(AttachmentResponse.class));
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+			Mockito.nullable(String.class), 
+			Mockito.matches("abc123"),
+			Mockito.anyString(),
+			Mockito.anyString(),
+			Mockito.nullable(String.class), 
+			Mockito.isA(byte[].class),
+			Mockito.nullable(Object.class), 
+			Mockito.nullable(String.class));
 		Mockito.clearInvocations();
 	}
 	
 	@Test
 	public void testFormResponse1() throws Exception {
 		execute("form1");
-		Mockito.verify(rh).accept(Mockito.any(FormResponse.class));
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.nullable(String.class), 
+				Mockito.matches("abc123"),
+				Mockito.anyString(),
+				Mockito.anyString(),
+				Mockito.nullable(String.class), 
+				Mockito.isA(byte[].class),
+				Mockito.nullable(Object.class), 
+				Mockito.nullable(String.class));
 		Mockito.clearInvocations();
 	}
 	
 	@Test
 	public void testFormResponse2() throws Exception {
 		execute("form2");
-		Mockito.verify(rh).accept(Mockito.any(FormResponse.class));
+		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.isNull(), 
+				Mockito.matches("abc123"),
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
 		Mockito.clearInvocations();
+		
+		EntityJson ej = ejc.readValue(data.getValue());
+		Assertions.assertEquals(1, ((ButtonList) ej.get(FormResponse.BUTTONLIST_KEY)).size());
 	}
 	
 	
 	@Test
 	public void testThrowsError() throws Exception {
 		execute("throwsError");
-		ArgumentCaptor<ErrorResponse> argument = ArgumentCaptor.forClass(ErrorResponse.class);
-		Mockito.verify(rh)
-			.accept(argument.capture());
+		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
+		
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.isNull(), 
+				Mockito.matches("abc123"),
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
+		
+		EntityJson ej = ejc.readValue(data.getValue());
+		Assertions.assertEquals("Error123", ej.get(ErrorResponse.MESSAGE_KEY));
+		Assertions.assertTrue(msg.getValue().contains("${entity.message}"));
 
-		Assertions.assertEquals("Error123", argument.getValue().getData().get(ErrorResponse.MESSAGE_KEY));
 		Mockito.clearInvocations();
 	}
 	

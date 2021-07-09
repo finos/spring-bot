@@ -2,8 +2,6 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.lang.reflect.Type;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-
 public class BooleanConverter extends AbstractSimpleTypeConverter {
 
 	public BooleanConverter() {
@@ -20,7 +18,7 @@ public class BooleanConverter extends AbstractSimpleTypeConverter {
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
+	public String apply(Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			return formatErrorsAndIndent(variable) + 
 				"<checkbox " 

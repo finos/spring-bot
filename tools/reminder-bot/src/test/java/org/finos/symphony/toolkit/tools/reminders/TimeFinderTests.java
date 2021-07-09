@@ -91,7 +91,7 @@ public class TimeFinderTests {
     private User getUser(){
         User user = new User() {
             @Override
-            public String getAddress() {
+            public String getEmailAddress() {
                 return "New Address";
             }
 

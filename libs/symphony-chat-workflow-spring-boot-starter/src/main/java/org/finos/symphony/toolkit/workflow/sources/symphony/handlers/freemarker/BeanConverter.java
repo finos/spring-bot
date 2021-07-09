@@ -1,10 +1,9 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.springframework.util.StringUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+
+import org.springframework.util.StringUtils;
 
 /**
  * This is the "fall-through" converter, used to convert user-beans when everything else fails.
@@ -24,7 +23,7 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 	}
 
 	@Override
-	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField showDetails) {
+	public String apply(WithType controller, Type t, boolean editMode, Variable variable, WithField showDetails) {
 		if (showDetails == null) {
 			return "";
 		}
@@ -32,7 +31,7 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 			Class<?> element = (Class<?>) t;
 			StringBuilder sb = new StringBuilder();
 			sb.append(indent(variable.depth)+ "<table>");
-			sb.append(withFields(controller, element, editMode, variable, ej, wrapInTableCells(showDetails)));
+			sb.append(withFields(controller, element, editMode, variable, wrapInTableCells(showDetails)));
 			sb.append(indent(variable.depth)+ "</table>");
 			return sb.toString();
 		} else {
@@ -44,9 +43,9 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 		return new WithField() {
 
             @Override
-            public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType controller) {
+            public String apply(Field f, boolean editMode, Variable variable, WithType controller) {
 				String fieldNameOrientation = getFieldNameOrientation(f);
-				return StringUtils.hasText(fieldNameOrientation) ? "<tr><td><b>" + fieldNameOrientation + ":</b></td><td>" + inner.apply(f, editMode, variable, ej, controller) + "</td></tr>" : "";
+				return StringUtils.hasText(fieldNameOrientation) ? "<tr><td><b>" + fieldNameOrientation + ":</b></td><td>" + inner.apply(f, editMode, variable, controller) + "</td></tr>" : "";
 			}
 
 			@Override

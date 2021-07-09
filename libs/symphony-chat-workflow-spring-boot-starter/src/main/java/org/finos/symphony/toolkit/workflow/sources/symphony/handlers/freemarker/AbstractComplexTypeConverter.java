@@ -5,8 +5,6 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-
 /**
  * Used where the content of the type contains fields of it's own.
  * 
@@ -19,13 +17,13 @@ public abstract class AbstractComplexTypeConverter extends AbstractTypeConverter
 		super(priority);
 	}
 
-	public String withFields(WithType controller, Class<?> c, boolean editMode, Variable variable, EntityJson ej, WithField displayer) {
+	public String withFields(WithType controller, Class<?> c, boolean editMode, Variable variable, WithField displayer) {
 		StringBuilder out = new StringBuilder();
 		
 		List<Field> fields = getFields(c);
 		
 		for (Field f : fields) {
-			String text = displayer.apply(f, editMode, variable.field(f.getName()), ej, controller);
+			String text = displayer.apply(f, editMode, variable.field(f.getName()), controller);
 			out.append(indent(variable.depth));
 			out.append(text);
 		}

@@ -10,8 +10,8 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;
@@ -22,12 +22,10 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 
 	EntityJsonConverter jsonConverter;
 	MessagesApi messageApi;
-	SymphonyRooms ru;
 	
-	public SymphonyHistoryImpl(EntityJsonConverter jsonConverter, MessagesApi messageApi, SymphonyRooms ru) {
+	public SymphonyHistoryImpl(EntityJsonConverter jsonConverter, MessagesApi messageApi) {
 		this.jsonConverter = jsonConverter;
 		this.messageApi = messageApi;
-		this.ru = ru;
 	}
 
 	@Override
@@ -185,8 +183,8 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 
 	private <X> MessageSearchQuery createMessageSearchQuery(Class<X> type, Addressable address, Instant since, Tag t) {
 		MessageSearchQuery msq = new MessageSearchQuery();
-		if (address != null) {
-			msq.setStreamId(ru.getStreamFor(address));
+		if (address instanceof SymphonyAddressable) {
+			msq.setStreamId(((SymphonyAddressable) address).getStreamId());
 		}
 		
 		if (since != null) {

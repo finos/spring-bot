@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
@@ -15,7 +14,7 @@ import org.springframework.util.StringUtils;
 public class TagSupport {
 
 	public static String toHashTag(String in) {
-		if (StringUtils.isEmpty(in)) {
+		if (!StringUtils.hasText(in)) {
 			return "";
 		}
 		
@@ -23,7 +22,7 @@ public class TagSupport {
 	}
 	
 	public static String toCashTag(String in) {
-		if (StringUtils.isEmpty(in)) {
+		if (!StringUtils.hasText(in)) {
 			return "";
 		}
 		
@@ -31,7 +30,7 @@ public class TagSupport {
 	}
 	
 	public static String toUserTag(String id) {
-		if (StringUtils.isEmpty(id)) {
+		if (!StringUtils.hasText(id)) {
 			return "";
 		}
 		
@@ -102,10 +101,4 @@ public class TagSupport {
 		return formatTag(in.getCanonicalName());
 	}
 	
-	public static String toHashTag(Workflow wf) {
-		if (wf == null) {
-			return "";
-		}
-		return toHashTag(wf.getNamespace());
-	}
 }

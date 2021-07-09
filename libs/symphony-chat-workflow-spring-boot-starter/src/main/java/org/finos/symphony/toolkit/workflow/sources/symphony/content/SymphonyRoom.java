@@ -2,19 +2,14 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
 import org.finos.symphony.toolkit.workflow.content.Chat;
 
-public class SymphonyRoom implements Chat {
+public class SymphonyRoom implements Chat, SymphonyAddressable {
 
 	protected String roomName;
 	protected String roomDescription;
 	protected boolean pub;
 	protected String id;
-<<<<<<< HEAD:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/content/SymphonyRoom.java
 	
 	public SymphonyRoom() {
-=======
-
-	public RoomDef() {
->>>>>>> master:libs/chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/content/RoomDef.java
 	}
 	
 	public SymphonyRoom(String name, String description, boolean pub, String id) {
@@ -30,12 +25,10 @@ public class SymphonyRoom implements Chat {
 		return roomName;
 	}
 
-	@Override
 	public String getRoomDescription() {
 		return roomDescription;
 	}
 
-	@Override
 	public boolean isPub() {
 		return pub;
 	}
@@ -43,7 +36,7 @@ public class SymphonyRoom implements Chat {
 
 	@Override
 	public String toString() {
-		return "RoomDef [name=" + getName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
+		return "SymphonyRooom [name=" + getName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
 	}
 
 	@Override
@@ -72,6 +65,11 @@ public class SymphonyRoom implements Chat {
 	}
 
 	public String getId() {
+		return id;
+	}
+
+	@Override
+	public String getStreamId() {
 		return id;
 	}
 

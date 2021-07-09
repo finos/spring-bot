@@ -1,13 +1,12 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
-
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
+
+import org.finos.symphony.toolkit.workflow.actions.form.TableAddRow;
+import org.finos.symphony.toolkit.workflow.actions.form.TableDeleteRows;
+import org.finos.symphony.toolkit.workflow.actions.form.TableEditRow;
 
 public class CollectionConverter extends AbstractTableConverter {
 	
@@ -26,10 +25,10 @@ public class CollectionConverter extends AbstractTableConverter {
 	}
 
 	@Override
-	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField showDetail) {
+	public String apply(WithType controller, Type t, boolean editMode, Variable variable, WithField showDetail) {
 		if (null == showDetail) return "...";
 		if (showDetail.expand()) {
-			return createTable(t, editMode, variable, ej, tableColumnNames(), tableColumnValues(), controller);
+			return createTable(t, editMode, variable, tableColumnNames(), tableColumnValues(), controller);
 		} else {
 			return text(variable, "!''");
 		}
@@ -38,7 +37,7 @@ public class CollectionConverter extends AbstractTableConverter {
 	
 	
 	@Override
-	protected Object rowDetails(Type t, boolean editMode, Variable variable, EntityJson ej, WithField cellDetail, WithType controller) {
+	protected Object rowDetails(Type t, boolean editMode, Variable variable, WithField cellDetail, WithType controller) {
 		Class<?> elementClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
 
 		TypeConverter elementTypeConverter = controller.getConverter(elementClass, controller);
@@ -52,10 +51,10 @@ public class CollectionConverter extends AbstractTableConverter {
 
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
 			sb.append("<td>");
-			sb.append(((SimpleTypeConverter)elementTypeConverter).apply(controller, elementClass, false, subVar, ej, cellDetail));
+			sb.append(((SimpleTypeConverter)elementTypeConverter).apply(controller, elementClass, false, subVar, cellDetail));
 			sb.append("</td>");
 		} else if (elementTypeConverter instanceof ComplexTypeConverter) {
-			sb.append(((ComplexTypeConverter)elementTypeConverter).withFields(controller, elementClass, false, subVar, ej, cellDetail));
+			sb.append(((ComplexTypeConverter)elementTypeConverter).withFields(controller, elementClass, false, subVar, cellDetail));
 		} else {
 			throw new UnsupportedOperationException();
 		}
@@ -72,7 +71,7 @@ public class CollectionConverter extends AbstractTableConverter {
 	}
 
 	@Override
-	protected Object rowHeaders(Type t, boolean editMode, Variable variable, EntityJson ej, WithField cellDetail, WithType controller) {
+	protected Object rowHeaders(Type t, boolean editMode, Variable variable, WithField cellDetail, WithType controller) {
 		Class<?> elementClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
 		TypeConverter elementTypeConverter = controller.getConverter(elementClass, controller);
 
@@ -81,7 +80,7 @@ public class CollectionConverter extends AbstractTableConverter {
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
 			sb.append("<td><b>Value</b></td>");
 		} else if (elementTypeConverter instanceof ComplexTypeConverter) {
-			sb.append(((ComplexTypeConverter)elementTypeConverter).withFields(controller, elementClass, editMode, variable, ej, cellDetail));
+			sb.append(((ComplexTypeConverter)elementTypeConverter).withFields(controller, elementClass, editMode, variable, cellDetail));
 		} else {
 			throw new UnsupportedOperationException();
 		}

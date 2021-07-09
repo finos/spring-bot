@@ -1,9 +1,8 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.room;
 
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.room.Rooms;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 
 /**
  * Increases the api-surface area, allowing you to create rooms/users from symphony objects.
@@ -13,11 +12,8 @@ import org.finos.symphony.toolkit.workflow.room.Rooms;
  */
 public interface SymphonyRooms extends Rooms {
 
-	public User loadUserById(Long userId);
+	public SymphonyUser loadUserById(Long userId);
 	
-	public Chat loadRoomById(String streamId);
+	public SymphonyRoom loadRoomById(String streamId);
 	
-	public String getStreamFor(Addressable a);
-	
-	public Long getId(User u);
 }

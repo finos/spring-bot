@@ -1,168 +1,164 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
-import com.symphony.api.agent.MessagesApi;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
-import org.finos.symphony.toolkit.workflow.response.*;
-import org.finos.symphony.toolkit.workflow.response.handlers.AbstractResponseHandler;
-import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
+import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
+import org.finos.symphony.toolkit.workflow.response.DataResponse;
+import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HeaderDetails;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter.Mode;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
+import org.springframework.util.StringUtils;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.Set;
-import java.util.stream.Collectors;
+import com.symphony.api.agent.MessagesApi;
 
-/**
- * This is responsible for taking {@link Response} objects and pushing them back to Symphony.
- * 
- * @author Rob Moffat
- *
- */
-public class SymphonyResponseHandler extends AbstractResponseHandler<String> {
+public class SymphonyResponseHandler implements ResponseHandler {
 	
-	MessagesApi messagesApi;
-	FormMessageMLConverter formConverter;
-	EntityJsonConverter jsonConverter;
-	SymphonyRooms ru;
-	AttachmentHandler ah;
+	public static final String MESSAGE_AREA = "<!-- Message Content -->";
 	
-	@Value("${symphony.chat-workflow.outputTemplates:true}")
-	private boolean outputTemplates;
+	private static final Logger LOG = LoggerFactory.getLogger(AbstractResponseHandler.class);
 	
-	@Value("${symphony.chat-workflow.header.template:classpath:/templates/response-header.ftl}")
-	private Resource responseHeader;
+	private String templatePrefix = "classpath:/templates/symphony/";
+	private String templateSuffix = ".ftl";
 	
-	@Value("${symphony.chat-workflow.header.template:classpath:/templates/response-footer.ftl}")
-	private Resource responseFooter;
+	protected MessagesApi messagesApi;
+	protected FormMessageMLConverter formMessageMLConverter;
+	protected MessageMLWriter contentWriter;
+	protected DataHandler dataHandler;
+	protected AttachmentHandler attachmentHandler;
+	protected ResourceLoader rl;
 	
 	
-	public SymphonyResponseHandler(MessagesApi api, 
-			FormMessageMLConverter fmc, 
-			EntityJsonConverter ejc, 
-			SymphonyRooms ru, 
-			AttachmentHandler ah) {
-		this.messagesApi = api;
-		this.formConverter = fmc;
-		this.jsonConverter = ejc;
-		this.ru = ru;
-		this.ah = ah;
+	public SymphonyResponseHandler(MessagesApi messagesApi,
+			FormMessageMLConverter formMessageMLConverter, MessageMLWriter contentWriter, DataHandler dataHandler,
+			AttachmentHandler attachmentHandler, ResourceLoader rl) {
+		super();
+		this.messagesApi = messagesApi;
+		this.formMessageMLConverter = formMessageMLConverter;
+		this.contentWriter = contentWriter;
+		this.dataHandler = dataHandler;
+		this.attachmentHandler = attachmentHandler;
+		this.rl = rl;
 	}
-	
+
+
 	@Override
 	public void accept(Response t) {
-		if (t instanceof FormResponse) {
-			processFormResponse((FormResponse) t);
-		} else if (t instanceof ErrorResponse) {
-			processErrorResponse((ErrorResponse) t);
-		} else if (t instanceof MessageResponse) {
-			processMessageResponse((MessageResponse) t);
-		} else if (t instanceof AttachmentResponse) {
-			processAttachmentResponse((AttachmentResponse) t);
-		} else if (t != null) {
-			throw new UnsupportedOperationException("Couldn't process response of type "+t.getClass());
+		if (t.getAddress() instanceof SymphonyAddressable) {		
+			String templateName = t.getTemplateName();
+	
+			String template = StringUtils.hasText(templateName) ? getTemplateForName(templateName) : null;
+	
+			if (template == null) {
+				LOG.info("Reverting to default template for " + t);
+				template = getDefaultTemplate(t);
+			}
+			
+			if (template == null) {
+				LOG.error("Cannot determine/create template for response {}", t);
+				return;
+			}
+			
+			Object attachment = null;
+			String data = null;
+						
+			if (t instanceof AttachmentResponse) {
+				attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
+			}
+			
+			if (t instanceof DataResponse) {
+				data = dataHandler.formatData((DataResponse) t);
+			}
+			
+			
+			sendResponse(template, attachment, data, t.getAddress());
+		}
+	}
+	
+	protected void sendResponse(String template, Object attachment, String data, Addressable address) {
+		if (address instanceof SymphonyAddressable) {
+			String streamId = ((SymphonyAddressable) address).getStreamId();
+			messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
+		} 
+	}
+
+	protected String getDefaultTemplate(Response r) {
+		String basic = getTemplateForName("default");
+		String insert = "";
+		if (r instanceof FormResponse) {
+			if (FormResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
+				Class<?> c = ((FormResponse) r).getFormObject().getClass();
+				insert = formMessageMLConverter.convert(c, Mode.FORM);
+			} else if (FormResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
+				Class<?> c = ((FormResponse) r).getFormObject().getClass();
+				boolean needsButtons = needsButtons(r);						
+				insert = formMessageMLConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
+			}
+		}
+		
+		if (r instanceof MessageResponse) {
+			insert = contentWriter.apply(((MessageResponse) r).getMessage());
+		}
+
+		if (basic == null) {
+			return insert; 
+		} else {
+			if (insert.startsWith("<messageML>" )) {
+				insert = insert.replaceFirst("<messageML>", "").replaceFirst("</messageML>", "");
+			}
+			
+			return basic.replace(MESSAGE_AREA, insert);
 		}
 	}
 
-	private void processAttachmentResponse(AttachmentResponse t) {
-		processDataResponse("", t, ah.formatAttachment(t));
+	protected boolean needsButtons(Response r) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
-	private void processErrorResponse(ErrorResponse t) {
-		processDataResponse(" - " + t.getMessage(), t, null);
-	}
-
-	private void processMessageResponse(MessageResponse t) {
-		processDataResponse(t.getMessage(), t, null);
-	}
-
-	private void processFormResponse(FormResponse t) {
-		String convertedForm = formConverter.convert(t.getFormClass(), t.getFormObject(), t.getButtons(), t.isEditable(), t.getErrors(), t.getData());
-		processDataResponse(convertedForm, t, null);
-	}
-
-
-	private void processDataResponse(String messageBody, DataResponse t, Object attachment) {
-		String header = createWorkflowHeader(t);
-		String footer = createWorkflowFooter(t);
-		String outMessage = "<messageML>"+header+messageBody+footer+"</messageML>";
-		String json = jsonConverter.writeValue(t.getData());
-		String streamId = ru.getStreamFor(t.getAddress());
-		if (isOutputTemplates()) {
-			LOG.info("JSON: \n"+ json);
-			LOG.info("TEMPLATE: \n"+ outMessage);
-		}
+	public String getTemplateForName(String name) {
 		try {
-			messagesApi.v4StreamSidMessageCreatePost(null, streamId, outMessage, json, null, attachment, null, null);
+			return resolveTemplate(name);
 		} catch (Exception e) {
-			LOG.error("Failed to send message: \nTEMPLATE:\n"+outMessage+"\nJSON:\n"+json+"\n", e);
+			LOG.debug("Couldn't find template: "+name);
+			return null;
 		}
-	}
-	
-	protected String createWorkflowHeader(DataResponse dr)  {
-		try {
-			HeaderDetails hd = new HeaderDetails(dr.getName(), dr.getInstructions(), getDataTags(dr));
-			dr.getData().putIfAbsent("header", hd);
-			if (responseHeader != null) {
-				return StreamUtils.copyToString(responseHeader.getInputStream(), Charset.forName("UTF-8"));
-			} else {
-				return "";
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't download / parse header template at "+responseHeader.getDescription(), e);
-		}
-	}
-	
-	protected String createWorkflowFooter(DataResponse dr)  {
-		try {
-			Set<HashTag> dataTags = getDataTags(dr);
-			HeaderDetails hd = (HeaderDetails) dr.getData().get("header");
-			hd = hd == null ? new HeaderDetails(dr.getName(), dr.getInstructions(), dataTags) : hd;
-			dr.getData().putIfAbsent("header", hd);
-			hd.getTags().addAll(dataTags);
-			if (responseFooter != null) {
-				return StreamUtils.copyToString(responseFooter.getInputStream(), Charset.forName("UTF-8"));
-			} else {
-				return "";
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("Couldn't download / parse header template at "+responseFooter.getDescription(), e);
-		}
-	}
-	
-	public Set<HashTag> getDataTags(DataResponse d) {
-		if (d.getData() == null) {
-			return Collections.emptySet();
-		}
-		Set<HashTag> tags = d.getData().values().stream()
-			.filter(v -> v != null)
-			.flatMap(v -> TagSupport.classHashTags(v).stream())
-			.collect(Collectors.toSet());
-		
-		tags.add(new HashTagDef(TagSupport.formatTag(d.getWorkflow().getNamespace())));
-		tags.add(new HashTagDef("symphony-workflow"));
-		
-		return tags;
-	}
-	
-
-	public boolean isOutputTemplates() {
-		return outputTemplates;
 	}
 
-	public void setOutputTemplates(boolean outputTemplates) {
-		this.outputTemplates = outputTemplates;
+	protected String resolveTemplate(String name) throws IOException {
+		return StreamUtils.copyToString(
+				rl.getResource(templatePrefix + name + templateSuffix).getInputStream(),
+				StandardCharsets.UTF_8);
+	}
+
+	public String getTemplatePrefix() {
+		return templatePrefix;
+	}
+
+	public void setTemplatePrefix(String templatePrefix) {
+		this.templatePrefix = templatePrefix;
+	}
+
+	public String getTemplateSuffix() {
+		return templateSuffix;
+	}
+
+	public void setTemplateSuffix(String templateSuffix) {
+		this.templateSuffix = templateSuffix;
+	}
+
+	@Override
+	public int getOrder() {
+		return LOWEST_PRECEDENCE;
 	}
 
 }
