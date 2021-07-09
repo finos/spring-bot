@@ -24,7 +24,7 @@
 		<module>libs/symphony-app-spring-boot-starter</module>
 		<module>libs/entity-json</module>
 		<module>libs/shared-stream-spring-boot-starter</module>
-		<module>libs/chat-workflow-spring-boot-starter</module>
+		<module>libs/chat-workflow</module>
 		<module>libs/symphony-chat-workflow-spring-boot-starter</module>
 		<module>libs/quickfix-json</module>
 		

@@ -8,7 +8,7 @@
  <parent>
   <groupId>org.finos.symphony.toolkit</groupId>
   <artifactId>symphony-java-toolkit</artifactId>
-  <version>7.20.3-SNAPSHOT</version>
+  <version>7.20.4-SNAPSHOT</version>
   <relativePath>../..</relativePath>
  </parent>
 
@@ -20,18 +20,18 @@
  <dependencies>
   <dependency>
    <groupId>org.finos.symphony.toolkit</groupId>
-   <artifactId>chat-workflow-spring-boot-starter</artifactId>
-   <version>7.20.3-SNAPSHOT</version>
+   <artifactId>chat-workflow</artifactId>
+   <version>7.20.4-SNAPSHOT</version>
   </dependency>
   <dependency>
    <groupId>org.finos.symphony.toolkit</groupId>
    <artifactId>symphony-api-spring-boot-starter</artifactId>
-   <version>7.20.3-SNAPSHOT</version>
+   <version>7.20.4-SNAPSHOT</version>
   </dependency>
   <dependency>
    <groupId>org.finos.symphony.toolkit</groupId>
    <artifactId>shared-stream-spring-boot-starter</artifactId>
-   <version>7.20.3-SNAPSHOT</version>
+   <version>7.20.4-SNAPSHOT</version>
   </dependency>
 
   <!-- allows chat workflow to send attachments -->

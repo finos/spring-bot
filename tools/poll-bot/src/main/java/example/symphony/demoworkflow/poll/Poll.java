@@ -50,7 +50,7 @@ public class Poll {
 	
 
 	public static boolean isMe(User u, SymphonyIdentity botIdentity) {
-		return u.getAddress().equals(botIdentity.getEmail());
+		return u.getEmailAddress().equals(botIdentity.getEmail());
 	}
 
 	@Exposed(description = "Start A Poll")

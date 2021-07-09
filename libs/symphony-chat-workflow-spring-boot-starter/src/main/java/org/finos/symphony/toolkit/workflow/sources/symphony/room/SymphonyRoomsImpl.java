@@ -76,11 +76,11 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 
 	@Override
 	public String getStreamFor(Addressable a) {
-		if (a instanceof User) {
-			return streamsApi.v1ImCreatePost(Collections.singletonList(getId((User) a)), null).getId();
-		} else if (a instanceof Chat) {
-			if (((Chat) a).getId() != null) {
-				return ((Chat) a).getId();
+		if (a instanceof SymphonyUser) {
+			return ((SymphonyUser) a).getStreamId()
+		} else if (a instanceof SymphonyRoom) {
+			if (((SymphonyRoom) a).getId() != null) {
+				return ((SymphonyRoom) a).getId();
 			}
 			
 			StreamType st = new StreamType().type(TypeEnum.ROOM);
@@ -133,7 +133,7 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 		} else if (u.getId() != null) {
 			return Long.parseLong(u.getId());
 		} else {
-			UserV2 user = usersApi.v2UserGet(null, null, u.getAddress(), null, true);
+			UserV2 user = usersApi.v2UserGet(null, null, u.getEmailAddress(), null, true);
 			return user.getId();
 		}
 	}

@@ -1,11 +1,25 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.springframework.validation.Errors;
-
 public interface FormMessageMLConverter {
+	
+	public enum Mode {
+		
+		/**
+		 * Create a template to display the contents of the class.
+		 */
+		DISPLAY, 	
+		
+		/**
+		 * Create a template to display the contents of the class, with some buttons.
+		 */
+		DISPLAY_WITH_BUTTONS, 
+		
+		/**
+		 * Create a form for editing the contents of the class, with buttons.
+		 */
+		FORM
+	}
 
-	String convert(Class<?> c, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work);
+	String convert(Class<?> c, Mode m);
 
 }

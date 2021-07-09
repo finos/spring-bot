@@ -18,7 +18,7 @@ public interface WithType {
 	 * @param details Used to decorate the output of any fields produced by this converter.
 	 * @return Part of a FreeMarker template.
 	 */
-	public String apply(WithType controller, Type t, boolean editMode, Variable variable, EntityJson ej, WithField details);
+	public String apply(WithType controller, Type t, boolean editMode, Variable variable, WithField details);
 
 	
 	public default TypeConverter getConverter(Type t, WithType ownerController) {

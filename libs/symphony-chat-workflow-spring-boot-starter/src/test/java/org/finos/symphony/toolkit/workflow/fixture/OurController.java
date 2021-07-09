@@ -8,11 +8,10 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.MessageParser;
 import org.finos.symphony.toolkit.workflow.content.Table;
-import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -22,7 +21,6 @@ import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -30,10 +28,6 @@ public class OurController {
 	
 	public List<Object> lastArguments;
 	public String lastMethod;
-	
-	@Autowired
-	MessageParser mp;
-	
 	
 	// todo: do we need any other kinds of wildcards?
 	@Exposed("*") 
@@ -126,7 +120,7 @@ public class OurController {
 	public MessageResponse banWord(@ChatVariable("word") Word w, Addressable a) {
 		lastArguments = Collections.singletonList(w);
 		lastMethod = "banWord";
-		return new MessageResponse(a, mp.parse("<messageML>Banned Word</messageML>"));
+		return new MessageResponse(a, Message.of(Word.build("banned words: "+w.getText())));
 	}
 	
 	@Exposed(value="attachment")
@@ -139,8 +133,6 @@ public class OurController {
 	
 	@Exposed(description="Do blah with a form", value="form1")
 	public FormResponse form1(Addressable a) {
-		lastArguments = Collections.emptyList();
-		lastMethod = "attachment";
 		EntityJson json = new EntityJson();
 		json.put(EntityJsonConverter.WORKFLOW_001, new TestObject());
 		ButtonList bl = new ButtonList();		
@@ -149,9 +141,12 @@ public class OurController {
 	
 	@Exposed(value="form2")
 	public TestObject form2(Addressable a) {
-		lastArguments = Collections.emptyList();
-		lastMethod = "attachment";
 		return new TestObject();
+	}
+	
+	@Exposed(value = "ok", formClass = TestObject.class)
+	public TestObject ok(TestObject to) {
+		return null;
 	}
 	
 	@Exposed(value="throwsError")

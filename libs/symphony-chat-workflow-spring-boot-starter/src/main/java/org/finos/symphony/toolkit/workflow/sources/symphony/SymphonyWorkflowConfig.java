@@ -4,28 +4,30 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
-import org.finos.symphony.toolkit.workflow.actions.ActionConsumer;
-import org.finos.symphony.toolkit.workflow.content.ContentWriter;
-import org.finos.symphony.toolkit.workflow.java.resolvers.FormDataArgumentWorkflowResolverFactory;
-import org.finos.symphony.toolkit.workflow.java.resolvers.MessagePartWorkflowResolverFactory;
-import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsConsumer;
+import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
+import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
+import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.OrderedList;
+import org.finos.symphony.toolkit.workflow.content.Paragraph;
+import org.finos.symphony.toolkit.workflow.content.UnorderedList;
+import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.EditActionElementsConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableAddRow;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableDeleteRows;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableEditRow;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler2;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerTypeConverterConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLWriter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
 import org.slf4j.Logger;
@@ -36,12 +38,14 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
+import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
@@ -54,6 +58,7 @@ import com.symphony.api.pod.UsersApi;
  */
 @Configuration
 @AutoConfigureBefore(SharedStreamSingleBotConfig.class)
+@Import({ChatWorkflowConfig.class, FreemarkerTypeConverterConfig.class})
 public class SymphonyWorkflowConfig {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SymphonyWorkflowConfig.class);
@@ -87,43 +92,7 @@ public class SymphonyWorkflowConfig {
 	@Lazy
 	List<TypeConverter> converters;
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public EditActionElementsConsumer editActionElementsConsumer() {
-		return new EditActionElementsConsumer();
-	}
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public TableAddRow tableAddRow() {
-		return new TableAddRow();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public TableDeleteRows tableDeleteRows() {
-		return new TableDeleteRows();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public TableEditRow tableEditRow() {
-		return new TableEditRow();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public FormDataArgumentWorkflowResolverFactory elementsArgumentWorkflowResolverFactory() {
-		return new FormDataArgumentWorkflowResolverFactory();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
-		return new MessagePartWorkflowResolverFactory();
-	}
-
-
 	@Bean
 	@ConditionalOnMissingBean
 	public MessageMLParser simpleMessageParser() {
@@ -132,23 +101,39 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyResponseHandler2 symphonyResponseHandler() {
-		ContentWriter cw = null;
-		return new SymphonyResponseHandler2(
-				cw, entityJsonConverter(), attachmentHandler, resourceLoader, messagesApi);
+	public MessageMLWriter messageMLWriter() {
+		MessageMLWriter out = new MessageMLWriter();
+		out.add(Message.class, out.new OrderedTagWriter("messageML"));
+		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
+		out.add(OrderedList.class, out.new OrderedTagWriter("ol"));
+		out.add(UnorderedList.class, out.new OrderedTagWriter("ul"));
+		out.add(CodeBlock.class, out.new SimpleTagWriter("code"));
+		out.add(Word.class, out.new PlainWriter());
+		
+		// table
+		// tags
+		
+		return out;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public SymphonyResponseHandler symphonyResponseHandler() {
+		return new SymphonyResponseHandler(messagesApi, formMessageMLConverter(), 
+				messageMLWriter(), entityJsonConverter(), attachmentHandler, resourceLoader);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public FormMessageMLConverter formMessageMLConverter() {
 		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
-		return new FreemarkerFormMessageMLConverter(resourceLoader, converters);
+		return new FreemarkerFormMessageMLConverter(converters);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyHistory symphonyHistory() {
-		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi, symphonyRooms());
+		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi);
 	}
 	
 	@Bean 
@@ -167,7 +152,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public PresentationMLHandler presentationMLHandler(List<ActionConsumer> messageConsumers) {
-		return new PresentationMLHandler(botIdentity, usersApi, simpleMessageParser(), entityJsonConverter(), messageConsumers, symphonyResponseHandler(), symphonyRooms());
+		return new PresentationMLHandler(simpleMessageParser(), entityJsonConverter(), messageConsumers, symphonyRooms(), botIdentity);
 	}
 
 	@Bean
@@ -178,18 +163,16 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ElementsHandler elementsHandler(List<ElementsConsumer> elementsConsumers) {
-<<<<<<< HEAD:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/SymphonyWorkflowConfig.java
-		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
-=======
-		return new ElementsHandler(wf, messagesApi, entityJsonConverter(), formConverter(), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
->>>>>>> master:libs/chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/SymphonyWorkflowConfig.java
+	public InRoomAddressingChecker inRoomAddressingChecker() {
+		UserV2 user = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
+		SymphonyUser su = new SymphonyUser(user.getId(), user.getDisplayName(), user.getEmailAddress(), () -> "");
+		return new InRoomAddressingChecker(su, true);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyBot symphonyBot(List<SymphonyEventHandler> eventHandlers) {
-		return new SymphonyBot(botIdentity, eventHandlers);
+	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers) {
+		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
 	}
 
 }

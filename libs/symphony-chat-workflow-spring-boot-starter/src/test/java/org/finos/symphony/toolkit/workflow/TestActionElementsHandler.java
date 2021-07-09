@@ -7,12 +7,12 @@ import java.util.Map;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.response.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.MethodCallElementsConsumer;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandlerOld;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
@@ -74,7 +74,7 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 		FormConverter fc = new FormConverter(symphonyRooms);
 		FormMessageMLConverter fmc = new FreemarkerFormMessageMLConverter(rl, fieldConverters);
 		MethodCallElementsConsumer mcec = new MethodCallElementsConsumer(cp);
-		SymphonyResponseHandler srh = new SymphonyResponseHandler(messagesApi, fmc, ejc, symphonyRooms, ah);
+		SymphonyResponseHandlerOld srh = new SymphonyResponseHandlerOld(messagesApi, fmc, ejc, symphonyRooms, ah);
 		handler = new ElementsHandler(wf, messagesApi, ejc,  fc, Arrays.asList(mcec), srh, symphonyRooms, v);
 	}
 	

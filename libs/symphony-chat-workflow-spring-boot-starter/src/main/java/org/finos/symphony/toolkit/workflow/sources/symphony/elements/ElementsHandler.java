@@ -2,23 +2,26 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
+import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyEventHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.Validator;
 
 import com.symphony.api.agent.MessagesApi;
@@ -32,20 +35,20 @@ import com.symphony.api.model.V4SymphonyElementsAction;
  * @author Rob Moffat
  *
  */
-public class ElementsHandler implements SymphonyEventHandler {
+public class ElementsHandler implements StreamEventConsumer {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ElementsHandler.class);
 	
 	MessagesApi messagesApi;
 	EntityJsonConverter jsonConverter;
 	FormConverter formConverter;
-	List<ElementsConsumer> elementsConsumers;
-	ResponseHandler rh;
+	List<ActionConsumer> elementsConsumers;
+	SymphonyResponseHandler rh;
 	SymphonyRooms ruBuilder;
 	Validator v;
 	
 	public ElementsHandler(MessagesApi messagesApi, EntityJsonConverter jsonConverter,
-			FormConverter formConverter, List<ElementsConsumer> elementsConsumers, ResponseHandler rh, SymphonyRooms ruBuilder, Validator v) {
+			FormConverter formConverter, List<ActionConsumer> elementsConsumers, SymphonyResponseHandler rh, SymphonyRooms ruBuilder, Validator v) {
 		this.messagesApi = messagesApi;
 		this.jsonConverter = jsonConverter;
 		this.formConverter = formConverter;
@@ -74,21 +77,16 @@ public class ElementsHandler implements SymphonyEventHandler {
 				
 				if (validated(currentForm, e)) {
 					FormAction ea = new FormAction(rr, u, currentForm, verb, data);
-					for (ElementsConsumer c : elementsConsumers) {
+					for (ActionConsumer c : elementsConsumers) {
 						try {
-							List<Response> ra = c.apply(ea);
-							if (ra != null) {
-								ra.stream()
-								.forEach(r -> rh.accept(r));	
-							}
-							
+							c.accept(ea);
 						} catch (Exception ee) {
 							LOG.error("Failed to handle consumer "+c, ee);
 						}
 					}
 				} else {
 					FormResponse fr = new FormResponse(rr, data, true, 
-						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), e);
+						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), convertErrorsToMap(e));
 					rh.accept(fr);
 				}
 			}
@@ -106,6 +104,13 @@ public class ElementsHandler implements SymphonyEventHandler {
 		}
 	}
 
+	private ErrorMap convertErrorsToMap(Errors e) {
+		return e == null ? new ErrorMap() : new ErrorMap(e.getAllErrors().stream()
+			.map(err -> (FieldError) err)
+			.collect(Collectors.toMap(fe -> fe.getField(), fe -> ""+fe.getDefaultMessage())));
+	}
+
+	
 	private EntityJson retrieveData(String formMessageId) {
 		V4Message originatingMessage = messagesApi.v1MessageIdGet(null, null, formMessageId.replace("/", "_").replace("+", "-").replace("=", ""));
 		return jsonConverter.readValue(originatingMessage.getData());

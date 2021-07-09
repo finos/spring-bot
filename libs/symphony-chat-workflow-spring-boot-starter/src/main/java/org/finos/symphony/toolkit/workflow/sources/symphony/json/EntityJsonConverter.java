@@ -13,11 +13,9 @@ import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.response.DataResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.DataHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HeaderDetails;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomList;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.DataHandler;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

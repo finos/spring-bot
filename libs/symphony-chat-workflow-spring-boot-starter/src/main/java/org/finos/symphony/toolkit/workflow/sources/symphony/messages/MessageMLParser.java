@@ -12,7 +12,6 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.MessageParser;
 import org.finos.symphony.toolkit.workflow.content.OrderedContent;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
@@ -44,7 +43,7 @@ import com.symphony.user.UserId;
  * @author Rob Moffat
  *
  */
-public class MessageMLParser implements MessageParser {
+public class MessageMLParser {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(PresentationMLHandler.class);
 	
@@ -71,7 +70,7 @@ public class MessageMLParser implements MessageParser {
 		@Override
 		public Tag getContents() {
 			if (type== Type.USER) {
-				return new SymphonyUser(id, buf.substring(1), null);
+				return new SymphonyUser(id, buf.substring(1), null, () -> "");
 			} else if (type == Type.CASH ){
 				return new CashTagDef(id);
 			} else {
@@ -350,12 +349,13 @@ public class MessageMLParser implements MessageParser {
 		}
 	}
 	
-	@Override
 	public Message parse(String source) {
 		return parse(source, new EntityJson());
 	}
 
 	public Message parse(String message, EntityJson jsonObjects) {
+		message = (!message.contains("<messageML>")) ? "<messageML>" + message + "</messageML>" : message;
+		
 
 		Content [] out = { null };
 		

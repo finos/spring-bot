@@ -1,25 +1,10 @@
 package org.finos.symphony.toolkit.workflow;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
-import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.java.perform.PerformerConfig;
-import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyBot;
+import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.AuthorConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.BeanConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.BooleanConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.CashTagConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.CollectionConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.EnumConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.HashTagConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.IDConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TimeConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.NumberConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.RoomConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.StringConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.UserConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +17,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.User;
+import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
@@ -40,25 +25,9 @@ import com.symphony.api.pod.UsersApi;
 @ExtendWith(SpringExtension.class)
 
 @SpringBootTest(classes = { 
-		AuthorConverter.class,
-		BeanConverter.class,
-		BooleanConverter.class, 
-		CashTagConverter.class,
-		CollectionConverter.class,
-		EnumConverter.class,
-		HashTagConverter.class,
-		IDConverter.class,
-		TimeConverter.class,
-		NumberConverter.class,
-		RoomConverter.class,
-		StringConverter.class,
-		UserConverter.class,
-		PerformerConfig.class,
-		ResolverConfig.class,
-		TestWorkflowConfig.class, 
-		SymphonyWorkflowConfig.class,
 		AbstractMockSymphonyTest.MockConfiguration.class, 
-		JerseyAttachmentHandlerConfig.class })
+	SymphonyWorkflowConfig.class,
+})
 public abstract class AbstractMockSymphonyTest {
 
 	private static final String BOT_EMAIL = "dummybot@example.com";
@@ -75,13 +44,6 @@ public abstract class AbstractMockSymphonyTest {
 	@MockBean
 	StreamsApi streamsApi;
 	
-	/**
-	 * This is here, otherwise we start the real symphony bot talking to mock endpoints, which 
-	 * wouldn't work.
-	 */
-	@MockBean
-	SymphonyBot symphonyBot;
-	
 	@Configuration
 	public static class MockConfiguration {
 	
@@ -95,7 +57,7 @@ public abstract class AbstractMockSymphonyTest {
 		@Bean
 		public UsersApi usersApi() {
 			UsersApi usersApi = Mockito.mock(UsersApi.class);
-			Mockito.when(usersApi.v1UserGet(Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean())).thenReturn(new User().emailAddress(BOT_EMAIL).id(111l));
+			Mockito.when(usersApi.v2UserGet(Mockito.isNull(), Mockito.nullable(long.class), Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean())).thenReturn(new UserV2().emailAddress(BOT_EMAIL).id(111l));
 			return usersApi;
 		}
 		
@@ -104,6 +66,16 @@ public abstract class AbstractMockSymphonyTest {
 			return new LocalValidatorFactoryBean();
 		}
 		
+		@Bean
+		public AttachmentHandler mockAttachmentHandler() {
+			return new AttachmentHandler() {
+				
+				@Override
+				public Object formatAttachment(AttachmentResponse ar) {
+					return ar.getAttachment();
+				}
+			};
+		}
 
 	}
 }

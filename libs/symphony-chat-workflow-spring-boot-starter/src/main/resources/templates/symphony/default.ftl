@@ -2,9 +2,9 @@
   accent="tempo-bg-color--blue">
   <header>
   
+    <!-- Message Content -->
   
-  
-   </header> 
+  </header> 
   <body>
     <ul>
       <#list entity.header.tags as tag>
