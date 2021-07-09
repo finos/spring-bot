@@ -169,11 +169,21 @@ public class SymphonyWorkflowConfig {
 	public PresentationMLHandler presentationMLHandler(List<ActionConsumer> messageConsumers) {
 		return new PresentationMLHandler(botIdentity, usersApi, simpleMessageParser(), entityJsonConverter(), messageConsumers, symphonyResponseHandler(), symphonyRooms());
 	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public FormConverter formConverter() {
+		return new FormConverter(symphonyRooms());
+	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public ElementsHandler elementsHandler(List<ElementsConsumer> elementsConsumers) {
+<<<<<<< HEAD:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/SymphonyWorkflowConfig.java
 		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
+=======
+		return new ElementsHandler(wf, messagesApi, entityJsonConverter(), formConverter(), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
+>>>>>>> master:libs/chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/SymphonyWorkflowConfig.java
 	}
 	
 	@Bean

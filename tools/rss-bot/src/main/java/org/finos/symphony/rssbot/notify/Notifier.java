@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.HtmlUtils;
 
 import com.symphony.api.agent.MessagesApi;
 
@@ -41,7 +42,7 @@ public class Notifier implements InitializingBean {
 		
 		if (observationRoom != null) {			
 			rh.accept(new MessageResponse(wf, observationRoom, new EntityJson(), "New Feed Created", "by "+author.getName(), 
-				"<ul><li>Url: "+sr.getUrl()+"</li>"+
+				"<ul><li>Url: "+HtmlUtils.htmlEscape(sr.getUrl())+"</li>"+
 						"<li>Room: "+a.toString()+"</li></ul>"));
 		}
 		
@@ -52,7 +53,7 @@ public class Notifier implements InitializingBean {
 		
 		if (observationRoom != null) {			
 			rh.accept(new MessageResponse(wf, observationRoom, new EntityJson(), "New Feed Creation Failed", "by "+author.getName(), 
-				"<ul><li>Url: "+sr.getUrl()+"</li>"+
+				"<ul><li>Url: "+HtmlUtils.htmlEscape(sr.getUrl())+"</li>"+
 						"<li>Room: "+a.toString()+"</li>"+
 						"<li>"+e.getMessage()+"</li></ul>"));
 		}
