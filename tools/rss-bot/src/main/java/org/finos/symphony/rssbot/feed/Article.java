@@ -1,6 +1,5 @@
 package org.finos.symphony.rssbot.feed;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,21 +13,22 @@ public class Article {
 
 	private String title;
 	private String author;
-	private Instant Instant;
 	private String uri;
-	private Instant startTime; 
 	private List<String> feedUrls;
 	private HashTag feedHashTag;
+	private HashTag articleHashTag;
+	private String feedName;
+	private String pubDate;
 	
-	public Article(String title, String author, Instant Instant, String uri, Instant startTime, FeedList fl, HashTag feedHashTag) {
+	public Article(String title, String author, String feedName, String uri, FeedList fl, HashTag feedHashTag, HashTag articleHashTag) {
 		super();
 		this.title = title;
+		this.feedName = feedName;
 		this.author = author;
-		this.Instant = Instant;
 		this.uri = uri;
-		this.startTime = startTime;
 		this.feedUrls = fl.feeds.stream().map(f -> f.getUrl()).collect(Collectors.toList());
 		this.feedHashTag = feedHashTag;
+		this.articleHashTag = articleHashTag;
 	}
 
 	public Article() {
@@ -50,29 +50,13 @@ public class Article {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-
-	public Instant getInstant() {
-		return Instant;
-	}
-
-	public void setInstant(Instant Instant) {
-		this.Instant = Instant;
-	}
-
+	
 	public String getUri() {
 		return uri;
 	}
 
 	public void setUri(String uri) {
 		this.uri = uri;
-	}
-
-	public Instant getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(Instant startTime) {
-		this.startTime = startTime;
 	}
 
 	public List<String> getFeedUrls() {
@@ -89,6 +73,30 @@ public class Article {
 
 	public void setFeedHashTag(HashTag feedHashTag) {
 		this.feedHashTag = feedHashTag;
+	}
+
+	public String getFeedName() {
+		return feedName;
+	}
+
+	public void setFeedName(String feedName) {
+		this.feedName = feedName;
+	}
+	
+	public HashTag getArticleHashTag() {
+		return articleHashTag;
+	}
+
+	public void setArticleHashTag(HashTag articleHashTag) {
+		this.articleHashTag = articleHashTag;
+	}
+
+	public String getPubDate() {
+		return pubDate;
+	}
+
+	public void setPubDate(String pubDate) {
+		this.pubDate = pubDate;
 	}
 
 }

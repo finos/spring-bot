@@ -63,16 +63,35 @@ public class PresentationMLHandler implements InitializingBean, SymphonyEventHan
 				EntityJson ej = jsonConverter.readValue(ms.getMessage().getData());
 				Message words = messageParser.parse(ms.getMessage().getMessage(), ej);
 				TypeEnum streamType = TypeEnum.fromValue(ms.getMessage().getStream().getStreamType());
-				if (isForThisBot(words, streamType)) {
-					Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
-					User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());
+				boolean forThisBot = isForThisBot(words, streamType);
+				Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
+				User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());
+				
+				// TODO: multi-user chat (not room)
+				rr = rr == null ? u : rr;
+				SimpleMessageAction sma = new SimpleMessageAction(wf, rr, u, words, ej);
+				for (SimpleMessageConsumer c : messageConsumers) {
 					
+					boolean requiresAddressing = c.requiresAddressing();
+					
+<<<<<<< HEAD:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/messages/PresentationMLHandler.java
 					// TODO: multi-user chat (not room)
 					rr = rr == null ? u : rr;
 					SimpleMessageAction sma = new SimpleMessageAction(rr, u, words, ej);
 					for (ActionConsumer c : messageConsumers) {
 						try {							
 							c.accept(sma);
+=======
+					if ((!requiresAddressing) || forThisBot) {
+						try { 
+							
+							List<Response> r = c.apply(sma);
+							if (r != null) {
+								r.stream()
+									.forEach(ri -> rh.accept(ri));
+							}
+							
+>>>>>>> master:libs/chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/messages/PresentationMLHandler.java
 						} catch (Exception e) {
 							LOG.error("Failed to handle consumer "+c, e);
 						}

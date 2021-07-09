@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>7.20.3-SNAPSHOT</version>
+	<version>7.20.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
@@ -32,9 +32,8 @@
 		<module>tools/rss-bot</module>
 		<module>tools/teamcity-symphony-integration</module>
 		<module>tools/symphony-maven-build-reporter</module>
-		<module>tools/poll-bot</module>		
-		<!-- <module>tools/webhook-bot</module>  -->
-		
+		<module>tools/poll-bot</module>
+		<module>tools/reminder-bot</module>
 		<module>demos/demo-bot</module>
 		<module>demos/demo-app</module>		
 		<module>demos/todo-bot</module>

@@ -8,8 +8,13 @@ public class SymphonyRoom implements Chat {
 	protected String roomDescription;
 	protected boolean pub;
 	protected String id;
+<<<<<<< HEAD:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/content/SymphonyRoom.java
 	
 	public SymphonyRoom() {
+=======
+
+	public RoomDef() {
+>>>>>>> master:libs/chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/content/RoomDef.java
 	}
 	
 	public SymphonyRoom(String name, String description, boolean pub, String id) {
@@ -34,6 +39,7 @@ public class SymphonyRoom implements Chat {
 	public boolean isPub() {
 		return pub;
 	}
+
 
 	@Override
 	public String toString() {
@@ -69,5 +75,7 @@ public class SymphonyRoom implements Chat {
 		return id;
 	}
 
-	
+
+
+
 }
