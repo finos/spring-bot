@@ -3,7 +3,6 @@ package org.finos.symphony.toolkit.workflow.actions.form;
 import java.util.Collections;
 import java.util.List;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;

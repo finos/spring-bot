@@ -1,6 +1,8 @@
 package org.finos.symphony.toolkit.workflow.response;
 
-import org.finos.symphony.toolkit.json.EntityJson;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.finos.symphony.toolkit.workflow.annotations.Template;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -15,7 +17,7 @@ public class FormResponse extends DataResponse {
 	public static final String ERRORS_KEY = "errors";
 	public static final String FORMOBJECT_KEY = "form";
 				
-	public FormResponse(Addressable to, EntityJson data, String templateName) {
+	public FormResponse(Addressable to, Object data, String templateName) {
 		super(to, data, templateName);
 	}
 	
@@ -30,8 +32,8 @@ public class FormResponse extends DataResponse {
 		this(to, o, editable, null, null);
 	}
 	
-	public static EntityJson createEntityJson(Object o, ButtonList buttons, ErrorMap errors) {
-		EntityJson json = new EntityJson();
+	public static Map<String, Object> createEntityJson(Object o, ButtonList buttons, ErrorMap errors) {
+		Map<String, Object> json = new HashMap<>();
 		json.put(BUTTONLIST_KEY, buttons == null ? new ButtonList() : buttons);
 		json.put(ERRORS_KEY, errors == null ? new ErrorMap() : errors);
 		json.put(FORMOBJECT_KEY, o);
@@ -52,6 +54,12 @@ public class FormResponse extends DataResponse {
 			return templateName;
 		}
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> getData() {
+		return (Map<String, Object>) super.getData();
 	}
 
 	public Object getFormObject() {

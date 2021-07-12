@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.actions;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.User;
 
@@ -19,7 +18,7 @@ public interface Action {
 	/**
 	 * Get the entity data underlying the request.
 	 */
-	public EntityJson getData();
+	public Object getData();
 	
 	/**
 	 * Keeps track of the action being handled by the current thread

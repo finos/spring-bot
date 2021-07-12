@@ -2,7 +2,6 @@ package org.finos.symphony.toolkit.workflow.actions.form;
 
 import java.util.Collections;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;

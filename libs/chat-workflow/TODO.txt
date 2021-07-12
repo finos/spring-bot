@@ -1,5 +1,3 @@
-3.  SymphonyResponseHandler - needs to handle templates properly.
-4.  We need to convert Message -> MessageML string.  
 8.  Optional/List parameters
 9.  Security on ExposedHandlerMapping (certain actions for certain users)
 10.  Write a test for /help
@@ -7,4 +5,4 @@
 12.  Create annotation for Content classes and scan for them inside ResolverConfig (maybe, we deleted the thing that would use this)
 13.  Add JerseyAttachmentHandler test
 14. StreamID for Symphony User
-15.  Rooms - we use a drop-down for this, how will we populate it?
+15.  Rooms - we use a drop-down for this, how will we populate it? (Write another response handler)
