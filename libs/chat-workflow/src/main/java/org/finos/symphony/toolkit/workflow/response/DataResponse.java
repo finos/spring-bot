@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.response;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 
 /**
@@ -11,18 +10,18 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
  */
 public class DataResponse implements Response {
 
-	private final EntityJson data;
+	private final Object data;
 	private final String templateName;
 	private final Addressable to;
 
-	public DataResponse(Addressable to, EntityJson data, String templateName) {
+	public DataResponse(Addressable to, Object data, String templateName) {
 		super();
 		this.to = to;
-		this.data = data == null ? new EntityJson() : data;
+		this.data = data == null ? new Object() : data;
 		this.templateName = templateName;
 	}
 
-	public EntityJson getData() {
+	public Object getData() {
 		return data;
 	}
 	

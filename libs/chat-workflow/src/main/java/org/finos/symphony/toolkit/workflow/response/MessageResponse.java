@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.response;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 
@@ -14,7 +13,7 @@ public class MessageResponse extends DataResponse {
 	
 	private final Content m;
 	
-	public MessageResponse(Addressable stream, EntityJson data, Content m, String templateName) {
+	public MessageResponse(Addressable stream, Object data, Content m, String templateName) {
 		super(stream, data, templateName);
 		this.m = m;
 	}

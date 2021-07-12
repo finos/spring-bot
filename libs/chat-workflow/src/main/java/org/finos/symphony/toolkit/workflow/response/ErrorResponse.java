@@ -1,6 +1,8 @@
 package org.finos.symphony.toolkit.workflow.response;
 
-import org.finos.symphony.toolkit.json.EntityJson;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 
 public class ErrorResponse extends DataResponse {
@@ -13,11 +15,17 @@ public class ErrorResponse extends DataResponse {
 		super(stream, createEntityJson(e), templateName);
 	}
 
-	public static EntityJson createEntityJson(Throwable t) {
-		EntityJson json = new EntityJson();
+	public static Map<String, Object> createEntityJson(Throwable t) {
+		Map<String, Object> json = new HashMap<>();
 		json.put(ERRORS_KEY, t);
 		json.put(MESSAGE_KEY, t.getMessage());
 		return json;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> getData() {
+		return (Map<String, Object>) super.getData();
 	}
 
 	@Override

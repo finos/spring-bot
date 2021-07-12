@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.response;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 
@@ -31,7 +30,7 @@ public class AttachmentResponse extends MessageResponse {
 		this.suffix = suffix;
 	}
 
-	public AttachmentResponse(Addressable stream, EntityJson data, Content m, String template, byte[] attachment, String name, String suffix) {
+	public AttachmentResponse(Addressable stream, Object data, Content m, String template, byte[] attachment, String name, String suffix) {
 		super(stream, data, m, template);
 		this.attachment = attachment;
 		this.name = name;

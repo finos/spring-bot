@@ -4,7 +4,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Indicates that we should provide edit functionality for this object when it is in a chat
+ * This indicates that this object is a value object that should be 
+ * sent into chats / returned from chats.  
+ * 
+ * @see VersionSpace in EntityJson project for uses of this.
  * 
  * @author Rob Moffat
  *
@@ -12,11 +15,12 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Work {
 
-	public String name() default "";
+	/**
+	 * Replace this name if you want to give a specific name for the class over the wire.
+	 */
+	public String jsonTypeName = "";
 	
-	public String instructions() default "";
+	public String writeVersion = "1.0";
 	
-	public boolean editable() default false;
-	
-	public String[] rooms() default {};
+	public String[] readVersions = { "1.0" };
 }
