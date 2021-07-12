@@ -25,7 +25,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	
 	public static final String MESSAGE_AREA = "<!-- Message Content -->";
 	
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractResponseHandler.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SymphonyResponseHandler.class);
 	
 	private String templatePrefix = "classpath:/templates/symphony/";
 	private String templateSuffix = ".ftl";
