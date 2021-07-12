@@ -34,9 +34,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
+import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
@@ -92,7 +95,6 @@ public class SymphonyWorkflowConfig {
 	@Lazy
 	List<TypeConverter> converters;
 	
-	
 	@Bean
 	@ConditionalOnMissingBean
 	public MessageMLParser simpleMessageParser() {
@@ -146,6 +148,8 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public EntityJsonConverter entityJsonConverter() {
+	//	cpsccp.
+		
 		return new EntityJsonConverter();
 	}
 	

@@ -1,14 +1,13 @@
 package example.symphony.demoworkflow.expenses;
 
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import javax.validation.constraints.Min;
+
+import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
-import javax.validation.constraints.Min;
-
-@Work(editable = true, instructions = "Sales Expense Claim Form", name = "Expense Claim")
+@Work()
 public class Claim {
 	
 	enum Status { OPEN, APPROVED, PAID };
@@ -16,7 +15,7 @@ public class Claim {
 	@Display(name = "Description")
 	String description;
 	
-	Author author = Author.CURRENT_AUTHOR.get();
+	User author = Action.CURRENT_ACTION.get().getUser();
 
 	@Display(name = "Amount")
 	@Min(0)
@@ -31,28 +30,6 @@ public class Claim {
 	Status status = Status.OPEN;
 
 
-	@Exposed(description="Begin New Expense Claim")
-	public static Claim open(StartClaim c) {
-		Claim out = new Claim();
-		out.description = c.description;
-		out.amount = c.amount;
-		return out;
-	}
-
-	@Exposed(description = "Approve an expense claim")
-	public Claim approve() {
-		if (this.status == Status.OPEN) {
-			this.approvedBy = Author.CURRENT_AUTHOR.get();
-			this.status = Status.APPROVED;
-		}
-		return this;
-	}
-	
-	@Exposed(description = "New Full Expense Form") 
-	public static Claim full(Claim c) {
-		return c;
-	}
-	
 	
 	public String getDescription() {
 		return description;
@@ -62,11 +39,11 @@ public class Claim {
 		this.description = description;
 	}
 
-	public Author getAuthor() {
+	public User getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Author author) {
+	public void setAuthor(User author) {
 		this.author = author;
 	}
 

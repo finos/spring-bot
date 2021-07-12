@@ -23,7 +23,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
-			<artifactId>chat-workflow-spring-boot-starter</artifactId>
+			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
 			<version>7.20.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
