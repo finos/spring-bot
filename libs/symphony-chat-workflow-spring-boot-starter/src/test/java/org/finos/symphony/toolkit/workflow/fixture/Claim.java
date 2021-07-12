@@ -4,7 +4,7 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
 
-@Work(editable = false, instructions = "Expenses Claim")
+@Work()
 public class Claim {
 	
 	enum Status { OPEN, APPROVED, PAID };

@@ -1,15 +1,11 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work(name="Test Object", instructions="blah")
+@Work()
 public class TestObject {
 
 	@Size(min=12)

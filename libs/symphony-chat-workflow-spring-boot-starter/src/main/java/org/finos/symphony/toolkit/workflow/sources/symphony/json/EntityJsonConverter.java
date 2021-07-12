@@ -87,7 +87,7 @@ public class EntityJsonConverter implements DataHandler {
 		}
 	}
 
-	public String writeValue(EntityJson ej) {
+	public String writeValue(Object ej) {
 		try {
 			return ej == null ? null : om.writeValueAsString(ej);
 		} catch (Exception e) {

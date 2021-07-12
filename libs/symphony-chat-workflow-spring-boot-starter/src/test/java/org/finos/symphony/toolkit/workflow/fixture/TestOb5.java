@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work(name="Test Object 5", instructions="sundry other fields")
+@Work()
 public class TestOb5 {
 
 	TestOb4 ob4;

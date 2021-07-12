@@ -6,7 +6,7 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 
-@Work(name="Test Templated", instructions="blah")
+@Work()
 @Template(view="classpath:/test-freemarker-view.ftl") 
 public class TestTemplatedObject {
 

@@ -14,8 +14,10 @@ import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
+import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
@@ -133,10 +135,9 @@ public class OurController {
 	
 	@Exposed(description="Do blah with a form", value="form1")
 	public FormResponse form1(Addressable a) {
-		EntityJson json = new EntityJson();
-		json.put(EntityJsonConverter.WORKFLOW_001, new TestObject());
-		ButtonList bl = new ButtonList();		
-		return new FormResponse(a, new Object(), true, bl, null);
+		ButtonList bl = new ButtonList();	
+		bl.add(new Button("go", Type.ACTION, "Do The Thing"));
+		return new FormResponse(a, new TestObject(), true, bl, null);
 	}
 	
 	@Exposed(value="form2")
