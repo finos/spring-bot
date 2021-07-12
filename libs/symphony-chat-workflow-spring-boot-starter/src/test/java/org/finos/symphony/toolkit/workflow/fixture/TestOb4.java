@@ -6,7 +6,7 @@ import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
 
-@Work(name="Test Object 4", instructions="sundry other fields")
+@Work()
 public class TestOb4 {
 
 	public enum Choice { A, B, C };

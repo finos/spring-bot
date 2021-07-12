@@ -5,7 +5,7 @@ import java.util.List;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
-@Work(name="Test Object 4", instructions="sundry other fields")
+@Work()
 public class TestCollections {
 
 	public static class MiniBean {

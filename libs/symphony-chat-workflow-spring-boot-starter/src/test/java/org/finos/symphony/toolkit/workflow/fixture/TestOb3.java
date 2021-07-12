@@ -5,7 +5,7 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 
-@Work(name="Test Object 3", instructions="blah")
+@Work()
 public class TestOb3 {
 
 	private Chat r;

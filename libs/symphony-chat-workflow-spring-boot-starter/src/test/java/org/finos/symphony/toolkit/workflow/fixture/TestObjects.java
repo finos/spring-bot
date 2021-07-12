@@ -8,7 +8,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-@Work(editable=true, instructions="basket of stuff", name = "List of Test Objects")
+@Work()
 public class TestObjects {
 
 	@Valid

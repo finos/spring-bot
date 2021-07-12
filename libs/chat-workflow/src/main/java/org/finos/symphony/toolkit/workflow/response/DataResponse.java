@@ -17,7 +17,7 @@ public class DataResponse implements Response {
 	public DataResponse(Addressable to, Object data, String templateName) {
 		super();
 		this.to = to;
-		this.data = data == null ? new Object() : data;
+		this.data = data;
 		this.templateName = templateName;
 	}
 

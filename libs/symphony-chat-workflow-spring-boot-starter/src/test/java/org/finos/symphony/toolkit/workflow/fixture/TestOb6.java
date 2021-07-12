@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work(name = "Test Object 6", instructions = "Test Object 6 instructions")
+@Work()
 public class TestOb6 {
 
     private List<String> names = new ArrayList<>();

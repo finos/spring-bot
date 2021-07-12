@@ -15,7 +15,6 @@ import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
@@ -39,6 +38,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @SpringBootTest(classes = {
@@ -81,7 +83,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(16, hm.getHandlerMethods().size());
+		Assertions.assertEquals(17, hm.getHandlerMethods().size());
 		getMappingsFor("list");
 	}
 
@@ -234,7 +236,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 				Mockito.nullable(String.class), 
 				Mockito.matches("abc123"),
 				msg.capture(),
-				Mockito.anyString(),
+				Mockito.isNull(),
 				Mockito.isNull(), 
 				Mockito.isNull(), 
 				Mockito.isNull(), 
@@ -251,31 +253,38 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	@Test
 	public void testAttachmentResponse() throws Exception {
 		execute("attachment");
+		ArgumentCaptor<Object> att = ArgumentCaptor.forClass(Object.class);
 		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
-			Mockito.nullable(String.class), 
+			Mockito.isNull(), 
 			Mockito.matches("abc123"),
 			Mockito.anyString(),
-			Mockito.anyString(),
-			Mockito.nullable(String.class), 
-			Mockito.isA(byte[].class),
-			Mockito.nullable(Object.class), 
-			Mockito.nullable(String.class));
+			Mockito.isNull(),
+			Mockito.isNull(),
+			att.capture(),
+			Mockito.isNull(),
+			Mockito.isNull());
 		Mockito.clearInvocations();
+		Assertions.assertEquals(0, Arrays.compare(new byte[] {1, 2, 3}, (byte[]) att.getValue()));
 	}
 	
 	@Test
 	public void testFormResponse1() throws Exception {
 		execute("form1");
+		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
 		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
-				Mockito.nullable(String.class), 
+				Mockito.isNull(), 
 				Mockito.matches("abc123"),
-				Mockito.anyString(),
-				Mockito.anyString(),
-				Mockito.nullable(String.class), 
-				Mockito.isA(byte[].class),
-				Mockito.nullable(Object.class), 
-				Mockito.nullable(String.class));
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
 		Mockito.clearInvocations();
+		JsonNode node = new ObjectMapper().readTree(data.getValue());
+		JsonNode button1 = node.get(FormResponse.BUTTONLIST_KEY).get("contents").get(0);
+		Assertions.assertEquals("go", button1.get("name").textValue());
 	}
 	
 	@Test
@@ -294,8 +303,9 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 				Mockito.isNull());
 		Mockito.clearInvocations();
 		
-		EntityJson ej = ejc.readValue(data.getValue());
-		Assertions.assertEquals(1, ((ButtonList) ej.get(FormResponse.BUTTONLIST_KEY)).size());
+		JsonNode node = new ObjectMapper().readTree(data.getValue());
+		JsonNode button1 = node.get(FormResponse.BUTTONLIST_KEY).get("contents").get(0);
+		Assertions.assertEquals("ok", button1.get("name").textValue());
 	}
 	
 	
@@ -315,8 +325,8 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 				Mockito.isNull(), 
 				Mockito.isNull());
 		
-		EntityJson ej = ejc.readValue(data.getValue());
-		Assertions.assertEquals("Error123", ej.get(ErrorResponse.MESSAGE_KEY));
+		JsonNode node = new ObjectMapper().readTree(data.getValue());
+		Assertions.assertEquals("Error123", node.get(ErrorResponse.MESSAGE_KEY).asText());
 		Assertions.assertTrue(msg.getValue().contains("${entity.message}"));
 
 		Mockito.clearInvocations();
