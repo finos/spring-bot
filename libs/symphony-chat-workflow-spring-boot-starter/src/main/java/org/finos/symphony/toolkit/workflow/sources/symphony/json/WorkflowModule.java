@@ -1,9 +1,10 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.room;
+package org.finos.symphony.toolkit.workflow.sources.symphony.json;
 
 import java.io.IOException;
 
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

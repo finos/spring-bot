@@ -32,7 +32,7 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 		this.clusterName = clusterName;
 		this.streamId = streamId;
 		this.om = ObjectMapperFactory.initialize(
-			ObjectMapperFactory.extendedSymphonyVersionSpace(MessagingVersionSpace.THIS));
+			ObjectMapperFactory.extendedSymphonyVersionSpace(LogMessage.VERSION_SPACE));
 		this.messagesApi = messagesApi;
 		this.environmentSuffix = environmentSuffix == null ? "prod" : environmentSuffix;
 	}

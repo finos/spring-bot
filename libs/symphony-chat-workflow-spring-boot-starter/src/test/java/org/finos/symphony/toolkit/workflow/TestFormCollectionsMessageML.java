@@ -10,7 +10,7 @@ import org.finos.symphony.toolkit.workflow.fixture.TestCollections.MiniBean;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
@@ -54,7 +54,7 @@ public class TestFormCollectionsMessageML extends AbstractMockSymphonyTest {
 				Arrays.asList("a", "b", "c"), 
 				Arrays.asList(Choice.A, Choice.B), 
 				Arrays.asList(mb1, mb2, mb3),
-				Arrays.asList(new HashTagDef("abc"), new HashTagDef("def")));
+				Arrays.asList(new HashTag("abc"), new HashTag("def")));
 		return out;
 	}
 	

@@ -1,18 +1,29 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
+import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
@@ -22,6 +33,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyRes
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerTypeConverterConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.jersey.JerseyAttachmentHandlerConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
@@ -34,17 +46,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Validator;
+import org.symphonyoss.Taxonomy;
+import org.symphonyoss.fin.Security;
+import org.symphonyoss.fin.security.id.Cusip;
+import org.symphonyoss.fin.security.id.Isin;
+import org.symphonyoss.fin.security.id.Openfigi;
+import org.symphonyoss.fin.security.id.Ticker;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
@@ -52,6 +73,8 @@ import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
+import com.symphony.user.Mention;
+import com.symphony.user.UserId;
 
 /**
  * Symphony beans needing the workflow bean to be defined.
@@ -61,7 +84,7 @@ import com.symphony.api.pod.UsersApi;
  */
 @Configuration
 @AutoConfigureBefore(SharedStreamSingleBotConfig.class)
-@Import({ChatWorkflowConfig.class, FreemarkerTypeConverterConfig.class})
+@Import({ChatWorkflowConfig.class, FreemarkerTypeConverterConfig.class, JerseyAttachmentHandlerConfig.class})
 public class SymphonyWorkflowConfig {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SymphonyWorkflowConfig.class);
@@ -94,6 +117,9 @@ public class SymphonyWorkflowConfig {
 	@Autowired
 	@Lazy
 	List<TypeConverter> converters;
+	
+	@Autowired
+	ApplicationContext ac;
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -148,9 +174,60 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public EntityJsonConverter entityJsonConverter() {
-	//	cpsccp.
+		List<VersionSpace> workAnnotatedversionSpaces = scanForWorkClasses();
 		
-		return new EntityJsonConverter();
+		List<VersionSpace> chatWorkflowVersionSpaces = Arrays.asList(
+			new VersionSpace(Taxonomy.class, "1.0"),
+			new VersionSpace(CashTag.class, EntityJson.getSymphonyTypeName(Security.class), "1.0", "0.*"),
+			new VersionSpace(SymphonyUser.class, EntityJson.getSymphonyTypeName(Mention.class), "1.0"), 
+			new VersionSpace(Mention.class, "1.0"), 
+			new VersionSpace(UserId.class, "1.0"), 
+			ObjectMapperFactory.noVersion(Ticker.class), 
+			ObjectMapperFactory.noVersion(Cusip.class), 
+			ObjectMapperFactory.noVersion(Isin.class), 
+			ObjectMapperFactory.noVersion(Openfigi.class),
+			LogMessage.VERSION_SPACE, 
+			RoomWelcomeEventConsumer.VERSION_SPACE);
+		
+		List<VersionSpace> combined = new ArrayList<>();
+		combined.addAll(chatWorkflowVersionSpaces);
+		combined.addAll(workAnnotatedversionSpaces);
+				
+		return new EntityJsonConverter(combined);
+	}
+
+	protected List<VersionSpace> scanForWorkClasses() {
+		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
+		scanner.addIncludeFilter(new AnnotationTypeFilter(Work.class));
+		Set<BeanDefinition> toAdd = scanner.findCandidateComponents(ChatWorkflowConfig.class.getPackageName());
+		
+		for (String ent : ac.getBeanNamesForAnnotation(SpringBootApplication.class)) {
+			String packageName = ac.getBean(ent).getClass().getPackageName();
+			Set<BeanDefinition> user = scanner.findCandidateComponents(packageName);
+			toAdd.addAll(user);
+		}
+		
+		List<VersionSpace> versionSpaces = toAdd.stream()
+			.map(bd -> bd.getBeanClassName()) 
+			.map(s -> {
+				try {
+					return Class.forName(s);
+				} catch (ClassNotFoundException e) {
+					LOG.error("Couldn't instantiate: "+s, e);
+					return null;
+				}
+			})
+			.filter(x -> x != null) 
+			.map(c -> {
+				Work w = c.getAnnotation(Work.class);
+				String jsonTypeName = w.jsonTypeName();
+				jsonTypeName = StringUtils.hasText(jsonTypeName) ? jsonTypeName : EntityJson.getSymphonyTypeName(c);
+				String writeVersion = w.writeVersion();
+				String[] readVersions = w.readVersions();
+				return new VersionSpace(jsonTypeName, c, writeVersion, readVersions);
+			})
+			.collect(Collectors.toList());
+		return versionSpaces;
 	}
 	
 	@Bean
@@ -168,8 +245,8 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public InRoomAddressingChecker inRoomAddressingChecker() {
-		UserV2 user = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
-		SymphonyUser su = new SymphonyUser(user.getId(), user.getDisplayName(), user.getEmailAddress(), () -> "");
+		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
+		SymphonyUser su = new SymphonyUser(() -> "", symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
 		return new InRoomAddressingChecker(su, true);
 	}
 	

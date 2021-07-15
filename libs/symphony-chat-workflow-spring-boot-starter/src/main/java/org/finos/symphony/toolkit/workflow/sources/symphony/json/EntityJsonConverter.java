@@ -1,25 +1,27 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.json;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.response.DataResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.DataHandler;
+import org.symphonyoss.Taxonomy;
+import org.symphonyoss.fin.Security;
+import org.symphonyoss.fin.security.id.Cusip;
+import org.symphonyoss.fin.security.id.Isin;
+import org.symphonyoss.fin.security.id.Openfigi;
+import org.symphonyoss.fin.security.id.Ticker;
+import org.symphonyoss.taxonomy.Hashtag;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.symphony.user.Mention;
+import com.symphony.user.UserId;
 
 /**
  * Converts workflow objects to/from JSON.
@@ -30,33 +32,18 @@ public class EntityJsonConverter implements DataHandler {
 
 	ObjectMapper om;
 	
-	public EntityJsonConverter() {
-		this(instantiateObjectMapper());
-	}
-
-	private static ObjectMapper instantiateObjectMapper() {
-		ObjectMapper om = new ObjectMapper();
-		om.enable(SerializationFeature.INDENT_OUTPUT);
-		return om;
+	public EntityJsonConverter(List<VersionSpace> versions) {
+		this(new ObjectMapper(), versions);
 	}
 	
-	public EntityJsonConverter(ObjectMapper objectMapper) {
-		List<Class<?>> extendedClassSpace = new ArrayList<Class<?>>();
-		extendedClassSpace.add(SymphonyRoom.class);
-		extendedClassSpace.add(SymphonyUser.class);
-		extendedClassSpace.add(User.class);
-		extendedClassSpace.add(Chat.class);
-		extendedClassSpace.add(Button.class);
-		extendedClassSpace.add(ButtonList.class);
-		extendedClassSpace.add(RoomList.class);
-		extendedClassSpace.add(ErrorMap.class);
-		extendedClassSpace.add(HeaderDetails.class);
-		
-		//extendedClassSpace.addAll(wf.getDataTypes());
-		VersionSpace[] vs = extendedClassSpace.stream().map(c -> new VersionSpace(c.getCanonicalName(), "1.0")).toArray(s -> new VersionSpace[s]);
-		om = ObjectMapperFactory.initialize(objectMapper, ObjectMapperFactory.extendedSymphonyVersionSpace(vs));		
+	public EntityJsonConverter(ObjectMapper objectMapper, List<VersionSpace> classesToUse) {
+		om = ObjectMapperFactory.initialize(objectMapper, ObjectMapperFactory.extendedSymphonyVersionSpace(classesToUse));		
+		om.enable(SerializationFeature.INDENT_OUTPUT);
 		om.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		om.registerModule(new JavaTimeModule());
+//		om.registerModule(new WorkflowModule(null))
+		
 	}
 
 	public Object readWorkflowValue(String json) {

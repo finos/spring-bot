@@ -1,82 +1,71 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.symphonyoss.TaxonomyElement;
 
-public class SymphonyUser extends TagDef implements User, SymphonyContent, SymphonyAddressable {
+import com.symphony.user.DisplayName;
+import com.symphony.user.EmailAddress;
+import com.symphony.user.Mention;
+import com.symphony.user.UserId;
+
+public class SymphonyUser extends Mention implements User, SymphonyContent, SymphonyAddressable {
 	
-	protected String emailAddress;
 	private transient String streamId;
-	private Supplier<String> streamIdSupplier;
+	private transient Supplier<String> streamIdSupplier;
 	
 	public SymphonyUser() {
 		super();
 	}
 
-	public SymphonyUser(String id, String name, String emailAddress, Supplier<String> streamIdSupplier) {
-		super(id, name, Type.USER);
-		this.emailAddress = emailAddress;
+	public SymphonyUser(long userId) {
+		super(createTaxonomy(userId, null, null));
+	}
+	
+	private static List<TaxonomyElement> createTaxonomy(Long userId, String displayName, String emailAddress) {
+		List<TaxonomyElement> out = new ArrayList<TaxonomyElement>();
+		if (userId != null) {
+			out.add(new UserId(""+userId));
+		}
+		if (displayName != null) {
+			out.add(new DisplayName(displayName));
+		}
+		if (emailAddress != null) {
+			out.add(new EmailAddress(emailAddress));
+		}
+		
+		return out;
+	}
+
+	public SymphonyUser(String streamId, String name, String emailAddress) {
+		super(createTaxonomy(null, name, emailAddress));
+		this.streamId = streamId;
+	}	
+	
+	public SymphonyUser(Supplier<String> streamIdSupplier, String name, String emailAddress) {
+		super(createTaxonomy(null, name, emailAddress));
 		this.streamIdSupplier = streamIdSupplier;
 	}	
 	
-	public SymphonyUser(long id, String name, String emailAddress, Supplier<String> streamIdSupplier) {
-		this(Long.toString(id), name, emailAddress, streamIdSupplier);
-	}
-	
-	public SymphonyUser(long id, String name, String emailAddress, String streamId) {
-		this(id, name, emailAddress, () -> streamId);
-	}
-
 	public String getEmailAddress() {
-		return emailAddress;
-	}
-	
-	@Override
-	public Type getTagType() {
-		return Type.USER;
+		return fromTaxonomy(EmailAddress.class);
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+	private String fromTaxonomy(Class<?> class1) {
+		return getId().stream()
+			.filter(t -> class1.isAssignableFrom(t.getClass()))
+			.findFirst()
+			.map(te -> te.getValue())
+			.orElse(null);
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SymphonyUser other = (SymphonyUser) obj;
-		if (emailAddress == null) {
-			if (other.emailAddress != null)
-				return false;
-		} else if (!emailAddress.equals(other.emailAddress))
-			return false;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
 
 	@Override
 	public String toString() {
-		return "UserDef [emailAddress=" + getEmailAddress() + ", name=" + getName() + ", id=" + getId() + "]";
+		return "SymphonyUser [getId()=" + getId() + "]";
 	}
 
 	@Override
@@ -85,6 +74,20 @@ public class SymphonyUser extends TagDef implements User, SymphonyContent, Symph
 		return streamId;
 	}
 
+	@Override
+	public String getName() {
+		return fromTaxonomy(DisplayName.class);
+	}
+
+	@Override
+	public Type getTagType() {
+		return USER;
+	}
+
+	
+	public String getUserId() {
+		return fromTaxonomy(UserId.class);
+	}
 	
 
 }

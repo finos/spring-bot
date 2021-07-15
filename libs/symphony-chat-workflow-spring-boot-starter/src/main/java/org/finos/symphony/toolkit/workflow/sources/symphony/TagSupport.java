@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.springframework.util.StringUtils;
 
 public class TagSupport {
@@ -38,19 +38,15 @@ public class TagSupport {
 	}
 	
 	public static String format(Tag t) {
-		if (t == null) {
-			return "";
-		}
-		switch(t.getTagType()) {
-		case CASH:
+		if (t.getTagType() == Tag.CASH) {
 			return toCashTag(t.getName());
-		case HASH:
+		} else if (t.getTagType() == Tag.HASH) {
 			return toHashTag(t.getName());
-		case USER:
-			return toUserTag(t.getId());
-		default:
-			return "";
+		} else if (t.getTagType() == Tag.USER) {
+			return toUserTag(((SymphonyUser) t).getUserId());
 		}
+		
+		return "";
 	}
 	
 	public static Set<HashTag> classHashTags(Object in) {
@@ -71,7 +67,7 @@ public class TagSupport {
 			return null;
 		}
 		
-		return new HashTagDef(formatTag(in));
+		return new HashTag(formatTag(in));
 	}
 	
 	public static Set<HashTag> toHashTags(Class<?> c) {

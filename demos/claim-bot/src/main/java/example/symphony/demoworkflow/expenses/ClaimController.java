@@ -13,11 +13,18 @@ public class ClaimController {
 
 
 	@Exposed(value = "open", description="Begin New Expense Claim")
-	public static Claim open(StartClaim c) {
-		Claim out = new Claim();
-		out.description = c.description;
-		out.amount = c.amount;
-		return out;
+	public FormResponse open(Addressable a) {
+		return new FormResponse(a, new StartClaim(), true);
+	}
+	
+	@Exposed(value = "add", description="Submit Expense Claim", formClass = StartClaim.class)
+	public Claim add(StartClaim sc, User u) {
+		Claim c =  new Claim();
+		c.amount = sc.amount;
+		c.author = u;
+		c.description = sc.description;
+		c.status = Status.OPEN;
+		return c;
 	}
 
 	@Exposed(formClass = Claim.class, value="approve", description = "Approve Claim")

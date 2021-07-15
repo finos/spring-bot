@@ -7,8 +7,8 @@ import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTagDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
@@ -21,8 +21,8 @@ public class TestContents {
 	@Test
 	public void testContents() {
 		// tag def
-		doAssertsOnContent(new CashTagDef("id123"), new CashTagDef("id123"));
-		doAssertsOnContent(new HashTagDef("id123"), new HashTagDef("id123"));
+		doAssertsOnContent(new CashTag("id123"), new CashTag("id123"));
+		doAssertsOnContent(new HashTag("id123"), new HashTag("id123"));
 		
 		// room def
 		doAssertsOnObject(new SymphonyRoom("abc", "desc", true, "abc123"), new SymphonyRoom("abc", "desc", true, "abc123"));

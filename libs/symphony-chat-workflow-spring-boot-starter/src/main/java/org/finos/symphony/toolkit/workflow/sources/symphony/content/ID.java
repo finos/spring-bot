@@ -9,7 +9,7 @@ import java.util.UUID;
  * @author Rob Moffat
  *
  */
-public final class ID extends TagDef {
+public final class ID extends HashTag {
 
 	public ID() {
 		this(UUID.randomUUID());

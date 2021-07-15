@@ -3,10 +3,9 @@ package org.finos.symphony.toolkit.json;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
-
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -54,16 +53,31 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 	 */
 	public static class VersionSpace {
 		
-		public final String packagePrefix;
+		public final String typeName;
 		public final String writeVersion;
-		private String[] readVersions;
+		private final String[] readVersions;
+		private final Class<?> toUse;
 		
-		public VersionSpace(String packagePrefix, String writeVersion, String... readVersions) {
+		public Class<?> getToUse() {
+			return toUse;
+		}
+
+		public VersionSpace(String typeName, Class<?> toUse, String writeVersion, String... readVersions) {
 			super();
-			this.packagePrefix = packagePrefix;
+			this.typeName = typeName;
 			this.writeVersion = writeVersion;
 			this.readVersions = readVersions;
+			this.toUse = toUse;
 		}
+		
+		public VersionSpace(Class<?> toUse, String writeVersion, String... readVersions) {
+			this(EntityJson.getSymphonyTypeName(toUse), toUse, writeVersion, readVersions);
+		}
+		
+		public VersionSpace(Class<?> toUse) {
+			this(EntityJson.getSymphonyTypeName(toUse), toUse, "1.0");
+		}
+		
 		
 		public Predicate<String> toPattern(String version) {
 			String converted = version
@@ -82,9 +96,10 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 
 		@Override
 		public String toString() {
-			return "VersionSpace [packagePrefix=" + packagePrefix + ", getVersions()=" + getVersions() + "]";
+			return "VersionSpace [typeName=" + typeName + ", writeVersion=" + writeVersion + ", readVersions="
+					+ Arrays.toString(readVersions) + ", toUse=" + toUse + "]";
 		}
-		
+	
 	}
 	
 	public EntityJsonTypeResolverBuilder(TypeFactory typeFactory, VersionSpace... allowed) {
@@ -99,7 +114,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 			public Validity validateSubClassName(MapperConfig<?> config, JavaType baseType, String subClassName)
 					throws JsonMappingException {
 				for (VersionSpace versionSpace : allowed) {
-					if (subClassName.startsWith(versionSpace.packagePrefix)) {
+					if (subClassName.startsWith(versionSpace.getToUse().getCanonicalName())) {
 						return Validity.ALLOWED;
 					}
 				}
@@ -121,22 +136,29 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 
 			@Override
 			public String idFromValue(Object value) {
-				StringBuilder manipulated = new StringBuilder(value.getClass().getCanonicalName());
-				int idx = manipulated.lastIndexOf(".");
-				manipulated.setCharAt(idx+1, Character.toLowerCase(manipulated.charAt(idx+1)));
-				String id = manipulated.toString();
-				return id;
+				Class<?> c = value.getClass();
+				Optional<VersionSpace> vs = Arrays.stream(allowed)
+					.filter(v -> v.getToUse().equals(c))
+					.findFirst();
+				
+				if (vs.isPresent()) {
+					return vs.get().typeName;
+				} else {
+					return EntityJson.getSymphonyTypeName(c);
+				}
 			}
 
 			@Override
 			public JavaType typeFromId(DatabindContext context, String id) throws IOException {
-				// upper-case the first letter after the last dot
-				StringBuilder manipulated = new StringBuilder(id);
-				int idx = manipulated.lastIndexOf(".");
-				manipulated.setCharAt(idx+1, Character.toUpperCase(manipulated.charAt(idx+1)));
-				id = manipulated.toString();
+				Optional<VersionSpace> vs = Arrays.stream(allowed)
+						.filter(v -> v.typeName.equals(id))
+						.findFirst();
 				
-				return super.typeFromId(context, id);
+				if (vs.isPresent()) {
+					return super.typeFromId(context, vs.get().getToUse().getCanonicalName());
+				} else {
+					throw new RuntimeException("Couldn't determine class for: "+id+".  This is not declared in VersionSpace array.");
+				}
 			}
 			
 			
@@ -159,19 +181,18 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 				
 				if ("version".equals(propertyName)) {
 					String versionNumber = ctxt.readValue(p, String.class);
-					String className = beanOrClass.getClass().getCanonicalName();
 					
 					for (VersionSpace versionSpace : allowed) {
-						if (className.startsWith(versionSpace.packagePrefix)) {
+						if (versionSpace.getToUse().equals(beanOrClass.getClass())) {
 							
 							if (versionSpace.matches(versionNumber)) {
 								// ok
 								return true;
 							} else {
 								throw JsonMappingException.from(p, 
-										"Version of object "+className+
+										"Version of object "+beanOrClass+
 										" was "+versionNumber+
-										" but versionSpace "+versionSpace.packagePrefix+
+										" but versionSpace "+versionSpace.typeName+
 										" requires "+versionSpace.getVersions());
 							}
 						}
@@ -203,9 +224,8 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		}
 		
 		if (!out) {
-			String className = t.getRawClass().getCanonicalName();
 			for (VersionSpace versionSpace : allowed) {
-				if (className.startsWith(versionSpace.packagePrefix)) {
+				if (t.isTypeOrSuperTypeOf(versionSpace.getToUse())) {
 					return true;
 				}
 			}
@@ -224,9 +244,8 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 				public WritableTypeId writeTypePrefix(JsonGenerator g, WritableTypeId idMetadata) throws IOException {
 					String version = null;
 					Class<? extends Object> class1 = idMetadata.forValue.getClass();
-					String className = class1.getCanonicalName();
 					for (VersionSpace versionSpace : allowed) {
-						if (className.startsWith(versionSpace.packagePrefix)) {
+						if (versionSpace.getToUse().isAssignableFrom(class1)) {
 							version= versionSpace.writeVersion;
 							break;
 						}
