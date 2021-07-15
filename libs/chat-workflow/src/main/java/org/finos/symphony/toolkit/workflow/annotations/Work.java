@@ -21,9 +21,9 @@ public @interface Work {
 	/**
 	 * Replace this name if you want to give a specific name for the class over the wire.
 	 */
-	public String jsonTypeName = "";
+	public String jsonTypeName() default "";
 	
-	public String writeVersion = "1.0";
+	public String writeVersion() default "1.0";
 	
-	public String[] readVersions = { "1.0" };
+	public String[] readVersions() default { "1.0" };
 }

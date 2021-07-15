@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.WorkflowModule;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.WorkflowModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

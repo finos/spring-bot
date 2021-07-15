@@ -22,7 +22,7 @@ import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
@@ -98,7 +98,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
 		jsonObjects.put("1", new SymphonyUser("1", "gaurav", "gaurav@example.com", () ->  ""));
-		jsonObjects.put("2", new HashTagDef("SomeTopic"));
+		jsonObjects.put("2", new HashTag("SomeTopic"));
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Chat r = new SymphonyRoom("The Room Where It Happened", "Some description", true, "abc123");
 		User author = new SymphonyUser("user123", "Rob Moffat", "rob.moffat@example.com", () -> "");

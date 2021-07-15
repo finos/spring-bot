@@ -22,7 +22,14 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.symphony.integration.Icon;
+import com.symphony.integration.User;
+import com.symphony.integration.jira.Issue;
+import com.symphony.integration.jira.IssueType;
+import com.symphony.integration.jira.Label;
+import com.symphony.integration.jira.Priority;
 import com.symphony.integration.jira.event.Created;
+import com.symphony.integration.jira.event.V2Created;
 import com.symphony.integration.jira.event.v2.State;
 import com.symphony.user.Mention;
 
@@ -34,8 +41,17 @@ public class TestSerialization {
 	@BeforeAll
 	public static void setupMapper() {
 		VersionSpace[] vs = ObjectMapperFactory.extendedSymphonyVersionSpace(
-				new VersionSpace("com.symphony", "1.0"),
-				new VersionSpace("org.finos.symphony.toolkit.json.test", "1.0"));
+				new VersionSpace(ClassWithEnum.class, "1.0"),
+				new VersionSpace(Created.class, "1.0"),
+				new VersionSpace("com.symphony.integration.jira.event.v2.created", V2Created.class, "1.0"),
+				new VersionSpace(Issue.class, "1.0"),
+				new VersionSpace(State.class, "1.0"),
+				new VersionSpace(IssueType.class, "1.0"),
+				new VersionSpace(Label.class, "1.0"),
+				new VersionSpace(Priority.class, "1.0"),
+				new VersionSpace(Icon.class, "1.0"),
+				new VersionSpace(User.class, "1.0")
+				);
 		om = ObjectMapperFactory.initialize(vs);
 		
 		// specific to these crazy beans
@@ -106,8 +122,8 @@ public class TestSerialization {
 	public void testJiraExample3() throws Exception {
 		String json = getExpected("jira-example-3.json");
 		EntityJson ej = om.readValue(json, EntityJson.class);
-		Assertions.assertEquals("production", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.labels.get(0).text);
-		Assertions.assertEquals("bot.user2", ((com.symphony.integration.jira.event.v2.Created) ej.get("jiraIssueCreated")).issue.assignee.username);
+		Assertions.assertEquals("production", ((V2Created) ej.get("jiraIssueCreated")).issue.labels.get(0).text);
+		Assertions.assertEquals("bot.user2", ((V2Created) ej.get("jiraIssueCreated")).issue.assignee.username);
 		EntityJson ej2 = om.readValue(json, EntityJson.class);
 		Assertions.assertEquals(ej, ej2);
 		Assertions.assertEquals(ej.hashCode(), ej2.hashCode());
@@ -142,12 +158,12 @@ public class TestSerialization {
 	
 	@Test
 	public void testVersionMatching() {
-		VersionSpace vs = new VersionSpace("", "2.0", "1.*");
+		VersionSpace vs = new VersionSpace(Object.class, "2.0", "1.*");
 		Assertions.assertTrue(vs.matches("1.1"));
 		Assertions.assertTrue(vs.matches("1.5"));
 		Assertions.assertTrue(vs.matches("2.0"));
 	
-		VersionSpace vs2 = new VersionSpace("", "2.0", "1.[0-4]");
+		VersionSpace vs2 = new VersionSpace(Object.class, "2.0", "1.[0-4]");
 		Assertions.assertTrue(vs2.matches("1.1"));
 		Assertions.assertFalse(vs2.matches("1.5"));
 		Assertions.assertTrue(vs2.matches("2.0"));

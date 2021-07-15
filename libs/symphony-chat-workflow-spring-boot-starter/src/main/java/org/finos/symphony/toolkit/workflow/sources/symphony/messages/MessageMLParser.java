@@ -17,24 +17,20 @@ import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.Tag;
-import org.finos.symphony.toolkit.workflow.content.Tag.Type;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTagDef;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTagDef;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.symphonyoss.Taxonomy;
-import org.symphonyoss.fin.security.id.SecId;
-import org.symphonyoss.taxonomy.Hashtag;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.ext.DefaultHandler2;
 
-import com.symphony.user.UserId;
+import com.symphony.user.DisplayName;
 
 /**
  * Provides functionality for simple command messages.  i.e. those likely to have been typed in by users.
@@ -62,44 +58,27 @@ public class MessageMLParser {
 		abstract boolean hasContent();
 	}
 	
-	static class TagFrame extends TextFrame<Tag> {
+	static class TagFrame<X extends Tag> extends TextFrame<X> {
 
 		String id;
 		Tag.Type type;
+		X contents;
 		
-		@Override
-		public Tag getContents() {
-			if (type== Type.USER) {
-				return new SymphonyUser(id, buf.substring(1), null, () -> "");
-			} else if (type == Type.CASH ){
-				return new CashTagDef(id);
-			} else {
-				return new HashTagDef(id);
-			}
-		}
-		
-		private void deReference(Object o) {
-			if (o instanceof Taxonomy) {
-				o = ((Taxonomy)o).getId().get(0);
-			} 
-			
-			if (o instanceof UserId) {
-				id = ((UserId) o).getValue();
-				type = Type.USER;
-			} else if (o instanceof SecId) {
-				id = ((SecId) o).getValue();
-				type = Type.CASH;
-			} else if (o instanceof Hashtag) {
-				id = ((Hashtag) o).getValue();
-				type = Type.HASH;
-			} else if (o instanceof Tag) {
-				id = ((Tag) o).getId();
-				type = ((Tag) o).getTagType();
-			} else {
-				throw new UnsupportedOperationException();
-			}
+		public TagFrame(X contents) {
+			super();
+			this.contents = contents;
 		}
 
+		@Override
+		public X getContents() {
+			if ((contents instanceof SymphonyUser) && (contents.getName()==null)) {
+				SymphonyUser su = (SymphonyUser) contents;
+				su.getId().add(new DisplayName(buf.toString()));
+			}
+			
+			return contents;
+		}
+		
 		@Override
 		public boolean isEnding(String qName) {
 			return true;
@@ -114,6 +93,8 @@ public class MessageMLParser {
 		boolean hasContent() {
 			return true;
 		}
+		
+		
 	}
 	
 	static class IgnoredFrame extends TextFrame<Content> {
@@ -374,10 +355,17 @@ public class MessageMLParser {
 					} else if (isStartCodeBlock(qName, attributes)) {
 						push(new CodeBlockFrame(qName));
 					} else if (isStartTag(qName, attributes)) {
-						TagFrame tf = push(new TagFrame());
 						String dataEntityId = attributes.getValue("data-entity-id");
 						Object o = jsonObjects.get(dataEntityId);
-						tf.deReference(o);
+						if (o instanceof SymphonyUser) {
+							push(new TagFrame<SymphonyUser>((SymphonyUser) o));
+						} else if (o instanceof HashTag) {
+							push(new TagFrame<HashTag>((HashTag) o));
+						} else if (o instanceof CashTag) {
+							push(new TagFrame<CashTag>((CashTag) o));
+						} else {
+							throw new UnsupportedOperationException();
+						}
 					} else if (isStartTable(qName, attributes)) {
 						push(new TableFrame());
 					} else if (isStartParaListItemOrCell(qName, attributes)) {

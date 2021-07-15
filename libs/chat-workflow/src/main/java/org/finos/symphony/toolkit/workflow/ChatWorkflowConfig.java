@@ -8,7 +8,6 @@ import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHandler;
 import org.finos.symphony.toolkit.workflow.actions.form.FormEditConfig;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.help.HelpController;
 import org.finos.symphony.toolkit.workflow.java.converters.FormResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
@@ -23,8 +22,6 @@ import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.OrderComparator;
@@ -32,7 +29,6 @@ import org.springframework.util.ErrorHandler;
 
 @Configuration
 @Import(value =  { ResolverConfig.class, FormEditConfig.class })
-@ComponentScan(includeFilters =  {@Filter(classes= {Work.class })})
 public class ChatWorkflowConfig {
 
 	@Bean

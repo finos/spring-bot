@@ -1,12 +1,13 @@
-package com.symphony.integration.jira.event.v2;
+package com.symphony.integration.jira.event;
 
 import com.symphony.integration.User;
 import com.symphony.integration.jira.Issue;
 
-public class Created {
+public class V2Created {
 
 	public User user;
 	public Issue issue;
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -23,7 +24,7 @@ public class Created {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Created other = (Created) obj;
+		V2Created other = (V2Created) obj;
 		if (issue == null) {
 			if (other.issue != null)
 				return false;
