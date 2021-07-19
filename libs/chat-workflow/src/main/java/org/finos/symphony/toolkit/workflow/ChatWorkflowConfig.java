@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Priority;
+
 import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHandler;
 import org.finos.symphony.toolkit.workflow.actions.form.FormEditConfig;
@@ -24,7 +26,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.OrderComparator;
+import org.springframework.core.PriorityOrdered;
+import org.springframework.core.annotation.Order;
 import org.springframework.util.ErrorHandler;
 
 @Configuration
@@ -33,8 +38,9 @@ public class ChatWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public HelpController helpConsumer(List<ChatHandlerMapping<Exposed>> chatHandlerMappings) {
-		return new HelpController(chatHandlerMappings);
+	@Lazy
+	public HelpController helpConsumer() {
+		return new HelpController();
 	}
 
 	@Bean
@@ -57,6 +63,7 @@ public class ChatWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
+	@Order(value = PriorityOrdered.HIGHEST_PRECEDENCE)
 	public ExposedHandlerMapping handlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
 			List<ResponseConverter> converters) {
 		return new ExposedHandlerMapping(wrf, rh, converters);

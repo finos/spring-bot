@@ -7,7 +7,7 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 
 @Work
-@Template(view = "help-page")
+@Template(view = "help-template")
 public class HelpPage {
 	
 	List<CommandDescription> commands;

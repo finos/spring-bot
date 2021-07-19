@@ -10,9 +10,7 @@ public interface CommandDescription {
 	public String getDescription();
 	
 	public List<String> getExamples();
-	
-	boolean addToHelp();
-	
+
 	/**
 	 * Whether this method can be exposed as a button
 	 */
