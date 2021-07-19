@@ -11,6 +11,10 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 public class HelpPage {
 	
 	List<CommandDescription> commands;
+	
+	public HelpPage() {
+		super();
+	}
 
 	public HelpPage(List<CommandDescription> commands2) {
 		this.commands = commands2;

@@ -36,7 +36,7 @@ public class SymphonyRoom implements Chat, SymphonyAddressable {
 
 	@Override
 	public String toString() {
-		return "SymphonyRooom [name=" + getName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
+		return "SymphonyRoom [name=" + getName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
 	}
 
 	@Override
