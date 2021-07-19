@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.stream.MessagingVersionSpace;
 import org.finos.symphony.toolkit.stream.SharedStreamException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

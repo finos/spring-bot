@@ -56,6 +56,7 @@ public class HelpController implements ApplicationContextAware {
 				.flatMap(ec -> ec.getAllHandlers(a, u).stream())
 				.filter(hm -> includeInHelp(hm))
 				.map(hm -> convertToCommandDescriptions(hm))
+				.sorted((c, b) -> c.getDescription().compareTo(b.getDescription()))
 				.collect(Collectors.toList());
 
 		return new FormResponse(a, new HelpPage(commands), false);
@@ -87,29 +88,8 @@ public class HelpController implements ApplicationContextAware {
 	private CommandDescription convertToCommandDescriptions(ChatMapping<Exposed> hm) {
 		Exposed e = hm.getMapping();
 		ChatHandlerMethod m = hm.getHandlerMethod();
-		return new CommandDescription() {
-			
-			@Override
-			public String getDescription() {
-				return StringUtils.hasText(e.description()) ? e.description() : defaultDescription(m.getMethod());
-			}
-
-			@Override
-			public boolean isButton() {
-				return e.isButton();
-			}
-
-			@Override
-			public boolean isMessage() {
-				return e.isMessage();
-			}
-
-			@Override
-			public List<String> getExamples() {
-				return Arrays.asList(e.value());
-			}
-
-		};
+		String d = StringUtils.hasText(e.description()) ? e.description() : defaultDescription(m.getMethod());
+		return new CommandDescription(d, e.isButton(), e.isMessage(), Arrays.asList(e.value()));
 	}
 
 	@SuppressWarnings("unchecked")

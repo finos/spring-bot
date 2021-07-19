@@ -14,6 +14,7 @@ import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.Exposed.NoFormClass;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -203,11 +204,19 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 					return null;
 				}
 				
-				if (e.formClass() != null) {
+				if (e.formClass() != NoFormClass.class) {
 					Class<?> expectedFormClass = e.formClass();
 					if (!expectedFormClass.isAssignableFrom(a.getFormData().getClass())) {
 						return null;
 					}
+				}
+				
+				long valueMatches = Arrays.stream(e.value())
+					.filter(v -> v.equals(a.getAction()))
+					.count();
+				
+				if (valueMatches == 0) {
+					return null;
 				}
 				
 				return new AbstractHandlerExecutor(wrf, rh, converters) {

@@ -85,9 +85,13 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	}
 	
 	protected void sendResponse(String template, Object attachment, String data, Addressable address) {
-		if (address instanceof SymphonyAddressable) {
-			String streamId = ((SymphonyAddressable) address).getStreamId();
-			messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
+		try {
+			if (address instanceof SymphonyAddressable) {
+				String streamId = ((SymphonyAddressable) address).getStreamId();
+				messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
+			}
+		} catch (Exception e) {
+			LOG.error("Coulnd't send message: ", e);
 		} 
 	}
 

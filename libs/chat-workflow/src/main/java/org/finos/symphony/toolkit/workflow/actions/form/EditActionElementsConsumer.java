@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.workflow.actions.form;
 
 import java.util.Collections;
+import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -19,15 +20,15 @@ public class EditActionElementsConsumer extends AbstractTableActionConsumer {
 	@Override
 	public void acceptFormAction(FormAction u) {
 		if (u.getAction().equals(EDIT)) {
-			EntityJson ej = u.getData();
-			Object ob = ej.get(FormAction.);
-			return Collections.singletonList(new FormResponse(wf, u.getAddressable(), ej, 
-					"Edit "+wf.getName(ob.getClass()), 
-					wf.getInstructions(ob.getClass()), ob, true, 
-				ButtonList.of()));
+			Object o = u.getData();
+//			Object ob = ej.get(FormAction.);
+//			return Collections.singletonList(new FormResponse(wf, u.getAddressable(), ej, 
+//					"Edit "+wf.getName(ob.getClass()), 
+//					wf.getInstructions(ob.getClass()), ob, true, 
+//				ButtonList.of()));
 		}
 		
-		return null;
+		//return null;
 	}
 
 }

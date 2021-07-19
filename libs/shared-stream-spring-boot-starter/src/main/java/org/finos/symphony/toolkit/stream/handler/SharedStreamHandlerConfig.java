@@ -110,9 +110,6 @@ public class SharedStreamHandlerConfig {
 		};
 	}
 
-	@Bean
-	@Scope(value = BeanDefinition.SCOPE_PROTOTYPE)
-	@ConditionalOnMissingBean
 	protected SymphonyStreamHandler streamHandler(ApiInstance symphonyApi, List<StreamEventConsumer> consumers, ExceptionConsumer ec){
 		SymphonyStreamHandler out = new SymphonyStreamHandler(symphonyApi, consumers, ec, false);
 		String email = symphonyApi.getIdentity().getEmail();
