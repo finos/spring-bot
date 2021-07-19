@@ -44,7 +44,8 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	 * @see #handlerMethodsInitialized
 	 */
 	protected void initHandlerMethods() {
-		for (String beanName : getCandidateBeanNames()) {
+		String[] candidateBeanNames = getCandidateBeanNames();
+		for (String beanName : candidateBeanNames) {
 			processCandidateBean(beanName);
 		}
 		handlerMethodsInitialized(getHandlerMethods());
@@ -99,18 +100,11 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 				logger.trace("Could not resolve type for bean '" + beanName + "'", ex);
 			}
 		}
-		if (bean != null && isHandler(type)) {
+		if (bean != null) {
 			
 			detectHandlerMethods(bean);
 		}
 	}
-	
-	/**
-	 * Whether the given type is a handler with handler methods.
-	 * @param beanType the type of the bean being checked
-	 * @return "true" if this a handler type, "false" otherwise.
-	 */
-	protected abstract boolean isHandler(Class<?> beanType);
 	
 	/**
 	 * Return a (read-only) map with all mappings and HandlerMethod's.

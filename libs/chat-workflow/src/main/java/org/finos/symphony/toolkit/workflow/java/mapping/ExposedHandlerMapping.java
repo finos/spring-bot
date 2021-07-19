@@ -25,7 +25,6 @@ import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFacto
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
-import org.springframework.stereotype.Controller;
 
 public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
 
@@ -38,11 +37,6 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 		this.wrf = wrf;
 		this.rh = rh;
 		this.converters = converters;
-	}
-
-	@Override
-	protected boolean isHandler(Class<?> beanType) {
-		return AnnotatedElementUtils.hasAnnotation(beanType, Controller.class);
 	}
 
 	@Override

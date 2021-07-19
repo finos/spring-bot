@@ -10,7 +10,10 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 
 import com.symphony.api.agent.MessagesApi;
@@ -194,16 +197,12 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 		if (type != null) {
 			msq.setHashtag(TagSupport.formatTag(type));
 		} else if (t != null) {
-			switch (t.getTagType()) {
-			case CASH:
+			if (t instanceof CashTag) {
 				msq.setCashtag(t.getName());
-				break;
-			case HASH:
+			} else if (t instanceof HashTag) {
 				msq.setHashtag(t.getName());
-				break;
-			case USER:
-				msq.setMention(Long.parseLong(t.getId()));
-				break;
+			} else if (t instanceof SymphonyUser) {
+				msq.setMention(Long.parseLong(((SymphonyUser)t).getUserId()));
 			}
 		}
 		

@@ -17,7 +17,7 @@ public class FormResponse extends DataResponse {
 	public static final String ERRORS_KEY = "errors";
 	public static final String FORMOBJECT_KEY = "form";
 				
-	public FormResponse(Addressable to, Object data, String templateName) {
+	public FormResponse(Addressable to, Map<String, Object> data, String templateName) {
 		super(to, data, templateName);
 	}
 	

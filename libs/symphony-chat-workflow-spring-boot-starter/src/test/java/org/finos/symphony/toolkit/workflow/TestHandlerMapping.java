@@ -22,7 +22,6 @@ import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
@@ -97,11 +96,11 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		jsonObjects.put("1", new SymphonyUser("1", "gaurav", "gaurav@example.com", () ->  ""));
+		jsonObjects.put("1", new SymphonyUser("g123", "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTag("SomeTopic"));
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Chat r = new SymphonyRoom("The Room Where It Happened", "Some description", true, "abc123");
-		User author = new SymphonyUser("user123", "Rob Moffat", "rob.moffat@example.com", () -> "");
+		User author = new SymphonyUser("r123", "Rob Moffat", "rob.moffat@example.com");
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		mc.accept(a);
 	}
@@ -191,6 +190,44 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Object firstArgument = oc.lastArguments.get(0);
 		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
 		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
+	}
+	
+	@Test
+	public void testHelp() throws Exception {
+		execute("help");
+		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
+		
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.isNull(), 
+				Mockito.matches("abc123"),
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
+		
+		JsonNode node = new ObjectMapper().readTree(data.getValue());
+		System.out.println(msg.getValue());
+		System.out.println(data.getValue());
+		
+		
+		Assertions.assertEquals(7, node.get(FormResponse.FORMOBJECT_KEY).get("commands").size());
+		
+		Assertions.assertTrue(data.getValue().contains("{\n"
+				+ "      \"examples\" : [ \"help\" ],\n"
+				+ "      \"button\" : true,\n"
+				+ "      \"message\" : true,\n"
+				+ "      \"description\" : \"Display this help page\"\n"
+				+ "    }"));
+		
+		Assertions.assertTrue(msg.getValue().contains("<tr>\n"
+				+ "            <th>Description</th>\n"
+				+ "            <th>Type... </th>\n"
+				+ "            <th>Or Press</th>\n"
+				+ "          </tr>"));
+
 	}
 	
 
