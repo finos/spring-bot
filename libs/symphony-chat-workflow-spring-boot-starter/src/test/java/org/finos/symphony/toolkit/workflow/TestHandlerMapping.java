@@ -1,5 +1,8 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,6 +30,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,6 +41,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -82,7 +87,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(17, hm.getHandlerMethods().size());
+		Assertions.assertEquals(18, hm.getHandlerMethods().size());
 		getMappingsFor("list");
 	}
 
@@ -301,7 +306,13 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 			Mockito.isNull(),
 			Mockito.isNull());
 		Mockito.clearInvocations();
-		Assertions.assertEquals(0, Arrays.compare(new byte[] {1, 2, 3}, (byte[]) att.getValue()));
+		FileDataBodyPart fdbp = (FileDataBodyPart) att.getValue();
+		String contents = StreamUtils.copyToString(
+			new FileInputStream((File) fdbp.getEntity()), 
+			Charset.defaultCharset());
+		
+
+		Assertions.assertEquals("payload", contents);
 	}
 	
 	@Test

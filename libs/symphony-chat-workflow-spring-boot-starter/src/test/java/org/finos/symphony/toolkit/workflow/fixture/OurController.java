@@ -127,8 +127,8 @@ public class OurController {
 	public AttachmentResponse attachment(Addressable a) {
 		lastArguments = Collections.emptyList();
 		lastMethod = "attachment";
-		byte[] bytes = { 1, 2, 3 };
-		return new AttachmentResponse(a, bytes, "somefile", "bin");
+		String payload = "payload";
+		return new AttachmentResponse(a, payload.getBytes(), "somefile", "txt");
 	}
 	
 	@Exposed(description="Do blah with a form", value="form1")
