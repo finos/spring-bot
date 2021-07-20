@@ -88,11 +88,9 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	 */
 	protected void processCandidateBean(String beanName) {
 		Object bean = null;
-		Class<?> type = null;
 		try {
 			ApplicationContext ctx = obtainApplicationContext();
 			bean = ctx.getBean(beanName);
-			type = ctx.getType(beanName);
 		}
 		catch (Throwable ex) {
 			// An unresolvable bean type, probably from a lazy bean - let's ignore it.

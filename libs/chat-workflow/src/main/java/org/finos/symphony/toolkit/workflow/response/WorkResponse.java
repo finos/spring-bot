@@ -9,26 +9,33 @@ import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.springframework.validation.Errors;
 
-public class FormResponse extends DataResponse {
+/**
+ * Returns @Work-annotated object back to the user, either as form if editable=true, or 
+ * displayed in the chat if editable=false.
+ * 
+ * @author rob@kite9.com
+ *
+ */
+public class WorkResponse extends DataResponse {
 	
 	public static final String DEFAULT_FORM_TEMPLATE_EDIT = "default-edit";
 	public static final String DEFAULT_FORM_TEMPLATE_VIEW = "default-view";
 	public static final String BUTTONLIST_KEY = "buttons";
 	public static final String ERRORS_KEY = "errors";
-	public static final String FORMOBJECT_KEY = "form";
+	public static final String OBJECT_KEY = "form";
 				
-	public FormResponse(Addressable to, Map<String, Object> data, String templateName) {
+	public WorkResponse(Addressable to, Map<String, Object> data, String templateName) {
 		super(to, data, templateName);
 	}
 	
 	/**
 	 * Call this contructor to create a basic form response using an object.
 	 */
-	public FormResponse(Addressable to, Object o, boolean editable, ButtonList buttons, ErrorMap errors) {
+	public WorkResponse(Addressable to, Object o, boolean editable, ButtonList buttons, ErrorMap errors) {
 		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(editable, o));
 	}
 	
-	public FormResponse(Addressable to, Object o, boolean editable) {
+	public WorkResponse(Addressable to, Object o, boolean editable) {
 		this(to, o, editable, null, null);
 	}
 	
@@ -36,7 +43,7 @@ public class FormResponse extends DataResponse {
 		Map<String, Object> json = new HashMap<>();
 		json.put(BUTTONLIST_KEY, buttons == null ? new ButtonList() : buttons);
 		json.put(ERRORS_KEY, errors == null ? new ErrorMap() : errors);
-		json.put(FORMOBJECT_KEY, o);
+		json.put(OBJECT_KEY, o);
 		return json;
 	}
 
@@ -63,7 +70,7 @@ public class FormResponse extends DataResponse {
 	}
 
 	public Object getFormObject() {
-		return getData().get(FORMOBJECT_KEY);
+		return getData().get(OBJECT_KEY);
 	}
 
 	public ButtonList getButtons() {

@@ -6,7 +6,7 @@ import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
@@ -38,19 +38,19 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 	public void testHistoricMethodCall() {
 		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "wrap", new EntityJson());
 		List<Response> r = cp.applyCommand("wrap", sma);
-		Assertions.assertEquals(FormResponse.class, r.get(0).getClass());
+		Assertions.assertEquals(WorkResponse.class, r.get(0).getClass());
 		TestObjects expected = new TestObjects(Collections.singletonList(TestWorkflowConfig.INITIAL_TEST_OBJECT));
-		Assertions.assertEquals(expected, ((FormResponse) r.get(0)).getFormObject());
-		Assertions.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
+		Assertions.assertEquals(expected, ((WorkResponse) r.get(0)).getFormObject());
+		Assertions.assertEquals(false, ((WorkResponse) r.get(0)).isEditable());	
 	}
 	
 	@Test
 	public void testStaticMethodCall() {
 		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "testObjects", new EntityJson());
 		List<Response> r = cp.applyCommand("testObjects", sma);
-		Assertions.assertEquals(FormResponse.class, r.get(0).getClass());
-		Assertions.assertEquals(TestWorkflowConfig.INITIAL_TEST_OBJECTS, ((FormResponse) r.get(0)).getFormObject());
-		Assertions.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
+		Assertions.assertEquals(WorkResponse.class, r.get(0).getClass());
+		Assertions.assertEquals(TestWorkflowConfig.INITIAL_TEST_OBJECTS, ((WorkResponse) r.get(0)).getFormObject());
+		Assertions.assertEquals(false, ((WorkResponse) r.get(0)).isEditable());	
 	}
 	
 	@Test
@@ -58,10 +58,10 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		FormAction sma = new FormAction(wf, TestWorkflowConfig.room, TestWorkflowConfig.u, null,  "add", new EntityJson());
 		List<Response> r = cp.applyCommand("add", sma);
 		
-		Assertions.assertEquals(FormResponse.class, r.get(0).getClass());
-		Assertions.assertNotNull(((FormResponse) r.get(0)).getFormObject());
-		Assertions.assertEquals(TestObject.class, ((FormResponse) r.get(0)).getFormClass());
-		Assertions.assertEquals(true, ((FormResponse) r.get(0)).isEditable());	
+		Assertions.assertEquals(WorkResponse.class, r.get(0).getClass());
+		Assertions.assertNotNull(((WorkResponse) r.get(0)).getFormObject());
+		Assertions.assertEquals(TestObject.class, ((WorkResponse) r.get(0)).getFormClass());
+		Assertions.assertEquals(true, ((WorkResponse) r.get(0)).isEditable());	
 	}
 	
 	@Test
@@ -77,10 +77,10 @@ public class TestCommandPerformer extends AbstractMockSymphonyTest {
 		TestObjects expected = new TestObjects(all);
 
 		
-		Assertions.assertEquals(FormResponse.class, r.get(0).getClass());
-		Assertions.assertEquals(expected, ((FormResponse) r.get(0)).getFormObject());
-		Assertions.assertEquals(TestObjects.class, ((FormResponse) r.get(0)).getFormClass());
-		Assertions.assertEquals(false, ((FormResponse) r.get(0)).isEditable());	
+		Assertions.assertEquals(WorkResponse.class, r.get(0).getClass());
+		Assertions.assertEquals(expected, ((WorkResponse) r.get(0)).getFormObject());
+		Assertions.assertEquals(TestObjects.class, ((WorkResponse) r.get(0)).getFormClass());
+		Assertions.assertEquals(false, ((WorkResponse) r.get(0)).isEditable());	
 	}
 
 	@Test

@@ -9,7 +9,7 @@
     <body>
       <ul>
         <#list entity.header.tags as tag>
-          <li><hash tag="${tag.id}" /></li>
+          <li><hash tag="${tag.value}" /></li>
         </#list>
       </ul>
     </body>

@@ -2,17 +2,23 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.DataResponse;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter.Mode;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLWriter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ResourceLoader;
@@ -20,8 +26,10 @@ import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
 import com.symphony.api.agent.MessagesApi;
+import com.symphony.api.pod.StreamsApi;
+import com.symphony.api.pod.UsersApi;
 
-public class SymphonyResponseHandler implements ResponseHandler {
+public class SymphonyResponseHandler extends AbstractStreamResolving implements ResponseHandler {
 	
 	public static final String MESSAGE_AREA = "<!-- Message Content -->";
 	
@@ -38,10 +46,13 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	protected ResourceLoader rl;
 	
 	
-	public SymphonyResponseHandler(MessagesApi messagesApi,
+	public SymphonyResponseHandler(
+			MessagesApi messagesApi,
+			StreamsApi streamsApi, 
+			UsersApi usersApi,
 			FormMessageMLConverter formMessageMLConverter, MessageMLWriter contentWriter, DataHandler dataHandler,
 			AttachmentHandler attachmentHandler, ResourceLoader rl) {
-		super();
+		super(streamsApi, usersApi);
 		this.messagesApi = messagesApi;
 		this.formMessageMLConverter = formMessageMLConverter;
 		this.contentWriter = contentWriter;
@@ -61,6 +72,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 			if (template == null) {
 				LOG.info("Reverting to default template for " + t);
 				template = getDefaultTemplate(t);
+				LOG.info(template);
 			}
 			
 			if (template == null) {
@@ -74,7 +86,19 @@ public class SymphonyResponseHandler implements ResponseHandler {
 			if (t instanceof AttachmentResponse) {
 				attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
 			}
-			
+		
+			if (t instanceof WorkResponse) {
+				WorkResponse workResponse = (WorkResponse) t;
+				HeaderDetails hd = (HeaderDetails) workResponse.getData().get(HeaderDetails.KEY);
+				Object o = workResponse.getData().get(WorkResponse.OBJECT_KEY);
+				if (hd == null) {
+					hd = new HeaderDetails();
+					workResponse.getData().put(HeaderDetails.KEY, hd);
+					List<Tag> tags = new ArrayList<>(TagSupport.classHashTags(o));
+					hd.setTags(tags);
+				}
+			}
+
 			if (t instanceof DataResponse) {
 				data = dataHandler.formatData((DataResponse) t);
 			}
@@ -87,23 +111,24 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	protected void sendResponse(String template, Object attachment, String data, Addressable address) {
 		try {
 			if (address instanceof SymphonyAddressable) {
-				String streamId = ((SymphonyAddressable) address).getStreamId();
+				String streamId = getStreamFor((SymphonyAddressable) address);
 				messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
 			}
 		} catch (Exception e) {
-			LOG.error("Coulnd't send message: ", e);
+			LOG.error("Couldn/'t send message \n{} \n{}: ", template, data);
+			LOG.error("Error was: ", e);
 		} 
 	}
 
 	protected String getDefaultTemplate(Response r) {
 		String basic = getTemplateForName("default");
 		String insert = "";
-		if (r instanceof FormResponse) {
-			if (FormResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
-				Class<?> c = ((FormResponse) r).getFormObject().getClass();
+		if (r instanceof WorkResponse) {
+			if (WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
+				Class<?> c = ((WorkResponse) r).getFormObject().getClass();
 				insert = formMessageMLConverter.convert(c, Mode.FORM);
-			} else if (FormResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
-				Class<?> c = ((FormResponse) r).getFormObject().getClass();
+			} else if (WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
+				Class<?> c = ((WorkResponse) r).getFormObject().getClass();
 				boolean needsButtons = needsButtons(r);						
 				insert = formMessageMLConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 			}

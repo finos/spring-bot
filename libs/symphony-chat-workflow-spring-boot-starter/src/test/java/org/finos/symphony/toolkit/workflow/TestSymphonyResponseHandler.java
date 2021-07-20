@@ -9,7 +9,7 @@ import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
@@ -85,7 +85,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 			return null;
 		});
 		
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", TestObject.class, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")));
+		WorkResponse fr = new WorkResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", TestObject.class, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")));
 		responseHandler.accept(fr);
 	}
 	
@@ -102,7 +102,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestObject a = new TestObject("213", true, false, "rob@here.com", 55, 22);
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
+		WorkResponse fr = new WorkResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 	
@@ -119,7 +119,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		TestOb3 a = new TestOb3(new SymphonyRoom("abc", "asds", true, null), new SymphonyUser(null, "Graham Bobki", "graham@goodle.com"), "some text");
 		Errors e= ErrorHelp.createErrorHolder();
 		e.rejectValue("isin.", "32432");
-		FormResponse fr = new FormResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
+		WorkResponse fr = new WorkResponse(wf, TestWorkflowConfig.room, new EntityJson(),  "test name", "test instruction", a, true, ButtonList.of(new Button("OK", Type.ACTION, "Click me")), e);
 		responseHandler.accept(fr);
 	}
 }

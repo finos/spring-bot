@@ -48,5 +48,13 @@ public class Taxonomy {
 		return true;
 	}
 	
+	protected String fromTaxonomy(Class<?> class1) {
+		return getId().stream()
+			.filter(t -> class1.isAssignableFrom(t.getClass()))
+			.findFirst()
+			.map(te -> te.getValue())
+			.orElse(null);
+	}
+
 	
 }

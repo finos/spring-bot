@@ -21,6 +21,8 @@ import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomName;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +76,9 @@ public class MessageMLParser {
 			if ((contents instanceof SymphonyUser) && (contents.getName()==null)) {
 				SymphonyUser su = (SymphonyUser) contents;
 				su.getId().add(new DisplayName(buf.toString()));
+			} else if ((contents instanceof SymphonyRoom) && (contents.getName() == null)) {
+				SymphonyRoom sr = (SymphonyRoom) contents;
+				sr.getId().add(new RoomName(buf.toString()));
 			}
 			
 			return contents;

@@ -1,7 +1,6 @@
 8.  Optional/List/* parameters
 9.  Security on ExposedHandlerMapping (certain actions for certain users)
 12.  Create annotation for Content classes and scan for them inside ResolverConfig (maybe, we deleted the thing that would use this)
-14. StreamID for Symphony User
 15.  Rooms - we use a drop-down for this, how will we populate it? (Write another response handler)
 16. Controller for Editing - think about this
 17. topLevelField thing (allow dropdown and other things)

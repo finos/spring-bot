@@ -11,7 +11,7 @@ import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHa
 import org.finos.symphony.toolkit.workflow.actions.form.FormEditConfig;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.help.HelpController;
-import org.finos.symphony.toolkit.workflow.java.converters.FormResponseConverter;
+import org.finos.symphony.toolkit.workflow.java.converters.WorkResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
@@ -46,7 +46,7 @@ public class ChatWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public ResponseConverter formResponseConverter() {
-		return new FormResponseConverter();
+		return new WorkResponseConverter();
 	} 
 	
 	@Bean

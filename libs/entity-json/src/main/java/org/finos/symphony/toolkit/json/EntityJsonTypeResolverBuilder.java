@@ -245,23 +245,28 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 					String version = null;
 					Class<? extends Object> class1 = idMetadata.forValue.getClass();
 					for (VersionSpace versionSpace : allowed) {
-						if (versionSpace.getToUse().isAssignableFrom(class1)) {
+						if (versionSpace.getToUse().equals(class1)) {
 							version= versionSpace.writeVersion;
-							break;
+							
+							idMetadata.id = versionSpace.typeName;
+							idMetadata.include = Inclusion.METADATA_PROPERTY;
+							
+							g.writeTypePrefix(idMetadata);
+							
+							g.writeFieldName("version");
+							g.writeString(version);
+							
+							
+							return idMetadata;
 						}
 					}
 					
 					if ((version == null) && (class1.isAssignableFrom(EntityJson.class))){
+						// this means don't bother adding any type for the EntityJson object.
 						idMetadata.include = Inclusion.PAYLOAD_PROPERTY;
 					}
-							
+					
 					WritableTypeId out = super.writeTypePrefix(g, idMetadata);
-					
-					if ((version != null) && (version.trim().length() > 0)) {
-						g.writeFieldName("version");
-						g.writeString(version);
-					}
-					
 					return out;
 				}
 			};

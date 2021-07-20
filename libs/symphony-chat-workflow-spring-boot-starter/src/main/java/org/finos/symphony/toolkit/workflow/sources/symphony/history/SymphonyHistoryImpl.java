@@ -15,18 +15,22 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageList;
+import com.symphony.api.pod.StreamsApi;
+import com.symphony.api.pod.UsersApi;
 
-public class SymphonyHistoryImpl implements SymphonyHistory {
+public class SymphonyHistoryImpl extends AbstractStreamResolving implements SymphonyHistory {
 
 	EntityJsonConverter jsonConverter;
 	MessagesApi messageApi;
 	
-	public SymphonyHistoryImpl(EntityJsonConverter jsonConverter, MessagesApi messageApi) {
+	public SymphonyHistoryImpl(EntityJsonConverter jsonConverter, MessagesApi messageApi, StreamsApi streamsApi, UsersApi usersApi) {
+		super(streamsApi, usersApi);
 		this.jsonConverter = jsonConverter;
 		this.messageApi = messageApi;
 	}
@@ -187,7 +191,7 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 	private <X> MessageSearchQuery createMessageSearchQuery(Class<X> type, Addressable address, Instant since, Tag t) {
 		MessageSearchQuery msq = new MessageSearchQuery();
 		if (address instanceof SymphonyAddressable) {
-			msq.setStreamId(((SymphonyAddressable) address).getStreamId());
+			msq.setStreamId(getStreamFor((SymphonyAddressable) address));
 		}
 		
 		if (since != null) {

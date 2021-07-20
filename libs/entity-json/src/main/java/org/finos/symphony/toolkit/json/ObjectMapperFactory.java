@@ -62,8 +62,8 @@ public class ObjectMapperFactory {
 	 * Provides all of the classes in the basicSymphonyVersionSpace (above), as well as any you provide in the
 	 * varargs.
 	 */
-	public static VersionSpace[] extendedSymphonyVersionSpace(VersionSpace... second) {
-		VersionSpace[] first = basicSymphonyVersionSpace();
+	public static VersionSpace[] extendedSymphonyVersionSpace(VersionSpace... first) {
+		VersionSpace[] second = basicSymphonyVersionSpace();
 		VersionSpace[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;

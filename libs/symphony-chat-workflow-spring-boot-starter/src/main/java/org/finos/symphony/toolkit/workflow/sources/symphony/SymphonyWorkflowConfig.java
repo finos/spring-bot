@@ -17,6 +17,7 @@ import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
@@ -24,6 +25,9 @@ import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomName;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
@@ -60,12 +64,12 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Validator;
-import org.symphonyoss.Taxonomy;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.Cusip;
 import org.symphonyoss.fin.security.id.Isin;
 import org.symphonyoss.fin.security.id.Openfigi;
 import org.symphonyoss.fin.security.id.Ticker;
+import org.symphonyoss.taxonomy.Hashtag;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
@@ -73,7 +77,10 @@ import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
+import com.symphony.user.DisplayName;
+import com.symphony.user.EmailAddress;
 import com.symphony.user.Mention;
+import com.symphony.user.StreamID;
 import com.symphony.user.UserId;
 
 /**
@@ -147,7 +154,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyResponseHandler symphonyResponseHandler() {
-		return new SymphonyResponseHandler(messagesApi, formMessageMLConverter(), 
+		return new SymphonyResponseHandler(messagesApi, streamsApi, usersApi, formMessageMLConverter(), 
 				messageMLWriter(), entityJsonConverter(), attachmentHandler, resourceLoader);
 	}
 	
@@ -161,7 +168,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyHistory symphonyHistory() {
-		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi);
+		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi, streamsApi, usersApi);
 	}
 	
 	@Bean 
@@ -177,15 +184,21 @@ public class SymphonyWorkflowConfig {
 		List<VersionSpace> workAnnotatedversionSpaces = scanForWorkClasses();
 		
 		List<VersionSpace> chatWorkflowVersionSpaces = Arrays.asList(
-			new VersionSpace(Taxonomy.class, "1.0"),
-			new VersionSpace(CashTag.class, EntityJson.getSymphonyTypeName(Security.class), "1.0", "0.*"),
-			new VersionSpace(SymphonyUser.class, EntityJson.getSymphonyTypeName(Mention.class), "1.0"), 
-			new VersionSpace(Mention.class, "1.0"), 
+			new VersionSpace(EntityJson.getSymphonyTypeName(Security.class), CashTag.class,  "1.0", "0.*"),
+			new VersionSpace(EntityJson.getSymphonyTypeName(Hashtag.class), HashTag.class, "1.0", "0.*"),
+			new VersionSpace(EntityJson.getSymphonyTypeName(Mention.class), SymphonyUser.class, "1.0"), 
+			new VersionSpace(EntityJson.getSymphonyTypeName(Chat.class), SymphonyRoom.class, "1.0"), 
+			
 			new VersionSpace(UserId.class, "1.0"), 
+			new VersionSpace(DisplayName.class, "1.0"), 
+			new VersionSpace(RoomName.class, "1.0"), 
+			new VersionSpace(StreamID.class, "1.0"), 
+			new VersionSpace(EmailAddress.class, "1.0"), 
 			ObjectMapperFactory.noVersion(Ticker.class), 
 			ObjectMapperFactory.noVersion(Cusip.class), 
 			ObjectMapperFactory.noVersion(Isin.class), 
 			ObjectMapperFactory.noVersion(Openfigi.class),
+
 			LogMessage.VERSION_SPACE, 
 			RoomWelcomeEventConsumer.VERSION_SPACE);
 		
@@ -246,7 +259,7 @@ public class SymphonyWorkflowConfig {
 	@ConditionalOnMissingBean
 	public InRoomAddressingChecker inRoomAddressingChecker() {
 		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
-		SymphonyUser su = new SymphonyUser(() -> "", symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
+		SymphonyUser su = new SymphonyUser(symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
 		return new InRoomAddressingChecker(su, true);
 	}
 	

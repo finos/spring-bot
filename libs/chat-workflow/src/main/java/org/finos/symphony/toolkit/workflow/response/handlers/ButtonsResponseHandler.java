@@ -9,7 +9,7 @@ import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -18,7 +18,7 @@ import org.springframework.core.ResolvableType;
 import org.springframework.util.StringUtils;
 
 /**
- * When returning a {@link FormResponse} to the user, this gathers up the buttons that are available
+ * When returning a {@link WorkResponse} to the user, this gathers up the buttons that are available
  * on the form, as defined by the {@link ChatHandlerMapping}s.
  * 
  * @author rob@kite9.com
@@ -31,14 +31,14 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 
 	@Override
 	public void accept(Response t) {
-		if (t instanceof FormResponse) {
-			Object o = ((FormResponse) t).getFormObject();
+		if (t instanceof WorkResponse) {
+			Object o = ((WorkResponse) t).getFormObject();
 			
-			ButtonList obl = (ButtonList) ((FormResponse) t).getData().get(FormResponse.BUTTONLIST_KEY);
+			ButtonList obl = (ButtonList) ((WorkResponse) t).getData().get(WorkResponse.BUTTONLIST_KEY);
 			
 			if (obl == null) {
 				obl = new ButtonList();
-				((FormResponse) t).getData().put(FormResponse.BUTTONLIST_KEY, obl);
+				((WorkResponse) t).getData().put(WorkResponse.BUTTONLIST_KEY, obl);
 			}
 			
 			final ButtonList bl = obl;
