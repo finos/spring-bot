@@ -11,6 +11,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.skyscreamer.jsonassert.JSONCompare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Validator;
 
@@ -72,11 +73,42 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 	@Test
 	public void testOb3() throws Exception {
 
-		TestOb3 a1 = new TestOb3(new SymphonyRoom("abc", "123", true, null), new SymphonyUser(null, "Robert Moffat", "rbo@kjite9.com"), "SOme message");
+		TestOb3 a1 = new TestOb3(new SymphonyRoom("abc", "123"), new SymphonyUser("Robert Moffat", "rbo@kjite9.com"), "SOme message");
 		String out = converter.toWorkflowJson(a1);
 
-		compare(out, "{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testOb3\",\"version\":\"1.0\",\"r\":{\"type\":\"org.finos.symphony.toolkit.workflow.content.roomDef\",\"version\":\"1.0\",\"roomName\":\"abc\",\"roomDescription\":\"123\",\"pub\":true,\"id\":null},\"u\":{\"type\":\"org.finos.symphony.toolkit.workflow.content.userDef\",\"version\":\"1.0\",\"name\":\"Robert Moffat\",\"id\":null,\"tagType\":\"USER\",\"address\":\"rbo@kjite9.com\"},\"someText\":\"SOme message\"}}");
-
+		compare(out, "{\n"
+				+ "  \"workflow_001\" : {\n"
+				+ "    \"type\" : \"org.finos.symphony.toolkit.workflow.fixture.testOb3\",\n"
+				+ "    \"version\" : \"1.0\",\n"
+				+ "    \"r\" : {\n"
+				+ "      \"type\" : \"org.finos.symphony.toolkit.workflow.content.chat\",\n"
+				+ "      \"version\" : \"1.0\",\n"
+				+ "      \"id\" : [ {\n"
+				+ "        \"type\" : \"com.symphony.user.streamID\",\n"
+				+ "        \"version\" : \"1.0\",\n"
+				+ "        \"value\" : \"123\"\n"
+				+ "      }, {\n"
+				+ "        \"type\" : \"org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName\",\n"
+				+ "        \"version\" : \"1.0\",\n"
+				+ "        \"value\" : \"abc\"\n"
+				+ "      } ]\n"
+				+ "    },\n"
+				+ "    \"u\" : {\n"
+				+ "      \"type\" : \"com.symphony.user.mention\",\n"
+				+ "      \"version\" : \"1.0\",\n"
+				+ "      \"id\" : [ {\n"
+				+ "        \"type\" : \"com.symphony.user.displayName\",\n"
+				+ "        \"version\" : \"1.0\",\n"
+				+ "        \"value\" : \"Robert Moffat\"\n"
+				+ "      }, {\n"
+				+ "        \"type\" : \"com.symphony.user.emailAddress\",\n"
+				+ "        \"version\" : \"1.0\",\n"
+				+ "        \"value\" : \"rbo@kjite9.com\"\n"
+				+ "      } ]\n"
+				+ "    },\n"
+				+ "    \"someText\" : \"SOme message\"\n"
+				+ "  }\n"
+				+ "}");
 		TestOb3 b = (TestOb3) converter.readWorkflowValue(out);
 		Assertions.assertEquals(a1, b);
 	}

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 
 /**
@@ -30,7 +30,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 	
 	@Override
 	public String convert(Class<?> c, Mode m) { //, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work) {
-		Variable v = new Variable("entity."+FormResponse.FORMOBJECT_KEY);
+		Variable v = new Variable("entity."+WorkResponse.OBJECT_KEY);
 		
 		
 		StringBuilder sb = new StringBuilder();

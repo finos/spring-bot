@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -58,7 +58,7 @@ public class TableDeleteRows extends AbstractTableActionConsumer {
 			}
 			
 			return Collections.singletonList(
-				new FormResponse(wf, ea.getAddressable(), ej, 
+				new WorkResponse(wf, ea.getAddressable(), ej, 
 						wf.getName(data.getClass()), 
 						wf.getInstructions(data.getClass()), 
 						data, false, 

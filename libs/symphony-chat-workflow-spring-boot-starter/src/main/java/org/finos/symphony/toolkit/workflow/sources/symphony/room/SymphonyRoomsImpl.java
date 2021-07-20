@@ -11,6 +11,7 @@ import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
 
 import com.symphony.api.model.MembershipList;
 import com.symphony.api.model.StreamAttributes;
@@ -31,17 +32,14 @@ import com.symphony.api.pod.UsersApi;
  * @author Rob Moffat
  *
  */
-public class SymphonyRoomsImpl implements SymphonyRooms {
+public class SymphonyRoomsImpl extends AbstractStreamResolving implements SymphonyRooms {
 	
 	private RoomMembershipApi rmApi;
-	private StreamsApi streamsApi;
-	private UsersApi usersApi;
 	private List<User> defaultAdministrators = new ArrayList<User>();
 	
 	public SymphonyRoomsImpl(RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi) {
+		super(streamsApi, usersApi);
 		this.rmApi = rmApi;
-		this.streamsApi = streamsApi;
-		this.usersApi = usersApi;
 	}
 	
 	@Override
@@ -67,36 +65,13 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	public SymphonyRoom loadRoomById(String streamId) {
 		try {
 			V3RoomDetail r = streamsApi.v3RoomIdInfoGet(streamId, null);
-			return new SymphonyRoom(r.getRoomAttributes().getName(), r.getRoomAttributes().getDescription(), r.getRoomAttributes().isPublic(), streamId);
+			return new SymphonyRoom(r.getRoomAttributes().getName(), streamId);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-//	@Override
-//	public String getStreamFor(Addressable a) {
-//		if (a instanceof SymphonyUser) {
-//			return ((SymphonyUser) a).getStreamId()
-//		} else if (a instanceof SymphonyRoom) {
-//			if (((SymphonyRoom) a).getId() != null) {
-//				return ((SymphonyRoom) a).getId();
-//			}
-//			
-//			StreamType st = new StreamType().type(TypeEnum.ROOM);
-//			StreamList list = streamsApi.v1StreamsListPost(null, new StreamFilter().streamTypes(Collections.singletonList(st)), 0, 0);
-//			Map<Chat, String> out = new HashMap<>();
-//			for (StreamAttributes streamAttributes : list) {
-//				if (streamAttributes.getRoomAttributes().getName().equals(((Chat) a).getName())) {
-//					return streamAttributes.getId();
-//				}
-//			}
-//			
-//			// ok, need to create the room
-//			return ensureRoom((Chat) a).getId();
-//		} else {
-//			throw new UnsupportedOperationException("What is this? "+a);
-//		}
-//	}
+
 	
 	public Chat ensureRoom(Chat r) {
 		
@@ -108,7 +83,6 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 			description = ((SymphonyRoom) r).getRoomDescription();
 			isPublic = ((SymphonyRoom) r).isPub();
 		}
-		
 		
 		// create the room
 		V3RoomAttributes ra = new V3RoomAttributes()
@@ -155,7 +129,7 @@ public class SymphonyRoomsImpl implements SymphonyRooms {
 	@Override
 	public List<User> getRoomAdmins(Chat r) {
 		if (r instanceof SymphonyRoom) {
-			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getId(), null);
+			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
 			return ml.stream()
 				.filter(m -> m.isOwner())
 				.map(m -> loadUserById(m.getId()))

@@ -7,7 +7,7 @@ import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.expression.Expression;
@@ -50,9 +50,9 @@ public class TableAddRow extends AbstractTableActionConsumer {
 			try {
 				out = c.newInstance(); 
 			} catch (Exception e1) {
-				return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", c, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
+				return Collections.singletonList(new WorkResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", c, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 			}
-			return Collections.singletonList(new FormResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
+			return Collections.singletonList(new WorkResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
 		} else if (verb.endsWith(DO_SUFFIX)) {
 			String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
 			tableLocation = TableEditRow.fixSpel(tableLocation);
@@ -61,7 +61,7 @@ public class TableAddRow extends AbstractTableActionConsumer {
 			List<Object> listToUpdate = (List<Object>) e.getValue(workflowObject);
 			listToUpdate.add(updated);
 			return Collections.singletonList(
-				new FormResponse(wf, ea.getAddressable(), 
+				new WorkResponse(wf, ea.getAddressable(), 
 						ej, 
 						wf.getName(workflowObject.getClass()), 
 						wf.getInstructions(workflowObject.getClass()), 

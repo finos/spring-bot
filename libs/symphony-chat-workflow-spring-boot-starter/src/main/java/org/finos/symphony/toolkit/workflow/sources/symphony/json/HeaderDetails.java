@@ -14,6 +14,8 @@ import org.finos.symphony.toolkit.workflow.content.Tag;
  */
 @Work
 public class HeaderDetails {
+	
+	public static final String KEY = "header";
 
 	private String name;
 	private String description;

@@ -7,7 +7,7 @@ import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -47,7 +47,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 			Expression e = spel.parseExpression(tableLocation);
 			Object o = e.getValue(data);
 			Class<?> c = o.getClass();
-			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), ej, "Edit "+wf.getName(c), "Update Row Details", o, true, ButtonList.of(new Button(tableLocation+"."+UPDATE_SUFFIX, Type.ACTION, "Update"))));
+			return Collections.singletonList(new WorkResponse(wf, in.getAddressable(), ej, "Edit "+wf.getName(c), "Update Row Details", o, true, ButtonList.of(new Button(tableLocation+"."+UPDATE_SUFFIX, Type.ACTION, "Update"))));
 		} else if (verb.endsWith(UPDATE_SUFFIX)) {
 			String tableLocation = verb.substring(0, verb.length() - UPDATE_SUFFIX.length()-1);
 			tableLocation = fixSpel(tableLocation);
@@ -59,7 +59,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 			List<Object> listToUpdate = (List<Object>) e.getValue(data);
 			listToUpdate.set(row, updated);
 			Class<?> c = data.getClass();
-			return Collections.singletonList(new FormResponse(wf, in.getAddressable(), ej, wf.getName(c), wf.getInstructions(c), data, false, wf.gatherButtons(data, in.getAddressable())));
+			return Collections.singletonList(new WorkResponse(wf, in.getAddressable(), ej, wf.getName(c), wf.getInstructions(c), data, false, wf.gatherButtons(data, in.getAddressable())));
 		}
 		
 		return null;

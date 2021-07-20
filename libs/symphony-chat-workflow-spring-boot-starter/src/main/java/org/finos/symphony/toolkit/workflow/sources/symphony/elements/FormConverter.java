@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.WorkflowModule;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.SymphonyModule;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,7 @@ public class FormConverter {
 	
 	public FormConverter(SymphonyRooms r) {
 		super();
-		om.registerModule(new WorkflowModule(r));
+		om.registerModule(new SymphonyModule());
 	}
 
 	/**

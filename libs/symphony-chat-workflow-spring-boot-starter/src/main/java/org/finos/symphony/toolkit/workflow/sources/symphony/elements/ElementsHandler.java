@@ -14,7 +14,7 @@ import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
@@ -85,7 +85,7 @@ public class ElementsHandler implements StreamEventConsumer {
 						}
 					}
 				} else {
-					FormResponse fr = new FormResponse(rr, data, true, 
+					WorkResponse fr = new WorkResponse(rr, data, true, 
 						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), convertErrorsToMap(e));
 					rh.accept(fr);
 				}

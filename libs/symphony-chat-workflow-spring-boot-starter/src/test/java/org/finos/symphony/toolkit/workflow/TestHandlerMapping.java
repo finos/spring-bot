@@ -22,7 +22,7 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingAction
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
@@ -104,7 +104,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		jsonObjects.put("1", new SymphonyUser("g123", "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTag("SomeTopic"));
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
-		Chat r = new SymphonyRoom("The Room Where It Happened", "Some description", true, "abc123");
+		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
 		User author = new SymphonyUser("r123", "Rob Moffat", "rob.moffat@example.com");
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		mc.accept(a);
@@ -218,7 +218,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		System.out.println(data.getValue());
 		
 		
-		Assertions.assertEquals(7, node.get(FormResponse.FORMOBJECT_KEY).get("commands").size());
+		Assertions.assertEquals(7, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
 		
 		Assertions.assertTrue(data.getValue().contains("{\n"
 				+ "      \"examples\" : [ \"help\" ],\n"
@@ -331,7 +331,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 				Mockito.isNull());
 		Mockito.clearInvocations();
 		JsonNode node = new ObjectMapper().readTree(data.getValue());
-		JsonNode button1 = node.get(FormResponse.BUTTONLIST_KEY).get("contents").get(0);
+		JsonNode button1 = node.get(WorkResponse.BUTTONLIST_KEY).get("contents").get(0);
 		Assertions.assertEquals("go", button1.get("name").textValue());
 	}
 	
@@ -352,7 +352,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Mockito.clearInvocations();
 		
 		JsonNode node = new ObjectMapper().readTree(data.getValue());
-		JsonNode button1 = node.get(FormResponse.BUTTONLIST_KEY).get("contents").get(0);
+		JsonNode button1 = node.get(WorkResponse.BUTTONLIST_KEY).get("contents").get(0);
 		Assertions.assertEquals("ok", button1.get("name").textValue());
 	}
 	

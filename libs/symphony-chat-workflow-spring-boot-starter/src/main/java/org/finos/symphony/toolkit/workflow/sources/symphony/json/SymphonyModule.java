@@ -4,7 +4,8 @@ import java.io.IOException;
 
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,14 +23,15 @@ import com.fasterxml.jackson.databind.node.LongNode;
 
 /**
  * Handles conversion of symphony elements' user picker back to User objects.
+ * 
  * @author Rob Moffat
- *
  */
-public class WorkflowModule extends Module {
+public class SymphonyModule extends Module {
 
 	private static final String NAME = "Symphony Workflow Module";
+	
 	private static final Version VERSION = new Version(1, 0, 0, "", 
-			WorkflowModule.class.getPackage().getName().toLowerCase(), 
+			SymphonyModule.class.getPackage().getName().toLowerCase(), 
 			"workflow-module");
 
 
@@ -42,12 +44,9 @@ public class WorkflowModule extends Module {
 	public Version version() {
 		return VERSION;
 	}
-	
-	private SymphonyRooms rooms;
-	
-	public WorkflowModule(SymphonyRooms rooms) {
+		
+	public SymphonyModule() {
 		super();
-		this.rooms = rooms;
 	}
 
 	@Override
@@ -68,7 +67,7 @@ public class WorkflowModule extends Module {
 							TreeNode tn = p.readValueAsTree();
 							if (tn.size() > 0) {
 								long ul = ((LongNode) tn.get(0)).asLong();
-								return rooms.loadUserById(ul);
+								return new SymphonyUser(ul);
 							} else {
 								return null;
 							}
@@ -81,7 +80,7 @@ public class WorkflowModule extends Module {
 						@Override
 						public Chat deserialize(JsonParser p, DeserializationContext ctxt)
 								throws IOException, JsonProcessingException {
-							return rooms.loadRoomById(p.getValueAsString());
+							return new SymphonyRoom(null, p.getValueAsString());
 						}
 					};
 					

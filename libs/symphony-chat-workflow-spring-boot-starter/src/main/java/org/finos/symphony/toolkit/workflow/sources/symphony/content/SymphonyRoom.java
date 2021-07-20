@@ -1,79 +1,52 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.symphonyoss.Taxonomy;
+import org.symphonyoss.TaxonomyElement;
 
-public class SymphonyRoom implements Chat, SymphonyAddressable {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.symphony.user.StreamID;
 
-	protected String roomName;
-	protected String roomDescription;
-	protected boolean pub;
-	protected String id;
-	
+public class SymphonyRoom extends Taxonomy implements Chat, SymphonyAddressable {
+
 	public SymphonyRoom() {
 	}
 	
-	public SymphonyRoom(String name, String description, boolean pub, String id) {
-		super();
-		this.roomName = name;
-		this.roomDescription = description;
-		this.pub = pub;
-		this.id = id;
+	public SymphonyRoom(String name, String id) {
+		super(createTaxonomy(name, id));
 	}
+	
+	private static List<TaxonomyElement> createTaxonomy(String name, String streamId) {
+		List<TaxonomyElement> out = new ArrayList<TaxonomyElement>();
+		if (streamId != null) {
+			out.add(new StreamID(streamId));
+		}
+		if (name != null) {
+			out.add(new RoomName(name));
+		}
+		
+		return out;
+	}
+
 
 	@Override
+	@JsonIgnore
 	public String getName() {
-		return roomName;
+		return fromTaxonomy(RoomName.class);
 	}
-
-	public String getRoomDescription() {
-		return roomDescription;
-	}
-
-	public boolean isPub() {
-		return pub;
-	}
-
 
 	@Override
 	public String toString() {
-		return "SymphonyRoom [name=" + getName() + ", description=" + getRoomDescription() + ", pub=" + isPub() + "]";
+		return "SymphonyRoom [name=" + getName() + ", streamId=" + getStreamId() + "]";
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((roomName == null) ? 0 : roomName.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		SymphonyRoom other = (SymphonyRoom) obj;
-		if (roomName == null) {
-			if (other.roomName != null)
-				return false;
-		} else if (!roomName.equals(other.roomName))
-			return false;
-		return true;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	@Override
+	@JsonIgnore
 	public String getStreamId() {
-		return id;
+		return fromTaxonomy(StreamID.class);
 	}
 
-
-
-
+	
 }

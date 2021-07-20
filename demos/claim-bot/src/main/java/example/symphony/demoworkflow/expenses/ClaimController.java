@@ -3,7 +3,7 @@ package example.symphony.demoworkflow.expenses;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.springframework.stereotype.Controller;
 
 import example.symphony.demoworkflow.expenses.Claim.Status;
@@ -13,8 +13,8 @@ public class ClaimController {
 
 
 	@Exposed(value = "open", description="Begin New Expense Claim")
-	public FormResponse open(Addressable a) {
-		return new FormResponse(a, new StartClaim(), true);
+	public WorkResponse open(Addressable a) {
+		return new WorkResponse(a, new StartClaim(), true);
 	}
 	
 	@Exposed(value = "add", description="Submit Expense Claim", formClass = StartClaim.class)
@@ -35,11 +35,5 @@ public class ClaimController {
 		}
 		return c;
 	}
-	
-	@Exposed(value="new", description = "New Full Expense Form") 
-	public FormResponse full(Addressable room) {
-		return new FormResponse(room, new Claim(), true);
-	}
-	
 	
 }

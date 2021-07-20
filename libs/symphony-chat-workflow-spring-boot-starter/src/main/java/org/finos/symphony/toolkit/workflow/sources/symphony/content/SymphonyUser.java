@@ -2,21 +2,19 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.symphonyoss.TaxonomyElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.symphony.user.DisplayName;
 import com.symphony.user.EmailAddress;
 import com.symphony.user.Mention;
+import com.symphony.user.StreamID;
 import com.symphony.user.UserId;
 
 public class SymphonyUser extends Mention implements User, SymphonyContent, SymphonyAddressable {
-	
-	private transient String streamId;
-	private transient Supplier<String> streamIdSupplier;
-	
+		
 	public SymphonyUser() {
 		super();
 	}
@@ -42,49 +40,41 @@ public class SymphonyUser extends Mention implements User, SymphonyContent, Symp
 
 	public SymphonyUser(String streamId, String name, String emailAddress) {
 		super(createTaxonomy(null, name, emailAddress));
-		this.streamId = streamId;
 	}	
 	
-	public SymphonyUser(Supplier<String> streamIdSupplier, String name, String emailAddress) {
+	public SymphonyUser(String name, String emailAddress) {
 		super(createTaxonomy(null, name, emailAddress));
-		this.streamIdSupplier = streamIdSupplier;
 	}	
 	
+	@JsonIgnore
 	public String getEmailAddress() {
 		return fromTaxonomy(EmailAddress.class);
 	}
-
-	private String fromTaxonomy(Class<?> class1) {
-		return getId().stream()
-			.filter(t -> class1.isAssignableFrom(t.getClass()))
-			.findFirst()
-			.map(te -> te.getValue())
-			.orElse(null);
-	}
-
 
 	@Override
 	public String toString() {
 		return "SymphonyUser [getId()=" + getId() + "]";
 	}
 
-	@Override
+	@JsonIgnore
 	public String getStreamId() {
-		streamId = streamId == null ? streamIdSupplier.get() : streamId;
-		return streamId;
+		return fromTaxonomy(StreamID.class);
 	}
 
+	@JsonIgnore
 	@Override
 	public String getName() {
 		return fromTaxonomy(DisplayName.class);
 	}
 
+	@JsonIgnore
 	@Override
 	public Type getTagType() {
 		return USER;
 	}
 
 	
+	@JsonIgnore
 	public String getUserId() {
 		return fromTaxonomy(UserId.class);
 	}

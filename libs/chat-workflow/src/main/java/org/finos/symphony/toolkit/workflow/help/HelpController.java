@@ -13,7 +13,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMethod;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -59,7 +59,7 @@ public class HelpController implements ApplicationContextAware {
 				.sorted((c, b) -> c.getDescription().compareTo(b.getDescription()))
 				.collect(Collectors.toList());
 
-		return new FormResponse(a, new HelpPage(commands), false);
+		return new WorkResponse(a, new HelpPage(commands), false);
 	}
 
 	private boolean includeInHelp(ChatMapping<Exposed> hm) {

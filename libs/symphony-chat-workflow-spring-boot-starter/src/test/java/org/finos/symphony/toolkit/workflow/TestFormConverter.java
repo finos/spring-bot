@@ -8,7 +8,7 @@ import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.WorkflowModule;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.SymphonyModule;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
