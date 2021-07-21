@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
 
 @Work()
@@ -10,9 +9,7 @@ public class Claim {
 	enum Status { OPEN, APPROVED, PAID };
 	
 	String description;
-	
-	Author author;
-	
+		
 	float amount;
 	
 	User approvedBy;
@@ -27,14 +24,6 @@ public class Claim {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public Author getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(Author author) {
-		this.author = author;
 	}
 
 	public float getAmount() {

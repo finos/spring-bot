@@ -39,8 +39,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
@@ -89,11 +87,11 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		jsonObjects.put("1", new SymphonyUser("g123", "gaurav", "gaurav@example.com"));
+		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTag("SomeTopic"));
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
-		User author = new SymphonyUser("r123", "Rob Moffat", "rob.moffat@example.com");
+		User author = new SymphonyUser(1233l, "Rob Moffat", "rob.moffat@example.com");
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		mc.accept(a);
 	}

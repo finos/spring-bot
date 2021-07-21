@@ -1,75 +1,36 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import java.util.Objects;
+
 import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
 @Work()
 public class TestOb4 {
 
 	public enum Choice { A, B, C };
 	
-	ID theId = new ID();
+	HashTag theId = HashTag.createID();
 	
 	Choice c;
 	
 	boolean b;
-	
-	Author a = Author.CURRENT_AUTHOR.get();
-	
+		
 	User someUser;
 	
 	public TestOb4() {
 		super();
 	}
 
-	public TestOb4(Choice c, boolean b, Author a, User someUser) {
+	public TestOb4(Choice c, boolean b, User someUser) {
 		super();
 		this.c = c;
 		this.b = b;
-		this.a = a;
 		this.someUser = someUser;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((a == null) ? 0 : a.hashCode());
-		result = prime * result + (b ? 1231 : 1237);
-		result = prime * result + ((c == null) ? 0 : c.hashCode());
-		result = prime * result + ((someUser == null) ? 0 : someUser.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TestOb4 other = (TestOb4) obj;
-		if (a == null) {
-			if (other.a != null)
-				return false;
-		} else if (!a.equals(other.a))
-			return false;
-		if (b != other.b)
-			return false;
-		if (c != other.c)
-			return false;
-		if (someUser == null) {
-			if (other.someUser != null)
-				return false;
-		} else if (!someUser.equals(other.someUser))
-			return false;
-		return true;
-	}
-
+	
 	public Choice getC() {
 		return c;
 	}
@@ -86,14 +47,6 @@ public class TestOb4 {
 		this.b = b;
 	}
 
-	public Author getA() {
-		return a;
-	}
-
-	public void setA(Author a) {
-		this.a = a;
-	}
-
 	public User getSomeUser() {
 		return someUser;
 	}
@@ -102,17 +55,32 @@ public class TestOb4 {
 		this.someUser = someUser;
 	}
 
-	public ID getTheId() {
+	public HashTag getTheId() {
 		return theId;
 	}
 
-	public void setTheId(ID theId) {
+	public void setTheId(HashTag theId) {
 		this.theId = theId;
 	}
 
-	@Exposed(description = "Creates a TestOb4")
-	public static TestOb4 ob4(TestOb4 in) {
-		return in;
+	@Override
+	public int hashCode() {
+		return Objects.hash(b, c, someUser, theId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TestOb4 other = (TestOb4) obj;
+		return b == other.b && c == other.c && Objects.equals(someUser, other.someUser)
+				&& Objects.equals(theId, other.theId);
 	}
 	
+	
 }
+

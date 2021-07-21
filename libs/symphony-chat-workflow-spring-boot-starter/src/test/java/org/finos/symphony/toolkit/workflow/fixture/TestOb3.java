@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -76,11 +75,6 @@ public class TestOb3 {
 		} else if (!u.equals(other.u))
 			return false;
 		return true;
-	}
-	
-	@Exposed(description = "Creates a TestOb3")
-	public static TestOb3 ob3(TestOb3 in) {
-		return in;
 	}
 	
 	

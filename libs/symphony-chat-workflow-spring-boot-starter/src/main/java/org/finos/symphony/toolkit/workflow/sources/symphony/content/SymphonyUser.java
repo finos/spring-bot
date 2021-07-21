@@ -38,8 +38,8 @@ public class SymphonyUser extends Mention implements User, SymphonyContent, Symp
 		return out;
 	}
 
-	public SymphonyUser(String streamId, String name, String emailAddress) {
-		super(createTaxonomy(null, name, emailAddress));
+	public SymphonyUser(long userId, String name, String emailAddress) {
+		super(createTaxonomy(userId, name, emailAddress));
 	}	
 	
 	public SymphonyUser(String name, String emailAddress) {

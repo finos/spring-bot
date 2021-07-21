@@ -1,5 +1,16 @@
 {
-  "formdata" : {
+  "buttons" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.form.button",
+      "version" : "1.0",
+      "name" : "submit",
+      "buttonType" : "ACTION",
+      "text" : "GO"
+    } ]
+  },
+  "form" : {
     "type" : "org.finos.symphony.toolkit.workflow.fixture.testObjects",
     "version" : "1.0",
     "items" : [ {
@@ -22,20 +33,20 @@
       "askQty" : 234823498.573
     } ]
   },
+  "header" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.headerDetails",
+    "version" : "1.0",
+    "name" : null,
+    "description" : null,
+    "tags" : [ {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-testobjects"
+    } ]
+  },
   "errors" : {
     "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
     "version" : "1.0",
     "contents" : { }
-  },
-  "buttons" : {
-    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
-    "version" : "1.0",
-    "contents" : [ {
-      "type" : "org.finos.symphony.toolkit.workflow.form.button",
-      "version" : "1.0",
-      "name" : "submit",
-      "buttonType" : "ACTION",
-      "text" : "GO"
-    } ]
   }
 }

@@ -2,13 +2,11 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.Map;
 
-import org.finos.symphony.toolkit.workflow.content.Author;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb4;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.SymphonyModule;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,14 +47,12 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testUsersAndAuthors() throws Exception {
+	public void testUserDeserialize() throws Exception {
 		before();
 		Object o = om.readValue("{\"action\": \"ob4+0\", \"c.\": \"B\", \"b.\": true, \"someUser.\": [345315370602462]}", Map.class);
-		Author.CURRENT_AUTHOR.set(new SymphonyUser("123", "johnny bignose", "jb@nose.com"));
 		TestOb4 to = (TestOb4) fc.convert((Map<String, Object>) o, TestOb4.class.getCanonicalName());
-		Assertions.assertEquals(Author.CURRENT_AUTHOR.get(), to.getA());
 		Assertions.assertTrue(to.isB());
-		Assertions.assertEquals("345315370602462", to.getSomeUser().getId());
+		Assertions.assertEquals("345315370602462", ((SymphonyUser) to.getSomeUser()).getUserId());
 		Assertions.assertEquals(TestOb4.Choice.B, to.getC());
 		
 		
@@ -66,6 +62,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	public void testListOfStringAddValue() throws Exception {
 		before();
 		Object o = om.readValue("{\"action\": \"names.table-add-done\", \"entity.formdata\": \"Amsidh\"}", Map.class);
+		@SuppressWarnings("unchecked")
 		String to = (String) fc.convert((Map<String, Object>) o, String.class.getCanonicalName());
 		Assertions.assertEquals("Amsidh", to);
 	}
@@ -75,6 +72,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	public void testListOfStringUpdateValue() throws Exception {
 		before();
 		Object o = om.readValue("{\"action\": \"names[0].table-update\", \"entity.formdata\": \"AmsidhLokhande\"}", Map.class);
+		@SuppressWarnings("unchecked")
 		String to = (String) fc.convert((Map<String, Object>) o, String.class.getCanonicalName());
 		Assertions.assertEquals("AmsidhLokhande", to);
 	}
@@ -83,13 +81,14 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	public void testListOfIntegerAddValue() throws Exception {
 		before();
 		Object o = om.readValue("{\"action\": \"names.table-add-done\", \"entity.formdata\": 40}", Map.class);
+		@SuppressWarnings("unchecked")
 		Integer to = (Integer) fc.convert((Map<String, Object>) o, Integer.class.getCanonicalName());
 		Assertions.assertEquals(40, to);
 	}
 
 	@BeforeEach
 	public void before() {
-		Mockito.when(rooms.loadUserById(Mockito.eq(345315370602462l))).thenReturn(new SymphonyUser("345315370602462", "Some Guy", "sg@example.com"));
+		Mockito.when(rooms.loadUserById(Mockito.eq(345315370602462l))).thenReturn(new SymphonyUser(345315370602462l, "Some Guy", "sg@example.com"));
 		fc = new FormConverter(rooms);
 	}
 	

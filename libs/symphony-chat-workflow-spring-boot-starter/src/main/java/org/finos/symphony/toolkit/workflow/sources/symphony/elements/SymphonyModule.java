@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.json;
+package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
 
 import java.io.IOException;
 

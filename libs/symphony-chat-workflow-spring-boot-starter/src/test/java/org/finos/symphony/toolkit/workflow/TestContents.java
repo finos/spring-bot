@@ -25,16 +25,16 @@ public class TestContents {
 		doAssertsOnContent(new HashTag("id123"), new HashTag("id123"));
 		
 		// room def
-		doAssertsOnObject(new SymphonyRoom("abc", "desc", true, "abc123"), new SymphonyRoom("abc", "desc", true, "abc123"));
-		doAssertsOnObject(new SymphonyRoom(null, "desc", true, "abc123"), new SymphonyRoom(null, "desc", true, "abc123"));
-		doAssertsOnObject(new SymphonyRoom("abc", null, true, "abc123"), new SymphonyRoom("abc", null, true, "abc123"));
-		doAssertsOnObject(new SymphonyRoom("abc", "desc", true, null), new SymphonyRoom("abc", "desc", true, null));
+		doAssertsOnObject(new SymphonyRoom("abc", "abc123"), new SymphonyRoom("abc", "abc123"));
+		doAssertsOnObject(new SymphonyRoom(null, "abc123"), new SymphonyRoom(null, "abc123"));
+		doAssertsOnObject(new SymphonyRoom("abc","abc123"), new SymphonyRoom("abc", "abc123"));
+		doAssertsOnObject(new SymphonyRoom("abc", null), new SymphonyRoom("abc", null));
 
 		// user def
-		doAssertsOnObject(new SymphonyUser("abc", "rob", "rob@example.com"), new SymphonyUser("abc", "rob", "rob@example.com"));
-		doAssertsOnObject(new SymphonyUser(null, "rob", "rob@example.com"), new SymphonyUser(null, "rob", "rob@example.com"));
-		doAssertsOnObject(new SymphonyUser("abc", null, "rob@example.com"), new SymphonyUser("abc", null, "rob@example.com"));
-		doAssertsOnObject(new SymphonyUser("abc", "rob", null), new SymphonyUser("abc", "rob", null));
+		doAssertsOnObject(new SymphonyUser(123l, "rob", "rob@example.com"), new SymphonyUser(123l, "rob", "rob@example.com"));
+		doAssertsOnObject(new SymphonyUser("rob", "rob@example.com"), new SymphonyUser("rob", "rob@example.com"));
+		doAssertsOnObject(new SymphonyUser(null, "rob@example.com"), new SymphonyUser(null, "rob@example.com"));
+		doAssertsOnObject(new SymphonyUser(123l, "rob", null), new SymphonyUser(123l, "rob", null));
 		
 		// id
 		UUID some = UUID.randomUUID();

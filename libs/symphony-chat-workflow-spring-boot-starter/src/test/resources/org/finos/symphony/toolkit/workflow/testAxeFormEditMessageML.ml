@@ -5,16 +5,42 @@
     
       
 <#-- starting template -->
- <table>
- <tr><td><b>Isin:</b></td><td>${entity.form.isin!''}</td></tr>
- <tr><td><b>Bid Axed:</b></td><td>${entity.form.bidAxed?string("Y", "N")}</td></tr>
- <tr><td><b>Ask Axed:</b></td><td>${entity.form.askAxed?string("Y", "N")}</td></tr>
- <tr><td><b>Creator:</b></td><td>${entity.form.creator!''}</td></tr>
- <tr><td><b>Bid Qty:</b></td><td>${entity.form.bidQty!''}</td></tr>
- <tr><td><b>Ask Qty:</b></td><td>${entity.form.askQty!''}</td></tr>
- </table>
 <form 
-  id="just-buttons-form">
+  id="org.finos.symphony.toolkit.workflow.fixture.TestObject">
+ <table>
+ <tr><td><b>Isin:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['isin']!''}</span>
+  <text-field 
+   name="isin"
+   placeholder="isin">${entity.form.isin!''}</text-field></td></tr>
+ <tr><td><b>Bid Axed:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['bidAxed']!''}</span>
+  <checkbox 
+   name="bidAxed"
+   checked="${entity.form.bidAxed?string('true', 'false')}"
+   value="true">bid axed</checkbox></td></tr>
+ <tr><td><b>Ask Axed:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['askAxed']!''}</span>
+  <checkbox 
+   name="askAxed"
+   checked="${entity.form.askAxed?string('true', 'false')}"
+   value="true">ask axed</checkbox></td></tr>
+ <tr><td><b>Creator:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['creator']!''}</span>
+  <text-field 
+   name="creator"
+   placeholder="creator">${entity.form.creator!''}</text-field></td></tr>
+ <tr><td><b>Bid Qty:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['bidQty']!''}</span>
+  <text-field 
+   name="bidQty"
+   placeholder="bid qty">${entity.form.bidQty!''}</text-field></td></tr>
+ <tr><td><b>Ask Qty:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['askQty']!''}</span>
+  <text-field 
+   name="askQty"
+   placeholder="ask qty">${entity.form.askQty!''}</text-field></td></tr>
+ </table>
   <p><#list entity.buttons.contents as button>
     <button 
          name="${button.name}"

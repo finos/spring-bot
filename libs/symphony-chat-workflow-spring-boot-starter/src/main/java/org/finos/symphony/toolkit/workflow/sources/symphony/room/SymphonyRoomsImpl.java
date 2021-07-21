@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ import com.symphony.api.model.StreamType;
 import com.symphony.api.model.StreamType.TypeEnum;
 import com.symphony.api.model.UserId;
 import com.symphony.api.model.UserV2;
+import com.symphony.api.model.V2RoomSearchCriteria;
 import com.symphony.api.model.V3RoomAttributes;
 import com.symphony.api.model.V3RoomDetail;
 import com.symphony.api.pod.RoomMembershipApi;
@@ -72,45 +74,60 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 	}
 
 
-	
-	public Chat ensureRoom(Chat r) {
+	public Chat doesRoomExist(String name) {
+		V2RoomSearchCriteria rsc = new V2RoomSearchCriteria();
+		rsc.setQuery(name);
+		streamsApi.v3RoomSearchPost(rsc, null, null, null)
 		
+		
+	}
+	
+	@Override
+	public Chat ensureRoom(Chat r, List<User> users, Map<String, Object> meta) {
 		String description = "";
 		String name = r.getName();
 		boolean isPublic = false;
 		
+		description = (String) meta.getOrDefault(ROOM_DESCRIPTION, "");
+		isPublic = (boolean) meta.getOrDefault(ROOM_PUBLIC, false);
+		
+		String streamId;
+	
 		if (r instanceof SymphonyRoom) {
-			description = ((SymphonyRoom) r).getRoomDescription();
-			isPublic = ((SymphonyRoom) r).isPub();
+			if (((SymphonyRoom) r).getStreamId() == null) {
+				// new room neede
+			}
+			// create the room
+			V3RoomAttributes ra = new V3RoomAttributes()
+				.name(name)
+				.description(description)
+				._public(isPublic)
+				.discoverable(isPublic);
+			V3RoomDetail detail = streamsApi.v3RoomCreatePost(ra, null);
+			String streamId = detail.getRoomSystemInfo().getId();
+			
+			// next, we need to make sure that all of the admins are members of the room and owners.
+			List<Long> adminIds = getDefaultAdministrators().stream()
+				.filter(u -> u instanceof SymphonyUser)
+				.map(u -> (SymphonyUser) u)
+				.map(su -> Long.parseLong(su.getUserId()))
+				.filter(id -> id != null)
+				.collect(Collectors.toList());
+			
+			for (Long user : adminIds) {
+				UserId u = new UserId().id(user);
+				rmApi.v1RoomIdMembershipAddPost(u, null, streamId);
+				rmApi.v1RoomIdMembershipPromoteOwnerPost(u, null, streamId);
+			}
 		}
 		
-		// create the room
-		V3RoomAttributes ra = new V3RoomAttributes()
-			.name(name)
-			.description(description)
-			._public(isPublic)
-			.discoverable(isPublic);
-		V3RoomDetail detail = streamsApi.v3RoomCreatePost(ra, null);
-		
-		// next, we need to make sure that all of the admins are members of the room and owners.
-		List<Long> adminIds = getDefaultAdministrators().stream()
-			.filter(u -> u instanceof SymphonyUser)
-			.map(u -> (SymphonyUser) u)
-			.map(su -> Long.parseLong(su.getUserId()))
-			.filter(id -> id != null)
-			.collect(Collectors.toList());
-		
-		for (Long user : adminIds) {
-			UserId u = new UserId().id(user);
-			rmApi.v1RoomIdMembershipAddPost(u, null, detail.getRoomSystemInfo().getId());
-			rmApi.v1RoomIdMembershipPromoteOwnerPost(u, null, detail.getRoomSystemInfo().getId());
+		for (User u : users) {
+			
 		}
-		
+	
 		return new SymphonyRoom(
 				detail.getRoomAttributes().getName(), 
-				detail.getRoomAttributes().getDescription(),
-				detail.getRoomAttributes().isPublic(),
-				detail.getRoomSystemInfo().getId());
+				streamId);
 	}
 
 
