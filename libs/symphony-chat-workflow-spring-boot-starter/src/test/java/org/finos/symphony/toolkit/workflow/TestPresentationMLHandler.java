@@ -23,9 +23,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
-
-	@Autowired
-	Workflow wf;
 	
 	@Autowired
 	SymphonyIdentity identity;
@@ -41,9 +38,6 @@ public class TestPresentationMLHandler extends AbstractMockSymphonyTest {
 	@MockBean
 	AttachmentHandler ah;
 	
-	@Autowired
-	CommandPerformer cp;
-
 	@Autowired
 	ResourceLoader rl;
 	

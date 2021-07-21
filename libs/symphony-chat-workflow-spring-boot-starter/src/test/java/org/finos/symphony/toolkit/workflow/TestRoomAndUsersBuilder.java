@@ -56,14 +56,9 @@ public class TestRoomAndUsersBuilder {
 	@MockBean
 	UsersApi usersApi;
 	
-	@Autowired
-	Workflow wf;
-	
 	@BeforeEach
 	public void setup() {
-
-		ruBuilder = new SymphonyRoomsImpl(wf, rmApi, streamsApi, usersApi);
-		
+		ruBuilder = new SymphonyRoomsImpl(rmApi, streamsApi, usersApi);
 	}
 	
 	@Test

@@ -156,9 +156,9 @@ public class TestMessageMLParser extends AbstractMockSymphonyTest {
 					Paragraph.of(Collections.emptyList()),
 					Paragraph.of(Arrays.asList(
 							Word.of("/help"), 
-							new SymphonyUser(347583113331315l, "Rob Moffat", null, ()-> "abc123"),
-							new SymphonyUser(345315370604167l, "Mark Mainwood", null, ()-> "abc345"),
-							new SymphonyUser(345315370598706l, "James Tan", null, ()-> "abc8910"))))), 
+							new SymphonyUser(347583113331315l),
+							new SymphonyUser(345315370604167l),
+							new SymphonyUser(345315370598706l))))), 
 			smp.parse(
 				"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p> </p><p>/help <span class=\"entity\" data-entity-id=\"0\">@Rob Moffat</span> <span class=\"entity\" data-entity-id=\"1\">@Mark Mainwood</span> <span class=\"entity\" data-entity-id=\"2\">@James Tan</span> </p></div>",
 				ej));

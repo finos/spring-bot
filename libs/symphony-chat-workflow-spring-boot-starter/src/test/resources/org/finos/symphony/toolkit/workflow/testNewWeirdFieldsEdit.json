@@ -1,27 +1,4 @@
 {
-  "formdata" : {
-    "type" : "org.finos.symphony.toolkit.workflow.fixture.testOb4",
-    "version" : "1.0",
-    "theId" : {
-      "name" : "adf360dd-06fe-43a4-9a62-2c17fe2deefa",
-      "id" : "adf360dd-06fe-43a4-9a62-2c17fe2deefa",
-      "tagType" : "HASH"
-    },
-    "c" : "C",
-    "b" : false,
-    "a" : {
-      "name" : "bbb",
-      "id" : "28374682376",
-      "tagType" : "USER",
-      "address" : "v@example.com"
-    },
-    "someUser" : null
-  },
-  "errors" : {
-    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
-    "version" : "1.0",
-    "contents" : { }
-  },
   "buttons" : {
     "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
     "version" : "1.0",
@@ -32,5 +9,33 @@
       "buttonType" : "ACTION",
       "text" : "GO"
     } ]
+  },
+  "form" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.testOb4",
+    "version" : "1.0",
+    "theId" : {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "adf360dd-06fe-43a4-9a62-2c17fe2deefa"
+    },
+    "c" : "C",
+    "b" : false,
+    "someUser" : null
+  },
+  "header" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.headerDetails",
+    "version" : "1.0",
+    "name" : null,
+    "description" : null,
+    "tags" : [ {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-testob4"
+    } ]
+  },
+  "errors" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
   }
 }

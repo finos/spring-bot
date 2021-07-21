@@ -35,11 +35,6 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
-	public IDConverter idConverter() {
-		return new IDConverter();
-	}
-	
-	@Bean
 	public TimeConverter timeConverter() {
 		return new TimeConverter();
 	}

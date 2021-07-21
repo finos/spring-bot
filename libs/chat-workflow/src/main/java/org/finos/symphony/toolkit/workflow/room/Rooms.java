@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.workflow.room;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.finos.symphony.toolkit.workflow.content.Chat;
@@ -13,7 +14,7 @@ public interface Rooms {
 	 */
 	public Set<Chat> getAllRooms();
 	
-	public Chat ensureRoom(Chat r);
+	public Chat ensureRoom(Chat r, List<User> users, Map<String, Object> meta);
 	
 	public List<User> getRoomMembers(Chat r);
 	

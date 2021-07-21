@@ -7,15 +7,12 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.symphony.api.model.MessageSearchQuery;
 import com.symphony.api.model.V4Message;
@@ -23,23 +20,11 @@ import com.symphony.api.model.V4MessageList;
 
 public class TestHistory extends AbstractMockSymphonyTest {
 	
-	
-	SymphonyHistoryImpl mh;
+	@Autowired
+	SymphonyHistory mh;
 	
 	@Autowired
-	Workflow wf;
-	
-	@MockBean
-	SymphonyRooms ru;
-	
 	EntityJsonConverter ejc;
-	
-	@BeforeEach
-	public void setup() {
-		ejc = new EntityJsonConverter(wf);
-		mh = new SymphonyHistoryImpl(wf, ejc, messagesApi, ru);
-	}
-	
 
 	@Test
 	public void testGetLast() {
@@ -53,7 +38,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 				return out;
 			});
 		
-		TestObjects out = mh.getLastFromHistory(TestObjects.class, new SymphonyRoom("someroom", "", true, "abc123"))
+		TestObjects out = mh.getLastFromHistory(TestObjects.class, new SymphonyRoom("someroom", "abc123"))
 			.orElseThrow(() -> new RuntimeException());
 		
 		Assertions.assertEquals(out, to);
@@ -79,7 +64,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 		
 		List<TestObjects> out = mh.getFromHistory(
 				TestObjects.class, 
-				new SymphonyRoom("someroom", "", true, "abc123"),
+				new SymphonyRoom("someroom", "abc123"),
 				Instant.now().minus(10, ChronoUnit.DAYS));
 		
 		Assertions.assertEquals(3, out.size());

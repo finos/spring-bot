@@ -1,20 +1,34 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
@@ -44,6 +58,10 @@ public abstract class AbstractMockSymphonyTest {
 	
 	@MockBean
 	StreamsApi streamsApi;
+	
+	@Autowired
+	ResponseHandlers rh;
+
 	
 	@Configuration
 	public static class MockConfiguration {
@@ -85,4 +103,51 @@ public abstract class AbstractMockSymphonyTest {
 		
 		
 	}
+	
+	
+	protected void testTemplating(WorkResponse wr, String streamId, String testStemML, String testStemJson) throws IOException, JsonMappingException, JsonProcessingException {
+		rh.accept(wr);
+	        
+	    ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+	    ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
+			
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.isNull(), 
+				Mockito.matches(streamId),
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
+		        
+	        System.out.println(data.getValue());
+	        
+	    new File("target/tests").mkdirs();
+	        
+        FileOutputStream out1 = new FileOutputStream("target/tests/"+testStemML);
+        StreamUtils.copy(msg.getValue(), StandardCharsets.UTF_8, out1);
+	        
+        FileOutputStream out2 = new FileOutputStream("target/tests/"+testStemJson);
+        StreamUtils.copy(data.getValue(), StandardCharsets.UTF_8, out2);
+	        
+        Assertions.assertTrue(loadML(testStemML).contentEquals(msg.getValue()));
+        compareJson(loadJson(testStemJson), data.getValue());
+	}
+	
+
+    private String loadML(String string) throws IOException {
+        return StreamUtils.copyToString(AbstractMockSymphonyTest.class.getResourceAsStream(string), Charset.forName("UTF-8")).replace("\r\n", "\n");
+    }
+
+    private String loadJson(String string) throws IOException {
+        return StreamUtils.copyToString(AbstractMockSymphonyTest.class.getResourceAsStream(string), Charset.forName("UTF-8"));
+    }
+
+	
+	
+    protected void compareJson(String loadJson, String json) throws JsonMappingException, JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Assertions.assertEquals(om.readTree(loadJson), om.readTree(json));
+    }
 }

@@ -7,7 +7,7 @@ import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 
 @Work()
-@Template(view="classpath:/test-freemarker-view.ftl") 
+@Template(view="test-freemarker-view") 
 public class TestTemplatedObject {
 
 	private Chat r;
@@ -41,12 +41,6 @@ public class TestTemplatedObject {
 		this.r = r;
 		this.u = u;
 		this.someText = someText;
-	}
-	
-	
-	@Exposed(description = "Creates a templated object")
-	public static TestTemplatedObject templated(TestTemplatedObject in) {
-		return in;
 	}
 	
 	
