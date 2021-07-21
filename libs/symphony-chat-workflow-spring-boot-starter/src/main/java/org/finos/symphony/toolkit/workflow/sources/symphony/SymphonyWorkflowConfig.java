@@ -24,6 +24,8 @@ import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
+import org.finos.symphony.toolkit.workflow.response.handlers.ButtonsResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomName;
@@ -33,6 +35,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHan
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.HeaderTagResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerTypeConverterConfig;
@@ -154,8 +157,12 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyResponseHandler symphonyResponseHandler() {
-		return new SymphonyResponseHandler(messagesApi, streamsApi, usersApi, formMessageMLConverter(), 
-				messageMLWriter(), entityJsonConverter(), attachmentHandler, resourceLoader);
+		return new SymphonyResponseHandler(messagesApi, streamsApi, usersApi, 
+				formMessageMLConverter(), 
+				messageMLWriter(), 
+				entityJsonConverter(), 
+				attachmentHandler, 
+				resourceLoader);
 	}
 	
 	@Bean
@@ -176,6 +183,12 @@ public class SymphonyWorkflowConfig {
 	public SymphonyRooms symphonyRooms() {
 		return new SymphonyRoomsImpl(roomMembershipApi, streamsApi, usersApi);
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public HeaderTagResponseHandler headerTagResponsehandler() {
+		return new HeaderTagResponseHandler();
+	} 
 	
 	
 	@Bean

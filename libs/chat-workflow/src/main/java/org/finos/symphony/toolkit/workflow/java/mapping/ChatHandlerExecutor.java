@@ -9,10 +9,11 @@ import org.finos.symphony.toolkit.workflow.content.Content;
 public interface ChatHandlerExecutor {
 
 	public Map<ChatVariable, Content> getReplacements();
-	
-	public ChatHandlerMethod getChatHandlerMethod();
-	
+		
 	public Action action();
 	
 	public void execute() throws Throwable;
+	
+	public ChatMapping<?> getOriginatingMapping();
+	
 }

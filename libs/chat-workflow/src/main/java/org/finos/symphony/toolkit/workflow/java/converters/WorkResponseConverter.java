@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.workflow.java.converters;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
@@ -12,7 +13,7 @@ public class WorkResponseConverter implements ResponseConverter {
 	@Override
 	public Response convert(Object source, ChatHandlerExecutor creator) {
 		Addressable a = creator.action().getAddressable();
-		return new WorkResponse(a, source, false, null, null);
+		return new WorkResponse(a, source, WorkMode.VIEW, null, null);
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.form.Button;
@@ -85,7 +86,7 @@ public class ElementsHandler implements StreamEventConsumer {
 						}
 					}
 				} else {
-					WorkResponse fr = new WorkResponse(rr, data, true, 
+					WorkResponse fr = new WorkResponse(rr, data,  WorkMode.EDIT, 
 						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), convertErrorsToMap(e));
 					rh.accept(fr);
 				}

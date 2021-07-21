@@ -15,6 +15,7 @@ import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed.NoFormClass;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -27,13 +28,13 @@ import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
-public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
+public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
 
 	private WorkflowResolversFactory wrf;
 	private ResponseHandlers rh;
 	private List<ResponseConverter> converters;
 	
-	public ExposedHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
+	public ExposedChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
 		super();
 		this.wrf = wrf;
 		this.rh = rh;
@@ -137,7 +138,6 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 		List<WildcardContent> wildcards = createWildcardContent(mapping, handlerMethod);
 		List<MessageMatcher> matchers = createMessageMatchers(mapping, wildcards); 
 		
-		
 		return new MappingRegistration<Exposed>(mapping, handlerMethod) {
 			
 			@Override
@@ -164,6 +164,7 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 			}
 
 			private ChatHandlerExecutor pathMatches(Message words, Action a) {
+				MappingRegistration<?> me = this;
 				ChatHandlerExecutor bestMatch = null;
 				
 				for (MessageMatcher messageMatcher : matchers) {
@@ -179,13 +180,13 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 								}
 	
 								@Override
-								public ChatHandlerMethod getChatHandlerMethod() {
-									return handlerMethod;
-								}
-	
-								@Override
 								public Action action() {
 									return a;
+								}
+
+								@Override
+								public ChatMapping<?> getOriginatingMapping() {
+									return me;
 								}
 	
 							};
@@ -198,9 +199,10 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 			}
 
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
+				MappingRegistration<?> me = this;
 				Exposed e = getMapping();
 				
-				if (!e.isButton()) {
+				if (e.isButton() == WorkMode.NONE) {
 					return null;
 				}
 				
@@ -227,15 +229,29 @@ public class ExposedHandlerMapping extends AbstractSpringComponentHandlerMapping
 					}
 					
 					@Override
-					public ChatHandlerMethod getChatHandlerMethod() {
-						return handlerMethod;
-					}
-					
-					@Override
 					public Action action() {
 						return a;
 					}
+
+
+					@Override
+					public ChatMapping<?> getOriginatingMapping() {
+						return me;
+					}
 				};
+			}
+
+			@Override
+			public boolean isButtonFor(Object o, WorkMode m) {
+				if (mapping.isButton() != m) {
+					return false;
+				}
+				
+				if (mapping.formClass() == NoFormClass.class) {
+					return true;
+				}
+				
+				return mapping.formClass().isAssignableFrom(o.getClass());
 			}
 		};
 	}

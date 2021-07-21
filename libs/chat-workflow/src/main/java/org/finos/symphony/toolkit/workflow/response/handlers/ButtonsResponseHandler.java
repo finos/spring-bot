@@ -1,10 +1,12 @@
 package org.finos.symphony.toolkit.workflow.response.handlers;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -33,12 +35,13 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 	public void accept(Response t) {
 		if (t instanceof WorkResponse) {
 			Object o = ((WorkResponse) t).getFormObject();
+			WorkMode wm = ((WorkResponse) t).getMode();
 			
-			ButtonList obl = (ButtonList) ((WorkResponse) t).getData().get(WorkResponse.BUTTONLIST_KEY);
+			ButtonList obl = (ButtonList) ((WorkResponse) t).getData().get(ButtonList.KEY);
 			
 			if (obl == null) {
 				obl = new ButtonList();
-				((WorkResponse) t).getData().put(WorkResponse.BUTTONLIST_KEY, obl);
+				((WorkResponse) t).getData().put(ButtonList.KEY, obl);
 			}
 			
 			final ButtonList bl = obl;
@@ -48,6 +51,7 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 			exposedHandlerMappings.stream()
 					.flatMap(hm -> hm.getAllHandlers(t.getAddress(), null).stream())
 					.filter(cm -> exposedMatchesObject(cm.getMapping(), o))
+					.filter(cm -> cm.isButtonFor(o, wm))
 					.map(cm -> cm.getMapping())
 					.forEach(e -> {
 						String value = e.value()[0];
@@ -55,7 +59,8 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 						text = StringUtils.hasText(text) ? text : value;
 						bl.add(new Button(value, Type.ACTION, text));
 					});
-					
+				
+			Collections.sort((List<Button>) bl.getContents());
 		}
 	}
 

@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.workflow.form;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 @Work
-public class Button {
+public class Button implements Comparable<Button> {
 	
 	public enum Type { ACTION, RESET };
 
@@ -43,6 +43,11 @@ public class Button {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	@Override
+	public int compareTo(Button o) {
+		return this.getText().compareTo(o.getText());
 	}
 
 }

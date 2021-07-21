@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.workflow.content;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public interface Tag extends Content {
 	
 	public interface Type {
@@ -53,13 +55,16 @@ public interface Tag extends Content {
 		
 	};
 	
+	@JsonIgnore
 	public Type getTagType();
 	
 	/**
 	 * Screen, display name
 	 */
+	@JsonIgnore
 	public String getName();
 	
+	@JsonIgnore
 	public default String getText() {
 		return getTagType().getPrefix() + getName();
 	}

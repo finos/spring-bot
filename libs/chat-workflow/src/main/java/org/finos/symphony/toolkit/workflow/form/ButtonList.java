@@ -9,7 +9,9 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 @Work
 public class ButtonList {
 	
-	private Collection<Button> contents;
+	private Collection<Button> contents = new ArrayList<Button>();
+
+	public static final String KEY = "buttons";
 
 	public Collection<Button> getContents() {
 		return contents;
