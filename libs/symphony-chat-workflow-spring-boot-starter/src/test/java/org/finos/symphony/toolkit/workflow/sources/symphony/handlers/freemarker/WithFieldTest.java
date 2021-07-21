@@ -1,13 +1,12 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import org.finos.symphony.toolkit.json.EntityJson;
+import java.lang.reflect.Field;
+import java.util.Date;
+
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.lang.reflect.Field;
-import java.util.Date;
 
 public class WithFieldTest {
 
@@ -17,7 +16,7 @@ public class WithFieldTest {
     public void init() {
         this.withField = new WithField() {
             @Override
-            public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
+            public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler) {
                 return null;
             }
 

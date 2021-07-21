@@ -5,17 +5,29 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
+import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.fixture.Address;
+import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.fixture.Person;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter.Mode;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.util.StreamUtils;
 import org.springframework.validation.Validator;
 
@@ -26,13 +38,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CollectionsMessageFormTest extends AbstractMockSymphonyTest {
 
     @Autowired
-    FormMessageMLConverter messageMlConverter;
-
-    @Autowired
-    Validator validator;
+    ResponseHandlers rh;
 
     @Autowired
     EntityJsonConverter ejc;
+    
+    @Autowired
+	OurController oc;
 
 
     private String loadML(String string) throws IOException {
@@ -45,36 +57,57 @@ public class CollectionsMessageFormTest extends AbstractMockSymphonyTest {
 
     @Test
     public void testCollectionEditMessage() throws Exception {
+    	WorkResponse wr = new WorkResponse(createAddressable(), getPerson(), WorkMode.EDIT);
 
-        Person person = getPerson();
-
-        Button submit = new Button("submit", Type.ACTION, "GO");
-
-        // can we convert to messageML? (something populated)
-        EntityJson empty = new EntityJson();
-        String out = messageMlConverter.convert(Person.class, person, ButtonList.of(submit), true,
-                ErrorHelp.createErrorHolder(), empty);
-        String json = ejc.writeValue(empty);
-        System.out.println("<messageML>" + out + "</messageML>\n" + json);
-        Assertions.assertTrue(loadML("testCollectionEditMessageML.ml").contentEquals(out));
-        compareJson(loadJson("testCollectionEditMessage.json"), json);
+        rh.accept(wr);
+        
+        ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
+		
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.isNull(), 
+				Mockito.matches("abc123"),
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
+	        
+        System.out.println(data.getValue());
+        
+        Assertions.assertTrue(loadML("testCollectionEditMessageML.ml").contentEquals(msg.getValue()));
+        compareJson(loadJson("testCollectionEditMessage.json"), data.getValue());
     }
 
-    @Test
+    private Addressable createAddressable() {
+		return new SymphonyRoom("bobo", "abc123");
+	}
+
+	@Test
     public void testCollectionViewMessage() throws Exception {
+		WorkResponse wr = new WorkResponse(createAddressable(), getPerson(), WorkMode.VIEW);
 
-        Person person = getPerson();
-
-        Button submit = new Button("submit", Type.ACTION, "GO");
-
-        // can we convert to messageML? (something populated)
-        EntityJson empty = new EntityJson();
-        String out = messageMlConverter.convert(Person.class, person, ButtonList.of(submit), false,
-                ErrorHelp.createErrorHolder(), empty);
-        String json = ejc.writeValue(empty);
-        System.out.println("<messageML>" + out + "</messageML>\n" + json);
-        Assertions.assertTrue(loadML("testCollectionViewMessageML.ml").contentEquals(out));
-        compareJson(loadJson("testCollectionViewMessage.json"), json);
+		rh.accept(wr);
+	        
+	    ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+	    ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
+			
+		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
+				Mockito.isNull(), 
+				Mockito.matches("abc123"),
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
+		        
+	        System.out.println(data.getValue());
+	        
+        
+        Assertions.assertTrue(loadML("testCollectionViewMessageML.ml").contentEquals(msg.getValue()));
+        compareJson(loadJson("testCollectionViewMessage.json"), data.getValue());
     }
     private void compareJson(String loadJson, String json) throws JsonMappingException, JsonProcessingException {
         ObjectMapper om = new ObjectMapper();

@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.workflow;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
@@ -77,5 +78,11 @@ public abstract class AbstractMockSymphonyTest {
 			};
 		}
 
+		@Bean
+		public OurController ourController() {
+			return new OurController();
+		}
+		
+		
 	}
 }

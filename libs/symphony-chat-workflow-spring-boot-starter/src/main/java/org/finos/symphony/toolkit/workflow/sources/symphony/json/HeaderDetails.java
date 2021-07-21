@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.json;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class HeaderDetails {
 
 	private String name;
 	private String description;
-	private Collection<Tag> tags;
+	private Collection<Tag> tags = new ArrayList<Tag>();
 	
 	public HeaderDetails() {
 		super();

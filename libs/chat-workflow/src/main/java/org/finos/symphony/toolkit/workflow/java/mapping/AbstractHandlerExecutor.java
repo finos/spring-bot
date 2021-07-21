@@ -35,7 +35,7 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 	
 	@Override
 	public void execute() throws Throwable {
-		ChatHandlerMethod hm = getChatHandlerMethod();
+		ChatHandlerMethod hm = getOriginatingMapping().getHandlerMethod();
 		Method m = hm.getMethod(); 
 		Object o = hm.getBean();
 		

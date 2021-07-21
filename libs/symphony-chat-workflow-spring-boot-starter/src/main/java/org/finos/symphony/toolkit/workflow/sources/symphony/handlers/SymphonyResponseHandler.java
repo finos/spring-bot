@@ -2,25 +2,24 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Tag;
+import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.DataResponse;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter.Mode;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLWriter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
@@ -29,7 +28,7 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
 
-public class SymphonyResponseHandler extends AbstractStreamResolving implements ResponseHandler {
+public class SymphonyResponseHandler extends AbstractStreamResolving implements ResponseHandler, ApplicationContextAware {
 	
 	public static final String MESSAGE_AREA = "<!-- Message Content -->";
 	
@@ -44,14 +43,17 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	protected DataHandler dataHandler;
 	protected AttachmentHandler attachmentHandler;
 	protected ResourceLoader rl;
-	
+	protected ApplicationContext ctx;
 	
 	public SymphonyResponseHandler(
 			MessagesApi messagesApi,
 			StreamsApi streamsApi, 
 			UsersApi usersApi,
-			FormMessageMLConverter formMessageMLConverter, MessageMLWriter contentWriter, DataHandler dataHandler,
-			AttachmentHandler attachmentHandler, ResourceLoader rl) {
+			FormMessageMLConverter formMessageMLConverter, 
+			MessageMLWriter contentWriter, 
+			DataHandler dataHandler,
+			AttachmentHandler attachmentHandler, 
+			ResourceLoader rl) {
 		super(streamsApi, usersApi);
 		this.messagesApi = messagesApi;
 		this.formMessageMLConverter = formMessageMLConverter;
@@ -65,38 +67,20 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	@Override
 	public void accept(Response t) {
 		if (t.getAddress() instanceof SymphonyAddressable) {		
-			String templateName = t.getTemplateName();
-	
-			String template = StringUtils.hasText(templateName) ? getTemplateForName(templateName) : null;
-	
-			if (template == null) {
-				LOG.info("Reverting to default template for " + t);
-				template = getDefaultTemplate(t);
-				LOG.info(template);
-			}
-			
-			if (template == null) {
-				LOG.error("Cannot determine/create template for response {}", t);
-				return;
-			}
-			
+
 			Object attachment = null;
 			String data = null;
-						
+			String template = null;
+			
 			if (t instanceof AttachmentResponse) {
 				attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
 			}
 		
-			if (t instanceof WorkResponse) {
-				WorkResponse workResponse = (WorkResponse) t;
-				HeaderDetails hd = (HeaderDetails) workResponse.getData().get(HeaderDetails.KEY);
-				Object o = workResponse.getData().get(WorkResponse.OBJECT_KEY);
-				if (hd == null) {
-					hd = new HeaderDetails();
-					workResponse.getData().put(HeaderDetails.KEY, hd);
-					List<Tag> tags = new ArrayList<>(TagSupport.classHashTags(o));
-					hd.setTags(tags);
-				}
+			template = buildTemplate(t);
+			
+			if (template == null) {
+				LOG.error("Cannot determine/create template for response {}", t);
+				return;
 			}
 
 			if (t instanceof DataResponse) {
@@ -107,7 +91,23 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			sendResponse(template, attachment, data, t.getAddress());
 		}
 	}
+
+
 	
+	protected String buildTemplate(Response t) {
+		String templateName = t.getTemplateName();
+
+		String template = StringUtils.hasText(templateName) ? getTemplateForName(templateName) : null;
+
+		if (template == null) {
+			LOG.info("Reverting to default template for " + t);
+			template = getDefaultTemplate(t);
+			LOG.info("Template: \n"+template);
+		}
+		
+		return template;
+	}
+
 	protected void sendResponse(String template, Object attachment, String data, Addressable address) {
 		try {
 			if (address instanceof SymphonyAddressable) {
@@ -115,7 +115,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 				messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
 			}
 		} catch (Exception e) {
-			LOG.error("Couldn/'t send message \n{} \n{}: ", template, data);
+			LOG.error("Couldn't send message \n{} \n{}: ", template, data);
 			LOG.error("Error was: ", e);
 		} 
 	}
@@ -150,8 +150,12 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	}
 
 	protected boolean needsButtons(Response r) {
-		// TODO Auto-generated method stub
-		return false;
+		if (r instanceof WorkResponse) {
+			ButtonList bl = (ButtonList) ((WorkResponse) r).getData().get(ButtonList.KEY);
+			return (bl != null) && (bl.getContents().size() > 0);
+		} else {
+			return false;
+		}
 	}
 
 	public String getTemplateForName(String name) {
@@ -188,6 +192,12 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	@Override
 	public int getOrder() {
 		return LOWEST_PRECEDENCE;
+	}
+
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.ctx = applicationContext;
 	}
 
 }

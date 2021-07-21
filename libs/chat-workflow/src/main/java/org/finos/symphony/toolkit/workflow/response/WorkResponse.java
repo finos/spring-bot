@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.annotations.Template;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
@@ -20,43 +21,45 @@ public class WorkResponse extends DataResponse {
 	
 	public static final String DEFAULT_FORM_TEMPLATE_EDIT = "default-edit";
 	public static final String DEFAULT_FORM_TEMPLATE_VIEW = "default-view";
-	public static final String BUTTONLIST_KEY = "buttons";
 	public static final String ERRORS_KEY = "errors";
 	public static final String OBJECT_KEY = "form";
-				
-	public WorkResponse(Addressable to, Map<String, Object> data, String templateName) {
+	
+	private final WorkMode mode;
+	
+	public WorkResponse(Addressable to, Map<String, Object> data, String templateName, WorkMode m) {
 		super(to, data, templateName);
+		this.mode = m;
 	}
 	
 	/**
 	 * Call this contructor to create a basic form response using an object.
 	 */
-	public WorkResponse(Addressable to, Object o, boolean editable, ButtonList buttons, ErrorMap errors) {
-		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(editable, o));
+	public WorkResponse(Addressable to, Object o, WorkMode m, ButtonList buttons, ErrorMap errors) {
+		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(m, o), m);
 	}
 	
-	public WorkResponse(Addressable to, Object o, boolean editable) {
-		this(to, o, editable, null, null);
+	public WorkResponse(Addressable to, Object o, WorkMode m) {
+		this(to, o, m, null, null);
 	}
 	
 	public static Map<String, Object> createEntityJson(Object o, ButtonList buttons, ErrorMap errors) {
 		Map<String, Object> json = new HashMap<>();
-		json.put(BUTTONLIST_KEY, buttons == null ? new ButtonList() : buttons);
+		json.put(ButtonList.KEY, buttons == null ? new ButtonList() : buttons);
 		json.put(ERRORS_KEY, errors == null ? new ErrorMap() : errors);
 		json.put(OBJECT_KEY, o);
 		return json;
 	}
 
-	public static String getTemplateNameForObject(boolean editable, Object o) {
-		return getTemplateNameForClass(editable, o.getClass());
+	public static String getTemplateNameForObject(WorkMode m, Object o) {
+		return getTemplateNameForClass(m, o.getClass());
 	}
 	
-	public static String getTemplateNameForClass(boolean editMode, Class<?> c) {
+	public static String getTemplateNameForClass(WorkMode m, Class<?> c) {
 		Template t = c.getAnnotation(Template.class);
-		String templateName = t == null ? null : (editMode ? t.edit() : t.view());
+		String templateName = t == null ? null : (m == WorkMode.EDIT ? t.edit() : t.view());
 		
 		if (templateName == null) {
-			return editMode ? DEFAULT_FORM_TEMPLATE_EDIT : DEFAULT_FORM_TEMPLATE_VIEW;
+			return (m == WorkMode.EDIT) ? DEFAULT_FORM_TEMPLATE_EDIT : DEFAULT_FORM_TEMPLATE_VIEW;
 		} else {
 			return templateName;
 		}
@@ -74,7 +77,7 @@ public class WorkResponse extends DataResponse {
 	}
 
 	public ButtonList getButtons() {
-		return (ButtonList) getData().get(BUTTONLIST_KEY);
+		return (ButtonList) getData().get(ButtonList.KEY);
 	}
 
 	public Errors getErrors() {
@@ -85,6 +88,10 @@ public class WorkResponse extends DataResponse {
 	public String toString() {
 		return "FormResponse [getData()=" + getData() + ", getTemplateName()="
 				+ getTemplateName() + ", getAddress()=" + getAddress() + "]";
+	}
+	
+	public WorkMode getMode() {
+		return mode;
 	}
 
 	

@@ -42,11 +42,12 @@ public @interface Exposed {
 	Class<?> formClass() default NoFormClass.class;
 	
 	boolean addToHelp() default true;
-	
+		
 	/**
-	 * Whether this method can be exposed as a button
+	 * Whether this method can be exposed as a button, and if so, whether it appears 
+	 * during the formClass's edit mode or display mode.
 	 */
-	boolean isButton() default true;
+	WorkMode isButton() default WorkMode.NONE;
 	
 	/**
 	 * If you want the button text to not match the first value, use this.

@@ -18,9 +18,10 @@ import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
+import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
-import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ExposedChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
@@ -48,7 +49,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @SpringBootTest(classes = {
-		TestHandlerMapping.TestConfig.class,
 		AbstractMockSymphonyTest.MockConfiguration.class, 
 		SymphonyWorkflowConfig.class,
 })
@@ -59,7 +59,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	OurController oc;
 	
 	@Autowired
-	ExposedHandlerMapping hm;
+	ExposedChatHandlerMapping hm;
 		
 	@Autowired
 	SymphonyResponseHandler rh;
@@ -69,18 +69,6 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	
 	@Autowired
 	EntityJsonConverter ejc;
-
-	@Configuration
-	static class TestConfig {
-		 
-		
-		@Bean
-		public OurController ourController() {
-			return new OurController();
-		}
-		
-		
-	}
 	
 	@Autowired
 	MessageMLParser smp;
@@ -218,13 +206,15 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		System.out.println(data.getValue());
 		
 		
-		Assertions.assertEquals(7, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
+		Assertions.assertEquals(16, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
 		
-		Assertions.assertTrue(data.getValue().contains("{\n"
-				+ "      \"examples\" : [ \"help\" ],\n"
+		Assertions.assertTrue(data.getValue().contains(" {\n"
+				+ "      \"type\" : \"org.finos.symphony.toolkit.workflow.help.commandDescription\",\n"
+				+ "      \"version\" : \"1.0\",\n"
+				+ "      \"description\" : \"Display this help page\",\n"
 				+ "      \"button\" : true,\n"
 				+ "      \"message\" : true,\n"
-				+ "      \"description\" : \"Display this help page\"\n"
+				+ "      \"examples\" : [ \"help\" ]\n"
 				+ "    }"));
 		
 		Assertions.assertTrue(msg.getValue().contains("<tr>\n"
@@ -331,7 +321,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 				Mockito.isNull());
 		Mockito.clearInvocations();
 		JsonNode node = new ObjectMapper().readTree(data.getValue());
-		JsonNode button1 = node.get(WorkResponse.BUTTONLIST_KEY).get("contents").get(0);
+		JsonNode button1 = node.get(ButtonList.KEY).get("contents").get(0);
 		Assertions.assertEquals("go", button1.get("name").textValue());
 	}
 	
@@ -352,7 +342,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Mockito.clearInvocations();
 		
 		JsonNode node = new ObjectMapper().readTree(data.getValue());
-		JsonNode button1 = node.get(WorkResponse.BUTTONLIST_KEY).get("contents").get(0);
+		JsonNode button1 = node.get(ButtonList.KEY).get("contents").get(0);
 		Assertions.assertEquals("ok", button1.get("name").textValue());
 	}
 	

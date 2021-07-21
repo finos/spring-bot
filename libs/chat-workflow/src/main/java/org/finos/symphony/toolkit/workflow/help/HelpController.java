@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed.NoFormClass;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
@@ -48,7 +49,7 @@ public class HelpController implements ApplicationContextAware {
 			.collect(Collectors.joining(" "));
 	}
 
-	@Exposed(value = "help", description="Display this help page")
+	@Exposed(value = "help", description="Display this help page", isButton = WorkMode.VIEW)
 	public Response handleHelp(Addressable a, User u) {
 		initExposedHandlers();
 		List<CommandDescription> commands = exposedHandlers
@@ -59,7 +60,7 @@ public class HelpController implements ApplicationContextAware {
 				.sorted((c, b) -> c.getDescription().compareTo(b.getDescription()))
 				.collect(Collectors.toList());
 
-		return new WorkResponse(a, new HelpPage(commands), false);
+		return new WorkResponse(a, new HelpPage(commands), WorkMode.VIEW);
 	}
 
 	private boolean includeInHelp(ChatMapping<Exposed> hm) {
@@ -69,14 +70,16 @@ public class HelpController implements ApplicationContextAware {
 			return false;
 		}
 		
-		if (e.isButton()) {
+		if (e.isMessage()) {
+			return true;
+		}
+		
+		if (e.isButton() != WorkMode.NONE) {
 			return ((e.formClass() == NoFormClass.class) && 
 				(!StringUtils.hasText(e.formName())) && noCurlies(e));
-		} else if (e.isMessage()) {
-			return true;
-		} else {
-			return false;
 		}
+		
+		return false;
 	}
 
 
@@ -89,7 +92,7 @@ public class HelpController implements ApplicationContextAware {
 		Exposed e = hm.getMapping();
 		ChatHandlerMethod m = hm.getHandlerMethod();
 		String d = StringUtils.hasText(e.description()) ? e.description() : defaultDescription(m.getMethod());
-		return new CommandDescription(d, e.isButton(), e.isMessage(), Arrays.asList(e.value()));
+		return new CommandDescription(d, e.isButton() != WorkMode.NONE, e.isMessage(), Arrays.asList(e.value()));
 	}
 
 	@SuppressWarnings("unchecked")

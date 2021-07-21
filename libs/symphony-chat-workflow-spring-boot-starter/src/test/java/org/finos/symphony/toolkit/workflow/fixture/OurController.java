@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
@@ -38,14 +39,14 @@ public class OurController {
 		lastMethod = "listenToEverything";
 	}
 	
-	@Exposed(value = "call", formClass=Person.class)
+	@Exposed(value = "call", formClass=Person.class, isButton = WorkMode.VIEW)
 	public void callPerson(Person arg) {
 		// do your own form processing
 		lastArguments = Collections.singletonList(arg);
 		lastMethod = "callPerson";
 	}
 	
-	@Exposed(value = "new claim", isButton = true, isMessage = false)
+	@Exposed(value = "new claim", isButton = WorkMode.EDIT, isMessage = false, formClass = StartClaim.class)
 	public TestObject startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
@@ -55,7 +56,7 @@ public class OurController {
 	}
 	
 
-	@Exposed(value = "process", isButton = true, formName = "process-form")
+	@Exposed(value = "process", isButton = WorkMode.EDIT, formName = "process-form")
 	public void processForm(FormSubmission f) {
 		// do your own form processing
 		// is this needed?
@@ -135,7 +136,7 @@ public class OurController {
 	public WorkResponse form1(Addressable a) {
 		ButtonList bl = new ButtonList();	
 		bl.add(new Button("go", Type.ACTION, "Do The Thing"));
-		return new WorkResponse(a, new TestObject(), true, bl, null);
+		return new WorkResponse(a, new TestObject(), WorkMode.EDIT, bl, null);
 	}
 	
 	@Exposed(value="form2")
@@ -143,8 +144,8 @@ public class OurController {
 		return new TestObject();
 	}
 	
-	@Exposed(value = "ok", formClass = TestObject.class)
-	public TestObject ok(TestObject to) {
+	@Exposed(value = "ok", formClass = Person.class, isButton = WorkMode.EDIT)
+	public TestObject ok(Person to) {
 		return null;
 	}
 	

@@ -280,6 +280,14 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 			return this.handlerMethod;
 		}
 	}
+	
+	abstract static class ButtonMappingRegistration<T> extends MappingRegistration<T> implements ButtonMapping {
+
+		public ButtonMappingRegistration(T mapping, ChatHandlerMethod handlerMethod) {
+			super(mapping, handlerMethod);
+		}
+		
+	}
 
 
 	protected abstract MappingRegistration<T> createMappingRegistration(T mapping, ChatHandlerMethod handlerMethod);

@@ -2,6 +2,9 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
+
+@Work
 public class Person {
     private List<String> names;
     private List<Address> addresses;

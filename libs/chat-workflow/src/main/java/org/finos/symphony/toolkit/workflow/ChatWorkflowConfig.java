@@ -15,7 +15,7 @@ import org.finos.symphony.toolkit.workflow.java.converters.WorkResponseConverter
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
-import org.finos.symphony.toolkit.workflow.java.mapping.ExposedHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ExposedChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.resolvers.ResolverConfig;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.Response;
@@ -64,9 +64,9 @@ public class ChatWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	@Order(value = PriorityOrdered.HIGHEST_PRECEDENCE)
-	public ExposedHandlerMapping handlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
+	public ExposedChatHandlerMapping handlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
 			List<ResponseConverter> converters) {
-		return new ExposedHandlerMapping(wrf, rh, converters);
+		return new ExposedChatHandlerMapping(wrf, rh, converters);
 	}
 	
 	@Bean
