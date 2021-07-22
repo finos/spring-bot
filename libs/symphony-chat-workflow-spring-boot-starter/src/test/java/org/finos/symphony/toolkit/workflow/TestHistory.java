@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
@@ -88,8 +89,10 @@ public class TestHistory extends AbstractMockSymphonyTest {
 
 
 	protected V4Message makeMessage(TestObjects one) {
+		EntityJson out = new EntityJson();
+		out.put("1", one);
 		return new V4Message()
 			.message("some stuff")
-			.data(ejc.toWorkflowJson(one));
+			.data(ejc.writeValue(out));
 	}
 }

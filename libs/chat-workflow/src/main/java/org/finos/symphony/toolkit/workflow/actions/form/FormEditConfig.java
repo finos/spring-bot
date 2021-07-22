@@ -16,23 +16,23 @@ public class FormEditConfig {
 	@Autowired
 	ResponseHandlers rh;
 	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public TableAddRow tableAddRow() {
-//		return new TableAddRow(eh, rh);
-//	}
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public TableDeleteRows tableDeleteRows() {
-//		return new TableDeleteRows(eh, rh);
-//	}
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public TableEditRow tableEditRow() {
-//		return new TableEditRow(eh, rh);
-//	}
+	@Bean
+	@ConditionalOnMissingBean
+	public TableAddRow tableAddRow() {
+		return new TableAddRow(eh, rh);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public TableDeleteRows tableDeleteRows() {
+		return new TableDeleteRows(eh, rh);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public TableEditRow tableEditRow() {
+		return new TableEditRow(eh, rh);
+	}
 	
 	@Bean
 	@ConditionalOnMissingBean

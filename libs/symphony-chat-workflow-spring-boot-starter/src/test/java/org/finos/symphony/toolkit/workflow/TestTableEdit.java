@@ -1,35 +1,37 @@
 package org.finos.symphony.toolkit.workflow;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
+import org.finos.symphony.toolkit.workflow.actions.form.TableAddRow;
+import org.finos.symphony.toolkit.workflow.actions.form.TableDeleteRows;
+import org.finos.symphony.toolkit.workflow.actions.form.TableEditRow;
+import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.fixture.TestOb6;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.form.TableAddRow;
-import org.finos.symphony.toolkit.workflow.form.TableDeleteRows;
-import org.finos.symphony.toolkit.workflow.form.TableEditRow;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Collections;
-import java.util.Map;
-
-import static org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig.room;
-import static org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig.u;
 
 public class TestTableEdit extends AbstractMockSymphonyTest {
+	
 
-    @Autowired
-    Workflow wf;
+	public static final User u = new SymphonyUser(123l, "Testy McTestFace", "tmt@example.com");
+	public static final Chat room = new SymphonyRoom("Test Room", "abc123");
 
     private TestObjects to;
-    private EntityJson toWrapper;
 
     @Autowired
     TableEditRow editRow;
@@ -40,35 +42,39 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
     @Autowired
     TableAddRow addRows;
 
-    EntityJsonConverter ejc;
-
-
     @BeforeEach
     public void setup() {
         to = TestWorkflowConfig.createTestObjects();
-        toWrapper = EntityJsonConverter.newWorkflow(to);
-        ejc = new EntityJsonConverter(wf);
     }
 
     @Test
-    public void testAddRow() {
-        FormAction ea = new FormAction(wf, room, u, null, "items." + TableAddRow.ACTION_SUFFIX, toWrapper);
-        WorkResponse fr = (WorkResponse) addRows.apply(ea).get(0);
-        Assertions.assertEquals(TestObject.class, fr.getFormClass());
-        Assertions.assertEquals("New Test Object", fr.getName());
-
-        // ok, make changes and post back
-        TestObject newTo = (TestObject) fr.getFormObject();
-        newTo.setCreator("newb@thing.com");
-        newTo.setIsin("isiny");
-        newTo.setBidAxed(true);
-        newTo.setBidQty(324);
-        ea = new FormAction(wf, room, u, newTo, "items." + TableAddRow.DO_SUFFIX, toWrapper);
-        fr = (WorkResponse) addRows.apply(ea).get(0);
-        TestObjects to = (TestObjects) ejc.readWorkflow(fr.getData());
-
-        Assertions.assertEquals(3, to.getItems().size());
-        Assertions.assertEquals(newTo, to.getItems().get(2));
+    public void testAddRow() throws Exception {
+    	EntityJson ej = new EntityJson();
+    	ej.put(WorkResponse.OBJECT_KEY, to);
+    	
+        FormAction ea = new FormAction(room, u, to, "items." + TableAddRow.ACTION_SUFFIX, ej);
+        addRows.accept(ea);
+        
+        // should get a new form back.
+        testTemplating("abc123", "testAddRow1.ml", "testAddRow1.json");
+        
+        
+//        
+//        Assertions.assertEquals(TestObject.class, fr.getFormClass());
+//        Assertions.assertEquals("New Test Object", fr.getName());
+//
+//        // ok, make changes and post back
+//        TestObject newTo = (TestObject) fr.getFormObject();
+//        newTo.setCreator("newb@thing.com");
+//        newTo.setIsin("isiny");
+//        newTo.setBidAxed(true);
+//        newTo.setBidQty(324);
+//        ea = new FormAction(wf, room, u, newTo, "items." + TableAddRow.DO_SUFFIX, toWrapper);
+//        fr = (WorkResponse) addRows.apply(ea).get(0);
+//        TestObjects to = (TestObjects) ejc.readWorkflow(fr.getData());
+//
+//        Assertions.assertEquals(3, to.getItems().size());
+//        Assertions.assertEquals(newTo, to.getItems().get(2));
     }
 
     @Test
@@ -131,6 +137,22 @@ public class TestTableEdit extends AbstractMockSymphonyTest {
         Assertions.assertTrue(to.getNames().contains(newTo));
 
     }
+    
+    /** 
+	 * Used in tests 
+	 */
+	public String toWorkflowJson(Object o) {
+		try {
+			if (o == null) {
+				return null;
+			}
+			EntityJson out = new EntityJson();
+			out.put(WORKFLOW_001, o);
+			return om.writeValueAsString(out);
+		} catch (Exception e) {
+			throw new UnsupportedOperationException("Map Fail", e);
+		}
+	}
 
     @Test
     public void testAddRowOfListOfPrimitiveTypeInteger() {

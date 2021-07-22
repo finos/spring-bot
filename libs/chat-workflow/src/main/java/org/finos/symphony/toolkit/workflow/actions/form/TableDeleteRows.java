@@ -31,17 +31,15 @@ public class TableDeleteRows extends AbstractTableActionConsumer {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void acceptFormAction(FormAction ea) {
-		Workflow wf = ea.getWorkflow();
 		String verb = ea.getAction();
 		if (verb == null) {
-			return null;
+			return;
 		}
 		
-		EntityJson ej = ea.getData();
-		Object data = ej.get(EntityJsonConverter.WORKFLOW_001);
-		
 		if (verb.endsWith(ACTION_SUFFIX)) {
-			
+			EntityJson ej = ea.getData();
+			Object data = ej.get(EntityJsonConverter.WORKFLOW_001);
+
 			// get the table to modify
 			String tableLocation = verb.substring(0, verb.length() - ACTION_SUFFIX.length()-1);
 			tableLocation = TableEditRow.fixSpel(tableLocation);

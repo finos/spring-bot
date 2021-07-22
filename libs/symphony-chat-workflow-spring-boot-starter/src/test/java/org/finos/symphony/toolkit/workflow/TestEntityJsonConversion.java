@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.EJTestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
@@ -21,6 +22,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
+	
+	public static final String WORKFLOW_001 = "workflow_001";
 
 	@Autowired
 	EntityJsonConverter converter;
@@ -30,17 +33,46 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 		
 	ObjectMapper om = new ObjectMapper();
 
+	public Object readWorkflowValue(String json) {
+		try {
+			if (json == null) {
+				return null;
+			}
+
+			return converter.readValue(json).get("workflow_001");
+		} catch (Exception e) {
+			System.out.println(json);
+			throw new UnsupportedOperationException("Map Fail", e);
+		}
+	}
+
+	/** 
+	 * Used in tests 
+	 */
+	public String toWorkflowJson(Object o) {
+		try {
+			if (o == null) {
+				return null;
+			}
+			EntityJson out = new EntityJson();
+			out.put(WORKFLOW_001, o);
+			return converter.writeValue(out);
+		} catch (Exception e) {
+			throw new UnsupportedOperationException("Map Fail", e);
+		}
+	}
+	
 	@Test
 	public void testObject() throws Exception {
 
 		TestObject a = new TestObject("83274239874", true, true, "rob@example.com", 234786, 2138);
 
 		// can we convert to messageML? (something populated)
-		String out = converter.toWorkflowJson(a);
+		String out = toWorkflowJson(a);
 	
 		compare(out, "{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObject\",\"version\":\"1.0\",\"isin\":\"83274239874\",\"bidAxed\":true,\"askAxed\":true,\"creator\":\"rob@example.com\",\"bidQty\":234786,\"askQty\":2138}}");
 		
-		TestObject b = (TestObject) converter.readWorkflowValue(out);
+		TestObject b = (TestObject) readWorkflowValue(out);
 		Assertions.assertEquals(a, b);
 	}
 
@@ -62,11 +94,11 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 
 		TestObjects a = new TestObjects(Arrays.asList(a1, a2));
 
-		String out = converter.toWorkflowJson(a);
+		String out = toWorkflowJson(a);
 		compare("{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObjects\",\"version\":\"1.0\",\"items\":[{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObject\",\"version\":\"1.0\",\"isin\":\"83274239874\",\"bidAxed\":true,\"askAxed\":true,\"creator\":\"rob@example.com\",\"bidQty\":234786,\"askQty\":2138},{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObject\",\"version\":\"1.0\",\"isin\":\"AUD274239874\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"gregb@example.com\",\"bidQty\":2386,\"askQty\":234823498.573}]}}",
 				out);
 
-		TestObjects b = (TestObjects) converter.readWorkflowValue(out);
+		TestObjects b = (TestObjects) readWorkflowValue(out);
 		Assertions.assertEquals(a, b);
 	}
 
@@ -74,7 +106,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 	public void testOb3() throws Exception {
 
 		EJTestObject a1 = new EJTestObject(new SymphonyRoom("abc", "123"), new SymphonyUser("Robert Moffat", "rbo@kjite9.com"), "SOme message");
-		String out = converter.toWorkflowJson(a1);
+		String out =  toWorkflowJson(a1);
 
 		compare(out, "{\n"
 				+ "  \"workflow_001\" : {\n"
@@ -109,7 +141,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 				+ "    \"someText\" : \"SOme message\"\n"
 				+ "  }\n"
 				+ "}");
-		EJTestObject b = (EJTestObject) converter.readWorkflowValue(out);
+		EJTestObject b = (EJTestObject) readWorkflowValue(out);
 		Assertions.assertEquals(a1, b);
 	}
 

@@ -118,24 +118,9 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected <T> T getRelevantObject(V4Message msg, Class<T> required) {
 		EntityJson ej = getEntityJson(msg);
-		Object out = jsonConverter.readWorkflow(ej);
-		if (out == null) {
-			return null;
-		} else if (required == null) {
-			return (T) out;
-		} else if (required.isAssignableFrom(out.getClass())) {
-			return (T) out;
-		} else {
-			for (Entry<String, Object> ent : ej.entrySet()) {
-				if (required.isAssignableFrom(ent.getValue().getClass())) {
-					return (T) ent.getValue();
-				}
-			}
-			return null;
-		} 
+		return getFromEntityJson(ej, required).orElse(null);
 	}
 	
 	protected <T> Optional<T> getRelevantObject(Optional<EntityJson> ej, Class<T> required) {
@@ -149,21 +134,13 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 	@SuppressWarnings("unchecked")
 	@Override
 	public <X> Optional<X> getFromEntityJson(EntityJson ej, Class<X> required) {
-		Object out = jsonConverter.readWorkflow(ej);
-		if (out == null) {
-			return Optional.empty();
-		} else if (required == null) {
-			return Optional.of((X) out);
-		} else if (required.isAssignableFrom(out.getClass())) {
-			return Optional.of((X) out);
-		} else {
-			for (Entry<String, Object> ent : ej.entrySet()) {
-				if (required.isAssignableFrom(ent.getValue().getClass())) {
-					return Optional.of((X) ent.getValue());
-				}
+		for (Entry<String, Object> ent : ej.entrySet()) {
+			if (required.isAssignableFrom(ent.getValue().getClass())) {
+				return Optional.of((X) ent.getValue());
 			}
-			return Optional.empty();
-		} 
+		}
+		
+		return Optional.empty();		
 	}
 
 	@Override
