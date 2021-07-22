@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -125,8 +126,13 @@ public abstract class AbstractMockSymphonyTest {
 	
 	protected void testTemplating(WorkResponse wr, String streamId, String testStemML, String testStemJson) throws IOException, JsonMappingException, JsonProcessingException {
 		rh.accept(wr);
-	        
-	    ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
+	    testTemplating(streamId, testStemML, testStemJson);
+	}
+
+
+	protected void testTemplating(String streamId, String testStemML, String testStemJson)
+			throws FileNotFoundException, IOException, JsonMappingException, JsonProcessingException {
+		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
 	    ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
 			
 		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(

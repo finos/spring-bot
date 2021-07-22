@@ -39,10 +39,13 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 			
 			ButtonList obl = (ButtonList) ((WorkResponse) t).getData().get(ButtonList.KEY);
 			
-			if (obl == null) {
-				obl = new ButtonList();
-				((WorkResponse) t).getData().put(ButtonList.KEY, obl);
+			if ((obl != null) && (obl.getContents().size() > 0)) {
+				return;
 			}
+			
+			obl = new ButtonList();
+			((WorkResponse) t).getData().put(ButtonList.KEY, obl);
+			
 			
 			final ButtonList bl = obl;
 			

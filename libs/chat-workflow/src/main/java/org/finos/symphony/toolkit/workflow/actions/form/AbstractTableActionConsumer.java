@@ -9,6 +9,8 @@ import org.springframework.util.ErrorHandler;
 
 public abstract class AbstractTableActionConsumer extends AbstractActionConsumer {
 	
+	public static final String WORKFLOW_001 = "workflow_001";
+	
 	protected ResponseHandlers rh;
 	
 

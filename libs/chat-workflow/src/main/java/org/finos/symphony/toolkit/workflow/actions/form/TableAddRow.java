@@ -2,8 +2,10 @@ package org.finos.symphony.toolkit.workflow.actions.form;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -31,45 +33,61 @@ public class TableAddRow extends AbstractTableActionConsumer {
 
 	@Override
 	public void acceptFormAction(FormAction ea) {
-		Workflow wf = ea.getWorkflow();
 		String verb = ea.getAction();
 		if (verb == null) {
-			return null;
+			return;
 		}
-		EntityJson ej = ea.getData();
-		Object workflowObject = ej.get(EntityJsonConverter.WORKFLOW_001);
 		
 		if (verb.endsWith(ACTION_SUFFIX)) {
-			String tableLocation = verb.substring(0, verb.length() - ACTION_SUFFIX.length()-1);
-			tableLocation = TableEditRow.fixSpel(tableLocation);
-			Expression e = spel.parseExpression(tableLocation);
-			TypeDescriptor td  = e.getValueTypeDescriptor(workflowObject);
-			Class<?> c = td.getResolvableType().getGeneric(0).resolve();
-			
-			Object out;
-			try {
-				out = c.newInstance(); 
-			} catch (Exception e1) {
-				return Collections.singletonList(new WorkResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", c, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
-			}
-			return Collections.singletonList(new WorkResponse(wf, ea.getAddressable(), ej, "New "+wf.getName(c), "Provide details for the new row", out, true, ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"))));
+			newRowFormAction(ea, verb);
 		} else if (verb.endsWith(DO_SUFFIX)) {
-			String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
-			tableLocation = TableEditRow.fixSpel(tableLocation);
-			Expression e = spel.parseExpression(tableLocation);
-			Object updated = ea.getFormData();
-			List<Object> listToUpdate = (List<Object>) e.getValue(workflowObject);
-			listToUpdate.add(updated);
-			return Collections.singletonList(
-				new WorkResponse(wf, ea.getAddressable(), 
-						ej, 
-						wf.getName(workflowObject.getClass()), 
-						wf.getInstructions(workflowObject.getClass()), 
-						workflowObject, false, 
-						wf.gatherButtons(workflowObject, ea.getAddressable())));
+			addNewRowAction(ea, verb);
 		} 
+	}
+
+
+	protected void addNewRowAction(FormAction ea, String verb) {
+		String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
+		tableLocation = TableEditRow.fixSpel(tableLocation);
+		Expression e = spel.parseExpression(tableLocation);
+		Object updated = ea.getFormData();
+		List<Object> listToUpdate = (List<Object>) e.getValue(workflowObject);
+		listToUpdate.add(updated);
+	}
+
+
+	protected void newRowFormAction(FormAction ea, String verb) {
+		Map<String, Object> ej = ea.getData();
+		Object workflowObject = ej.get(WorkResponse.OBJECT_KEY);
+
+		String tableLocation = verb.substring(0, verb.length() - ACTION_SUFFIX.length()-1);
+		tableLocation = TableEditRow.fixSpel(tableLocation);
+		Expression e = spel.parseExpression(tableLocation);
+		TypeDescriptor td  = e.getValueTypeDescriptor(workflowObject);
+		Class<?> c = td.getResolvableType().getGeneric(0).resolve();
 		
-		return null;
+		Object out = null;
+		try {
+			out = c.getConstructor().newInstance();
+		} catch (Exception e1) {
+			errorHandler.handleError(e1);
+		}
+		
+		Map<String, Object> data = WorkResponse.createEntityJson(out, 
+				ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"), null), 
+				null);
+		
+		// keep track of the original data
+		data.put(WORKFLOW_001, workflowObject);
+		
+		
+		WorkResponse wr = new WorkResponse(
+				ea.getAddressable(),
+				data,
+				WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT,
+				WorkMode.EDIT);
+		
+		rh.accept(wr);
 	}
 	
 }

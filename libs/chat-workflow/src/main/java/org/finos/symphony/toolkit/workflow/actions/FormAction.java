@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.workflow.actions;
 
+import java.util.Map;
+
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.User;
 
@@ -13,11 +15,11 @@ public class FormAction implements Action {
 
 	private final Object formData;
 	private final String action;
-	private final Object entityJson;
+	private final Map<String, Object> entityJson;
 	private final Addressable a;
 	private final User u;
 	
-	public FormAction(Addressable a, User u, Object formData, String action, Object entityJson) {
+	public FormAction(Addressable a, User u, Object formData, String action, Map<String, Object> entityJson) {
 		super();
 		this.formData = formData;
 		this.action = action;
@@ -35,7 +37,7 @@ public class FormAction implements Action {
 	}
 
 	@Override
-	public Object getData() {
+	public Map<String, Object> getData() {
 		return entityJson;
 	}
 
