@@ -13,6 +13,8 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.symphony.api.model.MembershipList;
 import com.symphony.api.model.StreamAttributes;
@@ -25,6 +27,7 @@ import com.symphony.api.model.UserV2;
 import com.symphony.api.model.V2RoomSearchCriteria;
 import com.symphony.api.model.V3RoomAttributes;
 import com.symphony.api.model.V3RoomDetail;
+import com.symphony.api.model.V3RoomSearchResults;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
@@ -35,6 +38,9 @@ import com.symphony.api.pod.UsersApi;
  *
  */
 public class SymphonyRoomsImpl extends AbstractStreamResolving implements SymphonyRooms {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(SymphonyRoomsImpl.class);
+
 	
 	private RoomMembershipApi rmApi;
 	private List<User> defaultAdministrators = new ArrayList<User>();
@@ -60,7 +66,13 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 	@Override
 	public SymphonyUser loadUserById(Long userId) {
 		UserV2 user = usersApi.v2UserGet(null, userId, null, null, true);
-		return new SymphonyUser(userId.toString(), user.getDisplayName(),user.getEmailAddress());
+		return new SymphonyUser(userId, user.getDisplayName(),user.getEmailAddress());
+	}
+	
+	@Override
+	public SymphonyUser loadUserByEmail(String name) {
+		UserV2 user = usersApi.v2UserGet(null, null, name, null, true);
+		return new SymphonyUser(user.getId(), user.getDisplayName(),user.getEmailAddress());
 	}
 
 	@Override
@@ -74,16 +86,20 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 	}
 
 
-	public Chat doesRoomExist(String name) {
+	@Override
+	public SymphonyRoom loadRoomByName(String name) {
 		V2RoomSearchCriteria rsc = new V2RoomSearchCriteria();
 		rsc.setQuery(name);
-		streamsApi.v3RoomSearchPost(rsc, null, null, null)
-		
-		
+		V3RoomSearchResults res = streamsApi.v3RoomSearchPost(rsc, null, null, null);
+		return res.getRooms().stream()
+				.filter(r -> r.getRoomAttributes().getName().equals(name))
+				.findFirst()
+				.map(rd -> new SymphonyRoom(rd.getRoomAttributes().getName(), rd.getRoomSystemInfo().getId()))
+				.orElse(null);
 	}
 	
 	@Override
-	public Chat ensureRoom(Chat r, List<User> users, Map<String, Object> meta) {
+	public SymphonyRoom ensureRoom(Chat r, List<User> users, Map<String, Object> meta) {
 		String description = "";
 		String name = r.getName();
 		boolean isPublic = false;
@@ -91,12 +107,17 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 		description = (String) meta.getOrDefault(ROOM_DESCRIPTION, "");
 		isPublic = (boolean) meta.getOrDefault(ROOM_PUBLIC, false);
 		
-		String streamId;
+		SymphonyRoom theRoom = null;
 	
 		if (r instanceof SymphonyRoom) {
-			if (((SymphonyRoom) r).getStreamId() == null) {
-				// new room neede
-			}
+			if (((SymphonyRoom) r).getStreamId() != null) {
+				theRoom = (SymphonyRoom) r;
+			} else {
+				theRoom = loadRoomByName(name);
+			} 
+		}
+		
+		if (theRoom == null) {
 			// create the room
 			V3RoomAttributes ra = new V3RoomAttributes()
 				.name(name)
@@ -105,6 +126,9 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 				.discoverable(isPublic);
 			V3RoomDetail detail = streamsApi.v3RoomCreatePost(ra, null);
 			String streamId = detail.getRoomSystemInfo().getId();
+			
+		
+			theRoom = new SymphonyRoom(name, streamId);
 			
 			// next, we need to make sure that all of the admins are members of the room and owners.
 			List<Long> adminIds = getDefaultAdministrators().stream()
@@ -119,15 +143,21 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 				rmApi.v1RoomIdMembershipAddPost(u, null, streamId);
 				rmApi.v1RoomIdMembershipPromoteOwnerPost(u, null, streamId);
 			}
-		}
-		
-		for (User u : users) {
 			
+			LOG.info("Created room {} with admins {} ", theRoom, getDefaultAdministrators());
 		}
-	
-		return new SymphonyRoom(
-				detail.getRoomAttributes().getName(), 
-				streamId);
+			
+		// next, ensure that all the users are in the room
+		
+		String streamId = theRoom.getStreamId();
+			
+		users.stream()
+			.filter(u -> u instanceof SymphonyUser)
+			.map(u -> (SymphonyUser) u)
+			.forEach(u -> rmApi.v1RoomIdMembershipAddPost(
+				new UserId().id(Long.parseLong(u.getUserId())), null, streamId));
+		
+		return theRoom;
 	}
 
 

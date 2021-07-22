@@ -2,27 +2,19 @@ package org.finos.symphony.toolkit.workflow;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.fixture.TestWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.symphony.api.model.MemberInfo;
 import com.symphony.api.model.MembershipList;
@@ -31,38 +23,20 @@ import com.symphony.api.model.RoomSystemInfo;
 import com.symphony.api.model.Stream;
 import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamList;
-import com.symphony.api.model.UserV2;
-import com.symphony.api.model.V2RoomAttributes;
-import com.symphony.api.model.V2RoomDetail;
-import com.symphony.api.model.V2UserList;
 import com.symphony.api.model.V3RoomAttributes;
 import com.symphony.api.model.V3RoomDetail;
-import com.symphony.api.pod.RoomMembershipApi;
-import com.symphony.api.pod.StreamsApi;
-import com.symphony.api.pod.UsersApi;
+import com.symphony.api.model.V3RoomSearchResults;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = {  TestWorkflowConfig.class })
-public class TestRoomAndUsersBuilder {
+public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 	
-	SymphonyRooms ruBuilder;
-	
-	@MockBean
-	RoomMembershipApi rmApi;
-	
-	@MockBean
-	StreamsApi streamsApi;
-	
-	@MockBean
-	UsersApi usersApi;
-	
-	@BeforeEach
-	public void setup() {
-		ruBuilder = new SymphonyRoomsImpl(rmApi, streamsApi, usersApi);
-	}
+	@Autowired
+	SymphonyRoomsImpl ruBuilder;
 	
 	@Test
-	public void testCreateRoom() {
+	public void testEnsureRoom() {
+		ruBuilder.setDefaultAdministrators(Collections.singletonList(new SymphonyUser(1111l)));
+		
+		
 		// create room
 		when(streamsApi.v1StreamsListPost(Mockito.isNull(), Mockito.any(), Mockito.eq(0), Mockito.eq(0)))
 			.thenAnswer(c -> {
@@ -81,24 +55,25 @@ public class TestRoomAndUsersBuilder {
 				.roomAttributes(new V3RoomAttributes()._public(false).name("Some Test Room").description("Still Bogus")));
 	
 		
-		SymphonyRoom rd = new SymphonyRoom("Some Test Room", "Automated Test Room Created", true, null);
-		Chat out = ruBuilder.ensureRoom(rd);
+		when(streamsApi.v3RoomSearchPost(Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
+			.then(a -> new V3RoomSearchResults().rooms(Collections.emptyList()));
+		
+		SymphonyRoom rd = new SymphonyRoom("Some Test Room", null);
+		
+		SymphonyUser su = new SymphonyUser(2342l);
+		
+		SymphonyRoom out = ruBuilder.ensureRoom(rd, Collections.singletonList(su), SymphonyRooms.simpleMeta("Automated Test Room Created", true));
 		assertEquals("Some Test Room", out.getName());
 		assertEquals(1, ruBuilder.getAllRooms().size());
-		
-		String someStream = ruBuilder.getStreamFor(out);
-		Assertions.assertEquals("456", someStream);
+		assertEquals("456", out.getStreamId());
 
 		// return members
 		MembershipList ml = new MembershipList();
 		ml.add(new MemberInfo().id(123l).owner(true));
 		when(rmApi.v1RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull())).thenReturn(ml);
-
-		when(usersApi.v2UserGet(any(), any(), any(), any(), any()))
-			.then(a -> new UserV2().id(45l).displayName("Roberto Banquet").emailAddress("r@example.com"));
 	
 		Assertions.assertEquals(
-			Collections.singletonList(new SymphonyUser("123", "Roberto Banquet", "r@example.com")), 
+			Collections.singletonList(new SymphonyUser(123l, "Roberto Banquet", "r@example.com")), 
 					ruBuilder.getRoomMembers(out));
 	}
 	
@@ -107,7 +82,7 @@ public class TestRoomAndUsersBuilder {
 		when(streamsApi.v1ImCreatePost(Mockito.any(),Mockito.isNull()))
 			.thenAnswer(c -> new Stream().id("123"));
 		
-		SymphonyUser rd = new SymphonyUser("123", "Robski mo", "rob@example.com");
+		SymphonyUser rd = new SymphonyUser("Robski mo", "rob@example.com");
 		String someStream = ruBuilder.getStreamFor(rd);
 		Assertions.assertEquals("123", someStream);
 	}

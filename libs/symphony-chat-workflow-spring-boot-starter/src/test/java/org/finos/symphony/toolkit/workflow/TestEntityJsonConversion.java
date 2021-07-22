@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.workflow;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
-import org.finos.symphony.toolkit.workflow.fixture.TestOb3;
+import org.finos.symphony.toolkit.workflow.fixture.EJTestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
@@ -73,12 +73,12 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 	@Test
 	public void testOb3() throws Exception {
 
-		TestOb3 a1 = new TestOb3(new SymphonyRoom("abc", "123"), new SymphonyUser("Robert Moffat", "rbo@kjite9.com"), "SOme message");
+		EJTestObject a1 = new EJTestObject(new SymphonyRoom("abc", "123"), new SymphonyUser("Robert Moffat", "rbo@kjite9.com"), "SOme message");
 		String out = converter.toWorkflowJson(a1);
 
 		compare(out, "{\n"
 				+ "  \"workflow_001\" : {\n"
-				+ "    \"type\" : \"org.finos.symphony.toolkit.workflow.fixture.testOb3\",\n"
+				+ "    \"type\" : \"org.finos.symphony.toolkit.workflow.fixture.eJTestObject\",\n"
 				+ "    \"version\" : \"1.0\",\n"
 				+ "    \"r\" : {\n"
 				+ "      \"type\" : \"org.finos.symphony.toolkit.workflow.content.chat\",\n"
@@ -109,7 +109,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 				+ "    \"someText\" : \"SOme message\"\n"
 				+ "  }\n"
 				+ "}");
-		TestOb3 b = (TestOb3) converter.readWorkflowValue(out);
+		EJTestObject b = (EJTestObject) converter.readWorkflowValue(out);
 		Assertions.assertEquals(a1, b);
 	}
 

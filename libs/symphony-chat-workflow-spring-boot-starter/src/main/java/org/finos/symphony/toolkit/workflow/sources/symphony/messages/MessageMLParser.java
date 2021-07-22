@@ -63,7 +63,6 @@ public class MessageMLParser {
 	static class TagFrame<X extends Tag> extends TextFrame<X> {
 
 		String id;
-		Tag.Type type;
 		X contents;
 		
 		public TagFrame(X contents) {
@@ -75,13 +74,22 @@ public class MessageMLParser {
 		public X getContents() {
 			if ((contents instanceof SymphonyUser) && (contents.getName()==null)) {
 				SymphonyUser su = (SymphonyUser) contents;
-				su.getId().add(new DisplayName(buf.toString()));
+				su.getId().add(new DisplayName(bufferWithoutPrefix()));
 			} else if ((contents instanceof SymphonyRoom) && (contents.getName() == null)) {
 				SymphonyRoom sr = (SymphonyRoom) contents;
-				sr.getId().add(new RoomName(buf.toString()));
+				sr.getId().add(new RoomName(bufferWithoutPrefix()));
 			}
 			
 			return contents;
+		}
+
+		protected String bufferWithoutPrefix() {
+			String out = buf.toString();
+			if (out.startsWith(""+contents.getTagType().getPrefix())) {
+				return out.substring(1);
+			} else {
+				return out;
+			}
 		}
 		
 		@Override
@@ -384,7 +392,9 @@ public class MessageMLParser {
 							throw new UnsupportedOperationException();
 						}
 					} else if (isStartMessage(qName, attributes)) {
-						push(new MessageFrame());
+						if (top == null) {
+							push(new MessageFrame());
+						}
 					}
 				}
 

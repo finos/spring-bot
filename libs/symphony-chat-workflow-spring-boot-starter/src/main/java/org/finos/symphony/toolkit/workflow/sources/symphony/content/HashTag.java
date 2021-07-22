@@ -30,6 +30,10 @@ public class HashTag extends Hashtag implements Tag {
 	}
 
 	public static final HashTag createID() {
-		return new HashTag(UUID.randomUUID().toString());
+		return createID(UUID.randomUUID());
+	}
+	
+	public static final HashTag createID(UUID id) {
+		return new HashTag(id.toString());
 	}
 }

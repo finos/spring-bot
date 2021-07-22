@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.fixture.TestOb4;
-import org.finos.symphony.toolkit.workflow.fixture.TestOb4.Choice;
-import org.finos.symphony.toolkit.workflow.fixture.TestOb5;
+import org.finos.symphony.toolkit.workflow.fixture.WeirdObject;
+import org.finos.symphony.toolkit.workflow.fixture.WeirdObject.Choice;
+import org.finos.symphony.toolkit.workflow.fixture.WeirdObjectCollection;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestTemplatedObject;
@@ -72,7 +72,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	protected WorkResponse createWeirdFieldsWorkResponse(WorkMode wm) {
 		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
 
-		TestOb4 to4 = new TestOb4();
+		WeirdObject to4 = new WeirdObject();
 		to4.setTheId(new HashTag("adf360dd-06fe-43a4-9a62-2c17fe2deefa"));
 		to4.setC(Choice.C);
 		
@@ -95,13 +95,13 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	protected WorkResponse createNestedWeirdFieldsWorkResponse(WorkMode wm) {
 		SymphonyUser someUser = new SymphonyUser(2678l, "bob", "bob@example.com");
 		
-		TestOb4 to4 = new TestOb4();
+		WeirdObject to4 = new WeirdObject();
 		to4.setB(true);
 		to4.setC(Choice.B);
 		to4.setSomeUser(someUser);
 		to4.setTheId(new HashTag("adf360dd-06fe-43a4-9a62-2c17fe2deefa"));
 		
-		TestOb5 ob5 = new TestOb5();
+		WeirdObjectCollection ob5 = new WeirdObjectCollection();
 		ob5.setOb4(to4);
 				
 		WorkResponse wr = createWorkAddSubmit(wm, ob5);
@@ -109,15 +109,6 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	}
 
 
-	protected WorkResponse createWorkAddSubmit(WorkMode wm, Object ob5) {
-		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
-		WorkResponse wr = new WorkResponse(theRoom, ob5, wm);
-		ButtonList bl = (ButtonList) wr.getData().get(ButtonList.KEY);
-		Button submit = new Button("submit", Type.ACTION, "GO");
-		bl.add(submit);
-		return wr;
-	}
-	
 	@Test
 	public void testNestedWeirdFieldsEdit() throws Exception {
 		WorkResponse wr = createWeirdFieldsWorkResponse(WorkMode.EDIT);

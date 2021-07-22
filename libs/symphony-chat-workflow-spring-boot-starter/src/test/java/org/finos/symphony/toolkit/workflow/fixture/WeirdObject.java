@@ -7,7 +7,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
 @Work()
-public class TestOb4 {
+public class WeirdObject {
 
 	public enum Choice { A, B, C };
 	
@@ -19,11 +19,11 @@ public class TestOb4 {
 		
 	User someUser;
 	
-	public TestOb4() {
+	public WeirdObject() {
 		super();
 	}
 
-	public TestOb4(Choice c, boolean b, User someUser) {
+	public WeirdObject(Choice c, boolean b, User someUser) {
 		super();
 		this.c = c;
 		this.b = b;
@@ -76,7 +76,7 @@ public class TestOb4 {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TestOb4 other = (TestOb4) obj;
+		WeirdObject other = (WeirdObject) obj;
 		return b == other.b && c == other.c && Objects.equals(someUser, other.someUser)
 				&& Objects.equals(theId, other.theId);
 	}

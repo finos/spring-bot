@@ -9,7 +9,6 @@ import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.junit.jupiter.api.Assertions;
@@ -38,9 +37,9 @@ public class TestContents {
 		
 		// id
 		UUID some = UUID.randomUUID();
-		doAssertsOnContent(new ID(some), new ID(some));
+		doAssertsOnContent(HashTag.createID(some), HashTag.createID(some));
 		
-		// word
+		// wordx
 		Word w1 = Word.of("hello");
 		Word w2 = Word.of("bye");
 		doAssertsOnContent(w1, Word.of("hello"));

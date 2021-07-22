@@ -31,7 +31,7 @@ public class CollectionsMessageFormTest extends AbstractMockSymphonyTest {
 	@Test
     public void testCollectionViewMessage() throws Exception {
 		WorkResponse wr = new WorkResponse(createAddressable(), getPerson(), WorkMode.VIEW);
-		testTemplating(wr, "abc123", "testCollectionViewMessageML.ml", "testCollectionEditMessage.json");
+		testTemplating(wr, "abc123", "testCollectionViewMessageML.ml", "testCollectionViewMessage.json");
     }
 
 	
