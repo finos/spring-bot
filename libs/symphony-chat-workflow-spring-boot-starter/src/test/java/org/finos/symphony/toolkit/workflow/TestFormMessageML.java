@@ -20,6 +20,7 @@ import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
@@ -170,20 +171,19 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	@Test
 	public void testValidation() throws Exception {
 		TestObject a = new TestObject("83274239874", true, true, "rob", 234786, 2138);
+		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
+		
+		ButtonList bl = new ButtonList();
 		Button submit = new Button("submit", Type.ACTION, "GO");
+		bl.add(submit);
 
-		// can we convert to messageML? (something populated)
 		Errors eh = ErrorHelp.createErrorHolder();
 		validator.validate(a, eh);
 		
-		EntityJson empty = new EntityJson();
-		String out = messageMlConverter.convert(TestObject.class, a, ButtonList.of(submit), true, eh, empty);
-		String json = ejc.writeValue(empty);x
-		System.out.println("<messageML>" + out + "</messageML>\n"+json);
-		String expectedOut = loadML("testValidation.ml");
-		String expectedJson = loadJson("testValidation.json");
-		Assertions.assertEquals(expectedOut, out); 
-		compareJson(expectedJson, json); 
+		WorkResponse wr = new WorkResponse(theRoom, a, WorkMode.EDIT, bl, ElementsHandler.convertErrorsToMap(eh));
+
+		testTemplating(wr, "abc123", "testValidation.ml", "testValidation.json");
+
 	}
 
 

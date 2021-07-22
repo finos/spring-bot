@@ -105,7 +105,7 @@ public class ElementsHandler implements StreamEventConsumer {
 		}
 	}
 
-	private ErrorMap convertErrorsToMap(Errors e) {
+	public static ErrorMap convertErrorsToMap(Errors e) {
 		return e == null ? new ErrorMap() : new ErrorMap(e.getAllErrors().stream()
 			.map(err -> (FieldError) err)
 			.collect(Collectors.toMap(fe -> fe.getField(), fe -> ""+fe.getDefaultMessage())));
