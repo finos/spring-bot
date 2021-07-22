@@ -6,11 +6,9 @@
     </p>
   </header> 
   <body>
-    <ul>
-      <#list entity.header.tags as tag>
-        <li><hash tag="${tag.value}" /></li>
-      </#list>
-    </ul>
+    <code>
+      ${entity.error}
+    </code>
   </body>
 </card>
      

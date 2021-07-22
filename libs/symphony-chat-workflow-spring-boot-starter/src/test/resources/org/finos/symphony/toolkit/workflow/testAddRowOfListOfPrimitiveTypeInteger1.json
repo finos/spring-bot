@@ -1,0 +1,33 @@
+{
+  "buttons" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.form.button",
+      "version" : "1.0",
+      "name" : "integerList.table-add-done",
+      "buttonType" : "ACTION",
+      "text" : "Add"
+    } ]
+  },
+  "form" : null,
+  "workflow_001" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.testPrimitives",
+    "version" : "1.0",
+    "names" : [ ],
+    "integerList" : [ 1 ],
+    "numberList" : [ ]
+  },
+  "header" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.headerDetails",
+    "version" : "1.0",
+    "name" : null,
+    "description" : null,
+    "tags" : [ ]
+  },
+  "errors" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  }
+}

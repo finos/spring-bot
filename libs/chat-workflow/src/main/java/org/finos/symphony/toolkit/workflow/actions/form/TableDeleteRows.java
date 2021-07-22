@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
@@ -37,8 +37,7 @@ public class TableDeleteRows extends AbstractTableActionConsumer {
 		}
 		
 		if (verb.endsWith(ACTION_SUFFIX)) {
-			EntityJson ej = ea.getData();
-			Object data = ej.get(EntityJsonConverter.WORKFLOW_001);
+			Object data = ea.getData().get(WorkResponse.OBJECT_KEY);
 
 			// get the table to modify
 			String tableLocation = verb.substring(0, verb.length() - ACTION_SUFFIX.length()-1);
@@ -55,15 +54,10 @@ public class TableDeleteRows extends AbstractTableActionConsumer {
 				table.remove((int) i);
 			}
 			
-			return Collections.singletonList(
-				new WorkResponse(wf, ea.getAddressable(), ej, 
-						wf.getName(data.getClass()), 
-						wf.getInstructions(data.getClass()), 
-						data, false, 
-						wf.gatherButtons(data, ea.getAddressable())));
+			WorkResponse out = new WorkResponse(ea.getAddressable(), data, WorkMode.EDIT);
+			
+			rh.accept(out);
 		}
-		
-		return null;
 	}
 
 	private String convertSpelToMapSpel(String tableLocation) {
