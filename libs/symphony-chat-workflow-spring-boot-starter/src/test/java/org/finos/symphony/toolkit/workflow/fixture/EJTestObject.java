@@ -5,7 +5,7 @@ import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 
 @Work()
-public class TestOb3 {
+public class EJTestObject {
 
 	private Chat r;
 	private User u;
@@ -30,10 +30,10 @@ public class TestOb3 {
 		this.someText = someText;
 	}
 	
-	public TestOb3() {
+	public EJTestObject() {
 	}
 	
-	public TestOb3(Chat r, User u, String someText) {
+	public EJTestObject(Chat r, User u, String someText) {
 		super();
 		this.r = r;
 		this.u = u;
@@ -58,7 +58,7 @@ public class TestOb3 {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TestOb3 other = (TestOb3) obj;
+		EJTestObject other = (EJTestObject) obj;
 		if (r == null) {
 			if (other.r != null)
 				return false;

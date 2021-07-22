@@ -6,7 +6,7 @@
       
 <#-- starting template -->
 <form 
-  id="org.finos.symphony.toolkit.workflow.fixture.TestOb4">
+  id="org.finos.symphony.toolkit.workflow.fixture.WeirdObject">
  <table>
  <tr><td><b>The Id:</b></td><td>
    <span class="tempo-text-color--red">${entity.errors.contents['value']!''}</span>

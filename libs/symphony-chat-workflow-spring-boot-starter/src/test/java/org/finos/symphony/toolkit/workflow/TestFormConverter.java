@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.Map;
 
-import org.finos.symphony.toolkit.workflow.fixture.TestOb4;
+import org.finos.symphony.toolkit.workflow.fixture.WeirdObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
@@ -50,10 +50,10 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	public void testUserDeserialize() throws Exception {
 		before();
 		Object o = om.readValue("{\"action\": \"ob4+0\", \"c.\": \"B\", \"b.\": true, \"someUser.\": [345315370602462]}", Map.class);
-		TestOb4 to = (TestOb4) fc.convert((Map<String, Object>) o, TestOb4.class.getCanonicalName());
+		WeirdObject to = (WeirdObject) fc.convert((Map<String, Object>) o, WeirdObject.class.getCanonicalName());
 		Assertions.assertTrue(to.isB());
 		Assertions.assertEquals("345315370602462", ((SymphonyUser) to.getSomeUser()).getUserId());
-		Assertions.assertEquals(TestOb4.Choice.B, to.getC());
+		Assertions.assertEquals(WeirdObject.Choice.B, to.getC());
 		
 		
 	}

@@ -117,16 +117,5 @@ public class TestWorkflowConfig {
 		return h;
 	}
 	
-	@Bean
-	public Workflow testObjectsWorkflow() {
-		ClassBasedWorkflow basicWorkflow = new ClassBasedWorkflow("testing-fixture-namespace", Collections.singletonList(u), Collections.singletonList(room));
-		basicWorkflow.addClass(TestObjects.class);
-		basicWorkflow.addClass(TestObject.class);
-		basicWorkflow.addClass(TestOb3.class);
-		basicWorkflow.addClass(TestOb4.class);
-		basicWorkflow.addClass(TestOb6.class);
-		basicWorkflow.addClass(TestTemplatedObject.class);
-		return basicWorkflow;
-	}
 
 }

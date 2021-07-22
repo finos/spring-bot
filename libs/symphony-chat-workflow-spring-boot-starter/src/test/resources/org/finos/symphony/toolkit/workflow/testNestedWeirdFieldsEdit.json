@@ -11,7 +11,7 @@
     } ]
   },
   "form" : {
-    "type" : "org.finos.symphony.toolkit.workflow.fixture.testOb4",
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.weirdObject",
     "version" : "1.0",
     "theId" : {
       "type" : "org.symphonyoss.taxonomy.hashtag",
@@ -30,7 +30,7 @@
     "tags" : [ {
       "type" : "org.symphonyoss.taxonomy.hashtag",
       "version" : "1.0",
-      "value" : "org-finos-symphony-toolkit-workflow-fixture-testob4"
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-weirdobject"
     } ]
   },
   "errors" : {

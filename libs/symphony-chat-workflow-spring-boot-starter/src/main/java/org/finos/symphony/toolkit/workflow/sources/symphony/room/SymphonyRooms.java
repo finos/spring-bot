@@ -1,8 +1,11 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.room;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.room.Rooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
@@ -20,9 +23,15 @@ public interface SymphonyRooms extends Rooms {
 
 	public SymphonyUser loadUserById(Long userId);
 	
+	public SymphonyUser loadUserByEmail(String emailAddress);
+	
 	public SymphonyRoom loadRoomById(String streamId);
 	
-	public default Map<String, Object> simpleMeta(String description, boolean isPublic) {
+	public SymphonyRoom loadRoomByName(String name);
+	
+	public SymphonyRoom ensureRoom(Chat r, List<User> users, Map<String, Object> meta);
+	
+	public static Map<String, Object> simpleMeta(String description, boolean isPublic) {
 		Map<String, Object> out = new HashMap<>();
 		out.put(ROOM_DESCRIPTION, description);
 		out.put(ROOM_PUBLIC, isPublic);

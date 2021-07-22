@@ -339,9 +339,11 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 				Mockito.isNull());
 		Mockito.clearInvocations();
 		
+		// there are no buttons for form 2.
 		JsonNode node = new ObjectMapper().readTree(data.getValue());
-		JsonNode button1 = node.get(ButtonList.KEY).get("contents").get(0);
-		Assertions.assertEquals("ok", button1.get("name").textValue());
+		JsonNode buttons = node.get(ButtonList.KEY).get("contents");
+		Assertions.assertEquals(0, buttons.size());
+		Assertions.assertFalse(msg.getValue().contains("<form"));
 	}
 	
 	

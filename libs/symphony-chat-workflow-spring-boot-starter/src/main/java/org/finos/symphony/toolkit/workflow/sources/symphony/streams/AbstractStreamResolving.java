@@ -56,8 +56,12 @@ public class AbstractStreamResolving {
 			return Long.parseLong(a.getUserId());
 		} else {
 			User u = usersApi.v1UserGet(a.getEmailAddress(), null, true);
-			a.getId().add(new UserId(""+u.getId()));
-			return u.getId();
+			if (u == null) {
+				throw new IllegalArgumentException("Couldn't find user: "+a);
+			} else {
+				a.getId().add(new UserId(""+u.getId()));
+				return u.getId();
+			}
 		}
 	}
 }
