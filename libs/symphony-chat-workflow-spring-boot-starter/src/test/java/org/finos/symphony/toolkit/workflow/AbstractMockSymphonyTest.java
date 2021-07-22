@@ -130,7 +130,7 @@ public abstract class AbstractMockSymphonyTest {
 	}
 
 
-	protected void testTemplating(String streamId, String testStemML, String testStemJson)
+	protected String testTemplating(String streamId, String testStemML, String testStemJson)
 			throws FileNotFoundException, IOException, JsonMappingException, JsonProcessingException {
 		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
 	    ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
@@ -157,6 +157,8 @@ public abstract class AbstractMockSymphonyTest {
 	        
         Assertions.assertTrue(loadML(testStemML).contentEquals(msg.getValue()));
         compareJson(loadJson(testStemJson), data.getValue());
+        
+        return data.getValue();
 	}
 	
 

@@ -25,17 +25,19 @@ public class WorkResponse extends DataResponse {
 	public static final String OBJECT_KEY = "form";
 	
 	private final WorkMode mode;
+	private final Class<?> formClass;
 	
-	public WorkResponse(Addressable to, Map<String, Object> data, String templateName, WorkMode m) {
+	public WorkResponse(Addressable to, Map<String, Object> data, String templateName, WorkMode m, Class<?> formClass) {
 		super(to, data, templateName);
 		this.mode = m;
+		this.formClass = formClass;
 	}
 	
 	/**
 	 * Call this contructor to create a basic form response using an object.
 	 */
 	public WorkResponse(Addressable to, Object o, WorkMode m, ButtonList buttons, ErrorMap errors) {
-		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(m, o), m);
+		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(m, o), m, o.getClass());
 	}
 	
 	public WorkResponse(Addressable to, Object o, WorkMode m) {
@@ -74,6 +76,10 @@ public class WorkResponse extends DataResponse {
 
 	public Object getFormObject() {
 		return getData().get(OBJECT_KEY);
+	}
+	
+	public Class<?> getFormClass() {
+		return formClass;
 	}
 
 	public ButtonList getButtons() {

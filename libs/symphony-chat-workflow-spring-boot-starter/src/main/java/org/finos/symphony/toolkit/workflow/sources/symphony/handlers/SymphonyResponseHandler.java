@@ -125,10 +125,10 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 		String insert = "";
 		if (r instanceof WorkResponse) {
 			if (WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
-				Class<?> c = ((WorkResponse) r).getFormObject().getClass();
+				Class<?> c = ((WorkResponse) r).getFormClass();
 				insert = formMessageMLConverter.convert(c, Mode.FORM);
 			} else if (WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
-				Class<?> c = ((WorkResponse) r).getFormObject().getClass();
+				Class<?> c = ((WorkResponse) r).getFormClass();
 				boolean needsButtons = needsButtons(r);						
 				insert = formMessageMLConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 			}

@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.actions.form;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -51,8 +50,16 @@ public class TableAddRow extends AbstractTableActionConsumer {
 		tableLocation = TableEditRow.fixSpel(tableLocation);
 		Expression e = spel.parseExpression(tableLocation);
 		Object updated = ea.getFormData();
-		List<Object> listToUpdate = (List<Object>) e.getValue(workflowObject);
+		Object toChange = ea.getData().get(WORKFLOW_001);
+		List<Object> listToUpdate = (List<Object>) e.getValue(toChange);
 		listToUpdate.add(updated);
+		
+		WorkResponse wr = new WorkResponse(
+				ea.getAddressable(),
+				toChange,
+				WorkMode.EDIT);
+		
+		rh.accept(wr);
 	}
 
 
@@ -70,11 +77,11 @@ public class TableAddRow extends AbstractTableActionConsumer {
 		try {
 			out = c.getConstructor().newInstance();
 		} catch (Exception e1) {
-			errorHandler.handleError(e1);
+			// this is called for primitives where we can't construct the new instance.
 		}
 		
 		Map<String, Object> data = WorkResponse.createEntityJson(out, 
-				ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add"), null), 
+				ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add")), 
 				null);
 		
 		// keep track of the original data
@@ -84,8 +91,9 @@ public class TableAddRow extends AbstractTableActionConsumer {
 		WorkResponse wr = new WorkResponse(
 				ea.getAddressable(),
 				data,
-				WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT,
-				WorkMode.EDIT);
+				WorkResponse.getTemplateNameForClass(WorkMode.EDIT, c),
+				WorkMode.EDIT,
+				c);
 		
 		rh.accept(wr);
 	}

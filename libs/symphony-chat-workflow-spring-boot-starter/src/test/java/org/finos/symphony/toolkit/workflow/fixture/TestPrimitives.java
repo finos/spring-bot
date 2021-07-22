@@ -6,13 +6,13 @@ import java.util.List;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 @Work()
-public class TestOb6 {
+public class TestPrimitives {
 
     private List<String> names = new ArrayList<>();
     private List<Integer> integerList = new ArrayList<>();
     private List<Number> numberList = new ArrayList<>();
 
-    public TestOb6() {
+    public TestPrimitives() {
     }
 
     public List<String> getNames() {

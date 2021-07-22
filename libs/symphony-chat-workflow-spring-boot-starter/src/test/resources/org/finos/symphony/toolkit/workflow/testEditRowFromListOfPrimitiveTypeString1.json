@@ -1,0 +1,33 @@
+{
+  "buttons" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.form.button",
+      "version" : "1.0",
+      "name" : "names[0].table-update",
+      "buttonType" : "ACTION",
+      "text" : "Update"
+    } ]
+  },
+  "form" : "Amsidh",
+  "workflow_001" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.testPrimitives",
+    "version" : "1.0",
+    "names" : [ "Amsidh", "Suresh" ],
+    "integerList" : [ ],
+    "numberList" : [ ]
+  },
+  "header" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.headerDetails",
+    "version" : "1.0",
+    "name" : null,
+    "description" : null,
+    "tags" : [ ]
+  },
+  "errors" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  }
+}

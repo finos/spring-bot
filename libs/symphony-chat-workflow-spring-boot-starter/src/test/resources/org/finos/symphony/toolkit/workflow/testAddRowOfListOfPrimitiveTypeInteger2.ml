@@ -6,43 +6,47 @@
       
 <#-- starting template -->
 <form 
-  id="org.finos.symphony.toolkit.workflow.fixture.TestObjects">
+  id="org.finos.symphony.toolkit.workflow.fixture.TestPrimitives">
  <table>
- <tr><td><b>Items:</b></td><td>
-  <span class="tempo-text-color--red">${entity.errors.contents['items']!''}</span>
+ <tr><td><b>Names:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['names']!''}</span>
   
-  <table><thead><tr>
-  
-    <td><b>Isin</b></td>
-  
-    <td style="text-align:center;" ><b>Bid Axed</b></td>
-  
-    <td style="text-align:center;" ><b>Ask Axed</b></td>
-  
-    <td><b>Creator</b></td>
-  
-    <td style="text-align: right;"><b>Bid Qty</b></td>
-  
-    <td style="text-align: right;"><b>Ask Qty</b></td>
-   <td style="text-align:center;" ><button name="items.table-delete-rows">Delete</button></td>
-   <td style="text-align:center;" ><button name="items.table-add-row">New</button></td>
+  <table><thead><tr><td><b>Value</b></td>
+   <td style="text-align:center;" ><button name="names.table-delete-rows">Delete</button></td>
+   <td style="text-align:center;" ><button name="names.table-add-row">New</button></td>
   </tr></thead><tbody>
-  <#list entity.form.items as iB>
-  <tr>
+  <#list entity.form.names as iB>
+  <tr><td>${iB!''}</td>
+   <td style="text-align:center; width:10%" ><checkbox name="names.${iB?index}.selected" /></td>
+   <td style="text-align:center;" ><button name="names[${iB?index}].table-edit-row">Edit</button></td>
+  </tr>
+  </#list>
+  </tbody></table></td></tr>
+ <tr><td><b>Integer List:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['integerList']!''}</span>
   
-   <td >${iB.isin!''}</td>
+  <table><thead><tr><td><b>Value</b></td>
+   <td style="text-align:center;" ><button name="integerList.table-delete-rows">Delete</button></td>
+   <td style="text-align:center;" ><button name="integerList.table-add-row">New</button></td>
+  </tr></thead><tbody>
+  <#list entity.form.integerList as iB>
+  <tr><td>${iB!''}</td>
+   <td style="text-align:center; width:10%" ><checkbox name="integerList.${iB?index}.selected" /></td>
+   <td style="text-align:center;" ><button name="integerList[${iB?index}].table-edit-row">Edit</button></td>
+  </tr>
+  </#list>
+  </tbody></table></td></tr>
+ <tr><td><b>Number List:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['numberList']!''}</span>
   
-   <td style="text-align:center;" >${iB.bidAxed?string("Y", "N")}</td>
-  
-   <td style="text-align:center;" >${iB.askAxed?string("Y", "N")}</td>
-  
-   <td >${iB.creator!''}</td>
-  
-   <td style="text-align: right;">${iB.bidQty!''}</td>
-  
-   <td style="text-align: right;">${iB.askQty!''}</td>
-   <td style="text-align:center; width:10%" ><checkbox name="items.${iB?index}.selected" /></td>
-   <td style="text-align:center;" ><button name="items[${iB?index}].table-edit-row">Edit</button></td>
+  <table><thead><tr><td><b>Value</b></td>
+   <td style="text-align:center;" ><button name="numberList.table-delete-rows">Delete</button></td>
+   <td style="text-align:center;" ><button name="numberList.table-add-row">New</button></td>
+  </tr></thead><tbody>
+  <#list entity.form.numberList as iB>
+  <tr><td>${iB!''}</td>
+   <td style="text-align:center; width:10%" ><checkbox name="numberList.${iB?index}.selected" /></td>
+   <td style="text-align:center;" ><button name="numberList[${iB?index}].table-edit-row">Edit</button></td>
   </tr>
   </#list>
   </tbody></table></td></tr>
