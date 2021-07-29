@@ -64,7 +64,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		.then(a -> {
 			Assertions.assertEquals(TestWorkflowConfig.room.getId(), a.getArgument(1));
 			Assertions.assertEquals("<messageML> - <hash tag=\"testobjects-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-symphonyp-workflow-testobject\" /> testing</messageML>", a.getArgument(2));
-			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		
@@ -78,10 +78,10 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		.then(a -> {
 			Assertions.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
 			Assertions.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />"+
-			" <form id=\"com.db.symphonyp.workflow.TestObject\" ><text-field name=\"isin.\" placeholder=\"isin\" ></text-field><checkbox name=\"bidAxed.\" value=\"true\" >bidAxed</checkbox><checkbox name=\"askAxed.\" value=\"true\" >askAxed</checkbox>"+
+			" <form id=\"org.finos.symphony.toolkit.workflow.TestObject\" ><text-field name=\"isin.\" placeholder=\"isin\" ></text-field><checkbox name=\"bidAxed.\" value=\"true\" >bidAxed</checkbox><checkbox name=\"askAxed.\" value=\"true\" >askAxed</checkbox>"+
 			"<text-field name=\"creator.\" placeholder=\"creator\" ></text-field><text-field name=\"bidQty.\" placeholder=\"bidQty\" ></text-field><text-field name=\"askQty.\" placeholder=\"askQty\" ></text-field>"
 			+"<button name=\"OK\" type=\"action\" >Click me</button></form></messageML>", a.getArgument(2));
-			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		
@@ -95,7 +95,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		.then(a -> {
 			Assertions.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
 			Assertions.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-axes-axe\" /> testing</messageML>", a.getArgument(2));
-			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		
@@ -112,7 +112,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 		.then(a -> {
 			Assertions.assertEquals(TestWorkflowConfig.room, a.getArgument(1));
 			Assertions.assertEquals("<messageML> - <hash tag=\"axes-workflow\" />  - <hash tag=\"symphony-workflow\" />  - <hash tag=\"com-db-axes-axe\" /> testing</messageML>", a.getArgument(2));
-			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"com.db.symphonyp.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
+			Assertions.assertEquals("{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.testObject\",\"version\":\"1.0\",\"isin\":\"213\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"rob@here.com\",\"bidQty\":55,\"askQty\":22}}", a.getArgument(3));
 			return null;
 		});
 		

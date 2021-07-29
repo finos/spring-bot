@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>7.20.4-SNAPSHOT</version>
+		<version>7.20.5-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -33,13 +33,13 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>7.20.4-SNAPSHOT</version>
+			<version>7.20.5-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
-			<version>7.20.4-SNAPSHOT</version>
+			<version>7.20.5-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
