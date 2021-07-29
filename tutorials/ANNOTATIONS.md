@@ -14,13 +14,13 @@ Here editable says whether the bean is editable by Symphony user
 Depending on the value of editable field, edit screen is available / hidden in UI
 When editable = false , UI renders as : 
 
-![Dependency Work Annotation1](Work-Annotation1.png)  
+![Dependency Work Annotation1](annotation/media/Work-Annotation1.png)  
 
 When editable is True , UI renders as : 
 
-![Dependency Work Annotation2](Work-Annotation2.png) 
+![Dependency Work Annotation2](annotation/media/Work-Annotation2.png) 
  
-Click on the … to get the Edit button
+Click on the ï¿½ to get the Edit button
 
 
 ## @Template
@@ -44,13 +44,13 @@ Syntax :
 ```
 UI renders as : 
 
-![Dependency Exposed Annotation2](Exposed-Annotation1.png)  
+![Dependency Exposed Annotation2](annotation/media/Exposed-Annotation1.png)  
 
 Explanation : 
 When user types /open in the Room where this bot is added, Open() is called .
 This Method requires an object of StartClaim class , Hence User is provided with a form to create object of StartClaim
 The values passed to Description and amount are in turn passed to Claim class properties
-2) @Exposed annotation can also be employed to verify the Workflow is applicable to specific room Only –
+2) @Exposed annotation can also be employed to verify the Workflow is applicable to specific room Only ï¿½
 
 Syntax  :
 ```
@@ -64,7 +64,7 @@ If the room is not the one mentioned in rooms parameter , An exception will be t
 3) @Exposed Annotation governs the /help
 Typing in /help in any room fetches the help Items the bot can support in . Result may render buttons or suggestions depending on method definition  Ex :
 
-![Dependency Exposed Annotation2](Exposed-Annotation2.png)    
+![Dependency Exposed Annotation2](annotation/media/Exposed-Annotation2.png)    
 
 
 ## @Display Annotation:
@@ -93,7 +93,7 @@ Typing in /help in any room fetches the help Items the bot can support in . Resu
             private String emailId;
         ```    
 
-   ![Dependency Display Annotation1](Display-Annotation1.png) 
+   ![Dependency Display Annotation1](annotation/media/Display-Annotation1.png) 
 
 
    --	Display Annotation with name and visible parameters:
@@ -110,7 +110,7 @@ Typing in /help in any room fetches the help Items the bot can support in . Resu
             private String email;
         ```
 
-   ![Dependency Display Annotation2](Display-Annotation2.png) 
+   ![Dependency Display Annotation2](annotation/media/Display-Annotation2.png) 
 
 
    --	Display annotation with visible true/false:
@@ -127,5 +127,5 @@ Typing in /help in any room fetches the help Items the bot can support in . Resu
             private String email;
         ```
 
-   ![Dependency Display Annotation2](Display-Annotation2.png) 
+   ![Dependency Display Annotation2](annotation/media/Display-Annotation2.png) 
    
