@@ -54,7 +54,7 @@ public class TimeFinderTests {
     }
 
     @SuppressWarnings("unchecked")
-	@Test
+	//@Test
     public void applyTest(){
         when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
         timefinder.initializingStanfordProperties();
