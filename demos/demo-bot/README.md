@@ -6,4 +6,4 @@ If you don't want to go through the tutorial and assemble the code yourself, you
 
 You will need to provide settings for the `application.yml` file according to your own environment.
 
-This will act as Bootstrap bot code.
+This will act as Bootstrap Bot code.
