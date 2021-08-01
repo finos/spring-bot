@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 
 public class TagSupport {
 
+	@SuppressWarnings("deprecation")
 	public static String toHashTag(String in) {
 		if (StringUtils.isEmpty(in)) {
 			return "";
@@ -22,6 +23,7 @@ public class TagSupport {
 		return "<hash tag=\""+formatTag(in)+"\" /> ";
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static String toCashTag(String in) {
 		if (StringUtils.isEmpty(in)) {
 			return "";
@@ -30,6 +32,7 @@ public class TagSupport {
 		return "<cash tag=\""+formatTag(in)+"\" /> ";
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static String toUserTag(String id) {
 		if (StringUtils.isEmpty(id)) {
 			return "";

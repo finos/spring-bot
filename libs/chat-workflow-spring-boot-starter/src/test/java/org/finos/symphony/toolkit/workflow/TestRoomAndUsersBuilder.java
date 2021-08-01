@@ -2,7 +2,6 @@ package org.finos.symphony.toolkit.workflow;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
@@ -32,9 +31,6 @@ import com.symphony.api.model.Stream;
 import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamList;
 import com.symphony.api.model.UserV2;
-import com.symphony.api.model.V2RoomAttributes;
-import com.symphony.api.model.V2RoomDetail;
-import com.symphony.api.model.V2UserList;
 import com.symphony.api.model.V3RoomAttributes;
 import com.symphony.api.model.V3RoomDetail;
 import com.symphony.api.pod.RoomMembershipApi;

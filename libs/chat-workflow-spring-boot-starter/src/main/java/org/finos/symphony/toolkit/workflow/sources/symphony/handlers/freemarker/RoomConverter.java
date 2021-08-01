@@ -2,9 +2,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.lang.reflect.Type;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.form.RoomList;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -20,14 +18,15 @@ public class RoomConverter extends AbstractClassConverter implements Application
 	private ApplicationContext ctx;
 	
 	@Override
-	public String apply(Type t, boolean editMode, Variable v, EntityJson ej) {
+	public String apply(Type t, boolean editMode, Variable v) {
 		
 		if (rooms == null) {
 			// this is done late-binding to avoid dependency loops in spring.
 			rooms = ctx.getBean(SymphonyRooms.class);
 		}
 		
-		ej.putIfAbsent("room", new RoomList(rooms.getAllRooms()));
+		// TODO :- handle room converter
+//		ej.putIfAbsent("room", new RoomList(rooms.getAllRooms()));
 		
 		if (editMode) {
 			StringBuilder out = new StringBuilder();

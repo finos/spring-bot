@@ -13,16 +13,16 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.MethodCallE
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResourceLoaderUtil;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
 import com.symphony.api.id.SymphonyIdentity;
@@ -60,7 +60,7 @@ public class TestActionElementsHandler extends AbstractMockSymphonyTest {
 	EntityJsonConverter ejc;
 
 	@Autowired
-	ResourceLoader rl;
+	ResourceLoaderUtil rl;
 	
 	@Autowired
 	CommandPerformer cp;

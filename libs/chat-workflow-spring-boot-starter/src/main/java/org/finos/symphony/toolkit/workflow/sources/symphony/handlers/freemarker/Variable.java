@@ -51,4 +51,8 @@ public class Variable {
 		return getDataPath() + ".error";
 	}
 
+	public int getDepth() {
+		return depth;
+	}
+
 }

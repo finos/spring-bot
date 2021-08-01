@@ -1,11 +1,11 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.springframework.util.StringUtils;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Optional;
+
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.ComplexUI;
+import org.springframework.util.StringUtils;
 
 public abstract class AbstractTableConverter extends AbstractComplexTypeConverter {
 
@@ -19,7 +19,7 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
             }
 
             @Override
-            public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
+            public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler) {
                 String align = numberClass(f.getType()) ? RIGHT_ALIGN : boolClass(f.getType()) ? CENTER_ALIGN : "";
                 String fieldNameOrientation = getFieldNameOrientation(f);
                 return StringUtils.hasText(fieldNameOrientation) ? indent(variable.depth + 1) + Optional.ofNullable(align).map(style -> StringUtils.hasText(style) ? "<td " + style + "><b>" : "<td><b>").get() + fieldNameOrientation + "</b></td>" : "";
@@ -44,10 +44,10 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
             }
 
             @Override
-            public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler) {
+            public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler) {
                 String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
-                Type t = f.getGenericType();
-                return StringUtils.hasText(getFieldNameOrientation(f)) ? indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(contentHandler, t, editMode, variable, ej, null) + "</td>" : "";
+                Type t = isComplextUIField(f) ? f.getAnnotation(ComplexUI.class).annotationType() : f.getGenericType();
+                return StringUtils.hasText(getFieldNameOrientation(f)) ? indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(contentHandler, t, editMode, variable, null, f.getAnnotation(ComplexUI.class)) + "</td>" : "";
             }
         };
 
@@ -59,20 +59,20 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
         super(priority);
     }
 
-    public String createTable(Type t, boolean editMode, Variable variable, EntityJson ej, WithField headerDetail, WithField rowDetail, WithType controller) {
+    public String createTable(Type t, boolean editMode, Variable variable, WithField headerDetail, WithField rowDetail, WithType controller) {
         StringBuilder sb = new StringBuilder();
         sb.append(formatErrorsAndIndent(variable));
         sb.append(indent(variable.depth) + "<table><thead><tr>");
-        sb.append(rowHeaders(t, editMode, variable, ej, headerDetail, controller));
+        sb.append(rowHeaders(t, editMode, variable, headerDetail, controller));
         sb.append(indent(variable.depth) + "</tr></thead><tbody>");
-        sb.append(rowDetails(t, editMode, variable, ej, rowDetail, controller));
+        sb.append(rowDetails(t, editMode, variable, rowDetail, controller));
         sb.append(indent(variable.depth) + "</tbody></table>");
         return sb.toString();
 
     }
 
-    protected abstract Object rowDetails(Type t, boolean editMode, Variable variable, EntityJson ej, WithField rowDetail, WithType controller);
+    protected abstract Object rowDetails(Type t, boolean editMode, Variable variable, WithField rowDetail, WithType controller);
 
-    protected abstract Object rowHeaders(Type t, boolean editMode, Variable variable, EntityJson ej, WithField headerDetails, WithType controller);
+    protected abstract Object rowHeaders(Type t, boolean editMode, Variable variable, WithField headerDetails, WithType controller);
 
 }

@@ -31,6 +31,11 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
+	public ComplexUIConverter complexUIConverter() {
+		return new ComplexUIConverter();
+	}
+	
+	@Bean
 	public EnumConverter enumConverter() {
 		return new EnumConverter();
 	}

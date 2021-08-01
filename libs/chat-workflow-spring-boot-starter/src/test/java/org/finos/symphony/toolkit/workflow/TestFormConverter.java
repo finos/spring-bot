@@ -8,7 +8,6 @@ import org.finos.symphony.toolkit.workflow.fixture.TestOb4;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.WorkflowModule;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +61,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testListOfStringAddValue() throws Exception {
 		before();
@@ -71,6 +71,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testListOfStringUpdateValue() throws Exception {
 		before();
@@ -79,6 +80,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 		Assertions.assertEquals("AmsidhLokhande", to);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testListOfIntegerAddValue() throws Exception {
 		before();

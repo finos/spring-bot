@@ -2,8 +2,6 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.lang.reflect.Type;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-
 public class StringConverter extends AbstractClassConverter {
 
 	public StringConverter() {
@@ -11,7 +9,7 @@ public class StringConverter extends AbstractClassConverter {
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
+	public String apply(Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			return formatErrorsAndIndent(variable)
 					+ "<text-field "

@@ -5,8 +5,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-
 public class TimeConverter extends AbstractClassConverter {
 
 	public TimeConverter() {
@@ -14,7 +12,7 @@ public class TimeConverter extends AbstractClassConverter {
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable, EntityJson ej) {
+	public String apply(Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			return textField(variable);
 		} else {

@@ -1,14 +1,13 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
+import static java.util.Optional.ofNullable;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.Optional.ofNullable;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
 /**
  * General interface for performing some function against a field, with a given variable.
@@ -16,7 +15,7 @@ import static java.util.Optional.ofNullable;
 public interface WithField {
     String DEFAULT_FORMATTER_PATTERN = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])";
 
-    public String apply(Field f, boolean editMode, Variable variable, EntityJson ej, WithType contentHandler);
+    public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler);
 
     /**
      * Return true if we are going to expand the contents of this field.

@@ -23,6 +23,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.edit.TableE
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResourceLoaderUtil;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
@@ -45,7 +46,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
 import com.symphony.api.agent.MessagesApi;
@@ -87,9 +87,6 @@ public class SymphonyWorkflowConfig {
 	
 	@Autowired
 	AttachmentHandler attachmentHandler;
-	
-	@Autowired
-	ResourceLoader resourceLoader;
 	
 	@Autowired
 	Workflow wf;
@@ -170,9 +167,15 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
+	public ResourceLoaderUtil resourceLoaderUtil() {
+		return new ResourceLoaderUtil();
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
 	public FormMessageMLConverter formMessageMLConverter() {
 		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
-		return new FreemarkerFormMessageMLConverter(resourceLoader, converters);
+		return new FreemarkerFormMessageMLConverter(resourceLoaderUtil(), converters);
 	}
 	
 	@Bean

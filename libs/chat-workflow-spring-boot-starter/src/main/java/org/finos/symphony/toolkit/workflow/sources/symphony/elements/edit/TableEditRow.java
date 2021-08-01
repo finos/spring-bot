@@ -29,6 +29,7 @@ public class TableEditRow extends AbstractElementsConsumer {
 		return in.replace("entity.formdata.", "").replace(".[", "[");
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Response> apply(ElementsAction in) {
 		Workflow wf = in.getWorkflow();

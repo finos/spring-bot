@@ -15,9 +15,10 @@ import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResourceLoaderUtil;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.finos.symphony.toolkit.workflow.validation.ErrorHelp;
 import org.junit.jupiter.api.Assertions;
@@ -26,7 +27,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Errors;
 
 public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
@@ -47,7 +47,7 @@ public class TestSymphonyResponseHandler extends AbstractMockSymphonyTest {
 	AttachmentHandler ah;
 	
 	@Autowired
-	ResourceLoader rl;
+	ResourceLoaderUtil rl;
 	
 	@Autowired
 	List<TypeConverter> fieldConverters;

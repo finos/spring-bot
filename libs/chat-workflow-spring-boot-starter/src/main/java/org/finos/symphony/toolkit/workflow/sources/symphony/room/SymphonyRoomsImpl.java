@@ -1,10 +1,8 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.room;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -88,7 +86,6 @@ public class SymphonyRoomsImpl extends AbstractNeedsWorkflow implements Symphony
 			
 			StreamType st = new StreamType().type(TypeEnum.ROOM);
 			StreamList list = streamsApi.v1StreamsListPost(null, new StreamFilter().streamTypes(Collections.singletonList(st)), 0, 0);
-			Map<Room, String> out = new HashMap<>();
 			for (StreamAttributes streamAttributes : list) {
 				if (streamAttributes.getRoomAttributes().getName().equals(((Room) a).getRoomName())) {
 					return streamAttributes.getId();

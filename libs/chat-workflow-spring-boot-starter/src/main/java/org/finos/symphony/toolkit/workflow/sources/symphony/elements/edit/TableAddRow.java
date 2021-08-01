@@ -28,6 +28,7 @@ public class TableAddRow extends AbstractElementsConsumer {
 	public static final String DO_SUFFIX = "table-add-done";
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Response> apply(ElementsAction ea) {
 		Workflow wf = ea.getWorkflow();
