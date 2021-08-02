@@ -3,30 +3,15 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.workflow.content.Room;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
-public class RoomConverter extends AbstractClassConverter implements ApplicationContextAware {
+public class RoomConverter extends AbstractClassConverter {
 
 	public RoomConverter() {
 		super(LOW_PRIORITY, Room.class);
 	}
-
-	private SymphonyRooms rooms;
-	private ApplicationContext ctx;
 	
 	@Override
 	public String apply(Type t, boolean editMode, Variable v) {
-		
-		if (rooms == null) {
-			// this is done late-binding to avoid dependency loops in spring.
-			rooms = ctx.getBean(SymphonyRooms.class);
-		}
-		
-		// TODO :- handle room converter
-//		ej.putIfAbsent("room", new RoomList(rooms.getAllRooms()));
 		
 		if (editMode) {
 			StringBuilder out = new StringBuilder();
@@ -46,11 +31,5 @@ public class RoomConverter extends AbstractClassConverter implements Application
 			return text(v, "!''");
 		}
 	}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.ctx = applicationContext;
-	}
-
 	
 }

@@ -2,12 +2,15 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.content.Room;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.form.RoomList;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.ComplexUI;
+import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.springframework.context.ApplicationContext;
 import org.springframework.validation.Errors;
 
@@ -27,11 +30,14 @@ public interface FormMessageMLConverter extends GetFields {
 					Object mappedBean = (Object) applicationContext.getBean(mappedClass);
 					Object values = new PropertyDescriptor(mappedBy, mappedClass).getReadMethod().invoke(mappedBean);
 
-					if (values instanceof Set)
-						work.put(mappedClass.getSimpleName(), mappedBean);
+					if (values instanceof Collection)
+						work.putIfAbsent(mappedClass.getSimpleName(), mappedBean);
 				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
+			} else if (f.getGenericType() instanceof Room) {
+				SymphonyRooms rooms = applicationContext.getBean(SymphonyRooms.class);
+				work.putIfAbsent("room", new RoomList(rooms.getAllRooms()));
 			}
 		}
 	}
