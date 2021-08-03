@@ -7,8 +7,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;

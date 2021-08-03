@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
 import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
@@ -37,70 +35,10 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
  * @author Rob Moffat
  *
  */
+@SuppressWarnings("serial")
 public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 	
 	private VersionSpace[] allowed;
-	
-	/**
-	 * This declares a package prefix, and the versions it supports for writing and reading.
-	 * 
-	 * This means we can correctly set the "version" : "xxx" part of the JSON format for any given class, 
-	 * and also makes sure that we can read the versions provided.
-	 * 
-	 * 
-	 * @author Rob Moffat
-	 *
-	 */
-	public static class VersionSpace {
-		
-		public final String typeName;
-		public final String writeVersion;
-		private final String[] readVersions;
-		private final Class<?> toUse;
-		
-		public Class<?> getToUse() {
-			return toUse;
-		}
-
-		public VersionSpace(String typeName, Class<?> toUse, String writeVersion, String... readVersions) {
-			super();
-			this.typeName = typeName;
-			this.writeVersion = writeVersion;
-			this.readVersions = readVersions;
-			this.toUse = toUse;
-		}
-		
-		public VersionSpace(Class<?> toUse, String writeVersion, String... readVersions) {
-			this(EntityJson.getSymphonyTypeName(toUse), toUse, writeVersion, readVersions);
-		}
-		
-		public VersionSpace(Class<?> toUse) {
-			this(EntityJson.getSymphonyTypeName(toUse), toUse, "1.0");
-		}
-		
-		
-		public Predicate<String> toPattern(String version) {
-			String converted = version
-				.replace(".", "\\.")
-				.replace("*", "[0-9]+");
-			return Pattern.compile(converted).asPredicate();
-		}
-		
-		public boolean matches(String in) {
-			return writeVersion.equals(in) || Arrays.stream(readVersions).anyMatch(x -> toPattern(x).test(in));
-		}
-		
-		public String getVersions() {
-			return writeVersion+ ", "+Arrays.stream(readVersions).reduce("", (a, b) -> a+", "+b);
-		}
-
-		@Override
-		public String toString() {
-			return "VersionSpace [typeName=" + typeName + ", writeVersion=" + writeVersion + ", readVersions="
-					+ Arrays.toString(readVersions) + ", toUse=" + toUse + "]";
-		}
-	
-	}
 	
 	public EntityJsonTypeResolverBuilder(TypeFactory typeFactory, VersionSpace... allowed) {
 		super(DefaultTyping.JAVA_LANG_OBJECT, new PolymorphicTypeValidator.Base() {
@@ -114,9 +52,14 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 			public Validity validateSubClassName(MapperConfig<?> config, JavaType baseType, String subClassName)
 					throws JsonMappingException {
 				for (VersionSpace versionSpace : allowed) {
-					if (subClassName.startsWith(versionSpace.getToUse().getCanonicalName())) {
+					if (versionSpace.typeMatches(subClassName)) {
 						return Validity.ALLOWED;
 					}
+				}
+				
+				if (subClassName.startsWith("java.util.")) {
+					// due to https://github.com/finos/symphony-java-toolkit/issues/113 
+					return Validity.ALLOWED;
 				}
 				
 				return Validity.DENIED;
@@ -155,10 +98,21 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 						.findFirst();
 				
 				if (vs.isPresent()) {
-					return super.typeFromId(context, vs.get().getToUse().getCanonicalName());
+					Class<?> theClass = vs.get().getToUse();
+ 					return super.typeFromId(context, theClass.getName());
+				} else if (id.startsWith("java.util.")) {
+					// due to https://github.com/finos/symphony-java-toolkit/issues/113 
+					// we are going to allow java util classes, since they are part of the
+					// jdk and therefore don't represent a security threat.
+					String javaName = "java.util."+fixJavaName(id.substring(10));
+					return super.typeFromId(context, javaName);
 				} else {
 					throw new RuntimeException("Couldn't determine class for: "+id+".  This is not declared in VersionSpace array.");
 				}
+			}
+
+			private String fixJavaName(String in) {
+				return in.substring(0, 1).toUpperCase()+in.substring(1);
 			}
 			
 			
@@ -183,9 +137,8 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 					String versionNumber = ctxt.readValue(p, String.class);
 					
 					for (VersionSpace versionSpace : allowed) {
-						if (versionSpace.getToUse().equals(beanOrClass.getClass())) {
-							
-							if (versionSpace.matches(versionNumber)) {
+						if (versionSpace.typeMatches(beanOrClass)) {
+							if (versionSpace.versionMatches(versionNumber)) {
 								// ok
 								return true;
 							} else {
@@ -253,8 +206,10 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 							
 							g.writeTypePrefix(idMetadata);
 							
-							g.writeFieldName("version");
-							g.writeString(version);
+							if ((version != null) && (version.trim().length() > 0)) {
+								g.writeFieldName("version");
+								g.writeString(version);
+							}
 							
 							
 							return idMetadata;

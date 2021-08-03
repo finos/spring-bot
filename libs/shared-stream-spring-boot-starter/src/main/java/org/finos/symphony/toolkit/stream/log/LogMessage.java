@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.stream.log;
 
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.stream.Participant;
 
 public class LogMessage {

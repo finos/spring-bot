@@ -3,7 +3,6 @@ package org.finos.symphony.toolkit.json;
 import java.util.Arrays;
 import java.util.List;
 
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.symphonyoss.Taxonomy;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.Cusip;
