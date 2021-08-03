@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.stream.welcome;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

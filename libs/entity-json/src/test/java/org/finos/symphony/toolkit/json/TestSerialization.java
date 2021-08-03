@@ -5,10 +5,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import org.finos.symphony.toolkit.json.test.ClassWithArray;
+import org.finos.symphony.toolkit.json.test.ClassWithArray.SubClass;
 import org.finos.symphony.toolkit.json.test.ClassWithEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,6 +44,8 @@ public class TestSerialization {
 	public static void setupMapper() {
 		VersionSpace[] vs = ObjectMapperFactory.extendedSymphonyVersionSpace(
 				new VersionSpace(ClassWithEnum.class, "1.0"),
+				new VersionSpace(ClassWithArray.class, "1.0"),
+				new VersionSpace(ClassWithArray.SubClass.class, "1.0"),
 				new VersionSpace(Created.class, "1.0"),
 				new VersionSpace("com.symphony.integration.jira.event.v2.created", V2Created.class, "1.0"),
 				new VersionSpace(Issue.class, "1.0"),
@@ -76,6 +80,33 @@ public class TestSerialization {
 		Assertions.assertEquals(ej, out);
 	
 	}
+	
+	@Test
+	public void testClassWithArray() throws Exception {
+		ClassWithArray cwe = new ClassWithArray();
+		
+		ArrayList<SubClass> vals1 = new ArrayList<SubClass>();
+		vals1.add(new SubClass("la1", "lb1"));
+		vals1.add(new SubClass("la2", "lb2"));
+		vals1.add(new SubClass("la3", "lb3"));
+		cwe.setL(vals1);
+		
+		ArrayList<SubClass> vals2 = new ArrayList<SubClass>();
+		vals2.add(new SubClass("ma1", "mb1"));
+		vals2.add(new SubClass("ma2", "mb2"));
+		vals2.add(new SubClass("ma3", "mb3"));
+		cwe.setM(vals2);
+		
+		
+		EntityJson ej = new EntityJson();
+		ej.put("cwe", cwe);
+		String json = om.writeValueAsString(ej);
+		System.out.println(json);
+		EntityJson out = om.readValue(json, EntityJson.class);
+		Assertions.assertEquals(ej, out);
+	
+	}
+	
 	
 	@Test
 	public void testJiraExample1() throws Exception {
@@ -159,14 +190,14 @@ public class TestSerialization {
 	@Test
 	public void testVersionMatching() {
 		VersionSpace vs = new VersionSpace(Object.class, "2.0", "1.*");
-		Assertions.assertTrue(vs.matches("1.1"));
-		Assertions.assertTrue(vs.matches("1.5"));
-		Assertions.assertTrue(vs.matches("2.0"));
+		Assertions.assertTrue(vs.versionMatches("1.1"));
+		Assertions.assertTrue(vs.versionMatches("1.5"));
+		Assertions.assertTrue(vs.versionMatches("2.0"));
 	
 		VersionSpace vs2 = new VersionSpace(Object.class, "2.0", "1.[0-4]");
-		Assertions.assertTrue(vs2.matches("1.1"));
-		Assertions.assertFalse(vs2.matches("1.5"));
-		Assertions.assertTrue(vs2.matches("2.0"));
+		Assertions.assertTrue(vs2.versionMatches("1.1"));
+		Assertions.assertFalse(vs2.versionMatches("1.5"));
+		Assertions.assertTrue(vs2.versionMatches("2.0"));
 	}
 	
 	private String getExpected(String name) {

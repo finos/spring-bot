@@ -6,8 +6,8 @@ import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
