@@ -73,7 +73,7 @@ public class KoreAIResponseHandlerImplTest {
        	om = new ObjectMapper();
     		ObjectMapperFactory.initialize(om, ObjectMapperFactory
     			.extendedSymphonyVersionSpace(
-    				new VersionSpace(KoreAIResponse.class.getPackage().getName(), "1.0")));
+    				new VersionSpace(KoreAIResponse.class)));
 
     	this.builder = new KoreAIResponseBuilderImpl(new ObjectMapper(), JsonNodeFactory.instance); 
         this.output = new KoreAIResponseHandlerImpl(api, rl, true, true, om, "classpath:/test-templates");
@@ -137,7 +137,7 @@ public class KoreAIResponseHandlerImplTest {
 			Template t = new Template("template-"+i, new StringReader(messsageML), c);
 			
 			StringWriter out = new StringWriter();
-			ObjectNode jo = JsonNodeFactory.instance.objectNode();
+			ObjectNode jo = JsonNodeFactory.instance.objectNode(); 
 			JsonNode o = om.readTree(json);
 			jo.set("entity", o);
 			System.out.println("Processing: "+json);
