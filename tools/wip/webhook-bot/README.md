@@ -1,0 +1,1 @@
+Webhooks allow you to connect your chatbot to your web services. Pass information from interactions and retrieve the result. ... Create webhooks to provide efficient communication between the bot and your web services.
