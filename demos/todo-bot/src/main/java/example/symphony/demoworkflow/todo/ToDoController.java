@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -19,7 +19,7 @@ import example.symphony.demoworkflow.todo.ToDoItem.Status;
 @Controller
 public class ToDoController {
 
-	@Exposed(value="new", description = "Create new item list")
+	@ChatRequest(value="new", description = "Create new item list")
 	public ToDoList init() {
 		return new ToDoList();
 	}
@@ -31,14 +31,14 @@ public class ToDoController {
 		}
 	}
 	
-	@Exposed(value="add", description = "Add an item")
+	@ChatRequest(value="add", description = "Add an item")
 	public NewItemDetails add1(User author) {
 		NewItemDetails out = new NewItemDetails();
 		out.assignTo = author;
 		return out;
 	}
 	
-	@Exposed(value="add", addToHelp = false, formClass = NewItemDetails.class)
+	@ChatRequest(value="add", addToHelp = false, formClass = NewItemDetails.class)
 	public ToDoList add(NewItemDetails a, User u, Optional<ToDoList> toDo) {
 		ToDoList out = toDo.orElse(new ToDoList());
 		out.getItems().add(new ToDoItem(a.getDescription(), u, a.getAssignTo(), Status.OPEN));
@@ -46,7 +46,7 @@ public class ToDoController {
 		return out;
 	}
 
-	@Exposed(value="show", description = "Show current list of items")
+	@ChatRequest(value="show", description = "Show current list of items")
 	public ToDoList show(Optional<ToDoList> in) {
 		ToDoList out = in.orElse(new ToDoList());
 		reNumber(out);
@@ -68,7 +68,7 @@ public class ToDoController {
 			.collect(Collectors.toSet());
 	}
 
-	@Exposed(value="delete {item}", description = "Remove items by number. e.g. \"/delete 5 6 7\"")
+	@ChatRequest(value="delete {item}", description = "Remove items by number. e.g. \"/delete 5 6 7\"")
 	public ToDoList delete(@ChatVariable(name = "item") List<Word> toDelete, Optional<ToDoList> toDo) {
 		ToDoList out = in.orElse(new ToDoList());
 		Set<Integer> toRemove = numbers(m);
@@ -96,14 +96,14 @@ public class ToDoController {
 		reNumber();
 	}
 	
-	@Exposed(isButton = false, description = "Complete items, e.g. \"/complete 1 3 5 @Suresh Rupnar\"")
+	@ChatRequest(isButton = false, description = "Complete items, e.g. \"/complete 1 3 5 @Suresh Rupnar\"")
 	public ToDoList complete(Message m, Author a) {
 		User u = m.getNth(User.class, 0).orElse(a);
 		changeStatus(m, u, Status.COMPLETE);
 		return this;
 	}
 
-	@Exposed(isButton = false, description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
+	@ChatRequest(isButton = false, description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
 	public ToDoList assign(Message m, Author a) {
 		User u = m.getNth(User.class, 0).orElse(a);
 		changeStatus(m, u, Status.OPEN);

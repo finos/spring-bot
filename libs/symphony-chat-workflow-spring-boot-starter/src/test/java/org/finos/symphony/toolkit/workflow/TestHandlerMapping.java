@@ -9,7 +9,7 @@ import java.util.List;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Message;
@@ -21,7 +21,8 @@ import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
-import org.finos.symphony.toolkit.workflow.java.mapping.ExposedChatHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatRequestChatHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ButtonRequestChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
@@ -57,7 +58,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	OurController oc;
 	
 	@Autowired
-	ExposedChatHandlerMapping hm;
+	ChatRequestChatHandlerMapping hm;
 		
 	@Autowired
 	SymphonyResponseHandler rh;
@@ -73,11 +74,11 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(18, hm.getHandlerMethods().size());
+		Assertions.assertEquals(14, hm.getHandlerMethods().size());
 		getMappingsFor("list");
 	}
 
-	private List<ChatMapping<Exposed>> getMappingsFor(String s) throws Exception {
+	private List<ChatMapping<ChatRequest>> getMappingsFor(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Action a = new SimpleMessageAction(null, null, m, jsonObjects);
@@ -98,7 +99,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	
 	@Test
 	public void checkWildcardMapping() throws Exception {
-		List<ChatMapping<Exposed>> mapped = getMappingsFor("ban zebedee");
+		List<ChatMapping<ChatRequest>> mapped = getMappingsFor("ban zebedee");
 		Assertions.assertTrue(mapped.size()  == 1);
 	}
 	
@@ -204,21 +205,18 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		System.out.println(data.getValue());
 		
 		
-		Assertions.assertEquals(16, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
+		Assertions.assertEquals(13, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
 		
 		Assertions.assertTrue(data.getValue().contains(" {\n"
 				+ "      \"type\" : \"org.finos.symphony.toolkit.workflow.help.commandDescription\",\n"
 				+ "      \"version\" : \"1.0\",\n"
 				+ "      \"description\" : \"Display this help page\",\n"
-				+ "      \"button\" : true,\n"
-				+ "      \"message\" : true,\n"
 				+ "      \"examples\" : [ \"help\" ]\n"
 				+ "    }"));
 		
 		Assertions.assertTrue(msg.getValue().contains("<tr>\n"
 				+ "            <th>Description</th>\n"
 				+ "            <th>Type... </th>\n"
-				+ "            <th>Or Press</th>\n"
 				+ "          </tr>"));
 
 	}
