@@ -10,7 +10,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
  * @author rupnsur
  *
  */
-@Work(name = "Item", instructions = "Add/Edit the Item")
+@Work
 public class ToDoItem {
 
 	public enum Status {

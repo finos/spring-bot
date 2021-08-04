@@ -14,16 +14,10 @@
 	<groupId>org.finos.symphony.toolkit.demos</groupId>
 	<artifactId>demo-app</artifactId>
 	<name>Symphony Demo App</name>
-	<description>Demo App for creation of Symphony App</description>
+	<description>Example of symphony-app-spring-boot-starter use</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
-		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
-		<symphony.reporter.recipients>y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==</symphony.reporter.recipients>
-		<symphony.reporter.agent.url>https://develop.symphony.com/agent</symphony.reporter.agent.url>
-		<symphony.reporter.pod.url>https://develop.symphony.com/pod</symphony.reporter.pod.url>
-		<symphony.reporter.login.url>https://develop.symphony.com/login</symphony.reporter.login.url>
-		<symphony.reporter.relay.url>https://develop.symphony.com/relay</symphony.reporter.relay.url>
+    <spring-boot.run.main-class>example.symphony.demoapp.DemoAppApplication</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>

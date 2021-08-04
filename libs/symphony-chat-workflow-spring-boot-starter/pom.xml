@@ -2,7 +2,7 @@
  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
  <modelVersion>4.0.0</modelVersion>
  <artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
- <name>Spring Boot Starter For Chat Workflowo Symphony Adapter</name>
+ <name>Spring Boot Starter For Chat Workflow Symphony Adapter</name>
  <description>Build Workflows Using Enterprise Chat</description>
 
  <parent>

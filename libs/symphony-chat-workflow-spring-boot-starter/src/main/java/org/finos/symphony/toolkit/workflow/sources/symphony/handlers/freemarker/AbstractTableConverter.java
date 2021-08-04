@@ -60,7 +60,7 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
 
     public String createTable(Type t, boolean editMode, Variable variable, WithField headerDetail, WithField rowDetail, WithType controller) {
         StringBuilder sb = new StringBuilder();
-        sb.append(formatErrorsAndIndent(variable));
+        sb.append(formatErrorsAndIndent(variable.getFormFieldName(), variable.depth));
         sb.append(indent(variable.depth) + "<table><thead><tr>");
         sb.append(rowHeaders(t, editMode, variable, headerDetail, controller));
         sb.append(indent(variable.depth) + "</tr></thead><tbody>");

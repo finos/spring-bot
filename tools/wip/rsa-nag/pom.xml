@@ -17,7 +17,6 @@
 	<description>Uses Symphony Admin API to tell you how old your bot's RSA keys are</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.symphony.practice.rsanag.Main</spring-boot.run.main-class>
 	</properties>
 

@@ -6,37 +6,45 @@
       
 <#-- starting template -->
 <form 
-  id="org.finos.symphony.toolkit.workflow.fixture.WeirdObject">
+  id="org.finos.symphony.toolkit.workflow.fixture.WeirdObjectCollection">
  <table>
- <tr><td><b>The Id:</b></td><td>
-   <span class="tempo-text-color--red">${entity.errors.contents['value']!''}</span>
-   <text-field 
-    name="value"
-    placeholder="value">${entity.form.theId.value!''}</text-field></td></tr>
- <tr><td><b>C:</b></td><td><select 
-   name="c"
-   required="false"
-   data-placeholder="Choose c">
-  <option 
-   value="A"
-   selected="${((entity.form.c!'') == 'A')?then('true', 'false')}">A</option>
-  <option 
-   value="B"
-   selected="${((entity.form.c!'') == 'B')?then('true', 'false')}">B</option>
-  <option 
-   value="C"
-   selected="${((entity.form.c!'') == 'C')?then('true', 'false')}">C</option></select></td></tr>
- <tr><td><b>B:</b></td><td>
-  <span class="tempo-text-color--red">${entity.errors.contents['b']!''}</span>
-  <checkbox 
-   name="b"
-   checked="${entity.form.b?string('true', 'false')}"
-   value="true">b</checkbox></td></tr>
- <tr><td><b>Some User:</b></td><td>
-  <span class="tempo-text-color--red">${entity.errors.contents['someUser']!''}</span>
-  <person-selector 
-   name="someUser"
-   placeholder="some user" required="false"/></td></tr>
+ <tr><td><b>Ob4:</b></td><td>
+  <table>
+  <tr><td><b>The Id:</b></td><td>
+    <span class="tempo-text-color--red">${entity.errors.contents['ob4.theId']!''}</span>
+    <text-field 
+     name="ob4.theId"
+     placeholder="the id">${entity.form.ob4.theId.value!''}</text-field></td></tr>
+  <tr><td><b>Cash Tag:</b></td><td>
+    <span class="tempo-text-color--red">${entity.errors.contents['ob4.cashTag']!''}</span>
+    <text-field 
+     name="ob4.cashTag"
+     placeholder="cash tag">${entity.form.ob4.cashTag.id[0].value!''}</text-field></td></tr>
+  <tr><td><b>C:</b></td><td><select 
+    name="ob4.c"
+    required="false"
+    data-placeholder="Choose c">
+   <option 
+    value="A"
+    selected="${((entity.form.ob4.c!'') == 'A')?then('true', 'false')}">A</option>
+   <option 
+    value="B"
+    selected="${((entity.form.ob4.c!'') == 'B')?then('true', 'false')}">B</option>
+   <option 
+    value="C"
+    selected="${((entity.form.ob4.c!'') == 'C')?then('true', 'false')}">C</option></select></td></tr>
+  <tr><td><b>B:</b></td><td>
+   <span class="tempo-text-color--red">${entity.errors.contents['ob4.b']!''}</span>
+   <checkbox 
+    name="ob4.b"
+    checked="${entity.form.ob4.b?string('true', 'false')}"
+    value="true">b</checkbox></td></tr>
+  <tr><td><b>Some User:</b></td><td>
+   <span class="tempo-text-color--red">${entity.errors.contents['ob4.someUser']!''}</span>
+   <person-selector 
+    name="ob4.someUser"
+    placeholder="some user" required="false"/></td></tr>
+  </table></td></tr>
  </table>
   <p><#list entity.buttons.contents as button>
     <button 

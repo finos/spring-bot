@@ -9,10 +9,15 @@
   id="org.finos.symphony.toolkit.workflow.fixture.WeirdObject">
  <table>
  <tr><td><b>The Id:</b></td><td>
-   <span class="tempo-text-color--red">${entity.errors.contents['value']!''}</span>
+   <span class="tempo-text-color--red">${entity.errors.contents['theId']!''}</span>
    <text-field 
-    name="value"
-    placeholder="value">${entity.form.theId.value!''}</text-field></td></tr>
+    name="theId"
+    placeholder="the id">${entity.form.theId.value!''}</text-field></td></tr>
+ <tr><td><b>Cash Tag:</b></td><td>
+   <span class="tempo-text-color--red">${entity.errors.contents['cashTag']!''}</span>
+   <text-field 
+    name="cashTag"
+    placeholder="cash tag">${entity.form.cashTag.id[0].value!''}</text-field></td></tr>
  <tr><td><b>C:</b></td><td><select 
    name="c"
    required="false"

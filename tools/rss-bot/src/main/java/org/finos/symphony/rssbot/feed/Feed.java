@@ -3,7 +3,7 @@ package org.finos.symphony.rssbot.feed;
 import org.finos.symphony.toolkit.spring.api.properties.ProxyProperties;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work(editable = false, instructions = "RSS Feed")
+@Work
 public class Feed {
 
 	String name;

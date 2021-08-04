@@ -40,7 +40,9 @@ public class Variable {
 	}
 
 	public String getFormFieldName() {
-		return segment;
+		String dp = getDataPath();
+		int formStart = dp.indexOf("form.");
+		return dp.substring(formStart+5);
 	}
 	
 	public String getDataPath() {

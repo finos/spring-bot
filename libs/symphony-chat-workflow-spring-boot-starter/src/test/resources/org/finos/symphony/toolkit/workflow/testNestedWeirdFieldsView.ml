@@ -6,13 +6,30 @@
       
 <#-- starting template -->
  <table>
- <tr><td><b>The Id:</b></td><td>
-  <#if entity.form.theId??><hash 
-   tag="${entity.form.theId.value!''}" /></#if></td></tr>
- <tr><td><b>C:</b></td><td>${entity.form.c!''}</td></tr>
- <tr><td><b>B:</b></td><td>${entity.form.b?string("Y", "N")}</td></tr>
- <tr><td><b>Some User:</b></td><td><#if entity.form.someUser??><mention 
-   uid="${entity.form.someUser.id}" /></#if></td></tr>
+ <tr><td><b>Ob4:</b></td><td>
+  <table>
+  <tr><td><b>The Id:</b></td><td>
+   <#if entity.form.ob4.theId??><hash 
+    tag="${entity.form.ob4.theId.value!''}" /></#if></td></tr>
+  <tr><td><b>Cash Tag:</b></td><td>
+   <#if entity.form.ob4.cashTag??><cash 
+    tag="${entity.form.ob4.cashTag.id[0].value!''}" /></#if></td></tr>
+  <tr><td><b>C:</b></td><td>${entity.form.ob4.c!''}</td></tr>
+  <tr><td><b>B:</b></td><td>${entity.form.ob4.b?string("Y", "N")}</td></tr>
+  <tr><td><b>Some User:</b></td><td>
+   <#if entity.form.ob4.someUser??>
+      <#list entity.form.ob4.someUser.id as id>
+        <#if id.type == 'com.symphony.user.userId'>
+          <mention uid="${id.value}" />    
+          <#break />
+        </#if>  
+        <#if id.type == 'com.symphony.user.emailAddress'>
+          <mention email="${id.value}" />    
+          <#break />
+        </#if>    
+      </#list>
+   </#if></td></tr>
+  </table></td></tr>
  </table>
 <form 
   id="just-buttons-form">

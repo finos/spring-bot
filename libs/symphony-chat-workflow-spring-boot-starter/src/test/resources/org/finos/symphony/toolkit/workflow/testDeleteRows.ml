@@ -5,31 +5,48 @@
     
       
 <#-- starting template -->
- <table>
- <tr><td><b>The Id:</b></td><td>
-  <#if entity.form.theId??><hash 
-   tag="${entity.form.theId.value!''}" /></#if></td></tr>
- <tr><td><b>Cash Tag:</b></td><td>
-  <#if entity.form.cashTag??><cash 
-   tag="${entity.form.cashTag.id[0].value!''}" /></#if></td></tr>
- <tr><td><b>C:</b></td><td>${entity.form.c!''}</td></tr>
- <tr><td><b>B:</b></td><td>${entity.form.b?string("Y", "N")}</td></tr>
- <tr><td><b>Some User:</b></td><td>
-  <#if entity.form.someUser??>
-     <#list entity.form.someUser.id as id>
-       <#if id.type == 'com.symphony.user.userId'>
-         <mention uid="${id.value}" />    
-         <#break />
-       </#if>  
-       <#if id.type == 'com.symphony.user.emailAddress'>
-         <mention email="${id.value}" />    
-         <#break />
-       </#if>    
-     </#list>
-  </#if></td></tr>
- </table>
 <form 
-  id="just-buttons-form">
+  id="org.finos.symphony.toolkit.workflow.fixture.TestObjects">
+ <table>
+ <tr><td><b>Items:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['items']!''}</span>
+  
+  <table><thead><tr>
+  
+    <td><b>Isin</b></td>
+  
+    <td style="text-align:center;" ><b>Bid Axed</b></td>
+  
+    <td style="text-align:center;" ><b>Ask Axed</b></td>
+  
+    <td><b>Creator</b></td>
+  
+    <td style="text-align: right;"><b>Bid Qty</b></td>
+  
+    <td style="text-align: right;"><b>Ask Qty</b></td>
+   <td style="text-align:center;" ><button name="items.table-delete-rows">Delete</button></td>
+   <td style="text-align:center;" ><button name="items.table-add-row">New</button></td>
+  </tr></thead><tbody>
+  <#list entity.form.items as iB>
+  <tr>
+  
+   <td >${iB.isin!''}</td>
+  
+   <td style="text-align:center;" >${iB.bidAxed?string("Y", "N")}</td>
+  
+   <td style="text-align:center;" >${iB.askAxed?string("Y", "N")}</td>
+  
+   <td >${iB.creator!''}</td>
+  
+   <td style="text-align: right;">${iB.bidQty!''}</td>
+  
+   <td style="text-align: right;">${iB.askQty!''}</td>
+   <td style="text-align:center; width:10%" ><checkbox name="items.${iB?index}.selected" /></td>
+   <td style="text-align:center;" ><button name="items[${iB?index}].table-edit-row">Edit</button></td>
+  </tr>
+  </#list>
+  </tbody></table></td></tr>
+ </table>
   <p><#list entity.buttons.contents as button>
     <button 
          name="${button.name}"

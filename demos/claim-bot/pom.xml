@@ -16,7 +16,6 @@
 	<description>Symphony chat workflow demo for expense claim processing</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
 	</properties>
 

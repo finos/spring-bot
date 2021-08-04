@@ -31,10 +31,10 @@ public abstract class AbstractTypeConverter implements TypeConverter {
 		return "\n"+String.format("%"+n+"s", "");
 	}
 	
-	public static String formatErrorsAndIndent(Variable variable) {
-		return indent(variable.depth) 
-				+ "<span class=\"tempo-text-color--red\">${entity.errors.contents['"+variable.getFormFieldName()+"']!''}</span>"
-				+ indent(variable.depth);
+	public static String formatErrorsAndIndent(String formField, int indent) {
+		return indent(indent) 
+				+ "<span class=\"tempo-text-color--red\">${entity.errors.contents['"+formField+"']!''}</span>"
+				+ indent(indent);
 	}
 
 	public static String attributeParam(Variable v, String name, String value) {
@@ -50,10 +50,14 @@ public abstract class AbstractTypeConverter implements TypeConverter {
 	}
 	
 	public static String textField(Variable variable) {
-		return formatErrorsAndIndent(variable)
+		return textField(variable, variable.getFormFieldName(), variable.getDisplayName());
+	}
+	
+	public static String textField(Variable variable, String formFieldName, String displayName) {
+		return formatErrorsAndIndent(formFieldName, variable.depth)
 				+ "<text-field "
-				+ attribute(variable, "name", variable.getFormFieldName())
-				+ attribute(variable, "placeholder", variable.getDisplayName()) +
+				+ attribute(variable, "name", formFieldName)
+				+ attribute(variable, "placeholder", displayName) +
 				">" + text(variable, "!''") + "</text-field>";
 	}
 

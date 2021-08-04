@@ -16,14 +16,13 @@
 	<description>Demo Bot for Managing a Todo List</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
-			<artifactId>chat-workflow-spring-boot-starter</artifactId>
+			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
 			<version>7.20.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
