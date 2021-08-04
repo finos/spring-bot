@@ -7,7 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
+import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -38,7 +40,7 @@ public class ToDoController {
 		return out;
 	}
 	
-	@ChatRequest(value="add", addToHelp = false, formClass = NewItemDetails.class)
+	@ButtonRequest(value = NewItemDetails.class)
 	public ToDoList add(NewItemDetails a, User u, Optional<ToDoList> toDo) {
 		ToDoList out = toDo.orElse(new ToDoList());
 		out.getItems().add(new ToDoItem(a.getDescription(), u, a.getAssignTo(), Status.OPEN));
@@ -47,6 +49,7 @@ public class ToDoController {
 	}
 
 	@ChatRequest(value="show", description = "Show current list of items")
+	@ChatResponseBody(workMode = WorkMode.EDIT)
 	public ToDoList show(Optional<ToDoList> in) {
 		ToDoList out = in.orElse(new ToDoList());
 		reNumber(out);

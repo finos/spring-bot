@@ -1,5 +1,6 @@
 package example.symphony.demoworkflow.expenses;
 
+import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -18,7 +19,7 @@ public class ClaimController {
 		return new WorkResponse(a, new StartClaim(), WorkMode.EDIT);
 	}
 	
-	@ChatRequest(value = "add", description="Submit Expense Claim", formClass = StartClaim.class, isButton = WorkMode.EDIT)
+	@ButtonRequest(value = StartClaim.class)
 	public Claim add(StartClaim sc, User u) {
 		Claim c =  new Claim();
 		c.amount = sc.amount;
@@ -28,7 +29,7 @@ public class ClaimController {
 		return c;
 	}
 
-	@ChatRequest(formClass = Claim.class, value="approve", description = "Approve Claim")
+	@ChatRequest(value="approve", description = "Approve Latest Claim")
 	public Claim approve(Claim c, User currentUser) {
 		if (c.status == Status.OPEN) {
 			c.approvedBy = currentUser;
