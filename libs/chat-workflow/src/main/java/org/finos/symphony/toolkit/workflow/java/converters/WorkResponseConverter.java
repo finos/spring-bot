@@ -1,5 +1,8 @@
 package org.finos.symphony.toolkit.workflow.java.converters;
 
+import java.util.Map;
+
+import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -7,13 +10,31 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.springframework.core.Ordered;
+import org.springframework.util.StringUtils;
 
 public class WorkResponseConverter implements ResponseConverter {
 
 	@Override
 	public Response convert(Object source, ChatHandlerExecutor creator) {
 		Addressable a = creator.action().getAddressable();
-		return new WorkResponse(a, source, WorkMode.VIEW, null, null);
+		ChatResponseBody wr = creator.getOriginatingMapping().getHandlerMethod().getMethodAnnotation(ChatResponseBody.class);
+		WorkMode wm = WorkMode.VIEW;
+		
+		if (wr != null) {
+			String template = wr.template();
+			WorkMode wmAnnotation = wr.workMode();
+			
+			if (wmAnnotation == WorkMode.EDIT) {
+				wm = wmAnnotation;
+			}
+			
+			if (StringUtils.hasText(template)) {
+				Map<String, Object> entityJson = WorkResponse.createEntityJson(source, null, null);
+				return new WorkResponse(a, entityJson, template, wm, source.getClass());
+			} 
+		}
+			
+		return new WorkResponse(a, source, wm, null, null);
 	}
 
 	@Override
