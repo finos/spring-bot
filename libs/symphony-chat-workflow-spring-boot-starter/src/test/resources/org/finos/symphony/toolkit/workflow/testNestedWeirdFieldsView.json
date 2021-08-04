@@ -11,16 +11,44 @@
     } ]
   },
   "form" : {
-    "type" : "org.finos.symphony.toolkit.workflow.fixture.weirdObject",
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.weirdObjectCollection",
     "version" : "1.0",
-    "theId" : {
-      "type" : "org.symphonyoss.taxonomy.hashtag",
+    "ob4" : {
+      "type" : "org.finos.symphony.toolkit.workflow.fixture.weirdObject",
       "version" : "1.0",
-      "value" : "adf360dd-06fe-43a4-9a62-2c17fe2deefa"
-    },
-    "c" : "C",
-    "b" : false,
-    "someUser" : null
+      "theId" : {
+        "type" : "org.symphonyoss.taxonomy.hashtag",
+        "version" : "1.0",
+        "value" : "adf360dd-06fe-43a4-9a62-2c17fe2deefa"
+      },
+      "cashTag" : {
+        "type" : "org.symphonyoss.fin.security",
+        "version" : "1.0",
+        "id" : [ {
+          "type" : "org.symphonyoss.fin.security.id.ticker",
+          "value" : "cashmoney"
+        } ]
+      },
+      "c" : "B",
+      "b" : true,
+      "someUser" : {
+        "type" : "com.symphony.user.mention",
+        "version" : "1.0",
+        "id" : [ {
+          "type" : "com.symphony.user.userId",
+          "version" : "1.0",
+          "value" : "2678"
+        }, {
+          "type" : "com.symphony.user.displayName",
+          "version" : "1.0",
+          "value" : "bob"
+        }, {
+          "type" : "com.symphony.user.emailAddress",
+          "version" : "1.0",
+          "value" : "bob@example.com"
+        } ]
+      }
+    }
   },
   "header" : {
     "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.headerDetails",
@@ -30,7 +58,7 @@
     "tags" : [ {
       "type" : "org.symphonyoss.taxonomy.hashtag",
       "version" : "1.0",
-      "value" : "org-finos-symphony-toolkit-workflow-fixture-weirdobject"
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-weirdobjectcollection"
     } ]
   },
   "errors" : {

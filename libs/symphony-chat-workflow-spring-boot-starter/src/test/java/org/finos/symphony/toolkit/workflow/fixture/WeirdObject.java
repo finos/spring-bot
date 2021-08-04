@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
 @Work()
@@ -12,6 +13,8 @@ public class WeirdObject {
 	public enum Choice { A, B, C };
 	
 	HashTag theId = HashTag.createID();
+	
+	CashTag cashTag = new CashTag("cashmoney");
 	
 	Choice c;
 	
@@ -63,9 +66,17 @@ public class WeirdObject {
 		this.theId = theId;
 	}
 
+	public CashTag getCashTag() {
+		return cashTag;
+	}
+
+	public void setCashTag(CashTag cashTag) {
+		this.cashTag = cashTag;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(b, c, someUser, theId);
+		return Objects.hash(b, c, cashTag, someUser, theId);
 	}
 
 	@Override
@@ -77,9 +88,10 @@ public class WeirdObject {
 		if (getClass() != obj.getClass())
 			return false;
 		WeirdObject other = (WeirdObject) obj;
-		return b == other.b && c == other.c && Objects.equals(someUser, other.someUser)
-				&& Objects.equals(theId, other.theId);
+		return b == other.b && c == other.c && Objects.equals(cashTag, other.cashTag)
+				&& Objects.equals(someUser, other.someUser) && Objects.equals(theId, other.theId);
 	}
+	
 	
 	
 }

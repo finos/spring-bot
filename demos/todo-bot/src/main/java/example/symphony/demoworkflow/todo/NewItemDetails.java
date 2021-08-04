@@ -10,7 +10,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
  * @author rupnsur
  *
  */
-@Work(name = "New Item", instructions = "Add the new item")
+@Work
 public class NewItemDetails {
 	
 	String description;

@@ -13,7 +13,7 @@ public class HashTagConverter extends AbstractClassConverter {
 	@Override
 	public String apply(Type t, boolean editMode, Variable variable) {
 		if (editMode) {
-			return textField(variable.field("value"));
+			return textField(variable.field("value"), variable.getFormFieldName(), variable.getDisplayName());
 		} else {
 			return indent(variable.depth)+"<#if " + variable.getDataPath() +"??><hash "
 				+ attributeParam(variable, "tag", variable.getDataPath()+".value!''")

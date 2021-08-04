@@ -17,7 +17,6 @@
 	<description>Demo Bot Using Spring Boot Starter</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>example.symphony.demobot.DemoApplication</spring-boot.run.main-class>
 	</properties>
 

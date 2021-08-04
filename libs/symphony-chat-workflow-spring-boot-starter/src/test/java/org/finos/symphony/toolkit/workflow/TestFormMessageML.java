@@ -1,22 +1,20 @@
 package org.finos.symphony.toolkit.workflow;
 
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.fixture.WeirdObject;
-import org.finos.symphony.toolkit.workflow.fixture.WeirdObject.Choice;
-import org.finos.symphony.toolkit.workflow.fixture.WeirdObjectCollection;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestTemplatedObject;
+import org.finos.symphony.toolkit.workflow.fixture.WeirdObject;
+import org.finos.symphony.toolkit.workflow.fixture.WeirdObject.Choice;
+import org.finos.symphony.toolkit.workflow.fixture.WeirdObjectCollection;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
@@ -24,10 +22,8 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHan
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StreamUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -52,15 +48,6 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 		WorkResponse wr = createWorkAddSubmit(WorkMode.VIEW, to4);
 		testTemplating(wr, "abc123", "testFreemarkerView.ml", "testFreemarkerView.json");
 	}
-	
-	
-	private String loadML(String string) throws IOException {
-		return StreamUtils.copyToString(TestFormMessageML.class.getResourceAsStream(string), Charset.forName("UTF-8")).replace("\r\n", "\n");
-	}
-
-	private String loadJson(String string) throws IOException {
-		return StreamUtils.copyToString(TestFormMessageML.class.getResourceAsStream(string), Charset.forName("UTF-8"));
-	}
 
 	@Test
 	public void testNewWeirdFieldsEdit() throws Exception {
@@ -71,10 +58,15 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 
 	protected WorkResponse createWeirdFieldsWorkResponse(WorkMode wm) {
 		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
+		SymphonyUser someUser = new SymphonyUser(2678l, "bob", "bob@example.com");
 
 		WeirdObject to4 = new WeirdObject();
 		to4.setTheId(new HashTag("adf360dd-06fe-43a4-9a62-2c17fe2deefa"));
 		to4.setC(Choice.C);
+		to4.setSomeUser(someUser);
+		to4.setCashTag(new CashTag("rameses"));
+		to4.setB(true);
+		to4.setC(Choice.B);
 		
 		Button submit = new Button("submit", Type.ACTION, "GO");
 		
@@ -111,13 +103,13 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 
 	@Test
 	public void testNestedWeirdFieldsEdit() throws Exception {
-		WorkResponse wr = createWeirdFieldsWorkResponse(WorkMode.EDIT);
+		WorkResponse wr = createNestedWeirdFieldsWorkResponse(WorkMode.EDIT);
 		testTemplating(wr, "abc123", "testNestedWeirdFieldsEdit.ml", "testNestedWeirdFieldsEdit.json");
 	}
 	
 	@Test
 	public void testNestedWeirdFieldsView() throws Exception {
-		WorkResponse wr = createWeirdFieldsWorkResponse(WorkMode.VIEW);
+		WorkResponse wr = createNestedWeirdFieldsWorkResponse(WorkMode.VIEW);
 		testTemplating(wr, "abc123", "testNestedWeirdFieldsView.ml", "testNestedWeirdFieldsView.json");
 	}
 	

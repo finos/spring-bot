@@ -16,7 +16,6 @@
 	<description>Reminder Bot for Managing Reminders</description>
 
 	<properties>
-		<maven.deploy.skip>false</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.symphony.toolkit.tools.reminders.ReminderBotApp</spring-boot.run.main-class>
 	</properties>
 

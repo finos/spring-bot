@@ -35,6 +35,11 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
+	public CashTagConverter cashTagConverter() {
+		return new CashTagConverter();
+	}
+	
+	@Bean
 	public TimeConverter timeConverter() {
 		return new TimeConverter();
 	}

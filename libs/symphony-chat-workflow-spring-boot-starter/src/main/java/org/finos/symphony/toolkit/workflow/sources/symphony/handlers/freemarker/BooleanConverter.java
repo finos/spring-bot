@@ -20,7 +20,7 @@ public class BooleanConverter extends AbstractSimpleTypeConverter {
 	@Override
 	public String apply(Type t, boolean editMode, Variable variable) {
 		if (editMode) {
-			return formatErrorsAndIndent(variable) + 
+			return formatErrorsAndIndent(variable.getFormFieldName(), variable.depth) + 
 				"<checkbox " 
 				+ attribute(variable, "name", variable.getFormFieldName())
 				+ attributeParam(variable, "checked", variable.getDataPath()+"?string('true', 'false')") 
