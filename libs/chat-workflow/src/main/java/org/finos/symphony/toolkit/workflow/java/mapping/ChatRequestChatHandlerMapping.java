@@ -3,18 +3,15 @@ package org.finos.symphony.toolkit.workflow.java.mapping;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
+import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
-import org.finos.symphony.toolkit.workflow.annotations.Exposed.NoFormClass;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
@@ -28,13 +25,13 @@ import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
-public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMapping<Exposed> {
+public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandlerMapping<ChatRequest> {
 
 	private WorkflowResolversFactory wrf;
 	private ResponseHandlers rh;
 	private List<ResponseConverter> converters;
 	
-	public ExposedChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
+	public ChatRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
 		super();
 		this.wrf = wrf;
 		this.rh = rh;
@@ -42,17 +39,17 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 	}
 
 	@Override
-	protected Exposed getMappingForMethod(Method method, Class<?> handlerType) {
-		if (AnnotatedElementUtils.hasAnnotation(method, Exposed.class)) {
-			return AnnotatedElementUtils.getMergedAnnotation(method, Exposed.class);
+	protected ChatRequest getMappingForMethod(Method method, Class<?> handlerType) {
+		if (AnnotatedElementUtils.hasAnnotation(method, ChatRequest.class)) {
+			return AnnotatedElementUtils.getMergedAnnotation(method, ChatRequest.class);
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public List<ChatMapping<Exposed>> getHandlers(Action a) {
-		List<ChatMapping<Exposed>> out = getAllHandlers(a.getAddressable(), a.getUser()).stream()
+	public List<ChatMapping<ChatRequest>> getHandlers(Action a) {
+		List<ChatMapping<ChatRequest>> out = getAllHandlers(a.getAddressable(), a.getUser()).stream()
 				.filter(m -> m.getExecutor(a) != null)
 				.collect(Collectors.toList());
 
@@ -60,10 +57,10 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 	}
 	
 	@Override
-	public List<ChatMapping<Exposed>> getAllHandlers(Addressable a, User u) {
+	public List<ChatMapping<ChatRequest>> getAllHandlers(Addressable a, User u) {
 		mappingRegistry.acquireReadLock();
 
-		List<ChatMapping<Exposed>> out = mappingRegistry.getRegistrations().values().stream()
+		List<ChatMapping<ChatRequest>> out = mappingRegistry.getRegistrations().values().stream()
 				.filter(cm -> canBePerformedHere(cm, a, u))
 				.collect(Collectors.toList());
 
@@ -71,7 +68,7 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 		return out;
 	}
 
-	private boolean canBePerformedHere(MappingRegistration<Exposed> cm, Addressable a, User u) {
+	private boolean canBePerformedHere(MappingRegistration<ChatRequest> cm, Addressable a, User u) {
 		return true;
 		//TODO: write this
 	}
@@ -86,7 +83,7 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 		return out;
 	}
 
-	protected List<MessageMatcher> createMessageMatchers(Exposed mapping, List<WildcardContent> chatVariables) {
+	protected List<MessageMatcher> createMessageMatchers(ChatRequest mapping, List<WildcardContent> chatVariables) {
 		List<MessageMatcher> parts = Arrays.stream(mapping.value()).map(str -> createContentPattern(str, chatVariables))
 				.map(cp -> new MessageMatcher(cp)).collect(Collectors.toList());
 
@@ -123,7 +120,7 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 		return Message.of(items);
 	}
 
-	private List<WildcardContent> createWildcardContent(Exposed mapping, ChatHandlerMethod method) {
+	private List<WildcardContent> createWildcardContent(ChatRequest mapping, ChatHandlerMethod method) {
 		MethodParameter[] params = method.getMethodParameters();
 		return Arrays.stream(params).filter(m -> m.getParameterAnnotation(ChatVariable.class) != null).map(m -> {
 			ChatVariable cv = m.getParameterAnnotation(ChatVariable.class);
@@ -133,18 +130,15 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 	}
 
 	@Override
-	protected MappingRegistration<Exposed> createMappingRegistration(Exposed mapping, ChatHandlerMethod handlerMethod) {
+	protected MappingRegistration<ChatRequest> createMappingRegistration(ChatRequest mapping, ChatHandlerMethod handlerMethod) {
 	
 		List<WildcardContent> wildcards = createWildcardContent(mapping, handlerMethod);
 		List<MessageMatcher> matchers = createMessageMatchers(mapping, wildcards); 
 		
-		return new MappingRegistration<Exposed>(mapping, handlerMethod) {
+		return new MappingRegistration<ChatRequest>(mapping, handlerMethod) {
 			
 			@Override
 			public ChatHandlerExecutor getExecutor(Action a) {
-				if (a instanceof FormAction) {
-					return matchesFormAction((FormAction)a);
-				}
 				
 				if (a instanceof SimpleMessageAction) {
 					return matchesSimpleMessageAction((SimpleMessageAction)a);
@@ -154,12 +148,6 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 			}
 
 			private ChatHandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {
-				Exposed e = getMapping();
-				
-				if (!e.isMessage()) {
-					return null;
-				}
-				
 				return pathMatches(a.getWords(), a);
 			}
 
@@ -198,60 +186,9 @@ public class ExposedChatHandlerMapping extends AbstractSpringComponentHandlerMap
 				return bestMatch;
 			}
 
-			private ChatHandlerExecutor matchesFormAction(FormAction a) {
-				MappingRegistration<?> me = this;
-				Exposed e = getMapping();
-				
-				if (e.isButton() == WorkMode.NONE) {
-					return null;
-				}
-				
-				if (e.formClass() != NoFormClass.class) {
-					Class<?> expectedFormClass = e.formClass();
-					if (!expectedFormClass.isAssignableFrom(a.getFormData().getClass())) {
-						return null;
-					}
-				}
-				
-				long valueMatches = Arrays.stream(e.value())
-					.filter(v -> v.equals(a.getAction()))
-					.count();
-				
-				if (valueMatches == 0) {
-					return null;
-				}
-				
-				return new AbstractHandlerExecutor(wrf, rh, converters) {
-					
-					@Override
-					public Map<ChatVariable, Content> getReplacements() {
-						return Collections.emptyMap();
-					}
-					
-					@Override
-					public Action action() {
-						return a;
-					}
-
-
-					@Override
-					public ChatMapping<?> getOriginatingMapping() {
-						return me;
-					}
-				};
-			}
-
 			@Override
 			public boolean isButtonFor(Object o, WorkMode m) {
-				if (mapping.isButton() != m) {
-					return false;
-				}
-				
-				if (mapping.formClass() == NoFormClass.class) {
-					return true;
-				}
-				
-				return mapping.formClass().isAssignableFrom(o.getClass());
+				return false;
 			}
 		};
 	}

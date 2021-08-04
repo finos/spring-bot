@@ -8,15 +8,11 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 public class CommandDescription {
 	
 	private String description;
-	boolean button;
-	boolean message;
 	List<String> examples;
 	
-	public CommandDescription(String description, boolean button, boolean message, List<String> examples) {
+	public CommandDescription(String description, List<String> examples) {
 		super();
 		this.description = description;
-		this.button = button;
-		this.message = message;
 		this.examples = examples;
 	}
 
@@ -29,18 +25,6 @@ public class CommandDescription {
 	}
 	public void setDescription(String description) {
 		this.description = description;
-	}
-	public boolean isButton() {
-		return button;
-	}
-	public void setButton(boolean button) {
-		this.button = button;
-	}
-	public boolean isMessage() {
-		return message;
-	}
-	public void setMessage(boolean message) {
-		this.message = message;
 	}
 	public List<String> getExamples() {
 		return examples;

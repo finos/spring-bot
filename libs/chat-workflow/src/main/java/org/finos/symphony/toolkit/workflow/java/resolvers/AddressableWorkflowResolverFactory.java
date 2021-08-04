@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.java.resolvers;
 
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.workflow.annotations.Exposed;
+import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -10,7 +10,7 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.core.MethodParameter;
 
 /** 
- * Resolves subclasses of {@link Addressable} when used as parameters of {@link Exposed}
+ * Resolves subclasses of {@link Addressable} when used as parameters of {@link ChatRequest}
  * methods.
  * 
  * @author rob@kite9.com

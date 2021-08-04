@@ -27,21 +27,18 @@ import java.util.stream.IntStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.core.BridgeMethodResolver;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.core.annotation.SynthesizingMethodParameter;
-import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Encapsulates information about a handler method consisting of a
@@ -79,12 +76,6 @@ public class ChatHandlerMethod {
 	private final MethodParameter[] parameters;
 
 	@Nullable
-	private HttpStatus responseStatus;
-
-	@Nullable
-	private String responseStatusReason;
-
-	@Nullable
 	private ChatHandlerMethod resolvedFromHandlerMethod;
 
 	@Nullable
@@ -105,7 +96,6 @@ public class ChatHandlerMethod {
 		this.method = method;
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
 		this.parameters = initMethodParameters();
-		evaluateResponseStatus();
 		this.description = initDescription(this.beanType, this.method);
 	}
 
@@ -122,7 +112,6 @@ public class ChatHandlerMethod {
 		this.method = bean.getClass().getMethod(methodName, parameterTypes);
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(this.method);
 		this.parameters = initMethodParameters();
-		evaluateResponseStatus();
 		this.description = initDescription(this.beanType, this.method);
 	}
 
@@ -145,7 +134,6 @@ public class ChatHandlerMethod {
 		this.method = method;
 		this.bridgedMethod = BridgeMethodResolver.findBridgedMethod(method);
 		this.parameters = initMethodParameters();
-		evaluateResponseStatus();
 		this.description = initDescription(this.beanType, this.method);
 	}
 
@@ -160,8 +148,6 @@ public class ChatHandlerMethod {
 		this.method = handlerMethod.method;
 		this.bridgedMethod = handlerMethod.bridgedMethod;
 		this.parameters = handlerMethod.parameters;
-		this.responseStatus = handlerMethod.responseStatus;
-		this.responseStatusReason = handlerMethod.responseStatusReason;
 		this.description = handlerMethod.description;
 		this.resolvedFromHandlerMethod = handlerMethod.resolvedFromHandlerMethod;
 	}
@@ -178,8 +164,6 @@ public class ChatHandlerMethod {
 		this.method = handlerMethod.method;
 		this.bridgedMethod = handlerMethod.bridgedMethod;
 		this.parameters = handlerMethod.parameters;
-		this.responseStatus = handlerMethod.responseStatus;
-		this.responseStatusReason = handlerMethod.responseStatusReason;
 		this.resolvedFromHandlerMethod = handlerMethod;
 		this.description = handlerMethod.description;
 	}
@@ -191,17 +175,6 @@ public class ChatHandlerMethod {
 			result[i] = new HandlerMethodParameter(i);
 		}
 		return result;
-	}
-
-	private void evaluateResponseStatus() {
-		ResponseStatus annotation = getMethodAnnotation(ResponseStatus.class);
-		if (annotation == null) {
-			annotation = AnnotatedElementUtils.findMergedAnnotation(getBeanType(), ResponseStatus.class);
-		}
-		if (annotation != null) {
-			this.responseStatus = annotation.code();
-			this.responseStatusReason = annotation.reason();
-		}
 	}
 
 	private static String initDescription(Class<?> beanType, Method method) {
@@ -249,26 +222,6 @@ public class ChatHandlerMethod {
 	 */
 	public MethodParameter[] getMethodParameters() {
 		return this.parameters;
-	}
-
-	/**
-	 * Return the specified response status, if any.
-	 * @since 4.3.8
-	 * @see ResponseStatus#code()
-	 */
-	@Nullable
-	protected HttpStatus getResponseStatus() {
-		return this.responseStatus;
-	}
-
-	/**
-	 * Return the associated response status reason, if any.
-	 * @since 4.3.8
-	 * @see ResponseStatus#reason()
-	 */
-	@Nullable
-	protected String getResponseStatusReason() {
-		return this.responseStatusReason;
 	}
 
 	/**

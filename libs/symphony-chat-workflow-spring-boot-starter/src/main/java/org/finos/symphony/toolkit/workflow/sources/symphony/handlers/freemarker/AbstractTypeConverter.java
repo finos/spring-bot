@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.springframework.util.StringUtils;
+
 public abstract class AbstractTypeConverter implements TypeConverter {
 	
 	public static final int MED_PRIORITY = 40;
@@ -32,9 +34,13 @@ public abstract class AbstractTypeConverter implements TypeConverter {
 	}
 	
 	public static String formatErrorsAndIndent(String formField, int indent) {
-		return indent(indent) 
+		if (!StringUtils.hasText(formField)) {
+			return indent(indent);
+		} else {
+			return indent(indent) 
 				+ "<span class=\"tempo-text-color--red\">${entity.errors.contents['"+formField+"']!''}</span>"
 				+ indent(indent);
+		}
 	}
 
 	public static String attributeParam(Variable v, String name, String value) {

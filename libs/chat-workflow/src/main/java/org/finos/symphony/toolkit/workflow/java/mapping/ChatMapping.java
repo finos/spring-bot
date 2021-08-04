@@ -12,4 +12,6 @@ public interface ChatMapping<T> {
 	ChatHandlerExecutor getExecutor(Action a);
 
 	boolean isButtonFor(Object o, WorkMode m);
+	
+	String getUniqueName();
 }

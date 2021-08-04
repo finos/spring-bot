@@ -260,6 +260,8 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		private final T mapping;
 
 		private final ChatHandlerMethod handlerMethod;
+		
+		private final String name;
 
 		public MappingRegistration(
 				T mapping, ChatHandlerMethod handlerMethod) {
@@ -268,6 +270,7 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 			Assert.notNull(handlerMethod, "HandlerMethod must not be null");
 			this.mapping = mapping;
 			this.handlerMethod = handlerMethod;
+			this.name = handlerMethod.getBeanType().getName() + "-" + handlerMethod.getMethod().getName();
 		}
 
 		@Override
@@ -279,16 +282,14 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		public ChatHandlerMethod getHandlerMethod() {
 			return this.handlerMethod;
 		}
-	}
-	
-	abstract static class ButtonMappingRegistration<T> extends MappingRegistration<T> implements ButtonMapping {
 
-		public ButtonMappingRegistration(T mapping, ChatHandlerMethod handlerMethod) {
-			super(mapping, handlerMethod);
+		@Override
+		public String getUniqueName() {
+			return name;
 		}
 		
+		
 	}
-
 
 	protected abstract MappingRegistration<T> createMappingRegistration(T mapping, ChatHandlerMethod handlerMethod);
 
