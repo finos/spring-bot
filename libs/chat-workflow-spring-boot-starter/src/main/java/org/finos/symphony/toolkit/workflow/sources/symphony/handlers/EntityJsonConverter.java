@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.workflow.AbstractNeedsWorkflow;
 import org.finos.symphony.toolkit.workflow.Workflow;
@@ -54,6 +55,7 @@ public class EntityJsonConverter extends AbstractNeedsWorkflow {
 		extendedClassSpace.add(RoomList.class);
 		extendedClassSpace.add(ErrorMap.class);
 		extendedClassSpace.add(HeaderDetails.class);
+		extendedClassSpace.add(LogMessage.class);
 		
 		extendedClassSpace.addAll(wf.getDataTypes());
 		VersionSpace[] vs = extendedClassSpace.stream().map(c -> new VersionSpace(c.getCanonicalName(), "1.0")).toArray(s -> new VersionSpace[s]);
