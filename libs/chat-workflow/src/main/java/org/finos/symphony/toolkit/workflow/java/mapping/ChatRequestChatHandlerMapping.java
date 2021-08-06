@@ -93,14 +93,16 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 		return parts;
 	}
 
-	private static WildcardContent ANY_CONTENT = new WildcardContent(null, Content.class, Arity.ONE);
+	private static WildcardContent UNBOUND_WILDCARD = new WildcardContent(null, Content.class, Arity.ONE);
 
 	private Content createContentPattern(String str, List<WildcardContent> chatVariables) {
 		List<Content> items = Arrays.stream(str.split("\\s")).map(word -> {
 			if (word.startsWith("{") && word.endsWith("}")) {
 				String pathVariableName = word.substring(1, word.length() - 1);
 				WildcardContent out = chatVariables.stream()
-						.filter(cv -> cv.chatVariable.name().equals(pathVariableName)).findFirst().orElse(ANY_CONTENT);
+						.filter(cv -> cv.chatVariable.name().equals(pathVariableName))
+						.findFirst()
+						.orElse(UNBOUND_WILDCARD);
 				return out;
 			} else {
 				String trimmedWord = word.trim();

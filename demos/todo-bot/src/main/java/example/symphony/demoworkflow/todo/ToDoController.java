@@ -33,6 +33,7 @@ public class ToDoController {
 	}
 	
 	@ChatRequest(value="add", description = "Add an item")
+	@ChatResponseBody(workMode = WorkMode.EDIT)
 	public NewItemDetails add1(User author) {
 		NewItemDetails out = new NewItemDetails();
 		out.assignTo = author;

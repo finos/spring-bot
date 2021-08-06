@@ -1,5 +1,8 @@
 package org.finos.symphony.toolkit.workflow.annotations;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Add this annotation on controller methods that return an object 
  * to indicate whether the object should be returned in edit or view mode,
@@ -8,10 +11,11 @@ package org.finos.symphony.toolkit.workflow.annotations;
  * @author rob@kite9.com
  *
  */
+@Retention(RetentionPolicy.RUNTIME)
 public @interface ChatResponseBody {
 	
 	/**
-	 * When you annotate a controller method with 
+	 * Override this to allow
 	 */
 	WorkMode workMode() default WorkMode.VIEW;
 	

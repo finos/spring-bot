@@ -109,15 +109,10 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	}
 
 	protected void sendResponse(String template, Object attachment, String data, Addressable address) {
-		try {
-			if (address instanceof SymphonyAddressable) {
-				String streamId = getStreamFor((SymphonyAddressable) address);
-				messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
-			}
-		} catch (Exception e) {
-			LOG.error("Couldn't send message \n{} \n{}: ", template, data);
-			LOG.error("Error was: ", e);
-		} 
+		if (address instanceof SymphonyAddressable) {
+			String streamId = getStreamFor((SymphonyAddressable) address);
+			messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
+		}
 	}
 
 	protected String getDefaultTemplate(Response r) {
