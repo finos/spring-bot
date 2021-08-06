@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
+import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
@@ -24,6 +25,32 @@ import org.springframework.core.MethodParameter;
 public class MessagePartWorkflowResolverFactory implements WorkflowResolverFactory {
 	
 	
+	private final class ContentWorkflowResolver implements WorkflowResolver {
+		private final Map<Class<?>, Deque<Object>> parameterBuckets;
+
+		private ContentWorkflowResolver(Map<Class<?>, Deque<Object>> parameterBuckets) {
+			this.parameterBuckets = parameterBuckets;
+		}
+
+		@Override
+		public Optional<Object> resolve(MethodParameter mp) {
+			Type t = mp.getGenericParameterType();
+			if (parameterBuckets.containsKey(t)) {
+				return Optional.of(parameterBuckets.get(t).pop());
+			} else {
+				return Optional.empty();
+			}
+		}
+
+		@Override
+		public boolean canResolve(MethodParameter mp) {
+			Type t = mp.getGenericParameterType();
+			ChatVariable chatVariable = mp.getParameterAnnotation(ChatVariable.class);
+			return (parameterBuckets.containsKey(t)) && (chatVariable == null);
+		}
+	}
+
+
 	private List<Class<? extends Content>> contentClasses;
 	
 
@@ -44,42 +71,10 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 		Action a = che.action();
 		
 		if (a instanceof SimpleMessageAction) {
-		
 			final Map<Class<?>, Deque<Object>> parameterBuckets = setupParameterBuckets(((SimpleMessageAction) a).getWords());
-			
-			return new WorkflowResolver() {
-				
-				
-				
-				@Override
-				public Optional<Object> resolve(MethodParameter mp) {
-					Type t = mp.getGenericParameterType();
-					if (parameterBuckets.containsKey(t)) {
-						return Optional.of(parameterBuckets.get(t).pop());
-					} else {
-						return Optional.empty();
-					}
-				}
-				
-				@Override
-				public boolean canResolve(MethodParameter mp) {
-					Type t = mp.getGenericParameterType();
-					return parameterBuckets.containsKey(t);
-				}
-			};
+			return new ContentWorkflowResolver(parameterBuckets);
 		} else {
-			return new WorkflowResolver() {
-				
-				@Override
-				public Optional<Object> resolve(MethodParameter mp) {
-					return Optional.empty();
-				}
-				
-				@Override
-				public boolean canResolve(MethodParameter mp) {
-					return false;
-				}
-			};
+			return new NullWorkflowResolver();
 		}
 	}
 

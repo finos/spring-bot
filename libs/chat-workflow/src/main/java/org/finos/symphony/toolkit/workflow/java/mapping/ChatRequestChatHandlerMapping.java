@@ -1,11 +1,14 @@
 package org.finos.symphony.toolkit.workflow.java.mapping;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
@@ -120,13 +123,35 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 		return Message.of(items);
 	}
 
-	private List<WildcardContent> createWildcardContent(ChatRequest mapping, ChatHandlerMethod method) {
+	protected List<WildcardContent> createWildcardContent(ChatRequest mapping, ChatHandlerMethod method) {
 		MethodParameter[] params = method.getMethodParameters();
 		return Arrays.stream(params).filter(m -> m.getParameterAnnotation(ChatVariable.class) != null).map(m -> {
 			ChatVariable cv = m.getParameterAnnotation(ChatVariable.class);
 			Type t = m.getGenericParameterType();
-			return new WildcardContent(cv, t, Arity.ONE);
+			
+			if ((t instanceof Class) && (Content.class.isAssignableFrom((Class<?>) t))) {
+				return new WildcardContent(cv, getContentClassFromType(t), Arity.ONE);
+			} else if (t.getTypeName().startsWith(Optional.class.getName())) {
+				ParameterizedType pt = (ParameterizedType) t;
+				return new WildcardContent(cv, getContentClassFromType(pt.getActualTypeArguments()[0]), Arity.OPTIONAL);
+			} else if ((t.getTypeName().startsWith(List.class.getName())) ||
+					(t.getTypeName().startsWith(Collection.class.getName()))) {
+				ParameterizedType pt = (ParameterizedType) t;
+				return new WildcardContent(cv, getContentClassFromType(pt.getActualTypeArguments()[0]), Arity.LIST);				
+			}
+			
+			throw new UnsupportedOperationException("Can't set up wildcard for type: "+t.getTypeName());
+			
 		}).collect(Collectors.toList());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Class<? extends Content> getContentClassFromType(Type t) {
+		if ((t instanceof Class) && (Content.class.isAssignableFrom((Class<?>) t))) {
+			return (Class<? extends Content>) t;
+		} else {
+			throw new UnsupportedOperationException("ChatVariables can only be used for Content subtypes: "+t.getTypeName());
+		}
 	}
 
 	@Override
@@ -156,14 +181,14 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 				ChatHandlerExecutor bestMatch = null;
 				
 				for (MessageMatcher messageMatcher : matchers) {
-					Map<ChatVariable, Content> map = new HashMap<>();
+					Map<ChatVariable, Object> map = new HashMap<>();
 					
 					if (messageMatcher.consume(words, map)) {
 						if ((bestMatch == null) || (bestMatch.getReplacements().size() < map.size())) {
 							bestMatch = new AbstractHandlerExecutor(wrf, rh, converters) {
 	
 								@Override
-								public Map<ChatVariable, Content> getReplacements() {
+								public Map<ChatVariable, Object> getReplacements() {
 									return map;
 								}
 	

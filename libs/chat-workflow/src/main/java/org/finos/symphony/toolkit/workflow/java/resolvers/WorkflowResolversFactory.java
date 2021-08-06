@@ -41,25 +41,15 @@ public class WorkflowResolversFactory implements ApplicationContextAware {
 			@Override
 			public Optional<Object> resolve(MethodParameter mp) {
 				for (WorkflowResolver workflowResolver : resolvers) {
-					Optional<Object> oo = workflowResolver.resolve(mp);
-					if (oo.isPresent()) {
-						return oo;
+					if (workflowResolver.canResolve(mp)) {
+						Optional<Object> oo = workflowResolver.resolve(mp);
+						if (oo.isPresent()) {
+							return oo;
+						}
 					}
 				}
 				
 				return Optional.empty();
-			}
-
-			@Override
-			public boolean canResolve(MethodParameter t) {
-				for (WorkflowResolver workflowResolver : resolvers) {
-					boolean b = workflowResolver.canResolve(t);
-					if (b) {
-						return true;
-					}
-				}
-				
-				return false;
 			}
 
 		};

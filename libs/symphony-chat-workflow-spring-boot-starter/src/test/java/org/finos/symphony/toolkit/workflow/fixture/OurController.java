@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow.fixture;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
@@ -153,6 +154,12 @@ public class OurController {
 	@ChatRequest(value="throwsError")
 	public TestObject throwsError() {
 		throw new RuntimeException("Error123");
+	}
+	
+	@ChatRequest(value="optionals {thing} {user} {lastword}")
+	public void doList(@ChatVariable("thing") List<Word> word, @ChatVariable("user") Optional<User> u, @ChatVariable(value="lastword", required = false) Word w) {
+		lastArguments = Arrays.asList(word, u, w);
+		lastMethod = "doList";
 	}
 
 }

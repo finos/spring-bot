@@ -4,11 +4,10 @@ import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
-import org.finos.symphony.toolkit.workflow.content.Content;
 
 public interface ChatHandlerExecutor {
 
-	public Map<ChatVariable, Content> getReplacements();
+	public Map<ChatVariable, Object> getReplacements();
 		
 	public Action action();
 	

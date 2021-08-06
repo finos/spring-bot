@@ -16,41 +16,32 @@ import org.springframework.core.MethodParameter;
  */
 public class FormDataArgumentWorkflowResolverFactory implements WorkflowResolverFactory {
 
+	private final class FormDataWorkflowResolver implements WorkflowResolver {
+		private final Action originatingAction;
+
+		private FormDataWorkflowResolver(Action originatingAction) {
+			this.originatingAction = originatingAction;
+		}
+
+		@Override
+		public boolean canResolve(MethodParameter mp) {
+			Type t = mp.getGenericParameterType();
+			return ((Class<?>) t).isAssignableFrom(((FormAction) originatingAction).getFormData().getClass());
+		}
+
+		@Override
+		public Optional<Object> resolve(MethodParameter mp) {
+			return Optional.of(((FormAction) originatingAction).getFormData());
+		}
+	}
+
 	@Override
 	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
 		Action originatingAction = che.action();
 		if ((originatingAction instanceof FormAction) && (((FormAction) originatingAction).getFormData() != null)) {
-			
-			return new WorkflowResolver() {
-
-				@Override
-				public boolean canResolve(MethodParameter mp) {
-					Type t = mp.getGenericParameterType();
-					return ((Class<?>) t).isAssignableFrom(((FormAction) originatingAction).getFormData().getClass());
-				}
-
-				@Override
-				public Optional<Object> resolve(MethodParameter mp) {
-					if (canResolve(mp)) {
-						return Optional.of(((FormAction) originatingAction).getFormData());
-					} else {
-						return Optional.empty();
-					}
-				}
-			};
+			return new FormDataWorkflowResolver(originatingAction);
 		} else {
-			return new WorkflowResolver() {
-
-				@Override
-				public boolean canResolve(MethodParameter c) {
-					return false;
-				}
-
-				@Override
-				public Optional<Object> resolve(MethodParameter mp) {
-					return Optional.empty();
-				}
-			};
+			return new NullWorkflowResolver();
 		}
 	}
 
