@@ -1,7 +1,5 @@
 package org.finos.symphony.toolkit.workflow.java.mapping;
 
-import java.lang.reflect.Type;
-
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 
@@ -15,7 +13,7 @@ public class WildcardContent implements Content {
 	
 	enum Arity { ONE, OPTIONAL, LIST }
 	
-	public WildcardContent(ChatVariable chatVariable, Type expected, Arity a) {
+	public WildcardContent(ChatVariable chatVariable, Class<? extends Content> expected, Arity a) {
 		super();
 		this.chatVariable = chatVariable;
 		this.expected = expected;
@@ -23,7 +21,7 @@ public class WildcardContent implements Content {
 	}
 
 	ChatVariable chatVariable;
-	Type expected;
+	Class<? extends Content> expected;
 	Arity arity;
 
 	@Override
@@ -39,7 +37,7 @@ public class WildcardContent implements Content {
 
 	@Override
 	public String toString() {
-		return "WildcardContent ["+chatVariable.name()+", "+expected.getTypeName()+"]";
+		return "WildcardContent ["+chatVariable.name()+", "+expected.getTypeName()+", "+arity+"]";
 	}
 
 	

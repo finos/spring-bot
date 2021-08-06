@@ -18,35 +18,42 @@ import org.springframework.core.MethodParameter;
  */
 public class AddressableWorkflowResolverFactory implements WorkflowResolverFactory {
 	
+	private final class AddressableWorkflowResolver implements WorkflowResolver {
+		private final ChatHandlerExecutor che;
+
+		private AddressableWorkflowResolver(ChatHandlerExecutor che) {
+			this.che = che;
+		}
+
+		@Override
+		public Optional<Object> resolve(MethodParameter mp) {
+			Class<?> cl = mp.getParameterType();
+			if (Chat.class.isAssignableFrom(cl)) {
+				Addressable a = che.action().getAddressable();
+				if (a instanceof Chat) {
+					return Optional.of((Chat) a);
+				}
+			} else if (User.class.isAssignableFrom(cl)) {
+				return Optional.of(che.action().getUser());
+			} else if (Addressable.class.isAssignableFrom(cl)) {
+				Addressable a = che.action().getAddressable();
+				return Optional.of(a);
+			}
+			
+			return Optional.empty();
+		}
+
+		@Override
+		public boolean canResolve(MethodParameter mp) {
+			Class<?> cl = mp.getParameterType();
+			return (Addressable.class.isAssignableFrom(cl));
+		}
+	}
+
 	@Override
 	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
 		
-		return new WorkflowResolver() {
-			
-			@Override
-			public Optional<Object> resolve(MethodParameter mp) {
-				Class<?> cl = mp.getParameterType();
-				if (Chat.class.isAssignableFrom(cl)) {
-					Addressable a = che.action().getAddressable();
-					if (a instanceof Chat) {
-						return Optional.of((Chat) a);
-					}
-				} else if (User.class.isAssignableFrom(cl)) {
-					return Optional.of(che.action().getUser());
-				} else if (Addressable.class.isAssignableFrom(cl)) {
-					Addressable a = che.action().getAddressable();
-					return Optional.of(a);
-				}
-				
-				return Optional.empty();
-			}
-			
-			@Override
-			public boolean canResolve(MethodParameter mp) {
-				Class<?> cl = mp.getParameterType();
-				return (Addressable.class.isAssignableFrom(cl));
-			}
-		};
+		return new AddressableWorkflowResolver(che);
 	}
 
 	@Override

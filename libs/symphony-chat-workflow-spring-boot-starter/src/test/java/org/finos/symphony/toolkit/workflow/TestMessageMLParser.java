@@ -80,7 +80,7 @@ public class TestMessageMLParser extends AbstractMockSymphonyTest {
 	public void testMessageMatcherExact() throws Exception {
 		Content c = smp.parse("hello some words");
 		MessageMatcher m1 = new MessageMatcher(c);
-		Assertions.assertTrue(m1.consume(c, new HashMap<ChatVariable, Content>()));
+		Assertions.assertTrue(m1.consume(c, new HashMap<ChatVariable, Object>()));
 	}
 	
 	@Test
@@ -88,10 +88,10 @@ public class TestMessageMLParser extends AbstractMockSymphonyTest {
 		Content pattern = smp.parse("hello some words");
 		Content c2 = smp.parse("hello some words and some more words");
 		MessageMatcher m1 = new MessageMatcher(pattern);
-		Assertions.assertTrue(m1.consume(c2, new HashMap<ChatVariable, Content>()));
+		Assertions.assertTrue(m1.consume(c2, new HashMap<ChatVariable, Object>()));
 		
 		Content c3 = smp.parse("hello some different words");
-		Assertions.assertFalse(m1.consume(c3, new HashMap<ChatVariable, Content>()));
+		Assertions.assertFalse(m1.consume(c3, new HashMap<ChatVariable, Object>()));
 	}
 	
 	@Test

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.Action;
@@ -74,7 +75,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(14, hm.getHandlerMethods().size());
+		Assertions.assertEquals(15, hm.getHandlerMethods().size());
 		getMappingsFor("list");
 	}
 
@@ -205,7 +206,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		System.out.println(data.getValue());
 		
 		
-		Assertions.assertEquals(13, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
+		Assertions.assertEquals(14, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
 		
 		Assertions.assertTrue(data.getValue().contains(" {\n"
 				+ "      \"type\" : \"org.finos.symphony.toolkit.workflow.help.commandDescription\",\n"
@@ -368,6 +369,37 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Mockito.clearInvocations();
 	}
 	
-
+	@Test
+	public void testOptionalPresent() throws Exception {
+		execute("optionals zib zab zob <span class=\"entity\" data-entity-id=\"1\">@gaurav</span> pingu");
+		Assertions.assertEquals("doList", oc.lastMethod);
+		Assertions.assertEquals(3,  oc.lastArguments.size());
+		
+		Object firstArgument = oc.lastArguments.get(1);
+		Assertions.assertEquals("gaurav", ((Optional<User>)firstArgument).get().getName());
+		
+		Object secondArgument = oc.lastArguments.get(0);
+		Assertions.assertEquals(secondArgument, Arrays.asList(Word.of("zib"), Word.of("zab"), Word.of("zob")));
+		
+		Object thirdArgument = oc.lastArguments.get(2);
+		Assertions.assertEquals(Word.of("pingu"), thirdArgument);
+	}
+	
+	@Test
+	public void testOptionalMissing() throws Exception {
+		execute("optionals");
+		Assertions.assertEquals("doList", oc.lastMethod);
+		Assertions.assertEquals(3,  oc.lastArguments.size());
+		Object firstArgument = oc.lastArguments.get(0);
+		Assertions.assertTrue(firstArgument instanceof List);
+		Assertions.assertEquals(0, ((List<?>)firstArgument).size());
+		
+		Object secondArgument = oc.lastArguments.get(1);
+		Assertions.assertTrue(secondArgument instanceof Optional);
+		Assertions.assertTrue(((Optional<?>)secondArgument).isEmpty());
+		
+		Assertions.assertNull(oc.lastArguments.get(2));
+		
+	}
 
 }

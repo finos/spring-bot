@@ -10,6 +10,41 @@ import org.springframework.core.MethodParameter;
 
 public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFactory {
 	
+	private final class MessageHistoryWorkflowResolver implements WorkflowResolver {
+		private final ChatHandlerExecutor che;
+
+		private MessageHistoryWorkflowResolver(ChatHandlerExecutor che) {
+			this.che = che;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public Optional<Object> resolve(MethodParameter mp) {
+			Type t = mp.getGenericParameterType();
+			
+			if (t instanceof Class<?>) {
+				return (Optional<Object>) hist.getLastFromHistory((Class<?>) t, che.action().getAddressable());
+			}
+			
+			return Optional.empty();
+			
+		}
+
+		@Override
+		public boolean canResolve(MethodParameter mo) {
+			Type t = mo.getGenericParameterType();
+			
+			if (t instanceof Class<?>) {
+				Work w = ((Class<?>)t).getAnnotation(Work.class);
+				if (w != null) {
+					return true;
+				}					
+			}
+			
+			return false;
+		}
+	}
+
 	History hist;
 	
 	public MessageHistoryWorkflowResolverFactory(History hist) {
@@ -23,35 +58,7 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 
 	@Override
 	public WorkflowResolver createResolver(ChatHandlerExecutor che) {
-		return new WorkflowResolver() {
-			
-			@SuppressWarnings("unchecked")
-			@Override
-			public Optional<Object> resolve(MethodParameter mp) {
-				Type t = mp.getGenericParameterType();
-				
-				if (t instanceof Class<?>) {
-					return (Optional<Object>) hist.getLastFromHistory((Class<?>) t, che.action().getAddressable());
-				}
-				
-				return Optional.empty();
-				
-			}
-			
-			@Override
-			public boolean canResolve(MethodParameter mo) {
-				Type t = mo.getGenericParameterType();
-				
-				if (t instanceof Class<?>) {
-					Work w = ((Class<?>)t).getAnnotation(Work.class);
-					if (w != null) {
-						return true;
-					}					
-				}
-				
-				return false;
-			}
-		};
+		return new MessageHistoryWorkflowResolver(che);
 	}
 
 }

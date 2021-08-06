@@ -39,6 +39,10 @@ public class WorkResponseConverter implements ResponseConverter {
 
 	@Override
 	public boolean canConvert(Object in) {
+		if (in == null) {
+			return false;
+		}
+		
 		Class<?> c = in.getClass();
 		Work work = c.getAnnotation(Work.class);
 		if (work != null) {

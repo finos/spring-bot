@@ -12,8 +12,6 @@ import org.springframework.core.MethodParameter;
  *
  */
 public interface WorkflowResolvers {
-
-	public boolean canResolve(MethodParameter t);
 	
 	public Optional<Object> resolve(MethodParameter mp);
 	

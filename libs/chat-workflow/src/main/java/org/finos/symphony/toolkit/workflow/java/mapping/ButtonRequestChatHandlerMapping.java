@@ -12,7 +12,6 @@ import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
@@ -108,7 +107,7 @@ public class ButtonRequestChatHandlerMapping extends AbstractSpringComponentHand
 				return new AbstractHandlerExecutor(wrf, rh, converters) {
 					
 					@Override
-					public Map<ChatVariable, Content> getReplacements() {
+					public Map<ChatVariable, Object> getReplacements() {
 						return Collections.emptyMap();
 					}
 					
