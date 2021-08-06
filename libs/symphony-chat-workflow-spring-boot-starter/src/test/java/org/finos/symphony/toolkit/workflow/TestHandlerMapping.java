@@ -41,6 +41,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
@@ -72,6 +73,9 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	
 	@Autowired
 	MessageMLParser smp;
+	
+	@Autowired
+	ErrorController ec;
 
 	@Test
 	public void checkMappings() throws Exception {

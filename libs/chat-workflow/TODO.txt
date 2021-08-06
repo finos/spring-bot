@@ -1,4 +1,3 @@
-8.  Optional/List/* parameters
 9.  Security on ExposedHandlerMapping (certain actions for certain users)
 15.  Rooms - we use a drop-down for this, how will we populate it? (Write another response handler)
 16. Controller for Editing - think about this

@@ -37,7 +37,7 @@ public class WildcardContent implements Content {
 
 	@Override
 	public String toString() {
-		return "WildcardContent ["+chatVariable.name()+", "+expected.getTypeName()+", "+arity+"]";
+		return "WildcardContent ["+chatVariable+", "+expected.getTypeName()+", "+arity+"]";
 	}
 
 	

@@ -9,8 +9,13 @@ import java.util.Optional;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.OrderedContent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MessageMatcher {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(MessageMatcher.class);
+
 	
 	private Content pattern;
 	
@@ -42,7 +47,7 @@ public class MessageMatcher {
 			}
 			
 			if (message.startsWith(first)) {
-				System.out.println("Matched "+first + " with start of "+pattern);
+				LOG.debug("Matched {} with start of {}", first, pattern);
 				
 				if (first instanceof WildcardContent) {
 					WildcardContent wc = (WildcardContent) first;
@@ -68,7 +73,8 @@ public class MessageMatcher {
 			}
 		}
 		
-		System.out.println("No Match "+message + " with start of "+pattern);
+		
+		LOG.debug("No Match {} with start of {}", message, pattern);
 		return false;
 	}
 	
