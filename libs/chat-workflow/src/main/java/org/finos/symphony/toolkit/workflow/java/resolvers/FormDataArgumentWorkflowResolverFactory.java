@@ -1,12 +1,10 @@
 package org.finos.symphony.toolkit.workflow.java.resolvers;
 
-import java.lang.reflect.Type;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
-import org.springframework.core.MethodParameter;
 
 /**
  * Handles cases when the argument to the workflow is the contents of the form that the user just filled in.
@@ -16,7 +14,7 @@ import org.springframework.core.MethodParameter;
  */
 public class FormDataArgumentWorkflowResolverFactory implements WorkflowResolverFactory {
 
-	private final class FormDataWorkflowResolver implements WorkflowResolver {
+	private final class FormDataWorkflowResolver extends AbstractClassWorkflowResolver {
 		private final Action originatingAction;
 
 		private FormDataWorkflowResolver(Action originatingAction) {
@@ -24,13 +22,12 @@ public class FormDataArgumentWorkflowResolverFactory implements WorkflowResolver
 		}
 
 		@Override
-		public boolean canResolve(MethodParameter mp) {
-			Type t = mp.getGenericParameterType();
-			return ((Class<?>) t).isAssignableFrom(((FormAction) originatingAction).getFormData().getClass());
+		public boolean canResolve(Class<?> t) {
+			return t.isAssignableFrom(((FormAction) originatingAction).getFormData().getClass());
 		}
 
 		@Override
-		public Optional<Object> resolve(MethodParameter mp) {
+		public Optional<Object> resolve(Class<?> t) {
 			return Optional.of(((FormAction) originatingAction).getFormData());
 		}
 	}

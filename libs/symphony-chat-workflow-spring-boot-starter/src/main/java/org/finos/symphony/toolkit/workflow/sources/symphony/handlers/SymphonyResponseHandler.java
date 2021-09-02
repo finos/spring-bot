@@ -21,6 +21,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.ErrorHandler;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
@@ -44,6 +45,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	protected AttachmentHandler attachmentHandler;
 	protected ResourceLoader rl;
 	protected ApplicationContext ctx;
+	protected ErrorHandler eh;
 	
 	public SymphonyResponseHandler(
 			MessagesApi messagesApi,
@@ -63,6 +65,12 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 		this.rl = rl;
 	}
 
+	protected void initErrorHandler() {
+		if (eh == null) {
+			eh = ctx.getBean(ErrorHandler.class);
+		}
+	}
+	
 
 	@Override
 	public void accept(Response t) {
@@ -109,9 +117,14 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	}
 
 	protected void sendResponse(String template, Object attachment, String data, Addressable address) {
-		if (address instanceof SymphonyAddressable) {
-			String streamId = getStreamFor((SymphonyAddressable) address);
-			messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
+		try {
+			if (address instanceof SymphonyAddressable) {
+				String streamId = getStreamFor((SymphonyAddressable) address);
+				messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
+			}
+		} catch (Exception e) {
+			initErrorHandler();
+			eh.handleError(e);
 		}
 	}
 

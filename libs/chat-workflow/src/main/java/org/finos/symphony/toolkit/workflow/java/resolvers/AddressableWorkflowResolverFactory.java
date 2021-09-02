@@ -7,7 +7,6 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
-import org.springframework.core.MethodParameter;
 
 /** 
  * Resolves subclasses of {@link Addressable} when used as parameters of {@link ChatRequest}
@@ -18,7 +17,7 @@ import org.springframework.core.MethodParameter;
  */
 public class AddressableWorkflowResolverFactory implements WorkflowResolverFactory {
 	
-	private final class AddressableWorkflowResolver implements WorkflowResolver {
+	private final class AddressableWorkflowResolver extends AbstractClassWorkflowResolver {
 		private final ChatHandlerExecutor che;
 
 		private AddressableWorkflowResolver(ChatHandlerExecutor che) {
@@ -26,8 +25,7 @@ public class AddressableWorkflowResolverFactory implements WorkflowResolverFacto
 		}
 
 		@Override
-		public Optional<Object> resolve(MethodParameter mp) {
-			Class<?> cl = mp.getParameterType();
+		public Optional<Object> resolve(Class<?> cl) {
 			if (Chat.class.isAssignableFrom(cl)) {
 				Addressable a = che.action().getAddressable();
 				if (a instanceof Chat) {
@@ -44,8 +42,7 @@ public class AddressableWorkflowResolverFactory implements WorkflowResolverFacto
 		}
 
 		@Override
-		public boolean canResolve(MethodParameter mp) {
-			Class<?> cl = mp.getParameterType();
+		public boolean canResolve(Class<?> cl) {
 			return (Addressable.class.isAssignableFrom(cl));
 		}
 	}
