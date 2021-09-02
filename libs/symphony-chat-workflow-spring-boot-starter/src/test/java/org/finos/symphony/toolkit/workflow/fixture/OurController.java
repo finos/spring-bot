@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
-import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
+import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -41,14 +41,14 @@ public class OurController {
 		lastMethod = "listenToEverything";
 	}
 	
-	@ButtonRequest(value = Person.class, showWhen = WorkMode.VIEW)
+	@ChatButton(value = Person.class, showWhen = WorkMode.VIEW)
 	public void callPerson(Person arg) {
 		// do your own form processing
 		lastArguments = Collections.singletonList(arg);
 		lastMethod = "callPerson";
 	}
 	
-	@ButtonRequest(value = StartClaim.class)
+	@ChatButton(value = StartClaim.class)
 	public TestObject startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
@@ -58,7 +58,7 @@ public class OurController {
 	}
 	
 
-	@ButtonRequest(value = FormSubmission.class, showWhen = WorkMode.EDIT)
+	@ChatButton(value = FormSubmission.class, showWhen = WorkMode.EDIT)
 	public void processForm(FormSubmission f) {
 		// do your own form processing
 		// is this needed?
@@ -146,7 +146,7 @@ public class OurController {
 		return new TestObject();
 	}
 	
-	@ButtonRequest(value = Person.class)
+	@ChatButton(value = Person.class)
 	public TestObject ok(Person to) {
 		return null;
 	}
