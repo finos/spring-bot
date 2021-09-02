@@ -10,7 +10,7 @@ import org.finos.symphony.toolkit.workflow.actions.form.FormEditConfig;
 import org.finos.symphony.toolkit.workflow.help.HelpController;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.converters.WorkResponseConverter;
-import org.finos.symphony.toolkit.workflow.java.mapping.ButtonRequestChatHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatButtonChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatRequestChatHandlerMapping;
@@ -26,8 +26,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.OrderComparator;
-import org.springframework.core.PriorityOrdered;
-import org.springframework.core.annotation.Order;
 import org.springframework.util.ErrorHandler;
 
 @Configuration
@@ -61,9 +59,9 @@ public class ChatWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ButtonRequestChatHandlerMapping buttonHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
+	public ChatButtonChatHandlerMapping buttonHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
 			List<ResponseConverter> converters) {
-		return new ButtonRequestChatHandlerMapping(wrf, rh, converters);
+		return new ChatButtonChatHandlerMapping(wrf, rh, converters);
 	}
 	
 	@Bean
