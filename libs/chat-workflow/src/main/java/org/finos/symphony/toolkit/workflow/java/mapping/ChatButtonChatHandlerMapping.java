@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
-import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
+import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -18,13 +18,13 @@ import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFacto
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
-public class ButtonRequestChatHandlerMapping extends AbstractSpringComponentHandlerMapping<ButtonRequest> {
+public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandlerMapping<ChatButton> {
 
 	private WorkflowResolversFactory wrf;
 	private ResponseHandlers rh;
 	private List<ResponseConverter> converters;
 	
-	public ButtonRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
+	public ChatButtonChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
 		super();
 		this.wrf = wrf;
 		this.rh = rh;
@@ -32,17 +32,17 @@ public class ButtonRequestChatHandlerMapping extends AbstractSpringComponentHand
 	}
 
 	@Override
-	protected ButtonRequest getMappingForMethod(Method method, Class<?> handlerType) {
-		if (AnnotatedElementUtils.hasAnnotation(method, ButtonRequest.class)) {
-			return AnnotatedElementUtils.getMergedAnnotation(method, ButtonRequest.class);
+	protected ChatButton getMappingForMethod(Method method, Class<?> handlerType) {
+		if (AnnotatedElementUtils.hasAnnotation(method, ChatButton.class)) {
+			return AnnotatedElementUtils.getMergedAnnotation(method, ChatButton.class);
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public List<ChatMapping<ButtonRequest>> getHandlers(Action a) {
-		List<ChatMapping<ButtonRequest>> out = getAllHandlers(a.getAddressable(), a.getUser()).stream()
+	public List<ChatMapping<ChatButton>> getHandlers(Action a) {
+		List<ChatMapping<ChatButton>> out = getAllHandlers(a.getAddressable(), a.getUser()).stream()
 				.filter(m -> m.getExecutor(a) != null)
 				.collect(Collectors.toList());
 
@@ -50,10 +50,10 @@ public class ButtonRequestChatHandlerMapping extends AbstractSpringComponentHand
 	}
 	
 	@Override
-	public List<ChatMapping<ButtonRequest>> getAllHandlers(Addressable a, User u) {
+	public List<ChatMapping<ChatButton>> getAllHandlers(Addressable a, User u) {
 		mappingRegistry.acquireReadLock();
 
-		List<ChatMapping<ButtonRequest>> out = mappingRegistry.getRegistrations().values().stream()
+		List<ChatMapping<ChatButton>> out = mappingRegistry.getRegistrations().values().stream()
 				.filter(cm -> canBePerformedHere(cm, a, u))
 				.collect(Collectors.toList());
 
@@ -61,7 +61,7 @@ public class ButtonRequestChatHandlerMapping extends AbstractSpringComponentHand
 		return out;
 	}
 
-	private boolean canBePerformedHere(MappingRegistration<ButtonRequest> cm, Addressable a, User u) {
+	private boolean canBePerformedHere(MappingRegistration<ChatButton> cm, Addressable a, User u) {
 		return true;
 		//TODO: write this
 	}
@@ -77,9 +77,9 @@ public class ButtonRequestChatHandlerMapping extends AbstractSpringComponentHand
 	}
 
 	@Override
-	protected MappingRegistration<ButtonRequest> createMappingRegistration(ButtonRequest mapping, ChatHandlerMethod handlerMethod) {
+	protected MappingRegistration<ChatButton> createMappingRegistration(ChatButton mapping, ChatHandlerMethod handlerMethod) {
 			
-		return new MappingRegistration<ButtonRequest>(mapping, handlerMethod) {
+		return new MappingRegistration<ChatButton>(mapping, handlerMethod) {
 			
 			@Override
 			public ChatHandlerExecutor getExecutor(Action a) {
@@ -92,7 +92,7 @@ public class ButtonRequestChatHandlerMapping extends AbstractSpringComponentHand
 
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
 				MappingRegistration<?> me = this;
-				ButtonRequest e = getMapping();
+				ChatButton e = getMapping();
 				
 				
 				Class<?> expectedFormClass = e.value();
