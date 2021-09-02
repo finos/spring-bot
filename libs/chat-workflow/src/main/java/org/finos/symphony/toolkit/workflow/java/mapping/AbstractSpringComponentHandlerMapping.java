@@ -239,7 +239,8 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 				throw new IllegalStateException(
 						"Ambiguous mapping. Cannot map '" + handlerMethod.getBean() + "' method \n" +
 						handlerMethod + "\nto " + mapping + ": There is already '" +
-						existingHandlerMethod.getBean() + "' bean method\n" + existingHandlerMethod + " mapped.");
+						existingHandlerMethod.getBean() + "' bean method\n" + existingHandlerMethod + " mapped. \n" +
+						"Try setting value / buttonText to disambiguate the annotations. ");
 			}
 		}
 

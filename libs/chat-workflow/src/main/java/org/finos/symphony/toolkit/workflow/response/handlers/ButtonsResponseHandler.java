@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
+import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
  */
 public class ButtonsResponseHandler implements ResponseHandler, ApplicationContextAware {
 	
-	private List<ChatHandlerMapping<ButtonRequest>> exposedHandlerMappings;
+	private List<ChatHandlerMapping<ChatButton>> exposedHandlerMappings;
 	private ApplicationContext applicationContext;
 	
 	
@@ -69,7 +69,7 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 					.filter(cm -> exposedMatchesObject(cm.getMapping(), o))
 					.filter(cm -> cm.isButtonFor(o, wm))
 					.forEach(cm -> {
-						ButtonRequest e = cm.getMapping();
+						ChatButton e = cm.getMapping();
 						String value = cm.getUniqueName();
 						String text = e.buttonText();
 						text = StringUtils.hasText(text) ? text : formatFieldName(cm.getHandlerMethod().getMethod().getName());
@@ -83,14 +83,14 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 	@SuppressWarnings("unchecked")
 	protected void initExposedHandlerMappings() {
 		if (exposedHandlerMappings == null) {
-			ResolvableType g = ResolvableType.forClassWithGenerics(ChatHandlerMapping.class, ButtonRequest.class);
+			ResolvableType g = ResolvableType.forClassWithGenerics(ChatHandlerMapping.class, ChatButton.class);
 			exposedHandlerMappings = Arrays.stream(applicationContext.getBeanNamesForType(g))
-				.map(n -> (ChatHandlerMapping<ButtonRequest>) applicationContext.getBean(n))
+				.map(n -> (ChatHandlerMapping<ChatButton>) applicationContext.getBean(n))
 				.collect(Collectors.toList());
 		}
 	}
 	
-	protected boolean exposedMatchesObject(ButtonRequest e, Object o) {
+	protected boolean exposedMatchesObject(ChatButton e, Object o) {
 		if (e.value().isAssignableFrom(o.getClass())) {
 			return true;
 		}

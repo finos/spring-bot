@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
+import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
@@ -40,7 +40,7 @@ public class ToDoController {
 		return out;
 	}
 	
-	@ButtonRequest(value = NewItemDetails.class)
+	@ChatButton(value = NewItemDetails.class)
 	public ToDoList add(NewItemDetails a, User u, Optional<ToDoList> toDo) {
 		ToDoList out = toDo.orElse(new ToDoList());
 		out.getItems().add(new ToDoItem(a.getDescription(), u, a.getAssignTo(), Status.OPEN));
@@ -48,7 +48,7 @@ public class ToDoController {
 		return out;
 	}
 	
-	@ButtonRequest(value = NewItemDetails.class, buttonText = "cancel")
+	@ChatButton(value = NewItemDetails.class, buttonText = "cancel")
 	public ToDoList cancel(Optional<ToDoList> toDo) {
 		ToDoList out = toDo.orElse(new ToDoList());
 		return out;

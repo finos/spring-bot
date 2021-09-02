@@ -1,6 +1,6 @@
 package example.symphony.demoworkflow.expenses;
 
-import org.finos.symphony.toolkit.workflow.annotations.ButtonRequest;
+import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -19,7 +19,7 @@ public class ClaimController {
 		return new WorkResponse(a, new StartClaim(), WorkMode.EDIT);
 	}
 	
-	@ButtonRequest(value = StartClaim.class)
+	@ChatButton(value = StartClaim.class)
 	public Claim add(StartClaim sc, User u) {
 		Claim c =  new Claim();
 		c.amount = sc.amount;

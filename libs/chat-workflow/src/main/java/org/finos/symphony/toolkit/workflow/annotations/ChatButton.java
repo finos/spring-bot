@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ButtonRequest {
+public @interface ChatButton {
 	
 	/**
 	 * This is a java-bean class on which the button will appear.  
