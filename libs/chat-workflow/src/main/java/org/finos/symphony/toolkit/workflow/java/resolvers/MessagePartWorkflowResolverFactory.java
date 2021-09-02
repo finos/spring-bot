@@ -25,7 +25,7 @@ import org.springframework.core.MethodParameter;
 public class MessagePartWorkflowResolverFactory implements WorkflowResolverFactory {
 	
 	
-	private final class ContentWorkflowResolver implements WorkflowResolver {
+	private final class ContentWorkflowResolver extends AbstractClassWorkflowResolver {
 		private final Map<Class<?>, Deque<Object>> parameterBuckets;
 
 		private ContentWorkflowResolver(Map<Class<?>, Deque<Object>> parameterBuckets) {
@@ -33,8 +33,7 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 		}
 
 		@Override
-		public Optional<Object> resolve(MethodParameter mp) {
-			Type t = mp.getGenericParameterType();
+		public Optional<Object> resolve(Class<?> t) {
 			if (parameterBuckets.containsKey(t)) {
 				return Optional.of(parameterBuckets.get(t).pop());
 			} else {
@@ -43,11 +42,10 @@ public class MessagePartWorkflowResolverFactory implements WorkflowResolverFacto
 		}
 
 		@Override
-		public boolean canResolve(MethodParameter mp) {
-			Type t = mp.getGenericParameterType();
-			ChatVariable chatVariable = mp.getParameterAnnotation(ChatVariable.class);
-			return (parameterBuckets.containsKey(t)) && (chatVariable == null);
+		public boolean canResolve(Class<?> t) {
+			return parameterBuckets.containsKey(t);
 		}
+
 	}
 
 

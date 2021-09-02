@@ -73,9 +73,6 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	
 	@Autowired
 	MessageMLParser smp;
-	
-	@Autowired
-	ErrorController ec;
 
 	@Test
 	public void checkMappings() throws Exception {

@@ -47,6 +47,12 @@ public class ToDoController {
 		reNumber(out);
 		return out;
 	}
+	
+	@ButtonRequest(value = NewItemDetails.class, buttonText = "cancel")
+	public ToDoList cancel(Optional<ToDoList> toDo) {
+		ToDoList out = toDo.orElse(new ToDoList());
+		return out;
+	}
 
 	@ChatRequest(value="show", description = "Show current list of items")
 	@ChatResponseBody(workMode = WorkMode.EDIT)
@@ -105,7 +111,7 @@ public class ToDoController {
 		changeStatus(out, words, u, Status.COMPLETE);
 		return out;
 	}
-
+	
 	@ChatRequest(value="assign {items} {to}", description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
 	public ToDoList assign(@ChatVariable("items") List<Word> words, @ChatVariable("by") Optional<User> by, User a, Optional<ToDoList> toDo) {
 		ToDoList out = toDo.orElse(new ToDoList());
