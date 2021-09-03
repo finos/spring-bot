@@ -80,7 +80,7 @@ public class TableAddRow extends AbstractTableActionConsumer {
 			// this is called for primitives where we can't construct the new instance.
 		}
 		
-		Map<String, Object> data = WorkResponse.createEntityJson(out, 
+		Map<String, Object> data = WorkResponse.createEntityMap(out, 
 				ButtonList.of(new Button(tableLocation+"."+DO_SUFFIX, Type.ACTION, "Add")), 
 				null);
 		

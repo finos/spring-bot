@@ -64,7 +64,7 @@ public class SymphonyAdminController extends BaseController {
 		
 		ObjectMapperFactory.initialize(om, 
 			ObjectMapperFactory.extendedSymphonyVersionSpace(
-				new VersionSpace(BuildData.class.getPackage().getName(), "1.0")));
+				new VersionSpace(BuildData.class, "1.0")));
 				
 		
 		this.configFile = serverPaths.getConfigDir() + CONFIG_PATH;

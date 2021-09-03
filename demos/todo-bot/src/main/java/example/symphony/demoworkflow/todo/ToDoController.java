@@ -40,7 +40,7 @@ public class ToDoController {
 		return out;
 	}
 	
-	@ChatButton(value = NewItemDetails.class)
+	@ChatButton(value = NewItemDetails.class, buttonText = "add")
 	public ToDoList add(NewItemDetails a, User u, Optional<ToDoList> toDo) {
 		ToDoList out = toDo.orElse(new ToDoList());
 		out.getItems().add(new ToDoItem(a.getDescription(), u, a.getAssignTo(), Status.OPEN));

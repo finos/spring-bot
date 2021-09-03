@@ -37,6 +37,6 @@ public @interface ChatButton {
 	/**
 	 * If you want the button text to not match the first value, use this.
 	 */
-	String buttonText() default "";
+	String buttonText();
 	
 }

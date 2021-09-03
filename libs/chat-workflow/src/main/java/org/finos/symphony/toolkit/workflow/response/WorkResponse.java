@@ -37,14 +37,14 @@ public class WorkResponse extends DataResponse {
 	 * Call this contructor to create a basic form response using an object.
 	 */
 	public WorkResponse(Addressable to, Object o, WorkMode m, ButtonList buttons, ErrorMap errors) {
-		this(to, createEntityJson(o, buttons, errors), getTemplateNameForObject(m, o), m, o.getClass());
+		this(to, createEntityMap(o, buttons, errors), getTemplateNameForObject(m, o), m, o.getClass());
 	}
 	
 	public WorkResponse(Addressable to, Object o, WorkMode m) {
 		this(to, o, m, null, null);
 	}
 	
-	public static Map<String, Object> createEntityJson(Object o, ButtonList buttons, ErrorMap errors) {
+	public static Map<String, Object> createEntityMap(Object o, ButtonList buttons, ErrorMap errors) {
 		Map<String, Object> json = new HashMap<>();
 		json.put(ButtonList.KEY, buttons == null ? new ButtonList() : buttons);
 		json.put(ERRORS_KEY, errors == null ? new ErrorMap() : errors);

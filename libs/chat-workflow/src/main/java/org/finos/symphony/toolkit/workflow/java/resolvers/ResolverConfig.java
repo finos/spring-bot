@@ -92,6 +92,12 @@ public class ResolverConfig {
 	public AddressableWorkflowResolverFactory addressableWorkflowResolverFactory() {
 		return new AddressableWorkflowResolverFactory();
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public EntityMapResolverFactory entityMapResolverFactory() {
+		return new EntityMapResolverFactory();
+	}
 
 	/**
 	 * Allows you to pull back previous exchanges in the history to use as parameters

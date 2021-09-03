@@ -92,13 +92,6 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
 				MappingRegistration<?> me = this;
-				ChatButton e = getMapping();
-				
-				
-				Class<?> expectedFormClass = e.value();
-				if (!expectedFormClass.isAssignableFrom(a.getFormData().getClass())) {
-					return null;
-				}
 					
 				if (!a.getAction().equals(this.getUniqueName())) {
 					return null;

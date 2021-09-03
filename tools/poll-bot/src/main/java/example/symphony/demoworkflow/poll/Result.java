@@ -2,16 +2,16 @@ package example.symphony.demoworkflow.poll;
 
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.annotations.Template;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.ID;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
-@Work(editable = false, name = "The Results Are In!")
-@Template(view="classpath:/template/result.ftl")
+@Work
+@Template(view="result")
 public class Result {
 
-	private ID pollID;
+	private HashTag pollID;
 	private List<Integer> counts;
 	private List<String> options;
 	private String question;
@@ -23,7 +23,7 @@ public class Result {
 		super();
 	}
 
-	public Result(ID pollID, List<Integer> counts, List<String> options, String question, User poller,
+	public Result(HashTag pollID, List<Integer> counts, List<String> options, String question, User poller,
 			Integer totalResponses) {
 		super();
 		this.pollID = pollID;
@@ -52,11 +52,11 @@ public class Result {
 		this.counts = counts;
 	}
 
-	public ID getPollID() {
+	public HashTag getPollID() {
 		return pollID;
 	}
 
-	public void setPollID(ID pollID) {
+	public void setPollID(HashTag pollID) {
 		this.pollID = pollID;
 	}
 

@@ -19,7 +19,7 @@ public class ClaimController {
 		return new WorkResponse(a, new StartClaim(), WorkMode.EDIT);
 	}
 	
-	@ChatButton(value = StartClaim.class)
+	@ChatButton(value = StartClaim.class,  buttonText = "add")
 	public Claim add(StartClaim sc, User u) {
 		Claim c =  new Claim();
 		c.amount = sc.amount;

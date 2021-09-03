@@ -1,1 +1,1 @@
-<a href="${entity.workflow_001.uri}">${entity.workflow_001.title}</a>  <i><hash tag="${entity.workflow_001.feedHashTag.id}" /></i> <i><hash tag="${entity.workflow_001.articleHashTag.id}" /></i>
+<a href="${entity.form.uri}">${entity.form.title}</a>  <i><hash tag="${entity.form.feedHashTag.id}" /></i> <i><hash tag="${entity.form.articleHashTag.id}" /></i>

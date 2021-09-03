@@ -1,10 +1,7 @@
 package org.finos.symphony.toolkit.workflow.actions.form;
 
-import java.util.Collections;
-import java.util.Map;
-
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.util.ErrorHandler;
@@ -21,14 +18,8 @@ public class EditActionElementsConsumer extends AbstractTableActionConsumer {
 	public void acceptFormAction(FormAction u) {
 		if (u.getAction().equals(EDIT)) {
 			Object o = u.getData();
-//			Object ob = ej.get(FormAction.);
-//			return Collections.singletonList(new FormResponse(wf, u.getAddressable(), ej, 
-//					"Edit "+wf.getName(ob.getClass()), 
-//					wf.getInstructions(ob.getClass()), ob, true, 
-//				ButtonList.of()));
+			rh.accept(new WorkResponse(u.getAddressable(), o, WorkMode.EDIT));
 		}
-		
-		//return null;
 	}
 
 }
