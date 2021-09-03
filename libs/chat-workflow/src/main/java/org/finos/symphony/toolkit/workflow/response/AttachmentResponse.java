@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.workflow.response;
 
+import java.util.Map;
+
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 
@@ -30,7 +32,7 @@ public class AttachmentResponse extends MessageResponse {
 		this.extension = extension;
 	}
 
-	public AttachmentResponse(Addressable stream, Object data, Content m, String template, byte[] attachment, String name, String extension) {
+	public AttachmentResponse(Addressable stream, Map<String, Object> data, Content m, String template, byte[] attachment, String name, String extension) {
 		super(stream, data, m, template);
 		this.attachment = attachment;
 		this.name = name;

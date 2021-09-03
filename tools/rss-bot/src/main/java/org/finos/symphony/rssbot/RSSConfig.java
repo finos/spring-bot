@@ -7,18 +7,11 @@ import org.finos.symphony.rssbot.alerter.ArticleSender;
 import org.finos.symphony.rssbot.alerter.CachingCheckingArticleSender;
 import org.finos.symphony.rssbot.alerter.FeedListCache;
 import org.finos.symphony.rssbot.alerter.FeedListCacheImpl;
-import org.finos.symphony.rssbot.feed.Article;
-import org.finos.symphony.rssbot.feed.Feed;
-import org.finos.symphony.rssbot.feed.FeedList;
-import org.finos.symphony.rssbot.feed.Filter;
-import org.finos.symphony.rssbot.feed.SubscribeRequest;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.rssbot.notify.Notifier;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.java.workflow.ClassBasedWorkflow;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -38,18 +31,6 @@ public class RSSConfig {
 	public static final String WELCOME_MESSAGE = "<messageML>"
 			+ "<p>Hi, welcome to <b>${entity.stream.roomName}</b></p><br />"
 			+ "<p>To configure RSS feeds in this room type: <b>/subscriptions</b></p></messageML>";
-
-	@Bean
-	public Workflow appWorkflow() {
-		ClassBasedWorkflow wf = new ClassBasedWorkflow(RSSConfig.class.getCanonicalName());
-		wf.addClass(FeedList.class);
-		wf.addClass(Feed.class);
-		wf.addClass(SubscribeRequest.class);
-		wf.addClass(Article.class);
-		wf.addClass(Filter.class);
-		wf.addClass(Filter.Type.class);
-		return wf;
-	}
 	
 	@Bean
 	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
@@ -72,8 +53,8 @@ public class RSSConfig {
 	}
 	
 	@Bean
-	public ArticleSender articleSender(ResponseHandler rh, History h) {
-		return new CachingCheckingArticleSender(appWorkflow(), rh, h);
+	public ArticleSender articleSender(ResponseHandlers rh, History h) {
+		return new CachingCheckingArticleSender(rh, h);
 	}
 
 }

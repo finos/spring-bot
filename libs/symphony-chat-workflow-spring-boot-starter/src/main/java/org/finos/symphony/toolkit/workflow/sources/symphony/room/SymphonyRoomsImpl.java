@@ -17,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.symphony.api.model.MembershipList;
-import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamFilter;
 import com.symphony.api.model.StreamList;
 import com.symphony.api.model.StreamType;
@@ -53,12 +52,19 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 	@Override
 	public Set<Chat> getAllRooms() {
 		StreamType st = new StreamType().type(TypeEnum.ROOM);
-		StreamList list = streamsApi.v1StreamsListPost(null, new StreamFilter().streamTypes(Collections.singletonList(st)), 0, 0);
+		StreamFilter streamTypes = new StreamFilter().streamTypes(Collections.singletonList(st));
+		streamTypes.includeInactiveStreams(false);
 		Set<Chat> out = new HashSet<>();
-		for (StreamAttributes streamAttributes : list) {
-			Chat r = loadRoomById(streamAttributes.getId());
-			out.add(r);
-		}
+
+		int skip = 0;
+		
+		StreamList sl;
+		do {
+			sl = streamsApi.v1StreamsListPost(null, streamTypes, skip, 50);
+			sl.forEach(s -> out.add(loadRoomById(s.getId())));
+			skip += sl.size();
+		} while (sl.size() == 50);
+		
 		
 		return out;
 	}

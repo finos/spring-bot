@@ -1,1 +1,0 @@
-<a href="${entity.form.uri}">${entity.form.title}</a>  <i><hash tag="${entity.form.feedHashTag.id}" /></i> <i><hash tag="${entity.form.articleHashTag.id}" /></i>

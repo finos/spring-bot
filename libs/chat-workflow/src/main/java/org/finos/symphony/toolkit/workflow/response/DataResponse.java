@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.workflow.response;
 
+import java.util.Map;
+
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 
 /**
@@ -10,18 +12,18 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
  */
 public class DataResponse implements Response {
 
-	private final Object data;
+	private final Map<String, Object> data;
 	private final String templateName;
 	private final Addressable to;
 
-	public DataResponse(Addressable to, Object data, String templateName) {
+	public DataResponse(Addressable to, Map<String, Object> data, String templateName) {
 		super();
 		this.to = to;
 		this.data = data;
 		this.templateName = templateName;
 	}
 
-	public Object getData() {
+	public Map<String, Object> getData() {
 		return data;
 	}
 	

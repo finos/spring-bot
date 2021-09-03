@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 		view = "feedlist-view")
 public class FeedList {
 	
-	public static final Logger LOG = LoggerFactory.getLogger(FeedList.class);
-
 	List<Feed> feeds = new ArrayList<Feed>();
 	boolean paused = false;
 	boolean adminOnly = false;
