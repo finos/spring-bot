@@ -4,7 +4,7 @@
     <header>
       <p>You chose <b>${entity.form.choiceText!''} </b> when asked <i>${entity.form.questionText!''}</i></p>
       <div style='height:2px;background:#0098ff;margin-top:10px;margin-bottom:10px'> </div>
-      <p><span class="tempo-text-color--secondary"> poll id <hash tag="${entity.form.pollID.name!''}" /></span></p>
+      <p><span class="tempo-text-color--secondary"> poll id <hash tag="${entity.form.pollID.value!''}" /></span></p>
    </header>
    <body>
    </body>

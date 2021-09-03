@@ -71,7 +71,7 @@ public class PollController {
 				.collect(Collectors.toList());
 		
 		ButtonList buttons = new ButtonList(options.stream()
-		.map(s -> new Button("poll"+(i[0]++), Type.ACTION, s))
+		.map(s -> new Button(PollController.class,"poll"+(i[0]++), Type.ACTION, s))
 			.collect(Collectors.toList()));
 		
 		HashTag id = new HashTag(UUID.randomUUID().toString());
