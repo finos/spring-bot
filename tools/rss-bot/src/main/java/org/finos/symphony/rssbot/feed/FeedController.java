@@ -6,18 +6,24 @@ import org.finos.symphony.rssbot.alerter.FeedListCache;
 import org.finos.symphony.rssbot.alerter.TimedAlerter;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.rssbot.notify.Notifier;
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
+import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
+import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
+import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Author;
-import org.finos.symphony.toolkit.workflow.content.Room;
+import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.java.Exposed;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.room.Rooms;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
+import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import com.rometools.rome.io.FeedException;
@@ -25,31 +31,52 @@ import com.rometools.rome.io.FeedException;
 @Controller
 public class FeedController {
 
+	public static final Logger LOG = LoggerFactory.getLogger(FeedList.class);
+
+	@Autowired
+	SymphonyHistory hist;
 	
-	@Exposed(addToHelp = true, description = "Show RSS Feeds Published In This Room", isButton = true, isMessage = true)
-	public static FeedList subscriptions(Addressable a, SymphonyHistoryImpl hist, Workflow wf) {
+	@Autowired
+	FeedLoader loader;
+	
+	@Autowired
+	FeedListCache rc;
+	
+	@Autowired
+	Notifier n;
+	
+	@Autowired
+	Rooms r;
+	
+	@Autowired
+	ResponseHandlers rh;
+	
+	@ChatRequest(value="subscriptions", description = "Show RSS Feeds Published In This Room")
+	public FeedList getFeedList(Addressable a) {
 		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
 		FeedList ob = fl.orElse(new FeedList());
 		return ob;
 	}
 
-	@Exposed(addToHelp = true, description = "Subscribe to a feed. ", isButton = true, isMessage = true)
-	public static FeedList subscribe(SubscribeRequest sr, Addressable a, SymphonyHistoryImpl hist, FeedLoader loader, Author author, Notifier n, FeedListCache rc, Rooms r) throws Exception {
-		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
-		return fl.orElseGet(() -> new FeedList()).add(sr, loader, a, author, n, rc, r);
+	@ChatRequest(description = "Subscribe to a feed. ", value="subscribe")
+	@ChatButton(value = FeedList.class, showWhen = WorkMode.VIEW, buttonText = "add")
+	@ChatResponseBody(workMode = WorkMode.EDIT)
+	public SubscribeRequest newSubscribeRequest() {
+		return new SubscribeRequest();
 	}
-	
-	@Exposed(addToHelp = false, description = "Add Subscription", isButton = true, isMessage = false) 
-	public FeedList add(SubscribeRequest sr, FeedLoader loader, Addressable a, Author author, Notifier n, FeedListCache rc, Rooms r) throws Exception {
-		adminCheck(author, a, r);
+
+	@ChatButton(value = SubscribeRequest.class, buttonText = "add")
+	public FeedList subscribe(SubscribeRequest sr, Addressable a, User author, Optional<FeedList> ofl) throws Exception {
+		FeedList fl = ofl.orElse(new FeedList());
+		adminCheck(author, a, fl);
 		try {
 			Feed feed = loader.createFeed(sr.url, sr.name);
-			if (!this.feeds.contains(feed)) {
-				this.feeds.add(feed);
+			if (!fl.feeds.contains(feed)) {
+				fl.feeds.add(feed);
 			}
 			n.sendSuccessNotification(sr, a, author);
-			rc.writeFeedList(a, this);
-			return this;
+			rc.writeFeedList(a, fl);
+			return fl;
 		} catch (FeedException e) {
 			n.sendFailureNotification(sr, a, e, author);
 			LOG.error("Couldn't add feed: ", e);
@@ -60,67 +87,81 @@ public class FeedController {
 	/**
 	 * Throws an exception if the author is not a room admin
 	 */
-	private void adminCheck(Author author, Addressable a, Rooms r) {
-		if (this.adminOnly) {
-			if (a instanceof Room) {
-				if (!r.getRoomAdmins((Room) a).contains(author)) {
+	private void adminCheck(User author, Addressable a, FeedList fl) {
+		if (fl.adminOnly) {
+			if (a instanceof Chat) {
+				if (!r.getRoomAdmins((Chat) a).contains(author)) {
 					throw new RuntimeException("You need to be admin of this room to modify the feed list");
 				}
 			}
 		}
 	}
 
-	@Exposed(addToHelp = true, description = "Stop Feeding (can be resumed later)", isButton = true, isMessage = true)
-	public FeedList pause(FeedListCache rc, Addressable a) {
-		this.paused = true;
-		rc.writeFeedList(a, this);
-		return this;
+	@ChatRequest(description = "Stop Feeding (can be resumed later)",  value="pause")
+	public FeedList pause(FeedListCache rc, Addressable a, User author) {
+		FeedList fl = getFeedList(a);
+		adminCheck(author, a, fl);
+		fl.paused = true;
+		rc.writeFeedList(a, fl);
+		return fl;
 	}
 
-	@Exposed(addToHelp = true, description = "Resume feeds if paused", isButton = true, isMessage = true)
-	public FeedList resume(FeedListCache rc, Addressable a) {
-		this.paused = false;
-		rc.writeFeedList(a, this);
-		return this;
+	@ChatRequest(value="resume", description = "Resume feeds if paused")
+	public FeedList resume(FeedListCache rc, Addressable a, User author) {
+		FeedList fl = getFeedList(a);
+		adminCheck(author, a, fl);
+		fl.paused = false;
+		rc.writeFeedList(a, fl);
+		return fl;
 	}
 	
-	@Exposed(addToHelp = true, description = "Fetch latest news now", isButton = true, isMessage = true) 
-	public void latest(TimedAlerter ta, History hist, Addressable a, Workflow wf, ResponseHandler rh) {
-		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
-		if (fl.isPresent()) {
-			int count = ta.allItems(a, fl.get());
-			if (count == 0) {
-				rh.accept(new MessageResponse(wf, a, new EntityJson(), "No New News Items", "", "All recent news has already been reported"));
-			}
+	@ChatRequest(description = "Fetch latest news now", value="latest") 
+	public void latest(TimedAlerter ta, History hist, Addressable a) {
+		FeedList fl = getFeedList(a);
+		int count = ta.allItems(a, fl);
+		if (count == 0) {
+			rh.accept(new MessageResponse(a, Message.of(Word.build("No New News Items"))));
 		}
 	}
 	
-	@Exposed(addToHelp = true, description = "Add A New Filter", isButton = true, isMessage = true) 
-	public FeedList filter(Filter f) {
-		this.filters.add(f);
-		return this;
+	@ChatRequest(value = "filter")
+	public Filter createFilterForm() {
+		return new Filter();
 	}
 	
-	@Exposed(addToHelp = true, description = "Only room admins can modify the feeds", isButton = true, isMessage = true) 
-	public FeedList makeAdminOnly(Addressable a, Rooms r, Author author) {
-		adminCheck(author, a, r);
-		this.adminOnly = true;
-		return this;
+	@ChatButton(buttonText = "Add Filter", value = Filter.class) 
+	public FeedList filter(Filter f, Addressable a, User author) {
+		FeedList fl = getFeedList(a);
+		adminCheck(author, a, fl);
+		fl.filters.add(f);
+		return fl;
 	}
 	
-	@Exposed(addToHelp = true, description = "Any room member can modify the feeds (default)", isButton = true, isMessage = true) 
-	public FeedList notAdminOnly(Addressable a, Rooms r, Author author) {
-		adminCheck(author, a, r);
-		this.adminOnly = false;
-		return this;
+	
+	
+	@ChatRequest(description = "Only room admins can modify the feeds", value="makeAdminOnly") 
+	public FeedList makeAdminOnly(Addressable a, User author) {
+		FeedList fl = getFeedList(a);
+		adminCheck(author, a, fl);
+		fl.adminOnly = true;
+		return fl;
 	}
 	
-	@Exposed(addToHelp = true, description = "Set the rate of refresh (in minutes) e.g. \"/every 10\"", isButton = false, isMessage = true) 
-	public FeedList every(Addressable a, Rooms r, Author author, Word every, Word mins, FeedListCache rc) {
-		adminCheck(author, a, r);
+	@ChatRequest(value="notAdminOnly", description = "Any room member can modify the feeds (default)") 
+	public FeedList notAdminOnly(Addressable a, User author) {
+		FeedList fl = getFeedList(a);
+		adminCheck(author, a, fl);
+		fl.adminOnly = false;
+		return fl;
+	}
+	
+	@ChatRequest(description = "Set the rate of refresh (in minutes) e.g. \"/every 10\"", value="every {mins}") 
+	public FeedList every(Addressable a, User author, @ChatVariable(name = "mins") Word mins) {
+		FeedList fl = getFeedList(a);
+		adminCheck(author, a, fl);
 		Integer minInt = Integer.parseInt(mins.getText());
-		this.updateIntervalMinutes = minInt;
-		rc.writeFeedList(a, this);
-		return this;
+		fl.updateIntervalMinutes = minInt;
+		rc.writeFeedList(a, fl);
+		return fl;
 	}
 }

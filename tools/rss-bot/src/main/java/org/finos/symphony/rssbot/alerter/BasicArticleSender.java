@@ -1,22 +1,18 @@
 package org.finos.symphony.rssbot.alerter;
 
 import org.finos.symphony.rssbot.feed.Article;
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 
 public class BasicArticleSender implements ArticleSender {
 
-	Workflow w;	
-	ResponseHandler responseHandler;
+	ResponseHandlers responseHandlers;
 	
-	public BasicArticleSender(Workflow w, ResponseHandler responseHandler) {
+	public BasicArticleSender(ResponseHandlers responseHandler) {
 		super();
-		this.w = w;
-		this.responseHandler = responseHandler;
+		this.responseHandlers = responseHandler;
 	}
 
 	@Override
@@ -26,9 +22,7 @@ public class BasicArticleSender implements ArticleSender {
 	}
 
 	protected void postInner(Addressable a, Article article) {
-		EntityJson ej = new EntityJson();
-		ej.put(EntityJsonConverter.WORKFLOW_001, article);
-		responseHandler.accept(new FormResponse(w, a, ej, article.getFeedName(), article.getAuthor(), article, false, w.gatherButtons(article, a)));
+		responseHandlers.accept(new WorkResponse(a, article, WorkMode.VIEW));
 	}
 
 }

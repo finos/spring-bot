@@ -8,7 +8,7 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
 @Work
-@Template(view = "classpath:/article-view.ftl")
+@Template(view = "article-view")
 public class Article {
 
 	private String title;

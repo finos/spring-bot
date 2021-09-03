@@ -1,6 +1,6 @@
 package org.finos.symphony.rssbot.feed;
 
-import org.finos.symphony.toolkit.workflow.java.Work;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
 @Work
