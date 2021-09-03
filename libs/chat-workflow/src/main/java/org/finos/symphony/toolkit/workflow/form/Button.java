@@ -14,6 +14,10 @@ public class Button implements Comparable<Button> {
 	public Button() {
 	}
 	
+	public Button(Class<?> c, String methodName, Type t, String text) {
+		this(c.getName()+"-"+methodName, t, text);
+	}
+	
 	public Button(String name, Type type, String text) {
 		super();
 		this.name = name;
