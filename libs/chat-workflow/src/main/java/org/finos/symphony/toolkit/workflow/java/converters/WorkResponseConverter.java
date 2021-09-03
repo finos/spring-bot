@@ -29,8 +29,8 @@ public class WorkResponseConverter implements ResponseConverter {
 			}
 			
 			if (StringUtils.hasText(template)) {
-				Map<String, Object> entityJson = WorkResponse.createEntityJson(source, null, null);
-				return new WorkResponse(a, entityJson, template, wm, source.getClass());
+				Map<String, Object> entityMap = WorkResponse.createEntityMap(source, null, null);
+				return new WorkResponse(a, entityMap, template, wm, source.getClass());
 			} 
 		}
 			

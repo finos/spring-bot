@@ -74,7 +74,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 		Object o = e.getValue(data);
 		Class<?> c = o.getClass();
 		
-		Map<String, Object> json = WorkResponse.createEntityJson(o, 
+		Map<String, Object> json = WorkResponse.createEntityMap(o, 
 				ButtonList.of(new Button(tableLocation+"."+UPDATE_SUFFIX, Type.ACTION, "Update")), 
 				null);
 

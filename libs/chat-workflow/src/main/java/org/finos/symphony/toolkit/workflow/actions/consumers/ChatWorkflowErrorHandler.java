@@ -23,14 +23,16 @@ public class ChatWorkflowErrorHandler implements ErrorHandler {
 
 	@Override
 	public void handleError(Throwable t) {
-		Action currentAction = Action.CURRENT_ACTION.get();
-		ErrorResponse er = new ErrorResponse(currentAction.getAddressable(), t, templateName);
 		LOG.error("Error thrown:" , t);
-
-		try {
-			rh.accept(er);
-		} catch (Throwable e) {
-			LOG.warn("Couldn't return error {} due to error {} ", er, e);
+		Action currentAction = Action.CURRENT_ACTION.get();
+		if (currentAction != null) {
+			ErrorResponse er = new ErrorResponse(currentAction.getAddressable(), t, templateName);
+		
+			try {
+				rh.accept(er);
+			} catch (Throwable e) {
+				LOG.warn("Couldn't return error {} due to error {} ", er, e);
+			}
 		}
 	}
 

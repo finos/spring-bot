@@ -41,14 +41,14 @@ public class OurController {
 		lastMethod = "listenToEverything";
 	}
 	
-	@ChatButton(value = Person.class, showWhen = WorkMode.VIEW)
+	@ChatButton(value = Person.class, showWhen = WorkMode.VIEW, buttonText = "call")
 	public void callPerson(Person arg) {
 		// do your own form processing
 		lastArguments = Collections.singletonList(arg);
 		lastMethod = "callPerson";
 	}
 	
-	@ChatButton(value = StartClaim.class)
+	@ChatButton(value = StartClaim.class, buttonText = "start")
 	public TestObject startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
@@ -58,7 +58,7 @@ public class OurController {
 	}
 	
 
-	@ChatButton(value = FormSubmission.class, showWhen = WorkMode.EDIT)
+	@ChatButton(value = FormSubmission.class, showWhen = WorkMode.EDIT, buttonText = "go")
 	public void processForm(FormSubmission f) {
 		// do your own form processing
 		// is this needed?
@@ -146,7 +146,7 @@ public class OurController {
 		return new TestObject();
 	}
 	
-	@ChatButton(value = Person.class)
+	@ChatButton(value = Person.class, buttonText = "ok")
 	public TestObject ok(Person to) {
 		return null;
 	}

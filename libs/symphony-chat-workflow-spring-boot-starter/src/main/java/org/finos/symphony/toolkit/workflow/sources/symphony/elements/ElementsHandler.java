@@ -65,9 +65,17 @@ public class ElementsHandler implements StreamEventConsumer {
 		try {
 			V4SymphonyElementsAction action = t.getPayload().getSymphonyElementsAction();
 			if (action != null) {
-				String verb = (String) ((Map<String, String>) action.getFormValues()).get("action");
+				Map<String, Object> formValues = (Map<String, Object>) action.getFormValues();
+				String verb = (String) formValues.get("action");
 				String formId = action.getFormId();
-				Object currentForm = formConverter.convert((Map<String, Object>) action.getFormValues(), formId);
+				
+				Object currentForm;
+				if (hasFormData(formValues)) {
+					currentForm = formConverter.convert(formValues, formId);
+				} else {
+					currentForm = null;
+				}
+				
 				EntityJson data = retrieveData(action.getFormMessageId());
 				Addressable rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
 				User u = ruBuilder.loadUserById(t.getInitiator().getUser().getUserId());
@@ -94,6 +102,14 @@ public class ElementsHandler implements StreamEventConsumer {
 		} catch (Exception e) {
 			LOG.error("Couldn't handle event "+t, e);
 		}
+	}
+
+	/**
+	 * If the button exists on the form in view-mode, there won't be any values in the
+	 * submitted data, just an action.
+	 */
+	private boolean hasFormData(Map<String, Object> formValues) {
+		return formValues.size() > 1;
 	}
 
 	private boolean validated(Object currentForm, Errors e) {

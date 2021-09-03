@@ -14,10 +14,10 @@ public class ErrorResponse extends DataResponse {
 
 
 	public ErrorResponse(Addressable stream, Throwable e, String templateName) {
-		super(stream, createEntityJson(e), templateName);
+		super(stream, createEntityMap(e), templateName);
 	}
 
-	public static Map<String, Object> createEntityJson(Throwable t) {
+	public static Map<String, Object> createEntityMap(Throwable t) {
 		Map<String, Object> json = new HashMap<>();
 		json.put(ERRORS_KEY, stacktraceToString(t));
 		json.put(MESSAGE_KEY, t.getMessage());

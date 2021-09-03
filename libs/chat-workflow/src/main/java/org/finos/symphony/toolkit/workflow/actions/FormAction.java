@@ -15,15 +15,15 @@ public class FormAction implements Action {
 
 	private final Object formData;
 	private final String action;
-	private final Map<String, Object> entityJson;
+	private final Map<String, Object> entityMap;
 	private final Addressable a;
 	private final User u;
 	
-	public FormAction(Addressable a, User u, Object formData, String action, Map<String, Object> entityJson) {
+	public FormAction(Addressable a, User u, Object formData, String action, Map<String, Object> entityMap) {
 		super();
 		this.formData = formData;
 		this.action = action;
-		this.entityJson = entityJson;
+		this.entityMap = entityMap;
 		this.a = a;
 		this.u = u;
 	}
@@ -38,13 +38,13 @@ public class FormAction implements Action {
 
 	@Override
 	public Map<String, Object> getData() {
-		return entityJson;
+		return entityMap;
 	}
 
 	@Override
 	public String toString() {
 		return "ElementsAction [formData=" + formData + ", action=" + action
-				+ ", entityJson=" + entityJson + "]";
+				+ ", entityMap=" + entityMap + "]";
 	}
 
 	@Override

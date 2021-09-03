@@ -123,6 +123,9 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 				messagesApi.v4StreamSidMessageCreatePost(null, streamId, template, data, null, attachment, null, null);
 			}
 		} catch (Exception e) {
+			LOG.error(e.getMessage());
+			LOG.error("message:\n"+template);
+			LOG.error("json:\n"+data);
 			initErrorHandler();
 			eh.handleError(e);
 		}
