@@ -2,7 +2,6 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
-import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Dropdown;
 
@@ -14,14 +13,14 @@ public class DropdownAnnotationConverter extends AbstractDropdownConverter {
 
 	@Override
 	protected String apply(Field ctx, Type t, boolean editMode, Variable variable) {
+		Dropdown dd = getDropdownAnnotation(ctx);
+		String location = dd.data();
+		Class<? extends ElementFormat> format = dd.format();
+		ElementFormat instance = instantiateDropdownFormat(format);
 		if (editMode) {
-			Dropdown dd = getDropdownAnnotation(ctx);
-			String location = dd.data();
-			Class<? extends ElementFormat> format = dd.format();
-			ElementFormat instance = instantiateDropdownFormat(format);
 			return renderDropdown(variable, location, instance);
 		} else {
-			return text(variable, "!''");
+			return "${" + instance.getValueFunction().apply(variable.getDataPath(), location) +  "!''}";
 		}
 	}
 

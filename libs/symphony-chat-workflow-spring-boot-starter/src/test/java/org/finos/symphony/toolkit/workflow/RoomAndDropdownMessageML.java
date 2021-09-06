@@ -54,7 +54,7 @@ public class RoomAndDropdownMessageML extends AbstractMockSymphonyTest {
 
 	protected WorkResponse dropdownsWork(WorkMode wm) {
 		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
-		String strangeOption = "A";
+		String strangeOption = "a";
 
 		RoomAndDropdown to4 = new RoomAndDropdown(theRoom, strangeOption);
 		
