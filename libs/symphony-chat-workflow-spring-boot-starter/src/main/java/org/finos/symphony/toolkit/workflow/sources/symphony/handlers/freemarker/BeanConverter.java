@@ -18,12 +18,12 @@ public class BeanConverter extends AbstractComplexTypeConverter {
 	}
 
 	@Override
-	public boolean canConvert(Type t) {
+	public boolean canConvert(Field ctx, Type t) {
 		return t instanceof Class<?>;
 	}
 
 	@Override
-	public String apply(WithType controller, Type t, boolean editMode, Variable variable, WithField showDetails) {
+	public String apply(Field ctx, WithType controller, Type t, boolean editMode, Variable variable, WithField showDetails) {
 		if (showDetails == null) {
 			return "";
 		}

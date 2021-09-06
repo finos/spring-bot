@@ -55,6 +55,11 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
+	public DropdownAnnotationConverter dropdownAnnotationConverter() {
+		return new DropdownAnnotationConverter();
+	}
+	
+	@Bean
 	public StringConverter stringConverter() {
 		return new StringConverter();
 	}

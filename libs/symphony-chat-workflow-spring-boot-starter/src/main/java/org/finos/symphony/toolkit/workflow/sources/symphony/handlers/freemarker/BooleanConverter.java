@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 public class BooleanConverter extends AbstractSimpleTypeConverter {
@@ -13,12 +14,12 @@ public class BooleanConverter extends AbstractSimpleTypeConverter {
 	}
 	
 	@Override
-	public boolean canConvert(Type t) {
+	public boolean canConvert(Field ctx, Type t) {
 		return (t instanceof Class) && (boolClass((Class<?>) t));
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable) {
+	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			return formatErrorsAndIndent(variable.getFormFieldName(), variable.depth) + 
 				"<checkbox " 

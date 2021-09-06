@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.json.EntityJson;
@@ -15,7 +16,7 @@ public class UserConverter extends AbstractClassConverter {
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable) {
+	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			return formatErrorsAndIndent(variable.getFormFieldName(), variable.depth) 
 					+ "<person-selector " 

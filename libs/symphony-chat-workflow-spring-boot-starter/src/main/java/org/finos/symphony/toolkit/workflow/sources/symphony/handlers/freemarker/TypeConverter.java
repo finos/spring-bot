@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 /**
@@ -20,7 +21,8 @@ public interface TypeConverter extends WithType {
 	
 	/**
 	 * Return true if your class should be used to convert this type.
+	 * @param ctx TODO
 	 */
-	public boolean canConvert(Type t);
+	public boolean canConvert(Field ctx, Type t);
 		
 }

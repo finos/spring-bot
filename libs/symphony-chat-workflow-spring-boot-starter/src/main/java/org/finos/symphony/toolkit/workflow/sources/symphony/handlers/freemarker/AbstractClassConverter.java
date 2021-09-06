@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 public abstract class AbstractClassConverter extends AbstractSimpleTypeConverter {
@@ -12,7 +13,7 @@ public abstract class AbstractClassConverter extends AbstractSimpleTypeConverter
 	}
 
 	@Override
-	public boolean canConvert(Type t) {
+	public boolean canConvert(Field ctx, Type t) {
 		for (Class<?> class1 : forClass) {
 			if ((t instanceof Class) && (class1.isAssignableFrom((Class<?>) t))) {
 				return true;

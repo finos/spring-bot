@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
@@ -10,12 +11,12 @@ public class EnumConverter extends AbstractSimpleTypeConverter {
 	}
 
 	@Override
-	public boolean canConvert(Type t) {
+	public boolean canConvert(Field ctx, Type t) {
 		return (t instanceof Class) && ((Class<?>) t).isEnum();
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable) {
+	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			Class<?> c = (Class<?>) t;
 			return renderDropdown(variable, 

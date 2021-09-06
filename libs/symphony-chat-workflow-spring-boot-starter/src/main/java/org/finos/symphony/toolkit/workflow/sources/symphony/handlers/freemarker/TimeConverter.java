@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -16,7 +17,7 @@ public class TimeConverter extends AbstractClassConverter {
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable) {
+	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			return textField(variable);
 		} else {
