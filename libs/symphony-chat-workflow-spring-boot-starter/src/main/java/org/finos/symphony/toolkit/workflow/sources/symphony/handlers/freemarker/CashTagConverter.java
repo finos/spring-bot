@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
@@ -11,7 +12,7 @@ public class CashTagConverter extends AbstractClassConverter {
 	}
 
 	@Override
-	public String apply(Type t, boolean editMode, Variable variable) {
+	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
 			return textField(variable.field("id[0].value"), variable.getFormFieldName(), variable.getDisplayName());
 		} else {

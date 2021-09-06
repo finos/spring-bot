@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 /**
@@ -15,10 +16,10 @@ public abstract class AbstractSimpleTypeConverter extends AbstractTypeConverter 
 	}
 
 	@Override
-	public final String apply(WithType controller, Type t, boolean editMode, Variable variable, WithField notUsed) {
-		return apply(t, editMode, variable);
+	public final String apply(Field ctx, WithType controller, Type t, boolean editMode, Variable variable, WithField notUsed) {
+		return apply(ctx, t, editMode, variable);
 	}
 
-	protected abstract String apply(Type t, boolean editMode, Variable variable);
+	protected abstract String apply(Field ctx, Type t, boolean editMode, Variable variable);
 
 }

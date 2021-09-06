@@ -40,7 +40,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 			sb.append("\n<form " + AbstractTypeConverter.attribute(v, "id", c.getCanonicalName()) + ">");
 		} 
 		
-		sb.append(apply(this, c, m==Mode.FORM, v, topLevelFieldOutput()));
+		sb.append(apply(null, this, c, m==Mode.FORM, v, topLevelFieldOutput()));
 		
 		if (m == Mode.DISPLAY_WITH_BUTTONS) {
 			// the form is created here just to contain these buttons.
@@ -72,9 +72,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 
 	
 	@Override
-	public TypeConverter getConverter(Type t, WithType ownerController) {
+	public TypeConverter getConverter(Field ctx, Type t, WithType ownerController) {
 		for(TypeConverter fc : converters) {
-			if (fc.canConvert(t)) {
+			if (fc.canConvert(ctx, t)) {
 				return fc;
 			}
 		} 
@@ -83,9 +83,9 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 	}
 
 	@Override
-	public String apply(WithType controller, Type t, boolean editMode, Variable variable, WithField context) {
-		TypeConverter tc = getConverter(t, controller);
-		return tc.apply(controller, t, editMode, variable, context);
+	public String apply(Field ctx, WithType controller, Type t, boolean editMode, Variable variable, WithField context) {
+		TypeConverter tc = getConverter(ctx, t, controller);
+		return tc.apply(ctx, controller, t, editMode, variable, context);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class FreemarkerFormMessageMLConverter implements FormMessageMLConverter,
 		return new WithField() {
 			public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler) {
 				Type t = f.getGenericType();
-				return contentHandler.apply(FreemarkerFormMessageMLConverter.this, t, editMode, variable, topLevelFieldOutput());
+				return contentHandler.apply(f, FreemarkerFormMessageMLConverter.this, t, editMode, variable, topLevelFieldOutput());
 			}
 
 			@Override

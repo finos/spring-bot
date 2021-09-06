@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -15,7 +16,7 @@ public class CollectionConverter extends AbstractTableConverter {
 	}
 		
 	@Override
-	public boolean canConvert(Type t) {
+	public boolean canConvert(Field ctx, Type t) {
 		if (t instanceof ParameterizedType) {
 			Type rawType = ((ParameterizedType)t).getRawType();
 			return (rawType instanceof Class<?>) && Collection.class.isAssignableFrom((Class<?>) rawType);
@@ -25,7 +26,7 @@ public class CollectionConverter extends AbstractTableConverter {
 	}
 
 	@Override
-	public String apply(WithType controller, Type t, boolean editMode, Variable variable, WithField showDetail) {
+	public String apply(Field ctx, WithType controller, Type t, boolean editMode, Variable variable, WithField showDetail) {
 		if (null == showDetail) return "...";
 		if (showDetail.expand()) {
 			return createTable(t, editMode, variable, tableColumnNames(), tableColumnValues(), controller);
@@ -40,7 +41,7 @@ public class CollectionConverter extends AbstractTableConverter {
 	protected Object rowDetails(Type t, boolean editMode, Variable variable, WithField cellDetail, WithType controller) {
 		Class<?> elementClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
 
-		TypeConverter elementTypeConverter = controller.getConverter(elementClass, controller);
+		TypeConverter elementTypeConverter = controller.getConverter(null, elementClass, controller);
 
 		StringBuilder sb = new StringBuilder();
 		Variable subVar = variable.index();
@@ -51,7 +52,7 @@ public class CollectionConverter extends AbstractTableConverter {
 
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
 			sb.append("<td>");
-			sb.append(((SimpleTypeConverter)elementTypeConverter).apply(controller, elementClass, false, subVar, cellDetail));
+			sb.append(((SimpleTypeConverter)elementTypeConverter).apply(null, controller, elementClass, false, subVar, cellDetail));
 			sb.append("</td>");
 		} else if (elementTypeConverter instanceof ComplexTypeConverter) {
 			sb.append(((ComplexTypeConverter)elementTypeConverter).withFields(controller, elementClass, false, subVar, cellDetail));
@@ -73,7 +74,7 @@ public class CollectionConverter extends AbstractTableConverter {
 	@Override
 	protected Object rowHeaders(Type t, boolean editMode, Variable variable, WithField cellDetail, WithType controller) {
 		Class<?> elementClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
-		TypeConverter elementTypeConverter = controller.getConverter(elementClass, controller);
+		TypeConverter elementTypeConverter = controller.getConverter(null, elementClass, controller);
 
 		StringBuilder sb = new StringBuilder();
 

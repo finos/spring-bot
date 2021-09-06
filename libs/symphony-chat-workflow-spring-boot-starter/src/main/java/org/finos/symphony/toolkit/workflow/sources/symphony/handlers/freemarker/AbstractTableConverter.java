@@ -46,7 +46,7 @@ public abstract class AbstractTableConverter extends AbstractComplexTypeConverte
             public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler) {
                 String align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : "");
                 Type t = f.getGenericType();
-                return StringUtils.hasText(getFieldNameOrientation(f)) ? indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(contentHandler, t, editMode, variable, null) + "</td>" : "";
+                return StringUtils.hasText(getFieldNameOrientation(f)) ? indent(variable.depth) + "<td " + align + ">" + contentHandler.apply(null, contentHandler, t, editMode, variable, null) + "</td>" : "";
             }
         };
 
