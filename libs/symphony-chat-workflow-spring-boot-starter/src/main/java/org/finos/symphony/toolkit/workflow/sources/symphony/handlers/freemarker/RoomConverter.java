@@ -9,10 +9,16 @@ import org.finos.symphony.toolkit.workflow.content.Chat;
 
 public class RoomConverter extends AbstractDropdownConverter {
 
+	final String location;
+	
 	public RoomConverter() {
-		super(LOW_PRIORITY, Chat.class);
+		this("entity.rooms");
 	}
 	
+	public RoomConverter(String location) {
+		super(LOW_PRIORITY, Chat.class);
+		this.location = location;
+	}
 
 	public static class RoomFormat implements ElementFormat {
 
@@ -36,11 +42,10 @@ public class RoomConverter extends AbstractDropdownConverter {
 
 	@Override
 	public String apply(Field ctx, Type t, boolean editMode, Variable v) {
-		
 		if (editMode) {
-			return renderDropdown(v, "entity.rooms", ROOM_FORMAT);
+			return renderDropdown(v, location, ROOM_FORMAT);
 		} else {
-			return text(v, "!''");
+			return "${" + ROOM_FORMAT.getValueFunction().apply(v.getDataPath(), location) +  "!''}";
 		}
 	}
 	
