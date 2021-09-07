@@ -14,7 +14,6 @@ import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
@@ -23,7 +22,6 @@ import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -60,9 +58,15 @@ public class ReminderController {
 		}
 	}
 
-	@ChatButton(buttonText = "save", value = ReminderList.class)
-	@ChatResponseBody(workMode = WorkMode.EDIT)
+	@ChatButton(buttonText = "save", value = ReminderList.class, showWhen = WorkMode.EDIT)
+	@ChatResponseBody(workMode = WorkMode.VIEW)
 	public ReminderList save(ReminderList rl) {
+		return rl;
+	}
+	
+	@ChatButton(buttonText = "edit", value = ReminderList.class, showWhen = WorkMode.VIEW)
+	@ChatResponseBody(workMode = WorkMode.EDIT)
+	public ReminderList edit(ReminderList rl) {
 		return rl;
 	}
 		

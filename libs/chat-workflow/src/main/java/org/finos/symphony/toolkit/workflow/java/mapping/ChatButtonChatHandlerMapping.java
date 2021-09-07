@@ -119,7 +119,16 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 
 			@Override
 			public boolean isButtonFor(Object o, WorkMode m) {
-				return mapping.value().isAssignableFrom(o.getClass());
+				return mapping.value().isAssignableFrom(o.getClass()) && workModeMatches(m, this.getMapping().showWhen());
+					
+			}
+
+			private boolean workModeMatches(WorkMode ourMode, WorkMode buttonMode) {
+				if (buttonMode == WorkMode.BOTH) {
+					return true;
+				} else {
+					return buttonMode == ourMode;
+				}
 			}
 		};
 	}
