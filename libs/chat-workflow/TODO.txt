@@ -1,10 +1,7 @@
 9.  Security on ExposedHandlerMapping (certain actions for certain users)
-15.  Rooms - we use a drop-down for this, how will we populate it? (Write another response handler)
-17. topLevelField thing (allow dropdown and other things)
 18. placeholder button if the user doesn't add one.
-
-
-
+19. Edit options for reminder bot (test table edit)
+20. MessageMLWriter for tags.
 
 DOCUMENTATION TOPICS
 
