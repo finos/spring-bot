@@ -12,13 +12,11 @@ import java.util.Optional;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,10 +38,7 @@ public class SchedulerTests {
     History history;
 
     @Mock
-    ResponseHandler responseHandler;
-
-    @Mock
-    RoomDef roomDef;
+    ResponseHandlers responseHandlers;
 
     @Mock
     LeaderService leaderService;
@@ -53,9 +48,6 @@ public class SchedulerTests {
 
     @Mock
     StreamsApi streams;
-
-    @Mock
-    Workflow w;
 
     @InjectMocks
     Scheduler scheduler = new Scheduler();
@@ -72,10 +64,10 @@ public class SchedulerTests {
         when(streams.v1StreamsListPost(null, null, 0, 50)).thenReturn(createStreams());
 
         scheduler.everyFiveMinutesWeekday();
-        verify(responseHandler).accept(Mockito.any(FormResponse.class));
-        ArgumentCaptor<FormResponse> argumentCaptor = ArgumentCaptor.forClass(FormResponse.class);
-        verify(responseHandler).accept(argumentCaptor.capture());
-        FormResponse fr = argumentCaptor.getValue();
+        verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
+        ArgumentCaptor<WorkResponse> argumentCaptor = ArgumentCaptor.forClass(WorkResponse.class);
+        verify(responseHandlers).accept(argumentCaptor.capture());
+        WorkResponse fr = argumentCaptor.getValue();
         Reminder r = (Reminder)fr.getFormObject();
         Assertions.assertEquals(r.getLocalTime(),expectedTime);
 
@@ -87,7 +79,7 @@ public class SchedulerTests {
     public void handleFeedNonLeaderTest(){
         when(leaderService.isLeader(Mockito.any())).thenReturn(false);
         scheduler.everyFiveMinutesWeekday();
-        verify(responseHandler, VerificationModeFactory.noInteractions()).accept(Mockito.any(FormResponse.class));
+        verify(responseHandlers, VerificationModeFactory.noInteractions()).accept(Mockito.any(WorkResponse.class));
 
     }
 
@@ -120,11 +112,6 @@ public class SchedulerTests {
             @Override
             public String getEmailAddress() {
                 return "New Address";
-            }
-
-            @Override
-            public String getId() {
-                return "1234";
             }
 
             @Override

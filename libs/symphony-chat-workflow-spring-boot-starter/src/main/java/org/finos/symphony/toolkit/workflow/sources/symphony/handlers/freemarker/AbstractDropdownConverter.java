@@ -42,7 +42,7 @@ public abstract class AbstractDropdownConverter extends AbstractClassConverter {
 	public String renderDropdown(Variable variable, String location, Function<String, String> sourceFunction , Function<String, String> keyFunction, BiFunction<String, String, String> valueFunction) {
 		String index = variable.index().getDataPath();
 		int indent = variable.depth;
-		return formatErrorsAndIndent(variable.getFormFieldName(), variable.depth) 
+		return formatErrorsAndIndent(variable.getFormFieldName(), variable.depth)
 				+ "<select " 
 				+ attribute(variable, "name", variable.getFormFieldName())
 				+ attribute(variable, "data-placeholder", "Choose "+variable.getDisplayName())

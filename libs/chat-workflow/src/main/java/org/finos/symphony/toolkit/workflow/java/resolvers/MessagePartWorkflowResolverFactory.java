@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.workflow.java.resolvers;
 
-import java.lang.reflect.Type;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,11 +9,9 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
-import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
-import org.springframework.core.MethodParameter;
 
 /**
  * Provides a resolver for parts of a message, e.g. words, paragraphs, tags.

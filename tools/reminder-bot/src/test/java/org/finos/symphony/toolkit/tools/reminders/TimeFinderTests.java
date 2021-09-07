@@ -20,6 +20,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -60,7 +61,7 @@ public class TimeFinderTests {
         timefinder.initializingStanfordProperties();
         List<Response> responses = timefinder.apply(getAction());
         Assertions.assertEquals(responses.size(),1);
-        FormResponse fr = (FormResponse)responses.get(0);
+        WorkResponse fr = (WorkResponse)responses.get(0);
         Reminder r = (Reminder) fr.getFormObject();
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -93,11 +94,6 @@ public class TimeFinderTests {
             @Override
             public String getEmailAddress() {
                 return "New Address";
-            }
-
-            @Override
-            public String getId() {
-                return "1234";
             }
 
             @Override

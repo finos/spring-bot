@@ -5,9 +5,9 @@ package org.finos.symphony.toolkit.tools.reminders;
 
 import java.time.LocalDateTime;
 
+import org.finos.symphony.toolkit.workflow.annotations.Template;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.java.Work;
-import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
 /**
@@ -15,8 +15,8 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.
  *
  */
 
-@Work(name = "Create Reminder", instructions = "Add the new Reminder")
-@Template(edit = "classpath:/create-reminder.ftl", view="classpath:/display-reminder.ftl")
+@Work
+@Template(edit = "create-reminder", view="display-reminder")
 public class Reminder {
 	
 	String description;

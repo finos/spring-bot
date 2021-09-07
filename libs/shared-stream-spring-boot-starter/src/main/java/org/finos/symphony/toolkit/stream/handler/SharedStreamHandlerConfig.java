@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import javax.annotation.PreDestroy;
+
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.SharedStreamProperties;
@@ -100,6 +102,7 @@ public class SharedStreamHandlerConfig {
 				return allClusterMembers;
 			}
 
+			@PreDestroy
 			@Override
 			public void stopAll() {
 				created.values().forEach(v -> v.stop());

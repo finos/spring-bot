@@ -13,7 +13,7 @@ import org.finos.symphony.toolkit.workflow.content.Tag;
  * @author moffrob
  *
  */
-@Work
+@Work(jsonTypeName = "org.finos.symphony.toolkit.workflow.form.headerDetails")
 public class HeaderDetails {
 	
 	public static final String KEY = "header";
