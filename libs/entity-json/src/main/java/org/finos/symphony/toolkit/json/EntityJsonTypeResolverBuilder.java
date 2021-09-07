@@ -107,7 +107,13 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 					String javaName = "java.util."+fixJavaName(id.substring(10));
 					return super.typeFromId(context, javaName);
 				} else {
-					throw new RuntimeException("Couldn't determine class for: "+id+".  This is not declared in VersionSpace array.");
+//					if (context instanceof DeserializationContext) {
+//		                // First: we may have problem handlers that can deal with it?
+//		                return ((DeserializationContext) context).handleUnknownTypeId(_baseType, id, this, "no such class found in VersionSpace");
+//		            }
+//					
+//					// apparently shouldn't reach this point
+					return null;
 				}
 			}
 

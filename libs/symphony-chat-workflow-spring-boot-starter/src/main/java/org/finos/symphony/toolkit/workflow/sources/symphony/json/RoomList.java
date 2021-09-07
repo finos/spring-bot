@@ -6,7 +6,15 @@ import java.util.Collection;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.RoomConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.RoomConverter.RoomFormat;
 
+/**
+ * This is used for carrying a set of Chat objects, and works with {@link RoomConverter}'s {@link RoomFormat}.
+ * 
+ * @author rob@kite9.com
+ *
+ */
 @Work
 public class RoomList {
 	

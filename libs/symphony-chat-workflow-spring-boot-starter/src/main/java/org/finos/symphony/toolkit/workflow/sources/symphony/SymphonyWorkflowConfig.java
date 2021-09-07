@@ -22,6 +22,7 @@ import org.finos.symphony.toolkit.workflow.content.CodeBlock;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
+import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
@@ -143,12 +144,11 @@ public class SymphonyWorkflowConfig {
 		MessageMLWriter out = new MessageMLWriter();
 		out.add(Message.class, out.new OrderedTagWriter("messageML"));
 		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
-		out.add(OrderedList.class, out.new OrderedTagWriter("ol"));
-		out.add(UnorderedList.class, out.new OrderedTagWriter("ul"));
+		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));
+		out.add(UnorderedList.class, out.new OrderedTagWriter("ul", out.new OrderedTagWriter("li")));
 		out.add(CodeBlock.class, out.new SimpleTagWriter("code"));
 		out.add(Word.class, out.new PlainWriter());
-		
-		// table
+		out.add(Table.class, out.new TableWriter());
 		// tags
 		
 		return out;

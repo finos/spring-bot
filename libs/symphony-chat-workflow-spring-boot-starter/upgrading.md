@@ -11,6 +11,7 @@
 8. Create a method to start a workflow and return an empty form
 9. Author -> User
 10. Move all @Exposed methods to a Controller and annotate with @Controller
+  - @Exposed becomes @ChatRequest
 11. ResponseHandler -> ResponseHandlers
 12. Add Header / Footer to template
 13. Update templates: 

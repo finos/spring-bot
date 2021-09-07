@@ -8,6 +8,7 @@ import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 
 /**
@@ -60,7 +61,7 @@ public class WorkResponse extends DataResponse {
 		Template t = c.getAnnotation(Template.class);
 		String templateName = t == null ? null : (m == WorkMode.EDIT ? t.edit() : t.view());
 		
-		if (templateName == null) {
+		if (!StringUtils.hasText(templateName)) {
 			return (m == WorkMode.EDIT) ? DEFAULT_FORM_TEMPLATE_EDIT : DEFAULT_FORM_TEMPLATE_VIEW;
 		} else {
 			return templateName;

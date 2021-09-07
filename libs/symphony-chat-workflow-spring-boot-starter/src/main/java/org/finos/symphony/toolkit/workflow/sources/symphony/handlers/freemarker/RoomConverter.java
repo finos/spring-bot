@@ -34,7 +34,7 @@ public class RoomConverter extends AbstractDropdownConverter {
 
 		@Override
 		public Function<String, String> getSourceFunction() {
-			return (k) -> k+ "[1]";
+			return (k) -> k + ".contents";
 		}
 	};
 	

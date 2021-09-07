@@ -1,6 +1,6 @@
 {
-  "rooms" : [ "java.util.arrayList", [ {
-    "type" : "org.finos.symphony.toolkit.workflow.content.chat",
+  "rooms" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.roomList",
     "version" : "1.0",
     "id" : [ {
       "type" : "com.symphony.user.streamID",

@@ -23,12 +23,12 @@ public class RoomAndDropdown {
 		this.dynOptions = dynOptions;
 	}
 	
-	public Chat getC() {
+	public Chat getChat() {
 		return chat;
 	}
 
 
-	public void setC(Chat c) {
+	public void setChat(Chat c) {
 		this.chat = c;
 	}
 
