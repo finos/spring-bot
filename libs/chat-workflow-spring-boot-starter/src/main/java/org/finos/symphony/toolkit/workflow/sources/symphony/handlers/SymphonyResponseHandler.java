@@ -93,7 +93,7 @@ public class SymphonyResponseHandler implements ResponseHandler {
 	private void processDataResponse(String messageBody, DataResponse t, Object attachment) {
 		String header = createWorkflowHeader(t);
 		String footer = createWorkflowFooter(t);
-		String outMessage = "<messageML>"+header+messageBody+footer+"</messageML>";
+		String outMessage = "<#ftl output_format=\"HTML\"><messageML>"+header+messageBody+footer+"</messageML>";
 		String json = jsonConverter.writeValue(t.getData());
 		String streamId = ru.getStreamFor(t.getAddress());
 		if (isOutputTemplates()) {
