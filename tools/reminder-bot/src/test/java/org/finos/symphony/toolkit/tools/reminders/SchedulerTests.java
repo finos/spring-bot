@@ -6,17 +6,22 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
+import org.finos.symphony.toolkit.workflow.room.Rooms;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,102 +39,93 @@ import com.symphony.api.pod.StreamsApi;
 @ExtendWith(MockitoExtension.class)
 public class SchedulerTests {
 
-    @Mock
-    History history;
+	@Mock
+	History history;
 
-    @Mock
-    ResponseHandlers responseHandlers;
+	@Mock
+	ResponseHandlers responseHandlers;
 
-    @Mock
-    LeaderService leaderService;
+	@Mock
+	LeaderService leaderService;
 
-    @Mock
-    Participant self;
+	@Mock
+	Rooms rooms;
 
-    @Mock
-    StreamsApi streams;
+	@InjectMocks
+	Scheduler scheduler = new Scheduler();
 
-    @InjectMocks
-    Scheduler scheduler = new Scheduler();
+	LocalDateTime expectedTime = LocalDateTime.now();
 
-    LocalDateTime expectedTime = LocalDateTime.now();
-
-
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Test
-    public void handleFeedLeaderTest(){
-        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
+	public void handleFeedLeaderTest() {
+		when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
+				.thenReturn(reminderList());
 
-        when(leaderService.isLeader(Mockito.any())).thenReturn(true);
-        when(streams.v1StreamsListPost(null, null, 0, 50)).thenReturn(createStreams());
+		when(leaderService.isLeader(Mockito.any())).thenReturn(true);
+		when(rooms.getAllRooms()).thenReturn(createStreams());
 
-        scheduler.everyFiveMinutesWeekday();
-        verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
-        ArgumentCaptor<WorkResponse> argumentCaptor = ArgumentCaptor.forClass(WorkResponse.class);
-        verify(responseHandlers).accept(argumentCaptor.capture());
-        WorkResponse fr = argumentCaptor.getValue();
-        Reminder r = (Reminder)fr.getFormObject();
-        Assertions.assertEquals(r.getLocalTime(),expectedTime);
+		scheduler.everyFiveMinutesWeekday();
+		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
+		ArgumentCaptor<WorkResponse> argumentCaptor = ArgumentCaptor.forClass(WorkResponse.class);
+		verify(responseHandlers).accept(argumentCaptor.capture());
+		WorkResponse fr = argumentCaptor.getValue();
+		Reminder r = (Reminder) fr.getFormObject();
+		Assertions.assertEquals(r.getLocalTime(), expectedTime);
 
-        // reminder timefinder tests to chck formresponse
+		// reminder timefinder tests to chck formresponse
 
-    }
-    @SuppressWarnings("unchecked")
+	}
+
 	@Test
-    public void handleFeedNonLeaderTest(){
-        when(leaderService.isLeader(Mockito.any())).thenReturn(false);
-        scheduler.everyFiveMinutesWeekday();
-        verify(responseHandlers, VerificationModeFactory.noInteractions()).accept(Mockito.any(WorkResponse.class));
+	public void handleFeedNonLeaderTest() {
+		when(leaderService.isLeader(Mockito.any())).thenReturn(false);
+		scheduler.everyFiveMinutesWeekday();
+		verify(responseHandlers, VerificationModeFactory.noInteractions()).accept(Mockito.any(WorkResponse.class));
 
-    }
+	}
 
+	private Set<Chat> createStreams() {
+		return Collections.singleton(new SymphonyRoom("test", "1234"));
+	}
 
-      private StreamList createStreams(){
-        StreamAttributes streamAttributes = new StreamAttributes();
-        StreamList sl = new StreamList();
-        streamAttributes.setId("1234");
-        sl.add(streamAttributes);
-        return sl;
-      }
+	private Optional<ReminderList> reminderList() {
+		Reminder reminder = new Reminder();
+		reminder.setDescription("Check at 9 pm");
+		reminder.setLocalTime(expectedTime);
+		List<Reminder> reminders = new ArrayList<>();
+		reminders.add(reminder);
+		ReminderList rl = new ReminderList();
+		rl.setTimeZone(ZoneId.of("Europe/London"));
 
-    private Optional<ReminderList> reminderList(){
-        Reminder reminder = new Reminder();
-        reminder.setDescription("Check at 9 pm");
-        reminder.setLocalTime(expectedTime);
-        reminder.setAuthor(getUser());
-        List<Reminder> reminders = new ArrayList<>();
-        reminders.add(reminder);
-        ReminderList rl = new ReminderList();
-        rl.setTimeZone(ZoneId.of("Europe/London"));
+		rl.setReminders(reminders);
+		Optional<ReminderList> rrl = Optional.of(rl);
+		return rrl;
+	}
 
-        rl.setReminders(reminders);
-        Optional<ReminderList> rrl = Optional.of(rl);
-        return rrl;
-    }
+	private User getUser() {
+		User user = new User() {
+			@Override
+			public String getEmailAddress() {
+				return "New Address";
+			}
 
-    private User getUser(){
-        User user = new User() {
-            @Override
-            public String getEmailAddress() {
-                return "New Address";
-            }
+			@Override
+			public Type getTagType() {
+				return null;
+			}
 
-            @Override
-            public Type getTagType() {
-                return null;
-            }
+			@Override
+			public String getName() {
+				return "Sherlock Holmes";
+			}
 
-            @Override
-            public String getName() {
-                return "Sherlock Holmes";
-            }
+			@Override
+			public String getText() {
+				return null;
+			}
+		};
+		return user;
 
-            @Override
-            public String getText() {
-                return null;
-            }
-        };
-        return user;
-
-    }
+	}
 }

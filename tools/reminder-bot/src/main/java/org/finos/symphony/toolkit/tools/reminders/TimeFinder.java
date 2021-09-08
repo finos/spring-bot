@@ -24,12 +24,8 @@ import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ErrorHandler;
-
-import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.pod.UsersApi;
 
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreEntityMention;
@@ -46,29 +42,24 @@ public class TimeFinder extends AbstractActionConsumer  {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TimeFinder.class);
 
-	@Autowired
-	UsersApi usersApi;
-
-	@Autowired
 	SymphonyRooms symphonyRooms;
-
-	@Autowired
-	SymphonyIdentity identity;
-
-	Properties props;
-	
-	@Autowired
 	History h;
-	
-	StanfordCoreNLP stanfordCoreNLP;
     ReminderProperties reminderProperties;
-    
-    @Autowired
     ResponseHandlers rh;
-
+	StanfordCoreNLP stanfordCoreNLP;
+	
+	public TimeFinder(ErrorHandler errorHandler, SymphonyRooms symphonyRooms, History h,
+			ReminderProperties reminderProperties, ResponseHandlers rh) {
+		super(errorHandler);
+		this.symphonyRooms = symphonyRooms;
+		this.h = h;
+		this.reminderProperties = reminderProperties;
+		this.rh = rh;
+	}
+    
     @PostConstruct
 	public void initializingStanfordProperties() {
-		props = new Properties();
+		Properties props = new Properties();
 		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
 		props.setProperty("ner.docdate.usePresent", "true");
 		stanfordCoreNLP = new StanfordCoreNLP(props);
@@ -78,7 +69,6 @@ public class TimeFinder extends AbstractActionConsumer  {
     
 	@Override
 	public void accept(Action t) {
-		Action.CURRENT_ACTION.set(t);
 		try {
 			if (t instanceof SimpleMessageAction) {
 				Message m = ((SimpleMessageAction) t).getWords();
