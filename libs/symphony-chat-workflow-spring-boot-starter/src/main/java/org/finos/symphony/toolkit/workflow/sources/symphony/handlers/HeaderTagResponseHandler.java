@@ -26,14 +26,13 @@ public class HeaderTagResponseHandler implements ResponseHandler {
 			WorkResponse workResponse = (WorkResponse) t;
 
 			HeaderDetails hd = (HeaderDetails) workResponse.getData().get(HeaderDetails.KEY);
-			Object o = workResponse.getData().get(WorkResponse.OBJECT_KEY);
 			if (hd == null) {
 				hd = new HeaderDetails();
 				workResponse.getData().put(HeaderDetails.KEY, hd);
 			}
 
 			// make sure all tags are unique, maintain order from original.
-			Set<HashTag> tags = new LinkedHashSet<>(TagSupport.classHashTags(o));
+			Set<HashTag> tags = new LinkedHashSet<>();
 			tags.addAll(hd.getTags());
 			
 			// check through other stuff in the json response
