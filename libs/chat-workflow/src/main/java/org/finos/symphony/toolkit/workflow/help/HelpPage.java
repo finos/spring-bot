@@ -6,7 +6,7 @@ import org.finos.symphony.toolkit.workflow.annotations.Template;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 
-@Work
+@Work(index = false)
 @Template(view = "help-template")
 public class HelpPage {
 	

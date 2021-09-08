@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.finos.symphony.toolkit.workflow.content.Tag;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
@@ -33,9 +33,19 @@ public class HeaderTagResponseHandler implements ResponseHandler {
 			}
 
 			// make sure all tags are unique, maintain order from original.
-			Set<Tag> tags = new LinkedHashSet<>(TagSupport.classHashTags(o));
+			Set<HashTag> tags = new LinkedHashSet<>(TagSupport.classHashTags(o));
 			tags.addAll(hd.getTags());
-			hd.setTags(new ArrayList<Tag>(tags));
+			
+			// check through other stuff in the json response
+			for (Object o2 : workResponse.getData().values()) {
+				Work w = o2.getClass().getAnnotation(Work.class);
+				if ((w != null) && (w.index())) {
+					tags.addAll(TagSupport.classHashTags(o2));
+				}
+			}
+			
+			
+			hd.setTags(new ArrayList<HashTag>(tags));
 
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
@@ -57,7 +58,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.context.annotation.Configuration;
@@ -65,7 +65,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springframework.util.ErrorHandler;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.Validator;
 import org.symphonyoss.fin.Security;
@@ -244,14 +243,23 @@ public class SymphonyWorkflowConfig {
 				}
 			})
 			.filter(x -> x != null) 
-			.map(c -> {
+			.flatMap(c -> {
 				Work w = c.getAnnotation(Work.class);
-				String jsonTypeName = w.jsonTypeName();
-				jsonTypeName = StringUtils.hasText(jsonTypeName) ? jsonTypeName : EntityJson.getSymphonyTypeName(c);
-				String writeVersion = w.writeVersion();
-				String[] readVersions = w.readVersions();
-				return new VersionSpace(jsonTypeName, c, writeVersion, readVersions);
-			})
+				String jsonTypeName[] = w.jsonTypeName();
+				return IntStream.range(0, jsonTypeName.length)
+						.mapToObj(i -> {
+							String t = jsonTypeName[i];
+							if (i == 0) {
+								t = StringUtils.hasText(t) ? t : EntityJson.getSymphonyTypeName(c);
+								String writeVersion = w.writeVersion();
+								String[] readVersions = w.readVersions();
+								return new VersionSpace(t, c, writeVersion, readVersions);
+							} else {
+								String[] readVersions = w.readVersions();
+								return new VersionSpace(t, c, null, readVersions);
+							}
+						});
+				})
 			.collect(Collectors.toList());
 		return versionSpaces;
 	}

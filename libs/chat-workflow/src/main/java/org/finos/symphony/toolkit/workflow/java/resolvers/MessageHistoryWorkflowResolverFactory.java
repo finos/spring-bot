@@ -34,7 +34,7 @@ public class MessageHistoryWorkflowResolverFactory implements WorkflowResolverFa
 		@Override
 		public boolean canResolve(Class<?> t) {
 			Work w = t.getAnnotation(Work.class);
-			return (w != null);
+			return (w != null) && (w.index());
 		}
 	}
 

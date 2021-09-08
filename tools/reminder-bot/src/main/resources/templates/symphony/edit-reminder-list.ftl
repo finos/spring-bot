@@ -31,13 +31,13 @@
   </#list>
   </tbody></table></td></tr>
  </table>
-  <p><#list entity.buttons.contents as button>
+  <p>
     <button
-         name="${button.name}"
-         type="${button.buttonType?lower_case}">
-      ${button.text}
+         name="reminders.table-delete-rows"
+         type="action">
+      Delete Selected Rows
     </button>
-  </#list></p>
+  </p>
 </form>
  
     </header> 

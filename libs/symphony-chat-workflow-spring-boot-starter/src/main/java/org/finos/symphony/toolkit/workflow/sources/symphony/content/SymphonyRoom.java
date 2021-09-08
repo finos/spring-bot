@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.symphonyoss.Taxonomy;
 import org.symphonyoss.TaxonomyElement;
@@ -10,6 +11,7 @@ import org.symphonyoss.TaxonomyElement;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.symphony.user.StreamID;
 
+@Work(index = false)
 public class SymphonyRoom extends Taxonomy implements Chat, SymphonyAddressable {
 
 	public SymphonyRoom() {

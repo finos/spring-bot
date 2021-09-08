@@ -20,6 +20,7 @@ import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.history.History;
+import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.room.Rooms;
@@ -84,29 +85,33 @@ public class Scheduler {
 
 
     public void handleFeed(Addressable a) {
-        Optional<ReminderList> fl = h.getLastFromHistory(ReminderList.class, a);
-        
-        if (fl.isPresent()) {
-            ReminderList updatedList = new ReminderList(fl.get());
-            ZoneId zone = updatedList.getTimeZone();
-            Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
-            ZoneOffset zo = zone.getRules().getOffset(currentTime);
+        try {
+			Optional<ReminderList> fl = h.getLastFromHistory(ReminderList.class, a);
+			
+			if (fl.isPresent()) {
+			    ReminderList updatedList = new ReminderList(fl.get());
+			    ZoneId zone = updatedList.getTimeZone();
+			    Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+			    ZoneOffset zo = zone.getRules().getOffset(currentTime);
 
 
-            fl.get().getReminders().stream().forEach((currentReminder) -> {
-                Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo);
+			    fl.get().getReminders().stream().forEach((currentReminder) -> {
+			        Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo);
 
-                if (timeForReminder.isBefore(currentTime)) {
-                    Map<String, Object> ej = WorkResponse.createEntityMap(currentReminder, null, null);
-                    updatedList.getReminders().remove(currentReminder);
-                    ej.put("ReminderList", updatedList);
-                    
-                    WorkResponse wr = new WorkResponse(a, ej, "display-reminder", WorkMode.VIEW, Reminder.class);
-                    responseHandlers.accept(wr);
+			        if (timeForReminder.isBefore(currentTime)) {
+			            Map<String, Object> ej = WorkResponse.createEntityMap(currentReminder, null, null);
+			            updatedList.getReminders().remove(currentReminder);
+			            ej.put("ReminderList", updatedList);
+			            
+			            WorkResponse wr = new WorkResponse(a, ej, "display-reminder", WorkMode.VIEW, Reminder.class);
+			            responseHandlers.accept(wr);
 
-                }
-            });
-        }
+			        }
+			    });
+			}
+		} catch (Exception e) {
+			responseHandlers.accept(new ErrorResponse(a, e));
+		}
     }
 }
 

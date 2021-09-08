@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work
+@Work(index = false)
 public class ErrorMap {
 	
 	private Map<String, String> contents;

@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work
+@Work(index = false)
 public class ButtonList {
 	
 	private Collection<Button> contents = new ArrayList<Button>();

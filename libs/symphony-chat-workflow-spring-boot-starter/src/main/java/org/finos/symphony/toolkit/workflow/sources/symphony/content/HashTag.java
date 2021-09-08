@@ -2,10 +2,12 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
 import java.util.UUID;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.symphonyoss.taxonomy.Hashtag;
 
-public class HashTag extends Hashtag implements Tag {
+@Work(index = false)
+public final class HashTag extends Hashtag implements Tag {
 		
 	public HashTag() {
 		super();

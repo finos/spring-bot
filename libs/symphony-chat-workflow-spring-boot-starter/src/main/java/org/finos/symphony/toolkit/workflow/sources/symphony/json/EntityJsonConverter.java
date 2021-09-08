@@ -7,6 +7,8 @@ import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.workflow.response.DataResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.DataHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +19,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  * Converts workflow objects to/from JSON.
  */
 public class EntityJsonConverter implements DataHandler {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(EntityJsonConverter.class);
 
 	ObjectMapper om;
 	
@@ -39,6 +43,7 @@ public class EntityJsonConverter implements DataHandler {
 			}
 			return om.readValue(json, EntityJson.class);
 		} catch (Exception e) {
+			LOG.error("Couldn't read: {}", json);
 			throw new UnsupportedOperationException("Map Fail", e);
 		}
 	}
