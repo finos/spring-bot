@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.form;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work
+@Work(index = false)
 public class Button implements Comparable<Button> {
 	
 	public enum Type { ACTION, RESET };

@@ -1,7 +1,9 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.symphonyoss.TaxonomyElement;
 
+@Work(index = false)
 public class RoomName extends TaxonomyElement {
 
 	public RoomName() {

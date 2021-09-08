@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 
-@Work
+@Work(index = false)
 public class CommandDescription {
 	
 	private String description;

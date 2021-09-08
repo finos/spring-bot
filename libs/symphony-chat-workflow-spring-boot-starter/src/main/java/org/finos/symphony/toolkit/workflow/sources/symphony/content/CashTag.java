@@ -3,12 +3,14 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 import java.util.Collections;
 import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.symphonyoss.TaxonomyElement;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.Ticker;
 
-public class CashTag extends Security implements Tag {
+@Work(index = false)
+public final class CashTag extends Security implements Tag {
 	
 	public CashTag() {
 		super();

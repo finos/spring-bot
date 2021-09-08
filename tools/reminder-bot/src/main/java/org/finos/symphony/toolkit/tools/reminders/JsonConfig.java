@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @Configuration
 public class JsonConfig implements InitializingBean {
@@ -24,7 +23,5 @@ public class JsonConfig implements InitializingBean {
 		.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 		.disable(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS)
 		.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-		
-		fc.getObjectMapper().registerModule(new JavaTimeModule());
 	}
 }

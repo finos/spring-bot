@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * Converts a form into an object.
@@ -31,6 +32,7 @@ public class FormConverter {
 	public FormConverter(SymphonyRooms r) {
 		super();
 		om.registerModule(new SymphonyModule());
+		om.registerModule(new JavaTimeModule());
 	}
 
 	/**

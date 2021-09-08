@@ -15,7 +15,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.
  * @author rob@kite9.com
  *
  */
-@Work
+@Work(index = false)
 public class RoomList {
 	
 	private Collection<Chat> contents;
