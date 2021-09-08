@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
+import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
@@ -86,12 +87,17 @@ public class ElementsHandler implements StreamEventConsumer {
 				
 				if (validated(currentForm, e)) {
 					FormAction ea = new FormAction(rr, u, currentForm, verb, data);
-					for (ActionConsumer c : elementsConsumers) {
-						try {
-							c.accept(ea);
-						} catch (Exception ee) {
-							LOG.error("Failed to handle consumer "+c, ee);
+					try {
+						Action.CURRENT_ACTION.set(ea);
+						for (ActionConsumer c : elementsConsumers) {
+							try {
+								c.accept(ea);
+							} catch (Exception ee) {
+								LOG.error("Failed to handle consumer "+c, ee);
+							}
 						}
+					} finally {
+						Action.CURRENT_ACTION.set(null);
 					}
 				} else {
 					WorkResponse fr = new WorkResponse(rr, data,  WorkMode.EDIT, 

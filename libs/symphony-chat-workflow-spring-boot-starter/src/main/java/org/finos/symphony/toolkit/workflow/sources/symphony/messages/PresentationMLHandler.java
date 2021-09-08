@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
+import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
@@ -56,8 +57,13 @@ public class PresentationMLHandler implements StreamEventConsumer {
 				// TODO: multi-user chat (not room)
 				rr = rr == null ? u : rr;
 				SimpleMessageAction sma = new SimpleMessageAction(rr, u, words, ej);
-				for (ActionConsumer c : messageConsumers) {
-					c.accept(sma);
+				try {
+					Action.CURRENT_ACTION.set(sma);
+					for (ActionConsumer c : messageConsumers) {
+						c.accept(sma);
+					}
+				} finally {
+					Action.CURRENT_ACTION.set(null);
 				}
 			}
 		} catch (Exception e) {
