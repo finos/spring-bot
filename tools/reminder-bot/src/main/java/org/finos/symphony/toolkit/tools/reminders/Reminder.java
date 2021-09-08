@@ -17,7 +17,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.
 
 @Work
 @Template(
-		//edit = "create-reminder", 
+		edit = "create-reminder", 
 		view="display-reminder")
 public class Reminder {
 	
@@ -25,8 +25,6 @@ public class Reminder {
 	
 	@Display(name = "Remind At")
 	LocalDateTime localTime;
-
-	User author;
 
 	public LocalDateTime getLocalTime() {
 		return localTime;
@@ -42,14 +40,6 @@ public class Reminder {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public User getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(User author) {
-		this.author = author;
 	}
 
 	public Reminder(){
