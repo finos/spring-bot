@@ -13,6 +13,7 @@ import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
@@ -20,7 +21,6 @@ import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.room.Rooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
@@ -39,7 +39,7 @@ public class PollController {
 	History h;
 	
 	@Autowired
-	Rooms rooms;
+	Conversations rooms;
 	
 	@Autowired
 	TaskScheduler taskScheduler;
@@ -82,7 +82,7 @@ public class PollController {
 		p.setOptions(options);
 		p.setId(id);
 		
-		List<User> users = rooms.getRoomMembers(r);
+		List<User> users = rooms.getChatMembers(r);
 		List<WorkResponse> out = users.stream()
 			.filter(u -> !isMe(u))
 			.map(u -> createResponseForUser(cf, options, id, buttons, u))

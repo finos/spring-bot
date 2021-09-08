@@ -6,8 +6,8 @@ import org.finos.symphony.toolkit.workflow.fixture.WeirdObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TestFormConverter extends AbstractMockSymphonyTest{
 	
 	@MockBean
-	SymphonyRooms rooms;
+	SymphonyConversations rooms;
 	
 	private FormConverter fc;
 	private ObjectMapper om = new ObjectMapper();

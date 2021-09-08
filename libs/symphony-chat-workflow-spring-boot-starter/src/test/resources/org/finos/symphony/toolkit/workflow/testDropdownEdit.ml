@@ -13,7 +13,7 @@
   <select 
    name="chat"
    data-placeholder="Choose chat">
-    <#list entity.rooms[1] as iB>
+    <#list entity.rooms.contents as iB>
      <option value="${iB.id[0].value}" selected="${(entity.form.chat.id[0].value == iB.id[0].value)?string('true','false')}">
       ${iB.id[1].value}
      </option>

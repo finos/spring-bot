@@ -2,40 +2,44 @@
   "rooms" : {
     "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.roomList",
     "version" : "1.0",
-    "id" : [ {
-      "type" : "com.symphony.user.streamID",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.content.chat",
       "version" : "1.0",
-      "value" : "one"
+      "id" : [ {
+        "type" : "com.symphony.user.streamID",
+        "version" : "1.0",
+        "value" : "one"
+      }, {
+        "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+        "version" : "1.0",
+        "value" : "room one"
+      } ]
     }, {
-      "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+      "type" : "org.finos.symphony.toolkit.workflow.content.chat",
       "version" : "1.0",
-      "value" : "room one"
-    } ]
-  }, {
-    "type" : "org.finos.symphony.toolkit.workflow.content.chat",
-    "version" : "1.0",
-    "id" : [ {
-      "type" : "com.symphony.user.streamID",
-      "version" : "1.0",
-      "value" : "abc123"
+      "id" : [ {
+        "type" : "com.symphony.user.streamID",
+        "version" : "1.0",
+        "value" : "abc123"
+      }, {
+        "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+        "version" : "1.0",
+        "value" : "tesxt room"
+      } ]
     }, {
-      "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+      "type" : "org.finos.symphony.toolkit.workflow.content.chat",
       "version" : "1.0",
-      "value" : "tesxt room"
+      "id" : [ {
+        "type" : "com.symphony.user.streamID",
+        "version" : "1.0",
+        "value" : "three"
+      }, {
+        "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+        "version" : "1.0",
+        "value" : "room three"
+      } ]
     } ]
-  }, {
-    "type" : "org.finos.symphony.toolkit.workflow.content.chat",
-    "version" : "1.0",
-    "id" : [ {
-      "type" : "com.symphony.user.streamID",
-      "version" : "1.0",
-      "value" : "three"
-    }, {
-      "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
-      "version" : "1.0",
-      "value" : "room three"
-    } ]
-  } ] ],
+  },
   "buttons" : {
     "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
     "version" : "1.0",
@@ -50,8 +54,7 @@
   "form" : {
     "type" : "org.finos.symphony.toolkit.workflow.fixture.roomAndDropdown",
     "version" : "1.0",
-    "dynOptions" : "a",
-    "c" : {
+    "chat" : {
       "type" : "org.finos.symphony.toolkit.workflow.content.chat",
       "version" : "1.0",
       "id" : [ {
@@ -63,7 +66,8 @@
         "version" : "1.0",
         "value" : "tesxt room"
       } ]
-    }
+    },
+    "dynOptions" : "a"
   },
   "dynoptions" : {
     "a" : "Great",

@@ -94,6 +94,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
 		User author = new SymphonyUser(1233l, "Rob Moffat", "rob.moffat@example.com");
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
+		Action.CURRENT_ACTION.set(a);
 		mc.accept(a);
 	}
 	
@@ -363,7 +364,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		
 		JsonNode node = new ObjectMapper().readTree(data.getValue());
 		Assertions.assertEquals("Error123", node.get(ErrorResponse.MESSAGE_KEY).asText());
-		Assertions.assertTrue(msg.getValue().contains("${entity.message}"));
+		Assertions.assertTrue(msg.getValue().contains("${entity.message!'Unknown Error'}"));
 
 		Mockito.clearInvocations();
 	}

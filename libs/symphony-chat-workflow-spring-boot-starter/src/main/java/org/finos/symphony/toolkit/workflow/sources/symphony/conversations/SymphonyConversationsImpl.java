@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.room;
+package org.finos.symphony.toolkit.workflow.sources.symphony.conversations;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
@@ -15,8 +16,11 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser
 import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 
+import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.MembershipList;
+import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamFilter;
 import com.symphony.api.model.StreamList;
 import com.symphony.api.model.StreamType;
@@ -30,38 +34,58 @@ import com.symphony.api.model.V3RoomSearchResults;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
+import com.symphony.user.StreamID;
 
 /**
  * Basic implementation of symphony rooms with no caching.
  * @author Rob Moffat
  *
  */
-public class SymphonyRoomsImpl extends AbstractStreamResolving implements SymphonyRooms {
+public class SymphonyConversationsImpl extends AbstractStreamResolving implements SymphonyConversations, InitializingBean {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(SymphonyRoomsImpl.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SymphonyConversationsImpl.class);
 
 	
 	private RoomMembershipApi rmApi;
+	private SymphonyIdentity botIdentity;
 	private List<User> defaultAdministrators = new ArrayList<User>();
+	private long botUserId;
 	
-	public SymphonyRoomsImpl(RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi) {
+	public SymphonyConversationsImpl(RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi, SymphonyIdentity botIdentity) {
 		super(streamsApi, usersApi);
 		this.rmApi = rmApi;
+		this.botIdentity = botIdentity;
 	}
 	
+	
 	@Override
-	public Set<Chat> getAllRooms() {
+	public Set<Addressable> getAllConversations() {
+		return getAllConversationsFiltered(new StreamFilter());
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public Set<Chat> getAllChats() {
 		StreamType st = new StreamType().type(TypeEnum.ROOM);
 		StreamFilter streamTypes = new StreamFilter().streamTypes(Collections.singletonList(st));
-		streamTypes.includeInactiveStreams(false);
-		Set<Chat> out = new HashSet<>();
+		return (Set<Chat>) (Set) getAllConversationsFiltered(streamTypes);
+	}
+
+	protected Set<Addressable> getAllConversationsFiltered(StreamFilter f) {
+		f.includeInactiveStreams(false);
+		Set<Addressable> out = new HashSet<>();
 
 		int skip = 0;
 		
 		StreamList sl;
 		do {
-			sl = streamsApi.v1StreamsListPost(null, streamTypes, skip, 50);
-			sl.forEach(s -> out.add(loadRoomById(s.getId())));
+			sl = streamsApi.v1StreamsListPost(null, f, skip, 50);
+			sl.forEach(si -> {
+				Addressable a  = convertToAddressable(si);
+				if (a != null) {
+					out.add(a);
+				}
+			});
 			skip += sl.size();
 		} while (sl.size() == 50);
 		
@@ -69,11 +93,47 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 		return out;
 	}
 
+	protected Addressable convertToAddressable(StreamAttributes si) {
+		switch (si.getStreamType().getType()) {
+			case "IM":
+				return loadUserByStreamAttributes(si);
+			case "MIM":
+				// not supported yet
+				return null;
+			case "ROOM":
+				return loadRoomByStreamAttributes(si);
+			default: 
+				return null;
+		}
+
+	}
+
+	protected SymphonyUser loadUserByStreamAttributes(StreamAttributes si) {
+		if (si.getStreamAttributes().getMembers().size() != 2) {
+			return null;
+		} else {
+			long userId = si.getStreamAttributes().getMembers().stream()
+				.filter(id -> id != botUserId)
+				.findFirst().orElseThrow();
+			
+			SymphonyUser out = new SymphonyUser(userId);
+			out.getId().add(new StreamID(si.getId()));
+			return out;
+		}
+	}
+	
+	protected SymphonyRoom loadRoomByStreamAttributes(StreamAttributes si) {
+		return new SymphonyRoom(si.getRoomAttributes().getName(), si.getId());
+	}
+
+
 	@Override
 	public SymphonyUser loadUserById(Long userId) {
 		UserV2 user = usersApi.v2UserGet(null, userId, null, null, true);
 		return new SymphonyUser(userId, user.getDisplayName(),user.getEmailAddress());
 	}
+	
+	
 	
 	@Override
 	public SymphonyUser loadUserByEmail(String name) {
@@ -105,7 +165,7 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 	}
 	
 	@Override
-	public SymphonyRoom ensureRoom(Chat r, List<User> users, Map<String, Object> meta) {
+	public SymphonyRoom ensureChat(Chat r, List<User> users, Map<String, Object> meta) {
 		String description = "";
 		String name = r.getName();
 		boolean isPublic = false;
@@ -168,7 +228,7 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 
 
 	@Override
-	public List<User> getRoomMembers(Chat r) {
+	public List<User> getChatMembers(Chat r) {
 		if (r instanceof SymphonyRoom) {
 			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
 			return ml.stream()
@@ -180,7 +240,7 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 	}
 
 	@Override
-	public List<User> getRoomAdmins(Chat r) {
+	public List<User> getChatAdmins(Chat r) {
 		if (r instanceof SymphonyRoom) {
 			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
 			return ml.stream()
@@ -199,5 +259,12 @@ public class SymphonyRoomsImpl extends AbstractStreamResolving implements Sympho
 
 	public void setDefaultAdministrators(List<User> defaultAdministrators) {
 		this.defaultAdministrators = defaultAdministrators;
+	}
+
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		com.symphony.api.model.User u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
+		botUserId = u.getId();
 	}
 }

@@ -17,10 +17,10 @@ import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.room.Rooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ public class SchedulerTests {
 	LeaderService leaderService;
 
 	@Mock
-	Rooms rooms;
+	Conversations rooms;
 
 	@InjectMocks
 	Scheduler scheduler = new Scheduler();
@@ -63,7 +63,7 @@ public class SchedulerTests {
 				.thenReturn(reminderList());
 
 		when(leaderService.isLeader(Mockito.any())).thenReturn(true);
-		when(rooms.getAllRooms()).thenReturn(createStreams());
+		when(rooms.getAllConversations()).thenReturn(createStreams());
 
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
@@ -85,7 +85,7 @@ public class SchedulerTests {
 
 	}
 
-	private Set<Chat> createStreams() {
+	private Set<Addressable> createStreams() {
 		return Collections.singleton(new SymphonyRoom("test", "1234"));
 	}
 

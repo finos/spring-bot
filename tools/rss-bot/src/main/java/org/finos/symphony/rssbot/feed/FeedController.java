@@ -16,10 +16,10 @@ import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.room.Rooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +46,7 @@ public class FeedController {
 	Notifier n;
 	
 	@Autowired
-	Rooms r;
+	Conversations r;
 	
 	@Autowired
 	ResponseHandlers rh;
@@ -90,7 +90,7 @@ public class FeedController {
 	private void adminCheck(User author, Addressable a, FeedList fl) {
 		if (fl.adminOnly) {
 			if (a instanceof Chat) {
-				if (!r.getRoomAdmins((Chat) a).contains(author)) {
+				if (!r.getChatAdmins((Chat) a).contains(author)) {
 					throw new RuntimeException("You need to be admin of this room to modify the feed list");
 				}
 			}

@@ -21,7 +21,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -42,13 +42,13 @@ public class TimeFinder extends AbstractActionConsumer  {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TimeFinder.class);
 
-	SymphonyRooms symphonyRooms;
+	SymphonyConversations symphonyRooms;
 	History h;
     ReminderProperties reminderProperties;
     ResponseHandlers rh;
 	StanfordCoreNLP stanfordCoreNLP;
 	
-	public TimeFinder(ErrorHandler errorHandler, SymphonyRooms symphonyRooms, History h,
+	public TimeFinder(ErrorHandler errorHandler, SymphonyConversations symphonyRooms, History h,
 			ReminderProperties reminderProperties, ResponseHandlers rh) {
 		super(errorHandler);
 		this.symphonyRooms = symphonyRooms;

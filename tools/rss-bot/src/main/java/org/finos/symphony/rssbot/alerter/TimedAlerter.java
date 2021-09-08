@@ -17,11 +17,11 @@ import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.room.Rooms;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +43,7 @@ public class TimedAlerter {
 	ResponseHandlers responseHandler;
 	
 	@Autowired
-	Rooms r;
+	Conversations r;
 	
 	@Autowired
 	History h;
@@ -105,7 +105,7 @@ public class TimedAlerter {
 		int[] count = { 0 };
 
 		if (leaderService.isLeader(self)) {
-			Set<Chat> allRooms = r.getAllRooms();
+			Set<Chat> allRooms = r.getAllConversations();
 			allRooms.stream().forEach(s -> count[0] += action.apply(s));
 			LOG.info("TimedAlerter processed "+allRooms.size()+" streams ");
 		} else {

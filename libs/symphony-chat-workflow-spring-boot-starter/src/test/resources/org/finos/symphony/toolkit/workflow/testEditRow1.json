@@ -52,6 +52,10 @@
       "type" : "org.symphonyoss.taxonomy.hashtag",
       "version" : "1.0",
       "value" : "org-finos-symphony-toolkit-workflow-fixture-testobject"
+    }, {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-testobjects"
     } ]
   },
   "errors" : {

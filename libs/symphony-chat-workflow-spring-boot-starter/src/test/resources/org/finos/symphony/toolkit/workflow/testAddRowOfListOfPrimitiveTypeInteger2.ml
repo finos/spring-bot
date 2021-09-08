@@ -64,7 +64,7 @@
     
     </header> 
     <body>
-      <#if entity.header.tags?size != 0>
+      <#if entity?? && entity.header?? && entity.header.tags?? && entity.header.tags?size != 0>
         <ul>
           <#list entity.header.tags as tag>
             <li><hash tag="${tag.value}" /></li>

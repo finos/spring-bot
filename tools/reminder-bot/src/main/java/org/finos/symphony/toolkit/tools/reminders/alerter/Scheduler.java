@@ -19,13 +19,13 @@ import org.finos.symphony.toolkit.tools.reminders.ReminderProperties;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.room.Rooms;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +49,13 @@ public class Scheduler {
     History h;
 
     @Autowired
-    Rooms rooms;
+    Conversations rooms;
 
     @Autowired
     ReminderProperties rp;
 
     @Autowired
-    SymphonyRooms symphonyRooms;
+    SymphonyConversations symphonyRooms;
 
     @Autowired
     StreamsApi streams;
@@ -75,7 +75,7 @@ public class Scheduler {
         LOG.info("TimedAlerter waking");
 
         if (leaderService.isLeader(self)) {
-            Set<Chat> allRooms = rooms.getAllRooms();
+            Set<Addressable> allRooms = rooms.getAllConversations();
 			allRooms.forEach(s -> action.accept(s));
             LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
         } else {

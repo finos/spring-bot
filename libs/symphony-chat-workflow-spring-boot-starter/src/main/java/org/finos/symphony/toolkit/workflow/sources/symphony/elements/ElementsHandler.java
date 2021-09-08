@@ -17,9 +17,9 @@ import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
@@ -46,11 +46,11 @@ public class ElementsHandler implements StreamEventConsumer {
 	FormConverter formConverter;
 	List<ActionConsumer> elementsConsumers;
 	SymphonyResponseHandler rh;
-	SymphonyRooms ruBuilder;
+	SymphonyConversations ruBuilder;
 	Validator v;
 	
 	public ElementsHandler(MessagesApi messagesApi, EntityJsonConverter jsonConverter,
-			FormConverter formConverter, List<ActionConsumer> elementsConsumers, SymphonyResponseHandler rh, SymphonyRooms ruBuilder, Validator v) {
+			FormConverter formConverter, List<ActionConsumer> elementsConsumers, SymphonyResponseHandler rh, SymphonyConversations ruBuilder, Validator v) {
 		this.messagesApi = messagesApi;
 		this.jsonConverter = jsonConverter;
 		this.formConverter = formConverter;

@@ -20,13 +20,13 @@ public class HeaderDetails {
 
 	private String name;
 	private String description;
-	private Collection<HashTag> tags = new ArrayList<HashTag>();
+	private List<HashTag> tags = new ArrayList<HashTag>();
 	
 	public HeaderDetails() {
 		super();
 	}
 	
-	public HeaderDetails(String name, String description, Collection<HashTag> tags) {
+	public HeaderDetails(String name, String description, List<HashTag> tags) {
 		super();
 		this.name = name;
 		this.description = description;
@@ -38,7 +38,7 @@ public class HeaderDetails {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public Collection<HashTag> getTags() {
+	public List<HashTag> getTags() {
 		return tags;
 	}
 	public void setTags(List<HashTag> tags) { 

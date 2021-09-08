@@ -10,8 +10,8 @@ import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,12 +27,12 @@ public class PresentationMLHandler implements StreamEventConsumer {
 	MessageMLParser messageParser;
 	EntityJsonConverter jsonConverter;
 	List<ActionConsumer> messageConsumers;
-	SymphonyRooms ruBuilder;
+	SymphonyConversations ruBuilder;
 		
 	public PresentationMLHandler(MessageMLParser messageParser,
 			EntityJsonConverter jsonConverter, 
 			List<ActionConsumer> messageConsumers, 
-			SymphonyRooms ruBuilder,
+			SymphonyConversations ruBuilder,
 			SymphonyIdentity botIdentity) {
 		this.messageParser = messageParser;
 		this.jsonConverter = jsonConverter;
