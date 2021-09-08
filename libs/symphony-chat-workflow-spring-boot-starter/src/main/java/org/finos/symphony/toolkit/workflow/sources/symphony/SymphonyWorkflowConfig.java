@@ -31,6 +31,8 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomName;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversationsImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
@@ -47,8 +49,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConve
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLWriter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -179,8 +179,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean 
 	@ConditionalOnMissingBean
-	public SymphonyRooms symphonyRooms() {
-		return new SymphonyRoomsImpl(roomMembershipApi, streamsApi, usersApi);
+	public SymphonyConversations symphonyRooms() {
+		return new SymphonyConversationsImpl(roomMembershipApi, streamsApi, usersApi, botIdentity);
 	}
 	
 	@Bean

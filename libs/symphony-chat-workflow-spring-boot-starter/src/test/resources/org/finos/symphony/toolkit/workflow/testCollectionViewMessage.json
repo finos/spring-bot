@@ -7,13 +7,13 @@
       "version" : "1.0",
       "name" : "org.finos.symphony.toolkit.workflow.fixture.OurController-callPerson",
       "buttonType" : "ACTION",
-      "text" : "Call Person"
+      "text" : "call"
     }, {
       "type" : "org.finos.symphony.toolkit.workflow.form.button",
       "version" : "1.0",
       "name" : "org.finos.symphony.toolkit.workflow.fixture.OurController-ok",
       "buttonType" : "ACTION",
-      "text" : "Ok"
+      "text" : "ok"
     } ]
   },
   "form" : {

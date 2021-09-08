@@ -112,6 +112,8 @@ public abstract class AbstractMockSymphonyTest {
 		@Bean
 		public UsersApi usersApi() {
 			UsersApi usersApi = Mockito.mock(UsersApi.class);
+			when(usersApi.v1UserGet(Mockito.eq("dummybot@example.com"), Mockito.isNull(), Mockito.anyBoolean()))
+				.thenReturn(new User().emailAddress("dummybot@example.com").id(654321l));
 			when(usersApi.v1UserGet(Mockito.eq("rob@example.com"), Mockito.isNull(), Mockito.anyBoolean()))
 				.thenReturn(new User().emailAddress("rob@example.com").id(765l));
 			when(usersApi.v2UserGet(Mockito.isNull(), Mockito.nullable(long.class), Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
@@ -134,6 +136,9 @@ public abstract class AbstractMockSymphonyTest {
 			throws FileNotFoundException, IOException, JsonMappingException, JsonProcessingException {
 		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
 	    ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
+	    
+        String expectedJson = loadJson(testStemJson);
+        String expectedML = loadML(testStemML);
 			
 		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
 				Mockito.isNull(), 
@@ -145,22 +150,27 @@ public abstract class AbstractMockSymphonyTest {
 				Mockito.isNull(), 
 				Mockito.isNull());
 		        
-	        System.out.println(data.getValue());
+	       System.out.println(data.getValue());
 	        
 	    new File("target/tests").mkdirs();
 	        
         FileOutputStream out1 = new FileOutputStream("target/tests/"+testStemML);
         StreamUtils.copy(msg.getValue(), StandardCharsets.UTF_8, out1);
+        
+        FileOutputStream out1ex = new FileOutputStream("target/tests/"+testStemML+".expected");
+        StreamUtils.copy(expectedML, StandardCharsets.UTF_8, out1ex);
 	        
         FileOutputStream out2 = new FileOutputStream("target/tests/"+testStemJson);
         StreamUtils.copy(data.getValue(), StandardCharsets.UTF_8, out2);
-	        
-        Assertions.assertTrue(loadML(testStemML).contentEquals(msg.getValue()));
-        compareJson(loadJson(testStemJson), data.getValue());
+
+        FileOutputStream out2ex = new FileOutputStream("target/tests/"+testStemJson+".expected");
+        StreamUtils.copy(expectedJson, StandardCharsets.UTF_8, out2ex);
+
+        Assertions.assertTrue(expectedML.contentEquals(msg.getValue()));
+		compareJson(expectedJson, data.getValue());
         
         return data.getValue();
-	}
-	
+	}	
 
     private String loadML(String string) throws IOException {
         return StreamUtils.copyToString(AbstractMockSymphonyTest.class.getResourceAsStream(string), Charset.forName("UTF-8")).replace("\r\n", "\n");

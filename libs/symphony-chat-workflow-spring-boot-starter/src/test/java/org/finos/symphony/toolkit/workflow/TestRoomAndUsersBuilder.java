@@ -9,13 +9,14 @@ import java.util.Collections;
 
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRoomsImpl;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversationsImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.symphony.api.model.ConversationSpecificStreamAttributes;
 import com.symphony.api.model.MemberInfo;
 import com.symphony.api.model.MembershipList;
 import com.symphony.api.model.RoomSpecificStreamAttributes;
@@ -23,14 +24,17 @@ import com.symphony.api.model.RoomSystemInfo;
 import com.symphony.api.model.Stream;
 import com.symphony.api.model.StreamAttributes;
 import com.symphony.api.model.StreamList;
+import com.symphony.api.model.StreamType;
 import com.symphony.api.model.V3RoomAttributes;
 import com.symphony.api.model.V3RoomDetail;
 import com.symphony.api.model.V3RoomSearchResults;
+import com.symphony.api.model.StreamType.TypeEnum;
+import com.symphony.api.model.UserIdList;
 
 public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 	
 	@Autowired
-	SymphonyRoomsImpl ruBuilder;
+	SymphonyConversationsImpl ruBuilder;
 	
 	@Test
 	public void testEnsureRoom() {
@@ -38,13 +42,24 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		
 		
 		// create room
-		when(streamsApi.v1StreamsListPost(Mockito.isNull(), Mockito.any(), Mockito.eq(0), Mockito.eq(0)))
+		when(streamsApi.v1StreamsListPost(Mockito.isNull(), Mockito.any(), Mockito.eq(0), Mockito.eq(50)))
 			.thenAnswer(c -> {
 				StreamList out = new StreamList();
 				out.add(new StreamAttributes()
 					.roomAttributes(new RoomSpecificStreamAttributes()
 						.name("Some Test Room"))
-					.id("abc123"));
+					.id("abc123")
+					.streamType(new StreamType().type(TypeEnum.ROOM)));
+				
+				UserIdList l = new UserIdList();
+				l.add(765l);	// robski
+				l.add(654321l); // the bot
+				
+				out.add(new StreamAttributes()
+						.streamAttributes(new ConversationSpecificStreamAttributes()
+							.members(l))
+						.id("283746")
+						.streamType(new StreamType().type(TypeEnum.IM)));
 				
 				return out;
 			});
@@ -62,9 +77,9 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		
 		SymphonyUser su = new SymphonyUser(2342l);
 		
-		SymphonyRoom out = ruBuilder.ensureRoom(rd, Collections.singletonList(su), SymphonyRooms.simpleMeta("Automated Test Room Created", true));
+		SymphonyRoom out = ruBuilder.ensureChat(rd, Collections.singletonList(su), SymphonyConversations.simpleMeta("Automated Test Room Created", true));
 		assertEquals("Some Test Room", out.getName());
-		assertEquals(1, ruBuilder.getAllRooms().size());
+		assertEquals(2, ruBuilder.getAllConversations().size());
 		assertEquals("456", out.getStreamId());
 
 		// return members
@@ -74,7 +89,7 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 	
 		Assertions.assertEquals(
 			Collections.singletonList(new SymphonyUser(123l, "Roberto Banquet", "r@example.com")), 
-					ruBuilder.getRoomMembers(out));
+					ruBuilder.getChatMembers(out));
 	}
 	
 	@Test

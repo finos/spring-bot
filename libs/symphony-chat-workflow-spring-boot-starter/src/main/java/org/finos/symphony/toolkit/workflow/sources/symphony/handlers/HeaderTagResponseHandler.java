@@ -37,7 +37,7 @@ public class HeaderTagResponseHandler implements ResponseHandler {
 			
 			// check through other stuff in the json response
 			for (Object o2 : workResponse.getData().values()) {
-				Work w = o2.getClass().getAnnotation(Work.class);
+				Work w = o2 != null ? o2.getClass().getAnnotation(Work.class) : null;
 				if ((w != null) && (w.index())) {
 					tags.addAll(TagSupport.classHashTags(o2));
 				}

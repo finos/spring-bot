@@ -23,7 +23,11 @@
     "version" : "1.0",
     "name" : null,
     "description" : null,
-    "tags" : [ ]
+    "tags" : [ {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-testprimitives"
+    }]
   },
   "errors" : {
     "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
