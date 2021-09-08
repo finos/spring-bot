@@ -37,7 +37,6 @@ public class ReminderController {
 	@ChatButton(buttonText = "Add", value = Reminder.class, showWhen = WorkMode.EDIT)
 	public ReminderList addreminder(Reminder cr, Addressable a, User author) {
 		ReminderList rl = list(a);
-		cr.setAuthor(author);
 		rl.reminders.add(cr);
 		return rl;
 	

@@ -108,7 +108,6 @@ public class TimeFinder extends AbstractActionConsumer  {
 						
 						Reminder reminder = new Reminder();
 						reminder.setDescription(messageInString);
-						reminder.setAuthor(currentUser);
 						reminder.setLocalTime(ldt);
 
 						WorkResponse wr = new WorkResponse(a, reminder, WorkMode.EDIT);
