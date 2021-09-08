@@ -112,9 +112,13 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 		if (si.getStreamAttributes().getMembers().size() != 2) {
 			return null;
 		} else {
-			long userId = si.getStreamAttributes().getMembers().stream()
+			Long userId = si.getStreamAttributes().getMembers().stream()
 				.filter(id -> id != botUserId)
-				.findFirst().orElseThrow();
+				.findFirst().orElse(null);
+			
+			if (userId == null) {
+				return null;
+			}
 			
 			SymphonyUser out = new SymphonyUser(userId);
 			out.getId().add(new StreamID(si.getId()));

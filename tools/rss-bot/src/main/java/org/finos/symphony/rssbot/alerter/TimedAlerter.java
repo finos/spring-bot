@@ -100,12 +100,12 @@ public class TimedAlerter {
 		}
 	}
 
-	public int onAllStreams(Function<Chat, Integer> action) {
+	public int onAllStreams(Function<Addressable, Integer> action) {
 		LOG.info("TimedAlerter waking");
 		int[] count = { 0 };
 
 		if (leaderService.isLeader(self)) {
-			Set<Chat> allRooms = r.getAllConversations();
+			Set<Addressable> allRooms = r.getAllConversations();
 			allRooms.stream().forEach(s -> count[0] += action.apply(s));
 			LOG.info("TimedAlerter processed "+allRooms.size()+" streams ");
 		} else {

@@ -26,8 +26,7 @@ public class Reminder {
 	@Display(name = "Remind At")
 	LocalDateTime localTime;
 
-	User author = Action.CURRENT_ACTION
-			.get().getUser();
+	User author = Action.CURRENT_ACTION.get() == null ? null : Action.CURRENT_ACTION.get().getUser();
 
 	public LocalDateTime getLocalTime() {
 		return localTime;
