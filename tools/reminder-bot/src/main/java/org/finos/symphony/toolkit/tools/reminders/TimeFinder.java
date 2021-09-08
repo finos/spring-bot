@@ -78,6 +78,7 @@ public class TimeFinder extends AbstractActionConsumer  {
     
 	@Override
 	public void accept(Action t) {
+		Action.CURRENT_ACTION.set(t);
 		try {
 			if (t instanceof SimpleMessageAction) {
 				Message m = ((SimpleMessageAction) t).getWords();
@@ -91,7 +92,7 @@ public class TimeFinder extends AbstractActionConsumer  {
 					System.out.println("temporal expression: " + cem.text());
 					System.out.println("temporal value: " + cem.coreMap().get(TimeAnnotations.TimexAnnotation.class));
 					Timex timex = cem.coreMap().get(TimeAnnotations.TimexAnnotation.class);
-
+					
 					LocalDateTime ldt = toLocalTime(timex);
 
 					if (ldt != null) {
@@ -122,6 +123,10 @@ public class TimeFinder extends AbstractActionConsumer  {
 	}
 
 	private LocalDateTime toLocalTime(Timex time) {
+		if (time == null ) {
+			return null;
+		}
+		
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
 			Instant instantTimeForReminder;

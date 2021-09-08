@@ -16,7 +16,9 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.
  */
 
 @Work
-@Template(edit = "create-reminder", view="display-reminder")
+@Template(
+		//edit = "create-reminder", 
+		view="display-reminder")
 public class Reminder {
 	
 	String description;

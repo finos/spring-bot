@@ -39,8 +39,6 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 		Method m = hm.getMethod(); 
 		Object o = hm.getBean();
 		
-		Action.CURRENT_ACTION.set(action());
-		
 		WorkflowResolvers wr = buildWorkflowResolvers(action());
 		Object[] args = new Object[hm.getMethodParameters().length];
 		for (int i = 0; i < args.length; i++) {
