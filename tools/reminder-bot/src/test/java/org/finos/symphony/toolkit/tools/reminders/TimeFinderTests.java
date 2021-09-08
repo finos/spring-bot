@@ -1,6 +1,5 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
-
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -10,161 +9,173 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.actions.Action;
+import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedContent;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.SimpleMessageAction;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.util.ErrorHandler;
 
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 @ExtendWith(MockitoExtension.class)
 public class TimeFinderTests {
 
-    @Mock
-    StanfordCoreNLP stanfordCoreNLP;
+	@Mock
+	StanfordCoreNLP stanfordCoreNLP;
 
-    @Mock
-    ReminderProperties reminderProperties;
+	@Mock
+	ReminderProperties reminderProperties;
 
-    @Mock
-    History history;
+	@Mock
+	History history;
 
-    @InjectMocks
-    TimeFinder timefinder = new TimeFinder();
+	@Mock
+	ErrorHandler eh;
 
+	@Mock
+	ResponseHandlers responseHandlers;
 
-    private SimpleMessageAction getAction(){
-        SimpleMessageAction simpleMessageAction = new SimpleMessageAction(null,getAddressable(),getUser(),getMessage(),null);
-        return simpleMessageAction;
+	@InjectMocks
+	TimeFinder timefinder;
+	
+	private SimpleMessageAction getAction() {
+		SimpleMessageAction simpleMessageAction = new SimpleMessageAction(getAddressable(), getUser(), getMessage(),
+				null);
+		Action.CURRENT_ACTION.set(simpleMessageAction);
+		return simpleMessageAction;
+	}
 
-    }
-
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	@Test
-    public void applyTest(){
-        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
-        timefinder.initializingStanfordProperties();
-        List<Response> responses = timefinder.apply(getAction());
-        Assertions.assertEquals(responses.size(),1);
-        WorkResponse fr = (WorkResponse)responses.get(0);
-        Reminder r = (Reminder) fr.getFormObject();
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        Assertions.assertEquals(r.getLocalTime(),LocalDateTime.of(year,month+1,day,21,20,0));
+	public void applyTest() {
+		SimpleMessageAction action = getAction();
+		when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
+				.thenReturn(reminderList());
 
-    }
+		timefinder.initializingStanfordProperties();
+		timefinder.accept(action);
 
-    private Optional<ReminderList> reminderList(){
-        Reminder reminder = new Reminder();
-        reminder.setDescription("Check at 9:30 pm");
-        reminder.setLocalTime(LocalDateTime.now());
-        reminder.setAuthor(getUser());
-        List<Reminder> reminders = new ArrayList<>();
-        reminders.add(reminder);
-        ReminderList rl = new ReminderList();
-        rl.setRemindBefore(10);
-        rl.setTimeZone(ZoneId.of("Asia/Calcutta"));
+		ArgumentCaptor<Response> args = ArgumentCaptor.forClass(Response.class);
+		Mockito.verify(responseHandlers).accept(args.capture());
 
-        rl.setReminders(reminders);
-        Optional<ReminderList> rrl = Optional.of(rl);
-        return rrl;
-    }
+		Assertions.assertEquals(args.getAllValues().size(), 1);
+		WorkResponse fr = (WorkResponse) args.getValue();
+		Reminder r = (Reminder) fr.getFormObject();
+		Calendar c = Calendar.getInstance();
+		int year = c.get(Calendar.YEAR);
+		int month = c.get(Calendar.MONTH);
+		int day = c.get(Calendar.DAY_OF_MONTH);
+		Assertions.assertEquals(r.getLocalTime(), LocalDateTime.of(year, month + 1, day, 21, 20, 0));
 
+	}
 
+	private Optional<ReminderList> reminderList() {
+		Reminder reminder = new Reminder();
+		reminder.setDescription("Check at 9:30 pm");
+		reminder.setLocalTime(LocalDateTime.now());
+		reminder.setAuthor(getUser());
+		List<Reminder> reminders = new ArrayList<>();
+		reminders.add(reminder);
+		ReminderList rl = new ReminderList();
+		rl.setRemindBefore(10);
+		rl.setTimeZone(ZoneId.of("Asia/Calcutta"));
 
-    private User getUser(){
-        User user = new User() {
-            @Override
-            public String getEmailAddress() {
-                return "New Address";
-            }
+		rl.setReminders(reminders);
+		Optional<ReminderList> rrl = Optional.of(rl);
+		return rrl;
+	}
 
-            @Override
-            public Type getTagType() {
-                return null;
-            }
+	private User getUser() {
+		User user = new User() {
+			@Override
+			public String getEmailAddress() {
+				return "New Address";
+			}
 
-            @Override
-            public String getName() {
-                return "Sherlock Holmes";
-            }
+			@Override
+			public Type getTagType() {
+				return null;
+			}
 
-            @Override
-            public String getText() {
-                return null;
-            }
-        };
-        return user;
+			@Override
+			public String getName() {
+				return "Sherlock Holmes";
+			}
 
-    }
-    private Message getMessage(){
-        Message m = new Message() {
-            @Override
-            public List<Content> getContents() {
-                return null;
-            }
+			@Override
+			public String getText() {
+				return null;
+			}
+		};
+		return user;
 
-            @Override
-            public OrderedContent<Content> buildAnother(List<Content> contents) {
-                return null;
-            }
+	}
 
-            @Override
-            public String getText() {
-                return "check at 9:30 pm";
-            }
-        };
-        return m;
-    }
+	private Message getMessage() {
+		Message m = new Message() {
+			@Override
+			public List<Content> getContents() {
+				return null;
+			}
 
-    private Addressable getAddressable(){
-        Addressable a = new Addressable() {
+			@Override
+			public OrderedContent<Content> buildAnother(List<Content> contents) {
+				return null;
+			}
 
-            @Override
-            public int hashCode() {
-                return super.hashCode();
-            }
+			@Override
+			public String getText() {
+				return "check at 9:30 pm";
+			}
+		};
+		return m;
+	}
 
-            @Override
-            public boolean equals(Object obj) {
-                return super.equals(obj);
-            }
+	private Addressable getAddressable() {
+		Addressable a = new Addressable() {
 
-            @Override
-            protected Object clone() throws CloneNotSupportedException {
-                return super.clone();
-            }
+			@Override
+			public int hashCode() {
+				return super.hashCode();
+			}
 
-            @Override
-            public String toString() {
-                return super.toString();
-            }
+			@Override
+			public boolean equals(Object obj) {
+				return super.equals(obj);
+			}
 
-            @Override
-            protected void finalize() throws Throwable {
-                super.finalize();
-            }
-        };
-        return a;
+			@Override
+			protected Object clone() throws CloneNotSupportedException {
+				return super.clone();
+			}
 
-    }
+			@Override
+			public String toString() {
+				return super.toString();
+			}
 
+			@Override
+			protected void finalize() throws Throwable {
+				super.finalize();
+			}
+		};
+		return a;
+
+	}
 
 }

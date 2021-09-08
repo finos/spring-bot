@@ -14,6 +14,8 @@
 
     <td><b>Local Time</b></td>
 
+    <td><b>Author</b></td>
+
   </tr></thead><tbody>
   <#list entity.form.reminders as iB>
   <tr>
@@ -22,6 +24,7 @@
 
    <td >${iB.localTime!''}</td>
 
+   <td >${iB.author.id[1].value!''}</td>
    <td style="text-align:center; width:10%" ><checkbox name="reminders.${iB?index}.selected" /></td>
    <td style="text-align:center;" ><button name="reminders[${iB?index}].table-edit-row">Edit</button></td>
   </tr>
@@ -33,11 +36,6 @@
          name="reminders.table-delete-rows"
          type="action">
       Delete Selected Rows
-    </button>
-    <button
-         name="save"
-         type="action">
-      Done
     </button>
   </p>
 </form>
