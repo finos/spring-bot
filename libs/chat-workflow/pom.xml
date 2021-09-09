@@ -8,7 +8,7 @@
     <parent>
     <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>symphony-java-toolkit</artifactId>
-    <version>7.20.4-SNAPSHOT</version>
+    <version>7.20.6-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent> 
   
@@ -18,7 +18,6 @@
   </properties>
   
   <dependencies>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>

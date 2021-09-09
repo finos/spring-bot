@@ -139,3 +139,11 @@
  - Fix for #180, Kore AI Bot Health Unreliable
  - Fix for #171, Chat Workflow Delete/Checkbox alignment display
  - Fix for #141, Handle Primitives in Chat Workflow
+
+## Jul 28, 2021
+ - Fix for #183, camelcase issue for methods
+ - Fix for #192, FormConverter doesn't use same object mapper as EntityJsonConverter
+ - Migrated from InstantConverter to TimeConverter, which supports Zone and LocaldateTime
+ 
+## Sep 9, 2021
+ - Fix for #214, support for escape character

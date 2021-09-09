@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit.tools</groupId>
 		<artifactId>teamcity-symphony-integration</artifactId>
-		<version>7.20.4-SNAPSHOT</version>
+		<version>7.20.6-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>build</artifactId>
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit.tools</groupId>
 			<artifactId>teamcity-symphony-integration-server</artifactId>
-			<version>7.20.4-SNAPSHOT</version>
+			<version>7.20.6-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>

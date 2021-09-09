@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>7.20.4-SNAPSHOT</version>
+		<version>7.20.6-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -16,6 +16,7 @@
 	<description>Sends RSS Feeds to Symphony Rooms</description>
 
 	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.symphony.rssbot.RSSBot</spring-boot.run.main-class>
 	</properties>
 
