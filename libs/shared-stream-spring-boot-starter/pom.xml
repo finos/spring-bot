@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>7.20.5-SNAPSHOT</version>
+		<version>7.20.6-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -23,19 +23,19 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>bindings</artifactId>
-			<version>7.20.5-SNAPSHOT</version>
+			<version>7.20.6-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>identity</artifactId>
-			<version>7.20.5-SNAPSHOT</version>
+			<version>7.20.6-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>entity-json</artifactId>
-			<version>7.20.5-SNAPSHOT</version>
+			<version>7.20.6-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>7.20.5-SNAPSHOT</version>
+			<version>7.20.6-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
