@@ -224,10 +224,10 @@ public class SymphonyWorkflowConfig {
 	protected List<VersionSpace> scanForWorkClasses() {
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
 		scanner.addIncludeFilter(new AnnotationTypeFilter(Work.class));
-		Set<BeanDefinition> toAdd = scanner.findCandidateComponents(ChatWorkflowConfig.class.getPackageName());
+		Set<BeanDefinition> toAdd = scanner.findCandidateComponents(getPackageName(ChatWorkflowConfig.class));
 		
 		for (String ent : ac.getBeanNamesForAnnotation(SpringBootApplication.class)) {
-			String packageName = ac.getBean(ent).getClass().getPackageName();
+			String packageName = getPackageName(ac.getBean(ent).getClass());
 			Set<BeanDefinition> user = scanner.findCandidateComponents(packageName);
 			toAdd.addAll(user);
 		}
@@ -262,6 +262,13 @@ public class SymphonyWorkflowConfig {
 				})
 			.collect(Collectors.toList());
 		return versionSpaces;
+	}
+
+	protected String getPackageName(Class<?> c) {
+		String cn = c.getName();
+        int dot = cn.lastIndexOf('.');
+        String pn = (dot != -1) ? cn.substring(0, dot).intern() : "";
+        return pn;
 	}
 	
 	@Bean
