@@ -58,6 +58,7 @@ public class SchedulerTests {
 
 	LocalDateTime expectedTime = LocalDateTime.now();
 
+<<<<<<< HEAD
 	@SuppressWarnings("unchecked")
 	@Test
 	public void handleFeedLeaderTest() {
@@ -66,6 +67,21 @@ public class SchedulerTests {
 
 		when(leaderService.isLeader(Mockito.any())).thenReturn(true);
 		when(rooms.getAllConversations()).thenReturn(createStreams());
+=======
+    @Mock
+    Workflow w;
+
+    @InjectMocks
+    Scheduler scheduler = new Scheduler();
+
+    LocalDateTime expectedTime = LocalDateTime.now();
+
+
+    @SuppressWarnings("unchecked")
+	//@Test
+    public void handleFeedLeaderTest(){
+        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
+>>>>>>> master
 
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
@@ -79,6 +95,7 @@ public class SchedulerTests {
 
 	}
 
+<<<<<<< HEAD
 	@Test
 	public void handleFeedNonLeaderTest() {
 		when(leaderService.isLeader(Mockito.any())).thenReturn(false);
@@ -130,4 +147,70 @@ public class SchedulerTests {
 		return user;
 
 	}
+=======
+    }
+    @SuppressWarnings("unchecked")
+	//@Test
+    public void handleFeedNonLeaderTest(){
+        when(leaderService.isLeader(Mockito.any())).thenReturn(false);
+        scheduler.everyFiveMinutesWeekday();
+        verify(responseHandler, VerificationModeFactory.noInteractions()).accept(Mockito.any(FormResponse.class));
+
+    }
+
+
+      private StreamList createStreams(){
+        StreamAttributes streamAttributes = new StreamAttributes();
+        StreamList sl = new StreamList();
+        streamAttributes.setId("1234");
+        sl.add(streamAttributes);
+        return sl;
+      }
+
+    private Optional<ReminderList> reminderList(){
+        Reminder reminder = new Reminder();
+        reminder.setDescription("Check at 9 pm");
+        reminder.setLocalTime(expectedTime);
+        reminder.setAuthor(getUser());
+        List<Reminder> reminders = new ArrayList<>();
+        reminders.add(reminder);
+        ReminderList rl = new ReminderList();
+        rl.setTimeZone(ZoneId.of("Europe/London"));
+
+        rl.setReminders(reminders);
+        Optional<ReminderList> rrl = Optional.of(rl);
+        return rrl;
+    }
+
+    private User getUser(){
+        User user = new User() {
+            @Override
+            public String getAddress() {
+                return "New Address";
+            }
+
+            @Override
+            public String getId() {
+                return "1234";
+            }
+
+            @Override
+            public Type getTagType() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return "Sherlock Holmes";
+            }
+
+            @Override
+            public String getText() {
+                return null;
+            }
+        };
+        return user;
+
+    }
+>>>>>>> master
 }

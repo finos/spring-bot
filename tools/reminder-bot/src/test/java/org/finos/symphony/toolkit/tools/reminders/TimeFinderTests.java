@@ -60,6 +60,7 @@ public class TimeFinderTests {
 		return simpleMessageAction;
 	}
 
+<<<<<<< HEAD
 	@SuppressWarnings("unchecked")
 	@Test
 	public void applyTest() {
@@ -177,5 +178,124 @@ public class TimeFinderTests {
 		return a;
 
 	}
+=======
+    @SuppressWarnings("unchecked")
+	//@Test
+    public void applyTest(){
+        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
+        timefinder.initializingStanfordProperties();
+        List<Response> responses = timefinder.apply(getAction());
+        Assertions.assertEquals(responses.size(),1);
+        FormResponse fr = (FormResponse)responses.get(0);
+        Reminder r = (Reminder) fr.getFormObject();
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        Assertions.assertEquals(r.getLocalTime(),LocalDateTime.of(year,month+1,day,21,20,0));
+
+    }
+
+    private Optional<ReminderList> reminderList(){
+        Reminder reminder = new Reminder();
+        reminder.setDescription("Check at 9:30 pm");
+        reminder.setLocalTime(LocalDateTime.now());
+        reminder.setAuthor(getUser());
+        List<Reminder> reminders = new ArrayList<>();
+        reminders.add(reminder);
+        ReminderList rl = new ReminderList();
+        rl.setRemindBefore(10);
+        rl.setTimeZone(ZoneId.of("Asia/Calcutta"));
+
+        rl.setReminders(reminders);
+        Optional<ReminderList> rrl = Optional.of(rl);
+        return rrl;
+    }
+
+
+
+    private User getUser(){
+        User user = new User() {
+            @Override
+            public String getAddress() {
+                return "New Address";
+            }
+
+            @Override
+            public String getId() {
+                return "1234";
+            }
+
+            @Override
+            public Type getTagType() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return "Sherlock Holmes";
+            }
+
+            @Override
+            public String getText() {
+                return null;
+            }
+        };
+        return user;
+
+    }
+    private Message getMessage(){
+        Message m = new Message() {
+            @Override
+            public List<Content> getContents() {
+                return null;
+            }
+
+            @Override
+            public OrderedContent<Content> buildAnother(List<Content> contents) {
+                return null;
+            }
+
+            @Override
+            public String getText() {
+                return "check at 9:30 pm";
+            }
+        };
+        return m;
+    }
+
+    private Addressable getAddressable(){
+        Addressable a = new Addressable() {
+
+            @Override
+            public int hashCode() {
+                return super.hashCode();
+            }
+
+            @Override
+            public boolean equals(Object obj) {
+                return super.equals(obj);
+            }
+
+            @Override
+            protected Object clone() throws CloneNotSupportedException {
+                return super.clone();
+            }
+
+            @Override
+            public String toString() {
+                return super.toString();
+            }
+
+            @Override
+            protected void finalize() throws Throwable {
+                super.finalize();
+            }
+        };
+        return a;
+
+    }
+
+>>>>>>> master
 
 }

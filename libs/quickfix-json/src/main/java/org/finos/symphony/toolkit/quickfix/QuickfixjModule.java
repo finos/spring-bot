@@ -34,7 +34,7 @@ import quickfix.field.TargetCompID;
 public class QuickfixjModule extends Module {
 
 	private static final String NAME = "QuickFix Module";
-	private static final Version VERSION = new Version(1, 0, 0, "", "com.db.symphony", "jackson-quickfix-mapper");
+	private static final Version VERSION = new Version(1, 0, 0, "", "org.finos.symphony.toolkit", "jackson-quickfix-mapper");
 	private Session s;
 	
 	public QuickfixjModule(Session s) {
