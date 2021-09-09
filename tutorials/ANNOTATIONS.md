@@ -25,7 +25,7 @@ Click on the � to get the Edit button
 
 ## @Template
 
-This Annotation conveys the chat-workflow-spring-boot-starter to use a template rather than build its 
+This Annotation conveys the chat-workflow to use a template rather than build its 
 Own
 
 
