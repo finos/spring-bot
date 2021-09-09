@@ -98,6 +98,7 @@ public class FeedController {
 	}
 
 	@ChatRequest(description = "Stop Feeding (can be resumed later)",  value="pause")
+	@ChatButton(buttonText = "pause", value = FeedList.class)
 	public FeedList pause(FeedListCache rc, Addressable a, User author) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
@@ -107,6 +108,7 @@ public class FeedController {
 	}
 
 	@ChatRequest(value="resume", description = "Resume feeds if paused")
+	@ChatButton(buttonText = "resume", value = FeedList.class)
 	public FeedList resume(FeedListCache rc, Addressable a, User author) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
@@ -125,6 +127,8 @@ public class FeedController {
 	}
 	
 	@ChatRequest(value = "filter")
+	@ChatResponseBody(workMode = WorkMode.EDIT)
+	@ChatButton(buttonText = "Add Filter", value = FeedList.class)
 	public Filter createFilterForm() {
 		return new Filter();
 	}

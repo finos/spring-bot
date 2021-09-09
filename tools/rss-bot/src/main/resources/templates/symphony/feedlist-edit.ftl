@@ -18,7 +18,7 @@
   
    <td style="text-align:center;" ><button name="feeds.table-delete-rows">Delete</button></td>
   </tr></thead><tbody>
-  <#list entity.formdata.feeds as iB>
+  <#list entity.form.feeds as iB>
   <tr>
   
     <td >${iB.name!''}</td>
@@ -41,7 +41,7 @@
     <td ><b>Usage</b></td>
    <td style="text-align:center;" ><button name="filters.table-delete-rows">Delete</button></td>
   </tr></thead><tbody>
-  <#list entity.formdata.filters as iB>
+  <#list entity.form.filters as iB>
   <tr>
   
    <td >${iB.toMatch!''}</td>
