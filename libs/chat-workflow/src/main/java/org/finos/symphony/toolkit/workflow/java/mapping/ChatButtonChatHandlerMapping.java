@@ -1,6 +1,7 @@
 package org.finos.symphony.toolkit.workflow.java.mapping;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,21 +58,10 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 	public List<ChatMapping<ChatButton>> getAllHandlers(Addressable a, User u) {
 		mappingRegistry.acquireReadLock();
 
-		List<ChatMapping<ChatButton>> out = mappingRegistry.getRegistrations().values().stream()
-				.filter(cm -> canBePerformedHere(cm, a, u))
-				.collect(Collectors.toList());
+		List<ChatMapping<ChatButton>> out = new ArrayList<>(mappingRegistry.getRegistrations().values());
 
 		mappingRegistry.releaseReadLock();
 		return out;
-	}
-
-	private boolean canBePerformedHere(MappingRegistration<ChatButton> cm, Addressable a, User u) {
-		ChatButton cb = cm.getMapping();
-		if (cb.admin() && (a instanceof Chat)) {
-			return conversations.getChatAdmins((Chat) a).contains(u);
-		} else {
-			return true;
-		}
 	}
 
 	@Override
@@ -98,10 +88,23 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 				return null;
 			}
 
+			private boolean canBePerformedHere(FormAction a) {
+				ChatButton cb = getMapping();
+				if (cb.admin() && (a.getAddressable() instanceof Chat)) {
+					return conversations.getChatAdmins((Chat) a.getAddressable()).contains(a.getUser());
+				} else {
+					return true;
+				}
+			}
+
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
 				MappingRegistration<?> me = this;
 					
 				if (!a.getAction().equals(this.getUniqueName())) {
+					return null;
+				}
+				
+				if (!canBePerformedHere(a)) {
 					return null;
 				}
 				

@@ -1,5 +1,3 @@
-9.  Security on ExposedHandlerMapping (certain actions for certain users)
-
 DOCUMENTATION TOPICS
 
 1.  Migration

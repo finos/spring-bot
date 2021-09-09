@@ -92,7 +92,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		jsonObjects.put("2", new HashTag("SomeTopic"));
 		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
 		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
-		User author = new SymphonyUser(1233l, "Rob Moffat", "rob.moffat@example.com");
+		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		Action.CURRENT_ACTION.set(a);
 		mc.accept(a);
@@ -143,7 +143,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		
 		Object secondArgument = oc.lastArguments.get(1);
 		Assertions.assertTrue(User.class.isAssignableFrom(secondArgument.getClass()));
-		Assertions.assertEquals("rob.moffat@example.com", ((User)secondArgument).getEmailAddress());
+		Assertions.assertEquals(ROB_EXAMPLE_EMAIL, ((User)secondArgument).getEmailAddress());
 	}
 	
 	@Test
@@ -341,7 +341,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		// there are no buttons for form 2.
 		JsonNode node = new ObjectMapper().readTree(data.getValue());
 		JsonNode buttons = node.get(ButtonList.KEY).get("contents");
-		Assertions.assertEquals(0, buttons.size());
+		Assertions.assertEquals(0, buttons.size());	
 		Assertions.assertFalse(msg.getValue().contains("<form"));
 	}
 	

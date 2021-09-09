@@ -6,7 +6,9 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 
 import java.util.Collections;
+import java.util.List;
 
+import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
@@ -87,9 +89,10 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		ml.add(new MemberInfo().id(123l).owner(true));
 		when(rmApi.v1RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull())).thenReturn(ml);
 	
+		List<User> chatMembers = ruBuilder.getChatMembers(out);
 		Assertions.assertEquals(
-			Collections.singletonList(new SymphonyUser(123l, "Roberto Banquet", "r@example.com")), 
-					ruBuilder.getChatMembers(out));
+			Collections.singletonList(new SymphonyUser(123l, ROB_NAME, ROB_EXAMPLE_EMAIL)), 
+					chatMembers);
 	}
 	
 	@Test
