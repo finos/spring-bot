@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow.java.mapping;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -67,21 +68,10 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 	public List<ChatMapping<ChatRequest>> getAllHandlers(Addressable a, User u) {
 		mappingRegistry.acquireReadLock();
 
-		List<ChatMapping<ChatRequest>> out = mappingRegistry.getRegistrations().values().stream()
-				.filter(cm -> canBePerformedHere(cm, a, u))
-				.collect(Collectors.toList());
+		List<ChatMapping<ChatRequest>> out = new ArrayList<>(mappingRegistry.getRegistrations().values());
 
 		mappingRegistry.releaseReadLock();
 		return out;
-	}
-
-	protected boolean canBePerformedHere(MappingRegistration<ChatRequest> cm, Addressable a, User u) {
-		ChatRequest cr = cm.getMapping();
-		if (cr.admin() && (a instanceof Chat)) {
-			return conversations.getChatAdmins((Chat) a).contains(u);
-		} else {
-			return true;
-		}
 	}
 
 	@Override
@@ -176,11 +166,27 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			public ChatHandlerExecutor getExecutor(Action a) {
 				
 				if (a instanceof SimpleMessageAction) {
+					
+					if (!canBePerformedHere((SimpleMessageAction) a)) {
+						return null;
+					}
+					
 					return matchesSimpleMessageAction((SimpleMessageAction)a);
 				}
 				
 				return null;
 			}
+			
+			private boolean canBePerformedHere(SimpleMessageAction a) {
+				ChatRequest cb = getMapping();
+				if (cb.admin() && (a.getAddressable() instanceof Chat)) {
+					List<User> chatAdmins = conversations.getChatAdmins((Chat) a.getAddressable());
+					return chatAdmins.contains(a.getUser());
+				} else {
+					return true;
+				}
+			}
+			
 
 			private ChatHandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {
 				return pathMatches(a.getWords(), a);
