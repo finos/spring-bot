@@ -12,7 +12,9 @@ import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
@@ -23,12 +25,14 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 	private WorkflowResolversFactory wrf;
 	private ResponseHandlers rh;
 	private List<ResponseConverter> converters;
+	private Conversations conversations;
 	
-	public ChatButtonChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
+	public ChatButtonChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters, Conversations conversations) {
 		super();
 		this.wrf = wrf;
 		this.rh = rh;
 		this.converters = converters;
+		this.conversations = conversations;
 	}
 
 	@Override
@@ -62,8 +66,12 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 	}
 
 	private boolean canBePerformedHere(MappingRegistration<ChatButton> cm, Addressable a, User u) {
-		return true;
-		//TODO: write this
+		ChatButton cb = cm.getMapping();
+		if (cb.admin() && (a instanceof Chat)) {
+			return conversations.getChatAdmins((Chat) a).contains(u);
+		} else {
+			return true;
+		}
 	}
 
 	@Override

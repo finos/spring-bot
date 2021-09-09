@@ -45,6 +45,7 @@ public class TableAddRow extends AbstractTableActionConsumer {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	protected void addNewRowAction(FormAction ea, String verb) {
 		String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
 		tableLocation = TableEditRow.fixSpel(tableLocation);

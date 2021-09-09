@@ -1,6 +1,4 @@
 9.  Security on ExposedHandlerMapping (certain actions for certain users)
-18. placeholder button if the user doesn't add one.
-20. MessageMLWriter for tags.
 
 DOCUMENTATION TOPICS
 

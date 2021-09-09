@@ -17,10 +17,12 @@ import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.WildcardContent.Arity;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
@@ -33,12 +35,14 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 	private WorkflowResolversFactory wrf;
 	private ResponseHandlers rh;
 	private List<ResponseConverter> converters;
+	private Conversations conversations;
 	
-	public ChatRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters) {
+	public ChatRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters, Conversations conversations) {
 		super();
 		this.wrf = wrf;
 		this.rh = rh;
 		this.converters = converters;
+		this.conversations = conversations;
 	}
 
 	@Override
@@ -71,9 +75,13 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 		return out;
 	}
 
-	private boolean canBePerformedHere(MappingRegistration<ChatRequest> cm, Addressable a, User u) {
-		return true;
-		//TODO: write this
+	protected boolean canBePerformedHere(MappingRegistration<ChatRequest> cm, Addressable a, User u) {
+		ChatRequest cr = cm.getMapping();
+		if (cr.admin() && (a instanceof Chat)) {
+			return conversations.getChatAdmins((Chat) a).contains(u);
+		} else {
+			return true;
+		}
 	}
 
 	@Override

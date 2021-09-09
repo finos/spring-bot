@@ -28,11 +28,13 @@ public interface Table extends Content {
 					.reduce("", (a, b) -> a + " " + b);
 			}
 			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public List<List<Content>> getData() {
 				return (List<List<Content>>) (List) data;
 			}
 			
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			@Override
 			public List<Content> getColumnNames() {
 				return (List<Content>) (List) headers;

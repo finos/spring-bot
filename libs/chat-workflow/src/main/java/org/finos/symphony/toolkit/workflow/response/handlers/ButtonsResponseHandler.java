@@ -29,10 +29,24 @@ import org.springframework.util.StringUtils;
  */
 public class ButtonsResponseHandler implements ResponseHandler, ApplicationContextAware {
 	
+	public static final Button PLACEHOLDER_BUTTON  = new Button("placeholder", Type.ACTION, "placeholder");
+	
+	
 	private List<ChatHandlerMapping<ChatButton>> exposedHandlerMappings;
 	private ApplicationContext applicationContext;
+	private Button addIfMissing;
 	
-	
+	public ButtonsResponseHandler() {
+		this(PLACEHOLDER_BUTTON);
+	}
+
+
+	public ButtonsResponseHandler(Button addIfMissing) {
+		super();
+		this.addIfMissing = addIfMissing;
+	}
+
+
 	public static final String DEFAULT_FORMATTER_PATTERN = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])";
 
     public static String formatFieldName(String fieldName) {
@@ -75,6 +89,10 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 						text = StringUtils.hasText(text) ? text : formatFieldName(cm.getHandlerMethod().getMethod().getName());
 						bl.add(new Button(value, Type.ACTION, text));
 					});
+			
+			if ((bl.getContents().size() == 0) && (addIfMissing != null)) {
+				bl.getContents().add(addIfMissing);
+			}
 				
 			Collections.sort((List<Button>) bl.getContents());
 		}
