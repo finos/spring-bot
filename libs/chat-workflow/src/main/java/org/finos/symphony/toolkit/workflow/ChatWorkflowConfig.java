@@ -7,6 +7,7 @@ import java.util.List;
 import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHandler;
 import org.finos.symphony.toolkit.workflow.actions.form.FormEditConfig;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.help.HelpController;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.converters.WorkResponseConverter;
@@ -60,15 +61,15 @@ public class ChatWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public ChatButtonChatHandlerMapping buttonHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
-			List<ResponseConverter> converters) {
-		return new ChatButtonChatHandlerMapping(wrf, rh, converters);
+			List<ResponseConverter> converters, Conversations conversations) {
+		return new ChatButtonChatHandlerMapping(wrf, rh, converters, conversations);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public ChatRequestChatHandlerMapping chatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
-			List<ResponseConverter> converters) {
-		return new ChatRequestChatHandlerMapping(wrf, rh, converters);
+			List<ResponseConverter> converters, Conversations conversations) {
+		return new ChatRequestChatHandlerMapping(wrf, rh, converters, conversations);
 	}
 	
 	@Bean

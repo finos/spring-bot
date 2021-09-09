@@ -396,7 +396,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		
 		Object secondArgument = oc.lastArguments.get(1);
 		Assertions.assertTrue(secondArgument instanceof Optional);
-		Assertions.assertTrue(((Optional<?>)secondArgument).isEmpty());
+		Assertions.assertFalse(((Optional<?>)secondArgument).isPresent());
 		
 		Assertions.assertNull(oc.lastArguments.get(2));
 		

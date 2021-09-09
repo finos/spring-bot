@@ -69,7 +69,6 @@ public class WorkResponse extends DataResponse {
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, Object> getData() {
 		return (Map<String, Object>) super.getData();
