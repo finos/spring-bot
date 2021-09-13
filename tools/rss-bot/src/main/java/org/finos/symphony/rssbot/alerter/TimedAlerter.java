@@ -3,6 +3,7 @@ package org.finos.symphony.rssbot.alerter;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.regex.Pattern;
 
@@ -11,32 +12,24 @@ import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
 import org.finos.symphony.rssbot.feed.Filter;
 import org.finos.symphony.rssbot.load.FeedLoader;
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
-import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.HashTag;
-import org.finos.symphony.toolkit.workflow.content.HashTagDef;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
-import org.finos.symphony.toolkit.workflow.content.UserDef;
+import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.rometools.rome.feed.synd.SyndEntry;
-import com.symphony.api.model.StreamAttributes;
-import com.symphony.api.model.StreamFilter;
-import com.symphony.api.model.StreamList;
-import com.symphony.api.model.StreamType;
 import com.symphony.api.pod.StreamsApi;
 
 @Component
@@ -47,14 +40,10 @@ public class TimedAlerter {
 	public static Logger LOG =  LoggerFactory.getLogger(TimedAlerter.class);
 		
 	@Autowired
-	ResponseHandler responseHandler;
+	ResponseHandlers responseHandler;
 	
 	@Autowired
-	EntityJsonConverter converter;
-
-	@Lazy
-	@Autowired
-	Workflow w;
+	Conversations r;
 	
 	@Autowired
 	History h;
@@ -83,8 +72,7 @@ public class TimedAlerter {
 	 */
 	@Scheduled(initialDelay = 10000, fixedRate = _5_MINUTES)
 	public void warmFeedListCache() {
-		onAllStreams(s -> {
-			Addressable a = temporaryRoomDef(s);
+		onAllStreams(a -> {
 			Optional<FeedList> fl = h.getLastFromHistory(FeedList.class, a); 
 			if (fl.isPresent()) {
 				flc.writeFeedList(a, fl.get());
@@ -112,31 +100,14 @@ public class TimedAlerter {
 		}
 	}
 
-	public Addressable temporaryRoomDef(StreamAttributes s) {
-		if (s.getStreamType().getType().equals("ROOM")) {
-			return new RoomDef(s.getRoomAttributes().getName(), "", false, s.getId());
-		} else {
-			return new RoomDef(s.getId(), "", false,  s.getId());
-		}
-	}
-
-	public int onAllStreams(Function<StreamAttributes, Integer> action) {
+	public int onAllStreams(Function<Addressable, Integer> action) {
 		LOG.info("TimedAlerter waking");
 		int[] count = { 0 };
 
 		if (leaderService.isLeader(self)) {
-			StreamFilter filter = new StreamFilter();
-			filter.includeInactiveStreams(false);
-			int skip = 0;
-			StreamList sl;
-			do {
-				sl = streams.v1StreamsListPost(null, null, skip, 50);
-				sl.forEach(s -> count[0] += action.apply(s));
-				skip += sl.size();
-			} while (sl.size() == 50);
-			
-			
-			LOG.info("TimedAlerter processed "+skip+" streams ");
+			Set<Addressable> allRooms = r.getAllConversations();
+			allRooms.stream().forEach(s -> count[0] += action.apply(s));
+			LOG.info("TimedAlerter processed "+allRooms.size()+" streams ");
 		} else {
 			LOG.info("Not leader, sleeping");
 		}
@@ -146,7 +117,7 @@ public class TimedAlerter {
 	
 	@Scheduled(cron = "0 0 0 4 * *")
 	public void firstOfTheMonth() {
-		onAllStreams(s -> pauseRunningStreams(temporaryRoomDef(s)));
+		onAllStreams(s -> pauseRunningStreams(s));
 	}
 
 	private int pauseRunningStreams(Addressable a) {
@@ -154,9 +125,7 @@ public class TimedAlerter {
 		if ((fl.isPresent()) && (!fl.get().isPaused())) {
 			FeedList active = fl.get();
 			active.setPaused(true);
-			EntityJson ej = EntityJsonConverter.newWorkflow(active);
-			responseHandler.accept(new FormResponse(w, a, ej, "Renew Feed Subscriptions", "Please select RESUME to continue feeds in this chat room", active, false, 
-				w.gatherButtons(active, a)));
+			responseHandler.accept(new WorkResponse(a, active, WorkMode.VIEW));
 			flc.writeFeedList(a, active);
 			return 1;
 		}
@@ -172,7 +141,7 @@ public class TimedAlerter {
 				flc.setNextReportTime(fl);
 			} catch (Exception e) {
 				LOG.error("AllItems failed: ", e);
-				responseHandler.accept(new ErrorResponse(w, a, "Problem with feed: "+f.getName()+": "+e.getMessage()));
+				responseHandler.accept(new ErrorResponse(a, e));
 			}
 		}
 		
@@ -209,14 +178,14 @@ public class TimedAlerter {
 
 	private HashTag createArticleHashTag(String uri) {
 		String hashCode = Integer.toHexString(Math.abs(uri.hashCode()));
-		return new HashTagDef(hashCode);
+		return new HashTag(hashCode);
 	}
 
 	Pattern p = Pattern.compile("[^\\w]");
 
 	private HashTag createFeedHashTag(Feed f) {
 		String simplified = f.getName().replaceAll("[^\\w]","");
-		return new HashTagDef(simplified);
+		return new HashTag(simplified);
 	}
 	
 

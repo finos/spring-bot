@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
@@ -64,7 +64,7 @@ public class SymphonyAdminController extends BaseController {
 		
 		ObjectMapperFactory.initialize(om, 
 			ObjectMapperFactory.extendedSymphonyVersionSpace(
-				new VersionSpace(BuildData.class.getPackage().getName(), "1.0")));
+				new VersionSpace(BuildData.class, "1.0")));
 				
 		
 		this.configFile = serverPaths.getConfigDir() + CONFIG_PATH;

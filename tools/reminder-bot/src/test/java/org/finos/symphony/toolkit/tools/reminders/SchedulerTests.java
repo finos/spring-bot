@@ -6,19 +6,24 @@ import static org.mockito.Mockito.when;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
-import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.actions.Action;
+import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,113 +41,66 @@ import com.symphony.api.pod.StreamsApi;
 @ExtendWith(MockitoExtension.class)
 public class SchedulerTests {
 
-    @Mock
-    History history;
+	@Mock
+	History history;
 
-    @Mock
-    ResponseHandler responseHandler;
+	@Mock
+	ResponseHandlers responseHandlers;
 
-    @Mock
-    RoomDef roomDef;
+	@Mock
+	LeaderService leaderService;
 
-    @Mock
-    LeaderService leaderService;
+	@Mock
+	Conversations rooms;
 
-    @Mock
-    Participant self;
+	@InjectMocks
+	Scheduler scheduler = new Scheduler();
 
-    @Mock
-    StreamsApi streams;
+	LocalDateTime expectedTime = LocalDateTime.now();
 
-    @Mock
-    Workflow w;
+	@SuppressWarnings("unchecked")
+	@Test
+	public void handleFeedLeaderTest() {
+		when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
+				.thenReturn(reminderList());
 
-    @InjectMocks
-    Scheduler scheduler = new Scheduler();
+		when(leaderService.isLeader(Mockito.any())).thenReturn(true);
+		when(rooms.getAllConversations()).thenReturn(createStreams());
+		scheduler.everyFiveMinutesWeekday();
+		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
+		ArgumentCaptor<WorkResponse> argumentCaptor = ArgumentCaptor.forClass(WorkResponse.class);
+		verify(responseHandlers).accept(argumentCaptor.capture());
+		WorkResponse fr = argumentCaptor.getValue();
+		Reminder r = (Reminder) fr.getFormObject();
+		Assertions.assertEquals(r.getLocalTime(), expectedTime);
 
-    LocalDateTime expectedTime = LocalDateTime.now();
+		// reminder timefinder tests to chck formresponse
 
+	}
 
-    @SuppressWarnings("unchecked")
-	//@Test
-    public void handleFeedLeaderTest(){
-        when(history.getLastFromHistory(Mockito.any(Class.class),Mockito.any(Addressable.class))).thenReturn(reminderList());
+	@Test
+	public void handleFeedNonLeaderTest() {
+		when(leaderService.isLeader(Mockito.any())).thenReturn(false);
+		scheduler.everyFiveMinutesWeekday();
+		verify(responseHandlers, VerificationModeFactory.noInteractions()).accept(Mockito.any(WorkResponse.class));
 
-        when(leaderService.isLeader(Mockito.any())).thenReturn(true);
-        when(streams.v1StreamsListPost(null, null, 0, 50)).thenReturn(createStreams());
+	}
 
-        scheduler.everyFiveMinutesWeekday();
-        verify(responseHandler).accept(Mockito.any(FormResponse.class));
-        ArgumentCaptor<FormResponse> argumentCaptor = ArgumentCaptor.forClass(FormResponse.class);
-        verify(responseHandler).accept(argumentCaptor.capture());
-        FormResponse fr = argumentCaptor.getValue();
-        Reminder r = (Reminder)fr.getFormObject();
-        Assertions.assertEquals(r.getLocalTime(),expectedTime);
+	private Set<Addressable> createStreams() {
+		return Collections.singleton(new SymphonyRoom("test", "1234"));
+	}
 
-        // reminder timefinder tests to chck formresponse
+	private Optional<ReminderList> reminderList() {
+		Reminder reminder = new Reminder();
+		reminder.setDescription("Check at 9 pm");
+		reminder.setLocalTime(expectedTime);
+		List<Reminder> reminders = new ArrayList<>();
+		reminders.add(reminder);
+		ReminderList rl = new ReminderList();
+		rl.setTimeZone(ZoneId.of("Europe/London"));
 
-    }
-    @SuppressWarnings("unchecked")
-	//@Test
-    public void handleFeedNonLeaderTest(){
-        when(leaderService.isLeader(Mockito.any())).thenReturn(false);
-        scheduler.everyFiveMinutesWeekday();
-        verify(responseHandler, VerificationModeFactory.noInteractions()).accept(Mockito.any(FormResponse.class));
-
-    }
-
-
-      private StreamList createStreams(){
-        StreamAttributes streamAttributes = new StreamAttributes();
-        StreamList sl = new StreamList();
-        streamAttributes.setId("1234");
-        sl.add(streamAttributes);
-        return sl;
-      }
-
-    private Optional<ReminderList> reminderList(){
-        Reminder reminder = new Reminder();
-        reminder.setDescription("Check at 9 pm");
-        reminder.setLocalTime(expectedTime);
-        reminder.setAuthor(getUser());
-        List<Reminder> reminders = new ArrayList<>();
-        reminders.add(reminder);
-        ReminderList rl = new ReminderList();
-        rl.setTimeZone(ZoneId.of("Europe/London"));
-
-        rl.setReminders(reminders);
-        Optional<ReminderList> rrl = Optional.of(rl);
-        return rrl;
-    }
-
-    private User getUser(){
-        User user = new User() {
-            @Override
-            public String getAddress() {
-                return "New Address";
-            }
-
-            @Override
-            public String getId() {
-                return "1234";
-            }
-
-            @Override
-            public Type getTagType() {
-                return null;
-            }
-
-            @Override
-            public String getName() {
-                return "Sherlock Holmes";
-            }
-
-            @Override
-            public String getText() {
-                return null;
-            }
-        };
-        return user;
-
-    }
+		rl.setReminders(reminders);
+		Optional<ReminderList> rrl = Optional.of(rl);
+		return rrl;
+	}
 }

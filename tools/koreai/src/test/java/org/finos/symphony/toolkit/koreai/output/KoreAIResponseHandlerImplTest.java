@@ -8,8 +8,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;
@@ -73,7 +73,7 @@ public class KoreAIResponseHandlerImplTest {
        	om = new ObjectMapper();
     		ObjectMapperFactory.initialize(om, ObjectMapperFactory
     			.extendedSymphonyVersionSpace(
-    				new VersionSpace(KoreAIResponse.class.getPackage().getName(), "1.0")));
+    				new VersionSpace(KoreAIResponse.class)));
 
     	this.builder = new KoreAIResponseBuilderImpl(new ObjectMapper(), JsonNodeFactory.instance); 
         this.output = new KoreAIResponseHandlerImpl(api, rl, true, true, om, "classpath:/test-templates");
@@ -137,7 +137,7 @@ public class KoreAIResponseHandlerImplTest {
 			Template t = new Template("template-"+i, new StringReader(messsageML), c);
 			
 			StringWriter out = new StringWriter();
-			ObjectNode jo = JsonNodeFactory.instance.objectNode();
+			ObjectNode jo = JsonNodeFactory.instance.objectNode(); 
 			JsonNode o = om.readTree(json);
 			jo.set("entity", o);
 			System.out.println("Processing: "+json);

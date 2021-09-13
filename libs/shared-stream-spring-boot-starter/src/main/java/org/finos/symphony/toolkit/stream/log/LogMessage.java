@@ -1,12 +1,11 @@
 package org.finos.symphony.toolkit.stream.log;
 
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.stream.Participant;
 
 public class LogMessage {
 	
-	public static final VersionSpace VERSION_SPACE = 
-		new VersionSpace(LogMessage.class.getPackage().getName(), "1.0", "1.0");
+	public static final VersionSpace VERSION_SPACE = new VersionSpace(LogMessage.class, "1.0", "1.0");
 
 	String cluster;
 	Participant participant;

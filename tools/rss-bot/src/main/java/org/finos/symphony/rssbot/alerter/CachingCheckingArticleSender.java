@@ -7,10 +7,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.finos.symphony.rssbot.feed.Article;
-import org.finos.symphony.toolkit.workflow.Workflow;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 
 /**
  * This checks an internal cache in order to decide whether an article is already sent.
@@ -24,8 +23,8 @@ public class CachingCheckingArticleSender extends CheckingArticleSender {
 	
 	Map<Addressable, SoftReference<Set<Article>>> alreadySent = new HashMap<>();
 
-	public CachingCheckingArticleSender(Workflow w, ResponseHandler responseHandler, History h) {
-		super(w, responseHandler, h);
+	public CachingCheckingArticleSender(ResponseHandlers responseHandler, History h) {
+		super(responseHandler, h);
 	}
 	
 
