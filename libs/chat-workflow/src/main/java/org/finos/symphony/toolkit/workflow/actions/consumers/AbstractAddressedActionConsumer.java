@@ -22,7 +22,7 @@ public abstract class AbstractAddressedActionConsumer extends AbstractActionCons
 
 	@Override
 	public void accept(Action t) {
-		if (ac == null) {
+		if (ac != null) {
 			Action f = ac.filter(t);
 			if (f != null) {
 				acceptInner(t);

@@ -90,7 +90,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		EntityJson jsonObjects = new EntityJson();
 		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTag("SomeTopic"));
-		Message m = smp.parse("<messageML>"+s+"</messageML>", jsonObjects);
+		Message m = smp.parse("<messageML>/"+s+"</messageML>", jsonObjects);
 		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
 		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
