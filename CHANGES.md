@@ -147,3 +147,19 @@
  
 ## Sep 9, 2021
  - Fix for #214, support for escape character
+
+## Sep 13, 2021
+
+Major release of chat workflow.  Most interfaces for this changed.  See migration guide for details.
+
+ - Fix for #210, removed EntityJSON parameter from freemarker templating engine
+ - Fix for #209, support for Dynamic Dropdowns, and room dropdowns
+ - Fix for #178, proper error reporting inside symphony
+ - Fix for #173, use of HandlerMapping pattern, removal of Workflow class.
+ - Fix for #172, better Response class hierarchy
+ - Fix for #168, spring scanning for @Work annotation classes
+ - Fix for #164, help provision now generic, not part of symphony code
+ - Fix for #113, trying to improve serialization of Entity JSON format
+ - Fix for #196, mapping of EntityJson tags are Content objects.
+ - Fix for #174, Addressable object hierarchy improved
+
