@@ -24,7 +24,6 @@ class JsonAwareObjectWrapper extends DefaultObjectWrapper {
         super(incompatibleImprovements);
     }
 
-
     private static class JsonNullNodeModel {
 
         static final ModelFactory FACTORY = new ModelFactory() {

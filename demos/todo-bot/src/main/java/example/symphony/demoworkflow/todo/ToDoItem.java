@@ -3,14 +3,14 @@
  */
 package example.symphony.demoworkflow.todo;
 
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.java.Work;
 
 /**
  * @author rupnsur
  *
  */
-@Work(name = "Item", instructions = "Add/Edit the Item")
+@Work
 public class ToDoItem {
 
 	public enum Status {

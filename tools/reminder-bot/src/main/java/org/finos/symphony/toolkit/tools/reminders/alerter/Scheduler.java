@@ -4,27 +4,31 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
+import org.finos.symphony.toolkit.tools.reminders.Reminder;
 import org.finos.symphony.toolkit.tools.reminders.ReminderList;
 import org.finos.symphony.toolkit.tools.reminders.ReminderProperties;
-import org.finos.symphony.toolkit.workflow.Workflow;
+import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.RoomDef;
+import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.conversations.Conversations;
 import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.FormResponse;
-import org.finos.symphony.toolkit.workflow.room.Rooms;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.ResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.room.SymphonyRooms;
+import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
+import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -39,26 +43,19 @@ public class Scheduler {
     public static Logger LOG = LoggerFactory.getLogger(Scheduler.class);
 
     @Autowired
-    ResponseHandler responseHandler;
-
-    @Autowired
-    EntityJsonConverter converter;
-
-    @Lazy
-    @Autowired
-    Workflow w;
+    ResponseHandlers responseHandlers;
 
     @Autowired
     History h;
 
     @Autowired
-    Rooms rooms;
+    Conversations rooms;
 
     @Autowired
     ReminderProperties rp;
 
     @Autowired
-    SymphonyRooms symphonyRooms;
+    SymphonyConversations symphonyRooms;
 
     @Autowired
     StreamsApi streams;
@@ -69,35 +66,18 @@ public class Scheduler {
     @Autowired
     Participant self;
 
-    @Autowired
-    Workflow workflow;
-
     @Scheduled(cron = "0 0/5 * * * MON-FRI")
     public void everyFiveMinutesWeekday() {
-        onAllStreams(s -> handleFeed(temporaryRoomDef(s)));
+        onAllStreams(s -> handleFeed(s));
     }
-
-    public RoomDef temporaryRoomDef(StreamAttributes s) {
-
-        return new RoomDef("", "", false, s.getId());
-    }
-
-    public void onAllStreams(Consumer<StreamAttributes> action) {
+    
+    public void onAllStreams(Consumer<Addressable> action) {
         LOG.info("TimedAlerter waking");
 
         if (leaderService.isLeader(self)) {
-            StreamFilter filter = new StreamFilter();
-            filter.includeInactiveStreams(false);
-            int skip = 0;
-            StreamList sl;
-            do {
-                sl = streams.v1StreamsListPost(null, null, skip, 50);
-                sl.forEach(s -> action.accept(s));
-                skip += sl.size();
-            } while (sl.size() == 50);
-
-
-            LOG.info("TimedAlerter processed " + skip + " streams ");
+            Set<Addressable> allRooms = rooms.getAllConversations();
+			allRooms.forEach(s -> action.accept(s));
+            LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
         } else {
             LOG.info("Not leader, sleeping");
         }
@@ -105,29 +85,33 @@ public class Scheduler {
 
 
     public void handleFeed(Addressable a) {
-        Optional<ReminderList> fl = h.getLastFromHistory(ReminderList.class, a);
-        
-        if (fl.isPresent()) {
-            ReminderList updatedList = new ReminderList(fl.get());
-            ZoneId zone = updatedList.getTimeZone();
-            Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
-            ZoneOffset zo = zone.getRules().getOffset(currentTime);
+        try {
+			Optional<ReminderList> fl = h.getLastFromHistory(ReminderList.class, a);
+			
+			if (fl.isPresent()) {
+			    ReminderList updatedList = new ReminderList(fl.get());
+			    ZoneId zone = updatedList.getTimeZone();
+			    Instant currentTime = LocalDateTime.now().toInstant(ZoneOffset.UTC);
+			    ZoneOffset zo = zone.getRules().getOffset(currentTime);
 
 
-            fl.get().getReminders().stream().forEach((currentReminder) -> {
-                Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo);
+			    fl.get().getReminders().stream().forEach((currentReminder) -> {
+			        Instant timeForReminder = currentReminder.getLocalTime().toInstant(zo);
 
-                if (timeForReminder.isBefore(currentTime)) {
-                    EntityJson ej = EntityJsonConverter.newWorkflow(currentReminder);
-                    updatedList.getReminders().remove(currentReminder);
-                    ej.put("ReminderList", updatedList);
+			        if (timeForReminder.isBefore(currentTime)) {
+			            Map<String, Object> ej = WorkResponse.createEntityMap(currentReminder, null, null);
+			            updatedList.getReminders().remove(currentReminder);
+			            ej.put("ReminderList", updatedList);
+			            
+			            WorkResponse wr = new WorkResponse(a, ej, "display-reminder", WorkMode.VIEW, Reminder.class);
+			            responseHandlers.accept(wr);
 
-                    responseHandler.accept(new FormResponse(w, a, ej, "Display Reminder", "This is regarding the reminder set by you", currentReminder, false,
-                            w.gatherButtons(currentReminder, a)));
-
-                }
-            });
-        }
+			        }
+			    });
+			}
+		} catch (Exception e) {
+			responseHandlers.accept(new ErrorResponse(a, e));
+		}
     }
 }
 

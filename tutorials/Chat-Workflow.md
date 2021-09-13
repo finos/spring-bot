@@ -51,7 +51,7 @@ In `pom.xml` add these dependencies:
 ```
 <dependency>
 	<groupId>org.finos.symphony.toolkit</groupId>
-	<artifactId>chat-workflow-spring-boot-starter</artifactId>
+	<artifactId>chat-workflow</artifactId>
 	<version>--latest version --</version>
 </dependency>
 <dependency>
@@ -280,7 +280,7 @@ Note this form now has the **add** button at the bottom of it.  And `/help` also
 
 ![Using Add](chat-workflow/media/image13.png)
 
-Now, you might well ask what parameters a workflow method like `add()` can have.  The [README](../libs/chat-workflow-spring-boot-starter/README.md) goes into more detail on this.
+Now, you might well ask what parameters a workflow method like `add()` can have.  The [README](../libs/chat-workflow/README.md) goes into more detail on this.
 
 ## 9. Returning State
 
@@ -404,7 +404,7 @@ Let's do the `/assign` and `/complete` commands together:
 
 ## Templating
 
-If you don't like the look of the forms presented, you don't have to stick with them!  Take a look a the [README](../libs/chat-workflow-spring-boot-starter/README.md), which covers how to customize your templates.  In the standard out logging for your bot, you will find sources which you can use as the basis for your templates.  e.g.
+If you don't like the look of the forms presented, you don't have to stick with them!  Take a look a the [README](../libs/chat-workflow/README.md), which covers how to customize your templates.  In the standard out logging for your bot, you will find sources which you can use as the basis for your templates.  e.g.
 
 ```
 2020-10-15 17:26:01.339  INFO 21628 --- [ SymphonyStream] c.g.d.s.w.s.s.h.SymphonyResponseHandler  : JSON: 

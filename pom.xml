@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>7.20.6-SNAPSHOT</version>
+	<version>8.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
@@ -24,7 +24,8 @@
 		<module>libs/symphony-app-spring-boot-starter</module>
 		<module>libs/entity-json</module>
 		<module>libs/shared-stream-spring-boot-starter</module>
-		<module>libs/chat-workflow-spring-boot-starter</module>
+		<module>libs/chat-workflow</module>
+		<module>libs/symphony-chat-workflow-spring-boot-starter</module>
 		<module>libs/quickfix-json</module>
 		
 		<module>tools/koreai</module>

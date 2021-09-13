@@ -1,0 +1,96 @@
+{
+  "rooms" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.roomList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.content.chat",
+      "version" : "1.0",
+      "id" : [ {
+        "type" : "com.symphony.user.streamID",
+        "version" : "1.0",
+        "value" : "one"
+      }, {
+        "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+        "version" : "1.0",
+        "value" : "room one"
+      } ]
+    }, {
+      "type" : "org.finos.symphony.toolkit.workflow.content.chat",
+      "version" : "1.0",
+      "id" : [ {
+        "type" : "com.symphony.user.streamID",
+        "version" : "1.0",
+        "value" : "abc123"
+      }, {
+        "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+        "version" : "1.0",
+        "value" : "tesxt room"
+      } ]
+    }, {
+      "type" : "org.finos.symphony.toolkit.workflow.content.chat",
+      "version" : "1.0",
+      "id" : [ {
+        "type" : "com.symphony.user.streamID",
+        "version" : "1.0",
+        "value" : "three"
+      }, {
+        "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+        "version" : "1.0",
+        "value" : "room three"
+      } ]
+    } ]
+  },
+  "buttons" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.form.button",
+      "version" : "1.0",
+      "name" : "submit",
+      "buttonType" : "ACTION",
+      "text" : "GO"
+    } ]
+  },
+  "form" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.roomAndDropdown",
+    "version" : "1.0",
+    "chat" : {
+      "type" : "org.finos.symphony.toolkit.workflow.content.chat",
+      "version" : "1.0",
+      "id" : [ {
+        "type" : "com.symphony.user.streamID",
+        "version" : "1.0",
+        "value" : "abc123"
+      }, {
+        "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.content.roomName",
+        "version" : "1.0",
+        "value" : "tesxt room"
+      } ]
+    },
+    "dynOptions" : "a"
+  },
+  "dynoptions" : {
+    "a" : "Great",
+    "b" : "Good",
+    "c" : "So-So",
+    "d" : "Awful",
+    "a+" : "Amazing",
+    "a-" : "Abysmal"
+  },
+  "header" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.headerDetails",
+    "version" : "1.0",
+    "name" : null,
+    "description" : null,
+    "tags" : [ {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-roomanddropdown"
+    } ]
+  },
+  "errors" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  }
+}

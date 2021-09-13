@@ -112,11 +112,13 @@ The purpose of this module is to provide a drop-in stream consumer for Symphony 
 
  - [View the README](libs/shared-stream-spring-boot-starter/README.md)
  
-## Chat Workflow
+## Chat Workflow / Chat Workflow Symphony Starter
 
-This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
+Chat Workflow provides interfaces and utilities for expressing bot workflows in Spring.
 
- - [View the README](libs/chat-workflow-spring-boot-starter/README.md)
+The Chat Workflow Symphony Starter implements this for symphony.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
+
+ - [View the README](libs/chat-workflow/README.md)
  - [View the Tutorial](tutorials/Chat-Workflow.md) 
  - [Demo To-Do List Bot](demos/todo-bot/README.md)
  - [Demo Claim Bot](demos/claim-bot/README.md)

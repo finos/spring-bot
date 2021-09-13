@@ -1,0 +1,66 @@
+{
+  "buttons" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.buttonList",
+    "version" : "1.0",
+    "contents" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.form.button",
+      "version" : "1.0",
+      "name" : "items[0].table-update",
+      "buttonType" : "ACTION",
+      "text" : "Update"
+    } ]
+  },
+  "form" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.testObject",
+    "version" : "1.0",
+    "isin" : "83274239874",
+    "bidAxed" : true,
+    "askAxed" : true,
+    "creator" : "rob@example.com",
+    "bidQty" : 234786,
+    "askQty" : 2138
+  },
+  "workflow_001" : {
+    "type" : "org.finos.symphony.toolkit.workflow.fixture.testObjects",
+    "version" : "1.0",
+    "items" : [ {
+      "type" : "org.finos.symphony.toolkit.workflow.fixture.testObject",
+      "version" : "1.0",
+      "isin" : "83274239874",
+      "bidAxed" : true,
+      "askAxed" : true,
+      "creator" : "rob@example.com",
+      "bidQty" : 234786,
+      "askQty" : 2138
+    }, {
+      "type" : "org.finos.symphony.toolkit.workflow.fixture.testObject",
+      "version" : "1.0",
+      "isin" : "AUD274239874",
+      "bidAxed" : true,
+      "askAxed" : false,
+      "creator" : "gregb@example.com",
+      "bidQty" : 2386,
+      "askQty" : 234823498.573
+    } ]
+  },
+  "header" : {
+    "type" : "org.finos.symphony.toolkit.workflow.sources.symphony.json.headerDetails",
+    "version" : "1.0",
+    "name" : null,
+    "description" : null,
+    "tags" : [ {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-testobject"
+    }, {
+      "type" : "org.symphonyoss.taxonomy.hashtag",
+      "version" : "1.0",
+      "value" : "org-finos-symphony-toolkit-workflow-fixture-testobjects"
+    } ]
+  },
+  "errors" : {
+    "type" : "org.finos.symphony.toolkit.workflow.form.errorMap",
+    "version" : "1.0",
+    "contents" : { }
+  }
+}

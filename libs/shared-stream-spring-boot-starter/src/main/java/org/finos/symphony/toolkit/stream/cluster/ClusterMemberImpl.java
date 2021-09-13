@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.stream.cluster;
 
+import javax.annotation.PreDestroy;
+
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 import org.finos.symphony.toolkit.stream.cluster.messages.SuppressionMessage;
@@ -121,6 +123,7 @@ public class ClusterMemberImpl implements ClusterMember {
 	}
 
 	@Override
+	@PreDestroy
 	public synchronized void shutdown() {
 		try {
 			Thread temp = timer;

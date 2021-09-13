@@ -2,16 +2,16 @@ package example.symphony.demoworkflow.poll;
 
 import java.time.Instant;
 
-import org.finos.symphony.toolkit.workflow.content.ID;
+import org.finos.symphony.toolkit.workflow.annotations.Template;
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.java.Work;
-import org.finos.symphony.toolkit.workflow.sources.symphony.Template;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
-@Work(editable = false, name = "Answer Chosen!")
-@Template(view="classpath:/template/answer.ftl")
+@Work
+@Template(view="answer")
 public class Answer {
 
-	private ID pollID;
+	private HashTag pollID;
 	private User User;
 	private Instant time;
 	private Integer choice;
@@ -22,7 +22,7 @@ public class Answer {
 		super();
 	}
 
-	public Answer(ID pollID, User User, Instant time, Integer choice, String questionText, String choiceText) {
+	public Answer(HashTag pollID, User User, Instant time, Integer choice, String questionText, String choiceText) {
 		super();
 		this.pollID = pollID;
 		this.User = User;
@@ -32,11 +32,11 @@ public class Answer {
 		this.questionText = questionText;
 	}
 
-	public ID getPollID() {
+	public HashTag getPollID() {
 		return pollID;
 	}
 
-	public void setPollID(ID pollID) {
+	public void setPollID(HashTag pollID) {
 		this.pollID = pollID;
 	}
 

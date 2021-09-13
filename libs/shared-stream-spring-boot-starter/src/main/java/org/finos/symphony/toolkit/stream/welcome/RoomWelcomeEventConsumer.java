@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.stream.welcome;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,8 @@ import com.symphony.api.pod.UsersApi;
  */
 public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 	
+	public static final VersionSpace VERSION_SPACE = new VersionSpace(V4RoomCreated.class, "1.0");
+
 	private static final Logger LOG = LoggerFactory.getLogger(RoomWelcomeEventConsumer.class);
 	
 	private static final String DEFAULT_WELCOME_MESSAGE = "<messageML>"
@@ -46,7 +48,7 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 		u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
 		om = new ObjectMapper();
 		ObjectMapperFactory.initialize(om, ObjectMapperFactory.extendedSymphonyVersionSpace(
-			new VersionSpace(V4RoomCreated.class.getPackage().getName(), "1.0")));
+			VERSION_SPACE));
 	}
 	
 	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity) {

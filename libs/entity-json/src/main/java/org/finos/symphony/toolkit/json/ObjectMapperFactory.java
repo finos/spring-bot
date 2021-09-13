@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.json;
 
 import java.util.Arrays;
+import java.util.List;
 
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.symphonyoss.Taxonomy;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.Cusip;
@@ -45,11 +45,11 @@ public class ObjectMapperFactory {
 	 */
 	public static VersionSpace[] basicSymphonyVersionSpace() {
 		return new VersionSpace[] { 
-				new VersionSpace(Taxonomy.class.getCanonicalName(), "1.0"),
-				new VersionSpace(Security.class.getCanonicalName(), "1.0", "0.*"),
-				new VersionSpace(Mention.class.getCanonicalName(), "1.0"), 
-				new VersionSpace(UserId.class.getCanonicalName(), "1.0"), 
-				new VersionSpace(Hashtag.class.getCanonicalName(), "1.0"), 
+				new VersionSpace(Taxonomy.class, "1.0"),
+				new VersionSpace(Security.class, "1.0", "0.*"),
+				new VersionSpace(Mention.class, "1.0"), 
+				new VersionSpace(UserId.class, "1.0"), 
+				new VersionSpace(Hashtag.class, "1.0"), 
 				noVersion(Ticker.class), 
 				noVersion(Cusip.class), 
 				noVersion(Isin.class), 
@@ -61,17 +61,29 @@ public class ObjectMapperFactory {
 	 * Provides all of the classes in the basicSymphonyVersionSpace (above), as well as any you provide in the
 	 * varargs.
 	 */
-	public static VersionSpace[] extendedSymphonyVersionSpace(VersionSpace... second) {
-		VersionSpace[] first = basicSymphonyVersionSpace();
+	public static VersionSpace[] extendedSymphonyVersionSpace(VersionSpace... first) {
+		VersionSpace[] second = basicSymphonyVersionSpace();
 		VersionSpace[] result = Arrays.copyOf(first, first.length + second.length);
 		System.arraycopy(second, 0, result, first.length, second.length);
 		return result;
 	}
+	
+	
+	/**
+	 * Provides all of the classes in the basicSymphonyVersionSpace (above), as well as any you provide in the
+	 * varargs.
+	 */
+	public static VersionSpace[] extendedSymphonyVersionSpace(List<VersionSpace> second) {
+		VersionSpace[] cc = new VersionSpace[second.size()];
+		return extendedSymphonyVersionSpace(second.toArray(cc));
+	}
+	
+	
 
 	/**
 	 * Provides a no-version-number VersionSpace for a given class.
 	 */
 	public static VersionSpace noVersion(Class<?> class1) {
-		return new VersionSpace(class1.getCanonicalName(), "");
+		return new VersionSpace(class1, "");
 	}
 }
