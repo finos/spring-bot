@@ -4,6 +4,7 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
+import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -25,4 +26,8 @@ public class WorkflowConfig {
 		return new RoomWelcomeEventConsumer(ma, ua, id, reminderProperties.getWelcomeMessage());
 	}
 
+	@Bean
+	TimeFinder timeFinder(ChatWorkflowErrorHandler eh) {
+		return new TimeFinder(eh);
+	}
 }

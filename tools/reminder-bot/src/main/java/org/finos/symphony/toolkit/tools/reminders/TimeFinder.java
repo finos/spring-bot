@@ -24,7 +24,6 @@ import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ErrorHandler;
 
 import edu.stanford.nlp.pipeline.CoreDocument;
@@ -33,7 +32,6 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.time.TimeAnnotations;
 import edu.stanford.nlp.time.Timex;
 
-@Component
 public class TimeFinder extends AbstractActionConsumer  {
 
 	public TimeFinder(ErrorHandler errorHandler) {
