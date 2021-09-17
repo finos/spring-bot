@@ -92,7 +92,7 @@ public class WorkResponse extends DataResponse {
 
 	@Override
 	public String toString() {
-		return "FormResponse [getData()=" + getData() + ", getTemplateName()="
+		return "WorkResponse [getData()=" + getData() + ", getTemplateName()="
 				+ getTemplateName() + ", getAddress()=" + getAddress() + "]";
 	}
 	
