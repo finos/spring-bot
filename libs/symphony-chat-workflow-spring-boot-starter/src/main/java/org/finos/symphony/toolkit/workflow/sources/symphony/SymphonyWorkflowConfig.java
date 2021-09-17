@@ -16,6 +16,7 @@ import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
 import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
@@ -285,7 +286,7 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public InRoomAddressingChecker inRoomAddressingChecker() {
+	public AddressingChecker defaultAddressingChecker() {
 		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		SymphonyUser su = new SymphonyUser(symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
 		return new InRoomAddressingChecker(su, true);

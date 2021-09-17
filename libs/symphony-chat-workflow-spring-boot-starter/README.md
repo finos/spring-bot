@@ -1,10 +1,8 @@
 [![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
-# Chat Workflow
+# Symphony Chat Workflow Spring Boot Starter
 
-This module provides an API for constructing workflows in Java.  
-
-It is intended that beyond _configuration_ (see below), the developer will not have to understand _any_ platform-specific APIs to build initial proof-of-concept work-flows.
+This module implements the Chat Workflow API for Symphony. 
 
 For complete documentation, head over to [our temporary docs location](https://robmoffat.github.io/spring-bot-docs).
 
