@@ -34,10 +34,6 @@ import edu.stanford.nlp.time.Timex;
 
 public class TimeFinder extends AbstractActionConsumer  {
 
-	public TimeFinder(ErrorHandler errorHandler) {
-		super(errorHandler);
-	}
-
 	private static final Logger LOG = LoggerFactory.getLogger(TimeFinder.class);
 
 	SymphonyConversations symphonyRooms;
@@ -69,7 +65,7 @@ public class TimeFinder extends AbstractActionConsumer  {
 	public void accept(Action t) {
 		try {
 			if (t instanceof SimpleMessageAction) {
-				Message m = ((SimpleMessageAction) t).getWords();
+				Message m = ((SimpleMessageAction) t).getMessage();
 				User currentUser = t.getUser();
 				Addressable a = t.getAddressable();
 				String messageInString = m.getText();
@@ -97,6 +93,7 @@ public class TimeFinder extends AbstractActionConsumer  {
 						Reminder reminder = new Reminder();
 						reminder.setDescription(messageInString);
 						reminder.setLocalTime(ldt);
+						reminder.setAuthor(currentUser);
 
 						WorkResponse wr = new WorkResponse(a, reminder, WorkMode.EDIT);
 						rh.accept(wr);

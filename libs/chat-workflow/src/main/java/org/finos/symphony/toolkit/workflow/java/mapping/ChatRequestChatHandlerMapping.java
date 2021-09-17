@@ -189,7 +189,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			
 
 			private ChatHandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {
-				return pathMatches(a.getWords(), a);
+				return pathMatches(a.getMessage(), a);
 			}
 
 			private ChatHandlerExecutor pathMatches(Message words, Action a) {

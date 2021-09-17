@@ -42,7 +42,7 @@ public class ChatWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ResponseConverter formResponseConverter() {
+	public ResponseConverter workResponseConverter() {
 		return new WorkResponseConverter();
 	} 
 	
