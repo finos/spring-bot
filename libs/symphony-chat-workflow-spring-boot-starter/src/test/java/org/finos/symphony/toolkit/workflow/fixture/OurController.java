@@ -48,7 +48,7 @@ public class OurController {
 		lastMethod = "callPerson";
 	}
 	
-	@ChatButton(value = StartClaim.class, buttonText = "start", rooms={"bob"})
+	@ChatButton(value = StartClaim.class, buttonText = "start", rooms={"The Room Where It Happened"})
 	public TestObject startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
