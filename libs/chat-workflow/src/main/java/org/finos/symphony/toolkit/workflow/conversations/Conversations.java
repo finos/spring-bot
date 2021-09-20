@@ -20,6 +20,8 @@ public interface Conversations {
 	 * Returns the subset of all conversations that are chats.
 	 */
 	public Set<Chat> getAllChats();
+	
+	public Chat getExistingChat(String name);
 
 	public Chat ensureChat(Chat r, List<User> users, Map<String, Object> meta);
 	

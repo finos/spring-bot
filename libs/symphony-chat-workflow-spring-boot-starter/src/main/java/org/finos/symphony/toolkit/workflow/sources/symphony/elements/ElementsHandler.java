@@ -98,7 +98,7 @@ public class ElementsHandler implements StreamEventConsumer {
 							}
 						}
 					} finally {
-						Action.CURRENT_ACTION.set(null);
+						Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 					}
 				} else {
 					WorkResponse fr = new WorkResponse(rr, currentForm,  WorkMode.EDIT, 

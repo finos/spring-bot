@@ -1,9 +1,18 @@
 package org.finos.symphony.toolkit.workflow.content;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public interface Message extends Paragraph {
+	
+	public static <X extends Content> Message of(String str) {
+		return of(
+				Arrays.stream(str.split("\\s"))
+					.map(s -> Word.of(s))
+					.collect(Collectors.toList()));
+	}
 
 	public static <X extends Content> Message of(List<X> c) {
 		return new Message() {

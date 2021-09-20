@@ -271,4 +271,10 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 		com.symphony.api.model.User u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
 		botUserId = u.getId();
 	}
+
+
+	@Override
+	public Chat getExistingChat(String name) {
+		return loadRoomByName(name);
+	}
 }
