@@ -1,12 +1,14 @@
 package example.symphony.demoworkflow.expenses;
 
+import javax.validation.constraints.Min;
+
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
 @Work
-public class OpenedClaim extends NewClaim {
+public class OpenedClaim {
 	
 	enum Status { OPEN, APPROVED, PAID };
 	
@@ -18,18 +20,34 @@ public class OpenedClaim extends NewClaim {
 
 	@Display(name = "Claim Status")
 	Status status = Status.OPEN;
+	
+	String description;
 
+	@Min(0)
+	Number amount;
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Number getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Number amount) {
+		this.amount = amount;
+	}
+	
 	public User getAuthor() {
 		return author;
 	}
 
 	public void setAuthor(User author) {
 		this.author = author;
-	}
-
-	public Number getAmount() {
-		return amount;
 	}
 
 	public void setApprovedBy(User approvedBy) {
