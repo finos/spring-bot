@@ -90,6 +90,13 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 
 			private boolean canBePerformedHere(FormAction a) {
 				ChatButton cb = getMapping();
+			
+				if ((a.getAddressable() instanceof Chat) && (cb.rooms().length > 0)) {
+					if (!roomMatched(cb.rooms(), (Chat) a.getAddressable())) {
+						return false;
+					}
+				}
+				
 				if (cb.admin() && (a.getAddressable() instanceof Chat)) {
 					return conversations.getChatAdmins((Chat) a.getAddressable()).contains(a.getUser());
 				} else {
