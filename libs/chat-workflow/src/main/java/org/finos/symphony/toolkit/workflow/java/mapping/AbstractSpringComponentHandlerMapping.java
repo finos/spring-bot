@@ -9,6 +9,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -288,6 +289,17 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		public String getUniqueName() {
 			return name;
 		}
+		
+		protected boolean roomMatched(String[] rooms, Chat addressable) {
+			for (String r : rooms) {
+				if (addressable.getName().equals(r)) {
+					return true;
+				}
+			}
+			
+			return false;
+		}
+
 		
 		
 	}

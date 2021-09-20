@@ -179,6 +179,13 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			
 			private boolean canBePerformedHere(SimpleMessageAction a) {
 				ChatRequest cb = getMapping();
+				
+				if ((a.getAddressable() instanceof Chat) && (cb.rooms().length > 0)) {
+					if (!roomMatched(cb.rooms(), (Chat) a.getAddressable())) {
+						return false;
+					}
+				}
+				
 				if (cb.admin() && (a.getAddressable() instanceof Chat)) {
 					List<User> chatAdmins = conversations.getChatAdmins((Chat) a.getAddressable());
 					return chatAdmins.contains(a.getUser());
@@ -186,8 +193,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 					return true;
 				}
 			}
-			
-
+		
 			private ChatHandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {
 				return pathMatches(a.getMessage(), a);
 			}
