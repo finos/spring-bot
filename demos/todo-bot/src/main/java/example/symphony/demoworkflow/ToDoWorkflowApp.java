@@ -5,10 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-public class DemoWorkflowApp 
+public class ToDoWorkflowApp 
 {
     public static void main( String[] args )
     {
-    	SpringApplication.run(new Class[] {DemoWorkflowApp.class}, args);
+    	SpringApplication.run(new Class[] {ToDoWorkflowApp.class}, args);
     }
 }
