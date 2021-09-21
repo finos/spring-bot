@@ -33,7 +33,7 @@ import org.springframework.util.ErrorHandler;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 
 @ExtendWith(MockitoExtension.class)
-public class TimeFinderTests {
+public class TimeFinderIT {
 
 	@Mock
 	StanfordCoreNLP stanfordCoreNLP;
