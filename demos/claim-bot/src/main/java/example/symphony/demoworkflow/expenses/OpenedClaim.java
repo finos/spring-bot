@@ -7,44 +7,31 @@ import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
-@Work()
-public class Claim {
+@Work
+public class OpenedClaim {
 	
 	enum Status { OPEN, APPROVED, PAID };
-
-	@Display(name = "Description")
-	String description;
 	
 	User author = Action.CURRENT_ACTION.get().getUser();
 
-	@Display(name = "Amount")
-	@Min(0)
-	Number amount;
-
-	@Display(name = "Approved By", visible = true)
 	User approvedBy;
 	
 	User paidBy;
 
 	@Display(name = "Claim Status")
 	Status status = Status.OPEN;
-
-
 	
+	String description;
+
+	@Min(0)
+	Number amount;
+
 	public String getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	public User getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(User author) {
-		this.author = author;
 	}
 
 	public Number getAmount() {
@@ -54,9 +41,13 @@ public class Claim {
 	public void setAmount(Number amount) {
 		this.amount = amount;
 	}
+	
+	public User getAuthor() {
+		return author;
+	}
 
-	public User getApprovedBy() {
-		return approvedBy;
+	public void setAuthor(User author) {
+		this.author = author;
 	}
 
 	public void setApprovedBy(User approvedBy) {

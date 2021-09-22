@@ -16,6 +16,7 @@ import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.form.ErrorMap;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
+import org.finos.symphony.toolkit.workflow.response.DataResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
@@ -97,10 +98,10 @@ public class ElementsHandler implements StreamEventConsumer {
 							}
 						}
 					} finally {
-						Action.CURRENT_ACTION.set(null);
+						Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 					}
 				} else {
-					WorkResponse fr = new WorkResponse(rr, data,  WorkMode.EDIT, 
+					WorkResponse fr = new WorkResponse(rr, currentForm,  WorkMode.EDIT, 
 						ButtonList.of(new Button(verb, Button.Type.ACTION, "Retry")), convertErrorsToMap(e));
 					rh.accept(fr);
 				}

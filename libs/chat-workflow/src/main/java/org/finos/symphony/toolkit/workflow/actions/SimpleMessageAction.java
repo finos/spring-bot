@@ -29,7 +29,7 @@ public class SimpleMessageAction implements Action {
 		return u;
 	}
 
-	public Message getWords() {
+	public Message getMessage() {
 		return words;
 	}
 

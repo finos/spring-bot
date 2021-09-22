@@ -8,7 +8,7 @@
     <parent>
     <groupId>org.finos.symphony.toolkit</groupId>
     <artifactId>symphony-java-toolkit</artifactId>
-    <version>8.0.1-SNAPSHOT</version>
+    <version>8.0.1</version>
     <relativePath>../..</relativePath>
   </parent> 
   

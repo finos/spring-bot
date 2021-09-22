@@ -20,7 +20,7 @@ import example.symphony.demoworkflow.todo.ToDoItem.Status;
 @Controller
 public class ToDoController {
 
-	@ChatRequest(value="new", description = "Create new item list")
+	@ChatRequest(value={"new", "nouveau"}, description = "Create new item list")
 	public ToDoList init() {
 		return new ToDoList();
 	}
@@ -33,6 +33,7 @@ public class ToDoController {
 	}
 	
 	@ChatRequest(value="add", description = "Add an item")
+	@ChatButton(value = ToDoList.class, buttonText = "Add")
 	@ChatResponseBody(workMode = WorkMode.EDIT)
 	public NewItemDetails add1(User author) {
 		NewItemDetails out = new NewItemDetails();
@@ -55,12 +56,21 @@ public class ToDoController {
 	}
 
 	@ChatRequest(value="show", description = "Show current list of items")
-	@ChatResponseBody(workMode = WorkMode.EDIT)
+	@ChatResponseBody(workMode = WorkMode.VIEW)
 	public ToDoList show(Optional<ToDoList> in) {
 		ToDoList out = in.orElse(new ToDoList());
 		reNumber(out);
 		return out;
 	}
+	
+	@ChatRequest(value="edit", description = "Edit current list of items")
+	@ChatResponseBody(workMode = WorkMode.EDIT)
+	public ToDoList edit(Optional<ToDoList> in) {
+		ToDoList out = in.orElse(new ToDoList());
+		reNumber(out);
+		return out;
+	}
+	
 	
 	private Integer parseInt(Word w) {
 		try {
@@ -112,7 +122,7 @@ public class ToDoController {
 		return out;
 	}
 	
-	@ChatRequest(value="assign {items} {to}", description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
+	@ChatRequest(value="assign {items} {by}", description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
 	public ToDoList assign(@ChatVariable("items") List<Word> words, @ChatVariable("by") Optional<User> by, User a, Optional<ToDoList> toDo) {
 		ToDoList out = toDo.orElse(new ToDoList());
 		User u = by.orElse(a);

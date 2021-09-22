@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow.response;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
 
 /**
  * A Response that contains some JSON data to be included in the message.
@@ -26,14 +27,17 @@ public class DataResponse implements Response {
 	public Map<String, Object> getData() {
 		return data;
 	}
-	
 
 	@Override
 	public String toString() {
 		return "DataResponse [data=" + data + ", template=" + templateName + "]";
 	}
 
-	@Override
+	/**
+	 * An optional template name, which will be used for customizing the formatting of the
+	 * response (depending on the output channel).  If the template cannot be resolved 
+	 * given the name, the {@link ResponseHandler} will fallback to a default.
+	 */
 	public String getTemplateName() {
 		return templateName;
 	}

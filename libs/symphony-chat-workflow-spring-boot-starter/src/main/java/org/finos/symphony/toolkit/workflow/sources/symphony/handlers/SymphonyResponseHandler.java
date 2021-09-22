@@ -84,25 +84,25 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 				attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
 			}
 		
-			template = buildTemplate(t);
-			
-			if (template == null) {
-				LOG.error("Cannot determine/create template for response {}", t);
-				return;
-			}
 
 			if (t instanceof DataResponse) {
+				template = buildTemplate((DataResponse) t);
+				
+				if (template == null) {
+					LOG.error("Cannot determine/create template for response {}", t);
+					return;
+				}
+
 				data = dataHandler.formatData((DataResponse) t);
+
+				sendResponse(template, attachment, data, t.getAddress());
 			}
-			
-			
-			sendResponse(template, attachment, data, t.getAddress());
 		}
 	}
 
 
 	
-	protected String buildTemplate(Response t) {
+	protected String buildTemplate(DataResponse t) {
 		String templateName = t.getTemplateName();
 
 		String template = StringUtils.hasText(templateName) ? getTemplateForName(templateName) : null;
@@ -131,7 +131,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 		}
 	}
 
-	protected String getDefaultTemplate(Response r) {
+	protected String getDefaultTemplate(DataResponse r) {
 		String basic = getTemplateForName("default");
 		String insert = "";
 		if (r instanceof WorkResponse) {

@@ -33,15 +33,15 @@ public class InRoomAddressingChecker implements AddressingChecker {
 			if (a instanceof SimpleMessageAction) {
 				SimpleMessageAction sma = (SimpleMessageAction) a;
 				
-				Optional<User> firstUserMention = sma.getWords().getNth(User.class, 0); 
+				Optional<User> firstUserMention = sma.getMessage().getNth(User.class, 0); 
 				
 				if ((firstUserMention.isPresent()) && (theBot.matches(firstUserMention.get()))) {
 					// bot is mentioned, so return the action, stripping out the bot mention
-					Message changedMessage = (Message) ((SimpleMessageAction) a).getWords().removeAtStart(firstUserMention.get());
+					Message changedMessage = (Message) ((SimpleMessageAction) a).getMessage().removeAtStart(firstUserMention.get());
 					return new SimpleMessageAction(a.getAddressable(), a.getUser(), changedMessage, sma.getData());
 				}
 				
-				Optional<Word> firstWord = sma.getWords().getNth(Word.class, 0);
+				Optional<Word> firstWord = sma.getMessage().getNth(Word.class, 0);
 				
 				if (allowSlash && firstWord.isPresent() && firstWord.get().getText().startsWith("/")) {
 					// we don't actually remove the slash - words will match anyway.
