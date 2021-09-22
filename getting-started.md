@@ -2,6 +2,7 @@
 layout: default
 title: Getting Started
 nav_order: 2
+nav-menu: true
 ---
 
 # Getting Started

@@ -1,1 +1,19 @@
 remote_theme: robmoffat/bot-jekyll-theme
+title: Spring Bot
+subtitle: Platform agnostic, annotation-driven bot creation framework.
+description: Platform agnostic, annotation-driven bot creation framework.
+email: rob@kite9.com
+baseurl: "/" # the subpath of your site, e.g. /blog
+include: ['_pages']
+url: https://finos.github.io/symphony-java-toolkit
+author: Finos
+
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# build settings
+markdown: kramdown
+
+sass:
+  style: compressed
