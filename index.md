@@ -4,15 +4,14 @@ title: Welcome
 nav_order: 1
 ---
 
-<section class="front-page-top" markdown="1">
-  <div class="logo-surround" markdown="1">
+<section class="front-page-top">
+  <div class="logo-surround">
     <div class="logo-image">
       <img src="assets/images/logo.svg" title="Bot Logo" />
     </div>
     <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
   </div>
 </section>
-
 
 <section class="front-page-alt" markdown="1">
   <aside markdown="1">

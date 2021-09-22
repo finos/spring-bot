@@ -1,14 +1,21 @@
+@font-face {
+  src: url('../fonts/Electrolize-Regular.ttf');
+  font-family: 'Elecrolize';
+}
+
 // WEIRD FRONT-PAGE SECTIONS
 
 section.front-page {
   //clip-path: polygon(0 9rem,100% 0,100% 90rem,0 80rem);
-  font-size: 2rem;
 }
 
 section.front-page-alt {
   background-color: lighten($body-background-color, 15%);
   clip-path: polygon(0 9rem,100% 0,100% 100%,0 9rem);
   display: flex;
+  font-size: 2rem;
+  align-items: center;
+  flex-basis: row;
 }
 
 section.front-page-top {
@@ -27,10 +34,6 @@ h1, h2, h3, h4, h5 {
 
 
 // LOGO STUFF
-
-@font-face {
-  src: url('../fonts/Electrolize-Regular.ttf');
-}
   
 .logo-surround {
   display: flex;
