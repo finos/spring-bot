@@ -4,32 +4,38 @@ title: Welcome
 nav_order: 1
 ---
 
-<div class="logo-surround" markdown="1">
-  <div class="logo-image">
-    <img src="assets/images/logo.svg" title="Bot Logo" />
+<section class="front-page-top" markdown="1">
+  <div class="logo-surround" markdown="1">
+    <div class="logo-image">
+      <img src="assets/images/logo.svg" title="Bot Logo" />
+    </div>
+    <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
   </div>
-  <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
-</div>
-
-<section class="front-page" markdown="1">
-
-# Welcome
-
-**Spring Bot** is like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/) but for building chat-bots. 
-
-This project is for:
-
- - building chat-bots in Java/Kotlin using Spring / Spring Boot
- - using a familiar, Spring-annotation-driven way to configure bots.
- - having access to the Java & Spring ecosystems for complex bot use-cases 
- 
-Although there are many low-code and no-code ways to put a chat-bot together now, for advanced use-cases and situations where you want to integrate with existing systems, Java will be the way to go.   
-
 </section>
 
+
 <section class="front-page-alt" markdown="1">
+  <aside markdown="1">
+  Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/) but for building chat-bots. 
+  </aside>
+
+  <div markdown="1">
+  This project is for:
+  
+   - building chat-bots in Java/Kotlin using Spring / Spring Boot
+   - using a familiar, Spring-annotation-driven way to configure bots.
+   - having access to the Java & Spring ecosystems for complex bot use-cases 
+   
+  Although there are many low-code and no-code ways to put a chat-bot together now, for advanced use-cases and situations where you want to integrate with existing systems, Java will be the way to go.   
+  
+  </div>
+</section>
+
+<section class="front-page" markdown="1">
+ 
  
 # One Quick Example
+
 
 Here is an excerpt from the [To-Do Tutorial]().  
 
@@ -93,11 +99,15 @@ This button will then appear on my To-Do List:
 
 </section>
 
-<section class="front-page" markdown="1">
+<section class="front-page-alt" markdown="1">
 
+<aside markdown="1>
 # MVC For Bots
 
-Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Model, View, Controller) pattern for your code:
+Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Model, View, Controller) pattern for your code.
+</aside>
+
+<div markdown="1">
 
 ## Model
 
@@ -115,9 +125,11 @@ Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Mode
  - Mapping of methods on your controllers to messages sent to the bot.
  - Resolving method parameters (such as the `User` in the example above).
  
- </section>
+</div>
 
-<section class="front-page-alt" markdown="1">
+</section>
+
+<section class="front-page" markdown="1">
 
 # Platform Bindings
 
@@ -129,14 +141,19 @@ Currently we have just have bindings for [Symphony](symphony.md) with MS Teams c
 
 </section>
 
-<section class="front-page" markdown="1">
 
-# Code
+<section class="front-page-alt" markdown="1">
+
+<aside markdown="1">
 
 ## Demo Bots
 
 - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/claim-bot)  - discussed in the [Symphony](symphony.md) tutorial.
 - [To Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/todo-bot)  - discussed in the [Getting Started](getting-started) tutorial.
+
+</aside>
+
+<div markdown="1">
 
 ## Tools
 
@@ -153,6 +170,8 @@ Allows you to configure news feeds into chat rooms.
 ### [Poll Bot](https://github.com/finos/symphony-java-toolkit/tree/master/tools/poll-bot)
 
 Allows you to poll the members of a room, providing a question and a list of answers to vote on.
+
+</div>
 
 </section>
 
