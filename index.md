@@ -4,14 +4,14 @@ title: Welcome
 nav_order: 1
 ---
 
-<div class="logo-surround">
+<div class="logo-surround" markdown="1">
   <div class="logo-image">
     <img src="assets/images/logo.svg" title="Bot Logo" />
   </div>
   <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
 </div>
 
-<section class="front-page">
+<section class="front-page" markdown="1">
 
 # Welcome
 
@@ -27,7 +27,7 @@ Although there are many low-code and no-code ways to put a chat-bot together now
 
 </section>
 
-<section class="front-page-alt">
+<section class="front-page-alt" markdown="1">
  
 # One Quick Example
 
@@ -93,7 +93,7 @@ This button will then appear on my To-Do List:
 
 </section>
 
-<section class="front-page">
+<section class="front-page" markdown="1">
 
 # MVC For Bots
 
@@ -117,7 +117,7 @@ Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Mode
  
  </section>
 
-<section class="front-page-alt">
+<section class="front-page-alt" markdown="1">
 
 # Platform Bindings
 
@@ -129,7 +129,7 @@ Currently we have just have bindings for [Symphony](symphony.md) with MS Teams c
 
 </section>
 
-<section class="front-page">
+<section class="front-page" markdown="1">
 
 # Code
 

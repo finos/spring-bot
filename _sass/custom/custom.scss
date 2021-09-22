@@ -1,13 +1,15 @@
 // WEIRD FRONT-PAGE SECTIONS
 
 section.front-page {
-  background-color: lighten($body-background-color, 3%);
+  background-color: lighten($body-background-color, 9%);
   clip-path: polygon(0 9rem,100% 0,100% 90rem,0 80rem);
   font-size: 2rem;
 }
 
 section.front-page-alt {
   font-size: 1.5rem;
+  background-color: lighten($body-background-color, 5%);
+  clip-path: polygon(0 9rem,100% 0,100% 90rem,0 80rem);
 }
 
 
