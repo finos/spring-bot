@@ -1,6 +1,21 @@
+// WEIRD FRONT-PAGE SECTIONS
+
+section.front-page {
+  background-color: lighten($body-background-color, 3%);
+  clip-path: polygon(0 9rem,100% 0,100% 90rem,0 80rem);
+  font-size: 2rem;
+}
+
+section.front-page-alt {
+  font-size: 1.5rem;
+}
+
+
+// LOGO STUFF
+
 @font-face {
   font-family: 'Electrolize';
-  src: url('assets/fonts/Electrolize-Regular.ttf');
+  src: url('../fonts/Electrolize-Regular.ttf');
 }
   
 .logo-surround {

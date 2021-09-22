@@ -11,6 +11,9 @@ nav_order: 1
   <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
 </div>
 
+<section class="front-page">
+
+# Welcome
 
 **Spring Bot** is like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/) but for building chat-bots. 
 
@@ -21,6 +24,10 @@ This project is for:
  - having access to the Java & Spring ecosystems for complex bot use-cases 
  
 Although there are many low-code and no-code ways to put a chat-bot together now, for advanced use-cases and situations where you want to integrate with existing systems, Java will be the way to go.   
+
+</section>
+
+<section class="front-page-alt">
  
 # One Quick Example
 
@@ -84,6 +91,10 @@ This button will then appear on my To-Do List:
 
 ... and so on. [Tutorial continues here.](getting-started.md)
 
+</section>
+
+<section class="front-page">
+
 # MVC For Bots
 
 Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Model, View, Controller) pattern for your code:
@@ -103,6 +114,10 @@ Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Mode
 
  - Mapping of methods on your controllers to messages sent to the bot.
  - Resolving method parameters (such as the `User` in the example above).
+ 
+ </section>
+
+<section class="front-page-alt">
 
 # Platform Bindings
 
@@ -111,6 +126,10 @@ Spring Bot is designed to be an _abstraction layer_ on top of other Java bot lib
 This means that you can build bots in Spring Bot that will work concurrently on different chat-platforms.
 
 Currently we have just have bindings for [Symphony](symphony.md) with MS Teams coming next.
+
+</section>
+
+<section class="front-page">
 
 # Code
 
@@ -135,6 +154,6 @@ Allows you to configure news feeds into chat rooms.
 
 Allows you to poll the members of a room, providing a question and a list of answers to vote on.
 
-
+</section>
 
 
