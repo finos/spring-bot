@@ -1,0 +1,30 @@
+@font-face {
+  font-family: 'Electrolize';
+  src: url('assets/fonts/Electrolize-Regular.ttf');
+}
+  
+.logo-surround {
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.logo-title,
+.logo-image {
+   font-size: 100px;
+   font-family: 'Electrolize';
+   color: white;
+   display: inline-block;
+   padding: 10px;
+ }
+ 
+ .logo-bot {
+   color: 0099FF; 
+ }
+ 
+ .logo-image img {
+   height: 70px;
+   background-color: white;
+   border-radius: 6px;
+   padding: 10px;
+ }

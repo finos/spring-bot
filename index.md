@@ -4,7 +4,13 @@ title: Welcome
 nav_order: 1
 ---
 
-# Welcome!
+<div class="logo-surround">
+  <div class="logo-image">
+    <img src="assets/images/logo.svg" title="Bot Logo" />
+  </div>
+  <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
+</div>
+
 
 **Spring Bot** is like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/) but for building chat-bots. 
 
