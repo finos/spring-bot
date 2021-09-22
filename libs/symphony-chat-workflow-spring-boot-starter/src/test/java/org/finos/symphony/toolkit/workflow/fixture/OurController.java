@@ -48,7 +48,7 @@ public class OurController {
 		lastMethod = "callPerson";
 	}
 	
-	@ChatButton(value = StartClaim.class, buttonText = "start")
+	@ChatButton(value = StartClaim.class, buttonText = "start", rooms={"The Room Where It Happened"})
 	public TestObject startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
@@ -67,7 +67,7 @@ public class OurController {
 	}
 	
 	
-	@ChatRequest("list") 
+	@ChatRequest(value="list", rooms= {"The Room Where It Happened"}) 
 	public void doCommand(Message m) {
 		// do something when user types in "/list"
 		lastArguments = Collections.singletonList(m);

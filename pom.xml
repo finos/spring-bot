@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>8.0.1-SNAPSHOT</version>
+	<version>8.0.1</version>
 	<packaging>pom</packaging>
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>

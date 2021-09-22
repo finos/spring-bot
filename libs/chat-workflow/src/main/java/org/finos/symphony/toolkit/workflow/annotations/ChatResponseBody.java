@@ -20,4 +20,5 @@ public @interface ChatResponseBody {
 	WorkMode workMode() default WorkMode.VIEW;
 	
 	String template() default "";
+	
 }

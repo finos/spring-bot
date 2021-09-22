@@ -19,9 +19,29 @@ public interface Action {
 	 * Get the entity data underlying the request.
 	 */
 	public Object getData();
+		
+	public static final Action NULL_ACTION = new Action() {
+
+		@Override
+		public Addressable getAddressable() {
+			return null;
+		}
+
+		@Override
+		public User getUser() {
+			return null;
+		}
+
+		@Override
+		public Object getData() {
+			return null;
+		}
+		
+	};
 	
 	/**
 	 * Keeps track of the action being handled by the current thread
 	 */
-	public static final ThreadLocal<Action> CURRENT_ACTION = new ThreadLocal<>();
+	public static final ThreadLocal<Action> CURRENT_ACTION = ThreadLocal.withInitial(() -> NULL_ACTION);
+	
 }

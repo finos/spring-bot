@@ -25,7 +25,7 @@ public abstract class AbstractAddressedActionConsumer extends AbstractActionCons
 		if (ac != null) {
 			Action f = ac.filter(t);
 			if (f != null) {
-				acceptInner(t);
+				acceptInner(f);
 			}
 		} else {
 			acceptInner(t);

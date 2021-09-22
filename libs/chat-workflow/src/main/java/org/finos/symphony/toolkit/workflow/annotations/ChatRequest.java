@@ -4,7 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Allows controller methods to be bound to messages chatted to the bot.
+ * Allows controller methods to be bound to messages sent to the bot via chat.
  * 
  * @author rob@kite9.com
  *

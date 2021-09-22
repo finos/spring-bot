@@ -119,9 +119,7 @@ Chat Workflow provides interfaces and utilities for expressing bot workflows in 
 The Chat Workflow Symphony Starter implements this for symphony.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
 
  - [View the README](libs/chat-workflow/README.md)
- - [View the Tutorial](tutorials/Chat-Workflow.md) 
- - [Demo To-Do List Bot](demos/todo-bot/README.md)
- - [Demo Claim Bot](demos/claim-bot/README.md)
+ - [View the Documentation Site](https://finos.github.io/symphony-java-toolkit) 
 
 # Tools
 

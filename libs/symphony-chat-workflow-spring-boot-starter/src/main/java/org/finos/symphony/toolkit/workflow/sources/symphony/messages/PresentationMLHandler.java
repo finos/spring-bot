@@ -63,7 +63,7 @@ public class PresentationMLHandler implements StreamEventConsumer {
 						c.accept(sma);
 					}
 				} finally {
-					Action.CURRENT_ACTION.set(null);
+					Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 				}
 			}
 		} catch (Exception e) {

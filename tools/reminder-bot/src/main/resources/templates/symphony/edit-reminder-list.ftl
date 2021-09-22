@@ -24,7 +24,7 @@
 
    <td >${iB.localTime!''}</td>
 
-   <td >${iB.author.id[1].value!''}</td>
+   <td ><#if iB.author??> ${iB.author.id[1].value!''}</#if></td>
    <td style="text-align:center; width:10%" ><checkbox name="reminders.${iB?index}.selected" /></td>
    <td style="text-align:center;" ><button name="reminders[${iB?index}].table-edit-row">Edit</button></td>
   </tr>

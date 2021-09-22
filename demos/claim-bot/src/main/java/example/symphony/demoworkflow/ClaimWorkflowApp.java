@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoWorkflowApp 
+public class ClaimWorkflowApp 
 {
     public static void main( String[] args )
     {
-    	SpringApplication.run(new Class[] {DemoWorkflowApp.class}, args);
+    	SpringApplication.run(new Class[] {ClaimWorkflowApp.class}, args);
     }
 }
