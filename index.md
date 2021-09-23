@@ -34,7 +34,7 @@ layout: home
 <h1>One Quick Example</h1>
 <div class="grid"><div class="item" markdown="1">
 
-Here is an excerpt from the [To-Do Tutorial]().  
+Here is an excerpt from the [To-Do Tutorial](getting-started.md).  
 
 Let's say I have a simple POJO called `ToDoItem` (containing fields like `Description`, `Creator` etc.) and a further POJO called `ToDoList` which looks like this.
 
@@ -80,11 +80,11 @@ This creates a new command for the bot.  When I type `/help`, the bot responds w
 
 </div><div class="item"  markdown="1">
 
-When I type '/new' the bot responds with an empty To-Do list like so:
+![Empty To-Do list](/assets/images/index/new.png)
 
 </div><div class="item"  markdown="1">
 
-![Empty To-Do list](/assets/images/index/new.png)
+When I type '/new' the bot responds with an empty To-Do list like so.
 
 </div><div class="item"  markdown="1">
 
@@ -110,11 +110,11 @@ public class ToDoController {
 
 </div><div class="item"  markdown="1">
 
-This button will then appear on my To-Do List:
+![Add Button](/assets/images/index/add.png)
 
 </div><div class="item"  markdown="1">
 
-![Add Button](/assets/images/index/add.png)
+This button will then appear on my To-Do List.
 
 </div><div class="item"  markdown="1">
 

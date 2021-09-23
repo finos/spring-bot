@@ -19,6 +19,8 @@ html {
 section.front-page-alt {
   background-color: #32324a;
   clip-path: polygon(0 9rem,100% 0,100% 100%,0 90rem);
+  padding-top: 10rem;
+  padding-bottom: 10rem;
 }
 
 div.inner {
@@ -43,6 +45,10 @@ div.item {
   padding: 20px;
 }
 
+div.item img {
+  border-radius: 15px;
+}
+
 section.front-page-top {
   display: flex;
   align-content: center;
@@ -58,6 +64,7 @@ aside {
 }
 
 aside a {
+  background-color: #0099FF;
   color: white;
 }
 
