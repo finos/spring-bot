@@ -35,6 +35,10 @@ div.inner {
   font-size: 1.5rem; 
 }
 
+div.footer {
+  width: 100px;
+}
+
 div.flex {
   display: flex; 
   align-items: center; 
@@ -66,6 +70,8 @@ section.footer {
   align-content: center;
   justify-content: center;
 }
+
+
 
 aside {
   font-size: 3rem;

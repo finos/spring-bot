@@ -191,8 +191,8 @@ Allows you to poll the members of a room, providing a question and a list of ans
 
 </div></div></section>
 
-<section class="footer">
+<section class="footer"><div class="inner footer">
   <a href="https://www.finos.org"><img id="finosicon" src="assets/images/index/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS">
   </a>
-</section>
+</div></section>
 
