@@ -175,7 +175,7 @@ Read the [Getting Started](getting-started) tutorial to see how...
 
 ## Source
 
-[See Github](https://github.org/finos/symphony-java-toolkit)
+[See Github](https://github.com/finos/symphony-java-toolkit)
 
 ## Tools
 
