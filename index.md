@@ -124,11 +124,11 @@ This button will then appear on my To-Do List:
 
 </div></section>
 
-<section class="front-page-alt"><div class="inner"><aside markdown="1>
+<section class="front-page-alt"><div class="inner"><aside markdown="1">
 
 # MVC For Bots
 
-Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Model, View, Controller) pattern for your code.
+Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Model, View, Controller) pattern for your code:
 
 </aside><div markdown="1">
 
@@ -166,7 +166,7 @@ Currently we have just have bindings for [Symphony](symphony.md) with MS Teams c
 
 <section class="front-page-alt"><div class="inner"><aside markdown="1">
 
-## Demo Bots
+## Tutorials
 
 - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/claim-bot)  - discussed in the [Symphony](symphony.md) tutorial.
 - [To Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/todo-bot)  - discussed in the [Getting Started](getting-started) tutorial.
