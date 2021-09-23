@@ -188,4 +188,8 @@ Allows you to poll the members of a room, providing a question and a list of ans
 
 </div></div></section>
 
+<section class="finos finosBanner">
+  <a href="https://www.finos.org"><img id="finosicon" src="img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS">
+  </a>
+</section>
 
