@@ -16,11 +16,16 @@ html {
 
 // WEIRD FRONT-PAGE SECTIONS
 
-section.front-page-alt {
-  background-color: #32324a;
-  clip-path: polygon(0 9rem,100% 0,100% 100%,0 90rem);
+section {
+   
   padding-top: 10rem;
   padding-bottom: 10rem;
+
+}
+
+section.front-page-alt {
+  background-color: #32324a;
+  clip-path: polygon(0 3rem, 100% 0, 100% 100%, 0 calc(100% - 3rem));
 }
 
 div.inner {
@@ -46,7 +51,7 @@ div.item {
 }
 
 div.item img {
-  border-radius: 15px;
+  border-radius: 4px;
 }
 
 section.front-page-top {
