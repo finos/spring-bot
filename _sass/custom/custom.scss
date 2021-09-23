@@ -16,14 +16,9 @@ html {
 
 // WEIRD FRONT-PAGE SECTIONS
 
-section.front-page {
-  //clip-path: polygon(0 9rem,100% 0,100% 90rem,0 80rem);
-}
-
 section.front-page-alt {
-  background-color: #00004c;
   display: flex;
-  font-size: 2rem;
+  font-size: 1.5rem;
   align-items: center;
   flex-basis: row;
 }
@@ -35,10 +30,8 @@ section.front-page-top {
 aside {
   font-size: 3rem;
   font-weight: bold;
-  background-color: lighten($body-background-color, 35%);
   color: white;
   font-family: 'Electrolize';
-  font-weight: 200;
 }
 
 aside a {
