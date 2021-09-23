@@ -14,9 +14,11 @@ layout: home
   </div>
 </section>
 
-<section class="front-page-alt" markdown="1">
+<section class="front-page-alt">
+  <div class="inner">
   <aside markdown="1">
-  Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/) but for building chat-bots. 
+  “Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/)...
+     but for building chat-bots”
   </aside>
 
   <div markdown="1">
@@ -29,10 +31,11 @@ layout: home
   Although there are many low-code and no-code ways to put a chat-bot together now, for advanced use-cases and situations where you want to integrate with existing systems, Java will be the way to go.   
   
   </div>
+  </div>
 </section>
 
-<section class="front-page" markdown="1">
- 
+<section class="front-page">
+  <div class="inner">
  
 # One Quick Example
 
@@ -97,9 +100,12 @@ This button will then appear on my To-Do List:
 
 ... and so on. [Tutorial continues here.](getting-started.md)
 
+</div>
 </section>
 
-<section class="front-page-alt" markdown="1">
+<section class="front-page-alt">
+  <div class="inner">
+
 
 <aside markdown="1>
 # MVC For Bots
@@ -126,10 +132,13 @@ Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Mode
  - Resolving method parameters (such as the `User` in the example above).
  
 </div>
+</div>
 
 </section>
 
-<section class="front-page" markdown="1">
+<section class="front-page">
+  <div class="inner">
+
 
 # Platform Bindings
 
@@ -139,10 +148,13 @@ This means that you can build bots in Spring Bot that will work concurrently on 
 
 Currently we have just have bindings for [Symphony](symphony.md) with MS Teams coming next.
 
+</div>
 </section>
 
 
-<section class="front-page-alt" markdown="1">
+<section class="front-page-alt">
+  <div class="inner">
+
 
 <aside markdown="1">
 
@@ -171,6 +183,7 @@ Allows you to configure news feeds into chat rooms.
 
 Allows you to poll the members of a room, providing a question and a list of answers to vote on.
 
+</div>
 </div>
 
 </section>

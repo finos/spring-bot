@@ -17,14 +17,25 @@ html {
 // WEIRD FRONT-PAGE SECTIONS
 
 section.front-page-alt {
-  display: flex;
-  font-size: 1.5rem;
-  align-items: center;
+  background-color: #32324a;
+  clip-path: polygon(0 9rem,100% 0,100% 100%,0 90rem);
+}
+
+div.inner {
+  width: 100%; 
+  max-width: 1000px; 
+  margin: auto;
+  display: flex; 
+  font-size: 1.5rem; 
+  align-items: center; 
   flex-basis: row;
 }
 
 section.front-page-top {
-  height: 100%;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  height: calc(100vh);
 }
 
 aside {
@@ -38,7 +49,7 @@ aside a {
   color: white;
 }
 
-h1, h2, h3, h4, h5 {
+h1 {
   font-family: 'Electrolize';
 }
 
