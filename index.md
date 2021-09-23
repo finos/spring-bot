@@ -46,7 +46,8 @@ Let's say I have a simple POJO called `ToDoItem` (containing fields like `Descri
 @Work
 public class ToDoList {
 
-  private List<ToDoItem> items = new ArrayList<ToDoItem>();
+  private List<ToDoItem> items = 
+       new ArrayList<ToDoItem>();
 
   // setters/getters omitted for brevity
   
@@ -63,7 +64,8 @@ We can create a Spring Controller like so:
 @Controller
 public class ToDoController {
 
-  @ChatRequest(value="new", description = "Create new item list")
+  @ChatRequest(value="new", 
+     description = "Create new item list")
   public ToDoList init() {
     return new ToDoList();
   }
@@ -84,7 +86,7 @@ This creates a new command for the bot.  When I type `/help`, the bot responds w
 
 </div><div class="item"  markdown="1">
 
-When I type '/new' the bot responds with an empty To-Do list like so.
+When I type `/new` the bot responds with an empty To-Do list like so.
 
 </div><div class="item"  markdown="1">
 
@@ -96,15 +98,18 @@ I can put an add button on the To-Do list like this:
 @Controller
 public class ToDoController {
   
-  // Other methods
+ // Other methods
   
-  @ChatButton(value = ToDoList.class, buttonText = "Add")
-  @ChatResponseBody(workMode = WorkMode.EDIT)
-  public NewItemDetails add(User author) {
-    NewItemDetails out = new NewItemDetails();
-    out.assignTo = author;      // assign to-do item to the person who clicked the button
-    return out;
-  }
+ @ChatButton(value = ToDoList.class, 
+   buttonText = "Add")
+ @ChatResponseBody(
+   workMode = WorkMode.EDIT)
+ public NewItemDetails add(User author) {
+  NewItemDetails out = 
+    new NewItemDetails();
+  out.assignTo = author;     
+  return out;
+ }
 }
 ```
 
@@ -126,8 +131,6 @@ This button will then appear on my To-Do List.
 
 <section class="front-page-alt"><div class="inner flex"><aside markdown="1">
 
-# MVC For Bots
-
 “Spring Bot handles [MVC](https://en.wikipedia.org/wiki/Model–view–controller) for your bot”
 
 </aside><div markdown="1">
@@ -135,12 +138,12 @@ This button will then appear on my To-Do List.
 ## Model
 
 - Spring Bot espouses a technique for building stateless bots, recommending that you store all working state as data within the chat platform. 
-- You use POJOs to define the data model that your bot needs (just like in the To-Do example above), persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history)
-- Spring Bot will handle serialization / deserialization of this model to your chat platform using Jackson.
+- You use POJOs to define the data model that your bot needs, persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history)
+- Spring Bot will handles serialization / deserialization via [Jackson]().
 
 ## View
 
- - Spring Bot will generate default views of your model, which are sent to the user. 
+ - Spring Bot can auto-generate default views of your models. 
  - It provides functionality for using alternate views, and customizing views for each platform.
  
 ## Controller
