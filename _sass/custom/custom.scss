@@ -61,6 +61,12 @@ section.front-page-top {
   height: calc(100vh);
 }
 
+section.footer {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
 aside {
   font-size: 3rem;
   font-weight: bold;

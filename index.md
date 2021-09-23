@@ -128,7 +128,7 @@ This button will then appear on my To-Do List.
 
 # MVC For Bots
 
-“Spring Bot handles MVC (Model, View, Controller) for your bot”
+“Spring Bot handles [MVC](https://en.wikipedia.org/wiki/Model–view–controller) for your bot”
 
 </aside><div markdown="1">
 
@@ -188,8 +188,8 @@ Allows you to poll the members of a room, providing a question and a list of ans
 
 </div></div></section>
 
-<section class="finos finosBanner">
-  <a href="https://www.finos.org"><img id="finosicon" src="img/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS">
+<section class="footer">
+  <a href="https://www.finos.org"><img id="finosicon" src="assets/images/index/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS">
   </a>
 </section>
 
