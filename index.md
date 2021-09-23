@@ -173,6 +173,10 @@ Read the [Getting Started](getting-started) tutorial to see how...
 
 </aside><div markdown="1">
 
+## Source
+
+[See Github](https://github.org/finos/symphony-java-toolkit)
+
 ## Tools
 
 To see how this toolkit works in action, check out some source code here:
@@ -195,4 +199,3 @@ Allows you to poll the members of a room, providing a question and a list of ans
   <a href="https://www.finos.org"><img id="finosicon" src="assets/images/index/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS">
   </a>
 </div></section>
-
