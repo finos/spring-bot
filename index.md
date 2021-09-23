@@ -14,14 +14,12 @@ layout: home
   </div>
 </section>
 
-<section class="front-page-alt">
-  <div class="inner">
-  <aside markdown="1">
+<section class="front-page-alt"><div class="inner"><aside markdown="1">
+
   “Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/)...
      but for building chat-bots”
-  </aside>
-
-  <div markdown="1">
+  
+</aside><div markdown="1">
   This project is for:
   
    - building chat-bots in Java/Kotlin using Spring / Spring Boot
@@ -30,12 +28,9 @@ layout: home
    
   Although there are many low-code and no-code ways to put a chat-bot together now, for advanced use-cases and situations where you want to integrate with existing systems, Java will be the way to go.   
   
-  </div>
-  </div>
-</section>
+</div></div></section>
 
-<section class="front-page">
-  <div class="inner">
+<section class="front-page"><div class="inner" markdown="1">
  
 # One Quick Example
 
@@ -100,20 +95,15 @@ This button will then appear on my To-Do List:
 
 ... and so on. [Tutorial continues here.](getting-started.md)
 
-</div>
-</section>
+</div></section>
 
-<section class="front-page-alt">
-  <div class="inner">
+<section class="front-page-alt"><div class="inner"><aside markdown="1>
 
-
-<aside markdown="1>
 # MVC For Bots
 
 Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Model, View, Controller) pattern for your code.
-</aside>
 
-<div markdown="1">
+</aside><div markdown="1">
 
 ## Model
 
@@ -131,13 +121,9 @@ Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Mode
  - Mapping of methods on your controllers to messages sent to the bot.
  - Resolving method parameters (such as the `User` in the example above).
  
-</div>
-</div>
+</div></div></section>
 
-</section>
-
-<section class="front-page">
-  <div class="inner">
+<section class="front-page"><div class="inner" markdown="1">
 
 
 # Platform Bindings
@@ -148,24 +134,17 @@ This means that you can build bots in Spring Bot that will work concurrently on 
 
 Currently we have just have bindings for [Symphony](symphony.md) with MS Teams coming next.
 
-</div>
-</section>
+</div></section>
 
 
-<section class="front-page-alt">
-  <div class="inner">
-
-
-<aside markdown="1">
+<section class="front-page-alt"><div class="inner"><aside markdown="1">
 
 ## Demo Bots
 
 - [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/claim-bot)  - discussed in the [Symphony](symphony.md) tutorial.
 - [To Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/todo-bot)  - discussed in the [Getting Started](getting-started) tutorial.
 
-</aside>
-
-<div markdown="1">
+</aside><div markdown="1">
 
 ## Tools
 
@@ -183,9 +162,6 @@ Allows you to configure news feeds into chat rooms.
 
 Allows you to poll the members of a room, providing a question and a list of answers to vote on.
 
-</div>
-</div>
-
-</section>
+</div></div></section>
 
 
