@@ -31,6 +31,15 @@ div.inner {
   flex-basis: row;
 }
 
+div.grid {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+div.item {
+  
+}
+
 section.front-page-top {
   display: flex;
   align-content: center;
