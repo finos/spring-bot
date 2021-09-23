@@ -137,8 +137,8 @@ This button will then appear on my To-Do List.
 
 ## Model
 
-- Spring Bot espouses a technique for building stateless bots, recommending that you store all working state as data within the chat platform. 
-- You use POJOs to define the data model that your bot needs, persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history)
+- Build stateless bots:  store all working state as data within the chat platform. 
+- Create POJOs for your data model, persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history).
 - Spring Bot will handles serialization / deserialization via [Jackson]().
 
 ## View
@@ -148,8 +148,8 @@ This button will then appear on my To-Do List.
  
 ## Controller
 
- - Mapping of methods on your controllers to messages sent to the bot.
- - Resolving method parameters (such as the `User` in the example above).
+ - Mapping of `methods()` on your `@Controllers` to messages sent to the bot.
+ - Resolving method parameters like `User`, `Word`, `HashTag`...
  
 </div></div></section>
 
