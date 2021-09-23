@@ -25,8 +25,11 @@ div.inner {
   width: 100%; 
   max-width: 1000px; 
   margin: auto;
-  display: flex; 
   font-size: 1.5rem; 
+}
+
+div.flex {
+  display: flex; 
   align-items: center; 
   flex-basis: column;
 }
@@ -37,7 +40,7 @@ div.grid {
 }
 
 div.item {
-  
+  padding: 20px;
 }
 
 section.front-page-top {

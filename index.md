@@ -14,7 +14,7 @@ layout: home
   </div>
 </section>
 
-<section class="front-page-alt"><div class="inner"><aside markdown="1">
+<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
 
   “Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/)...
      but for building chat-bots”
@@ -124,7 +124,7 @@ This button will then appear on my To-Do List:
 
 </div></section>
 
-<section class="front-page-alt"><div class="inner"><aside markdown="1">
+<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
 
 # MVC For Bots
 
@@ -164,7 +164,7 @@ Currently we have just have bindings for [Symphony](symphony.md) with MS Teams c
 </div></section>
 
 
-<section class="front-page-alt"><div class="inner"><aside markdown="1">
+<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
 
 ## Tutorials
 
