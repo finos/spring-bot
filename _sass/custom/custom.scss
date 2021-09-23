@@ -5,7 +5,7 @@
 
 @font-face {
   src: url('../fonts/OpenSans-Regular.ttf');
-  font-family: 'Electrolize';
+  font-family: 'OpenSans';
 }
 
 
@@ -22,7 +22,6 @@ section.front-page {
 
 section.front-page-alt {
   background-color: #00004c;
-  clip-path: polygon(0 9rem,100% 0,100% 100%,0 9rem);
   display: flex;
   font-size: 2rem;
   align-items: center;
