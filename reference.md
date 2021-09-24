@@ -2,6 +2,7 @@
 layout: default
 title: Reference Guide
 nav_order: 4
+nav-menu: true
 ---
 
 # Reference Guide

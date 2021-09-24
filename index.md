@@ -2,101 +2,159 @@
 layout: default
 title: Welcome
 nav_order: 1
+layout: home
 ---
 
-# Welcome!
+<section class="front-page-top">
+  <div class="logo-surround">
+    <div class="logo-image">
+      <img src="assets/images/logo.svg" title="Bot Logo" />
+    </div>
+    <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
+  </div>
+</section>
 
-**Spring Bot** is like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/) but for building chat-bots. 
+<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
 
-This project is for:
+  “Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/)...
+     but for building chat-bots”
+  
+</aside><div markdown="1">
+  This project is for:
+  
+   - building chat-bots in Java/Kotlin using Spring / Spring Boot
+   - using a familiar, Spring-annotation-driven way to configure bots.
+   - having access to the Java & Spring ecosystems for complex bot use-cases 
+   
+  Although there are many low-code and no-code ways to put a chat-bot together now, for advanced use-cases and situations where you want to integrate with existing systems, Java will be the way to go.   
+  
+</div></div></section>
 
- - building chat-bots in Java/Kotlin using Spring / Spring Boot
- - using a familiar, Spring-annotation-driven way to configure bots.
- - having access to the Java & Spring ecosystems for complex bot use-cases 
- 
-Although there are many low-code and no-code ways to put a chat-bot together now, for advanced use-cases and situations where you want to integrate with existing systems, Java will be the way to go.   
- 
-# One Quick Example
+<section class="front-page"><div class="inner">
+<h1>One Quick Example</h1>
+<div class="grid"><div class="item" markdown="1">
 
-Here is an excerpt from the [To-Do Tutorial]().  
+Here is an excerpt from the [To-Do Tutorial](getting-started.md).  
 
-Let's say I have a simple POJO called `ToDoItem` (containing fields like `Description`, `Creator` etc.) and a further POJO called `ToDoList` which looks like this:
+Let's say I have a simple POJO called `ToDoItem` (containing fields like `Description`, `Creator` etc.) and a further POJO called `ToDoList` which looks like this.
+
+</div>
+
+<div class="item"  markdown="1">
 
 ```java
 @Work
 public class ToDoList {
 
-  private List<ToDoItem> items = new ArrayList<ToDoItem>();
+  private List<ToDoItem> items = 
+       new ArrayList<ToDoItem>();
 
   // setters/getters omitted for brevity
   
 }
 ```
 
+</div><div class="item"  markdown="1">
+
 We can create a Spring Controller like so:
+
+</div><div class="item"  markdown="1">
 
 ```java
 @Controller
 public class ToDoController {
 
-  @ChatRequest(value="new", description = "Create new item list")
+  @ChatRequest(value="new", 
+     description = "Create new item list")
   public ToDoList init() {
     return new ToDoList();
   }
 
 ```
 
-This creates a new command for the bot.  When I type `/help`, the bot responds with...
+</div><div class="item"  markdown="1">
 
 ![Help Page](/assets/images/index/help.png)
 
-When I type '/new' the bot responds with an empty To-Do list like so:
+</div><div class="item"  markdown="1">
+
+This creates a new command for the bot.  When I type `/help`, the bot responds with...
+
+</div><div class="item"  markdown="1">
 
 ![Empty To-Do list](/assets/images/index/new.png)
 
+</div><div class="item"  markdown="1">
+
+When I type `/new` the bot responds with an empty To-Do list like so.
+
+</div><div class="item"  markdown="1">
+
 I can put an add button on the To-Do list like this:
+
+</div><div class="item"  markdown="1">
 
 ```java
 @Controller
 public class ToDoController {
   
-  // Other methods
+ // Other methods
   
-  @ChatButton(value = ToDoList.class, buttonText = "Add")
-  @ChatResponseBody(workMode = WorkMode.EDIT)
-  public NewItemDetails add(User author) {
-    NewItemDetails out = new NewItemDetails();
-    out.assignTo = author;      // assign to-do item to the person who clicked the button
-    return out;
-  }
+ @ChatButton(value = ToDoList.class, 
+   buttonText = "Add")
+ @ChatResponseBody(
+   workMode = WorkMode.EDIT)
+ public NewItemDetails add(User author) {
+  NewItemDetails out = 
+    new NewItemDetails();
+  out.assignTo = author;     
+  return out;
+ }
 }
 ```
 
-This button will then appear on my To-Do List:
+</div><div class="item"  markdown="1">
 
 ![Add Button](/assets/images/index/add.png)
 
+</div><div class="item"  markdown="1">
+
+This button will then appear on my To-Do List.
+
+</div><div class="item"  markdown="1">
+
 ... and so on. [Tutorial continues here.](getting-started.md)
 
-# MVC For Bots
+</div></div>
 
-Spring Bot has similar logic to Spring Web MVC, in that it handles the MVC (Model, View, Controller) pattern for your code:
+</div></section>
+
+<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
+
+“Spring Bot handles [MVC](https://en.wikipedia.org/wiki/Model–view–controller) for your bot”
+
+</aside><div markdown="1">
 
 ## Model
 
-- Spring Bot espouses a technique for building stateless bots, recommending that you store all working state as data within the chat platform. 
-- You use POJOs to define the data model that your bot needs (just like in the To-Do example above), persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history)
-- Spring Bot will handle serialization / deserialization of this model to your chat platform using Jackson.
+- Build stateless bots:  store all working state as data within the chat platform. 
+- Create POJOs for your data model, persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history).
+- Spring Bot will handles serialization / deserialization via [Jackson]().
 
 ## View
 
- - Spring Bot will generate default views of your model, which are sent to the user. 
+ - Spring Bot can auto-generate default views of your models. 
  - It provides functionality for using alternate views, and customizing views for each platform.
  
 ## Controller
 
- - Mapping of methods on your controllers to messages sent to the bot.
- - Resolving method parameters (such as the `User` in the example above).
+ - Mapping of `methods()` on your `@Controllers` to messages sent to the bot.
+ - Resolving method parameters like `User`, `Word`, `HashTag`...
+ 
+</div></div></section>
+
+<section class="front-page"><div class="inner" markdown="1">
+
 
 # Platform Bindings
 
@@ -106,12 +164,18 @@ This means that you can build bots in Spring Bot that will work concurrently on 
 
 Currently we have just have bindings for [Symphony](symphony.md) with MS Teams coming next.
 
-# Code
+</div></section>
 
-## Demo Bots
 
-- [Claim Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/claim-bot)  - discussed in the [Symphony](symphony.md) tutorial.
-- [To Do Bot](https://github.com/finos/symphony-java-toolkit/tree/master/demos/todo-bot)  - discussed in the [Getting Started](getting-started) tutorial.
+<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
+
+Read the [Getting Started](getting-started) tutorial to see how...
+
+</aside><div markdown="1">
+
+## Source
+
+[See Github](https://github.com/finos/symphony-java-toolkit)
 
 ## Tools
 
@@ -129,6 +193,9 @@ Allows you to configure news feeds into chat rooms.
 
 Allows you to poll the members of a room, providing a question and a list of answers to vote on.
 
+</div></div></section>
 
-
-
+<section class="footer"><div class="inner footer">
+  <a href="https://www.finos.org"><img id="finosicon" src="assets/images/index/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS">
+  </a>
+</div></section>

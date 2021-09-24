@@ -2,6 +2,7 @@
 layout: default
 title: Symphony Tutorial
 nav_order: 3
+nav-menu: true
 ---
 
 # A To-Do List Using Spring Bot on Symphony
