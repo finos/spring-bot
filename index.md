@@ -31,8 +31,9 @@ layout: home
 </div></div></section>
 
 <section class="front-page"><div class="inner">
-<h1>One Quick Example</h1>
-<div class="flex"><div class="item" markdown="1">
+<div class="flex">
+<div class="item" style="flex-basis: 100%"><h1>One Quick Example</h1></div>
+<div class="item" markdown="1">
 
 Here is an excerpt from the [To-Do Tutorial](getting-started.md).  
 
