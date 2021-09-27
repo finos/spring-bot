@@ -134,7 +134,7 @@ This button will then appear on my To-Do List.
 
 “Spring Bot handles [MVC](https://en.wikipedia.org/wiki/Model–view–controller) for your bot”
 
-</aside><div clkass="item" markdown="1">
+</aside><div class="item" markdown="1">
 
 ## Model
 
@@ -142,10 +142,14 @@ This button will then appear on my To-Do List.
 - Create POJOs for your data model, persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history).
 - Spring Bot will handles serialization / deserialization via [Jackson]().
 
+</div><div class="item" markdown="1">
+
 ## View
 
  - Spring Bot can auto-generate default views of your models. 
  - It provides functionality for using alternate views, and customizing views for each platform.
+
+</div><div class="item" markdown="1">
  
 ## Controller
 
