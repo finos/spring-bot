@@ -32,7 +32,7 @@ layout: home
 
 <section class="front-page"><div class="inner">
 <h1>One Quick Example</h1>
-<div class="grid"><div class="item" markdown="1">
+<div class="flex"><div class="item" markdown="1">
 
 Here is an excerpt from the [To-Do Tutorial](getting-started.md).  
 

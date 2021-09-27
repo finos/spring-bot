@@ -42,7 +42,7 @@ div.footer {
 div.flex {
   display: flex; 
   align-items: center; 
-  flex-basis: column;
+  flex-wrap: wrap;
 }
 
 div.grid {
@@ -52,6 +52,7 @@ div.grid {
 
 div.item {
   padding: 20px;
+  flex-basis: 50%;
 }
 
 div.item img {
@@ -95,7 +96,8 @@ h1 {
 .logo-surround {
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .logo-title,
@@ -105,6 +107,7 @@ h1 {
    color: white;
    display: inline-block;
    padding: 10px;
+   text-align: center;
  }
  
  .logo-bot {
