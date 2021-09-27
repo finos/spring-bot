@@ -5,9 +5,9 @@ symphony:
     # if using clustering, a room containing the bot where the bot instances can
     # coordinate and decide a leader.  Any room in your pod containing the first-defined KoreAI bot will do.
     coordination-stream-id: teTciUUD97QutXGmPP3///o5FJNtKdA==
-  trust-store:
-    location: classpath:/example-trust.crt
-    type: PEMS
+#  trust-store:
+#    location: classpath:/example-trust.crt
+#    type: PEMS
   apis:
     # add in the details for your pod instead
   - id: develop
