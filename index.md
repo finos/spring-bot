@@ -134,7 +134,7 @@ This button will then appear on my To-Do List.
 
 “Spring Bot handles [MVC](https://en.wikipedia.org/wiki/Model–view–controller) for your bot”
 
-</aside><div markdown="1">
+</aside><div clkass="item" markdown="1">
 
 ## Model
 
@@ -172,7 +172,7 @@ Currently we have just have bindings for [Symphony](symphony.md) with MS Teams c
 
 Read the [Getting Started](getting-started) tutorial to see how...
 
-</aside><div markdown="1">
+</aside><div class="item" markdown="1">
 
 ## Source
 
