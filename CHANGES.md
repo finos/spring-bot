@@ -163,6 +163,7 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - Fix for #196, mapping of EntityJson tags are Content objects.
  - Fix for #174, Addressable object hierarchy improved
 
-# Sep 14, 2021
+# Sep 27, 2021
 
  - Fix for #221, Reminder Bot not starting
+ - Fix for #223, help command not working by calling bot name
