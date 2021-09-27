@@ -13,6 +13,10 @@ html {
   font-family: 'OpenSans';
 }
 
+body {
+  min-width: 450px;
+}
+
 
 // WEIRD FRONT-PAGE SECTIONS
 
@@ -54,7 +58,7 @@ div.grid {
 div.item {
   padding: 20px;
   flex-basis: 50%;
-  min-width: 250px;
+  min-width: 450px;
 }
 
 div.item img {
@@ -76,7 +80,7 @@ section.footer {
 
 aside {
   flex-basis: 50%;
-  min-width: 250px;
+  min-width: 450px;
   font-size: 3rem;
   font-weight: bold;
   color: white;
