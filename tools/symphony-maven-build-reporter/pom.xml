@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>8.0.1</version>
+		<version>8.0.2-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -38,13 +38,13 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>bindings</artifactId>
-			<version>8.0.1</version>
+			<version>8.0.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>identity</artifactId>
-			<version>8.0.1</version>
+			<version>8.0.2-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
