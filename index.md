@@ -75,19 +75,19 @@ public class ToDoController {
 
 </div><div class="item"  markdown="1">
 
-![Help Page](/assets/images/index/help.png)
-
-</div><div class="item"  markdown="1">
-
 This creates a new command for the bot.  When I type `/help`, the bot responds with...
 
 </div><div class="item"  markdown="1">
 
-![Empty To-Do list](/assets/images/index/new.png)
+![Help Page](/assets/images/index/help.png)
 
 </div><div class="item"  markdown="1">
 
 When I type `/new` the bot responds with an empty To-Do list like so.
+
+</div><div class="item"  markdown="1">
+
+![Empty To-Do list](/assets/images/index/new.png)
 
 </div><div class="item"  markdown="1">
 
