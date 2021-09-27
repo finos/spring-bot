@@ -19,7 +19,7 @@ layout: home
   “Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/)...
      but for building chat-bots”
   
-</aside><div markdown="1">
+</aside><div class="item" markdown="1">
   This project is for:
   
    - building chat-bots in Java/Kotlin using Spring / Spring Boot

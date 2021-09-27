@@ -43,6 +43,7 @@ div.flex {
   display: flex; 
   align-items: center; 
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 div.grid {
@@ -53,6 +54,7 @@ div.grid {
 div.item {
   padding: 20px;
   flex-basis: 50%;
+  min-width: 450px;
 }
 
 div.item img {
