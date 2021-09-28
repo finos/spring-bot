@@ -16,7 +16,7 @@ import com.symphony.api.agent.SystemApi;
 @ExtendWith(SpringExtension.class)
 
 @SpringBootTest(classes={TestApplication.class})
-@ActiveProfiles({"proxy", "crt"})
+@ActiveProfiles({"proxy"})
 public class ProxyLoadingIT {
 
 	@Autowired
