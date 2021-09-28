@@ -19,7 +19,7 @@ layout: home
   “Like [Spring Web MVC](https://spring.io/guides/gs/serving-web-content/)...
      but for building chat-bots”
   
-</aside><div markdown="1">
+</aside><div class="item" markdown="1">
   This project is for:
   
    - building chat-bots in Java/Kotlin using Spring / Spring Boot
@@ -31,8 +31,9 @@ layout: home
 </div></div></section>
 
 <section class="front-page"><div class="inner">
-<h1>One Quick Example</h1>
-<div class="grid"><div class="item" markdown="1">
+<div class="flex">
+<div class="item" style="flex-basis: 100%"><h1>One Quick Example</h1></div>
+<div class="item" markdown="1">
 
 Here is an excerpt from the [To-Do Tutorial](getting-started.md).  
 
@@ -74,19 +75,19 @@ public class ToDoController {
 
 </div><div class="item"  markdown="1">
 
-![Help Page](/assets/images/index/help.png)
-
-</div><div class="item"  markdown="1">
-
 This creates a new command for the bot.  When I type `/help`, the bot responds with...
 
 </div><div class="item"  markdown="1">
 
-![Empty To-Do list](/assets/images/index/new.png)
+![Help Page](/assets/images/index/help.png)
 
 </div><div class="item"  markdown="1">
 
 When I type `/new` the bot responds with an empty To-Do list like so.
+
+</div><div class="item"  markdown="1">
+
+![Empty To-Do list](/assets/images/index/new.png)
 
 </div><div class="item"  markdown="1">
 
@@ -115,11 +116,11 @@ public class ToDoController {
 
 </div><div class="item"  markdown="1">
 
-![Add Button](/assets/images/index/add.png)
+This button will then appear on my To-Do List.
 
 </div><div class="item"  markdown="1">
 
-This button will then appear on my To-Do List.
+![Add Button](/assets/images/index/add.png)
 
 </div><div class="item"  markdown="1">
 
@@ -133,7 +134,7 @@ This button will then appear on my To-Do List.
 
 “Spring Bot handles [MVC](https://en.wikipedia.org/wiki/Model–view–controller) for your bot”
 
-</aside><div markdown="1">
+</aside><div class="item" markdown="1">
 
 ## Model
 
@@ -141,10 +142,14 @@ This button will then appear on my To-Do List.
 - Create POJOs for your data model, persisting data into chat rooms and retrieving it using the [`History` API](reference.md#history).
 - Spring Bot will handles serialization / deserialization via [Jackson]().
 
+</div><div class="item" markdown="1">
+
 ## View
 
  - Spring Bot can auto-generate default views of your models. 
  - It provides functionality for using alternate views, and customizing views for each platform.
+
+</div><div class="item" markdown="1">
  
 ## Controller
 
@@ -171,7 +176,7 @@ Currently we have just have bindings for [Symphony](symphony.md) with MS Teams c
 
 Read the [Getting Started](getting-started) tutorial to see how...
 
-</aside><div markdown="1">
+</aside><div class="item" markdown="1">
 
 ## Source
 
