@@ -4,5 +4,5 @@
 
 This module implements the Chat Workflow API for Symphony. 
 
-For complete documentation, head over to [our temporary docs location](https://robmoffat.github.io/spring-bot-docs).
+For complete documentation, head over to [new documentation site](https://finos.github.io/symphony-java-toolkit).
 
