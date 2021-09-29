@@ -94,6 +94,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 				}
 
 				data = dataHandler.formatData((DataResponse) t);
+				LOG.info("JSON: \n"+ data);
 
 				sendResponse(template, attachment, data, t.getAddress());
 			}
