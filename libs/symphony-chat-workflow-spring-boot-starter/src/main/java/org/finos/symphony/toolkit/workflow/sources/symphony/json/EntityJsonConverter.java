@@ -34,6 +34,7 @@ public class EntityJsonConverter implements DataHandler {
 		om.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		om.registerModule(new JavaTimeModule());
+		om.registerModule(new LegacyHashTagModule());
 	}
 
 	public EntityJson readValue(String json) {

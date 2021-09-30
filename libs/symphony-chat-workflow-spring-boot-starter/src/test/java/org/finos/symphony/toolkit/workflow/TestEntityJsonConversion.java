@@ -1,19 +1,23 @@
 package org.finos.symphony.toolkit.workflow;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.EJTestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.HeaderDetails;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONCompare;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.Validator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -100,6 +104,17 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 
 		TestObjects b = (TestObjects) readWorkflowValue(out);
 		Assertions.assertEquals(a, b);
+	}
+	
+	@Test
+	public void testLegacyLoad() throws Exception {
+		String toLoad = StreamUtils.copyToString(TestEntityJsonConversion.class.getResourceAsStream("legacyJsonFormat.json"), StandardCharsets.UTF_8);
+		EntityJson ej = converter.readValue(toLoad);
+		
+		HeaderDetails hd = (HeaderDetails) ej.get(HeaderDetails.KEY);
+		Assertions.assertEquals(3, hd.getTags().size());
+		HashTag first = new HashTag("symphony-workflow");
+		Assertions.assertEquals(first, hd.getTags().get(0));
 	}
 
 	@Test
