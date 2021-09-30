@@ -66,23 +66,23 @@
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
-			<version>3.9.2</version>
+			<version>${corenlp.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
-			<version>3.9.2</version>
+			<version>${corenlp.version}</version>
 			<classifier>models</classifier>
 		</dependency>
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-parser</artifactId>
-			<version>3.9.2</version>
+			<version>${corenlp.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>edu.washington.cs.knowitall.stanford-corenlp</groupId>
 			<artifactId>stanford-sutime-models</artifactId>
-			<version>1.3.5</version>
+			<version>${sutime-models.version}</version>
 		</dependency>
 
     </dependencies>

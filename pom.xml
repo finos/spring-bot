@@ -51,6 +51,14 @@
 		<!-- this must match the version from the spring boot pom -->
 		<jackson-databind.version>2.12.5</jackson-databind.version>
 		<jackson.version>2.12.5</jackson.version>
+    <cxf.version>3.3.4</cxf.version>
+    <commons-logging.version>1.2</commons-logging.version>
+    <wiremock.version>2.25.1</wiremock.version>
+    <bouncy-castle.version>1.67</bouncy-castle.version>
+    <commonmark.version>0.15.2</commonmark.version>
+    <corenlp.version>3.9.2</corenlp.version>
+    <sutime-models.version>1.3.5</sutime-models.version>
+    <rometools.version>1.15.0</rometools.version>
 
 		<!-- this configures the build reporter -->
 		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
