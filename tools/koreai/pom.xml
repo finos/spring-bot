@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>8.0.1</version>
+		<version>8.0.2-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -25,17 +25,17 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>8.0.1</version>
+			<version>8.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>entity-json</artifactId>
-			<version>8.0.1</version>
+			<version>8.0.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
-			<version>8.0.1</version>
+			<version>8.0.2-SNAPSHOT</version>
 		</dependency>
 
 		<!-- allows shared stream coordination -->
@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>com.atlassian.commonmark</groupId>
 			<artifactId>commonmark</artifactId>
-			<version>0.15.2</version>
+			<version>${commonmark.version}</version>
 		</dependency>
 
 		<dependency>
@@ -78,7 +78,7 @@
 		<dependency>
 			<groupId>com.github.tomakehurst</groupId>
 			<artifactId>wiremock-jre8</artifactId>
-			<version>2.25.1</version>
+			<version>${wiremock.version}</version>
 			<scope>test</scope>
 		</dependency>
 

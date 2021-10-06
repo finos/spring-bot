@@ -6,9 +6,10 @@ symphony:
   #stream:
   #  coordination-stream-id: y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==
     
-  trust-store:
-    location: classpath:/example-trust.crt
-    type: PEMS
+  # use if you need an external trust store
+  #trust-store:
+  #  location: classpath:/example-trust.crt
+  #  type: PEMS
   apis:
   - id: develop
     pod:

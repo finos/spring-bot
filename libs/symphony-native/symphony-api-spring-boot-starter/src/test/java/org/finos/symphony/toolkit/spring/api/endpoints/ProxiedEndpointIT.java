@@ -21,7 +21,7 @@ import com.symphony.api.pod.UsersApi;
 @ExtendWith(SpringExtension.class)
 
 @SpringBootTest(classes={TestApplication.class})
-@ActiveProfiles({"proxies", "crt"})
+@ActiveProfiles({"proxies"})
 public class ProxiedEndpointIT {
 
 	@Autowired

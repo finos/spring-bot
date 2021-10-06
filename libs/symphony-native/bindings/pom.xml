@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>8.0.1</version>
+    <version>8.0.2-SNAPSHOT</version>
 		<relativePath>../../..</relativePath>
 	</parent>
 
@@ -212,7 +212,7 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-rs-client</artifactId>
-			<version>3.3.1</version>
+			<version>${cxf.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -247,14 +247,14 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>identity</artifactId>
-			<version>8.0.1</version>
+			<version>8.0.2-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<!-- excluded by spring bom, but we need it for jersey-apache-connector -->
 		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
-			<version>1.2</version>
+			<version>${commons-logging.version}</version>
 			<scope>test</scope>
 		</dependency>
 
