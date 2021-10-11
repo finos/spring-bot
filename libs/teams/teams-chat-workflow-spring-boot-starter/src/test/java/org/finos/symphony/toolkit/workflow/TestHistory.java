@@ -5,11 +5,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.history.SymphonyHistory;
+import org.finos.springbot.sources.teams.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -39,7 +39,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 				return out;
 			});
 		
-		TestObjects out = mh.getLastFromHistory(TestObjects.class, new SymphonyRoom("someroom", "abc123"))
+		TestObjects out = mh.getLastFromHistory(TestObjects.class, new TeamsChat("someroom", "abc123"))
 			.orElseThrow(() -> new RuntimeException());
 		
 		Assertions.assertEquals(out, to);
@@ -65,7 +65,7 @@ public class TestHistory extends AbstractMockSymphonyTest {
 		
 		List<TestObjects> out = mh.getFromHistory(
 				TestObjects.class, 
-				new SymphonyRoom("someroom", "abc123"),
+				new TeamsChat("someroom", "abc123"),
 				Instant.now().minus(10, ChronoUnit.DAYS));
 		
 		Assertions.assertEquals(3, out.size());

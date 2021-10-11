@@ -3,11 +3,11 @@ package org.finos.symphony.toolkit.workflow;
 import java.util.Map;
 
 import org.finos.symphony.toolkit.workflow.fixture.WeirdObject;
+import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.sources.teams.conversations.TeamsConversations;
+import org.finos.springbot.sources.teams.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TestFormConverter extends AbstractMockSymphonyTest{
 	
 	@MockBean
-	SymphonyConversations rooms;
+	TeamsConversations rooms;
 	
 	private FormConverter fc;
 	private ObjectMapper om = new ObjectMapper();
@@ -52,7 +52,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 		Object o = om.readValue("{\"action\": \"ob4+0\", \"c.\": \"B\", \"b.\": true, \"someUser.\": [345315370602462]}", Map.class);
 		WeirdObject to = (WeirdObject) fc.convert((Map<String, Object>) o, WeirdObject.class.getCanonicalName());
 		Assertions.assertTrue(to.isB());
-		Assertions.assertEquals("345315370602462", ((SymphonyUser) to.getSomeUser()).getUserId());
+		Assertions.assertEquals("345315370602462", ((TeamsUser) to.getSomeUser()).getUserId());
 		Assertions.assertEquals(WeirdObject.Choice.B, to.getC());
 		
 		
@@ -88,7 +88,7 @@ public class TestFormConverter extends AbstractMockSymphonyTest{
 
 	@BeforeEach
 	public void before() {
-		Mockito.when(rooms.loadUserById(Mockito.eq(345315370602462l))).thenReturn(new SymphonyUser(345315370602462l, "Some Guy", "sg@example.com"));
+		Mockito.when(rooms.loadUserById(Mockito.eq(345315370602462l))).thenReturn(new TeamsUser(345315370602462l, "Some Guy", "sg@example.com"));
 		fc = new FormConverter(rooms);
 	}
 	

@@ -36,12 +36,12 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 	}
 
 	@Override
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Addressable address) {
+	public <X> Optional<X> getLastFromHistory(Class<X> type, SymphonyAddressable address) {
 		return getRelevantObject(getLastEntityJsonFromHistory(type, address), type); 
 	}
 	
 	@Override
-	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Addressable address) {
+	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, SymphonyAddressable address) {
 		MessageSearchQuery msq = createMessageSearchQuery(type, address, null, null);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 1, null, null);
 		return convertToOptionalEntityJson(out);
@@ -71,20 +71,20 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 	
 
 	@Override
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, Addressable address) {
+	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, SymphonyAddressable address) {
 		return getRelevantObject(getLastEntityJsonFromHistory(type, t, address), type);
 	}
 
 
 	@Override
-	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Tag t, Addressable address) {
+	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Tag t, SymphonyAddressable address) {
 		MessageSearchQuery msq = createMessageSearchQuery(null, address, null, t);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 1, null, null);
 		return convertToOptionalEntityJson(out);
 	}
 	
 	@Override
-	public <X> List<X> getFromHistory(Class<X> type, Tag t, Addressable address, Instant since) {
+	public <X> List<X> getFromHistory(Class<X> type, Tag t, SymphonyAddressable address, Instant since) {
 		return getFromEntityJson(getEntityJsonFromHistory(t, address, since), type);
 	}
 	
@@ -100,7 +100,7 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 
 	
 	@Override
-	public List<EntityJson> getEntityJsonFromHistory(Tag t, Addressable address, Instant since) {
+	public List<EntityJson> getEntityJsonFromHistory(Tag t, SymphonyAddressable address, Instant since) {
 		MessageSearchQuery msq = createMessageSearchQuery(null, address, since, t);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 50, null, null);
 		return out.stream()
@@ -144,7 +144,7 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 	}
 
 	@Override
-	public <X> List<X> getFromHistory(Class<X> type, Addressable address, Instant since) {
+	public <X> List<X> getFromHistory(Class<X> type, SymphonyAddressable address, Instant since) {
 		return getEntityJsonFromHistory(type, address, since).stream()
 				.map(ej -> getRelevantObject(Optional.of(ej), type))
 				.filter(o -> o.isPresent())
@@ -154,7 +154,7 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 	
 
 	@Override
-	public <X> List<EntityJson> getEntityJsonFromHistory(Class<X> type, Addressable address, Instant since) {
+	public <X> List<EntityJson> getEntityJsonFromHistory(Class<X> type, SymphonyAddressable address, Instant since) {
 		MessageSearchQuery msq = createMessageSearchQuery(type, address, since, null);
 		V4MessageList out = messageApi.v1MessageSearchPost(msq, null, null, 0, 50, null, null);
 		return out.stream()
@@ -188,6 +188,11 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 		}
 		
 		return msq;
+	}
+
+	@Override
+	public boolean isSupported(Addressable a) {
+		return a instanceof SymphonyAddressable;
 	}
 
 	

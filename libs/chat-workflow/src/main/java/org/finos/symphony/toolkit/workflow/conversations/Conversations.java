@@ -8,25 +8,25 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 
-public interface Conversations {
+public interface Conversations<C extends Chat, U extends User> {
 
 	
 	/**
 	 * Returns all the conversations that the bot is a member of.
 	 */
-	public Set<Addressable> getAllConversations();
+	public Set<Addressable> getAllAddressables();
 
 	/**
 	 * Returns the subset of all conversations that are chats.
 	 */
-	public Set<Chat> getAllChats();
+	public Set<C> getAllChats();
 	
-	public Chat getExistingChat(String name);
+	public C getExistingChat(String name);
 
-	public Chat ensureChat(Chat r, List<User> users, Map<String, Object> meta);
+	public C ensureChat(C r, List<U> users, Map<String, Object> meta);
 	
-	public List<User> getChatMembers(Chat r);
+	public List<U> getChatMembers(C r);
 	
-	public List<User> getChatAdmins(Chat r);
-
+	public List<U> getChatAdmins(C r);
+	
 }

@@ -3,7 +3,10 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 import java.lang.reflect.Field;
 import java.util.Date;
 
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
+import org.finos.springbot.sources.teams.handlers.freemarker.Variable;
+import org.finos.springbot.sources.teams.handlers.freemarker.WithField;
+import org.finos.springbot.sources.teams.handlers.freemarker.WithType;
+import org.finos.springbot.sources.teams.handlers.freemarker.annotations.Display;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

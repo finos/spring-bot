@@ -3,6 +3,14 @@ package org.finos.symphony.toolkit.workflow;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import org.finos.springbot.sources.teams.content.CashTag;
+import org.finos.springbot.sources.teams.content.HashTag;
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.sources.teams.elements.ElementsHandler;
+import org.finos.springbot.sources.teams.elements.ErrorHelp;
+import org.finos.springbot.sources.teams.handlers.FormMessageMLConverter;
+import org.finos.springbot.sources.teams.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
@@ -14,14 +22,6 @@ import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ErrorHelp;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -42,7 +42,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	public void testFreemarkerView() throws Exception {
 		TestTemplatedObject to4 = new TestTemplatedObject();
 		to4.setSomeText("howdy");
-		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
+		TeamsChat theRoom = new TeamsChat("tesxt room", "abc123");
 		to4.setR(theRoom);
 		
 		WorkResponse wr = createWorkAddSubmit(WorkMode.VIEW, to4);
@@ -57,8 +57,8 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 
 
 	protected WorkResponse createWeirdFieldsWorkResponse(WorkMode wm) {
-		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
-		SymphonyUser someUser = new SymphonyUser(2678l, "bob", "bob@example.com");
+		TeamsChat theRoom = new TeamsChat("tesxt room", "abc123");
+		TeamsUser someUser = new TeamsUser(2678l, "bob", "bob@example.com");
 
 		WeirdObject to4 = new WeirdObject();
 		to4.setTheId(new HashTag("adf360dd-06fe-43a4-9a62-2c17fe2deefa"));
@@ -85,7 +85,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	
 	
 	protected WorkResponse createNestedWeirdFieldsWorkResponse(WorkMode wm) {
-		SymphonyUser someUser = new SymphonyUser(2678l, "bob", "bob@example.com");
+		TeamsUser someUser = new TeamsUser(2678l, "bob", "bob@example.com");
 		
 		WeirdObject to4 = new WeirdObject();
 		to4.setB(true);
@@ -154,7 +154,7 @@ public class TestFormMessageML extends AbstractMockSymphonyTest {
 	@Test
 	public void testValidation() throws Exception {
 		TestObject a = new TestObject("83274239874", true, true, "rob", 234786, 2138);
-		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
+		TeamsChat theRoom = new TeamsChat("tesxt room", "abc123");
 		
 		ButtonList bl = new ButtonList();
 		Button submit = new Button("submit", Type.ACTION, "GO");

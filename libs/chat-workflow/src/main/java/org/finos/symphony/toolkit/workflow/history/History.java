@@ -7,14 +7,14 @@ import java.util.Optional;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Tag;
 
-public interface History {
+public interface History<A extends Addressable> {
 	
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Addressable address);
+	public <X> Optional<X> getLastFromHistory(Class<X> type, A address);
 	
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, Addressable address);
+	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, A address);
 	
-	public <X> List<X> getFromHistory(Class<X> type, Addressable address, Instant since);
+	public <X> List<X> getFromHistory(Class<X> type, A address, Instant since);
 
-	public <X> List<X> getFromHistory(Class<X> type, Tag t, Addressable address, Instant since);
+	public <X> List<X> getFromHistory(Class<X> type, Tag t, A address, Instant since);
 
 }

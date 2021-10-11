@@ -3,14 +3,14 @@ package org.finos.symphony.toolkit.workflow;
 import java.util.Arrays;
 import java.util.UUID;
 
+import org.finos.springbot.sources.teams.content.CashTag;
+import org.finos.springbot.sources.teams.content.HashTag;
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.content.TeamsUser;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -24,16 +24,16 @@ public class TestContents {
 		doAssertsOnContent(new HashTag("id123"), new HashTag("id123"));
 		
 		// room def
-		doAssertsOnObject(new SymphonyRoom("abc", "abc123"), new SymphonyRoom("abc", "abc123"));
-		doAssertsOnObject(new SymphonyRoom(null, "abc123"), new SymphonyRoom(null, "abc123"));
-		doAssertsOnObject(new SymphonyRoom("abc","abc123"), new SymphonyRoom("abc", "abc123"));
-		doAssertsOnObject(new SymphonyRoom("abc", null), new SymphonyRoom("abc", null));
+		doAssertsOnObject(new TeamsChat("abc", "abc123"), new TeamsChat("abc", "abc123"));
+		doAssertsOnObject(new TeamsChat(null, "abc123"), new TeamsChat(null, "abc123"));
+		doAssertsOnObject(new TeamsChat("abc","abc123"), new TeamsChat("abc", "abc123"));
+		doAssertsOnObject(new TeamsChat("abc", null), new TeamsChat("abc", null));
 
 		// user def
-		doAssertsOnObject(new SymphonyUser(123l, "rob", "rob@example.com"), new SymphonyUser(123l, "rob", "rob@example.com"));
-		doAssertsOnObject(new SymphonyUser("rob", "rob@example.com"), new SymphonyUser("rob", "rob@example.com"));
-		doAssertsOnObject(new SymphonyUser(null, "rob@example.com"), new SymphonyUser(null, "rob@example.com"));
-		doAssertsOnObject(new SymphonyUser(123l, "rob", null), new SymphonyUser(123l, "rob", null));
+		doAssertsOnObject(new TeamsUser(123l, "rob", "rob@example.com"), new TeamsUser(123l, "rob", "rob@example.com"));
+		doAssertsOnObject(new TeamsUser("rob", "rob@example.com"), new TeamsUser("rob", "rob@example.com"));
+		doAssertsOnObject(new TeamsUser(null, "rob@example.com"), new TeamsUser(null, "rob@example.com"));
+		doAssertsOnObject(new TeamsUser(123l, "rob", null), new TeamsUser(123l, "rob", null));
 		
 		// id
 		UUID some = UUID.randomUUID();

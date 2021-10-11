@@ -2,13 +2,13 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.Arrays;
 
+import org.finos.springbot.sources.teams.content.TeamsChat;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.fixture.Address;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.fixture.Person;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +25,7 @@ public class CollectionsMessageFormTest extends AbstractMockSymphonyTest {
     }
 
     private Addressable createAddressable() {
-		return new SymphonyRoom("bobo", "abc123");
+		return new TeamsChat("bobo", "abc123");
 	}
 
 	@Test

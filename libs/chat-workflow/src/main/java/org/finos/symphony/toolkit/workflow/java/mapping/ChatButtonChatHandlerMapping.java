@@ -15,7 +15,7 @@ import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.conversations.Conversations;
+import org.finos.symphony.toolkit.workflow.conversations.AllConversations;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
@@ -26,9 +26,9 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 	private WorkflowResolversFactory wrf;
 	private ResponseHandlers rh;
 	private List<ResponseConverter> converters;
-	private Conversations conversations;
+	private AllConversations conversations;
 	
-	public ChatButtonChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters, Conversations conversations) {
+	public ChatButtonChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters, AllConversations conversations) {
 		super();
 		this.wrf = wrf;
 		this.rh = rh;

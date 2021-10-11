@@ -81,7 +81,7 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		
 		SymphonyRoom out = ruBuilder.ensureChat(rd, Collections.singletonList(su), SymphonyConversations.simpleMeta("Automated Test Room Created", true));
 		assertEquals("Some Test Room", out.getName());
-		assertEquals(2, ruBuilder.getAllConversations().size());
+		assertEquals(2, ruBuilder.getAllAddressables().size());
 		assertEquals("456", out.getStreamId());
 
 		// return members
@@ -89,7 +89,7 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		ml.add(new MemberInfo().id(123l).owner(true));
 		when(rmApi.v1RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull())).thenReturn(ml);
 	
-		List<User> chatMembers = ruBuilder.getChatMembers(out);
+		List<SymphonyUser> chatMembers = ruBuilder.getChatMembers(out);
 		Assertions.assertEquals(
 			Collections.singletonList(new SymphonyUser(123l, ROB_NAME, ROB_EXAMPLE_EMAIL)), 
 					chatMembers);
