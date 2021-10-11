@@ -60,5 +60,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		}
 			
 		CurrentTurnContext.CURRENT_CONTEXT.set(null);
+		
+		return null;
 	}
 }
