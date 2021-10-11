@@ -69,6 +69,7 @@
     <corenlp.version>3.9.2</corenlp.version>
     <sutime-models.version>1.3.5</sutime-models.version>
     <rometools.version>1.15.0</rometools.version>
+    <teams.version>4.14.0</teams.version>
 
 		<!-- this configures the build reporter -->
 		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>

@@ -8,11 +8,11 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
 
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.sources.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.sources.teams.conversations.TeamsConversations;
 import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversationsImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,11 +36,11 @@ import com.symphony.api.model.UserIdList;
 public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 	
 	@Autowired
-	SymphonyConversationsImpl ruBuilder;
+	TeamsConversationsImpl ruBuilder;
 	
 	@Test
 	public void testEnsureRoom() {
-		ruBuilder.setDefaultAdministrators(Collections.singletonList(new SymphonyUser(1111l)));
+		ruBuilder.setDefaultAdministrators(Collections.singletonList(new TeamsUser(1111l)));
 		
 		
 		// create room
@@ -75,11 +75,11 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		when(streamsApi.v3RoomSearchPost(Mockito.any(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
 			.then(a -> new V3RoomSearchResults().rooms(Collections.emptyList()));
 		
-		SymphonyRoom rd = new SymphonyRoom("Some Test Room", null);
+		TeamsChat rd = new TeamsChat("Some Test Room", null);
 		
-		SymphonyUser su = new SymphonyUser(2342l);
+		TeamsUser su = new TeamsUser(2342l);
 		
-		SymphonyRoom out = ruBuilder.ensureChat(rd, Collections.singletonList(su), SymphonyConversations.simpleMeta("Automated Test Room Created", true));
+		TeamsChat out = ruBuilder.ensureChat(rd, Collections.singletonList(su), TeamsConversations.simpleMeta("Automated Test Room Created", true));
 		assertEquals("Some Test Room", out.getName());
 		assertEquals(2, ruBuilder.getAllConversations().size());
 		assertEquals("456", out.getStreamId());
@@ -91,7 +91,7 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 	
 		List<User> chatMembers = ruBuilder.getChatMembers(out);
 		Assertions.assertEquals(
-			Collections.singletonList(new SymphonyUser(123l, ROB_NAME, ROB_EXAMPLE_EMAIL)), 
+			Collections.singletonList(new TeamsUser(123l, ROB_NAME, ROB_EXAMPLE_EMAIL)), 
 					chatMembers);
 	}
 	
@@ -100,7 +100,7 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		when(streamsApi.v1ImCreatePost(Mockito.any(),Mockito.isNull()))
 			.thenAnswer(c -> new Stream().id("123"));
 		
-		SymphonyUser rd = new SymphonyUser("Robski mo", "rob@example.com");
+		TeamsUser rd = new TeamsUser("Robski mo", "rob@example.com");
 		String someStream = ruBuilder.getStreamFor(rd);
 		Assertions.assertEquals("123", someStream);
 	}

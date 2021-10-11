@@ -3,13 +3,13 @@ package org.finos.symphony.toolkit.workflow;
 import java.math.BigDecimal;
 import java.util.Arrays;
 
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.sources.teams.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.fixture.EJTestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONCompare;
@@ -105,7 +105,7 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 	@Test
 	public void testOb3() throws Exception {
 
-		EJTestObject a1 = new EJTestObject(new SymphonyRoom("abc", "123"), new SymphonyUser("Robert Moffat", "rbo@kjite9.com"), "SOme message");
+		EJTestObject a1 = new EJTestObject(new TeamsChat("abc", "123"), new TeamsUser("Robert Moffat", "rbo@kjite9.com"), "SOme message");
 		String out =  toWorkflowJson(a1);
 
 		compare(out, "{\n"

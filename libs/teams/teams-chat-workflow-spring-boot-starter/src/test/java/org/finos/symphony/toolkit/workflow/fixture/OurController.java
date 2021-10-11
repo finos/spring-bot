@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
+import org.finos.springbot.sources.teams.content.HashTag;
 import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
@@ -23,7 +24,6 @@ import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.springframework.stereotype.Controller;
 
 @Controller

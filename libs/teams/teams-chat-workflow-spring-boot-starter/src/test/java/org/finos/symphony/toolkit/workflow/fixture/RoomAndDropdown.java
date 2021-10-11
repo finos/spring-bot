@@ -2,9 +2,9 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import java.util.Objects;
 
+import org.finos.springbot.sources.teams.handlers.freemarker.annotations.Dropdown;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Dropdown;
 
 @Work
 public class RoomAndDropdown {

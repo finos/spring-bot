@@ -59,16 +59,16 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	
 	
 	@Override
-	public Set<Addressable> getAllConversations() {
+	public Set<Addressable> getAllAddressables() {
 		return getAllConversationsFiltered(new StreamFilter());
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Set<Chat> getAllChats() {
+	public Set<SymphonyRoom> getAllChats() {
 		StreamType st = new StreamType().type(TypeEnum.ROOM);
 		StreamFilter streamTypes = new StreamFilter().streamTypes(Collections.singletonList(st));
-		return (Set<Chat>) (Set) getAllConversationsFiltered(streamTypes);
+		return (Set<SymphonyRoom>) (Set) getAllConversationsFiltered(streamTypes);
 	}
 
 	protected Set<Addressable> getAllConversationsFiltered(StreamFilter f) {
@@ -169,7 +169,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	}
 	
 	@Override
-	public SymphonyRoom ensureChat(Chat r, List<User> users, Map<String, Object> meta) {
+	public SymphonyRoom ensureChat(SymphonyRoom r, List<SymphonyUser> users, Map<String, Object> meta) {
 		String description = "";
 		String name = r.getName();
 		boolean isPublic = false;
@@ -232,7 +232,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 
 
 	@Override
-	public List<User> getChatMembers(Chat r) {
+	public List<SymphonyUser> getChatMembers(SymphonyRoom r) {
 		if (r instanceof SymphonyRoom) {
 			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
 			return ml.stream()
@@ -244,7 +244,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	}
 
 	@Override
-	public List<User> getChatAdmins(Chat r) {
+	public List<SymphonyUser> getChatAdmins(SymphonyRoom r) {
 		if (r instanceof SymphonyRoom) {
 			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
 			return ml.stream()
@@ -274,7 +274,19 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 
 
 	@Override
-	public Chat getExistingChat(String name) {
+	public SymphonyRoom getExistingChat(String name) {
 		return loadRoomByName(name);
+	}
+
+
+	@Override
+	public boolean isSupported(Chat r) {
+		return r instanceof SymphonyRoom;
+	}
+
+
+	@Override
+	public boolean isSupported(User u) {
+		return u instanceof SymphonyUser;
 	}
 }

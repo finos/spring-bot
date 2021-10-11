@@ -9,6 +9,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+import org.finos.springbot.sources.teams.TeamsWorkflowConfig;
+import org.finos.springbot.sources.teams.content.HashTag;
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.sources.teams.handlers.SymphonyResponseHandler;
+import org.finos.springbot.sources.teams.json.EntityJsonConverter;
+import org.finos.springbot.sources.teams.messages.MessageMLParser;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
@@ -32,13 +39,6 @@ import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatRequestChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -56,7 +56,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(classes = {
 		AbstractMockSymphonyTest.MockConfiguration.class, 
-		SymphonyWorkflowConfig.class,
+		TeamsWorkflowConfig.class,
 })
 @ExtendWith(SpringExtension.class)
 public class TestHandlerMapping extends AbstractMockSymphonyTest {
@@ -95,11 +95,11 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 
 	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
+		jsonObjects.put("1", new TeamsUser(123l, "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTag("SomeTopic"));
 		Message m = smp.parse("<messageML>/"+s+"</messageML>", jsonObjects);
-		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
-		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
+		Chat r = new TeamsChat("The Room Where It Happened", "abc123");
+		User author = new TeamsUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
 		Action a = new SimpleMessageAction(r, author, m, jsonObjects);
 		Action.CURRENT_ACTION.set(a);
 		mc.accept(a);
@@ -415,10 +415,10 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	
 	private void pressButton(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
-		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
+		jsonObjects.put("1", new TeamsUser(123l, "gaurav", "gaurav@example.com"));
 		jsonObjects.put("2", new HashTag("SomeTopic"));
-		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
-		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
+		Chat r = new TeamsChat("The Room Where It Happened", "abc123");
+		User author = new TeamsUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
 		Object fd = new StartClaim();
 		Action a = new FormAction(r, author, fd, s, jsonObjects);
 		Action.CURRENT_ACTION.set(a);

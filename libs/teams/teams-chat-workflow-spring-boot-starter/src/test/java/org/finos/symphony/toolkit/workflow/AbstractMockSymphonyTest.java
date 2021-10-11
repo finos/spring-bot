@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import org.finos.springbot.sources.teams.TeamsWorkflowConfig;
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
@@ -19,9 +22,6 @@ import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -54,7 +54,7 @@ import com.symphony.api.pod.UsersApi;
 
 @SpringBootTest(classes = { 
 		AbstractMockSymphonyTest.MockConfiguration.class, 
-	SymphonyWorkflowConfig.class,
+	TeamsWorkflowConfig.class,
 })
 public abstract class AbstractMockSymphonyTest {
 
@@ -206,7 +206,7 @@ public abstract class AbstractMockSymphonyTest {
 
 
 	protected WorkResponse createWorkAddSubmit(WorkMode wm, Object ob5) {
-		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
+		TeamsChat theRoom = new TeamsChat("tesxt room", "abc123");
 		WorkResponse wr = new WorkResponse(theRoom, ob5, wm);
 		ButtonList bl = (ButtonList) wr.getData().get(ButtonList.KEY);
 		Button submit = new Button("submit", Type.ACTION, "GO");

@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.sources.teams.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.form.TableAddRow;
@@ -18,9 +21,6 @@ import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.finos.symphony.toolkit.workflow.fixture.TestPrimitives;
 import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -30,8 +30,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TestTableEdit extends AbstractMockSymphonyTest {
 	
 
-	public static final User u = new SymphonyUser(123l, "Testy McTestFace", "tmt@example.com");
-	public static final Chat room = new SymphonyRoom("Test Room", "abc123");
+	public static final User u = new TeamsUser(123l, "Testy McTestFace", "tmt@example.com");
+	public static final Chat room = new TeamsChat("Test Room", "abc123");
 
     private TestObjects to;
 

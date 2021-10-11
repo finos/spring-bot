@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.sources.teams.json.EntityJsonConverter;
+import org.finos.springbot.sources.teams.messages.MessageMLParser;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.content.Content;
@@ -15,9 +18,6 @@ import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.java.mapping.MessageMatcher;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -158,9 +158,9 @@ public class TestMessageMLParser extends AbstractMockSymphonyTest {
 				Paragraph.of(Collections.emptyList()),
 				Paragraph.of(Arrays.asList(
 						Word.of("/help"), 
-						new SymphonyUser(347583113331315l, "Rob Moffat",null),
-						new SymphonyUser(345315370604167l, "Mark Mainwood",null),
-						new SymphonyUser(345315370598706l, "James Tan", null)))));
+						new TeamsUser(347583113331315l, "Rob Moffat",null),
+						new TeamsUser(345315370604167l, "Mark Mainwood",null),
+						new TeamsUser(345315370598706l, "James Tan", null)))));
 		Assertions.assertEquals(
 			expected, 
 			actual);

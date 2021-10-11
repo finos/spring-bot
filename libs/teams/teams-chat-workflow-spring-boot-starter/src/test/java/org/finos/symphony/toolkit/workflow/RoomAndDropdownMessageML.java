@@ -5,16 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.handlers.FormMessageMLConverter;
+import org.finos.springbot.sources.teams.json.EntityJsonConverter;
+import org.finos.springbot.sources.teams.json.RoomList;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.fixture.RoomAndDropdown;
 import org.finos.symphony.toolkit.workflow.form.Button;
 import org.finos.symphony.toolkit.workflow.form.Button.Type;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.RoomList;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Validator;
@@ -31,9 +31,9 @@ public class RoomAndDropdownMessageML extends AbstractMockSymphonyTest {
 	EntityJsonConverter ejc;
 	
 	protected RoomList getSomeRooms() {
-		SymphonyRoom a = new SymphonyRoom("room one", "one");
-		SymphonyRoom b = new SymphonyRoom("tesxt room", "abc123");
-		SymphonyRoom c = new SymphonyRoom("room three", "three");
+		TeamsChat a = new TeamsChat("room one", "one");
+		TeamsChat b = new TeamsChat("tesxt room", "abc123");
+		TeamsChat c = new TeamsChat("room three", "three");
 		RoomList out = new RoomList();
 		out.add(a);
 		out.add(b);
@@ -54,7 +54,7 @@ public class RoomAndDropdownMessageML extends AbstractMockSymphonyTest {
 	}
 
 	protected WorkResponse dropdownsWork(WorkMode wm) {
-		SymphonyRoom theRoom = new SymphonyRoom("tesxt room", "abc123");
+		TeamsChat theRoom = new TeamsChat("tesxt room", "abc123");
 		String strangeOption = "a";
 
 		RoomAndDropdown to4 = new RoomAndDropdown(theRoom, strangeOption);
