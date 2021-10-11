@@ -1,7 +1,9 @@
 package org.finos.springbot.sources.teams.conversations;
 
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.sources.teams.content.TeamsUser;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.conversations.Conversations;
+import org.finos.symphony.toolkit.workflow.conversations.PlatformConversations;
 
 import com.microsoft.bot.schema.teams.TeamsChannelData;
 
@@ -11,7 +13,7 @@ import com.microsoft.bot.schema.teams.TeamsChannelData;
  * @author Rob Moffat
  *
  */
-public interface TeamsConversations extends Conversations {
+public interface TeamsConversations extends PlatformConversations<TeamsChat, TeamsUser> {
 
 	Addressable getTeamsChat(TeamsChannelData tcd);
 	

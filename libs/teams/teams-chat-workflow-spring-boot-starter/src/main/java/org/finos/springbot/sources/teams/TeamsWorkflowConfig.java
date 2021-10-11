@@ -1,6 +1,7 @@
 package org.finos.springbot.sources.teams;
 
 import java.util.List;
+import java.util.Properties;
 
 import org.finos.springbot.sources.teams.conversations.TeamsConversations;
 import org.finos.springbot.sources.teams.conversations.TeamsConversationsImpl;
@@ -18,7 +19,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
+import com.microsoft.bot.integration.AdapterWithErrorHandler;
+import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
+import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
 
 /**
  * Symphony beans needing the workflow bean to be defined.
@@ -27,8 +31,8 @@ import com.microsoft.bot.integration.spring.BotController;
  *
  */
 @Configuration
-@Import({ChatWorkflowConfig.class, BotController.class})
-public class TeamsWorkflowConfig {
+@Import({ChatWorkflowConfig.class})
+public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
 	
@@ -166,6 +170,39 @@ public class TeamsWorkflowConfig {
 	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers) {
 		return new MessageActivityHandler(messageConsumers, teamsConversations());
 	}
+
+    @Bean
+    @ConditionalOnMissingBean
+    public BotFrameworkHttpAdapter getBotFrameworkHttpAdaptor() {
+        return new AdapterWithErrorHandler(getConfiguration());
+    }
+    
+    @Override
+	public com.microsoft.bot.integration.Configuration getConfiguration() {
+    	return new com.microsoft.bot.integration.Configuration() {
+			
+			@Override
+			public String getProperty(String key) {
+				return ac.getEnvironment().getProperty(key);
+			}
+			
+			@Override
+			public String[] getProperties(String key) {
+				throw new UnsupportedOperationException("Couldn't getProperties for "+key);
+			}
+			
+			@Override
+			public Properties getProperties() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+
+	@Bean
+    @ConditionalOnMissingBean
+    public BotController botController(MessageActivityHandler mah) {
+    	return new BotController(getBotFrameworkHttpAdaptor(), mah);
+    }
 
 //	@Bean
 //	@ConditionalOnMissingBean
