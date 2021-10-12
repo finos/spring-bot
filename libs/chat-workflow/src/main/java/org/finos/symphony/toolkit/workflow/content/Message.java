@@ -9,8 +9,8 @@ public interface Message extends Paragraph {
 	
 	public static <X extends Content> Message of(String str) {
 		return of(
-				Arrays.stream(str.split("\\s"))
-					.map(s -> Word.of(s))
+				Arrays.stream(str.split("\\n"))
+					.map(s -> Paragraph.of(s))
 					.collect(Collectors.toList()));
 	}
 

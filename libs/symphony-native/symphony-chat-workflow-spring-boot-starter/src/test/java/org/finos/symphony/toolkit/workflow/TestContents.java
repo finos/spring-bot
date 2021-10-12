@@ -55,6 +55,23 @@ public class TestContents {
 		Message m2 = Message.of(Arrays.asList(p1, p2));
 		doAssertsOnContent(m1, m2);
 		
+		// parsing
+		doAssertsOnContent(
+			Message.of("this little piggy\nwent all the way home"),
+			Message.of(Arrays.asList(
+				Paragraph.of(
+					Arrays.asList(
+							Word.of("this"),
+							Word.of("little"),
+							Word.of("piggy"))),
+				Paragraph.of(
+					Arrays.asList(
+							Word.of("went"),
+							Word.of("all"),
+							Word.of("the"),
+							Word.of("way"),
+							Word.of("home"))))));
+		
 	}
 
 	protected void doAssertsOnContent(Content td1, Content td2) {

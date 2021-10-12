@@ -16,7 +16,7 @@ public class ChatHandlerMappingActionConsumer extends AbstractAddressedActionCon
 
 	private List<ChatHandlerMapping<?>> handlerMapping;
 
-	public ChatHandlerMappingActionConsumer(List<ChatHandlerMapping<?>> handlerMapping, ErrorHandler eh, AddressingChecker ac) {
+	public ChatHandlerMappingActionConsumer(List<ChatHandlerMapping<?>> handlerMapping, ErrorHandler eh, List<AddressingChecker> ac) {
 		super(eh, ac);
 		this.handlerMapping = handlerMapping;
 	}
