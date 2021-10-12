@@ -6,6 +6,7 @@ import java.util.Properties;
 import org.finos.springbot.sources.teams.conversations.TeamsConversations;
 import org.finos.springbot.sources.teams.conversations.TeamsConversationsImpl;
 import org.finos.springbot.sources.teams.messages.MessageActivityHandler;
+import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
 import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.slf4j.Logger;
@@ -76,100 +77,19 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public TeamsConversations teamsConversations() {
 		return new TeamsConversationsImpl();
 	}
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public HeaderTagResponseHandler headerTagResponsehandler() {
-//		return new HeaderTagResponseHandler();
-//	} 
-//	
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public EntityJsonConverter entityJsonConverter() {
-//		List<VersionSpace> workAnnotatedversionSpaces = scanForWorkClasses();
-//		
-//		List<VersionSpace> chatWorkflowVersionSpaces = Arrays.asList(
-//			new VersionSpace(EntityJson.getSymphonyTypeName(Security.class), CashTag.class,  "1.0", "0.*"),
-//			new VersionSpace(EntityJson.getSymphonyTypeName(Hashtag.class), HashTag.class, "1.0", "0.*"),
-//			new VersionSpace(EntityJson.getSymphonyTypeName(Mention.class), SymphonyUser.class, "1.0"), 
-//			new VersionSpace(EntityJson.getSymphonyTypeName(Chat.class), SymphonyRoom.class, "1.0"), 
-//			
-//			new VersionSpace(UserId.class, "1.0"), 
-//			new VersionSpace(DisplayName.class, "1.0"), 
-//			new VersionSpace(RoomName.class, "1.0"), 
-//			new VersionSpace(StreamID.class, "1.0"), 
-//			new VersionSpace(EmailAddress.class, "1.0"), 
-//			ObjectMapperFactory.noVersion(Ticker.class), 
-//			ObjectMapperFactory.noVersion(Cusip.class), 
-//			ObjectMapperFactory.noVersion(Isin.class), 
-//			ObjectMapperFactory.noVersion(Openfigi.class),
-//
-//			LogMessage.VERSION_SPACE, 
-//			RoomWelcomeEventConsumer.VERSION_SPACE);
-//		
-//		List<VersionSpace> combined = new ArrayList<>();
-//		combined.addAll(chatWorkflowVersionSpaces);
-//		combined.addAll(workAnnotatedversionSpaces);
-//				
-//		return new EntityJsonConverter(combined);
-//	}
-//
-//	protected List<VersionSpace> scanForWorkClasses() {
-//		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
-//		scanner.addIncludeFilter(new AnnotationTypeFilter(Work.class));
-//		Set<BeanDefinition> toAdd = scanner.findCandidateComponents(getPackageName(ChatWorkflowConfig.class));
-//		
-//		for (String ent : ac.getBeanNamesForAnnotation(SpringBootApplication.class)) {
-//			String packageName = getPackageName(ac.getBean(ent).getClass());
-//			Set<BeanDefinition> user = scanner.findCandidateComponents(packageName);
-//			toAdd.addAll(user);
-//		}
-//		
-//		List<VersionSpace> versionSpaces = toAdd.stream()
-//			.map(bd -> bd.getBeanClassName()) 
-//			.map(s -> {
-//				try {
-//					return Class.forName(s);
-//				} catch (ClassNotFoundException e) {
-//					LOG.error("Couldn't instantiate: "+s, e);
-//					return null;
-//				}
-//			})
-//			.filter(x -> x != null) 
-//			.flatMap(c -> {
-//				Work w = c.getAnnotation(Work.class);
-//				String jsonTypeName[] = w.jsonTypeName();
-//				return IntStream.range(0, jsonTypeName.length)
-//						.mapToObj(i -> {
-//							String t = jsonTypeName[i];
-//							if (i == 0) {
-//								t = StringUtils.hasText(t) ? t : EntityJson.getSymphonyTypeName(c);
-//								String writeVersion = w.writeVersion();
-//								String[] readVersions = w.readVersions();
-//								return new VersionSpace(t, c, writeVersion, readVersions);
-//							} else {
-//								String[] readVersions = w.readVersions();
-//								return new VersionSpace(t, c, null, readVersions);
-//							}
-//						});
-//				})
-//			.collect(Collectors.toList());
-//		return versionSpaces;
-//	}
-//
-//	protected String getPackageName(Class<?> c) {
-//		String cn = c.getName();
-//        int dot = cn.lastIndexOf('.');
-//        String pn = (dot != -1) ? cn.substring(0, dot).intern() : "";
-//        return pn;
-//	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers) {
-		return new MessageActivityHandler(messageConsumers, teamsConversations());
+	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser) {
+		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser);
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public TeamsHTMLParser teamsHTMLParser() {
+		return new TeamsHTMLParser();
+	}
+	
 
     @Bean
     @ConditionalOnMissingBean

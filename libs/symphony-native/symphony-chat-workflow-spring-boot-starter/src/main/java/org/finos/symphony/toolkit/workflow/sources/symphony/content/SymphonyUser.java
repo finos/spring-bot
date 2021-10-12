@@ -72,7 +72,7 @@ public final class SymphonyUser extends Mention implements User, SymphonyContent
 	@JsonIgnore
 	@Override
 	public Type getTagType() {
-		return USER;
+		return MENTION;
 	}
 
 	

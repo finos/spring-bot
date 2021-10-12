@@ -16,7 +16,7 @@ import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
 import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.BlockQuote;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Table;
@@ -191,8 +191,8 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Assertions.assertEquals("process2", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
-		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
-		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
+		Assertions.assertTrue(BlockQuote.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("public static void main(String[] args) {}", ((BlockQuote)firstArgument).getText());
 	}
 	
 	@Test
@@ -239,8 +239,8 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Assertions.assertEquals("process2", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
-		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
-		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
+		Assertions.assertTrue(BlockQuote.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("public static void main(String[] args) {}", ((BlockQuote)firstArgument).getText());
 	}
 	
 	

@@ -9,7 +9,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.BlockQuote;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedContent;
@@ -141,7 +141,7 @@ public class MessageMLParser {
 		
 	}
 	
-	static class CodeBlockFrame extends TextFrame<CodeBlock> {
+	static class CodeBlockFrame extends TextFrame<BlockQuote> {
 		
 		String tag;
 
@@ -151,8 +151,8 @@ public class MessageMLParser {
 		}
 
 		@Override
-		CodeBlock getContents() {
-			return CodeBlock.of(buf.toString());
+		BlockQuote getContents() {
+			return BlockQuote.of(buf.toString());
 		}
 
 		@Override

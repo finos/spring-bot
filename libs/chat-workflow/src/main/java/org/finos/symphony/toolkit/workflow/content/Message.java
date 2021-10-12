@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.content;
 
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,45 +13,19 @@ public interface Message extends Paragraph {
 					.collect(Collectors.toList()));
 	}
 
-	public static <X extends Content> Message of(List<X> c) {
-		return new Message() {
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public List<Content> getContents() {
-				return (List<Content>) c;
-			}
-
-			@Override
-			public int hashCode() {
-				return c.hashCode();
-			}
-
-			@Override
-			public boolean equals(Object obj) {
-				if (obj instanceof Message) {
-					return getContents().equals(((Message) obj).getContents());
-				} else {
-					return false;
-				}
-			}
+	public static Message of(List<Content> c) {
+		
+		abstract class MessageOut extends AbstractOrderedContent<Content> implements Message {
+			public MessageOut(List<Content> c) {
+				super(c);
+			}			
+		}
+ 		
+		return new MessageOut(c) {
 
 			@Override
 			public String toString() {
 				return "Message ["+c.toString()+"]";
-			}
-
-			@SuppressWarnings("unchecked")
-			@Override
-			public Iterator<Content> iterator() {
-				return (Iterator<Content>) c.iterator();
-			}
-
-			@Override
-			public String getText() {
-				return getContents().stream()
-						.map(e -> e.getText())
-						.reduce("", (a, b) -> a + "\n" + b);
 			}
 
 			@Override
@@ -60,6 +33,7 @@ public interface Message extends Paragraph {
 				return of(contents);
 			}
 		};
+		
 	}
 	
 }

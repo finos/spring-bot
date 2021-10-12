@@ -20,7 +20,7 @@ import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
 import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.BlockQuote;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
 import org.finos.symphony.toolkit.workflow.content.Paragraph;
@@ -146,7 +146,7 @@ public class SymphonyWorkflowConfig {
 		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
 		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));
 		out.add(UnorderedList.class, out.new OrderedTagWriter("ul", out.new OrderedTagWriter("li")));
-		out.add(CodeBlock.class, out.new SimpleTagWriter("code"));
+		out.add(BlockQuote.class, out.new SimpleTagWriter("code"));
 		out.add(Word.class, out.new PlainWriter());
 		out.add(Table.class, out.new TableWriter());
 		// tags
