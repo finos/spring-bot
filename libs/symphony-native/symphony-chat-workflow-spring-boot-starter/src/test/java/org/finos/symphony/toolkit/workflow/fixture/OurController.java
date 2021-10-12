@@ -11,7 +11,7 @@ import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.BlockQuote;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -97,7 +97,7 @@ public class OurController {
 	}
 
 	@ChatRequest("update {code}") 
-	public void process2(@ChatVariable("code") CodeBlock cb) {
+	public void process2(@ChatVariable("code") BlockQuote cb) {
 		// provide some processing for a block of code
 		lastArguments = Collections.singletonList(cb);
 		lastMethod = "process2";

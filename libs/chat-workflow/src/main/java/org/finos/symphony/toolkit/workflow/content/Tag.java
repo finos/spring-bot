@@ -7,9 +7,7 @@ public interface Tag extends Content {
 	public interface Type {
 		
 		public char getPrefix();
-		
-		public String getTypeName();
-		
+				
 	}
 	
 	public static Type CASH = new Type() {
@@ -19,11 +17,6 @@ public interface Tag extends Content {
 			return '$';
 		}
 
-		@Override
-		public String getTypeName() {
-			return "CASH";
-		}
-		
 	};
 	
 	public static Type HASH = new Type() {
@@ -32,27 +25,17 @@ public interface Tag extends Content {
 		public char getPrefix() {
 			return '#';
 		}
-
-		@Override
-		public String getTypeName() {
-			return "HASH";
-		}
 		
 	};
 	
 	
-	public static Type USER = new Type() {
+	public static Type MENTION = new Type() {
 
 		@Override
 		public char getPrefix() {
 			return '@';
 		}
 
-		@Override
-		public String getTypeName() {
-			return "USER";
-		}
-		
 	};
 	
 	@JsonIgnore

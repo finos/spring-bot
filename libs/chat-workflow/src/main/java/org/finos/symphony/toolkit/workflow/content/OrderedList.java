@@ -5,49 +5,22 @@ import java.util.List;
 public interface OrderedList extends OrderedContent<Paragraph> {
 
 	public static OrderedList of(List<Paragraph> c) {
-		return new OrderedList() {
-
-			@Override
-			public List<Paragraph> getContents() {
-				return c;
-			}
-
-			@Override
-			public int hashCode() {
-				return c.hashCode();
-			}
-
-			@Override
-			public boolean equals(Object obj) {
-				if (obj instanceof OrderedList) {
-					return getContents().equals(((OrderedList) obj).getContents());
-				} else {
-					return false;
-				}
-			}
+		abstract class OrderedListOut extends AbstractOrderedContent<Paragraph> implements OrderedList {
+			public OrderedListOut(List<Paragraph> c) {
+				super(c);
+			}			
+		}
+ 		
+		return new OrderedListOut(c) {
 
 			@Override
 			public String toString() {
 				return "OrderedList ["+c.toString()+"]";
 			}
 
-
-			@Override
-			public String getText() {
-				return getContents().stream()
-					.map(e -> e.getText())
-					.reduce("", (a, b) -> a + " " + b);
-			}
-			
-
 			@Override
 			public OrderedList buildAnother(List<Paragraph> contents) {
-				return OrderedList.of(contents);
-			}
-
-			@Override
-			public int size() {
-				return c.size();
+				return of(contents);
 			}
 		};
 	}

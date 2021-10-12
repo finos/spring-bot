@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.BlockQuote;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
@@ -65,7 +65,7 @@ public class ResolverConfig {
 	@ConditionalOnMissingBean
 	public MessagePartWorkflowResolverFactory messagePartWorkflowResolverFactory() {
 		List<Class<? extends Content>> allowedTypes = new ArrayList<Class<? extends Content>>();
-		allowedTypes.add(CodeBlock.class);
+		allowedTypes.add(BlockQuote.class);
 		allowedTypes.add(Message.class);
 		allowedTypes.add(OrderedList.class);
 		allowedTypes.add(Paragraph.class);

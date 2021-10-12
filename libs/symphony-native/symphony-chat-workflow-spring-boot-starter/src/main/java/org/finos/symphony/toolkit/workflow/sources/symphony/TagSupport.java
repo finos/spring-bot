@@ -42,7 +42,7 @@ public class TagSupport {
 			return toCashTag(t.getName());
 		} else if (t.getTagType() == Tag.HASH) {
 			return toHashTag(t.getName());
-		} else if (t.getTagType() == Tag.USER) {
+		} else if (t.getTagType() == Tag.MENTION) {
 			return toUserTag(((SymphonyUser) t).getUserId());
 		}
 		

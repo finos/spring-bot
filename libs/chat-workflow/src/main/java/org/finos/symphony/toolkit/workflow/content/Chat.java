@@ -6,7 +6,7 @@ package org.finos.symphony.toolkit.workflow.content;
  * @author Rob Moffat
  *
  */
-public interface Chat extends Addressable {
+public interface Chat extends Addressable, Content {
 
 	public String getName();
 	

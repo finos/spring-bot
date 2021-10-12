@@ -5,7 +5,6 @@ import java.util.Map;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.Word;
 
 /**
  * A Response that includes a message {@link Content} to send back to the user.
@@ -23,7 +22,7 @@ public class MessageResponse extends DataResponse {
 	}
 	
 	public MessageResponse(Addressable stream, String textContent) {
-		this(stream, Message.of(Word.build(textContent)));
+		this(stream, Message.of(textContent));
 	}
 	
 
