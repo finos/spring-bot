@@ -21,11 +21,11 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
 			<version>8.0.2-SNAPSHOT</version>
-		</dependency>
+		</dependency> -->
     <dependency>
       <groupId>org.finos.symphony.toolkit</groupId>
       <artifactId>teams-chat-workflow-spring-boot-starter</artifactId>

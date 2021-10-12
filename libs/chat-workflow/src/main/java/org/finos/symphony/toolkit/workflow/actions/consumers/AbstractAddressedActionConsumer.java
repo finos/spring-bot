@@ -1,5 +1,7 @@
 package org.finos.symphony.toolkit.workflow.actions.consumers;
 
+import java.util.List;
+
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.springframework.util.ErrorHandler;
 
@@ -13,9 +15,9 @@ import org.springframework.util.ErrorHandler;
  */
 public abstract class AbstractAddressedActionConsumer extends AbstractActionConsumer {
 	
-	AddressingChecker ac;
+	List<AddressingChecker> ac;
 
-	public AbstractAddressedActionConsumer(ErrorHandler errorHandler, AddressingChecker ac) {
+	public AbstractAddressedActionConsumer(ErrorHandler errorHandler, List<AddressingChecker> ac) {
 		super(errorHandler);
 		this.ac = ac;
 	}
@@ -23,13 +25,21 @@ public abstract class AbstractAddressedActionConsumer extends AbstractActionCons
 	@Override
 	public void accept(Action t) {
 		if (ac != null) {
-			Action f = ac.filter(t);
+			Action f = performFilters(t);
 			if (f != null) {
 				acceptInner(f);
 			}
 		} else {
 			acceptInner(t);
 		}
+	}
+
+	protected Action performFilters(Action t) {
+		for (AddressingChecker addressingChecker : ac) {
+			t = addressingChecker.filter(t);
+		}
+		
+		return t;
 	}
 
 	protected abstract void acceptInner(Action t);

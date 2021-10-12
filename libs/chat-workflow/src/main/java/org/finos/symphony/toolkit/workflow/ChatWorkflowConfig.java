@@ -75,7 +75,7 @@ public class ChatWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ChatHandlerMappingActionConsumer methodCallMessageConsumer(List<ChatHandlerMapping<?>> chatHandlerMappings, ErrorHandler eh, AddressingChecker ac) {
+	public ChatHandlerMappingActionConsumer methodCallMessageConsumer(List<ChatHandlerMapping<?>> chatHandlerMappings, ErrorHandler eh, List<AddressingChecker> ac) {
 		return new ChatHandlerMappingActionConsumer(chatHandlerMappings, eh, ac);
 	}
 	
