@@ -1,7 +1,6 @@
 package com.symphony.api.bindings;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -19,7 +18,6 @@ import com.symphony.api.agent.SystemApi;
 import com.symphony.api.bindings.Streams.Worker;
 import com.symphony.api.model.AckId;
 import com.symphony.api.model.Datafeed;
-import com.symphony.api.model.V2HealthCheckResponse;
 import com.symphony.api.model.V3Health;
 import com.symphony.api.model.V3HealthStatus;
 import com.symphony.api.model.V4Event;
@@ -183,11 +181,12 @@ public class AgentIT extends AbstractIT {
 	@MethodSource("setupConfigurations")
 	public void testHealthEndpoint(TestClientStrategy s) throws Exception {
 		SystemApi systemApi = s.getAgentApi(SystemApi.class);
-		V3Health v3Health = systemApi.v3Health();
+		V3Health v3Health = systemApi.v3ExtendedHealth();
 		String json = new ObjectMapper().writeValueAsString(v3Health);
 		Assertions.assertTrue(v3Health.getStatus().equals(V3HealthStatus.UP));
-//		Assertions.assertTrue(resp.isKeyManagerConnectivity());
-//		Assertions.assertTrue(resp.isAgentServiceUser());
+		Assertions.assertTrue(v3Health.getServices().get("pod").getStatus().equals(V3HealthStatus.UP));
+		Assertions.assertTrue(v3Health.getServices().get("key_manager").getStatus().equals(V3HealthStatus.UP));
+		Assertions.assertTrue(v3Health.getUsers().get("agentservice").getStatus().equals(V3HealthStatus.UP));
 		System.out.println(json);
 	}
 	
