@@ -66,7 +66,8 @@ public class MessageActivityHandler extends ActivityHandler {
 			
 		CurrentTurnContext.CURRENT_CONTEXT.set(null);
 		
-		return null;
+		// errors are handled using Spring's ErrorHandler rather than this.
+		return new CompletableFuture<Void>();
 	}
 
 	private Message createMessageFromActivity(Activity a) {
