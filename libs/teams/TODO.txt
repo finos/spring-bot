@@ -3,4 +3,7 @@
 
 
 1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead.
-2. 
+2. Add tests for Link, Image
+3. Refactor parser so that it shares code with Symphony.
+4. Build Teams Response Handler.
+5. Teams Templating

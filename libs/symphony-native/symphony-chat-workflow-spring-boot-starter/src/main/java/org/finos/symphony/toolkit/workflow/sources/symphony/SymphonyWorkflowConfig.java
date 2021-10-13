@@ -289,7 +289,7 @@ public class SymphonyWorkflowConfig {
 	public AddressingChecker defaultAddressingChecker() {
 		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		SymphonyUser su = new SymphonyUser(symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
-		return new InRoomAddressingChecker(su, true);
+		return new InRoomAddressingChecker(() -> su, true);
 	}
 	
 	@Bean

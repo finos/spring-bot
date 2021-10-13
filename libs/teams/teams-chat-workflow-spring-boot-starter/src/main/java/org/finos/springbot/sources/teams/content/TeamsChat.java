@@ -34,14 +34,11 @@ public class TeamsChat implements Chat, TeamsAddressable, TeamsContent, Tag {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
+		if (obj instanceof TeamsChat) {
+			return this.id.equals(((TeamsChat) obj).getId());
+		} else {
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		TeamsChat other = (TeamsChat) obj;
-		return Objects.equals(id, other.id);
+		}
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
+import com.microsoft.bot.schema.ChannelAccount;
 import com.microsoft.bot.schema.teams.TeamsChannelData;
 
 public class TeamsConversationsImpl implements TeamsConversations, InitializingBean {
@@ -73,8 +74,12 @@ public class TeamsConversationsImpl implements TeamsConversations, InitializingB
 
 	@Override
 	public Addressable getTeamsChat(TeamsChannelData tcd) {
-		// TODO Auto-generated method stub
-		return null;
+		return tcd.getChannel() == null ? null : new TeamsChat(tcd.getChannel().getId(), tcd.getChannel().getName());
+	}
+
+	@Override
+	public User getUser(ChannelAccount from) {
+		return new TeamsUser(from.getId(), from.getName());
 	}
 
 }
