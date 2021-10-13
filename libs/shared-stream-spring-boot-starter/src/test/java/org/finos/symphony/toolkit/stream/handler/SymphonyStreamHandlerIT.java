@@ -15,7 +15,9 @@ import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.testing.TestIdentityProvider;
 import com.symphony.api.model.AckId;
 import com.symphony.api.model.Datafeed;
+import com.symphony.api.model.MessageList;
 import com.symphony.api.model.V2Error;
+import com.symphony.api.model.V2MessageList;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4EventList;
 import com.symphony.api.model.V4Message;
@@ -45,6 +47,23 @@ public class SymphonyStreamHandlerIT {
 		int currentId = 868;
 		int call = 0;
 		int eventId = 0;
+		
+		@Override
+		public Datafeed v1DatafeedCreatePost(String sessionToken, String keyManagerToken) {
+			return new Datafeed().id(""+(++currentId));
+		}
+
+		@Override
+		public MessageList v1DatafeedIdReadGet(String id, String sessionToken, String keyManagerToken,
+				Integer maxMessages) {
+			return null; // not used
+		}
+		
+		@Override
+		public V2MessageList v2DatafeedIdReadGet(String id, String sessionToken, String keyManagerToken,
+				Integer maxMessages) {
+			return null; // not used
+		}
 
 		@Override
 		public Datafeed v4DatafeedCreatePost(String sessionToken, String keyManagerToken) {
