@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.User;
+import com.symphony.api.model.UserV2;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4RoomCreated;
 import com.symphony.api.model.V4UserJoinedRoom;
@@ -37,7 +37,7 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 	MessagesApi messagesApi;
 	SymphonyIdentity botIdentity;
 	String welcomeMessageML;
-	User u;
+	UserV2 u;
 	ObjectMapper om;
 	
 	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, String welcomeMessageML) {
@@ -45,7 +45,7 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 		this.messagesApi = messagesApi;
 		this.botIdentity = botIdentity;
 		this.welcomeMessageML = welcomeMessageML;
-		u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
+		u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		om = new ObjectMapper();
 		ObjectMapperFactory.initialize(om, ObjectMapperFactory.extendedSymphonyVersionSpace(
 			VERSION_SPACE));

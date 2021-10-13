@@ -30,7 +30,7 @@ public class AgentEndpointJerseyIT {
 
 	@Test
 	public void testAutowire() throws Exception {
-		api.v2HealthCheckGet(false, false, false, false, false, false, false, false, null, null);
+		api.v3Health();
 	}
 	
 	@Test

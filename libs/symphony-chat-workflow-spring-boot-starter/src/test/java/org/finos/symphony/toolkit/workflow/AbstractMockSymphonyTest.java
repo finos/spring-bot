@@ -44,7 +44,6 @@ import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.MemberInfo;
 import com.symphony.api.model.MembershipList;
-import com.symphony.api.model.User;
 import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
@@ -85,7 +84,7 @@ public abstract class AbstractMockSymphonyTest {
 		out.add(new MemberInfo().id(BOT_ID).owner(false));
 		out.add(new MemberInfo().id(ROB_EXAMPLE_ID).owner(true));
 		
-		Mockito.when(rmApi.v1RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull()))
+		Mockito.when(rmApi.v2RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull()))
 			.thenReturn(out);
 	}
 
@@ -125,11 +124,11 @@ public abstract class AbstractMockSymphonyTest {
 		public UsersApi usersApi() {
 			UsersApi usersApi = Mockito.mock(UsersApi.class);
 			
-			when(usersApi.v1UserGet(Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-				.thenReturn(new User().emailAddress(BOT_EMAIL).id(BOT_ID));
+			when(usersApi.v2UserGet(Mockito.isNull(), Mockito.isNull(), Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
+				.thenReturn(new UserV2().emailAddress(BOT_EMAIL).id(BOT_ID));
 			
-			when(usersApi.v1UserGet(Mockito.eq(ROB_EXAMPLE_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-				.thenReturn(new User().emailAddress(ROB_EXAMPLE_EMAIL).id(ROB_EXAMPLE_ID));
+			when(usersApi.v2UserGet(Mockito.isNull(), Mockito.isNull(), Mockito.eq(ROB_EXAMPLE_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
+				.thenReturn(new UserV2().emailAddress(ROB_EXAMPLE_EMAIL).id(ROB_EXAMPLE_ID));
 			
 			when(usersApi.v2UserGet(Mockito.isNull(), Mockito.nullable(long.class), Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
 				.thenReturn(new UserV2().emailAddress(BOT_EMAIL).id(111l));
