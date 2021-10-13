@@ -8,7 +8,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 
 import com.symphony.api.model.Stream;
-import com.symphony.api.model.User;
+import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
 import com.symphony.user.StreamID;
@@ -55,7 +55,7 @@ public class AbstractStreamResolving {
 		if (a.getUserId() != null) {
 			return Long.parseLong(a.getUserId());
 		} else {
-			User u = usersApi.v1UserGet(a.getEmailAddress(), null, true);
+			UserV2 u = usersApi.v2UserGet(null, null, a.getEmailAddress(), null, true);
 			if (u == null) {
 				throw new IllegalArgumentException("Couldn't find user: "+a);
 			} else {

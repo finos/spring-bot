@@ -55,7 +55,8 @@ public abstract class AbstractTest {
 
     protected MockMvc mockMvc;
 
-    @BeforeEach
+    @SuppressWarnings("deprecation")
+	@BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();

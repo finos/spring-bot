@@ -17,7 +17,7 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<symphony.api-version>20_13</symphony.api-version>
+		<symphony.api-version>20_13_LOCAL</symphony.api-version>
 	</properties>
 
 	<build>
@@ -70,7 +70,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/${symphony.api-version}/agent-api-public-deprecated.yaml</inputSpec>
+							<inputSpec>${project.basedir}/src/main/resources/${symphony.api-version}/agent-api-public.yaml</inputSpec>
 							<apiPackage>com.symphony.api.agent</apiPackage>
 						</configuration>
 					</execution>
@@ -80,7 +80,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/${symphony.api-version}/authenticator-api-public-deprecated.yaml</inputSpec>
+							<inputSpec>${project.basedir}/src/main/resources/${symphony.api-version}/authenticator-api-public.yaml</inputSpec>
 							<apiPackage>com.symphony.api.authenticator</apiPackage>
 						</configuration>
 					</execution>
@@ -100,7 +100,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/${symphony.api-version}/pod-api-public-deprecated.yaml</inputSpec>
+							<inputSpec>${project.basedir}/src/main/resources/${symphony.api-version}/pod-api-public.yaml</inputSpec>
 							<apiPackage>com.symphony.api.pod</apiPackage>
 						</configuration>
 					</execution>
