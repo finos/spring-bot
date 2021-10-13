@@ -143,7 +143,6 @@ public class AgentIT extends AbstractIT {
 
 	@ParameterizedTest
 	@MethodSource("setupConfigurations")
-	@Disabled
 	public void testStreamsV5(TestClientStrategy s) throws Exception {
 		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
