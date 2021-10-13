@@ -48,7 +48,7 @@ public class MessageActivityHandler extends ActivityHandler {
 	
 		Message message = createMessageFromActivity(a);
 		Addressable rr = teamsConversations.getTeamsChat(tcd);
-		User u = null; //teamsConversations.loadUserById(a.get);
+		User u = teamsConversations.getUser(a.getFrom());
 		
 		rr = rr == null ? u : rr;
 		SimpleMessageAction sma = new SimpleMessageAction(rr, u, message, data);

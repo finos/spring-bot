@@ -5,17 +5,9 @@ import org.finos.symphony.toolkit.workflow.content.User;
 
 @Work(index = false)
 public final class TeamsUser extends TeamsChat implements User {
-		
-	String email;
-	
-	public TeamsUser(String id, String name, String email) {
+			
+	public TeamsUser(String id, String name) {
 		super(id, name);
-		this.email = email;
-	}
-
-	@Override
-	public String getEmailAddress() {
-		return email;
 	}
 
 }

@@ -10,16 +10,16 @@ import org.finos.symphony.toolkit.workflow.content.OrderedContent;
 import org.finos.symphony.toolkit.workflow.content.Table;
 import org.springframework.web.util.HtmlUtils;
 
-public class MessageMLWriter implements Function<Content, String> {
+public class TeamsHTMLWriter implements Function<Content, String> {
 	
 	Map<Class<? extends Content>, Function<Content, String>> tagMap = new HashMap<>();
 	
-	public MessageMLWriter(Map<Class<? extends Content>, Function<Content, String>> tagMap) {
+	public TeamsHTMLWriter(Map<Class<? extends Content>, Function<Content, String>> tagMap) {
 		super();
 		this.tagMap = tagMap;
 	}
 
-	public MessageMLWriter() {
+	public TeamsHTMLWriter() {
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class MessageMLWriter implements Function<Content, String> {
 
 		protected String writeInner(Content c){
 			if (following == null) {
-				return MessageMLWriter.this.apply(c);
+				return TeamsHTMLWriter.this.apply(c);
 			} else {
 				return following.apply(c);
 			}
@@ -120,7 +120,7 @@ public class MessageMLWriter implements Function<Content, String> {
 		private String writeRow(String tag, List<Content> row) {
 			return "<tr>"
 				+ row.stream()
-					.map(td -> "<" + tag + ">" + MessageMLWriter.this.apply(td) + "</" + tag + ">")
+					.map(td -> "<" + tag + ">" + TeamsHTMLWriter.this.apply(td) + "</" + tag + ">")
 			 		.reduce("", (a, b) -> a.trim() + b.trim())
 			 	+ "</tr>";
 		}

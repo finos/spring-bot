@@ -5,10 +5,23 @@ import java.util.Properties;
 
 import org.finos.springbot.sources.teams.conversations.TeamsConversations;
 import org.finos.springbot.sources.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.sources.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.sources.teams.messages.MessageActivityHandler;
 import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
+import org.finos.springbot.sources.teams.messages.TeamsHTMLWriter;
+import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
 import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
+import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
+import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
+import org.finos.symphony.toolkit.workflow.content.BlockQuote;
+import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.OrderedList;
+import org.finos.symphony.toolkit.workflow.content.Paragraph;
+import org.finos.symphony.toolkit.workflow.content.Table;
+import org.finos.symphony.toolkit.workflow.content.UnorderedList;
+import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.symphony.toolkit.workflow.content.Word;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +33,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
+import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
@@ -46,18 +60,32 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Autowired
 	ApplicationContext ac;
 	
-//
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public SymphonyResponseHandler symphonyResponseHandler() {
-//		return new SymphonyResponseHandler(messagesApi, streamsApi, usersApi, 
-//				formMessageMLConverter(), 
-//				messageMLWriter(), 
-//				entityJsonConverter(), 
-//				attachmentHandler, 
-//				resourceLoader);
-//	}
+	@Bean
+	@ConditionalOnMissingBean
+	public TeamsHTMLWriter teamsHTMLWriter() {
+		TeamsHTMLWriter out = new TeamsHTMLWriter();
+		out.add(Message.class, out.new OrderedTagWriter("div"));
+		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
+		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));
+		out.add(UnorderedList.class, out.new OrderedTagWriter("ul", out.new OrderedTagWriter("li")));
+		out.add(BlockQuote.class, out.new SimpleTagWriter("code"));
+		out.add(Word.class, out.new PlainWriter());
+		out.add(Table.class, out.new TableWriter());
+		out.add(BlockQuote.class, out.new SimpleTagWriter("blockquote"));
+		// tags, images, links etc.
+		
+		return out;
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public TeamsResponseHandler teamsResponseHandler() {
+		return new TeamsResponseHandler(
+				teamsHTMLWriter(), 
+				null, 
+				null, 
+				resourceLoader);
+	}
 //	
 //	@Bean
 //	@ConditionalOnMissingBean
@@ -130,13 +158,15 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 //		return new FormConverter(symphonyRooms());
 //	}
 //	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public AddressingChecker defaultAddressingChecker() {
-//		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
-//		TeamsUser su = new TeamsUser(symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
-//		return new InRoomAddressingChecker(su, true);
-//	}
+	@Bean
+	@ConditionalOnMissingBean
+	public AddressingChecker teamsAddressingChecker(TeamsConversations conv) {
+		return new InRoomAddressingChecker(() -> {
+			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
+			User u = conv.getUser(tc.getActivity().getRecipient());	
+			return u;
+		}, true);
+	}
 //	
 //	@Bean
 //	@ConditionalOnMissingBean

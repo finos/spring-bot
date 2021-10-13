@@ -79,6 +79,19 @@ public class TeamsHTMLParserTest {
 				 "{\"type\":\"mention\",\"text\":\"<at>Suresh Rupnar</at>\",\"mentioned\":{\"id\":\"29:1et6-4yR75MhoRMsybG_kWQSm_4tXqh_WLZVQmXyY4FmpKCgpazJaZCt-uyQRe5R8M46KC4adpqgWGNmIbD2xEw\",\"name\":\"Suresh Rupnar\"}}",
 				 "{\"type\":\"mention\",\"text\":\"<at>General</at>\",\"mentioned\":{\"id\":\"29:1-XAcnCve4eHbCHU4O8XHbx5Sx3cM2CxKtU4BbXmv1e99zp-4oUdX-8mP8SkToJzfkXxd4c1bQvSeAZGowOQwdv2h20lH6c-bbWTPRrdhi68\",\"name\":\"General\"}}"
 		};
+		List<Entity> entities = parseEntities(someEntities);
+				
+		Message m = parser.parse(" <div><div><span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Rob's Echo App</span>&nbsp;ask <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">Suresh Rupnar</span>&nbsp;for <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"2\">General</span></div></div>", entities);
+		
+		List<TeamsChat> mentions1 = m.only(TeamsChat.class);
+		
+		Assertions.assertEquals(3, mentions1.size());
+		Assertions.assertEquals("Suresh Rupnar", mentions1.get(1).getName());
+		Assertions.assertEquals("abc123", mentions1.get(0).getId());
+		
+	}
+
+	protected List<Entity> parseEntities(String[] someEntities) {
 		ObjectMapper om = new ObjectMapper();
 		List<Entity> entities = Arrays.stream(someEntities)
 			.map(s -> {
@@ -89,14 +102,13 @@ public class TeamsHTMLParserTest {
 				}
 			})
 			.collect(Collectors.toList());
-				
-		Message m = parser.parse(" <div><div><span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Rob's Echo App</span>&nbsp;ask <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">Suresh Rupnar</span>&nbsp;for <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"2\">General</span></div></div>", entities);
-		
-		List<TeamsChat> mentions1 = m.only(TeamsChat.class);
-		
-		Assertions.assertEquals(3, mentions1.size());
-		Assertions.assertEquals("Suresh Rupnar", mentions1.get(1).getName());
-		Assertions.assertEquals("abc123", mentions1.get(0).getId());
+		return entities;
+	}
+	
+	//@Test
+	// this commented for now - doesn't seem to be a way for bots to read code snippets.
+	public void testCodeSnippet() {
+		Message m = parser.parse("<span itemid=\"c0ac3db2bcb94831a4306d676e8679f2\" itemscope=\"\" itemtype=\"http://schema.skype.com/InputExtension\"><span itemprop=\"cardId\"></span></span>", null);
 		
 	}
 }

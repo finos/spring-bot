@@ -1,10 +1,13 @@
 package org.finos.symphony.toolkit.workflow.actions.consumers;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
+import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 
@@ -15,10 +18,10 @@ import org.finos.symphony.toolkit.workflow.content.Word;
  */
 public class InRoomAddressingChecker implements AddressingChecker {
 
-	protected User theBot;
+	protected Supplier<User> theBot;
 	protected boolean allowSlash;
 	
-	public InRoomAddressingChecker(User theBot, boolean allowSlash) {
+	public InRoomAddressingChecker(Supplier<User> theBot, boolean allowSlash) {
 		super();
 		this.theBot = theBot;
 		this.allowSlash = allowSlash;
@@ -33,9 +36,10 @@ public class InRoomAddressingChecker implements AddressingChecker {
 			if (a instanceof SimpleMessageAction) {
 				SimpleMessageAction sma = (SimpleMessageAction) a;
 				
-				Optional<User> firstUserMention = sma.getMessage().getNth(User.class, 0); 
+				Optional<Tag> firstUserMention = sma.getMessage().getNth(Tag.class, 0); 
+				User bot = theBot.get();
 				
-				if ((firstUserMention.isPresent()) && (theBot.matches(firstUserMention.get()))) {
+				if ((firstUserMention.isPresent()) && (bot.matches(firstUserMention.get()))) {
 					// bot is mentioned, so return the action, stripping out the bot mention
 					Message changedMessage = (Message) ((SimpleMessageAction) a).getMessage().removeAtStart(firstUserMention.get());
 					return new SimpleMessageAction(a.getAddressable(), a.getUser(), changedMessage, sma.getData());

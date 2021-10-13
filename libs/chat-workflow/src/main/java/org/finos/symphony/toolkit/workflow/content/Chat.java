@@ -1,12 +1,12 @@
 package org.finos.symphony.toolkit.workflow.content;
 
 /**
- * This defines a Chat as a collection of people, which you can address messages to.
+ * A chat is some named place where you can send messages, on a one-to-many basis.  
  *  
  * @author Rob Moffat
  *
  */
-public interface Chat extends Addressable, Content {
+public interface Chat extends Addressable {
 
 	public String getName();
 	

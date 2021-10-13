@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.sources.teams.conversations.TeamsConversations;
-import org.finos.springbot.sources.teams.handlers.SymphonyResponseHandler;
+import org.finos.springbot.sources.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.sources.teams.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
@@ -46,12 +46,12 @@ public class ElementsHandler implements StreamEventConsumer {
 	EntityJsonConverter jsonConverter;
 	FormConverter formConverter;
 	List<ActionConsumer> elementsConsumers;
-	SymphonyResponseHandler rh;
+	TeamsResponseHandler rh;
 	TeamsConversations ruBuilder;
 	Validator v;
 	
 	public ElementsHandler(MessagesApi messagesApi, EntityJsonConverter jsonConverter,
-			FormConverter formConverter, List<ActionConsumer> elementsConsumers, SymphonyResponseHandler rh, TeamsConversations ruBuilder, Validator v) {
+			FormConverter formConverter, List<ActionConsumer> elementsConsumers, TeamsResponseHandler rh, TeamsConversations ruBuilder, Validator v) {
 		this.messagesApi = messagesApi;
 		this.jsonConverter = jsonConverter;
 		this.formConverter = formConverter;

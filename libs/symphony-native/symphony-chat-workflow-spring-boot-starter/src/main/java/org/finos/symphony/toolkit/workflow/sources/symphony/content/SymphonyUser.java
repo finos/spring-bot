@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.symphonyoss.TaxonomyElement;
 
@@ -15,7 +16,7 @@ import com.symphony.user.StreamID;
 import com.symphony.user.UserId;
 
 @Work(jsonTypeName = {"", "org.finos.symphony.toolkit.workflow.content.userDef"}, index = false)
-public final class SymphonyUser extends Mention implements User, SymphonyContent, SymphonyAddressable {
+public final class SymphonyUser extends Mention implements User, SymphonyContent, SymphonyAddressable, Tag {
 		
 	public SymphonyUser() {
 		super();
