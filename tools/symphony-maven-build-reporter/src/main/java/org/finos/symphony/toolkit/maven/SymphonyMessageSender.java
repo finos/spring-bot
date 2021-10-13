@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.symphony.api.agent.MessagesApi;
-import com.symphony.api.authenticator.AuthenticationApi;
 import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.JWTHelper;

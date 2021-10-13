@@ -17,7 +17,7 @@
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<symphony.api-version>20_10_0_LOCAL</symphony.api-version>
+		<symphony.api-version>20_13_LOCAL</symphony.api-version>
 	</properties>
 
 	<build>
