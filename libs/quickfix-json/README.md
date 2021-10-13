@@ -2,7 +2,7 @@
 
 # Jackson JSON QuickFIX Module
 
-This is a small [Jackson](https://github.com/FasterXML/jackson) plugin to allow you to serialize [QuickFixJ](https://www.quickfixj.org/) objects into JSON, as described by [the FIX JSON encoding specification](https://github.com/FIXTradingCommunity/fix-json-encoding-spec/blob/master/Encoding_FIX_using_JSON-User_Guide.md)
+This is a small [Jackson](https://github.com/FasterXML/jackson) plugin to allow you to serialize objects into JSON, as described by [the FIX JSON encoding specification](https://github.com/FIXTradingCommunity/fix-json-encoding-spec/blob/master/Encoding_FIX_using_JSON-User_Guide.md)
 
 This is a stand-alone jar, and doesn't require Symphony or any of the other components described in this project.
 
