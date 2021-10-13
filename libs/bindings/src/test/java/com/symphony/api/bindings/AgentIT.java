@@ -20,8 +20,11 @@ import com.symphony.api.bindings.Streams.Worker;
 import com.symphony.api.model.AckId;
 import com.symphony.api.model.Datafeed;
 import com.symphony.api.model.V2HealthCheckResponse;
+import com.symphony.api.model.V3Health;
+import com.symphony.api.model.V3HealthStatus;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V5Datafeed;
+import com.symphony.api.model.V5DatafeedCreateBody;
 import com.symphony.api.model.V5EventList;
 
 /**
@@ -147,7 +150,7 @@ public class AgentIT extends AbstractIT {
 		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
 
-		V5Datafeed datafeed = dfApi.createDatafeed(null, null);
+		V5Datafeed datafeed = dfApi.createDatafeed(null, null, new V5DatafeedCreateBody());
 
 		System.out.println("Datafeed ID: "+datafeed.getId());
 
@@ -180,11 +183,11 @@ public class AgentIT extends AbstractIT {
 	@MethodSource("setupConfigurations")
 	public void testHealthEndpoint(TestClientStrategy s) throws Exception {
 		SystemApi systemApi = s.getAgentApi(SystemApi.class);
-		V2HealthCheckResponse resp = systemApi.v2HealthCheckGet(false, null, null, null, null, null, null, null, null, null);
-		String json = new ObjectMapper().writeValueAsString(resp);
-		Assertions.assertTrue(resp.isPodConnectivity());
-		Assertions.assertTrue(resp.isKeyManagerConnectivity());
-		Assertions.assertTrue(resp.isAgentServiceUser());
+		V3Health v3Health = systemApi.v3Health();
+		String json = new ObjectMapper().writeValueAsString(v3Health);
+		Assertions.assertTrue(v3Health.getStatus().equals(V3HealthStatus.UP));
+//		Assertions.assertTrue(resp.isKeyManagerConnectivity());
+//		Assertions.assertTrue(resp.isAgentServiceUser());
 		System.out.println(json);
 	}
 	
