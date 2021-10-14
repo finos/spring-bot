@@ -87,7 +87,7 @@ public class TestRoomAndUsersBuilder extends AbstractMockSymphonyTest {
 		// return members
 		MembershipList ml = new MembershipList();
 		ml.add(new MemberInfo().id(123l).owner(true));
-		when(rmApi.v1RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull())).thenReturn(ml);
+		when(rmApi.v2RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull())).thenReturn(ml);
 	
 		List<SymphonyUser> chatMembers = ruBuilder.getChatMembers(out);
 		Assertions.assertEquals(

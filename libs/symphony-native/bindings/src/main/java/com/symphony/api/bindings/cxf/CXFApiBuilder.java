@@ -14,8 +14,6 @@ import org.apache.cxf.transport.http.HTTPConduit;
 import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
-import com.symphony.api.agent.MessagesApi;
-import com.symphony.api.authenticator.AuthenticationApi;
 import com.symphony.api.bindings.AbstractApiBuilder;
 import com.symphony.api.bindings.jackson.LenientJacksonJsonProvider;
 

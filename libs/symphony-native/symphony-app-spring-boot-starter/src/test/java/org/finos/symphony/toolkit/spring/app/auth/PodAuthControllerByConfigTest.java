@@ -10,16 +10,13 @@ import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.app.AbstractTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 
-import com.symphony.api.authenticator.AuthenticationApi;
 import com.symphony.api.authenticator.CertificateAuthenticationApi;
 import com.symphony.api.bindings.AbstractApiBuilder;
-import com.symphony.api.model.AppAuthenticateRequest;
 import com.symphony.api.model.ExtensionAppAuthenticateRequest;
 import com.symphony.api.model.ExtensionAppTokens;
 
