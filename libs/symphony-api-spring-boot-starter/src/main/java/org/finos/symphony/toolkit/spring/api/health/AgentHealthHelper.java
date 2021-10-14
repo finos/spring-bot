@@ -23,9 +23,9 @@ public class AgentHealthHelper implements HealthIndicator {
 	private SystemApi api;
 	private ObjectMapper om;
 
-	public AgentHealthHelper(ApiBuilder ab, ObjectMapper om) {
+	public AgentHealthHelper(ApiBuilder ab) {
 		this.api = ab.getApi(SystemApi.class);
-		this.om = om;
+		this.om = new ObjectMapper();
 	}
 
 	@SuppressWarnings("unchecked")

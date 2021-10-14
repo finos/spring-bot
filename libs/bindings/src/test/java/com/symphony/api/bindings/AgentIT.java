@@ -22,6 +22,7 @@ import com.symphony.api.model.V2Error;
 import com.symphony.api.model.V3Health;
 import com.symphony.api.model.V3HealthStatus;
 import com.symphony.api.model.V4Event;
+import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V5Datafeed;
 import com.symphony.api.model.V5DatafeedCreateBody;
 import com.symphony.api.model.V5EventList;
@@ -47,12 +48,21 @@ public class AgentIT extends AbstractIT {
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
 		String in = asString(this.getClass().getResourceAsStream("/pizza.json"));
 		
-		messageAPi.v4StreamSidMessageCreatePost(null, ROOM,
+		V4Message done = messageAPi.v4StreamSidMessageCreatePost(null, ROOM,
 				"<messageML>" + 
 				"  Hello. Here is an important message with an" + 
 				"  <div class=\"entity\" data-entity-id=\"object001\" />" + 
 				"  included." + 
 				"</messageML>", in, null, null, null, null);
+		
+		// updating messages currently not supported on develop pod
+//		// try updating the message
+//		V4Message second = messageAPi.v4StreamSidMessageMidUpdatePost(null, ROOM, done.getMessageId(), "<messageML>This is updated</messageML>", in, null, null);
+//		
+//		// read the message back
+//		V4Message third = messageAPi.v1MessageIdGet(null, null, done.getMessageId());
+//		
+//		Assertions.assertEquals(second.getMessage(), third.getMessage());
 	}
 	
 	@ParameterizedTest
