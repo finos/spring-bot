@@ -234,7 +234,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	@Override
 	public List<SymphonyUser> getChatMembers(SymphonyRoom r) {
 		if (r instanceof SymphonyRoom) {
-			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
+			MembershipList ml = rmApi.v2RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
 			return ml.stream()
 				.map(m -> loadUserById(m.getId()))
 				.collect(Collectors.toList());	
@@ -246,7 +246,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	@Override
 	public List<SymphonyUser> getChatAdmins(SymphonyRoom r) {
 		if (r instanceof SymphonyRoom) {
-			MembershipList ml = rmApi.v1RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
+			MembershipList ml = rmApi.v2RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
 			return ml.stream()
 				.filter(m -> m.isOwner())
 				.map(m -> loadUserById(m.getId()))
@@ -268,7 +268,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		com.symphony.api.model.User u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
+		com.symphony.api.model.UserV2 u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		botUserId = u.getId();
 	}
 

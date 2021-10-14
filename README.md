@@ -1,6 +1,6 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 ![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)
-[![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
+[![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://app.codecov.io/gh/finos/symphony-java-toolkit)
 ![License](https://img.shields.io/github/license/finos/symphony-java-toolkit)
 [![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 

@@ -38,6 +38,7 @@ import com.symphony.api.bindings.ConfigurableApiBuilder;
 import com.symphony.api.bindings.cxf.CXFApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.json.SymphonyIdentityModule;
+import com.symphony.api.model.V5DatafeedCreateBody;
 
 import jetbrains.buildServer.controllers.BaseController;
 import jetbrains.buildServer.controllers.FormUtil;
@@ -94,7 +95,7 @@ public class SymphonyAdminController extends BaseController {
 	protected ModelAndView testConfig() throws IOException, Exception {
 		// this is to make sure config is ok
 		DatafeedApi df = getAPI(DatafeedApi.class);
-		df.createDatafeed(null, null);
+		df.createDatafeed(null, null, new V5DatafeedCreateBody());
 		return null;
 	}
 
