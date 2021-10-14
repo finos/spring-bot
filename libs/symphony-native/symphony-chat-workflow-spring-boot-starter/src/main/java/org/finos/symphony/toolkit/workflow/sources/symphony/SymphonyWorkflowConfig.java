@@ -20,6 +20,7 @@ import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
 import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.symphony.toolkit.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.symphony.toolkit.workflow.content.Heading;
 import org.finos.symphony.toolkit.workflow.content.BlockQuote;
 import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.OrderedList;
@@ -27,6 +28,7 @@ import org.finos.symphony.toolkit.workflow.content.Paragraph;
 import org.finos.symphony.toolkit.workflow.content.Table;
 import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.symphony.toolkit.workflow.content.serialization.MarkupWriter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomName;
@@ -140,8 +142,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageMLWriter messageMLWriter() {
-		MessageMLWriter out = new MessageMLWriter();
+	public MarkupWriter messageMLWriter() {
+		MarkupWriter out = new MarkupWriter();
 		out.add(Message.class, out.new OrderedTagWriter("messageML"));
 		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
 		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));
@@ -149,7 +151,13 @@ public class SymphonyWorkflowConfig {
 		out.add(BlockQuote.class, out.new SimpleTagWriter("code"));
 		out.add(Word.class, out.new PlainWriter());
 		out.add(Table.class, out.new TableWriter());
-		// tags
+		out.add(Heading.class, out.new HeadingWriter("h"));
+		// user
+		// heading
+		// image
+		// link
+		// hashtag
+		// cashtag
 		
 		return out;
 	}

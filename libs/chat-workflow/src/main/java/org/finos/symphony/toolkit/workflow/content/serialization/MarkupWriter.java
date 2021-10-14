@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.messages;
+package org.finos.symphony.toolkit.workflow.content.serialization;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,20 +6,27 @@ import java.util.Map;
 import java.util.function.Function;
 
 import org.finos.symphony.toolkit.workflow.content.Content;
+import org.finos.symphony.toolkit.workflow.content.Heading;
 import org.finos.symphony.toolkit.workflow.content.OrderedContent;
 import org.finos.symphony.toolkit.workflow.content.Table;
 import org.springframework.web.util.HtmlUtils;
 
-public class TeamsXMLWriter implements Function<Content, String> {
+/**
+ * Converts {@link Content} classes into xml/html etc.  styles of markup.
+ * 
+ * @author rob@kite9.com
+ *
+ */
+public class MarkupWriter implements Function<Content, String> {
 	
 	Map<Class<? extends Content>, Function<Content, String>> tagMap = new HashMap<>();
 	
-	public TeamsXMLWriter(Map<Class<? extends Content>, Function<Content, String>> tagMap) {
+	public MarkupWriter(Map<Class<? extends Content>, Function<Content, String>> tagMap) {
 		super();
 		this.tagMap = tagMap;
 	}
 
-	public TeamsXMLWriter() {
+	public MarkupWriter() {
 	}
 
 	@Override
@@ -87,20 +94,43 @@ public class TeamsXMLWriter implements Function<Content, String> {
 
 		@Override
 		public String apply(Content t) {
-			return "<"+tag+">" + 
+			return "<"+getTagName(t)+">" + 
 				((OrderedContent<?>)t).getContents().stream()
 					.map(c -> writeInner(c)) 
 					.reduce("", (a, b) -> a.trim() + " "+ b.trim()) + 
-					"</"+tag+">";		
+					"</"+getTagName(t)+">";		
+		}
+
+		protected String getTagName(Content t) {
+			return tag;
 		}
 
 		protected String writeInner(Content c){
 			if (following == null) {
-				return TeamsXMLWriter.this.apply(c);
+				return MarkupWriter.this.apply(c);
 			} else {
 				return following.apply(c);
 			}
 		}
+		
+	}
+	
+	public class HeadingWriter extends OrderedTagWriter {
+
+		public HeadingWriter(String tag) {
+			super(tag);
+		}
+
+		@Override
+		protected String getTagName(Content t) {
+			if (t instanceof Heading) {
+				return tag + ((Heading)t).getLevel();
+			} else {
+				return tag;
+			}
+		}
+		
+		
 		
 	}
 	
@@ -120,7 +150,7 @@ public class TeamsXMLWriter implements Function<Content, String> {
 		private String writeRow(String tag, List<Content> row) {
 			return "<tr>"
 				+ row.stream()
-					.map(td -> "<" + tag + ">" + TeamsXMLWriter.this.apply(td) + "</" + tag + ">")
+					.map(td -> "<" + tag + ">" + MarkupWriter.this.apply(td) + "</" + tag + ">")
 			 		.reduce("", (a, b) -> a.trim() + b.trim())
 			 	+ "</tr>";
 		}

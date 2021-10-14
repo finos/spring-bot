@@ -13,11 +13,13 @@ public interface Message extends Paragraph {
 					.collect(Collectors.toList()));
 	}
 
-	public static Message of(List<Content> c) {
+	public static Message of(List<? extends Content> c) {
 		
 		abstract class MessageOut extends AbstractOrderedContent<Content> implements Message {
-			public MessageOut(List<Content> c) {
-				super(c);
+
+			@SuppressWarnings("unchecked")
+			public MessageOut(List<? extends Content> c) {
+				super((List<Content>) c);
 			}			
 		}
  		

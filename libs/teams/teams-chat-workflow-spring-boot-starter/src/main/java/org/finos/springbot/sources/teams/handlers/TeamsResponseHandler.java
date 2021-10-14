@@ -1,9 +1,9 @@
 package org.finos.springbot.sources.teams.handlers;
 
 import org.finos.springbot.sources.teams.content.TeamsAddressable;
-import org.finos.springbot.sources.teams.messages.TeamsXMLWriter;
 import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
 import org.finos.symphony.toolkit.workflow.content.Content;
+import org.finos.symphony.toolkit.workflow.content.serialization.MarkupWriter;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
@@ -36,7 +36,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	
 	public TeamsResponseHandler(
 			String templatePrefix,
-			TeamsXMLWriter contentWriter, 
+			MarkupWriter contentWriter, 
 			DataHandler dataHandler,
 			AttachmentHandler attachmentHandler, 
 			ResourceLoader rl) {

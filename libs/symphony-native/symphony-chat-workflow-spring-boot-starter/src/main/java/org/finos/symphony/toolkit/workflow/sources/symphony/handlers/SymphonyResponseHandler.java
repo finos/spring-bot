@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.serialization.MarkupWriter;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.DataResponse;
@@ -40,7 +41,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	
 	protected MessagesApi messagesApi;
 	protected FormMessageMLConverter formMessageMLConverter;
-	protected MessageMLWriter contentWriter;
+	protected MarkupWriter contentWriter;
 	protected DataHandler dataHandler;
 	protected AttachmentHandler attachmentHandler;
 	protected ResourceLoader rl;
@@ -52,7 +53,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			StreamsApi streamsApi, 
 			UsersApi usersApi,
 			FormMessageMLConverter formMessageMLConverter, 
-			MessageMLWriter contentWriter, 
+			MarkupWriter contentWriter, 
 			DataHandler dataHandler,
 			AttachmentHandler attachmentHandler, 
 			ResourceLoader rl) {
