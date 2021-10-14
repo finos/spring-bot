@@ -63,7 +63,7 @@ public abstract class AbstractBotIT {
 				post(urlEqualTo("/kore2")).withHeader("Authorization", new EqualToPattern("Bearer some-other-jwt"))
 						.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody(response)));
 
-		wireMockRule.stubFor(get(urlPathMatching("/pod/v1/user"))
+		wireMockRule.stubFor(get(urlPathMatching("/pod/v2/user"))
 				.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("{\"id\":1234}")));
 
 		wireMockRule.stubFor(post(urlPathMatching("/login/pubkey/authenticate")).willReturn(
@@ -87,9 +87,9 @@ public abstract class AbstractBotIT {
 		wireMockRule.stubFor(post(urlPathMatching("/agent/v4/stream/ABC123/message/create"))
 				.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("{}")));
 		
-		wireMockRule.stubFor(get(urlPathMatching("/agent/v2/HealthCheck"))
+		wireMockRule.stubFor(get(urlPathMatching("/agent/v3/health/extended"))
 				.willReturn(aResponse().withHeader("Content-Type", "application/json").withStatus(200).withBody(
-			"{\"keyManagerConnectivity\" : true,\"encryptDecryptSuccess\" : true,\"podConnectivity\": true,\"agentServiceUser\": true }")));
+			"{\"services\":{\"pod\":{\"authType\":null,\"message\":null,\"status\":\"UP\",\"version\":\"20.12.2\"},\"key_manager\":{\"authType\":null,\"message\":null,\"status\":\"UP\",\"version\":\"20.12.2\"}},\"status\":\"UP\",\"users\":{\"agentservice\":{\"authType\":\"RSA\",\"message\":null,\"status\":\"UP\",\"version\":null},\"ceservice\":{\"authType\":\"RSA\",\"message\":null,\"status\":\"UP\",\"version\":null}},\"version\":\"20.12.3\"}")));
 		
 		wireMockRule.stubFor(post(urlPathMatching("/agent/v1/message/search"))
 				.willReturn(aResponse().withHeader("Content-Type", "application/json").withBody("[]")));
