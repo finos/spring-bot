@@ -3055,6 +3055,9 @@ paths:
             $ref: '#/definitions/V5DatafeedCreateBody'
       produces:
         - application/json
+      consumes:
+        - application/json
+      
       responses:
         201:
           description: Datafeed sucessfully created.
