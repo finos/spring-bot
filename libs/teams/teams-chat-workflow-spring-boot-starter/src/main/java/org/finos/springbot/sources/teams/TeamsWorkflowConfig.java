@@ -25,6 +25,7 @@ import org.finos.symphony.toolkit.workflow.content.Word;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -79,8 +80,10 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsResponseHandler teamsResponseHandler() {
+	public TeamsResponseHandler teamsResponseHandler(
+			@Value("${teams.template.location:classpath:/templates/teams/}") String templatePrefix) {
 		return new TeamsResponseHandler(
+				templatePrefix,
 				teamsHTMLWriter(), 
 				null, 
 				null, 

@@ -2,16 +2,12 @@ package org.finos.symphony.toolkit.workflow.java.mapping;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
+import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverters;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolvers;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
-import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.MethodParameter;
 
 /**
@@ -23,13 +19,11 @@ import org.springframework.core.MethodParameter;
 public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 	
 	private WorkflowResolversFactory wrf;
-	private ResponseHandlers rh;
-	private List<ResponseConverter> converters;
+	private ResponseConverters converters;
 	
-	public AbstractHandlerExecutor(WorkflowResolversFactory wrf, ResponseHandlers  rh, List<ResponseConverter> converters) {
+	public AbstractHandlerExecutor(WorkflowResolversFactory wrf, ResponseConverters converters) {
 		super();
 		this.wrf = wrf;
-		this.rh = rh;
 		this.converters = converters;
 	}
 	
@@ -57,35 +51,10 @@ public abstract class AbstractHandlerExecutor implements ChatHandlerExecutor {
 			throw ite.getTargetException();
 		}
 		
-		if (out instanceof Response) {
-			rh.accept((Response) out);
-		} else if (out instanceof Collection) {
-			for (Object object : (List<?>) out) {
-				if (object instanceof Response) {
-					rh.accept((Response) object);
-				} else {
-					Response r = convert(object);
-					if (r != null) {
-						rh.accept(r);
-					}
-				}
-			}
-		} else {
-			Response r = convert(out);
-			if (r != null) {
-				rh.accept(r);
-			}
-		}
-	}
-	
-	private Response convert(Object object) {
-		for (ResponseConverter responseConverter : converters) {
-			if (responseConverter.canConvert(object)) {
-				return responseConverter.convert(object, this);
-			}
+		if (out != null) {
+			converters.accept(out, this);
 		}
 		
-		return null;
 	}
 
 	private WorkflowResolvers buildWorkflowResolvers(Action originatingAction) {

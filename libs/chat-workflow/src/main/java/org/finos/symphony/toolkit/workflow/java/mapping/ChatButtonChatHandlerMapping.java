@@ -16,22 +16,19 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.conversations.AllConversations;
-import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
+import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverters;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
 public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandlerMapping<ChatButton> {
 
 	private WorkflowResolversFactory wrf;
-	private ResponseHandlers rh;
-	private List<ResponseConverter> converters;
+	private ResponseConverters converters;
 	private AllConversations conversations;
 	
-	public ChatButtonChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters, AllConversations conversations) {
+	public ChatButtonChatHandlerMapping(WorkflowResolversFactory wrf, ResponseConverters converters, AllConversations conversations) {
 		super();
 		this.wrf = wrf;
-		this.rh = rh;
 		this.converters = converters;
 		this.conversations = conversations;
 	}
@@ -115,7 +112,7 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 					return null;
 				}
 				
-				return new AbstractHandlerExecutor(wrf, rh, converters) {
+				return new AbstractHandlerExecutor(wrf, converters) {
 					
 					@Override
 					public Map<ChatVariable, Object> getReplacements() {

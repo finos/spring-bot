@@ -24,24 +24,21 @@ import org.finos.symphony.toolkit.workflow.content.Message;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.conversations.AllConversations;
-import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
+import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverters;
 import org.finos.symphony.toolkit.workflow.java.mapping.WildcardContent.Arity;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
 public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandlerMapping<ChatRequest> {
 
 	private WorkflowResolversFactory wrf;
-	private ResponseHandlers rh;
-	private List<ResponseConverter> converters;
+	private ResponseConverters converters;
 	private AllConversations conversations;
 	
-	public ChatRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh, List<ResponseConverter> converters, AllConversations conversations) {
+	public ChatRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseConverters converters, AllConversations conversations) {
 		super();
 		this.wrf = wrf;
-		this.rh = rh;
 		this.converters = converters;
 		this.conversations = conversations;
 	}
@@ -207,7 +204,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 					
 					if (messageMatcher.consume(words, map)) {
 						if ((bestMatch == null) || (bestMatch.getReplacements().size() < map.size())) {
-							bestMatch = new AbstractHandlerExecutor(wrf, rh, converters) {
+							bestMatch = new AbstractHandlerExecutor(wrf, converters) {
 	
 								@Override
 								public Map<ChatVariable, Object> getReplacements() {

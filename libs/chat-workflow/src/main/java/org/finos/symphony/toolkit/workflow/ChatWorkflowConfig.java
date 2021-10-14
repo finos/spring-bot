@@ -10,9 +10,13 @@ import org.finos.symphony.toolkit.workflow.actions.form.FormEditConfig;
 import org.finos.symphony.toolkit.workflow.conversations.AllConversations;
 import org.finos.symphony.toolkit.workflow.help.HelpController;
 import org.finos.symphony.toolkit.workflow.history.AllHistory;
+import org.finos.symphony.toolkit.workflow.java.converters.CollectionResponseConverter;
+import org.finos.symphony.toolkit.workflow.java.converters.ContentResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
+import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverters;
 import org.finos.symphony.toolkit.workflow.java.converters.WorkResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatButtonChatHandlerMapping;
+import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatRequestChatHandlerMapping;
@@ -43,8 +47,20 @@ public class ChatWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ResponseConverter workResponseConverter() {
-		return new WorkResponseConverter();
+	public WorkResponseConverter workResponseConverter(ResponseHandlers rh) {
+		return new WorkResponseConverter(rh);
+	} 
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ContentResponseConverter contentResponseConverter(ResponseHandlers rh) {
+		return new ContentResponseConverter(rh);
+	} 
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public CollectionResponseConverter collectionResponseConverter(ResponseHandlers rh) {
+		return new CollectionResponseConverter(rh);
 	} 
 	
 	@Bean
@@ -61,16 +77,16 @@ public class ChatWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ChatButtonChatHandlerMapping buttonHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
-			List<ResponseConverter> converters, AllConversations conversations) {
-		return new ChatButtonChatHandlerMapping(wrf, rh, converters, conversations);
+	public ChatButtonChatHandlerMapping buttonHandlerMapping(WorkflowResolversFactory wrf,
+			ResponseConverters converters, AllConversations conversations) {
+		return new ChatButtonChatHandlerMapping(wrf, converters, conversations);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ChatRequestChatHandlerMapping chatHandlerMapping(WorkflowResolversFactory wrf, ResponseHandlers rh,
-			List<ResponseConverter> converters, AllConversations conversations) {
-		return new ChatRequestChatHandlerMapping(wrf, rh, converters, conversations);
+	public ChatRequestChatHandlerMapping chatHandlerMapping(WorkflowResolversFactory wrf, 
+			ResponseConverters converters, AllConversations conversations) {
+		return new ChatRequestChatHandlerMapping(wrf, converters, conversations);
 	}
 	
 	@Bean
@@ -101,6 +117,20 @@ public class ChatWorkflowConfig {
 			@Override
 			public void accept(Response t) {
 				sorted.forEach(rh -> rh.accept(t));
+			}
+		};
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ResponseConverters responseConverters(List<ResponseConverter> rh) {
+		List<ResponseConverter> sorted = new ArrayList<>(rh);
+		Collections.sort(sorted, OrderComparator.INSTANCE);
+		return new ResponseConverters() {
+			
+			@Override
+			public void accept(Object t, ChatHandlerExecutor che) {
+				sorted.forEach(rh -> rh.accept(t, che));
 			}
 		};
 	}

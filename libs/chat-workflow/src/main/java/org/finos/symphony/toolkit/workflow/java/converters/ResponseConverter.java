@@ -1,12 +1,16 @@
 package org.finos.symphony.toolkit.workflow.java.converters;
 
+import java.util.function.BiConsumer;
+
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
-import org.finos.symphony.toolkit.workflow.response.Response;
 import org.springframework.core.PriorityOrdered;
 
-public interface ResponseConverter extends PriorityOrdered {
+/**
+ * Converts the output of a method call into Response objects, sends to the ResponseHandlers.
+ * 
+ * @author rob@kite9.com
+ *
+ */
+public interface ResponseConverter extends PriorityOrdered, BiConsumer<Object, ChatHandlerExecutor> {
 
-	public boolean canConvert(Object in);
-
-	public Response convert(Object source, ChatHandlerExecutor creator);
 }
