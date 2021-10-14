@@ -8,13 +8,24 @@ import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerExecutor;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 
-public class WorkResponseConverter implements ResponseConverter {
+public class WorkResponseConverter extends AbstractResponseConverter {
+
+	public WorkResponseConverter(ResponseHandlers rh) {
+		super(rh);
+	}
 
 	@Override
+	public void accept(Object t, ChatHandlerExecutor u) {
+		if (canConvert(t)) {
+			rh.accept(convert(t, u));
+		}
+	}
+
 	public Response convert(Object source, ChatHandlerExecutor creator) {
 		Addressable a = creator.action().getAddressable();
 		ChatResponseBody wr = creator.getOriginatingMapping().getHandlerMethod().getMethodAnnotation(ChatResponseBody.class);
@@ -37,7 +48,6 @@ public class WorkResponseConverter implements ResponseConverter {
 		return new WorkResponse(a, source, wm, null, null);
 	}
 
-	@Override
 	public boolean canConvert(Object in) {
 		if (in == null) {
 			return false;
@@ -57,4 +67,5 @@ public class WorkResponseConverter implements ResponseConverter {
 		return Ordered.LOWEST_PRECEDENCE;
 	}
 
+	
 }

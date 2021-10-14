@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.workflow.response.templating;
 
-import org.finos.symphony.toolkit.workflow.response.DataResponse;
+import org.finos.symphony.toolkit.workflow.response.Response;
 
-public interface TemplateProvider<T> {
+public interface TemplateProvider<T, V extends Response> {
 
-	public T getTemplate(DataResponse dr);
+	public T template(V dr);
 }

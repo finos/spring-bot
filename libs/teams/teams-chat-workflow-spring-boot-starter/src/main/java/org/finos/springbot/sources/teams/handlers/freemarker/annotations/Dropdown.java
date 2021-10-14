@@ -5,8 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.finos.springbot.sources.teams.handlers.freemarker.AbstractDropdownConverter;
-import org.finos.springbot.sources.teams.handlers.freemarker.AbstractDropdownConverter.ElementFormat;
+import org.finos.springbot.sources.teams.handlers.adaptivecard.AbstractDropdownConverter;
+import org.finos.springbot.sources.teams.handlers.adaptivecard.AbstractDropdownConverter.ElementFormat;
 
 /**
  * Mark a field with this interface to allow it to use dropdown options.

@@ -1,5 +1,6 @@
 package example.symphony.demoworkflow.todo;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,11 @@ import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
 import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
+import org.finos.symphony.toolkit.workflow.content.BlockQuote;
+import org.finos.symphony.toolkit.workflow.content.CodeBlock;
+import org.finos.symphony.toolkit.workflow.content.Message;
+import org.finos.symphony.toolkit.workflow.content.Paragraph;
+import org.finos.symphony.toolkit.workflow.content.UnorderedList;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.springframework.stereotype.Controller;
@@ -129,4 +135,19 @@ public class ToDoController {
 		changeStatus(out, words, u, Status.OPEN);
 		return out;
 	}
+	
+	@ChatRequest(value="test", description = "Prints a  test message on the screen") 
+	public Message testMessage() {
+		Message out = Message.of(Arrays.asList(
+			Paragraph.of("Some first paragraph"),
+			UnorderedList.of(Arrays.asList(
+				Paragraph.of("item 1"),
+				Paragraph.of("item 2"),
+				Paragraph.of("item 3"))),
+			BlockQuote.of("This one goes out to the one I love\nThis one goes out to the one I left behind"),
+			CodeBlock.of("Some preformatted text")));
+		
+		return out;
+	}
+	
 }
