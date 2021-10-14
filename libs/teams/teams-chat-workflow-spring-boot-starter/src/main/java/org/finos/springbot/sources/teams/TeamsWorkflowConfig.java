@@ -8,7 +8,7 @@ import org.finos.springbot.sources.teams.conversations.TeamsConversationsImpl;
 import org.finos.springbot.sources.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.sources.teams.messages.MessageActivityHandler;
 import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
-import org.finos.springbot.sources.teams.messages.TeamsHTMLWriter;
+import org.finos.springbot.sources.teams.messages.TeamsXMLWriter;
 import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
 import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
@@ -62,8 +62,8 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsHTMLWriter teamsHTMLWriter() {
-		TeamsHTMLWriter out = new TeamsHTMLWriter();
+	public TeamsXMLWriter teamsHTMLWriter() {
+		TeamsXMLWriter out = new TeamsXMLWriter();
 		out.add(Message.class, out.new OrderedTagWriter("div"));
 		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
 		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));

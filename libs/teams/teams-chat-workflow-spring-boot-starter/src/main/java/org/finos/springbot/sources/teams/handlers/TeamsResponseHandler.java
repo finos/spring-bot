@@ -5,10 +5,11 @@ import java.nio.charset.StandardCharsets;
 
 import org.finos.springbot.sources.teams.content.TeamsAddressable;
 import org.finos.springbot.sources.teams.handlers.FormMessageMLConverter.Mode;
-import org.finos.springbot.sources.teams.messages.TeamsHTMLWriter;
+import org.finos.springbot.sources.teams.messages.TeamsXMLWriter;
 import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.content.Content;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.response.DataResponse;
@@ -27,20 +28,38 @@ import org.springframework.util.ErrorHandler;
 import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
+import com.microsoft.bot.schema.Serialization;
+import com.microsoft.bot.schema.TextFormatTypes;
 
 public class TeamsResponseHandler implements ResponseHandler, ApplicationContextAware {
 	
 	public static final String MESSAGE_AREA = "<!-- Message Content -->";
 	
+	enum Format { 
+		
+		XML, CARD;
+		
+		String getExtension() {
+			switch (this) {
+			case XML: 
+				return ".xml";
+			case CARD:
+			default:
+				return ".json";
+			}
+		}
+		
+	}
+	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsResponseHandler.class);
 	
 	private String templatePrefix = "classpath:/templates/teams/";
-	private String templateSuffix = ".json";
 	
-	protected TeamsHTMLWriter contentWriter;
+	protected TeamsXMLWriter contentWriter;
 	protected DataHandler dataHandler;
 	protected AttachmentHandler attachmentHandler;
 	protected ResourceLoader rl;
@@ -48,7 +67,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected ErrorHandler eh;
 	
 	public TeamsResponseHandler(
-			TeamsHTMLWriter contentWriter, 
+			TeamsXMLWriter contentWriter, 
 			DataHandler dataHandler,
 			AttachmentHandler attachmentHandler, 
 			ResourceLoader rl) {
@@ -67,61 +86,100 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 
 	@Override
 	public void accept(Response t) {
-		TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
-		
-		if (ctx == null) {
-			return;
-		}
 		
 		if (t.getAddress() instanceof TeamsAddressable) {		
 
-			Object attachment = null;
-			String data = null;
-			String template = null;
+			TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
 			
-			if (t instanceof AttachmentResponse) {
-				attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
+			if (ctx == null) {
+				return;
 			}
-		
 
-			if (t instanceof DataResponse) {
-				template = "<div>hello</div>"; //buildTemplate((DataResponse) t);
+			if (t instanceof MessageResponse) {
+
+				Object attachment = null;
+				String data = null;
+				String template = null;
+
+				template = buildTemplate((DataResponse) t, Format.XML);
 				
 				if (template == null) {
-					LOG.error("Cannot determine/create template for response {}", t);
-					return;
+					template = MESSAGE_AREA;
 				}
-
-				//data = dataHandler.formatData((DataResponse) t);
-
-				sendResponse(template, attachment, data, (TeamsAddressable) t.getAddress(), ctx);
+				
+				if (t instanceof AttachmentResponse) {
+					attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
+				}
+				
+				sendXMLResponse(template, ((MessageResponse) t).getMessage(), attachment, (TeamsAddressable) t.getAddress(), ctx);
+				
+			} else if (t instanceof WorkResponse) {
+				//sendCardResponse(template, attachment, data, null, ctx);
+				
 			}
 		}
 	}
 
 
 	
-	protected String buildTemplate(DataResponse t) {
+	protected String buildTemplate(DataResponse t, Format f) {
 		String templateName = t.getTemplateName();
 
-		String template = StringUtils.hasText(templateName) ? getTemplateForName(templateName) : null;
+		String template = StringUtils.hasText(templateName) ? getTemplateForName(templateName, f) : null;
 
 		if (template == null) {
 			LOG.info("Reverting to default template for " + t);
-			template = getDefaultTemplate(t);
+			template = getDefaultTemplate(t, f);
 			LOG.info("Template: \n"+template);
 		}
 		
 		return template;
 	}
 
-	protected void sendResponse(String template, Object attachment, String data, TeamsAddressable address, TurnContext ctx) {		
+	protected void sendXMLResponse(String template, Content c, Object attachment, TeamsAddressable address, TurnContext ctx) {		
 		Activity out = Activity.createMessageActivity();
-		out.setText("sdfds");
-//		Attachment body = new Attachment();
-//		body.setContentType(MediaType.TEXT_HTML_VALUE);
-//		body.setContent(template);
-//		out.getAttachments().add(body);
+		String xml = contentWriter.apply(c);
+		out.setText(xml);
+		out.setTextFormat(TextFormatTypes.XML);
+		Attachment body = new Attachment();
+		body.setContentType("application/vnd.microsoft.card.adaptive");
+		JsonNode json = null;
+		try {
+			json = Serialization.jsonToTree(template);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		body.setContent(json);
+		out.getAttachments().add(body);
+		ctx.sendActivity(out).handle((rr, e) -> {
+			if (e != null) {
+				LOG.error(e.getMessage());
+				LOG.error("message:\n"+template);
+				LOG.error("json:\n"+data);
+				initErrorHandler();
+				eh.handleError(e);	
+			}
+			
+			return null;
+		});
+		
+	}
+	
+	protected void sendCardResponse(String x, Object attachment, String data, TeamsAddressable address, TurnContext ctx) {		
+		Activity out = Activity.createMessageActivity();
+		out.setText("bibblidh");
+		Attachment body = new Attachment();
+		body.setContentType("application/vnd.microsoft.card.adaptive");
+		JsonNode json = null;
+		try {
+			json = Serialization.jsonToTree(template);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		body.setContent(json);
+		out.getAttachments().add(body);
 		ctx.sendActivity(out).handle((rr, e) -> {
 			if (e != null) {
 				LOG.error(e.getMessage());
@@ -137,9 +195,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	}
 
 	protected String getDefaultTemplate(DataResponse r) {
-		String basic = getTemplateForName("default");
-		String insert = "";
 		if (r instanceof WorkResponse) {
+			String insert;
 			if (WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
 				Class<?> c = ((WorkResponse) r).getFormClass();
 				insert = formMessageMLConverter.convert(c, Mode.FORM);
@@ -148,9 +205,13 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				boolean needsButtons = needsButtons(r);						
 				insert = formMessageMLConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 			}
+			
+			return insert;
 		}
 		
 		if (r instanceof MessageResponse) {
+			String basic = getTemplateForName("default", Format.XML);
+			String insert = "";
 			insert = contentWriter.apply(((MessageResponse) r).getMessage());
 		}
 
@@ -174,18 +235,18 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		}
 	}
 
-	public String getTemplateForName(String name) {
+	public String getTemplateForName(String name, Format f) {
 		try {
-			return resolveTemplate(name);
+			return resolveTemplate(name, f);
 		} catch (Exception e) {
 			LOG.debug("Couldn't find template: "+name);
 			return null;
 		}
 	}
 
-	protected String resolveTemplate(String name) throws IOException {
+	protected String resolveTemplate(String name, Format f) throws IOException {
 		return StreamUtils.copyToString(
-				rl.getResource(templatePrefix + name + templateSuffix).getInputStream(),
+				rl.getResource(templatePrefix + name + f.getExtension()).getInputStream(),
 				StandardCharsets.UTF_8);
 	}
 
@@ -195,14 +256,6 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 
 	public void setTemplatePrefix(String templatePrefix) {
 		this.templatePrefix = templatePrefix;
-	}
-
-	public String getTemplateSuffix() {
-		return templateSuffix;
-	}
-
-	public void setTemplateSuffix(String templateSuffix) {
-		this.templateSuffix = templateSuffix;
 	}
 
 	@Override

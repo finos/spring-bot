@@ -114,6 +114,8 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			LOG.info("Template: \n"+template);
 		}
 		
+		return basic.replaceAll(MESSAGE_AREA, insert);
+		
 		return template;
 	}
 
@@ -157,7 +159,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 				insert = insert.replaceFirst("<messageML>", "").replaceFirst("</messageML>", "");
 			}
 			
-			return basic.replace(MESSAGE_AREA, insert);
+			ret
 		}
 	}
 
