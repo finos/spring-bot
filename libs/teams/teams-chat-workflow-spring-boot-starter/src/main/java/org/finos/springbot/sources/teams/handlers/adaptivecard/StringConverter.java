@@ -3,18 +3,30 @@ package org.finos.springbot.sources.teams.handlers.adaptivecard;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-public class StringConverter extends AbstractClassConverter {
+import org.finos.springbot.sources.teams.handlers.adaptivecard.helper.AdaptiveCardRendering;
+import org.finos.springbot.workflow.templating.AbstractClassConverter;
+import org.finos.springbot.workflow.templating.Rendering;
+import org.finos.springbot.workflow.templating.Variable;
 
-	public StringConverter() {
-		super(LOW_PRIORITY, String.class);
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class StringConverter extends AbstractClassConverter<JsonNode> {
+
+	public StringConverter(Rendering<JsonNode> r) {
+		super(LOW_PRIORITY, r, String.class);
 	}
 
 	@Override
-	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
+	public JsonNode apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
-			return textField(variable);
+			ObjectNode on = AdaptiveCardRendering.f.objectNode();
+			on.put("type", "Input.Text");
+			on.put("value", variable.getDataPath());
+			on.put("id", variable.getFormFieldName());
+  			return on;
 		} else {
-			return text(variable, "!''");
+			return r.text(variable);
 		}
 	}
 

@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers.freemarker.annotations;
+package org.finos.springbot.workflow.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,38 +1,41 @@
 package org.finos.springbot.sources.teams.handlers.adaptivecard;
 
+import org.finos.springbot.workflow.templating.Variable;
+
 /**
  * This class represents a FreeMarker template entity variable, such as "entity.id"
  * 
  * @author rob@kite9.com
  *
  */
-public class Variable {
+public class ACVariable implements Variable {
 	
-	String segment;
-	Variable parent = null;
-	int depth = 0;
+	public final String segment;
+	private final ACVariable parent;
+	public final int depth;
 	
-	public Variable(String name) {
+	public ACVariable(String name) {
 		this(1, name);
 	}
 	
-	private Variable(int depth, String var) {
+	private ACVariable(int depth, String var) {
 		this.segment = var;
 		this.depth = depth;
+		this.parent = null;
 	}
 	
-	private Variable(Variable parent2, String seg) {
+	private ACVariable(ACVariable parent2, String seg) {
 		this.segment = seg;
 		this.parent = parent2;
 		this.depth = parent2.depth + 1;
 	}
 
-	public Variable field(String seg) {
-		return new Variable(this, seg);
+	public ACVariable field(String seg) {
+		return new ACVariable(this, seg);
 	}
 	
-	public Variable index() {
-		return new Variable(parent.depth + 1, "i"+Character.toString((char) (65 + parent.depth)));
+	public ACVariable index() {
+		return new ACVariable(parent.depth + 1, "i"+Character.toString((char) (65 + parent.depth)));
 	}
 	
 	public String getDisplayName() {
@@ -40,7 +43,7 @@ public class Variable {
 	}
 
 	public String getFormFieldName() {
-		String dp = getDataPath();
+		String dp = getInnerDataPath();
 		int formStart = dp.indexOf("form.");
 		if (formStart > -1) {
 			return dp.substring(formStart+5);
@@ -49,8 +52,13 @@ public class Variable {
 		}
 	}
 	
+	public String getInnerDataPath() {
+		return (parent != null ? parent.getInnerDataPath() + "." : "") + segment;
+	}
+	
+	
 	public String getDataPath() {
-		return (parent != null ? parent.getDataPath() + "." : "") + segment;
+		return "${" + getInnerDataPath() + "}";
 	}
 	
 	public String getErrorPath() {

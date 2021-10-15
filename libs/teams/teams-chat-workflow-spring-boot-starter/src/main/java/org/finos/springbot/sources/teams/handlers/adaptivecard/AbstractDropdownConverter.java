@@ -3,42 +3,16 @@ package org.finos.springbot.sources.teams.handlers.adaptivecard;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import org.finos.springbot.workflow.templating.AbstractClassConverter;
+import org.finos.springbot.workflow.templating.ElementFormat;
+import org.finos.springbot.workflow.templating.Variable;
+
 public abstract class AbstractDropdownConverter extends AbstractClassConverter {
 
 	public AbstractDropdownConverter(int priority, Class<?> c) {
 		super(priority, c);
 	}
 	
-	public interface ElementFormat { 
-		
-		public Function<String, String> getSourceFunction();
-		
-		public Function<String, String> getKeyFunction();
-		
-		public BiFunction<String, String, String> getValueFunction();
-		
-	}
-	
-	public static class MapFormat implements ElementFormat {
-
-		@Override
-		public Function<String, String> getSourceFunction() {
-			return (location) -> location+"?keys";
-		}
-		
-		@Override
-		public Function<String, String> getKeyFunction() {
-			return (k) -> k;
-		}
-
-		@Override
-		public BiFunction<String, String, String> getValueFunction() {
-			return (k, location) -> location+"["+k+"]";
-		}
-		
-	};
-	
-
 	public String renderDropdown(Variable variable, String location, Function<String, String> sourceFunction , Function<String, String> keyFunction, BiFunction<String, String, String> valueFunction) {
 		String index = variable.index().getDataPath();
 		int indent = variable.depth;

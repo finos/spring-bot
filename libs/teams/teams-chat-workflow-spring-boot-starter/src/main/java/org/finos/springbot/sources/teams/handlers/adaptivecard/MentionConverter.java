@@ -5,18 +5,20 @@ import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.workflow.templating.ElementFormat;
+import org.finos.springbot.workflow.templating.Variable;
 
-public class RoomConverter extends AbstractDropdownConverter {
+public class MentionConverter extends AbstractDropdownConverter {
 
 	final String location;
 	
-	public RoomConverter() {
+	public MentionConverter() {
 		this("entity.rooms");
 	}
 	
-	public RoomConverter(String location) {
-		super(LOW_PRIORITY, Chat.class);
+	public MentionConverter(String location) {
+		super(LOW_PRIORITY, TeamsChat.class);
 		this.location = location;
 	}
 

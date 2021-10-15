@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.workflow.templating;
 
 import static java.util.Optional.ofNullable;
 
@@ -7,16 +7,16 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.finos.springbot.sources.teams.handlers.freemarker.annotations.Display;
+import org.finos.springbot.workflow.annotations.Display;
 
 /**
  * General interface for performing some function against a field, with a given variable.
  */
-public interface WithField {
+public interface WithField<X> {
 	
     String DEFAULT_FORMATTER_PATTERN = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])";
 
-    public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler);
+    public X apply(Field f, boolean editMode, Variable variable, WithType<X> contentHandler);
 
     /**
      * Return true if we are going to expand the contents of this field.

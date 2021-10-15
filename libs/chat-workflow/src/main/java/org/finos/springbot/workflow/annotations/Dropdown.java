@@ -1,12 +1,11 @@
-package org.finos.springbot.sources.teams.handlers.freemarker.annotations;
+package org.finos.springbot.workflow.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-
-import org.finos.springbot.sources.teams.handlers.adaptivecard.AbstractDropdownConverter;
-import org.finos.springbot.sources.teams.handlers.adaptivecard.AbstractDropdownConverter.ElementFormat;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * Mark a field with this interface to allow it to use dropdown options.
@@ -18,10 +17,20 @@ import org.finos.springbot.sources.teams.handlers.adaptivecard.AbstractDropdownC
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dropdown {
 
+	public interface ElementFormat { 
+		
+		public Function<String, String> getSourceFunction();
+		
+		public Function<String, String> getKeyFunction();
+		
+		public BiFunction<String, String, String> getValueFunction();
+		
+	}
+	
 	/**
 	 * Dictates where in the JSON structure to get the options for the dropdown
 	 */
 	public String data() default "entity.dropdown";
 	
-	public Class<? extends ElementFormat> format() default AbstractDropdownConverter.MapFormat.class;
+	public Class<? extends ElementFormat> format();
 }
