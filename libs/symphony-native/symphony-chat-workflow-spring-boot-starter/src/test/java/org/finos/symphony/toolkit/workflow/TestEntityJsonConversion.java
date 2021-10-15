@@ -81,12 +81,13 @@ public class TestEntityJsonConversion extends AbstractMockSymphonyTest {
 	}
 
 	private void compare(String out, String expected) throws JsonProcessingException, JsonMappingException {
-		System.out.println("expected: "+expected);
-		System.out.println("actual  : "+out);
-		
 		JsonNode joOut = om.readTree(out);
 		JsonNode joExpected = om.readTree(expected);
 
+		System.out.println("expected: "+new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(joExpected));
+		System.out.println("actual  : "+new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(joOut));
+
+		
 		Assertions.assertEquals(joOut, joExpected);
 	}
 

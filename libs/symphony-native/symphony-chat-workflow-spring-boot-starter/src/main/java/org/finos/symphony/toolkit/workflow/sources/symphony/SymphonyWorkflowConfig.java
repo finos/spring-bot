@@ -22,6 +22,8 @@ import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
+import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.VersionSpace;
@@ -42,6 +44,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentH
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.HeaderTagResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
+import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyTemplateProvider;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerFormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.FreemarkerTypeConverterConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.TypeConverter;
@@ -55,6 +58,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -161,15 +165,34 @@ public class SymphonyWorkflowConfig {
 		return out;
 	}
 	
+	@Bean 
+	@ConditionalOnMissingBean
+	public SimpleMessageMarkupTemplateProvider markupTemplater(
+			@Value("${symphony.templates.prefix:classpath:/templates/symphony}") String prefix,
+			@Value("${symphony.templates.suffix:.ftl}") String suffix,
+			MarkupWriter converter) {
+		return new SimpleMessageMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
+	}
+	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyResponseHandler symphonyResponseHandler() {
+	public SymphonyTemplateProvider workTemplater(
+			@Value("${symphony.templates.prefix:classpath:/templates/symphony}") String prefix,
+			@Value("${symphony.templates.suffix:.ftl}") String suffix,
+			FormMessageMLConverter formConverter) {
+		return new SymphonyTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public SymphonyResponseHandler symphonyResponseHandler(
+			SimpleMessageMarkupTemplateProvider markupTemplater,
+			SymphonyTemplateProvider workTemplater) {
 		return new SymphonyResponseHandler(messagesApi, streamsApi, usersApi, 
-				formMessageMLConverter(), 
-				messageMLWriter(), 
 				entityJsonConverter(), 
 				attachmentHandler, 
-				resourceLoader);
+				markupTemplater,
+				workTemplater);
 	}
 	
 	@Bean
@@ -301,8 +324,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers) {
-		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
+	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers, ResponseHandlers rh) {
+		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, rh, symphonyRooms(), validator);
 	}
 
 }

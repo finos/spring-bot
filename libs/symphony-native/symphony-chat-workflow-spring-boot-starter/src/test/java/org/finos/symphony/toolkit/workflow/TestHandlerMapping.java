@@ -256,7 +256,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Assertions.assertEquals("process-table", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Table firstArgument = (Table) oc.lastArguments.get(0);
-		List<Paragraph> expected = Arrays.asList(Paragraph.of(Arrays.asList(Word.of("thing"))), Paragraph.of(Arrays.asList(Word.of("thang"))));
+		List<Paragraph> expected = Arrays.asList(Paragraph.of("thing"), Paragraph.of("thang"));
 		Assertions.assertEquals(expected, firstArgument.getColumnNames());
 		Assertions.assertEquals(2, firstArgument.getData().size());
 	}
