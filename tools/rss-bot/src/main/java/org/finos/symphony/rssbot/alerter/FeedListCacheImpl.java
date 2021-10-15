@@ -5,8 +5,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.finos.springbot.workflow.content.Addressable;
 import org.finos.symphony.rssbot.feed.FeedList;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
 
 public class FeedListCacheImpl implements FeedListCache {
 	

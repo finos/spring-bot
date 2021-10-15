@@ -2,10 +2,10 @@ package org.finos.symphony.rssbot.alerter;
 
 import java.util.Optional;
 
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.rssbot.feed.Article;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 
 /**
  * This avoids repeating a post by checking the history of the room.  

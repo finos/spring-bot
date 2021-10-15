@@ -5,7 +5,7 @@ import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.springbot.workflow.content.Chat;
 
 public class RoomConverter extends AbstractDropdownConverter {
 

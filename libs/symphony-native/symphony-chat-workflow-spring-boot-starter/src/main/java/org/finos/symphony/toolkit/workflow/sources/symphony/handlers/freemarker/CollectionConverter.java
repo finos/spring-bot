@@ -5,9 +5,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.finos.symphony.toolkit.workflow.actions.form.TableAddRow;
-import org.finos.symphony.toolkit.workflow.actions.form.TableDeleteRows;
-import org.finos.symphony.toolkit.workflow.actions.form.TableEditRow;
+import org.finos.springbot.workflow.actions.form.TableAddRow;
+import org.finos.springbot.workflow.actions.form.TableDeleteRows;
+import org.finos.springbot.workflow.actions.form.TableEditRow;
 
 public class CollectionConverter extends AbstractTableConverter {
 	

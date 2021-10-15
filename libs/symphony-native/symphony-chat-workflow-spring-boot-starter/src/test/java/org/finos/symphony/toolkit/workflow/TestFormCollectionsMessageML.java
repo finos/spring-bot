@@ -2,11 +2,11 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.Arrays;
 
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.fixture.TestCollections;
 import org.finos.symphony.toolkit.workflow.fixture.TestCollections.Choice;
 import org.finos.symphony.toolkit.workflow.fixture.TestCollections.MiniBean;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.junit.jupiter.api.Test;
 

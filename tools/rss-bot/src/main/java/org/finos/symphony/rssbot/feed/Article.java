@@ -3,8 +3,8 @@ package org.finos.symphony.rssbot.feed;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.annotations.Template;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.springbot.workflow.annotations.Template;
+import org.finos.springbot.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
 @Work

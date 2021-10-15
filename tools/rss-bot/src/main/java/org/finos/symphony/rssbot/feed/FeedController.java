@@ -122,7 +122,7 @@ public class FeedController {
 		FeedList fl = getFeedList(a);
 		int count = ta.allItems(a, fl);
 		if (count == 0) {
-			rh.accept(new MessageResponse(a, Message.of(Word.build("No New News Items"))));
+			rh.accept(new MessageResponse(a, Message.of("No New News Items"))));
 		}
 	}
 	

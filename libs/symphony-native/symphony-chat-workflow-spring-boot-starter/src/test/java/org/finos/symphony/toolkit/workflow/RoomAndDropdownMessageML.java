@@ -5,12 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.form.Button;
+import org.finos.springbot.workflow.form.ButtonList;
+import org.finos.springbot.workflow.form.Button.Type;
+import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.fixture.RoomAndDropdown;
-import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.Button.Type;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;

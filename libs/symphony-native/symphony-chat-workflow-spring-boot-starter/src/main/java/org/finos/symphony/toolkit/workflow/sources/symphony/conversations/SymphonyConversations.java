@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.conversations;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.finos.symphony.toolkit.workflow.conversations.PlatformConversations;
+import org.finos.springbot.workflow.conversations.PlatformConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 

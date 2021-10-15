@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.response.Response;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.HeaderDetails;

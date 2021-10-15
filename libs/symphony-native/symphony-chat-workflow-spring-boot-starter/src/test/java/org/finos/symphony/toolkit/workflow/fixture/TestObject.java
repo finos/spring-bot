@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.workflow.fixture;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.springbot.workflow.annotations.Work;
 
 @Work()
 public class TestObject {

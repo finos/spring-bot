@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 
 /**

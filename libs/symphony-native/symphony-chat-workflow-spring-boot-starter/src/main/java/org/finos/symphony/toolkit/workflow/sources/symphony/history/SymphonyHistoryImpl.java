@@ -6,9 +6,9 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Tag;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;

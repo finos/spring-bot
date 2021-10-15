@@ -4,9 +4,9 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import org.finos.springbot.workflow.content.Tag;
+import org.finos.springbot.workflow.history.PlatformHistory;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.Tag;
-import org.finos.symphony.toolkit.workflow.history.PlatformHistory;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 
 public interface SymphonyHistory extends PlatformHistory<SymphonyAddressable> {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.RoomConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.RoomConverter.RoomFormat;
 

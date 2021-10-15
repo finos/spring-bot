@@ -3,8 +3,8 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Chat;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.Chat;
 import org.symphonyoss.Taxonomy;
 import org.symphonyoss.TaxonomyElement;
 

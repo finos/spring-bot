@@ -3,10 +3,10 @@
  */
 package org.finos.symphony.toolkit.tools.reminders;
 
+import org.finos.springbot.workflow.actions.consumers.ChatWorkflowErrorHandler;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
-import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHandler;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.springbot.workflow.annotations.Work;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
 @Work()

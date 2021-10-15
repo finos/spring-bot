@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 import java.util.Collections;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.springbot.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;

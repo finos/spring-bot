@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
-import org.finos.symphony.toolkit.workflow.response.DataResponse;
+import org.finos.springbot.workflow.response.DataResponse;
 
 /**
  * Formats data for wire transfer
