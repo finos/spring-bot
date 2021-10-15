@@ -1,7 +1,7 @@
 package org.finos.springbot.sources.teams.content;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.User;
 
 @Work(index = false)
 public final class TeamsUser extends TeamsChat implements User {
