@@ -5,23 +5,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.sources.teams.content.TeamsChat;
-import org.finos.springbot.sources.teams.content.TeamsUser;
 import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
-import org.finos.symphony.toolkit.workflow.content.CodeBlock;
-import org.finos.symphony.toolkit.workflow.content.Image;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.OrderedList;
-import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.UnorderedList;
-import org.finos.symphony.toolkit.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.Image;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.OrderedList;
+import org.finos.springbot.workflow.content.Paragraph;
+import org.finos.springbot.workflow.content.UnorderedList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.ArrayType;
 import com.microsoft.bot.schema.Entity;
 
 public class TeamsHTMLParserTest {
@@ -30,7 +24,7 @@ public class TeamsHTMLParserTest {
 	
 	@Test
 	public void testSimpleImageMessageParse() {
-		Message m = parser.parse("<div><img src=\"https://abc.123/image.jpg\" width=\"333\" height=\"250\" alt=\"Some alt\" style=\"padding-top:5px\"></div>", null);
+		Message m = parser.apply("<div><img src=\"https://abc.123/image.jpg\" width=\"333\" height=\"250\" alt=\"Some alt\" style=\"padding-top:5px\"></div>", null);
 		Assertions.assertEquals(1, m.only(Image.class).size());
 		Assertions.assertEquals("https://abc.123/image.jpg", m.getNth(Image.class, 0).get().getUrl());
 		Assertions.assertEquals("Some alt", m.getNth(Image.class, 0).get().getAlt());
@@ -38,7 +32,7 @@ public class TeamsHTMLParserTest {
 	
 	@Test
 	public void testListAndBlockQuoteMarkup() {
-		Message m = parser.parse("<p>this <strong>is a piece </strong></p>\n"
+		Message m = parser.apply("<p>this <strong>is a piece </strong></p>\n"
 				+ "<ol>\n"
 				+ "<li><strong>of text</strong><br>\n"
 				+ "</li><li>that is <br>\n"
@@ -61,7 +55,7 @@ public class TeamsHTMLParserTest {
 	
 	@Test
 	public void testMixedBlockQuoteParse() {
-		Message m = parser.parse("<blockquote>\n"
+		Message m = parser.apply("<blockquote>\n"
 				+ "<ul>\n"
 				+ "<li>one</li><li>two</li><li>three</li></ul>\n"
 				+ "<p>this is another para</p>\n"
@@ -81,7 +75,7 @@ public class TeamsHTMLParserTest {
 		};
 		List<Entity> entities = parseEntities(someEntities);
 				
-		Message m = parser.parse(" <div><div><span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Rob's Echo App</span>&nbsp;ask <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">Suresh Rupnar</span>&nbsp;for <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"2\">General</span></div></div>", entities);
+		Message m = parser.apply(" <div><div><span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Rob's Echo App</span>&nbsp;ask <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">Suresh Rupnar</span>&nbsp;for <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"2\">General</span></div></div>", entities);
 		
 		List<TeamsChat> mentions1 = m.only(TeamsChat.class);
 		
@@ -108,7 +102,7 @@ public class TeamsHTMLParserTest {
 	//@Test
 	// this commented for now - doesn't seem to be a way for bots to read code snippets.
 	public void testCodeSnippet() {
-		Message m = parser.parse("<span itemid=\"c0ac3db2bcb94831a4306d676e8679f2\" itemscope=\"\" itemtype=\"http://schema.skype.com/InputExtension\"><span itemprop=\"cardId\"></span></span>", null);
+		Message m = parser.apply("<span itemid=\"c0ac3db2bcb94831a4306d676e8679f2\" itemscope=\"\" itemtype=\"http://schema.skype.com/InputExtension\"><span itemprop=\"cardId\"></span></span>", null);
 		
 	}
 }

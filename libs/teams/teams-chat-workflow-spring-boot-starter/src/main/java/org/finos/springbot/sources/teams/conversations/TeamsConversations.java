@@ -2,9 +2,9 @@ package org.finos.springbot.sources.teams.conversations;
 
 import org.finos.springbot.sources.teams.content.TeamsChat;
 import org.finos.springbot.sources.teams.content.TeamsUser;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.conversations.PlatformConversations;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.PlatformConversations;
 
 import com.microsoft.bot.schema.ChannelAccount;
 import com.microsoft.bot.schema.teams.TeamsChannelData;

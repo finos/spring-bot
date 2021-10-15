@@ -2,9 +2,9 @@ package org.finos.springbot.sources.teams.content;
 
 import java.util.Objects;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.Tag;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.Tag;
 
 @Work(index = false)
 public class TeamsChat implements Chat, TeamsAddressable, TeamsContent, Tag {

@@ -50,7 +50,7 @@ public class PresentationMLHandler implements StreamEventConsumer {
 				// ok, this is a message, and it's from a third party.  Parse it.
 				
 				EntityJson ej = jsonConverter.readValue(ms.getMessage().getData());
-				Message words = messageParser.parse(ms.getMessage().getMessage(), ej);
+				Message words = messageParser.apply(ms.getMessage().getMessage(), ej);
 				Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
 				User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());
 				

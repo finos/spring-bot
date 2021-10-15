@@ -9,6 +9,7 @@ import org.finos.springbot.sources.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.sources.teams.messages.MessageActivityHandler;
 import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
+import org.finos.springbot.workflow.content.serialization.AbstractContentParser;
 import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
 import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
@@ -111,13 +112,13 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser) {
+	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, AbstractContentParser parser) {
 		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsHTMLParser teamsHTMLParser() {
+	public AbstractContentParser teamsHTMLParser() {
 		return new TeamsHTMLParser();
 	}
 	

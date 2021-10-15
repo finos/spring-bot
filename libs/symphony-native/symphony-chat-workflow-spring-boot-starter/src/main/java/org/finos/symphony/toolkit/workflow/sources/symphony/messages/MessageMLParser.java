@@ -1,23 +1,14 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.messages;
 
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.OrderedContent;
-import org.finos.springbot.workflow.content.OrderedList;
-import org.finos.springbot.workflow.content.Paragraph;
-import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.Tag;
-import org.finos.springbot.workflow.content.UnorderedList;
-import org.finos.springbot.workflow.content.Word;
+import org.finos.springbot.workflow.content.serialization.AbstractContentParser;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
@@ -41,32 +32,19 @@ import com.symphony.user.DisplayName;
  * @author Rob Moffat
  *
  */
-public class MessageMLParser {
+public class MessageMLParser extends AbstractContentParser<String, EntityJson>{
 	
 	private static final Logger LOG = LoggerFactory.getLogger(PresentationMLHandler.class);
 	
 	private SAXParserFactory factory = SAXParserFactory.newInstance();
-	
-	static abstract class Frame<X extends Content> {
-		
-		abstract X getContents();
-		
-		abstract boolean isEnding(String qName);
-		
-		Frame<?> parent;
-		
-		abstract void push(Content c);
-		
-		abstract boolean hasContent();
-	}
 	
 	static class TagFrame<X extends Tag> extends TextFrame<X> {
 
 		String id;
 		X contents;
 		
-		public TagFrame(X contents) {
-			super();
+		public TagFrame(String qName, X contents) {
+			super(qName);
 			this.contents = contents;
 		}
 
@@ -103,251 +81,18 @@ public class MessageMLParser {
 		}
 
 		@Override
-		boolean hasContent() {
+		public boolean hasContent() {
 			return true;
 		}
 		
 		
 	}
 	
-	static class IgnoredFrame extends TextFrame<Content> {
-		
-		String tag;
-
-		public IgnoredFrame(String tag) {
-			super();
-			this.tag = tag;
-		}
-		
-		@Override
-		boolean isEnding(String qName) {
-			return tag.equals(qName);
-		}
-
-
-		@Override
-		Content getContents() {
-			return null;
-		}
-
-		@Override
-		void push(Content c) {			
-		}
-
-		@Override
-		boolean hasContent() {
-			return false;
-		}
-		
-	}
-	
-	static class CodeBlockFrame extends TextFrame<BlockQuote> {
-		
-		String tag;
-
-		public CodeBlockFrame(String tag) {
-			super();
-			this.tag = tag;
-		}
-
-		@Override
-		BlockQuote getContents() {
-			return BlockQuote.of(buf.toString());
-		}
-
-		@Override
-		boolean isEnding(String qName) {
-			return tag.equals(qName);
-		}
-
-		@Override
-		void push(Content c) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		boolean hasContent() {
-			return buf.length() > 0;
-		}
-		
-		
-		
-	}
-	
-	static class ListFrame extends Frame<OrderedContent<?>> {
-
-		private String qName;
-		private List<Paragraph> contents = new ArrayList<>();
-		
-		public ListFrame(String qName) {
-			this.qName = qName;
-		}
-
-		public OrderedContent<?> getContents() {
-			if ("ol".equals(qName)) {
-				return new OrderedList.OrderedListImpl(contents);
-			} else {
-				return new UnorderedList.UnorderedListImpl(contents);
-			}
-		}
-
-		@Override
-		boolean isEnding(String qName) {
-			return true;
-		}
-
-		@Override
-		void push(Content c) {
-			if (c instanceof Paragraph) {
-				contents.add((Paragraph) c);
-			} else {
-				throw new UnsupportedOperationException("Only <li> can appear in <"+qName+">");
-			}
-		}
-
-		@Override
-		boolean hasContent() {
-			return contents.size() > 0;
-		}
-		
-	}
-	
-	static class TableFrame extends Frame<Table> {
-		
-		private List<List<Content>> contents = new ArrayList<>();
-
-		void newRow() {
-			contents.add(new ArrayList<>());		
-		}
-		
-		@Override
-		public Table getContents() {
-			return new Table() {
-				
-				@Override
-				public List<List<Content>> getData() {
-					return contents.subList(1, contents.size());
-				}
-				
-				@Override
-				public List<Content> getColumnNames() {
-					return contents.get(0);
-				}
-
-				@Override
-				public int hashCode() {
-					return contents.hashCode();
-				}
-
-				@Override
-				public boolean equals(Object obj) {
-					if (obj instanceof Table) {
-						return getData().equals(((Table) obj).getData()) &&
-							getColumnNames().equals(((Table) obj).getColumnNames());
-					} else {
-						return false;
-					}
-				}
-
-				@Override
-				public String toString() {
-					return "PastedTable ["+contents+"]";
-				}
-
-				@Override
-				public String getText() {
-					return "<pastedTable />";
-				}
-
-			};
-		}
-
-		@Override
-		public boolean isEnding(String qName) {
-			return qName.equals("table");
-		}
-
-		@Override
-		public void push(Content c) {
-			List<Content> lastRow = contents.get(contents.size()-1);
-			lastRow.add(c);
-		}
-
-		@Override
-		boolean hasContent() {
-			return contents.size()>0;
-		}
-		
-	}
-	
-	static abstract class TextFrame<X extends Content> extends Frame<X> {
-		
-		StringBuilder buf = new StringBuilder();
-		
-		void push(char[] ch, int start, int length) {
-			buf.append(ch, start, length);
-		}
-	}
-	
-	static abstract class TextRunFrame<X extends Content> extends TextFrame<X> {
-		
-		List<Content> stuffSoFar = new ArrayList<>();
-		
-		void push(Content c) {
-			consumeBuffer();
-			stuffSoFar.add(c);
-		}
-
-		protected void consumeBuffer() {
-			Arrays.stream(buf.toString().split("\\s+"))
-			.filter(s -> s.length() > 0)
-			.map(s -> Word.of(s))
-			.forEach(w -> stuffSoFar.add(w));
-			
-			buf.setLength(0);
-		}
-
-		@Override
-		boolean isEnding(String qName) {
-			return true;
-		}
-
-		@Override
-		boolean hasContent() {
-			return stuffSoFar.size() > 0;
-		}
-	}
-	
-	static class MessageFrame extends TextRunFrame<Message> {
-		
-		public Message getContents() {
-			consumeBuffer();
-			return new Message.MessageImpl(stuffSoFar);
-				
-		}
-		
-		@Override
-		boolean isEnding(String qName) {
-			return true;
-		}
-
-		
-	}
-	
-	static class ParagraphFrame extends TextRunFrame<Paragraph> {
-		public Paragraph getContents() {
-			consumeBuffer();
-			return new Paragraph.ParagraphImpl(stuffSoFar);
-				
-		}
-	}
-	
-	public Message parse(String source) {
-		return parse(source, new EntityJson());
+	public Message apply(String source) {
+		return apply(source, new EntityJson());
 	}
 
-	public Message parse(String message, EntityJson jsonObjects) {
+	public Message apply(String message, EntityJson jsonObjects) {
 		message = (!message.contains("<messageML>")) ? "<messageML>" + message + "</messageML>" : message;
 		
 
@@ -371,18 +116,18 @@ public class MessageMLParser {
 						String dataEntityId = attributes.getValue("data-entity-id");
 						Object o = jsonObjects.get(dataEntityId);
 						if (o instanceof SymphonyUser) {
-							push(new TagFrame<SymphonyUser>((SymphonyUser) o));
+							push(new TagFrame<SymphonyUser>(qName, (SymphonyUser) o));
 						} else if (o instanceof HashTag) {
-							push(new TagFrame<HashTag>((HashTag) o));
+							push(new TagFrame<HashTag>(qName, (HashTag) o));
 						} else if (o instanceof CashTag) {
-							push(new TagFrame<CashTag>((CashTag) o));
+							push(new TagFrame<CashTag>(qName, (CashTag) o));
 						} else {
 							throw new UnsupportedOperationException();
 						}
 					} else if (isStartTable(qName, attributes)) {
-						push(new TableFrame());
+						push(new TableFrame("table"));
 					} else if (isStartParaListItemOrCell(qName, attributes)) {
-						push(new ParagraphFrame());
+						push(new ParagraphFrame(qName));
 					} else if (isStartList(qName, attributes)) {
 						push(new ListFrame(qName));
 					} else if (isStartRow(qName, attributes)) {
@@ -393,7 +138,7 @@ public class MessageMLParser {
 						}
 					} else if (isStartMessage(qName, attributes)) {
 						if (top == null) {
-							push(new MessageFrame());
+							push(new MessageFrame("messageML"));
 						}
 					}
 				}
