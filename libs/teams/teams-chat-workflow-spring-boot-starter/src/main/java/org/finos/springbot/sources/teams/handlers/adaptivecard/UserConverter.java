@@ -3,8 +3,10 @@ package org.finos.springbot.sources.teams.handlers.adaptivecard;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.templating.AbstractClassConverter;
+import org.finos.springbot.workflow.templating.Variable;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.User;
 
 import com.symphony.user.EmailAddress;
 import com.symphony.user.UserId;

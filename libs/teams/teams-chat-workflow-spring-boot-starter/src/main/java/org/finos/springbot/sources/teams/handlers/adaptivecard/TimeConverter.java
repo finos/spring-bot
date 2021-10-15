@@ -6,6 +6,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import org.finos.springbot.workflow.templating.AbstractClassConverter;
+import org.finos.springbot.workflow.templating.Variable;
+
 public class TimeConverter extends AbstractClassConverter {
 
 	public TimeConverter() {

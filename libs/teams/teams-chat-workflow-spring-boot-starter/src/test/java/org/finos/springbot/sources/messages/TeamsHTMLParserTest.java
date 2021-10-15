@@ -13,6 +13,7 @@ import org.finos.springbot.workflow.content.OrderedList;
 import org.finos.springbot.workflow.content.Paragraph;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -99,10 +100,11 @@ public class TeamsHTMLParserTest {
 		return entities;
 	}
 	
-	//@Test
-	// this commented for now - doesn't seem to be a way for bots to read code snippets.
+	@Test
+	@Disabled
+	// this disabled for now - doesn't seem to be a way for bots to read code snippets.
 	public void testCodeSnippet() {
 		Message m = parser.apply("<span itemid=\"c0ac3db2bcb94831a4306d676e8679f2\" itemscope=\"\" itemtype=\"http://schema.skype.com/InputExtension\"><span itemprop=\"cardId\"></span></span>", null);
-		
+		Assertions.assertEquals(Message.of("blah"), m);
 	}
 }

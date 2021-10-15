@@ -75,7 +75,7 @@ public class MessageActivityHandler extends ActivityHandler {
 			Collections.reverse(attachments);
 			for (Attachment attachment : attachments) {
 				if (MediaType.TEXT_HTML_VALUE.equals(attachment.getContentType())) {
-					return messageParser.parse((String) attachment.getContent(), a.getEntities());
+					return messageParser.apply((String) attachment.getContent(), a.getEntities());
 				}
 			}
 		}

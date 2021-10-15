@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.workflow.templating;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -10,7 +10,7 @@ import java.lang.reflect.Type;
  * @author rob@kite9.com
  *
  */
-public interface TypeConverter extends WithType {
+public interface TypeConverter<X> extends WithType<X> {
 
 	/**
 	 * Higher priority classes are tested first, so ensure your class has higher priority than

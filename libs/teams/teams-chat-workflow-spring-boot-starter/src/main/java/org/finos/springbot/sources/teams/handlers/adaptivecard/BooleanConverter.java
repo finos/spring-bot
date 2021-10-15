@@ -3,10 +3,18 @@ package org.finos.springbot.sources.teams.handlers.adaptivecard;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-public class BooleanConverter extends AbstractSimpleTypeConverter {
+import org.finos.springbot.sources.teams.handlers.adaptivecard.helper.AdaptiveCardRendering;
+import org.finos.springbot.workflow.templating.AbstractSimpleTypeConverter;
+import org.finos.springbot.workflow.templating.Rendering;
+import org.finos.springbot.workflow.templating.Variable;
 
-	public BooleanConverter() {
-		super(LOW_PRIORITY);
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+public class BooleanConverter extends AbstractSimpleTypeConverter<JsonNode> {
+
+	public BooleanConverter(Rendering<JsonNode> r) {
+		super(LOW_PRIORITY, r);
 	}
 
 	private boolean boolClass(Class<?> c) {
@@ -19,20 +27,16 @@ public class BooleanConverter extends AbstractSimpleTypeConverter {
 	}
 
 	@Override
-	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
+	public JsonNode apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
-			return formatErrorsAndIndent(variable.getFormFieldName(), variable.depth) + 
-				"<checkbox " 
-				+ attribute(variable, "name", variable.getFormFieldName())
-				+ attributeParam(variable, "checked", variable.getDataPath()+"?string('true', 'false')") 
-				+ attribute(variable, "value", "true") 
-				+ ">" 
-				+ variable.getDisplayName()
-				+ "</checkbox>";
+			ObjectNode out = AdaptiveCardRendering.f.objectNode();
+			out.put("type", "Input.Toggle");
+			out.put("value", variable.getDataPath());
+			out.put("id", variable.getFormFieldName());
+			return out;
 		} else {
-			return text(variable, "?string(\"Y\", \"N\")");
+			return r.text(variable); 
 		}	
 	}
-
 	
 }

@@ -137,7 +137,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 				return new WildcardContent(cv, getContentClassFromType(pt.getActualTypeArguments()[0]), Arity.LIST);				
 			}
 			
-			throw new UnsupportedOperationException("Can't set up wildcard for type: "+t.getTypeName());
+			throw new UnsupportedOperationException("Can't set up wildcard for type: "+t.getTypeName()+" on "+mapping);
 			
 		}).collect(Collectors.toList());
 	}

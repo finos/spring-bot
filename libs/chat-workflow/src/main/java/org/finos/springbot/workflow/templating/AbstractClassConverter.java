@@ -1,14 +1,15 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.workflow.templating;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-public abstract class AbstractClassConverter extends AbstractSimpleTypeConverter {
+
+public abstract class AbstractClassConverter<X> extends AbstractSimpleTypeConverter<X> {
 
 	private Class<?>[] forClass;
 
-	public AbstractClassConverter(int priority, Class<?>... forClass) {
-		super(priority);
+	public AbstractClassConverter(int priority, Rendering<X> r, Class<?>... forClass) {
+		super(priority, r);
 		this.forClass = forClass;
 	}
 

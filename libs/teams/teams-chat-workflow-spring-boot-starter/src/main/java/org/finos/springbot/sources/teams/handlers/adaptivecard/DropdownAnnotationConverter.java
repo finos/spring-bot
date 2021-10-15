@@ -3,7 +3,9 @@ package org.finos.springbot.sources.teams.handlers.adaptivecard;
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
-import org.finos.springbot.sources.teams.handlers.freemarker.annotations.Dropdown;
+import org.finos.springbot.workflow.annotations.Dropdown;
+import org.finos.springbot.workflow.templating.ElementFormat;
+import org.finos.springbot.workflow.templating.Variable;
 
 public class DropdownAnnotationConverter extends AbstractDropdownConverter {
 

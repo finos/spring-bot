@@ -4,12 +4,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Optional;
 
+import org.finos.springbot.workflow.templating.AbstractComplexTypeConverter;
+import org.finos.springbot.workflow.templating.Variable;
+import org.finos.springbot.workflow.templating.WithField;
+import org.finos.springbot.workflow.templating.WithType;
 import org.springframework.util.StringUtils;
 
-public abstract class AbstractTableConverter extends AbstractComplexTypeConverter {
+public abstract class AbstractTableConverter<X> extends AbstractComplexTypeConverter<X> {
 
 
-    protected WithField tableColumnNames() {
+    protected WithField<X> tableColumnNames() {
         return new WithField() {
 
             @Override

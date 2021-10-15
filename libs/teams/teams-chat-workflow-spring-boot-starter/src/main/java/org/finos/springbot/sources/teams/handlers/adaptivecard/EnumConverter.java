@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 
+import org.finos.springbot.workflow.templating.AbstractSimpleTypeConverter;
+import org.finos.springbot.workflow.templating.Variable;
+
 public class EnumConverter extends AbstractSimpleTypeConverter {
 
 	public EnumConverter() {

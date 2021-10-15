@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.DataResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
@@ -23,9 +22,7 @@ import com.symphony.api.pod.StreamsApi;
 import com.symphony.api.pod.UsersApi;
 
 public class SymphonyResponseHandler extends AbstractStreamResolving implements ResponseHandler, ApplicationContextAware {
-	
-	public static final String MESSAGE_AREA = "<!-- Message Content -->";
-	
+		
 	private static final Logger LOG = LoggerFactory.getLogger(SymphonyResponseHandler.class);
 	
 	protected MessagesApi messagesApi;
@@ -58,7 +55,6 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			eh = ctx.getBean(ErrorHandler.class);
 		}
 	}
-	
 
 	@Override
 	public void accept(Response t) {
@@ -88,8 +84,6 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			}
 		}
 	}
-
-
 	
 	protected String buildTemplate(DataResponse t) {
 		if (t instanceof WorkResponse) {
@@ -115,8 +109,6 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			eh.handleError(e);
 		}
 	}
-
-
 
 	@Override
 	public int getOrder() {

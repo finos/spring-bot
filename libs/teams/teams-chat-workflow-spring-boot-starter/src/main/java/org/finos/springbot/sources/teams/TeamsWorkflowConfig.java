@@ -5,24 +5,30 @@ import java.util.Properties;
 
 import org.finos.springbot.sources.teams.conversations.TeamsConversations;
 import org.finos.springbot.sources.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.sources.teams.handlers.Mode;
 import org.finos.springbot.sources.teams.handlers.TeamsResponseHandler;
+import org.finos.springbot.sources.teams.handlers.TeamsTemplateProvider;
+import org.finos.springbot.sources.teams.handlers.WorkConverter;
+import org.finos.springbot.sources.teams.handlers.adaptivecard.AdaptiveCardConverter;
+import org.finos.springbot.sources.teams.handlers.adaptivecard.AdaptiveCardConverterConfig;
 import org.finos.springbot.sources.teams.messages.MessageActivityHandler;
 import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
-import org.finos.springbot.workflow.content.serialization.AbstractContentParser;
-import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
-import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
-import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
-import org.finos.symphony.toolkit.workflow.content.BlockQuote;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.OrderedList;
-import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.Table;
-import org.finos.symphony.toolkit.workflow.content.UnorderedList;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.content.serialization.MarkupWriter;
+import org.finos.springbot.workflow.ChatWorkflowConfig;
+import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
+import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
+import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
+import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.OrderedList;
+import org.finos.springbot.workflow.content.Paragraph;
+import org.finos.springbot.workflow.content.Table;
+import org.finos.springbot.workflow.content.UnorderedList;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.content.Word;
+import org.finos.springbot.workflow.content.serialization.MarkupWriter;
+import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
+import org.finos.springbot.workflow.templating.TypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +41,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
@@ -48,7 +55,7 @@ import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
  *
  */
 @Configuration
-@Import({ChatWorkflowConfig.class})
+@Import({ChatWorkflowConfig.class, AdaptiveCardConverterConfig.class})
 public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
@@ -79,24 +86,41 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 		return out;
 	}
 	
+	@Bean 
+	@ConditionalOnMissingBean
+	public SimpleMessageMarkupTemplateProvider markupTemplater(
+			@Value("${teams.templates.prefix:classpath:/templates/teams}") String prefix,
+			@Value("${teams.templates.suffix:.html}") String suffix,
+			MarkupWriter converter) {
+		return new SimpleMessageMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public TeamsTemplateProvider workTemplater(
+			@Value("${symphony.templates.prefix:classpath:/templates/teams}") String prefix,
+			@Value("${symphony.templates.suffix:.json}") String suffix,
+			WorkConverter<Mode, JsonNode> formConverter) {
+		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+	}
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsResponseHandler teamsResponseHandler(
-			@Value("${teams.template.location:classpath:/templates/teams/}") String templatePrefix) {
+			SimpleMessageMarkupTemplateProvider markupTemplater,
+			TeamsTemplateProvider workTemplater) {
 		return new TeamsResponseHandler(
-				templatePrefix,
-				teamsHTMLWriter(), 
-				null, 
-				null, 
-				resourceLoader);
+				null,
+				markupTemplater,
+				workTemplater);
 	}
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public FormMessageMLConverter formMessageMLConverter() {
-//		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
-//		return new FreemarkerFormMessageMLConverter(converters);
-//	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public WorkConverter<Mode, JsonNode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters) {
+		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
+		return new AdaptiveCardConverter(converters);
+	}
 //	
 //	@Bean
 //	@ConditionalOnMissingBean
@@ -112,13 +136,13 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, AbstractContentParser parser) {
+	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser) {
 		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public AbstractContentParser teamsHTMLParser() {
+	public TeamsHTMLParser teamsHTMLParser() {
 		return new TeamsHTMLParser();
 	}
 	

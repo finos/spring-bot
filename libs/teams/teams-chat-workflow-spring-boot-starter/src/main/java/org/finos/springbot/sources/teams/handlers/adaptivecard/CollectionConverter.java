@@ -5,14 +5,21 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.finos.symphony.toolkit.workflow.actions.form.TableAddRow;
-import org.finos.symphony.toolkit.workflow.actions.form.TableDeleteRows;
-import org.finos.symphony.toolkit.workflow.actions.form.TableEditRow;
+import org.finos.springbot.workflow.actions.form.TableAddRow;
+import org.finos.springbot.workflow.actions.form.TableDeleteRows;
+import org.finos.springbot.workflow.actions.form.TableEditRow;
+import org.finos.springbot.workflow.templating.AbstractComplexTypeConverter;
+import org.finos.springbot.workflow.templating.ComplexTypeConverter;
+import org.finos.springbot.workflow.templating.Rendering;
+import org.finos.springbot.workflow.templating.SimpleTypeConverter;
+import org.finos.springbot.workflow.templating.Variable;
+import org.finos.springbot.workflow.templating.WithField;
+import org.finos.springbot.workflow.templating.WithType;
 
-public class CollectionConverter extends AbstractTableConverter {
+public class CollectionConverter<X> extends AbstractComplexTypeConverter<X> {
 	
-	public CollectionConverter() {
-		super(LOW_PRIORITY);
+	public CollectionConverter(Rendering<X> r) {
+		super(LOW_PRIORITY, r);
 	}
 		
 	@Override
@@ -26,12 +33,12 @@ public class CollectionConverter extends AbstractTableConverter {
 	}
 
 	@Override
-	public String apply(Field ctx, WithType controller, Type t, boolean editMode, Variable variable, WithField showDetail) {
-		if (null == showDetail) return "...";
+	public X apply(Field ctx, WithType<X> controller, Type t, boolean editMode, Variable variable, WithField<X> showDetail) {
+		if (null == showDetail) return r.description("...");
 		if (showDetail.expand()) {
-			return createTable(t, editMode, variable, tableColumnNames(), tableColumnValues(), controller);
+			return r.createTable(t, editMode, variable, tableColumnNames(), tableColumnValues(), controller);
 		} else {
-			return text(variable, "!''");
+			return r.text(variable, "!''");
 		}
 	}
 	
