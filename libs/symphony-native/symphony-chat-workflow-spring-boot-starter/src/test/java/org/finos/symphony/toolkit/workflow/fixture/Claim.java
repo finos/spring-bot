@@ -1,7 +1,7 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.User;
 
 @Work()
 public class Claim {

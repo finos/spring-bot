@@ -12,9 +12,9 @@ import org.finos.symphony.toolkit.workflow.response.MessageResponse;
 import org.finos.symphony.toolkit.workflow.response.Response;
 import org.finos.symphony.toolkit.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
+import org.finos.symphony.toolkit.workflow.response.templating.MarkupTemplateProvider;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter.Mode;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLWriter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +47,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	protected ResourceLoader rl;
 	protected ApplicationContext ctx;
 	protected ErrorHandler eh;
+	protected MarkupTemplateProvider 
 	
 	public SymphonyResponseHandler(
 			MessagesApi messagesApi,
@@ -186,22 +187,6 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 		return StreamUtils.copyToString(
 				rl.getResource(templatePrefix + name + templateSuffix).getInputStream(),
 				StandardCharsets.UTF_8);
-	}
-
-	public String getTemplatePrefix() {
-		return templatePrefix;
-	}
-
-	public void setTemplatePrefix(String templatePrefix) {
-		this.templatePrefix = templatePrefix;
-	}
-
-	public String getTemplateSuffix() {
-		return templateSuffix;
-	}
-
-	public void setTemplateSuffix(String templateSuffix) {
-		this.templateSuffix = templateSuffix;
 	}
 
 	@Override

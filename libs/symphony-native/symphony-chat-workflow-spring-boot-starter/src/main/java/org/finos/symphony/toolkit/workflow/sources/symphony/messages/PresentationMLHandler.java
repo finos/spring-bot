@@ -2,14 +2,14 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.messages;
 
 import java.util.List;
 
+import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.SimpleMessageAction;
+import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.User;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
-import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
-import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.slf4j.Logger;

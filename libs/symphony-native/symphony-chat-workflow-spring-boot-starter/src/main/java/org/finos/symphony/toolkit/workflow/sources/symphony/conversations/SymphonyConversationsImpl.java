@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;

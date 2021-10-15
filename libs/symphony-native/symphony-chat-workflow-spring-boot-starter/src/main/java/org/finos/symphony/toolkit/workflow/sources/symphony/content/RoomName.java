@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.content;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.springbot.workflow.annotations.Work;
 import org.symphonyoss.TaxonomyElement;
 
 @Work(index = false)

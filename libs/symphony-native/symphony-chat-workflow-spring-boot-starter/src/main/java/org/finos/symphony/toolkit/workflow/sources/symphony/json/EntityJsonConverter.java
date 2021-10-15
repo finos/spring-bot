@@ -2,10 +2,10 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.json;
 
 import java.util.List;
 
+import org.finos.springbot.workflow.response.DataResponse;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.VersionSpace;
-import org.finos.symphony.toolkit.workflow.response.DataResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.DataHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

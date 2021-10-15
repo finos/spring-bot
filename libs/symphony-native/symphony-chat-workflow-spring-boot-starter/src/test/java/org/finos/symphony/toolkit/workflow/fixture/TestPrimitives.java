@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.workflow.fixture;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.springbot.workflow.annotations.Work;
 
 @Work()
 public class TestPrimitives {

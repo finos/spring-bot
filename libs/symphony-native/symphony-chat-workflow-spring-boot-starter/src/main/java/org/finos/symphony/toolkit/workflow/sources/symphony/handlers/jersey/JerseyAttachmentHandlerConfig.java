@@ -3,7 +3,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.jersey;
 import java.io.File;
 import java.io.FileOutputStream;
 
-import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
+import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

@@ -1,10 +1,11 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Word;
-
 import javax.validation.Valid;
+
+import org.finos.springbot.workflow.annotations.ChatRequest;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.Word;
+
 import java.util.ArrayList;
 import java.util.List;
 

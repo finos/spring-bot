@@ -7,6 +7,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.finos.springbot.workflow.ChatWorkflowConfig;
+import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
+import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
+import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.Heading;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.OrderedList;
+import org.finos.springbot.workflow.content.Paragraph;
+import org.finos.springbot.workflow.content.Table;
+import org.finos.springbot.workflow.content.UnorderedList;
+import org.finos.springbot.workflow.content.Word;
+import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.VersionSpace;
@@ -14,21 +29,6 @@ import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
-import org.finos.symphony.toolkit.workflow.ChatWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
-import org.finos.symphony.toolkit.workflow.actions.consumers.AddressingChecker;
-import org.finos.symphony.toolkit.workflow.actions.consumers.InRoomAddressingChecker;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.Heading;
-import org.finos.symphony.toolkit.workflow.content.BlockQuote;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.OrderedList;
-import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.Table;
-import org.finos.symphony.toolkit.workflow.content.UnorderedList;
-import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.content.serialization.MarkupWriter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomName;
@@ -50,7 +50,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHist
 import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistoryImpl;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLWriter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,8 +151,8 @@ public class SymphonyWorkflowConfig {
 		out.add(Word.class, out.new PlainWriter());
 		out.add(Table.class, out.new TableWriter());
 		out.add(Heading.class, out.new HeadingWriter("h"));
+		//out.add(null, out);
 		// user
-		// heading
 		// image
 		// link
 		// hashtag

@@ -2,8 +2,8 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
 
 import java.io.IOException;
 
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 

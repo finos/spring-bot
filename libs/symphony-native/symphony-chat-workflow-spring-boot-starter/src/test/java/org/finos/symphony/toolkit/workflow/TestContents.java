@@ -1,12 +1,11 @@
 package org.finos.symphony.toolkit.workflow;
 
-import java.util.Arrays;
 import java.util.UUID;
 
-import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.Word;
+import org.finos.springbot.workflow.content.Content;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.Paragraph;
+import org.finos.springbot.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
@@ -45,32 +44,30 @@ public class TestContents {
 		doAssertsOnContent(w1, Word.of("hello"));
 		
 		// paragraph
-		Paragraph p1 = Paragraph.of(Arrays.asList(w1, w2));
-		Paragraph p2 = Paragraph.of(Arrays.asList(w1, w2));
+		Paragraph p1 = Paragraph.of(w1, w2);
+		Paragraph p2 = Paragraph.of(w1, w2);
 		doAssertsOnContent(p1, p2);
 		doAssertsOnContent(p1.getNth(Word.class, 0).get(), p2.getNth(Word.class, 0).get());
 		
 		// message
-		Message m1 = Message.of(Arrays.asList(p1, p2));
-		Message m2 = Message.of(Arrays.asList(p1, p2));
+		Message m1 = Message.of(p1, p2);
+		Message m2 = Message.of(p1, p2);
 		doAssertsOnContent(m1, m2);
 		
 		// parsing
 		doAssertsOnContent(
 			Message.of("this little piggy\nwent all the way home"),
-			Message.of(Arrays.asList(
+			Message.of(
 				Paragraph.of(
-					Arrays.asList(
-							Word.of("this"),
-							Word.of("little"),
-							Word.of("piggy"))),
+					Word.of("this"),
+					Word.of("little"),
+					Word.of("piggy")),
 				Paragraph.of(
-					Arrays.asList(
-							Word.of("went"),
-							Word.of("all"),
-							Word.of("the"),
-							Word.of("way"),
-							Word.of("home"))))));
+					Word.of("went"),
+					Word.of("all"),
+					Word.of("the"),
+					Word.of("way"),
+					Word.of("home"))));
 		
 	}
 

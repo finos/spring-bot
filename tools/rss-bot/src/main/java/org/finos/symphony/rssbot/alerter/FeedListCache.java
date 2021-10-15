@@ -3,8 +3,8 @@ package org.finos.symphony.rssbot.alerter;
 import java.time.Instant;
 import java.util.Map;
 
+import org.finos.springbot.workflow.content.Addressable;
 import org.finos.symphony.rssbot.feed.FeedList;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
 
 /**
  * This reduces the number of lookups to the backing system by keeping track of what has already been reported.

@@ -2,8 +2,8 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import java.util.Objects;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 

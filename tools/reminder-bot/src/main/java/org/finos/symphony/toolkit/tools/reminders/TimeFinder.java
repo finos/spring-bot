@@ -11,16 +11,16 @@ import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
-import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
-import org.finos.symphony.toolkit.workflow.actions.consumers.AbstractActionConsumer;
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
+import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.SimpleMessageAction;
+import org.finos.springbot.workflow.actions.consumers.AbstractActionConsumer;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

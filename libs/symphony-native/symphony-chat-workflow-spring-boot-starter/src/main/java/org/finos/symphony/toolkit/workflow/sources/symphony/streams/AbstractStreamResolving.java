@@ -2,7 +2,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.streams;
 
 import java.util.Collections;
 
-import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;

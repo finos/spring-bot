@@ -4,8 +4,8 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.annotations.Template;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.springbot.workflow.annotations.Template;
+import org.finos.springbot.workflow.annotations.Work;
 
 /**
  * @author Gaurav Pancholi

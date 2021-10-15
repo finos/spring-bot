@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.finos.symphony.toolkit.workflow.form.FormSubmission;
+import org.finos.springbot.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,8 +5,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Tag;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.Tag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.springframework.util.StringUtils;

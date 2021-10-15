@@ -3,8 +3,8 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
+import org.finos.springbot.workflow.content.User;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.User;
 
 import com.symphony.user.EmailAddress;
 import com.symphony.user.UserId;

@@ -5,24 +5,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
-import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
-import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.BlockQuote;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.Table;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.Button.Type;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.MessageResponse;
+import org.finos.springbot.workflow.annotations.ChatButton;
+import org.finos.springbot.workflow.annotations.ChatRequest;
+import org.finos.springbot.workflow.annotations.ChatVariable;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.Table;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.content.Word;
+import org.finos.springbot.workflow.form.Button;
+import org.finos.springbot.workflow.form.ButtonList;
+import org.finos.springbot.workflow.form.FormSubmission;
+import org.finos.springbot.workflow.form.Button.Type;
+import org.finos.springbot.workflow.response.AttachmentResponse;
+import org.finos.springbot.workflow.response.MessageResponse;
+import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.springframework.stereotype.Controller;
 
@@ -123,7 +123,7 @@ public class OurController {
 	public MessageResponse banWord(@ChatVariable("word") Word w, Addressable a) {
 		lastArguments = Collections.singletonList(w);
 		lastMethod = "banWord";
-		return new MessageResponse(a, Message.of(Word.build("banned words: "+w.getText())));
+		return new MessageResponse(a, Message.of("banned words: "+w.getText()));
 	}
 	
 	@ChatRequest(value="attachment")

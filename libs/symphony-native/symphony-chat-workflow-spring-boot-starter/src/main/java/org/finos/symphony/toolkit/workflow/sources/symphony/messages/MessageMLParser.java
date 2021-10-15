@@ -8,17 +8,17 @@ import java.util.List;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.Content;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.OrderedContent;
+import org.finos.springbot.workflow.content.OrderedList;
+import org.finos.springbot.workflow.content.Paragraph;
+import org.finos.springbot.workflow.content.Table;
+import org.finos.springbot.workflow.content.Tag;
+import org.finos.springbot.workflow.content.UnorderedList;
+import org.finos.springbot.workflow.content.Word;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.content.BlockQuote;
-import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.OrderedContent;
-import org.finos.symphony.toolkit.workflow.content.OrderedList;
-import org.finos.symphony.toolkit.workflow.content.Paragraph;
-import org.finos.symphony.toolkit.workflow.content.Table;
-import org.finos.symphony.toolkit.workflow.content.Tag;
-import org.finos.symphony.toolkit.workflow.content.UnorderedList;
-import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.RoomName;
@@ -186,9 +186,9 @@ public class MessageMLParser {
 
 		public OrderedContent<?> getContents() {
 			if ("ol".equals(qName)) {
-				return OrderedList.of(contents);
+				return new OrderedList.OrderedListImpl(contents);
 			} else {
-				return UnorderedList.of(contents);
+				return new UnorderedList.UnorderedListImpl(contents);
 			}
 		}
 
@@ -323,7 +323,7 @@ public class MessageMLParser {
 		
 		public Message getContents() {
 			consumeBuffer();
-			return Message.of(stuffSoFar);
+			return new Message.MessageImpl(stuffSoFar);
 				
 		}
 		
@@ -338,7 +338,7 @@ public class MessageMLParser {
 	static class ParagraphFrame extends TextRunFrame<Paragraph> {
 		public Paragraph getContents() {
 			consumeBuffer();
-			return Paragraph.of(stuffSoFar);
+			return new Paragraph.ParagraphImpl(stuffSoFar);
 				
 		}
 	}
