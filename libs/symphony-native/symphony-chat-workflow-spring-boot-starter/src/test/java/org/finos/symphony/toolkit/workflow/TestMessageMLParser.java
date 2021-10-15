@@ -1,9 +1,6 @@
 package org.finos.symphony.toolkit.workflow;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.content.Content;
@@ -20,7 +17,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConve
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.MessageMLParser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestMessageMLParser extends AbstractMockSymphonyTest {
@@ -36,44 +32,10 @@ public class TestMessageMLParser extends AbstractMockSymphonyTest {
 				"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p><table class=\"pasted-table\"><thead><tr><th>Name</th><th>Age</th><th>Alive</th></tr></thead><tbody><tr><td>Jim</td><td>5</td><td>FALSE</td></tr><tr><td>James</td><td>7</td><td>TRUE</td></tr></tbody></table></p></div>",
 				new EntityJson());
 		
-		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("Age"))), c.getNth(Table.class, 0).get().getColumnNames().get(1));
+		Assertions.assertEquals(Paragraph.of("Age"), c.getNth(Table.class, 0).get().getColumnNames().get(1));
 
-		Assertions.assertEquals(Paragraph.of(Arrays.asList(Word.of("TRUE"))), c.getNth(Table.class, 0).get().getData().get(1).get(2));
+		Assertions.assertEquals(Paragraph.of("TRUE"), c.getNth(Table.class, 0).get().getData().get(1).get(2));
 
-	}
-	
-	@Test
-	public void testWithout() {
-		Word one = Word.of("one");
-		Word two = Word.of("two");
-		Word three = Word.of("three");
-		Paragraph p1 = Paragraph.of(Arrays.asList(one, two, three));
-		Paragraph p2 = Paragraph.of(Arrays.asList(one, three));
-		Paragraph p1_ = Paragraph.of(Arrays.asList(one, two));
-		Paragraph p2_ = Paragraph.of(Arrays.asList(one));
-		Message m1 = Message.of(Arrays.asList(p1, p2));
-		Message m2 = Message.of(Arrays.asList(p1_, p2_));
-		
-		
-		Assertions.assertEquals(
-				m1.without(three),
-				m2);
-	}
-	
-	@Test
-	public void testRemoveStart() {
-		Word one = Word.of("one");
-		Word two = Word.of("two");
-		Word three = Word.of("three");
-		Paragraph p1 = Paragraph.of(Arrays.asList(one, two, three));
-		Paragraph p1_ = Paragraph.of(Arrays.asList(two, three));
-		Message m1 = Message.of(Arrays.asList(p1));
-		Message m2 = Message.of(Arrays.asList(p1_));
-		
-		
-		Assertions.assertEquals(
-				m1.removeAtStart(one),
-				m2);
 	}
 	
 	@Test
@@ -104,47 +66,29 @@ public class TestMessageMLParser extends AbstractMockSymphonyTest {
 	@Test
 	public void testSimpleMessage() throws Exception {
 		Assertions.assertEquals(
-			Message.of(
-				Arrays.asList(
-					Paragraph.of(
-						Arrays.stream(new String[] {"this", "is", "it"})
-							.map(s -> Word.of(s))
-							.collect(Collectors.toList())
-						))), smp.parse("<messageML><p>this is it</p></messageML>", null));
+			Message.of("this is it"),
+			smp.parse("<messageML><p>this is it</p></messageML>", null));
 	}
 	
 	@Test
 	public void testUnorderedListMessage() throws Exception {
 		Assertions.assertEquals(
-			Message.of(
-				Arrays.asList(
-					UnorderedList.of(
-						Arrays.stream(new String[] {"First", "Second"})
-							.map(s -> Paragraph.of(Collections.singletonList(Word.of(s))))
-							.collect(Collectors.toList())
-						))), smp.parse("<messageML><ul><li>First</li><li>Second</li></ul></messageML>", null));
+			Message.of(UnorderedList.of(Paragraph.of("First"), Paragraph.of("Second"))),
+			smp.parse("<messageML><ul><li>First</li><li>Second</li></ul></messageML>", null));
 	}
 	
 	@Test
 	public void testOrderedListMessage() throws Exception {
 		Assertions.assertEquals(
-			Message.of(
-				Arrays.asList(
-					OrderedList.of(
-						Arrays.stream(new String[] {"First", "Second"})
-							.map(s -> Paragraph.of(Collections.singletonList(Word.of(s))))
-							.collect(Collectors.toList())
-						))), smp.parse("<messageML><ol><li>First</li><li>Second</li></ol></messageML>", null));
+			Message.of(OrderedList.of(Paragraph.of("First"), Paragraph.of("Second"))),
+			smp.parse("<messageML><ol><li>First</li><li>Second</li></ol></messageML>", null));
 	}
 	
 	@Test
 	public void testHelpMessage() throws Exception {
 		Assertions.assertEquals(
-			Message.of(
-					Arrays.stream(new String[] {"help"})
-						.map(s -> Word.of(s))
-						.collect(Collectors.toList())
-						), smp.parse("<messageML>Help</messageML>", null));
+			Message.of(Word.of("help")),
+			smp.parse("<messageML>Help</messageML>", null));
 	}
 	
 	@Test
@@ -154,13 +98,12 @@ public class TestMessageMLParser extends AbstractMockSymphonyTest {
 			"<div data-format=\"PresentationML\" data-version=\"2.0\" class=\"wysiwyg\"><p> </p><p>/help <span class=\"entity\" data-entity-id=\"0\">@Rob Moffat</span> <span class=\"entity\" data-entity-id=\"1\">@Mark Mainwood</span> <span class=\"entity\" data-entity-id=\"2\">@James Tan</span> </p></div>",
 			ej);
 		Message expected = Message.of(
-			Arrays.asList(
-				Paragraph.of(Collections.emptyList()),
-				Paragraph.of(Arrays.asList(
+				Paragraph.of(),
+				Paragraph.of(
 						Word.of("/help"), 
 						new SymphonyUser(347583113331315l, "Rob Moffat",null),
 						new SymphonyUser(345315370604167l, "Mark Mainwood",null),
-						new SymphonyUser(345315370598706l, "James Tan", null)))));
+						new SymphonyUser(345315370598706l, "James Tan", null)));
 		Assertions.assertEquals(
 			expected, 
 			actual);

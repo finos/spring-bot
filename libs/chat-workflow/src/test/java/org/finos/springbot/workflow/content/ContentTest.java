@@ -33,4 +33,37 @@ public class ContentTest {
 						Arrays.asList(Word.of("value 5"), Word.of("value 6")))));
 	}
 
+	@Test
+	public void testWithout() {
+		Word one = Word.of("one");
+		Word two = Word.of("two");
+		Word three = Word.of("three");
+		Paragraph p1 = Paragraph.of(one, two, three);
+		Paragraph p2 = Paragraph.of(one, three);
+		Paragraph p1_ = Paragraph.of(one, two);
+		Paragraph p2_ = Paragraph.of(one);
+		Message m1 = Message.of(p1, p2);
+		Message m2 = Message.of(p1_, p2_);
+		
+		
+		Assertions.assertEquals(
+				m1.without(three),
+				m2);
+	}
+	
+	@Test
+	public void testRemoveStart() {
+		Word one = Word.of("one");
+		Word two = Word.of("two");
+		Word three = Word.of("three");
+		Paragraph p1 = Paragraph.of(one, two, three);
+		Paragraph p1_ = Paragraph.of(two, three);
+		Message m1 = Message.of(p1);
+		Message m2 = Message.of(p1_);
+		
+		
+		Assertions.assertEquals(
+				m1.removeAtStart(one),
+				m2);
+	}
 }

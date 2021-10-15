@@ -1,30 +1,22 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.serialization.MarkupWriter;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
-import org.finos.symphony.toolkit.workflow.response.DataResponse;
-import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandler;
-import org.finos.symphony.toolkit.workflow.response.templating.MarkupTemplateProvider;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.serialization.MarkupWriter;
+import org.finos.springbot.workflow.response.AttachmentResponse;
+import org.finos.springbot.workflow.response.DataResponse;
+import org.finos.springbot.workflow.response.MessageResponse;
+import org.finos.springbot.workflow.response.Response;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandler;
+import org.finos.springbot.workflow.response.templating.MarkupTemplateProvider;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter.Mode;
 import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ErrorHandler;
-import org.springframework.util.StreamUtils;
-import org.springframework.util.StringUtils;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.pod.StreamsApi;
@@ -36,35 +28,29 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SymphonyResponseHandler.class);
 	
-	private String templatePrefix = "classpath:/templates/symphony/";
-	private String templateSuffix = ".ftl";
-	
 	protected MessagesApi messagesApi;
-	protected FormMessageMLConverter formMessageMLConverter;
-	protected MarkupWriter contentWriter;
 	protected DataHandler dataHandler;
 	protected AttachmentHandler attachmentHandler;
-	protected ResourceLoader rl;
 	protected ApplicationContext ctx;
 	protected ErrorHandler eh;
-	protected MarkupTemplateProvider 
+	protected MarkupTemplateProvider messageTemplater;
+	protected SymphonyTemplateProvider workTemplater;
+	
 	
 	public SymphonyResponseHandler(
 			MessagesApi messagesApi,
 			StreamsApi streamsApi, 
 			UsersApi usersApi,
-			FormMessageMLConverter formMessageMLConverter, 
-			MarkupWriter contentWriter, 
 			DataHandler dataHandler,
-			AttachmentHandler attachmentHandler, 
-			ResourceLoader rl) {
+			AttachmentHandler attachmentHandler,
+			MarkupTemplateProvider messageTemplater,
+			SymphonyTemplateProvider workTemplater) {
 		super(streamsApi, usersApi);
 		this.messagesApi = messagesApi;
-		this.formMessageMLConverter = formMessageMLConverter;
-		this.contentWriter = contentWriter;
 		this.dataHandler = dataHandler;
 		this.attachmentHandler = attachmentHandler;
-		this.rl = rl;
+		this.messageTemplater = messageTemplater;
+		this.workTemplater = workTemplater;
 	}
 
 	protected void initErrorHandler() {
@@ -106,19 +92,13 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 
 	
 	protected String buildTemplate(DataResponse t) {
-		String templateName = t.getTemplateName();
-
-		String template = StringUtils.hasText(templateName) ? getTemplateForName(templateName) : null;
-
-		if (template == null) {
-			LOG.info("Reverting to default template for " + t);
-			template = getDefaultTemplate(t);
-			LOG.info("Template: \n"+template);
+		if (t instanceof WorkResponse) {
+			return workTemplater.template((WorkResponse) t);
+		} else if (t instanceof MessageResponse) {
+			return messageTemplater.template((MessageResponse)t);
+		} else {
+			throw new UnsupportedOperationException("Can't template: "+t);
 		}
-		
-		return basic.replaceAll(MESSAGE_AREA, insert);
-		
-		return template;
 	}
 
 	protected void sendResponse(String template, Object attachment, String data, Addressable address) {
@@ -136,58 +116,7 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 		}
 	}
 
-	protected String getDefaultTemplate(DataResponse r) {
-		String basic = getTemplateForName("default");
-		String insert = "";
-		if (r instanceof WorkResponse) {
-			if (WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
-				Class<?> c = ((WorkResponse) r).getFormClass();
-				insert = formMessageMLConverter.convert(c, Mode.FORM);
-			} else if (WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
-				Class<?> c = ((WorkResponse) r).getFormClass();
-				boolean needsButtons = needsButtons(r);						
-				insert = formMessageMLConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
-			}
-		}
-		
-		if (r instanceof MessageResponse) {
-			insert = contentWriter.apply(((MessageResponse) r).getMessage());
-		}
 
-		if (basic == null) {
-			return insert; 
-		} else {
-			if (insert.startsWith("<messageML>" )) {
-				insert = insert.replaceFirst("<messageML>", "").replaceFirst("</messageML>", "");
-			}
-			
-			ret
-		}
-	}
-
-	protected boolean needsButtons(Response r) {
-		if (r instanceof WorkResponse) {
-			ButtonList bl = (ButtonList) ((WorkResponse) r).getData().get(ButtonList.KEY);
-			return (bl != null) && (bl.getContents().size() > 0);
-		} else {
-			return false;
-		}
-	}
-
-	public String getTemplateForName(String name) {
-		try {
-			return resolveTemplate(name);
-		} catch (Exception e) {
-			LOG.debug("Couldn't find template: "+name);
-			return null;
-		}
-	}
-
-	protected String resolveTemplate(String name) throws IOException {
-		return StreamUtils.copyToString(
-				rl.getResource(templatePrefix + name + templateSuffix).getInputStream(),
-				StandardCharsets.UTF_8);
-	}
 
 	@Override
 	public int getOrder() {

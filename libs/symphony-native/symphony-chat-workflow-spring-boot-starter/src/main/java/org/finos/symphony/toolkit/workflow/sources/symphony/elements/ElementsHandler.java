@@ -14,12 +14,11 @@ import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.ErrorMap;
 import org.finos.springbot.workflow.form.FormSubmission;
-import org.finos.springbot.workflow.response.DataResponse;
 import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.SymphonyResponseHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,19 +45,19 @@ public class ElementsHandler implements StreamEventConsumer {
 	EntityJsonConverter jsonConverter;
 	FormConverter formConverter;
 	List<ActionConsumer> elementsConsumers;
-	SymphonyResponseHandler rh;
 	SymphonyConversations ruBuilder;
 	Validator v;
+	ResponseHandlers rh;
 	
 	public ElementsHandler(MessagesApi messagesApi, EntityJsonConverter jsonConverter,
-			FormConverter formConverter, List<ActionConsumer> elementsConsumers, SymphonyResponseHandler rh, SymphonyConversations ruBuilder, Validator v) {
+			FormConverter formConverter, List<ActionConsumer> elementsConsumers, ResponseHandlers rh, SymphonyConversations ruBuilder, Validator v) {
 		this.messagesApi = messagesApi;
 		this.jsonConverter = jsonConverter;
 		this.formConverter = formConverter;
 		this.elementsConsumers = elementsConsumers;
-		this.rh = rh;
 		this.ruBuilder = ruBuilder;
 		this.v = v;
+		this.rh = rh;
 	}
 
 	@SuppressWarnings("unchecked")
