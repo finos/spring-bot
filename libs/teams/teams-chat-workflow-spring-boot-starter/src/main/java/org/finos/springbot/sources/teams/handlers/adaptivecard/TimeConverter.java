@@ -7,24 +7,27 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 import org.finos.springbot.workflow.templating.AbstractClassConverter;
+import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
 
-public class TimeConverter extends AbstractClassConverter {
+import com.fasterxml.jackson.databind.JsonNode;
 
-	public TimeConverter() {
-		this(LOW_PRIORITY, Instant.class, LocalDateTime.class, ZoneId.class);
+public class TimeConverter extends AbstractClassConverter<JsonNode> {
+
+	public TimeConverter(Rendering<JsonNode> r) {
+		this(LOW_PRIORITY, r, Instant.class, LocalDateTime.class, ZoneId.class);
 	}
 
-	public TimeConverter(int priority, Class<?>... forClass) {
-		super(priority, forClass);
+	public TimeConverter(int priority, Rendering<JsonNode> r, Class<?>... forClass) {
+		super(priority, r, forClass);
 	}
 
 	@Override
-	public String apply(Field ctx, Type t, boolean editMode, Variable variable) {
+	public JsonNode apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
-			return textField(variable);
+			return r.textField(variable, j -> j);
 		} else {
-			return text(variable, "!''");
+			return r.text(variable);
 		}
 		
 	}

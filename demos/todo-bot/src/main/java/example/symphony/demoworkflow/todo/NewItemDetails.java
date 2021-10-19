@@ -3,8 +3,8 @@
  */
 package example.symphony.demoworkflow.todo;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.User;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.User;
 
 /**
  * @author rupnsur

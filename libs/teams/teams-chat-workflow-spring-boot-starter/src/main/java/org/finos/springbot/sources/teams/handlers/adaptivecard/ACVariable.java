@@ -3,7 +3,7 @@ package org.finos.springbot.sources.teams.handlers.adaptivecard;
 import org.finos.springbot.workflow.templating.Variable;
 
 /**
- * This class represents a FreeMarker template entity variable, such as "entity.id"
+ * Adaptive-cards compatible variable naming.
  * 
  * @author rob@kite9.com
  *

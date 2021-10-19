@@ -4,17 +4,21 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 import org.finos.springbot.workflow.annotations.Dropdown;
-import org.finos.springbot.workflow.templating.ElementFormat;
+import org.finos.springbot.workflow.annotations.Dropdown.ElementFormat;
+import org.finos.springbot.workflow.templating.AbstractSimpleTypeConverter;
+import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
 
-public class DropdownAnnotationConverter extends AbstractDropdownConverter {
+import com.fasterxml.jackson.databind.JsonNode;
 
-	public DropdownAnnotationConverter() {
-		super(MED_PRIORITY, Object.class);
+public class DropdownAnnotationConverter extends AbstractSimpleTypeConverter<JsonNode> {
+
+	public DropdownAnnotationConverter(Rendering<JsonNode> r) {
+		super(MED_PRIORITY, r);
 	}
 
 	@Override
-	protected String apply(Field ctx, Type t, boolean editMode, Variable variable) {
+	protected JsonNode apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		Dropdown dd = getDropdownAnnotation(ctx);
 		String location = dd.data();
 		Class<? extends ElementFormat> format = dd.format();

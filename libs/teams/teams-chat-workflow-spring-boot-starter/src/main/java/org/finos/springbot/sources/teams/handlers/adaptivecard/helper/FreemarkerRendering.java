@@ -17,8 +17,13 @@ public class FreemarkerRendering implements Rendering<String> {
 	}
 	
 	@Override
-	public String textField(Variable variable) {
+	public String textField(Variable variable, Function<String, String> change) {
 		return textField(variable, variable.getFormFieldName(), variable.getDisplayName());
+	}
+	
+	
+	@Override
+	public String textField(Variable variable) {
 	}
 	
 	@Override
@@ -124,5 +129,19 @@ public class FreemarkerRendering implements Rendering<String> {
 				+ "</checkbox>";
 		
 	}
+
+	@Override
+	public String text(Variable v) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String renderDropdown(Variable variable, String location, Function<String, String> sourceFunction,
+			Function<String, String> keyFunction, BiFunction<String, String, String> valueFunction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 }

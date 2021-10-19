@@ -102,24 +102,9 @@ public class TimeFinderIT {
 
 	private User getUser() {
 		User user = new User() {
-			@Override
-			public String getEmailAddress() {
-				return "New Address";
-			}
-
-			@Override
-			public Type getTagType() {
-				return null;
-			}
-
-			@Override
+		
 			public String getName() {
 				return "Sherlock Holmes";
-			}
-
-			@Override
-			public String getText() {
-				return null;
 			}
 		};
 		return user;

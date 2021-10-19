@@ -1,5 +1,6 @@
 package org.finos.springbot.sources.teams;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
@@ -100,7 +101,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public TeamsTemplateProvider workTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/teams}") String prefix,
 			@Value("${symphony.templates.suffix:.json}") String suffix,
-			WorkConverter<Mode, JsonNode> formConverter) {
+			WorkConverter<Mode, JsonNode> formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
 	}
 	

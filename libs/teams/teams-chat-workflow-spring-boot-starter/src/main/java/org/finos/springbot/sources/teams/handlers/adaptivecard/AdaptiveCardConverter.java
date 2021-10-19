@@ -30,7 +30,7 @@ public class AdaptiveCardConverter extends AbstractTopLevelConverter<JsonNode> i
 	
 	@Override
 	public JsonNode convert(Class<?> c, Mode m) { //, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work) {
-		Variable v = new ACVariable("$root.form");
+		Variable v = new ACVariable("form");
 		
 		JsonNodeFactory fact = new JsonNodeFactory(true);
 		ObjectNode top = fact.objectNode();

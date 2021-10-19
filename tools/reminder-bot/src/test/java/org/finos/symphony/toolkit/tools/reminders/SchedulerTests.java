@@ -42,7 +42,7 @@ import com.symphony.api.pod.StreamsApi;
 public class SchedulerTests {
 
 	@Mock
-	History history;
+	History<Addressable> history;
 
 	@Mock
 	ResponseHandlers responseHandlers;
@@ -51,7 +51,7 @@ public class SchedulerTests {
 	LeaderService leaderService;
 
 	@Mock
-	Conversations rooms;
+	Conversations<Chat, User> rooms;
 
 	@InjectMocks
 	Scheduler scheduler = new Scheduler();
@@ -65,7 +65,7 @@ public class SchedulerTests {
 				.thenReturn(reminderList());
 
 		when(leaderService.isLeader(Mockito.any())).thenReturn(true);
-		when(rooms.getAllConversations()).thenReturn(createStreams());
+		when(rooms.getAllAddressables()).thenReturn(createStreams());
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
 		ArgumentCaptor<WorkResponse> argumentCaptor = ArgumentCaptor.forClass(WorkResponse.class);
