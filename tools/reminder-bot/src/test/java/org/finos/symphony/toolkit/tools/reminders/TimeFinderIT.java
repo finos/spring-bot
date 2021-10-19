@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
@@ -65,7 +66,7 @@ public class TimeFinderIT {
 	public void applyTest() {
 		try {
 			SimpleMessageAction action = getAction();
-			when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
+			lenient().when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
 					.thenReturn(reminderList());
 
 			timefinder.initializingStanfordProperties();
