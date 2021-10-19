@@ -38,7 +38,7 @@ public class InRoomAddressingChecker implements AddressingChecker {
 				Optional<Tag> firstUserMention = sma.getMessage().getNth(Tag.class, 0); 
 				User bot = theBot.get();
 				
-				if ((firstUserMention.isPresent()) && (bot.matches(firstUserMention.get()))) {
+				if ((firstUserMention.isPresent()) && (bot.equals(firstUserMention.get()))) {
 					// bot is mentioned, so return the action, stripping out the bot mention
 					Message changedMessage = (Message) ((SimpleMessageAction) a).getMessage().removeAtStart(firstUserMention.get());
 					return new SimpleMessageAction(a.getAddressable(), a.getUser(), changedMessage, sma.getData());

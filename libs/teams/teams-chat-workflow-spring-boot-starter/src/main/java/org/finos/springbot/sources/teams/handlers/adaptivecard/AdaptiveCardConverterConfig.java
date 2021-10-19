@@ -28,32 +28,32 @@ public class AdaptiveCardConverterConfig {
 	public BooleanConverter booleanConverter(Rendering<JsonNode> r) {
 		return new BooleanConverter(r);
 	}
-//	
-//	@Bean
-//	public CollectionConverter collectionConverter(Rendering<JsonNode> r) {
-//		return new CollectionConverter();
-//	}
+	
+	@Bean
+	public CollectionConverter collectionConverter(Rendering<JsonNode> r) {
+		return new CollectionConverter(r);
+	}
 //	
 //	@Bean
 //	public EnumConverter enumConverter(Rendering<JsonNode> r) {
 //		return new EnumConverter();
 //	}
 //	
-//	@Bean
-//	public TimeConverter timeConverter(Rendering<JsonNode> r) {
-//		return new TimeConverter();
-//	}
-//	
+	@Bean
+	public TimeConverter timeConverter(Rendering<JsonNode> r) {
+		return new TimeConverter(r);
+	}
+	
 	@Bean
 	public NumberConverter numberConverter(Rendering<JsonNode> r) {
 		return new NumberConverter(r);
 	}
-//	
-//	@Bean
-//	public MentionConverter mentionConverter(Rendering<JsonNode> r) {
-//		return new MentionConverter();
-//	}
-//	
+	
+	@Bean
+	public UserConverter userConverter(Rendering<JsonNode> r) {
+		return new UserConverter(r);
+	}
+	
 //	@Bean
 //	public DropdownAnnotationConverter dropdownAnnotationConverter() {
 //		return new DropdownAnnotationConverter();

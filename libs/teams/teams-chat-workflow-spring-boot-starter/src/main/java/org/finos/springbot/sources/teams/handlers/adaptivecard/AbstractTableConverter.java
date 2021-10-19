@@ -10,10 +10,17 @@ import org.finos.springbot.workflow.templating.WithField;
 import org.finos.springbot.workflow.templating.WithType;
 import org.springframework.util.StringUtils;
 
-public abstract class AbstractTableConverter<X> extends AbstractComplexTypeConverter<X> {
+import com.fasterxml.jackson.databind.JsonNode;
+
+/**
+ * Builds faux-table using Columns in Adaptive Cards, as seen here: 
+ * @author rob@kite9.com
+ *
+ */
+public abstract class AbstractTableConverter extends AbstractComplexTypeConverter<JsonNode> {
 
 
-    protected WithField<X> tableColumnNames() {
+    protected WithField<JsonNode> tableColumnNames() {
         return new WithField() {
 
             @Override
@@ -22,7 +29,7 @@ public abstract class AbstractTableConverter<X> extends AbstractComplexTypeConve
             }
 
             @Override
-            public String apply(Field f, boolean editMode, Variable variable, WithType contentHandler) {
+            public X apply(Field f, boolean editMode, Variable variable, WithType contentHandler) {
                 String align = numberClass(f.getType()) ? RIGHT_ALIGN : boolClass(f.getType()) ? CENTER_ALIGN : "";
                 String fieldNameOrientation = getFieldNameOrientation(f);
                 return StringUtils.hasText(fieldNameOrientation) ? indent(variable.depth + 1) + Optional.ofNullable(align).map(style -> StringUtils.hasText(style) ? "<td " + style + "><b>" : "<td><b>").get() + fieldNameOrientation + "</b></td>" : "";

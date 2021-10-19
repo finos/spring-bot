@@ -106,6 +106,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		Attachment body = new Attachment();
 		body.setContentType("application/vnd.microsoft.card.adaptive");
 		body.setContent(json);
+		body.setProperties("$data", json);
 		out.getAttachments().add(body);
 		ctx.sendActivity(out).handle((rr, e) -> {
 			if (e != null) {
