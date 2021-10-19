@@ -47,13 +47,13 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 		// load libraries
 		//ctx.eval("js", "https://unpkg.com/adaptivecards-templating/dist/adaptivecards-templating.min.js");
 		
-		load("/adaptive-expressions.js");
-		load("/adaptivecards-templating.min.js");
-		
+		load("/js/adaptive-expressions2.min.js");
+		load("/js/adaptivecards-templating2.min.js");		
 	}
 
-	private void load(String f) throws IOException {
-		ctx.eval("js", StreamUtils.copyToString(TeamsTemplateProvider.class.getResourceAsStream(f), Charsets.UTF_8));
+	private Value load(String f) throws IOException {
+		Value out = ctx.eval("js", StreamUtils.copyToString(TeamsTemplateProvider.class.getResourceAsStream(f), Charsets.UTF_8));
+		return out;
 	}
 
 	@Override
@@ -90,27 +90,24 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 	@Override
 	protected JsonNode applyTemplate(JsonNode template, WorkResponse t) {
 		
-		Object data = t.getData();
+		JsonNode _$root = om.valueToTree(t.getData());
+		ObjectNode data = om.createObjectNode();
+		data.set("$root", _$root);
+		
 		try {
-			//Value tv = ctx.eval("js", "new ACData.Template(templatePayload)");
+			String dataStr = om.writerWithDefaultPrettyPrinter().writeValueAsString(data);
+			String templateStr = om.writerWithDefaultPrettyPrinter().writeValueAsString(template);
+			Value tv = ctx.eval("js", "JSON.stringify(new ACData.Template("+templateStr+").expand("+dataStr+"))");
+
+			System.out.println("TEMPLATE: \n"+templateStr); 
+			System.out.println("DATA: \n"+ dataStr);
 			
-			
-//			//ar template = ;
-//			 
-//			// Expand the template with your `$root` data object.
-//			// This binds it to the data and produces the final Adaptive Card payload
-//			var cardPayload = template.expand({
-//			   $root: {
-//			      name: "Matt Hidinger"
-//			   }
-//			});
-//			ctx.l
-			System.out.println("TEMPLATE: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(template));
-			System.out.println("DATA: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(data));
-			JsonNode dataNode = om.valueToTree(data);
-			((ObjectNode)template).set("$data", dataNode);
-			System.out.println("COMBINED: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(template));
-			
+//			JsonNode dataNode = om.valueToTree(data);
+//			((ObjectNode)template).set("$data", dataNode);
+//			System.out.println("COMBINED: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(template));
+	
+			return om.readTree(tv.asString());
+				
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
