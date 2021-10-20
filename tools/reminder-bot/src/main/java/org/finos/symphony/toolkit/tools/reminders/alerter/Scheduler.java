@@ -75,7 +75,7 @@ public class Scheduler {
         LOG.info("TimedAlerter waking");
 
         if (leaderService.isLeader(self)) {
-            Set<Addressable> allRooms = rooms.getAllConversations();
+            Set<Addressable> allRooms = rooms.getAllAddressables();
 			allRooms.forEach(s -> action.accept(s));
             LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
         } else {
