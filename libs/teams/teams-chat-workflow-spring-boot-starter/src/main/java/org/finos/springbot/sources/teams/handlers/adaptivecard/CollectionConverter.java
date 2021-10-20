@@ -44,7 +44,9 @@ public class CollectionConverter extends AbstractComplexTypeConverter<JsonNode> 
 		} else if (showDetail.expand()) {
 			Class<?> elementClass = (Class<?>) ((ParameterizedType) t).getActualTypeArguments()[0];
 			TypeConverter<JsonNode> elementTypeConverter = controller.getConverter(null, elementClass, controller);
-			JsonNode propertyPanel = elementTypeConverter.apply(null, controller, elementClass, false, variable, collectionValues());
+			Variable child = variable.index();
+			JsonNode propertyPanel = elementTypeConverter.apply(null, controller, elementClass, false, child, collectionValues());
+			((ObjectNode) propertyPanel).put("$data", variable.getDataPath());
 			return propertyPanel;
 		} else {
 			return r.text(variable);

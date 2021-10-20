@@ -31,11 +31,15 @@ public class ACVariable implements Variable {
 	}
 
 	public ACVariable field(String seg) {
-		return new ACVariable(this, seg);
+		if (segment.length()==0) {
+			return new ACVariable(seg);
+		} else {
+			return new ACVariable(this, seg);
+		}
 	}
 	
 	public ACVariable index() {
-		return new ACVariable(parent.depth + 1, "i"+Character.toString((char) (65 + parent.depth)));
+		return new ACVariable(depth + 1, "");
 	}
 	
 	public String getDisplayName() {

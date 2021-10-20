@@ -18,27 +18,27 @@ public class SimpleTestObject {
 		this.name = name;
 	}
 	
-//	@Display(name = "Main")
-//	private NewItemDetails nid;
-//
-//	public NewItemDetails getNid() {
-//		return nid;
-//	}
-//
-//	public void setNid(NewItemDetails nid) {
-//		this.nid = nid;
-//	}
-//	
-//	@Display(name = "New Item Details")
-//	private List<NewItemDetails> lotsOfNids;
-//
-//	public List<NewItemDetails> getLotsOfNids() {
-//		return lotsOfNids;
-//	}
-//
-//	public void setLotsOfNids(List<NewItemDetails> lotsOfNids) {
-//		this.lotsOfNids = lotsOfNids;
-//	}
-//	
+	@Display(name = "Main")
+	private NewItemDetails nid;
+
+	public NewItemDetails getNid() {
+		return nid;
+	}
+
+	public void setNid(NewItemDetails nid) {
+		this.nid = nid;
+	}
+	
+	@Display(name = "New Item Details")
+	private List<NewItemDetails> lotsOfNids;
+
+	public List<NewItemDetails> getLotsOfNids() {
+		return lotsOfNids;
+	}
+
+	public void setLotsOfNids(List<NewItemDetails> lotsOfNids) {
+		this.lotsOfNids = lotsOfNids;
+	}
+	
 	
 }
