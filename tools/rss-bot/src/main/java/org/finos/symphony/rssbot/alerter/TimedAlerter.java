@@ -105,7 +105,7 @@ public class TimedAlerter {
 		int[] count = { 0 };
 
 		if (leaderService.isLeader(self)) {
-			Set<Addressable> allRooms = r.getAllConversations();
+			Set<Addressable> allRooms = r.getAllAddressables();
 			allRooms.stream().forEach(s -> count[0] += action.apply(s));
 			LOG.info("TimedAlerter processed "+allRooms.size()+" streams ");
 		} else {

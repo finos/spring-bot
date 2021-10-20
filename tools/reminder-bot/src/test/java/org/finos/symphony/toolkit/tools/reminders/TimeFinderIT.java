@@ -20,6 +20,7 @@ import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -101,13 +102,7 @@ public class TimeFinderIT {
 	}
 
 	private User getUser() {
-		User user = new User() {
-		
-			public String getName() {
-				return "Sherlock Holmes";
-			}
-		};
-		return user;
+		return new SymphonyUser("Sherlock Holmes", "sherlock.holmes@mail.com");
 
 	}
 
