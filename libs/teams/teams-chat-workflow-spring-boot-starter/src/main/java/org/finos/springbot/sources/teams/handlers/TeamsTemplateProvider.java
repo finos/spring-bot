@@ -97,10 +97,12 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 		try {
 			String dataStr = om.writerWithDefaultPrettyPrinter().writeValueAsString(data);
 			String templateStr = om.writerWithDefaultPrettyPrinter().writeValueAsString(template);
-			Value tv = ctx.eval("js", "JSON.stringify(new ACData.Template("+templateStr+").expand("+dataStr+"))");
 
 			System.out.println("TEMPLATE: \n"+templateStr); 
 			System.out.println("DATA: \n"+ dataStr);
+
+			Value tv = ctx.eval("js", "JSON.stringify(new ACData.Template("+templateStr+").expand("+dataStr+"))");
+
 			
 //			JsonNode dataNode = om.valueToTree(data);
 //			((ObjectNode)template).set("$data", dataNode);

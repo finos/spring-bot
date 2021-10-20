@@ -1,5 +1,6 @@
 package example.symphony.demoworkflow.todo;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -154,9 +155,19 @@ public class ToDoController {
 	public SimpleTestObject testWork() {
 		SimpleTestObject out = new SimpleTestObject();
 		out.setName("geoff hurst");
-//		NewItemDetails nid = new NewItemDetails();
-//		nid.setDescription("bib");
-//		out.setNid(nid);
+		NewItemDetails nid = new NewItemDetails();
+		nid.setDescription("bib");
+		out.setNid(nid);
+		
+		NewItemDetails nid1 = new NewItemDetails();
+		nid1.setDescription("one");
+		out.setNid(nid);
+		
+		NewItemDetails nid2 = new NewItemDetails();
+		nid2.setDescription("two");
+		out.setNid(nid);
+		
+		out.setLotsOfNids(Arrays.asList(nid1, nid2));
 		return out;
 	}
 	
