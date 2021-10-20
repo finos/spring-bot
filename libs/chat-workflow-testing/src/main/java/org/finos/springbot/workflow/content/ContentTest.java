@@ -2,6 +2,17 @@ package org.finos.springbot.workflow.content;
 
 import java.util.Arrays;
 
+import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.CodeBlock;
+import org.finos.springbot.workflow.content.Content;
+import org.finos.springbot.workflow.content.Heading;
+import org.finos.springbot.workflow.content.Image;
+import org.finos.springbot.workflow.content.Link;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.OrderedList;
+import org.finos.springbot.workflow.content.Paragraph;
+import org.finos.springbot.workflow.content.Table;
+import org.finos.springbot.workflow.content.UnorderedList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -13,16 +24,30 @@ public class ContentTest {
 		Message m2 = createMessage();
 		Assertions.assertEquals(m1.hashCode(), m2.hashCode());
 	}
+	
+	@Test
+	public void testMatches() {
+		Message m1 = createMessage();
+		Message m2 = createMessage();
+		Assertions.assertTrue(m1.matches(m2));
+	}
 
+	/**
+	 * This should exhaustively cover all the different implementations of {@link Content}.
+	 */
 	public static Message createMessage() {
 		return Message.of(
 			Heading.of("Heading 1", 1),	
 			Paragraph.of("some words"),
 			Paragraph.of("Some other words"),
 			UnorderedList.of(
-				Paragraph.of("item 1"),
-				Paragraph.of("item 2")),
+				Paragraph.of("item a"),
+				Paragraph.of("item b")),
+			OrderedList.of(
+						Paragraph.of("item 1"),
+						Paragraph.of("item 2")),
 			BlockQuote.of("Something wicked this way comes"),
+			CodeBlock.of("<some>code</some>"),
 			Image.of("https://www.bob.com/image", "Some image"),
 			Link.of("http://www.some.link", "This is a link"),
 			Heading.of("Heading 2", 2),
