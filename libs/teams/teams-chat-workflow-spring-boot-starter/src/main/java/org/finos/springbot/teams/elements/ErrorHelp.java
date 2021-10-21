@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.elements;
+package org.finos.springbot.teams.elements;
 
 import java.util.HashMap;
 

@@ -1,9 +1,9 @@
-package org.finos.springbot.sources.teams.elements;
+package org.finos.springbot.teams.elements;
 
 import java.io.IOException;
 
-import org.finos.springbot.sources.teams.content.TeamsChat;
-import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 

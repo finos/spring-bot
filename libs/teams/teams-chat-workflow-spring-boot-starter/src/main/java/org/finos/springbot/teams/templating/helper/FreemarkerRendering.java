@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard.helper;
+package org.finos.springbot.teams.templating.helper;
 
 import java.util.Collection;
 import java.util.List;

@@ -1,12 +1,12 @@
 package org.finos.springbot.teams.handlers.adaptivecard;
 
-import org.finos.springbot.AbstractMockTeamsTest;
 import org.finos.springbot.fixture.TestObject;
 import org.finos.springbot.fixture.TestTemplatedObject;
-import org.finos.springbot.sources.teams.content.TeamsChat;
-import org.finos.springbot.sources.teams.handlers.WorkConverter;
+import org.finos.springbot.teams.AbstractMockTeamsTest;
+import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Validator;
@@ -14,7 +14,7 @@ import org.springframework.validation.Validator;
 public class TestAdaptiveCardConverter extends AbstractMockTeamsTest {
 
 	@Autowired
-	WorkConverter messageMlConverter;
+	WorkTemplater messageMlConverter;
 	
 	@Autowired
 	Validator validator;

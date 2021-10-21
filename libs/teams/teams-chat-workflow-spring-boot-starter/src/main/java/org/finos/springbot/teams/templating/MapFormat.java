@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.teams.templating;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;

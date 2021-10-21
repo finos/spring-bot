@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers;
+package org.finos.springbot.teams.handlers;
 
 import org.finos.springbot.workflow.response.AttachmentResponse;
 

@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.content;
+package org.finos.springbot.teams.content;
 
 import org.finos.springbot.workflow.content.Addressable;
 

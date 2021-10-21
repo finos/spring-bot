@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard.helper;
+package org.finos.springbot.teams.templating.helper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.function.Function;
 
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -32,15 +33,19 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	public JsonNode text(Variable v) {
 		ObjectNode out = f.objectNode();
 		out.put("type", "TextBlock");
-		out.put("text", v.getDataPath());
+		out.put("text", nullProof(v));
 		return out;
+	}
+
+	protected String nullProof(Variable v) {
+		return "${if("+v.getDataPath()+",string("+v.getDataPath()+"),'')}";
 	}
 
 	@Override
 	public JsonNode textField(Variable variable, Function<JsonNode, JsonNode> change) {
 		ObjectNode on = AdaptiveCardRendering.f.objectNode();
 		on.put("type", "Input.Text");
-		on.put("value", variable.getDataPath());
+		on.put("value", nullProof(variable));
 		on.put("id", variable.getFormFieldName());
 		return change.apply(on);
 	}
@@ -59,7 +64,21 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 
 	@Override
 	public JsonNode property(String field, JsonNode value) {
-		if (value.get("type").asText().startsWith("Input.")) {
+		if (!StringUtils.hasText(field)) {
+			return null;
+		} else if (value.get("type").asText().equals("TextBlock")) {
+			ObjectNode out = f.objectNode();
+			out.put("type", "FactSet");
+			ObjectNode fact = f.objectNode();
+			out.putArray("facts").add(fact);
+			fact.put("title", field);
+			fact.put("value", value.get("text").asText());
+			return out;
+		} else if (value.get("type").asText().equals("Input.Toggle")) {
+			ObjectNode on = (ObjectNode) value;
+			on.put("title", field);
+			return on;
+		} else if (value.get("type").asText().startsWith("Input.")) {
 			ObjectNode on = (ObjectNode) value;
 			on.put("label", field);
 			return on;
@@ -93,29 +112,34 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
 
 	@Override
-	public JsonNode renderDropdown(Variable variable, String location, Function<String, String> sourceFunction,
-			Function<String, String> keyFunction, BiFunction<String, String, String> valueFunction) {
+	public JsonNode renderDropdown(Variable variable, String location, String key, String value) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "Input.ChoiceSet");
+		out.put("value", "${"+variable.getDataPath()+"}");
+		ArrayNode an = out.putArray("choices");
 		
-		"type": "Input.ChoiceSet",
-        "choices": [
-            {
-                "title": "Choice 1",
-                "value": "Choice 1"
-            },
-            {
-                "title": "Choice 2",
-                "value": "Choice 2"
-            },
-            {
-                "title": "three",
-                "value": "three"
-            }
-        ],
-        "placeholder": "Placeholder text"
-    }
+		ObjectNode choice = f.objectNode();
+		choice.put("$data", "${"+location+"}");
+		choice.put("title", "${"+value+"}");
+		choice.put("value", "${"+key+"}");
+		an.add(choice);
+		
+		return out;
+	}
 
+	@Override
+	public JsonNode renderDropdownView(Variable variable, String location, String key, String value) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "TextBlock");
+		out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
+		return out;
+	}
+
+	
 	
 	
 	

@@ -1,24 +1,24 @@
-package org.finos.springbot.sources.teams;
+package org.finos.springbot.teams;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
-import org.finos.springbot.sources.teams.conversations.TeamsConversations;
-import org.finos.springbot.sources.teams.conversations.TeamsConversationsImpl;
-import org.finos.springbot.sources.teams.handlers.Mode;
-import org.finos.springbot.sources.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.sources.teams.handlers.TeamsTemplateProvider;
-import org.finos.springbot.sources.teams.handlers.WorkConverter;
-import org.finos.springbot.sources.teams.handlers.adaptivecard.AdaptiveCardConverter;
-import org.finos.springbot.sources.teams.handlers.adaptivecard.AdaptiveCardConverterConfig;
-import org.finos.springbot.sources.teams.messages.MessageActivityHandler;
-import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
-import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
+import org.finos.springbot.teams.conversations.TeamsConversations;
+import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.teams.handlers.Mode;
+import org.finos.springbot.teams.handlers.TeamsResponseHandler;
+import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
+import org.finos.springbot.teams.messages.MessageActivityHandler;
+import org.finos.springbot.teams.messages.TeamsHTMLParser;
+import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
+import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
+import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
+import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.OrderedList;
@@ -30,6 +30,7 @@ import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.springbot.workflow.templating.TypeConverter;
+import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public TeamsTemplateProvider workTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/teams}") String prefix,
 			@Value("${symphony.templates.suffix:.json}") String suffix,
-			WorkConverter<Mode, JsonNode> formConverter) throws IOException {
+			WorkTemplater<Mode, JsonNode> formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
 	}
 	
@@ -118,9 +119,9 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public WorkConverter<Mode, JsonNode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters) {
+	public WorkTemplater<JsonNode, WorkMode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters) {
 		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
-		return new AdaptiveCardConverter(converters);
+		return new AdaptiveCardTemplater(converters);
 	}
 //	
 //	@Bean

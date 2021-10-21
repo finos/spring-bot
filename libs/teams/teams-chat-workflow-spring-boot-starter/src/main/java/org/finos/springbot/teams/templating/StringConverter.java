@@ -1,27 +1,30 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.teams.templating;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
+import java.util.function.Function;
 
 import org.finos.springbot.workflow.templating.AbstractClassConverter;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
 
-import com.fasterxml.jackson.databind.JsonNode;
+public class StringConverter<X> extends AbstractClassConverter<X> {
 
-public class StringConverter extends AbstractClassConverter<JsonNode> {
-
-	public StringConverter(Rendering<JsonNode> r) {
-		super(LOW_PRIORITY, r, String.class);
+	public StringConverter(int priority, Rendering<X> r, Class<?>... forClass) {
+		super(priority, r, forClass);
 	}
 
 	@Override
-	public JsonNode apply(Field ctx, Type t, boolean editMode, Variable variable) {
+	public X apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		if (editMode) {
-			return r.textField(variable, (j) -> j);
+			return r.textField(variable, textFieldDetails());
 		} else {
 			return r.text(variable);
 		}
+	}
+
+	protected Function<X, X> textFieldDetails() {
+		return (j) -> j;
 	}
 
 }

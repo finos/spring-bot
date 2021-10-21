@@ -71,6 +71,14 @@
    <artifactId>spring-boot-starter-test</artifactId>
    <scope>test</scope>
   </dependency>
+  
+  <dependency>
+   <groupId>org.finos.symphony.toolkit</groupId>
+   <artifactId>chat-workflow-testing</artifactId>
+   <version>8.0.3-SNAPSHOT</version>
+   <scope>test</scope>
+  </dependency>
+  
 
 
  </dependencies>

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class AbstractTopLevelConverter<X> implements WithType<X> {
+public abstract class AbstractTopLevelConverter<X, MODE> implements WithType<X>, WorkTemplater<X, MODE> {
 
 	private final List<TypeConverter<X>> converters;
 	
@@ -52,5 +52,7 @@ public class AbstractTopLevelConverter<X> implements WithType<X> {
 		};
 		
 	}
+	
+	
 
 }

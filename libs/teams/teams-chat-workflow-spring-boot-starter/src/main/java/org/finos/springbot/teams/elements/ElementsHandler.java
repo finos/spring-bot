@@ -1,12 +1,12 @@
-package org.finos.springbot.sources.teams.elements;
+package org.finos.springbot.teams.elements;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.finos.springbot.sources.teams.conversations.TeamsConversations;
-import org.finos.springbot.sources.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.sources.teams.json.EntityJsonConverter;
+import org.finos.springbot.teams.conversations.TeamsConversations;
+import org.finos.springbot.teams.handlers.TeamsResponseHandler;
+import org.finos.springbot.teams.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.workflow.actions.Action;

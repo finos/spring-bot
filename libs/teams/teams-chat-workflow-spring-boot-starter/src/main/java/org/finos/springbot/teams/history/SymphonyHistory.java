@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.history;
+package org.finos.springbot.teams.history;
 
 import java.time.Instant;
 import java.util.List;

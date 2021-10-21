@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.finos.springbot.sources.teams.content.TeamsChat;
-import org.finos.springbot.sources.teams.messages.TeamsHTMLParser;
+import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Image;
 import org.finos.springbot.workflow.content.Message;

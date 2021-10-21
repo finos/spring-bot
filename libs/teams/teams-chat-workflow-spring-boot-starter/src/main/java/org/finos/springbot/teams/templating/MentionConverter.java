@@ -1,11 +1,11 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.teams.templating;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.workflow.templating.ElementFormat;
 import org.finos.springbot.workflow.templating.Variable;
 
