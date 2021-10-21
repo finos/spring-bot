@@ -22,6 +22,7 @@ import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ public class PollController {
 	@Autowired
 	SymphonyIdentity botIdentity;
 	
-	public boolean isMe(User u) {
+	public boolean isMe(SymphonyUser u) {
 		return u.getEmailAddress().equals(botIdentity.getEmail());
 	}
 	
@@ -82,7 +83,7 @@ public class PollController {
 		p.setOptions(options);
 		p.setId(id);
 		
-		List<User> users = rooms.getChatMembers(r);
+		List<SymphonyUser> users = rooms.getChatMembers(r);
 		List<WorkResponse> out = users.stream()
 			.filter(u -> !isMe(u))
 			.map(u -> createResponseForUser(cf, options, id, buttons, u))
