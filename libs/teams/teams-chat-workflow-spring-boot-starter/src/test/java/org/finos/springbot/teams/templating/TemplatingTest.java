@@ -14,6 +14,7 @@ import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.AbstractTemplatingTest;
+import org.finos.springbot.workflow.templating.Mode;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.junit.jupiter.api.Assertions;
@@ -24,7 +25,6 @@ import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @SpringBootTest(classes = { 
@@ -35,7 +35,7 @@ public class TemplatingTest extends AbstractTemplatingTest{
 	@Autowired
 	List<TypeConverter<JsonNode>> converters;
 	
-	WorkTemplater<JsonNode, WorkMode> templater;
+	WorkTemplater<JsonNode> templater;
 	
 	ObjectMapper om;
 	
@@ -66,7 +66,7 @@ public class TemplatingTest extends AbstractTemplatingTest{
 	    try {			    
 			// actual template
 			new File("target/tests").mkdirs();
-			JsonNode actualNode = templater.convert(workResponse.getFormClass(), workResponse.getMode());
+			JsonNode actualNode = templater.convert(workResponse.getFormClass(), translateMode(workResponse));
 			String actualJson = om.writerWithDefaultPrettyPrinter().writeValueAsString(actualNode);
 			System.out.println("ACTUAL  : " + actualJson);
 			
@@ -92,6 +92,10 @@ public class TemplatingTest extends AbstractTemplatingTest{
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	protected Mode translateMode(WorkResponse workResponse) {
+		return workResponse.getMode() == WorkMode.EDIT ? Mode.FORM : Mode.DISPLAY;
 	}
 
 }
