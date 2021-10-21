@@ -172,3 +172,8 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
 
  - Symphony API version upgraded to v20.13 by #238
  - Fix for #232, Un-marshelling of historical objects 
+
+# Oct 20, 2021
+
+ - Fix for #241, fixing mock issue
+ - Fix for #239, fixing Integration test
