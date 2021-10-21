@@ -1,7 +1,7 @@
-package org.finos.springbot.sources.teams.conversations;
+package org.finos.springbot.teams.conversations;
 
-import org.finos.springbot.sources.teams.content.TeamsChat;
-import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.conversations.PlatformConversations;

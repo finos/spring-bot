@@ -1,22 +1,16 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.teams.templating;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
 
-import org.finos.springbot.workflow.actions.form.TableAddRow;
-import org.finos.springbot.workflow.actions.form.TableDeleteRows;
-import org.finos.springbot.workflow.actions.form.TableEditRow;
 import org.finos.springbot.workflow.templating.AbstractComplexTypeConverter;
-import org.finos.springbot.workflow.templating.ComplexTypeConverter;
 import org.finos.springbot.workflow.templating.Rendering;
-import org.finos.springbot.workflow.templating.SimpleTypeConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.Variable;
 import org.finos.springbot.workflow.templating.WithField;
 import org.finos.springbot.workflow.templating.WithType;
-import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -46,7 +40,7 @@ public class CollectionConverter extends AbstractComplexTypeConverter<JsonNode> 
 			TypeConverter<JsonNode> elementTypeConverter = controller.getConverter(null, elementClass, controller);
 			Variable child = variable.index();
 			JsonNode propertyPanel = elementTypeConverter.apply(null, controller, elementClass, false, child, collectionValues());
-			((ObjectNode) propertyPanel).put("$data", variable.getDataPath());
+			((ObjectNode) propertyPanel).put("$data", "${"+variable.getDataPath()+"}");
 			return propertyPanel;
 		} else {
 			return r.text(variable);

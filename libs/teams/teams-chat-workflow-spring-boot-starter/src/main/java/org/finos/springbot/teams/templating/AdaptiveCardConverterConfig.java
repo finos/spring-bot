@@ -1,9 +1,11 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.teams.templating;
 
-import org.finos.springbot.sources.teams.TeamsWorkflowConfig;
-import org.finos.springbot.sources.teams.handlers.adaptivecard.helper.AdaptiveCardRendering;
+import org.finos.springbot.teams.TeamsWorkflowConfig;
+import org.finos.springbot.teams.templating.helper.AdaptiveCardRendering;
 import org.finos.springbot.workflow.templating.BeanConverter;
+import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.Rendering;
+import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,14 +56,14 @@ public class AdaptiveCardConverterConfig {
 		return new UserConverter(r);
 	}
 	
-//	@Bean
-//	public DropdownAnnotationConverter dropdownAnnotationConverter() {
-//		return new DropdownAnnotationConverter();
-//	}
+	@Bean
+	public DropdownAnnotationConverter<JsonNode> dropdownAnnotationConverter(Rendering<JsonNode> r) {
+		return new DropdownAnnotationConverter<>(r);
+	}
 	
 	@Bean
-	public StringConverter stringConverter(Rendering<JsonNode> r) {
-		return new StringConverter(r);
+	public TextFieldConverter<JsonNode> stringConverter(Rendering<JsonNode> r) {
+		return new TextFieldConverter<JsonNode>(TextFieldConverter.LOW_PRIORITY, r, String.class);
 	}
 	
 }

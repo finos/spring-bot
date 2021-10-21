@@ -4,8 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.function.BiFunction;
-import java.util.function.Function;
 
 /**
  * Mark a field with this interface to allow it to use dropdown options.
@@ -16,21 +14,14 @@ import java.util.function.Function;
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Dropdown {
-
-	public interface ElementFormat { 
-		
-		public Function<String, String> getSourceFunction();
-		
-		public Function<String, String> getKeyFunction();
-		
-		public BiFunction<String, String, String> getValueFunction();
-		
-	}
 	
 	/**
 	 * Dictates where in the JSON structure to get the options for the dropdown
 	 */
-	public String data() default "entity.dropdown";
+	public String data();
 	
-	public Class<? extends ElementFormat> format();
+	public String key();
+	
+	public String value();
+
 }

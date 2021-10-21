@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.teams.templating;
 
 import org.finos.springbot.workflow.templating.Variable;
 
@@ -62,7 +62,7 @@ public class ACVariable implements Variable {
 	
 	
 	public String getDataPath() {
-		return "${" + getInnerDataPath() + "}";
+		return getInnerDataPath();
 	}
 	
 	public String getErrorPath() {

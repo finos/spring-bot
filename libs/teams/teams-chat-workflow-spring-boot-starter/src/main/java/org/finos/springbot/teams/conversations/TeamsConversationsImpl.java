@@ -1,11 +1,11 @@
-package org.finos.springbot.sources.teams.conversations;
+package org.finos.springbot.teams.conversations;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.finos.springbot.sources.teams.content.TeamsChat;
-import org.finos.springbot.sources.teams.content.TeamsUser;
+import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;

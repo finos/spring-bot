@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.turns;
+package org.finos.springbot.teams.turns;
 
 import com.microsoft.bot.builder.TurnContext;
 

@@ -1,7 +1,12 @@
-package org.finos.springbot.sources.teams.handlers;
+package org.finos.springbot.workflow.templating;
 
-public interface WorkConverter<MODE, O> {
+import org.finos.springbot.workflow.annotations.Work;
+
+/**
+ * The main interface for converting {@link Work}-annotated beans into templates
+ */
+public interface WorkTemplater<O, MODE> {
 	
-	O convert(Class<?> c, Mode m);
+	O convert(Class<?> c, MODE m);
 
 }

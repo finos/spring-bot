@@ -1,11 +1,12 @@
 package org.finos.springbot.fixture;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.finos.springbot.sources.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatVariable;
@@ -43,7 +44,7 @@ public class OurController {
 	}
 	
 	@ChatButton(value = Person.class, showWhen = WorkMode.VIEW, buttonText = "call")
-	public void callPerson(Person arg) {
+	public Collection<TestObject> callPerson(Person arg) {
 		// do your own form processing
 		lastArguments = Collections.singletonList(arg);
 		lastMethod = "callPerson";

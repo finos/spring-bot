@@ -3,6 +3,8 @@
  */
 package example.symphony.demoworkflow.todo;
 
+import javax.validation.constraints.Min;
+
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.User;
 
@@ -13,6 +15,7 @@ import org.finos.springbot.workflow.content.User;
 @Work
 public class NewItemDetails {
 	
+
 	String description;
 	User assignTo;
 	

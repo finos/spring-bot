@@ -1,7 +1,7 @@
-package org.finos.springbot.sources.teams.handlers;
+package org.finos.springbot.teams.handlers;
 
-import org.finos.springbot.sources.teams.content.TeamsAddressable;
-import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
+import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.MessageResponse;

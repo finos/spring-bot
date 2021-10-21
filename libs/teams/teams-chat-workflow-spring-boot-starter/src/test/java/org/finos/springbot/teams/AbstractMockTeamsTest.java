@@ -1,4 +1,4 @@
-package org.finos.springbot;
+package org.finos.springbot.teams;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -11,10 +11,10 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.finos.springbot.fixture.OurController;
-import org.finos.springbot.sources.teams.TeamsWorkflowConfig;
-import org.finos.springbot.sources.teams.content.TeamsChat;
-import org.finos.springbot.sources.teams.handlers.AttachmentHandler;
-import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
+import org.finos.springbot.teams.TeamsWorkflowConfig;
+import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.handlers.AttachmentHandler;
+import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.Button.Type;
@@ -143,13 +143,13 @@ public abstract class AbstractMockTeamsTest {
         return data.getValue();
 	}	
 
-    private String loadJson(String string) throws IOException {
+    public static String loadJson(String string) throws IOException {
         return StreamUtils.copyToString(AbstractMockTeamsTest.class.getResourceAsStream(string), Charset.forName("UTF-8"));
     }
 
 	
 	
-    protected void compareJson(String loadJson, String json) throws JsonMappingException, JsonProcessingException {
+    public static void compareJson(String loadJson, String json) throws JsonMappingException, JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
         Assertions.assertEquals(om.readTree(loadJson), om.readTree(json));
     }

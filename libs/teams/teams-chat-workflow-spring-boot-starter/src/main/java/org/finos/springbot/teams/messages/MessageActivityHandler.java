@@ -1,12 +1,12 @@
-package org.finos.springbot.sources.teams.messages;
+package org.finos.springbot.teams.messages;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.finos.springbot.sources.teams.conversations.TeamsConversations;
-import org.finos.springbot.sources.teams.turns.CurrentTurnContext;
+import org.finos.springbot.teams.conversations.TeamsConversations;
+import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;

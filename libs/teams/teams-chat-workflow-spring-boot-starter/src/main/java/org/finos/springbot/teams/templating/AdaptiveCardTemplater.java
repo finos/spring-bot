@@ -1,9 +1,8 @@
-package org.finos.springbot.sources.teams.handlers.adaptivecard;
+package org.finos.springbot.teams.templating;
 
 import java.util.List;
 
-import org.finos.springbot.sources.teams.handlers.Mode;
-import org.finos.springbot.sources.teams.handlers.WorkConverter;
+import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.templating.AbstractTopLevelConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.Variable;
@@ -19,17 +18,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * @author Rob Moffat
  *
  */
-public class AdaptiveCardConverter extends AbstractTopLevelConverter<JsonNode> implements WorkConverter<Mode, JsonNode> {
+public class AdaptiveCardTemplater extends AbstractTopLevelConverter<JsonNode, WorkMode> {
 
 	
-	public AdaptiveCardConverter(List<TypeConverter<JsonNode>> fieldConverters) {
+	public AdaptiveCardTemplater(List<TypeConverter<JsonNode>> fieldConverters) {
 		super(fieldConverters);
 	}
 
 	public static final String JUST_BUTTONS_FORM = "just-buttons-form";
 	
 	@Override
-	public JsonNode convert(Class<?> c, Mode m) { //, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work) {
+	public JsonNode convert(Class<?> c, WorkMode m) { //, Object o, ButtonList actions, boolean editMode, Errors e, EntityJson work) {
 		Variable v = new ACVariable("form");
 		
 		JsonNodeFactory fact = new JsonNodeFactory(true);
@@ -37,7 +36,7 @@ public class AdaptiveCardConverter extends AbstractTopLevelConverter<JsonNode> i
 		top.put("$schema", "http://adaptivecards.io/schemas/adaptive-card.json");
 		top.put("version", "1.3");
 		top.put("type","AdaptiveCard");
-		JsonNode contents = apply(null, this, c, m==Mode.FORM, v, topLevelFieldOutput());
+		JsonNode contents = apply(null, this, c, m==WorkMode.EDIT, v, topLevelFieldOutput());
 		top.putArray("body").add(contents);
 		
 //		

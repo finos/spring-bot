@@ -1,4 +1,4 @@
-package org.finos.springbot.sources.teams.history;
+package org.finos.springbot.teams.history;
 
 import java.time.Instant;
 import java.util.List;
@@ -6,13 +6,13 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.finos.springbot.sources.teams.TagSupport;
-import org.finos.springbot.sources.teams.content.CashTag;
-import org.finos.springbot.sources.teams.content.HashTag;
-import org.finos.springbot.sources.teams.content.TeamsAddressable;
-import org.finos.springbot.sources.teams.content.TeamsUser;
-import org.finos.springbot.sources.teams.json.EntityJsonConverter;
-import org.finos.springbot.sources.teams.streams.AbstractStreamResolving;
+import org.finos.springbot.teams.TagSupport;
+import org.finos.springbot.teams.content.CashTag;
+import org.finos.springbot.teams.content.HashTag;
+import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.teams.json.EntityJsonConverter;
+import org.finos.springbot.teams.streams.AbstractStreamResolving;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Tag;

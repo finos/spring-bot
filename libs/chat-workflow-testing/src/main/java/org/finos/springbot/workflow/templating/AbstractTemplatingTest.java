@@ -1,8 +1,12 @@
 package org.finos.springbot.workflow.templating;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.finos.springbot.workflow.annotations.WorkMode;
@@ -13,10 +17,17 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.fixture.BooleanWork;
 import org.finos.springbot.workflow.templating.fixture.ChatWork;
 import org.finos.springbot.workflow.templating.fixture.CollectionBeanWork;
-import org.finos.springbot.workflow.templating.fixture.CollectionSingleWork;
 import org.finos.springbot.workflow.templating.fixture.CollectionBeanWork.Inner;
+import org.finos.springbot.workflow.templating.fixture.CollectionSingleWork;
 import org.finos.springbot.workflow.templating.fixture.DisplayWork;
 import org.finos.springbot.workflow.templating.fixture.DropdownWork;
+import org.finos.springbot.workflow.templating.fixture.EnumWork;
+import org.finos.springbot.workflow.templating.fixture.EnumWork.TrafficLights;
+import org.finos.springbot.workflow.templating.fixture.IntegerWork;
+import org.finos.springbot.workflow.templating.fixture.NestedWork;
+import org.finos.springbot.workflow.templating.fixture.StringWork;
+import org.finos.springbot.workflow.templating.fixture.TimeWork;
+import org.finos.springbot.workflow.templating.fixture.UserWork;
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -150,6 +161,108 @@ public abstract class AbstractTemplatingTest {
 		testTemplating(createDropdownWork(WorkMode.EDIT), "DropdownWorkEdit");
 	}
 	
+	@Test
+	public void testEnumWorkView() {
+		EnumWork ew = new EnumWork();
+		ew.setS(TrafficLights.RED);
+		testTemplating(new WorkResponse(getTo(), ew, WorkMode.VIEW), "EnumWorkView");
+	}
+	
+	@Test
+	public void testEnumWorkEdit() {
+		EnumWork ew = new EnumWork();
+		ew.setS(TrafficLights.GREEN);
+		testTemplating(new WorkResponse(getTo(), ew, WorkMode.EDIT), "EnumWorkEdit");
+	}
+	
+	@Test
+	public void testIntegerWorkView() {
+		IntegerWork iw = new IntegerWork();
+		iw.setS(45);
+		testTemplating(new WorkResponse(getTo(), iw, WorkMode.VIEW), "IntegerWorkView");
+	}
+	
+	
+	@Test
+	public void testIntegerWorkEdit() {
+		IntegerWork iw = new IntegerWork();
+		iw.setS(45);
+		testTemplating(new WorkResponse(getTo(), iw, WorkMode.EDIT), "IntegerWorkEdit");
+	}
+	
+	@Test
+	public void testNestedWorkView() {
+		NestedWork iw = createNestedWork();
+		testTemplating(new WorkResponse(getTo(), iw, WorkMode.VIEW), "NestedWorkView");
+	}
+	
+	@Test
+	public void testNestedWorkEdit() {
+		NestedWork iw = createNestedWork();
+		testTemplating(new WorkResponse(getTo(), iw, WorkMode.EDIT), "NestedWorkEdit");
+	}
+
+	protected NestedWork createNestedWork() {
+		NestedWork iw = new NestedWork();
+		NestedWork.Inner a = new NestedWork.Inner();
+		NestedWork.Inner b = new NestedWork.Inner();
+		a.setS("First");
+		b.setS("Second");
+		iw.setA(a);
+		iw.setB(b);
+		return iw;
+	}
+	
+	@Test
+	public void testStringWorkView() {
+		StringWork ew = new StringWork();
+		ew.setS("Some string");
+		testTemplating(new WorkResponse(getTo(), ew, WorkMode.VIEW), "StringWorkView");
+	}
+	
+	@Test
+	public void testStringWorkEdit() {
+		StringWork ew = new StringWork();
+		ew.setS("Some too-long string");
+		testTemplating(new WorkResponse(getTo(), ew, WorkMode.EDIT), "StringWorkEdit");
+	}
+
+	@Test
+	public void testTimeWorkView() {
+		TimeWork ew = createTimeWork();
+		testTemplating(new WorkResponse(getTo(), ew, WorkMode.VIEW), "TimeWorkView");
+	}
+	
+	@Test
+	public void testTimeWorkEdit() {
+		TimeWork ew = createTimeWork();
+		testTemplating(new WorkResponse(getTo(), ew, WorkMode.EDIT), "TimeWorkEdit");
+	}
+
+	protected TimeWork createTimeWork() {
+		TimeWork ew = new TimeWork();
+		ew.setI(Instant.ofEpochMilli(983724958439l));
+		ew.setLd(LocalDate.of(2000, 1, 1));
+		ew.setLdt(LocalDateTime.of(2000, 1, 1, 11, 11));
+		ew.setZdt(ZonedDateTime.of(LocalDateTime.of(2001, 5, 5, 5, 5), ZoneId.of("Europe/London")));
+		ew.setZid(ZoneId.of("America/New_York"));
+		return ew;
+	}
+	
+	@Test
+	public void testUserWorkView() {
+		UserWork out = new UserWork();
+		out.setS(getUser());
+		testTemplating(new WorkResponse(getTo(), out, WorkMode.VIEW), "UserWorkView");
+	}
+	
+	@Test
+	public void testUserWorkEdit() {
+		UserWork out = new UserWork();
+		out.setS(getUser());
+		testTemplating(new WorkResponse(getTo(), out, WorkMode.EDIT), "UserWorkEdit");
+	}
+
 	protected abstract void testTemplating(WorkResponse workResponse, String testName);
 
 	
