@@ -6,10 +6,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import org.finos.springbot.teams.content.TeamsChat;
-import org.finos.springbot.workflow.templating.ElementFormat;
+import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.finos.springbot.workflow.templating.Variable;
 
-public class MentionConverter extends AbstractDropdownConverter {
+import com.fasterxml.jackson.databind.JsonNode;
+
+public class MentionConverter extends TextFieldConverter<JsonNode> {
 
 	final String location;
 	
@@ -21,24 +23,6 @@ public class MentionConverter extends AbstractDropdownConverter {
 		super(LOW_PRIORITY, TeamsChat.class);
 		this.location = location;
 	}
-
-	public static class RoomFormat implements ElementFormat {
-
-		@Override
-		public Function<String, String> getKeyFunction() {
-			return (k) -> k+".id[0].value";
-		}
-
-		@Override
-		public BiFunction<String, String, String> getValueFunction() {
-			return (k, d) -> k+".id[1].value";
-		}
-
-		@Override
-		public Function<String, String> getSourceFunction() {
-			return (k) -> k + ".contents";
-		}
-	};
 	
 	private static final RoomFormat ROOM_FORMAT = new RoomFormat();
 

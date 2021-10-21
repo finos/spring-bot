@@ -1,29 +1,19 @@
 package org.finos.springbot.teams.templating;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.function.Function;
 
-import org.finos.springbot.workflow.templating.AbstractClassConverter;
 import org.finos.springbot.workflow.templating.Rendering;
-import org.finos.springbot.workflow.templating.Variable;
+import org.finos.springbot.workflow.templating.TextFieldConverter;
 
-public class StringConverter<X> extends AbstractClassConverter<X> {
+import com.fasterxml.jackson.databind.JsonNode;
 
-	public StringConverter(int priority, Rendering<X> r, Class<?>... forClass) {
+public class StringConverter extends TextFieldConverter<JsonNode> {
+
+	public StringConverter(int priority, Rendering<JsonNode> r, Class<?>... forClass) {
 		super(priority, r, forClass);
 	}
 
-	@Override
-	public X apply(Field ctx, Type t, boolean editMode, Variable variable) {
-		if (editMode) {
-			return r.textField(variable, textFieldDetails());
-		} else {
-			return r.text(variable);
-		}
-	}
-
-	protected Function<X, X> textFieldDetails() {
+	protected Function<JsonNode, JsonNode> textFieldDetails() {
 		return (j) -> j;
 	}
 

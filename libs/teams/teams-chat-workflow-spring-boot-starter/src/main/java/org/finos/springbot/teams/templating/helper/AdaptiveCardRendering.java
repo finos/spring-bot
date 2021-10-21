@@ -2,7 +2,7 @@ package org.finos.springbot.teams.templating.helper;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
+import java.util.Map;
 import java.util.function.Function;
 
 import org.finos.springbot.workflow.templating.Rendering;
@@ -120,6 +120,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		ObjectNode out = f.objectNode();
 		out.put("type", "Input.ChoiceSet");
 		out.put("value", "${"+variable.getDataPath()+"}");
+		out.put("id", variable.getFormFieldName());
 		ArrayNode an = out.putArray("choices");
 		
 		ObjectNode choice = f.objectNode();
@@ -133,6 +134,38 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 
 	@Override
 	public JsonNode renderDropdownView(Variable variable, String location, String key, String value) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "TextBlock");
+		out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
+		return out;
+	}
+
+	@Override
+	public JsonNode renderDropdown(Variable variable, Map<String, String> options) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "Input.ChoiceSet");
+		out.put("value", "${"+variable.getDataPath()+"}");
+		out.put("id", variable.getFormFieldName());
+		ArrayNode an = out.putArray("choices");
+		
+		options.forEach((k, v) -> {
+			ObjectNode choice = f.objectNode();
+			choice.put("title", k);
+			choice.put("value", prettyPrint(v));
+			an.add(choice);
+		});
+		
+		return out;
+	}
+
+	private String prettyPrint(String v) {
+		String text = v.substring(0, 1).toUpperCase()+v.substring(1).toLowerCase();
+		text = text.replace('_',' ');
+		return text;
+	}
+
+	@Override
+	public JsonNode renderDropdownView(Variable variable, Map<String, String> options) {
 		ObjectNode out = f.objectNode();
 		out.put("type", "TextBlock");
 		out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version

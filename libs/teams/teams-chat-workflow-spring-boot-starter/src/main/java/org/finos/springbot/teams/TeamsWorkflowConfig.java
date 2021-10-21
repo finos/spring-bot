@@ -6,13 +6,12 @@ import java.util.Properties;
 
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
-import org.finos.springbot.teams.handlers.Mode;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.messages.TeamsHTMLParser;
-import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
+import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
@@ -102,7 +101,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public TeamsTemplateProvider workTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/teams}") String prefix,
 			@Value("${symphony.templates.suffix:.json}") String suffix,
-			WorkTemplater<Mode, JsonNode> formConverter) throws IOException {
+			WorkTemplater<JsonNode, WorkMode> formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
 	}
 	

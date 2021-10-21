@@ -1,0 +1,25 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Input.ChoiceSet",
+      "value" : "${form.s}",
+      "id" : "s",
+      "choices" : [ {
+        "title" : "RED",
+        "value" : "Red"
+      }, {
+        "title" : "AMBER",
+        "value" : "Amber"
+      }, {
+        "title" : "GREEN",
+        "value" : "Green"
+      } ],
+      "label" : "S"
+    } ]
+  } ]
+}

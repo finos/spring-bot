@@ -3,6 +3,7 @@ package org.finos.springbot.workflow.templating;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
@@ -244,6 +245,7 @@ public abstract class AbstractTemplatingTest {
 		ew.setI(Instant.ofEpochMilli(983724958439l));
 		ew.setLd(LocalDate.of(2000, 1, 1));
 		ew.setLdt(LocalDateTime.of(2000, 1, 1, 11, 11));
+		ew.setLt(LocalTime.of(13, 13));
 		ew.setZdt(ZonedDateTime.of(LocalDateTime.of(2001, 5, 5, 5, 5), ZoneId.of("Europe/London")));
 		ew.setZid(ZoneId.of("America/New_York"));
 		return ew;
