@@ -1,4 +1,4 @@
-package org.finos.springbot.teams.templating.helper;
+package org.finos.springbot.teams.templating;
 
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -31,8 +31,12 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		return out;
 	}
 	
-	protected String nullProof(Variable v) {
-		return "${if("+v.getDataPath()+",string("+v.getDataPath()+"),'')}";
+	public static String nullProof(Variable v) {
+		return nullProofWithFunction(v, "string");
+	}
+	
+	public static String nullProofWithFunction(Variable v, String function) {
+		return "${if("+v.getDataPath()+","+function+"("+v.getDataPath()+"),'')}";
 	}
 
 	@Override
