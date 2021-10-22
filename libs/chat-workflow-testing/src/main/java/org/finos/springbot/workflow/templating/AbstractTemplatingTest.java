@@ -254,7 +254,7 @@ public abstract class AbstractTemplatingTest {
 
 	protected TimeWork createTimeWork() {
 		TimeWork ew = new TimeWork();
-		ew.setI(Instant.ofEpochMilli(983724958439l));
+		ew.setI(Instant.parse("2000-01-01T14:44:44.00Z"));
 		ew.setLd(LocalDate.of(2000, 1, 1));
 		ew.setLdt(LocalDateTime.of(2000, 1, 1, 11, 11));
 		ew.setLt(LocalTime.of(13, 13));

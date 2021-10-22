@@ -1,7 +1,6 @@
 package org.finos.springbot.teams.templating;
 
 import org.finos.springbot.teams.TeamsWorkflowConfig;
-import org.finos.springbot.teams.templating.helper.AdaptiveCardRendering;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.templating.BeanConverter;
