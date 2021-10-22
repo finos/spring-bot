@@ -9,9 +9,11 @@ import java.util.List;
 public abstract class AbstractTopLevelConverter<X, MODE> implements WithType<X>, WorkTemplater<X> {
 
 	private final List<TypeConverter<X>> converters;
+	protected final Rendering<X> r;
 	
-	public AbstractTopLevelConverter(List<TypeConverter<X>> fieldConverters) {
+	public AbstractTopLevelConverter(List<TypeConverter<X>> fieldConverters, Rendering<X> r) {
 		this.converters = new ArrayList<>(fieldConverters);
+		this.r = r;
 		Collections.sort(this.converters, (a, b) -> Integer.compare(a.getPriority(), b.getPriority()));
 	}
 

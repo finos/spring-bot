@@ -1,0 +1,48 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Input.Text",
+      "value" : "${if(form.i,formatEpoch(form.i),'')}",
+      "id" : "i",
+      "label" : "I"
+    }, {
+      "type" : "Input.Text",
+      "value" : "${if(form.ldt,string(form.ldt),'')}",
+      "id" : "ldt",
+      "label" : "Ldt"
+    }, {
+      "type" : "Input.Text",
+      "value" : "${if(form.zid,string(form.zid),'')}",
+      "id" : "zid",
+      "label" : "Zid"
+    }, {
+      "type" : "Input.Text",
+      "value" : "${if(form.ld,string(form.ld),'')}",
+      "id" : "ld",
+      "label" : "Ld"
+    }, {
+      "type" : "Input.Text",
+      "value" : "${if(form.lt,string(form.lt),'')}",
+      "id" : "lt",
+      "label" : "Lt"
+    }, {
+      "type" : "Input.Text",
+      "value" : "${if(form.zdt,formatEpoch(form.zdt),'')}",
+      "id" : "zdt",
+      "label" : "Zdt"
+    } ]
+  }, {
+    "type" : "ActionSet",
+    "actions" : [ {
+      "type" : "Action.Submit",
+      "title" : "${text}",
+      "id" : "${name}",
+      "$data" : "${buttons.contents}"
+    } ]
+  } ]
+}

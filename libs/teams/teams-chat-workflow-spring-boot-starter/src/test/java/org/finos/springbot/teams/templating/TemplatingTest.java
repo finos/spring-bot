@@ -3,21 +3,26 @@ package org.finos.springbot.teams.templating;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import org.finos.springbot.teams.AbstractMockTeamsTest;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.form.Button;
+import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.AbstractTemplatingTest;
 import org.finos.springbot.workflow.templating.Mode;
+import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.junit.jupiter.api.Assertions;
@@ -37,6 +42,9 @@ public class TemplatingTest extends AbstractTemplatingTest{
 
 	@Autowired
 	List<TypeConverter<JsonNode>> converters;
+	
+	@Autowired 
+	Rendering<JsonNode> r;
 	
 	WorkTemplater<JsonNode> templater;
 	
@@ -59,14 +67,22 @@ public class TemplatingTest extends AbstractTemplatingTest{
 
 	@BeforeEach
 	public void doSetup() {
-		templater = new AdaptiveCardTemplater(converters);
+		templater = new AdaptiveCardTemplater(converters, r);
 		om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
 	}
 
 	@Override
 	protected void testTemplating(WorkResponse workResponse, String testName) {
-	    try {			    
+	    try {		
+	    	// populate with at least one button
+	    	Map<String, Object> data = workResponse.getData();
+	    	ButtonList bl = (ButtonList) data.get(ButtonList.KEY);
+	    	if ((bl == null) || (bl.getContents().size() == 0)) {
+	    		data.put(ButtonList.KEY, new ButtonList(
+	    				Arrays.asList(new Button("test", Button.Type.ACTION, "Submit"))));
+	    	}
+ 	    	
 			// actual template
 			new File("target/tests").mkdirs();
 			JsonNode actualNode = templater.convert(workResponse.getFormClass(), translateMode(workResponse));

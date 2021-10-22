@@ -16,6 +16,9 @@ import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.form.Button;
+import org.finos.springbot.workflow.form.Button.Type;
+import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.fixture.BooleanWork;
 import org.finos.springbot.workflow.templating.fixture.ChatWork;
@@ -294,6 +297,24 @@ public abstract class AbstractTemplatingTest {
 
 	protected abstract void testTemplating(WorkResponse workResponse, String testName);
 
+	
+	@Test
+	public void testSomeButtons() {
+		StringWork out = new StringWork();
+		out.setS("ALARM");
+
+		ButtonList bl = new ButtonList(Arrays.asList(
+				new Button("do.thing", Type.ACTION, "Do The Thing"),
+				new Button("stop.it", Type.ACTION, "Abort")));
+		
+	
+		Map<String, Object> data = new HashMap<>();
+		data.put(ButtonList.KEY, bl);
+		data.put(WorkResponse.OBJECT_KEY, out);
+		
+		WorkResponse wr = new WorkResponse(getTo(), data, null, WorkMode.EDIT, StringWork.class);
+		testTemplating(wr, "SomeButtons");
+	}
 	
 
 }
