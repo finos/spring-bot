@@ -1,4 +1,4 @@
-package org.finos.springbot.workflow.templating.fixture;
+package org.finos.springbot.workflow.work;
 
 import org.finos.springbot.workflow.annotations.Work;
 
