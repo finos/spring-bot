@@ -1,4 +1,4 @@
-package org.finos.springbot.fixture;
+package org.finos.springbot.workflow.controller;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatVariable;
@@ -16,7 +15,6 @@ import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.Table;
-import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.form.Button;
@@ -48,6 +46,7 @@ public class OurController {
 		// do your own form processing
 		lastArguments = Collections.singletonList(arg);
 		lastMethod = "callPerson";
+		return Arrays.asList(new TestObject());
 	}
 	
 	@ChatButton(value = StartClaim.class, buttonText = "start", rooms={"The Room Where It Happened"})
@@ -108,7 +107,7 @@ public class OurController {
 	@ChatRequest({
 		"add {user} to {hashtag}", 
 		"add {user} {hashtag}"}) 
-	public void addUserToTopic(@ChatVariable("user") User u, @ChatVariable("hashtag") TeamsChat t) {
+	public void addUserToTopic(@ChatVariable("user") User u, @ChatVariable("hashtag") Chat t) {
 		// provide some processing for a block of code
 		lastArguments = Arrays.asList(u, t);
 		lastMethod = "addUserToTopic";
@@ -116,7 +115,7 @@ public class OurController {
 	
 	
 	@ChatRequest(admin = true, value = "delete {user}")
-	public void removeUserFromRoom(@ChatVariable("user") User u, TeamsChat r) {
+	public void removeUserFromRoom(@ChatVariable("user") User u, Chat r) {
 		lastArguments = Arrays.asList(u, r);
 		lastMethod = "removeUserFromRoom";	
 	}

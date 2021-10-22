@@ -12,7 +12,6 @@ import java.util.stream.IntStream;
 import org.finos.springbot.teams.AbstractMockTeamsTest;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
-import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;

@@ -2,17 +2,6 @@ package org.finos.springbot.workflow.content;
 
 import java.util.Arrays;
 
-import org.finos.springbot.workflow.content.BlockQuote;
-import org.finos.springbot.workflow.content.CodeBlock;
-import org.finos.springbot.workflow.content.Content;
-import org.finos.springbot.workflow.content.Heading;
-import org.finos.springbot.workflow.content.Image;
-import org.finos.springbot.workflow.content.Link;
-import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.OrderedList;
-import org.finos.springbot.workflow.content.Paragraph;
-import org.finos.springbot.workflow.content.Table;
-import org.finos.springbot.workflow.content.UnorderedList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

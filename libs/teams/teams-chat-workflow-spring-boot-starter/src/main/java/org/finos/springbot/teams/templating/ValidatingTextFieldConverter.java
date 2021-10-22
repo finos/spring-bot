@@ -1,9 +1,11 @@
 package org.finos.springbot.teams.templating;
 
-import java.util.function.Function;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
+import org.finos.springbot.workflow.templating.Variable;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -13,8 +15,12 @@ public class ValidatingTextFieldConverter extends TextFieldConverter<JsonNode> {
 		super(priority, r, forClass);
 	}
 
-	protected Function<JsonNode, JsonNode> textFieldDetails() {
-		return (j) -> j;
+	@Override
+	public JsonNode apply(Field ctx, Type t, boolean editMode, Variable variable) {
+		return super.apply(ctx, t, editMode, variable);
+		
+		// add validation
 	}
 
+	
 }

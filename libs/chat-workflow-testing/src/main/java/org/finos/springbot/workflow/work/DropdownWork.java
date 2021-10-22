@@ -1,4 +1,4 @@
-package org.finos.springbot.workflow.templating.fixture;
+package org.finos.springbot.workflow.work;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package org.finos.springbot.fixture;
+package org.finos.springbot.workflow.controller;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
