@@ -8,6 +8,9 @@ package org.finos.springbot.workflow.content;
  */
 public interface Chat extends Addressable {
 
+	/**
+	 * Human-readable identifier for chat
+	 */
 	public String getName();
-	
+
 }

@@ -8,8 +8,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.finos.springbot.workflow.annotations.RequiresChatList;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
@@ -58,26 +60,36 @@ public abstract class AbstractTemplatingTest {
 		testTemplating(new WorkResponse(getTo(), out, WorkMode.EDIT), "BooleanWorkEdit");
 	}
 	
-	@Test
-	public void testChatWorkView() {
+	private WorkResponse createChatWorkResponse(WorkMode wm) {
 		ChatWork out = new ChatWork();
 		out.setS(getChat());
-		testTemplating(new WorkResponse(getTo(), out, WorkMode.VIEW), "ChatWorkView");
+
+		List<Chat> bigList = createSomeChats(10);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put(RequiresChatList.CHAT_LIST_KEY, bigList);
+		data.put(WorkResponse.OBJECT_KEY, out);
+		
+		return new WorkResponse(getTo(), data, null, wm, ChatWork.class);
+	}
+	
+	@Test
+	public void testChatWorkView() {
+		testTemplating(createChatWorkResponse(WorkMode.VIEW), "ChatWorkView");
 	}
 	
 	@Test
 	public void testChatWorkEdit() {
-		ChatWork out = new ChatWork();
-		out.setS(getChat());
-		testTemplating(new WorkResponse(getTo(), out, WorkMode.EDIT), "ChatWorkEdit");
+		testTemplating(createChatWorkResponse(WorkMode.EDIT), "ChatWorkEdit");
 	}
 	
 	private CollectionBeanWork createCollectionBean() {
 		CollectionBeanWork out = new CollectionBeanWork();
 		Inner inner1 = new CollectionBeanWork.Inner();
 		inner1.setS("first");
+		inner1.setB(true);
 		Inner inner2 = new CollectionBeanWork.Inner();
-		inner1.setS("second");		
+		inner2.setS("second");		
 		out.setInners(Arrays.asList(inner1, inner2));
 		return out;
 	}
@@ -251,18 +263,33 @@ public abstract class AbstractTemplatingTest {
 		return ew;
 	}
 	
-	@Test
-	public void testUserWorkView() {
+	protected abstract List<User> createSomeUsers(int count);
+	
+	protected abstract List<Chat> createSomeChats(int count);
+
+	private WorkResponse createUserWorkResponse(WorkMode wm) {
 		UserWork out = new UserWork();
 		out.setS(getUser());
-		testTemplating(new WorkResponse(getTo(), out, WorkMode.VIEW), "UserWorkView");
+
+		List<User> bigList = createSomeUsers(5);
+		List<User> smallList = createSomeUsers(3);
+		
+		Map<String, Object> data = new HashMap<>();
+		data.put("biglist", bigList);
+		data.put("smalllist", smallList);
+		data.put(WorkResponse.OBJECT_KEY, out);
+		
+		return new WorkResponse(getTo(), data, null, wm, UserWork.class);
+	}
+	
+	@Test
+	public void testUserWorkView() {
+		testTemplating(createUserWorkResponse(WorkMode.VIEW), "UserWorkView");
 	}
 	
 	@Test
 	public void testUserWorkEdit() {
-		UserWork out = new UserWork();
-		out.setS(getUser());
-		testTemplating(new WorkResponse(getTo(), out, WorkMode.EDIT), "UserWorkEdit");
+		testTemplating(createUserWorkResponse(WorkMode.EDIT), "UserWorkEdit");
 	}
 
 	protected abstract void testTemplating(WorkResponse workResponse, String testName);

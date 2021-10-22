@@ -82,7 +82,7 @@ public class TeamsHTMLParserTest {
 		
 		Assertions.assertEquals(3, mentions1.size());
 		Assertions.assertEquals("Suresh Rupnar", mentions1.get(1).getName());
-		Assertions.assertEquals("abc123", mentions1.get(0).getId());
+		Assertions.assertEquals("abc123", mentions1.get(0).getKey());
 		
 	}
 

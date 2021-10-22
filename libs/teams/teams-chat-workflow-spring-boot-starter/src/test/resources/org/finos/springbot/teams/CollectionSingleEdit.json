@@ -1,0 +1,116 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Ints",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "Container",
+          "items" : [ {
+            "type" : "Container",
+            "style" : "default",
+            "items" : [ {
+              "type" : "TextBlock",
+              "text" : "${if($data,string($data),'')}"
+            }, {
+              "type" : "ColumnSet",
+              "separator" : true,
+              "columns" : [ {
+                "type" : "Column",
+                "verticalContentAlignment" : "Center",
+                "items" : [ {
+                  "type" : "Input.Toggle",
+                  "value" : "${form.ints}",
+                  "id" : "ints",
+                  "title" : "Select"
+                } ]
+              }, {
+                "type" : "Column",
+                "verticalContentAlignment" : "Center",
+                "items" : [ {
+                  "type" : "ActionSet",
+                  "actions" : [ {
+                    "type" : "Action.Submit",
+                    "title" : "Edit",
+                    "id" : "form.intstable-edit-row"
+                  } ]
+                } ]
+              } ]
+            } ],
+            "$data" : "${form.ints}"
+          }, {
+            "type" : "ActionSet",
+            "actions" : [ {
+              "type" : "Action.Submit",
+              "title" : "Delete Selected",
+              "id" : "form.intstable-delete-rows"
+            } ]
+          } ]
+        } ]
+      } ]
+    }, {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Strings",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "Container",
+          "items" : [ {
+            "type" : "Container",
+            "style" : "default",
+            "items" : [ {
+              "type" : "TextBlock",
+              "text" : "${if($data,string($data),'')}"
+            }, {
+              "type" : "ColumnSet",
+              "separator" : true,
+              "columns" : [ {
+                "type" : "Column",
+                "verticalContentAlignment" : "Center",
+                "items" : [ {
+                  "type" : "Input.Toggle",
+                  "value" : "${form.strings}",
+                  "id" : "strings",
+                  "title" : "Select"
+                } ]
+              }, {
+                "type" : "Column",
+                "verticalContentAlignment" : "Center",
+                "items" : [ {
+                  "type" : "ActionSet",
+                  "actions" : [ {
+                    "type" : "Action.Submit",
+                    "title" : "Edit",
+                    "id" : "form.stringstable-edit-row"
+                  } ]
+                } ]
+              } ]
+            } ],
+            "$data" : "${form.strings}"
+          }, {
+            "type" : "ActionSet",
+            "actions" : [ {
+              "type" : "Action.Submit",
+              "title" : "Delete Selected",
+              "id" : "form.stringstable-delete-rows"
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  } ]
+}

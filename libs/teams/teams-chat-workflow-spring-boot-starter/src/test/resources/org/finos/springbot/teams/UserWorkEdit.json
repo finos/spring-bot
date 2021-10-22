@@ -1,0 +1,30 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Input.ChoiceSet",
+      "value" : "${form.b.key}",
+      "id" : "b.key",
+      "choices" : [ {
+        "$data" : "${biglist}",
+        "title" : "${name}",
+        "value" : "${key}"
+      } ],
+      "label" : "B"
+    }, {
+      "type" : "Input.ChoiceSet",
+      "value" : "${form.s.key}",
+      "id" : "s.key",
+      "choices" : [ {
+        "$data" : "${smalllist}",
+        "title" : "${name}",
+        "value" : "${key}"
+      } ],
+      "label" : "S"
+    } ]
+  } ]
+}

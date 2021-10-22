@@ -39,7 +39,7 @@ public class ACVariable implements Variable {
 	}
 	
 	public ACVariable index() {
-		return new ACVariable(depth + 1, "");
+		return new ACVariable(depth + 1, "$data");
 	}
 	
 	public String getDisplayName() {

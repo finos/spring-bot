@@ -14,11 +14,7 @@ public class DropdownAnnotationConverter<X> extends AbstractSimpleTypeConverter<
 	@Override
 	protected X apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		Dropdown dd = getDropdownAnnotation(ctx);
-		if (editMode) {
-			return r.renderDropdown(variable, dd.data(), dd.key(), dd.value());
-		} else {
-			return r.renderDropdownView(variable, dd.data(), dd.key(), dd.value());
-		}
+		return r.renderDropdown(variable, dd.data(), dd.key(), dd.value(), editMode);
 	}
 
 

@@ -30,7 +30,7 @@ public class BeanConverter<X> extends AbstractComplexTypeConverter<X> {
 		if (showDetails.expand()) {
 			Class<?> element = (Class<?>) t;
 			List<X> contents = withFields(controller, element, editMode, variable, propertyPanel(showDetails));
-			return r.propertyPanel(contents);
+			return r.list(element, contents, editMode);
 		} else {
 			return r.description("some object");
 		}
@@ -42,7 +42,7 @@ public class BeanConverter<X> extends AbstractComplexTypeConverter<X> {
             @Override
             public X apply(Field f, boolean editMode, Variable variable, WithType<X> controller) {
 				String fieldNameOrientation = getFieldNameOrientation(f);
-				return r.property(fieldNameOrientation, inner.apply(f, editMode, variable, controller));
+				return r.addFieldName(fieldNameOrientation, inner.apply(f, editMode, variable, controller));
 			}
 
 			@Override

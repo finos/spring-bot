@@ -1,0 +1,92 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Inners",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "Container",
+          "items" : [ {
+            "type" : "Container",
+            "style" : "default",
+            "items" : [ {
+              "type" : "Container",
+              "style" : "emphasis",
+              "items" : [ {
+                "type" : "Container",
+                "items" : [ {
+                  "type" : "TextBlock",
+                  "text" : "String Field",
+                  "wrap" : true
+                }, {
+                  "type" : "Container",
+                  "style" : "default",
+                  "items" : [ {
+                    "type" : "TextBlock",
+                    "text" : "${if($data.s,string($data.s),'')}"
+                  } ]
+                } ]
+              }, {
+                "type" : "Container",
+                "items" : [ {
+                  "type" : "TextBlock",
+                  "text" : "Boolean field",
+                  "wrap" : true
+                }, {
+                  "type" : "Container",
+                  "style" : "default",
+                  "items" : [ {
+                    "type" : "TextBlock",
+                    "text" : "${if($data.b,'☑','☐')}"
+                  } ]
+                } ]
+              } ]
+            }, {
+              "type" : "ColumnSet",
+              "separator" : true,
+              "columns" : [ {
+                "type" : "Column",
+                "verticalContentAlignment" : "Center",
+                "items" : [ {
+                  "type" : "Input.Toggle",
+                  "value" : "${form.inners}",
+                  "id" : "inners",
+                  "title" : "Select"
+                } ]
+              }, {
+                "type" : "Column",
+                "verticalContentAlignment" : "Center",
+                "items" : [ {
+                  "type" : "ActionSet",
+                  "actions" : [ {
+                    "type" : "Action.Submit",
+                    "title" : "Edit",
+                    "id" : "form.innerstable-edit-row"
+                  } ]
+                } ]
+              } ]
+            } ],
+            "$data" : "${form.inners}"
+          }, {
+            "type" : "ActionSet",
+            "actions" : [ {
+              "type" : "Action.Submit",
+              "title" : "Delete Selected",
+              "id" : "form.innerstable-delete-rows"
+            } ]
+          } ]
+        } ]
+      } ]
+    } ]
+  } ]
+}

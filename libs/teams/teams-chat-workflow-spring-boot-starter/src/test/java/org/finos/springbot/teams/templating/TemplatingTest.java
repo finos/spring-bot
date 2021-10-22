@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.finos.springbot.teams.AbstractMockTeamsTest;
 import org.finos.springbot.teams.content.TeamsChat;
@@ -96,6 +99,20 @@ public class TemplatingTest extends AbstractTemplatingTest{
 
 	protected Mode translateMode(WorkResponse workResponse) {
 		return workResponse.getMode() == WorkMode.EDIT ? Mode.FORM : Mode.DISPLAY;
+	}
+
+	@Override
+	protected List<User> createSomeUsers(int count) {
+		return IntStream.range(0, count)
+				.mapToObj(i -> i == 0 ? getUser() : new TeamsUser("idu"+i, "Name of "+i))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	protected List<Chat> createSomeChats(int count) {
+		return IntStream.range(0, count)
+				.mapToObj(i -> i == 0 ? getChat() : new TeamsChat("idc"+i, "Chat name of "+i))
+				.collect(Collectors.toList());
 	}
 
 }

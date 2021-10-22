@@ -24,8 +24,10 @@ import org.finos.springbot.workflow.java.resolvers.ResolverConfig;
 import org.finos.springbot.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.handlers.ButtonsResponseHandler;
+import org.finos.springbot.workflow.response.handlers.ChatListResponseHandler;
 import org.finos.springbot.workflow.response.handlers.ResponseHandler;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
+import org.finos.springbot.workflow.response.handlers.UserListResponseHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -67,6 +69,18 @@ public class ChatWorkflowConfig {
 	@ConditionalOnMissingBean
 	public ButtonsResponseHandler buttonsResponseHandler() {
 		return new ButtonsResponseHandler();
+	} 
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ChatListResponseHandler chatListResponseHandler() {
+		return new ChatListResponseHandler(allConversations());
+	} 
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public UserListResponseHandler userListResponseHandler() {
+		return new UserListResponseHandler(allConversations());
 	} 
 	
 	@Bean

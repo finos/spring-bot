@@ -97,12 +97,12 @@ public class FreemarkerRendering implements Rendering<String> {
 	}
 
 	@Override
-	public String propertyPanel(List<String> contents) {
+	public String list(List<String> contents) {
 		return "<table>" + contents.stream().reduce(String::concat) + "</table>";
 	}
 
 	@Override
-	public String property(String field, String value) {
+	public String addFieldName(String field, String value) {
 		return field == null ? "" : "<tr><td><b>" + field + ":</b></td><td>" + value + "</td></tr>";
 	}
 

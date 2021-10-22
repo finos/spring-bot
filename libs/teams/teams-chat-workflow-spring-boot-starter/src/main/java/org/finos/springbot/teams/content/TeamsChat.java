@@ -9,11 +9,11 @@ import org.finos.springbot.workflow.content.Tag;
 @Work(index = false)
 public class TeamsChat implements Chat, TeamsAddressable, TeamsContent, Tag {
 
-	final String id;
+	final String key;
 	final String name;
 	
 	public TeamsChat(String id, String name) {
-		this.id = id;
+		this.key = id;
 		this.name = name;
 	}
 
@@ -29,13 +29,13 @@ public class TeamsChat implements Chat, TeamsAddressable, TeamsContent, Tag {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(key);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof TeamsChat) {
-			return this.id.equals(((TeamsChat) obj).getId());
+			return this.key.equals(((TeamsChat) obj).getKey());
 		} else {
 			return false;
 		}
@@ -46,8 +46,8 @@ public class TeamsChat implements Chat, TeamsAddressable, TeamsContent, Tag {
 		return Tag.MENTION;
 	}
 
-	public String getId() {
-		return id;
+	public String getKey() {
+		return key;
 	}
 	
 }

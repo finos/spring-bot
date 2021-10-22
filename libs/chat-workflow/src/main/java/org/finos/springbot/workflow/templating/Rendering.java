@@ -1,42 +1,37 @@
 package org.finos.springbot.workflow.templating;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 public interface Rendering<X> {
 
 	X description(String d);
-	
-	X text(Variable v);
 
-	X propertyPanel(List<X> contents);
+	X list(Class<?> of, List<X> contents, boolean editable);
 
-	X property(String field, X value);
-	
-	X button(String name, String text);
-	
+	X addFieldName(String field, X value);
+		
 	X renderDropdown(
 		Variable variable, 
 		String location, 
 		String key, 
-		String value);
+		String value,
+		boolean editable);
 	
 	X renderDropdown(
 			Variable variable, 
-			Map<String, String> options);
-	
-	X renderDropdownView(
-		Variable variable, 
-		String location, 
-		String key, 
-		String value);
-	
-	X renderDropdownView(
-			Variable variable, 
-			Map<String, String> options);
+			Map<String, String> options,
+			boolean editable);
 
-	X textField(Variable variable, Function<X, X> change);
+	X textField(Variable variable, boolean editable);
+	
+	X checkBox(Variable variable, boolean editable);
 
+	X collection(Type t, Variable v, X in, boolean editable);
+
+	X button(String name, String value);
+	
+	X buttons(String location);
 
 }
