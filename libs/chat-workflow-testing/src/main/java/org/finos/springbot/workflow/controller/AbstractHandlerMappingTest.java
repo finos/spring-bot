@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow;
+package org.finos.springbot.workflow.controller;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,6 +25,8 @@ import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
 import org.finos.springbot.workflow.response.ErrorResponse;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.symphony.toolkit.workflow.AbstractMockSymphonyTest;
+import org.finos.symphony.toolkit.workflow.AbstractMockSymphonyTest.MockConfiguration;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.fixture.StartClaim;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
@@ -54,26 +56,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 		SymphonyWorkflowConfig.class,
 })
 @ExtendWith(SpringExtension.class)
-public class TestHandlerMapping extends AbstractMockSymphonyTest {
+public abstract class AbstractHandlerMappingTest {
 
 	@Autowired
 	OurController oc;
 	
-	@Autowired
-	ChatRequestChatHandlerMapping hm;
-		
-	@Autowired
-	SymphonyResponseHandler rh;
-	
-	@Autowired
-	ChatHandlerMappingActionConsumer mc;
-	
-	@Autowired
-	EntityJsonConverter ejc;
-	
-	@Autowired
-	MessageMLParser smp;
-
 	@Test
 	public void checkMappings() throws Exception {
 		Assertions.assertEquals(15, hm.getHandlerMethods().size());
