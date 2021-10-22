@@ -26,5 +26,13 @@
       } ],
       "label" : "S"
     } ]
+  }, {
+    "type" : "ActionSet",
+    "actions" : [ {
+      "type" : "Action.Submit",
+      "title" : "${text}",
+      "id" : "${name}",
+      "$data" : "${buttons.contents}"
+    } ]
   } ]
 }

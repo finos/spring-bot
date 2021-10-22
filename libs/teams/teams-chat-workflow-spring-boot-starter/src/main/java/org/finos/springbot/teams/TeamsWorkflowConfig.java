@@ -28,6 +28,7 @@ import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
+import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.slf4j.Logger;
@@ -70,6 +71,9 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Autowired
 	ApplicationContext ac;
 	
+	@Autowired
+	Rendering<JsonNode> r;
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public MarkupWriter teamsHTMLWriter() {
@@ -101,7 +105,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public TeamsTemplateProvider workTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/teams}") String prefix,
 			@Value("${symphony.templates.suffix:.json}") String suffix,
-			WorkTemplater<JsonNode, WorkMode> formConverter) throws IOException {
+			WorkTemplater<JsonNode> formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
 	}
 	
@@ -118,9 +122,9 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public WorkTemplater<JsonNode, WorkMode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters) {
+	public WorkTemplater<JsonNode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters) {
 		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
-		return new AdaptiveCardTemplater(converters);
+		return new AdaptiveCardTemplater(converters, r);
 	}
 //	
 //	@Bean

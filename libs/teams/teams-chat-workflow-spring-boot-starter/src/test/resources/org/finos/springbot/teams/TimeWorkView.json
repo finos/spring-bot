@@ -1,0 +1,94 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "I",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "TextBlock",
+          "text" : "${if(form.i,formatEpoch(form.i),'')}"
+        } ]
+      } ]
+    }, {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Ldt",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "TextBlock",
+          "text" : "${if(form.ldt,string(form.ldt),'')}"
+        } ]
+      } ]
+    }, {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Zid",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "TextBlock",
+          "text" : "${if(form.zid,string(form.zid),'')}"
+        } ]
+      } ]
+    }, {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Ld",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "TextBlock",
+          "text" : "${if(form.ld,string(form.ld),'')}"
+        } ]
+      } ]
+    }, {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Lt",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "TextBlock",
+          "text" : "${if(form.lt,string(form.lt),'')}"
+        } ]
+      } ]
+    }, {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "Zdt",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "TextBlock",
+          "text" : "${if(form.zdt,formatEpoch(form.zdt),'')}"
+        } ]
+      } ]
+    } ]
+  } ]
+}
