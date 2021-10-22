@@ -44,7 +44,6 @@ public interface Tag extends Content {
 	/**
 	 * Screen, display name
 	 */
-	@JsonIgnore
 	public String getName();
 	
 	@JsonIgnore

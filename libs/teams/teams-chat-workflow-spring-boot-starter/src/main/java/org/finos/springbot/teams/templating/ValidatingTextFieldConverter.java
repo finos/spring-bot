@@ -7,9 +7,9 @@ import org.finos.springbot.workflow.templating.TextFieldConverter;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class StringConverter extends TextFieldConverter<JsonNode> {
+public class ValidatingTextFieldConverter extends TextFieldConverter<JsonNode> {
 
-	public StringConverter(int priority, Rendering<JsonNode> r, Class<?>... forClass) {
+	public ValidatingTextFieldConverter(int priority, Rendering<JsonNode> r, Class<?>... forClass) {
 		super(priority, r, forClass);
 	}
 

@@ -1,10 +1,12 @@
 package org.finos.springbot.teams.templating.helper;
 
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
+import org.finos.springbot.workflow.actions.form.TableDeleteRows;
+import org.finos.springbot.workflow.actions.form.TableEditRow;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
 import org.springframework.util.StringUtils;
@@ -24,56 +26,72 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		ObjectNode out = f.objectNode();
 		out.put("type", "TextBlock");
 		out.put("text", d);
-		//out.put("weight", "Bolder");
+		//out.put("weight", "bolder");
 		out.put("wrap", true);
 		return out;
 	}
 	
-	@Override
-	public JsonNode text(Variable v) {
-		ObjectNode out = f.objectNode();
-		out.put("type", "TextBlock");
-		out.put("text", nullProof(v));
-		return out;
-	}
-
 	protected String nullProof(Variable v) {
 		return "${if("+v.getDataPath()+",string("+v.getDataPath()+"),'')}";
 	}
 
 	@Override
-	public JsonNode textField(Variable variable, Function<JsonNode, JsonNode> change) {
-		ObjectNode on = AdaptiveCardRendering.f.objectNode();
-		on.put("type", "Input.Text");
-		on.put("value", nullProof(variable));
-		on.put("id", variable.getFormFieldName());
-		return change.apply(on);
+	public JsonNode textField(Variable variable, boolean editMode) {
+		if (editMode) {
+			ObjectNode on = AdaptiveCardRendering.f.objectNode();
+			on.put("type", "Input.Text");
+			on.put("value", nullProof(variable));
+			on.put("id", variable.getFormFieldName());
+			return on;
+		} else {
+			ObjectNode out = f.objectNode();
+			out.put("type", "TextBlock");
+			out.put("text", nullProof(variable));
+			return out;
+		}
+	}
+		
+	@Override
+	public ObjectNode list(Class<?> on, List<JsonNode> contents, boolean editMode) {
+		ObjectNode out = rows("emphasis", contents);
+		return out;
 	}
 	
-
+	private ObjectNode rows(String style, List<JsonNode> rows) {
+		return rows(style, rows.toArray(JsonNode[]::new));
+	}
 	
-	@Override
-	public ObjectNode propertyPanel(List<JsonNode> contents) {
+	private ObjectNode rows(String style, JsonNode... rows) {
 		ObjectNode out = f.objectNode();
 		out.put("type", "Container");
-		out.put("style", "emphasis");
+		if (StringUtils.hasText(style)) {
+			out.put("style", style);
+		}
 		ArrayNode an = out.putArray("items");
-		contents.forEach(c -> an.add(c));
+		Arrays.stream(rows).forEach(c -> an.add(c));
+		return out;
+	}
+	
+	private ObjectNode columns(JsonNode... items) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "ColumnSet");
+		out.put("separator", true);
+		ArrayNode content = out.putArray("columns");
+		Arrays.stream(items).forEach(i -> {
+			ObjectNode col = f.objectNode();
+			col.put("type", "Column");
+			col.put("verticalContentAlignment", "Center");
+			ArrayNode colContent = col.putArray("items");
+			colContent.add(i);
+			content.add(col);
+		});
 		return out;
 	}
 
 	@Override
-	public JsonNode property(String field, JsonNode value) {
+	public JsonNode addFieldName(String field, JsonNode value) {
 		if (!StringUtils.hasText(field)) {
 			return null;
-		} else if (value.get("type").asText().equals("TextBlock")) {
-			ObjectNode out = f.objectNode();
-			out.put("type", "FactSet");
-			ObjectNode fact = f.objectNode();
-			out.putArray("facts").add(fact);
-			fact.put("title", field);
-			fact.put("value", value.get("text").asText());
-			return out;
 		} else if (value.get("type").asText().equals("Input.Toggle")) {
 			ObjectNode on = (ObjectNode) value;
 			on.put("title", field);
@@ -83,79 +101,87 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 			on.put("label", field);
 			return on;
 		} else {
-			ObjectNode container = propertyPanel(
-				Arrays.asList(description(field), propertyPanel(Arrays.asList(value))));
+			JsonNode desc = description(field);
+			ObjectNode out = rows("", desc, rows("default", value));
+			return out;
+		}
+	}
+	
+	public JsonNode buttons(String location) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "ActionSet");
+		ArrayNode actions = out.putArray("actions");
+		ObjectNode submit = f.objectNode();
+		submit.put("type", "Action.Submit");
+		submit.put("title", "${text}");
+		submit.put("id", "${name}");
+		submit.put("$data", "${"+location+"}");
+		actions.add(submit);
+		return out;
+	}
+
+	@Override
+	public JsonNode button(String name, String value) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "ActionSet");
+		ArrayNode actions = out.putArray("actions");
+		ObjectNode submit = f.objectNode();
+		submit.put("type", "Action.Submit");
+		submit.put("title", name);
+		submit.put("id", value);
+		actions.add(submit);
+		return out;
+	}
+	
+	
+
+	@Override
+	public JsonNode renderDropdown(Variable variable, String location, String key, String value, boolean editMode) {
+		if (editMode) {
+			ObjectNode out = f.objectNode();
+			out.put("type", "Input.ChoiceSet");
+			out.put("value", "${"+variable.getDataPath()+"}");
+			out.put("id", variable.getFormFieldName());
+			ArrayNode an = out.putArray("choices");
 			
-			container.put("style", "default");
-			return container;
-//			
-//			out.put("type", "Container");
-//			ObjectNode nameColumn = f.objectNode();
-//			nameColumn.put("type", "TextBlock");
-//			nameColumn.put("width", "auto");
-//			nameColumn.putArray("items").add(description(field));
-//			
-//			ObjectNode valueColumn = f.objectNode();
-//			valueColumn.put("type", "Column");
-//			valueColumn.put("width", "stretch");
-//			valueColumn.putArray("items").add(value);
-//			
-//			ArrayNode columns = out.putArray("columns");
-//			columns.add(nameColumn);
-//			columns.add(valueColumn);
-//			return out;
+			ObjectNode choice = f.objectNode();
+			choice.put("$data", "${"+location+"}");
+			choice.put("title", "${"+value+"}");
+			choice.put("value", "${"+key+"}");
+			an.add(choice);
+			
+			return out;
+		} else {
+			ObjectNode out = f.objectNode();
+			out.put("type", "TextBlock");
+			out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
+			return out;
 		}
 	}
 
 	@Override
-	public JsonNode button(String name, String text) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-
-	@Override
-	public JsonNode renderDropdown(Variable variable, String location, String key, String value) {
-		ObjectNode out = f.objectNode();
-		out.put("type", "Input.ChoiceSet");
-		out.put("value", "${"+variable.getDataPath()+"}");
-		out.put("id", variable.getFormFieldName());
-		ArrayNode an = out.putArray("choices");
-		
-		ObjectNode choice = f.objectNode();
-		choice.put("$data", "${"+location+"}");
-		choice.put("title", "${"+value+"}");
-		choice.put("value", "${"+key+"}");
-		an.add(choice);
-		
-		return out;
-	}
-
-	@Override
-	public JsonNode renderDropdownView(Variable variable, String location, String key, String value) {
-		ObjectNode out = f.objectNode();
-		out.put("type", "TextBlock");
-		out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
-		return out;
-	}
-
-	@Override
-	public JsonNode renderDropdown(Variable variable, Map<String, String> options) {
-		ObjectNode out = f.objectNode();
-		out.put("type", "Input.ChoiceSet");
-		out.put("value", "${"+variable.getDataPath()+"}");
-		out.put("id", variable.getFormFieldName());
-		ArrayNode an = out.putArray("choices");
-		
-		options.forEach((k, v) -> {
-			ObjectNode choice = f.objectNode();
-			choice.put("title", k);
-			choice.put("value", prettyPrint(v));
-			an.add(choice);
-		});
-		
-		return out;
+	public JsonNode renderDropdown(Variable variable, Map<String, String> options, boolean editMode) {
+		if (editMode) {
+			ObjectNode out = f.objectNode();
+			out.put("type", "Input.ChoiceSet");
+			out.put("value", "${"+variable.getDataPath()+"}");
+			out.put("id", variable.getFormFieldName());
+			ArrayNode an = out.putArray("choices");
+			
+			options.forEach((k, v) -> {
+				ObjectNode choice = f.objectNode();
+				choice.put("title", k);
+				choice.put("value", prettyPrint(v));
+				an.add(choice);
+			});
+			
+			return out;
+		} else {
+			ObjectNode out = f.objectNode();
+			out.put("type", "TextBlock");
+			out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
+			return out;
+		}
 	}
 
 	private String prettyPrint(String v) {
@@ -165,15 +191,37 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	}
 
 	@Override
-	public JsonNode renderDropdownView(Variable variable, Map<String, String> options) {
-		ObjectNode out = f.objectNode();
-		out.put("type", "TextBlock");
-		out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
-		return out;
+	public JsonNode checkBox(Variable variable, boolean editMode) {
+		if (editMode) {
+			ObjectNode out = AdaptiveCardRendering.f.objectNode();
+			out.put("type", "Input.Toggle");
+			out.put("value", "${"+ variable.getDataPath()+"}");
+			out.put("id", variable.getFormFieldName());
+			return out;
+		} else {
+			ObjectNode out = AdaptiveCardRendering.f.objectNode();
+			out.put("type", "TextBlock");
+			out.put("text", "${if("+variable.getDataPath()+",'☑','☐')}");
+			return out;
+		}
 	}
 
-	
-	
-	
+	@Override
+	public JsonNode collection(Type t, Variable v, JsonNode in, boolean editable) {
+		if (editable) {
+			JsonNode cb = addFieldName("Select", checkBox(v, true));
+			JsonNode edit = button("Edit", v.getDataPath()+TableEditRow.EDIT_SUFFIX);
+			ObjectNode footer = columns(cb, edit);
+			ObjectNode out = rows("default", in, footer);
+			out.put("$data", "${"+v.getDataPath()+"}");
+			
+			JsonNode delete = button("Delete Selected", v.getDataPath()+TableDeleteRows.ACTION_SUFFIX);
+			
+			return rows("", out, delete);
+		} else {
+			((ObjectNode)in).put("$data", "${"+v.getDataPath()+"}");
+			return in;
+		}
+	}
 	
 }

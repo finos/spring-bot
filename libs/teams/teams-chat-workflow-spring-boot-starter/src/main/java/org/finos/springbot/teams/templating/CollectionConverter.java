@@ -13,7 +13,6 @@ import org.finos.springbot.workflow.templating.WithField;
 import org.finos.springbot.workflow.templating.WithType;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class CollectionConverter extends AbstractComplexTypeConverter<JsonNode> {
 	
@@ -40,10 +39,9 @@ public class CollectionConverter extends AbstractComplexTypeConverter<JsonNode> 
 			TypeConverter<JsonNode> elementTypeConverter = controller.getConverter(null, elementClass, controller);
 			Variable child = variable.index();
 			JsonNode propertyPanel = elementTypeConverter.apply(null, controller, elementClass, false, child, collectionValues());
-			((ObjectNode) propertyPanel).put("$data", "${"+variable.getDataPath()+"}");
-			return propertyPanel;
+			return r.collection(elementClass, variable, propertyPanel, editMode);
 		} else {
-			return r.text(variable);
+			return r.textField(variable, false);
 		}
 	}
 	
@@ -60,9 +58,6 @@ public class CollectionConverter extends AbstractComplexTypeConverter<JsonNode> 
             public JsonNode apply(Field f, boolean editMode, Variable variable, WithType<JsonNode> contentHandler) {
             	Type t = f.getGenericType();
             	JsonNode out = contentHandler.apply(null, contentHandler, t, editMode, variable, null);
-            	
-            	// add checkbox/delete button
-            	
             	return out;
             }
         };

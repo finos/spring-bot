@@ -3,9 +3,9 @@ package org.finos.springbot.teams.handlers;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.templating.AbstractResourceTemplateProvider;
+import org.finos.springbot.workflow.templating.Mode;
 import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.HostAccess;
@@ -21,7 +21,7 @@ import com.google.common.base.Charsets;
 
 public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, WorkResponse> {
 
-	private final WorkTemplater<JsonNode, WorkMode> formConverter;
+	private final WorkTemplater<JsonNode> formConverter;
 	
 	private ObjectMapper om;
 	
@@ -31,7 +31,7 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 			String templatePrefix, 
 			String templateSuffix, 
 			ResourceLoader rl, 
-			WorkTemplater<JsonNode, WorkMode> formConverter
+			WorkTemplater<JsonNode> formConverter
 		) throws IOException {
 		super(templatePrefix, templateSuffix, rl);
 		this.formConverter = formConverter;
@@ -61,10 +61,11 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 		JsonNode insert;
 		if (WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
 			Class<?> c = ((WorkResponse) r).getFormClass();
-			insert = formConverter.convert(c, WorkMode.EDIT);
+			insert = formConverter.convert(c, Mode.FORM);
 		} else if (WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
 			Class<?> c = ((WorkResponse) r).getFormClass();
-			insert = formConverter.convert(c, WorkMode.VIEW);
+			boolean needsButtons = needsButtons(r);						
+			insert = formConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
 		} else {
 			throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
 		}
@@ -72,6 +73,11 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 		return insert;
 	}
 	
+	protected boolean needsButtons(WorkResponse r) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	@Override
 	protected JsonNode deserializeTemplate(InputStream is) throws IOException {
 		return om.readTree(is);
