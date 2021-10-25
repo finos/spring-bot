@@ -12,6 +12,7 @@ import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.CodeBlock;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.Paragraph;
 import org.finos.springbot.workflow.content.Table;
@@ -55,10 +56,10 @@ public abstract class AbstractHandlerMappingTest {
 	@Test
 	public void checkMappings() throws Exception {
 		Assertions.assertEquals(15, hm.getHandlerMethods().size());
-		getMappingsFor("list");
+		getMappingsFor(Message.of("list"));
 	}
 
-	protected abstract List<ChatMapping<ChatRequest>> getMappingsFor(String s) throws Exception;
+	protected abstract List<ChatMapping<ChatRequest>> getMappingsFor(Message s) throws Exception;
 	
 	protected abstract String getMessageData();
 	
@@ -68,7 +69,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	@Test
 	public void checkWildcardMapping() throws Exception {
-		List<ChatMapping<ChatRequest>> mapped = getMappingsFor("ban zebedee");
+		List<ChatMapping<ChatRequest>> mapped = getMappingsFor(Message.of("ban zebedee"));
 		Assertions.assertTrue(mapped.size()  == 1);
 	}
 	
@@ -90,7 +91,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	@Test
 	public void checkMethodCallWithChatVariables() throws Exception {
-		execute("ban gaurav");
+		execute("ban @gaurav");
 		Assertions.assertEquals("banWord", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -100,7 +101,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	@Test
 	public void testAuthorChatVariable() throws Exception {
-		execute("userDetails2 <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
+		execute("userDetails2 @gaurav");
 		Assertions.assertEquals("userDetails2", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -109,12 +110,12 @@ public abstract class AbstractHandlerMappingTest {
 		
 		Object secondArgument = oc.lastArguments.get(1);
 		Assertions.assertTrue(User.class.isAssignableFrom(secondArgument.getClass()));
-		Assertions.assertEquals(ROB_EXAMPLE_EMAIL, ((SymphonyUser)secondArgument).getEmailAddress());
+		Assertions.assertEquals("@"+ROB_NAME, ((User)secondArgument).getText());
 	}
 	
 	@Test
 	public void testUserChatVariable() throws Exception {
-		execute("delete <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
+		execute("delete @gaurav");
 		Assertions.assertEquals("removeUserFromRoom", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -123,23 +124,10 @@ public abstract class AbstractHandlerMappingTest {
 		
 		Object secondArgument = oc.lastArguments.get(1);
 		Assertions.assertTrue(Chat.class.isAssignableFrom(secondArgument.getClass()));
-		Assertions.assertEquals("The Room Where It Happened", ((Chat)secondArgument).getName());
+		Assertions.assertEquals(OurController.SOME_ROOM, ((Chat)secondArgument).getName());
 	}
 	
-	@Test
-	public void testHashtagMapping() throws Exception {
-		execute("add <span class=\"entity\" data-entity-id=\"1\">@gaurav</span> to <span class=\"entity\" data-entity-id=\"2\">#SomeTopic</span>");
-		Assertions.assertEquals("addUserToTopic", oc.lastMethod);
-		Assertions.assertEquals(2,  oc.lastArguments.size());
-		Object firstArgument = oc.lastArguments.get(0);
-		Assertions.assertTrue(User.class.isAssignableFrom(firstArgument.getClass()));
-		Assertions.assertEquals("gaurav", ((User)firstArgument).getName());
-		
-		Object secondArgument = oc.lastArguments.get(1);
-		Assertions.assertTrue(HashTag.class.isAssignableFrom(secondArgument.getClass()));
-		Assertions.assertEquals("SomeTopic", ((HashTag)secondArgument).getName());
-	}
-	
+
 	
 	@Test
 	public void testCodeblockMapping() throws Exception {
@@ -147,8 +135,8 @@ public abstract class AbstractHandlerMappingTest {
 		Assertions.assertEquals("process2", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
-		Assertions.assertTrue(BlockQuote.class.isAssignableFrom(firstArgument.getClass()));
-		Assertions.assertEquals("public static void main(String[] args) {}", ((BlockQuote)firstArgument).getText());
+		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
 	}
 	
 	@Test
@@ -171,11 +159,7 @@ public abstract class AbstractHandlerMappingTest {
 				+ "      \"examples\" : [ \"help\" ]\n"
 				+ "    }"));
 		
-		Assertions.assertTrue(msg.contains("<tr>\n"
-				+ "            <th>Description</th>\n"
-				+ "            <th>Type... </th>\n"
-				+ "          </tr>"));
-
+		Assertions.assertTrue(msg.contains("Description"));
 	}
 	
 
@@ -185,8 +169,8 @@ public abstract class AbstractHandlerMappingTest {
 		Assertions.assertEquals("process2", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
-		Assertions.assertTrue(BlockQuote.class.isAssignableFrom(firstArgument.getClass()));
-		Assertions.assertEquals("public static void main(String[] args) {}", ((BlockQuote)firstArgument).getText());
+		Assertions.assertTrue(CodeBlock.class.isAssignableFrom(firstArgument.getClass()));
+		Assertions.assertEquals("public static void main(String[] args) {}", ((CodeBlock)firstArgument).getText());
 	}
 	
 	
@@ -203,7 +187,7 @@ public abstract class AbstractHandlerMappingTest {
 				+ "      <tr>\n"
 				+ "        <td>3</td><td>4</td>\n"
 				+ "      </tr>\n"
-				+ "  </table> <span class=\"entity\" data-entity-id=\"1\">@gaurav</span>");
+				+ "  </table> @gaurav");
 		Assertions.assertEquals("process-table", oc.lastMethod);
 		Assertions.assertEquals(2,  oc.lastArguments.size());
 		Table firstArgument = (Table) oc.lastArguments.get(0);
@@ -215,47 +199,10 @@ public abstract class AbstractHandlerMappingTest {
 	@Test
 	public void testMessageResponse() throws Exception {
 		execute("ban rob");
-		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
 		Assertions.assertEquals("banWord", oc.lastMethod);
-		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
-				Mockito.nullable(String.class), 
-				Mockito.matches("abc123"),
-				msg.capture(),
-				Mockito.isNull(),
-				Mockito.isNull(), 
-				Mockito.isNull(), 
-				Mockito.isNull(), 
-				Mockito.isNull());
-		Mockito.clearInvocations();
-		
-		String message = msg.getValue();
+		String message = getMessageContent();
 		System.out.println(message);
 		Assertions.assertTrue(message.contains("banned words: rob"));
-	}
-	
-	
-	
-	@Test
-	public void testAttachmentResponse() throws Exception {
-		execute("attachment");
-		ArgumentCaptor<Object> att = ArgumentCaptor.forClass(Object.class);
-		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
-			Mockito.isNull(), 
-			Mockito.matches("abc123"),
-			Mockito.anyString(),
-			Mockito.isNull(),
-			Mockito.isNull(),
-			att.capture(),
-			Mockito.isNull(),
-			Mockito.isNull());
-		Mockito.clearInvocations();
-		FileDataBodyPart fdbp = (FileDataBodyPart) att.getValue();
-		String contents = StreamUtils.copyToString(
-			new FileInputStream((File) fdbp.getEntity()), 
-			Charset.defaultCharset());
-		
-
-		Assertions.assertEquals("payload", contents);
 	}
 	
 	@Test
@@ -273,39 +220,26 @@ public abstract class AbstractHandlerMappingTest {
 		String data = getMessageData();
 		
 		// there are no buttons for form 2.
-		JsonNode node = new ObjectMapper().readTree(data.getValue());
+		JsonNode node = new ObjectMapper().readTree(data);
 		JsonNode buttons = node.get(ButtonList.KEY).get("contents");
 		Assertions.assertEquals(0, buttons.size());	
-		Assertions.assertFalse(msg.getValue().contains("<form"));
+		Assertions.assertFalse(getMessageContent().contains("<form"));
 	}
 	
 	
 	@Test
 	public void testThrowsError() throws Exception {
 		execute("throwsError");
-		ArgumentCaptor<String> msg = ArgumentCaptor.forClass(String.class);
-		ArgumentCaptor<String> data = ArgumentCaptor.forClass(String.class);
-		
-		Mockito.verify(messagesApi).v4StreamSidMessageCreatePost(
-				Mockito.isNull(), 
-				Mockito.matches("abc123"),
-				msg.capture(),
-				data.capture(),
-				Mockito.isNull(), 
-				Mockito.isNull(), 
-				Mockito.isNull(), 
-				Mockito.isNull());
-		
-		JsonNode node = new ObjectMapper().readTree(data.getValue());
+		JsonNode node = new ObjectMapper().readTree(getMessageData());
 		Assertions.assertEquals("Error123", node.get(ErrorResponse.MESSAGE_KEY).asText());
-		Assertions.assertTrue(msg.getValue().contains("${entity.message!'Unknown Error'}"));
+		Assertions.assertTrue(getMessageContent().contains("${entity.message!'Unknown Error'}"));
 
 		Mockito.clearInvocations();
 	}
 	
 	@Test
 	public void testOptionalPresent() throws Exception {
-		execute("optionals zib zab zob <span class=\"entity\" data-entity-id=\"1\">@gaurav</span> pingu");
+		execute("optionals zib zab zob @gaurav pingu");
 		Assertions.assertEquals("doList", oc.lastMethod);
 		Assertions.assertEquals(3,  oc.lastArguments.size());
 		

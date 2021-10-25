@@ -42,13 +42,11 @@ public class SymphonyRoom extends Taxonomy implements Chat, SymphonyAddressable 
 
 	@Override
 	public String toString() {
-		return "SymphonyRoom [name=" + getName() + ", streamId=" + getStreamId() + "]";
+		return "SymphonyRoom [name=" + getName() + ", streamId=" + getKey() + "]";
 	}
 
 	@JsonIgnore
-	public String getStreamId() {
+	public String getKey() {
 		return fromTaxonomy(StreamID.class);
 	}
-
-	
 }

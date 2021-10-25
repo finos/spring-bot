@@ -27,7 +27,6 @@ import org.finos.springbot.workflow.response.ErrorResponse;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.AbstractMockSymphonyTest;
-import org.finos.symphony.toolkit.workflow.AbstractMockSymphonyTest.MockConfiguration;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.fixture.StartClaim;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
@@ -53,7 +52,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @SpringBootTest(classes = {
-		AbstractMockSymphonyTest.MockConfiguration.class, 
+		SymphonyMockConfiguration.class, 
 		SymphonyWorkflowConfig.class,
 })
 @ExtendWith(SpringExtension.class)

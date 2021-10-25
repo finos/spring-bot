@@ -1,8 +1,5 @@
 package org.finos.symphony.toolkit.workflow;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,45 +11,28 @@ import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.Button.Type;
-import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.WorkResponse;
-import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
-import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.api.agent.DatafeedApi;
-import com.symphony.api.agent.MessagesApi;
-import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.MemberInfo;
 import com.symphony.api.model.MembershipList;
-import com.symphony.api.model.UserV2;
-import com.symphony.api.pod.RoomMembershipApi;
-import com.symphony.api.pod.StreamsApi;
-import com.symphony.api.pod.UsersApi;
 
 @ExtendWith(SpringExtension.class)
 
 @SpringBootTest(classes = { 
-		AbstractMockSymphonyTest.MockConfiguration.class, 
+		SymphonyMockConfiguration.class, 
 	SymphonyWorkflowConfig.class,
 })
 public abstract class AbstractMockSymphonyTest {
@@ -63,85 +43,7 @@ public abstract class AbstractMockSymphonyTest {
 	public static final long ROB_EXAMPLE_ID = 765l;
 	public static final String ROB_NAME =  "Robert Moffat";
 
-	@MockBean
-	MessagesApi messagesApi;
-	
-	@MockBean
-	DatafeedApi datafeedApi;
-	
-	@MockBean
-	RoomMembershipApi rmApi;
-	
-	@MockBean
-	StreamsApi streamsApi;
-	
-	@Autowired
-	ResponseHandlers rh;
-	
-	@BeforeEach
-	public void setupMembershipMock() {
-		MembershipList out = new MembershipList();
-		out.add(new MemberInfo().id(BOT_ID).owner(false));
-		out.add(new MemberInfo().id(ROB_EXAMPLE_ID).owner(true));
-		
-		Mockito.when(rmApi.v2RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull()))
-			.thenReturn(out);
-	}
 
-	@Configuration
-	public static class MockConfiguration {
-	
-
-		@Bean(name=SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
-		public SymphonyIdentity symphonyIdentity() {
-			SymphonyIdentity botIdentity = Mockito.mock(SymphonyIdentity.class);
-			Mockito.when(botIdentity.getEmail()).then((i) -> BOT_EMAIL);
-			return botIdentity;
-		}
-		
-		@Bean
-		public LocalValidatorFactoryBean localValidatorFactoryBean() {
-			return new LocalValidatorFactoryBean();
-		}
-		
-		@Bean
-		public AttachmentHandler mockAttachmentHandler() {
-			return new AttachmentHandler() {
-				
-				@Override
-				public Object formatAttachment(AttachmentResponse ar) {
-					return ar.getAttachment();
-				}
-			};
-		}
-
-		@Bean
-		public OurController ourController() {
-			return new OurController();
-		}
-		
-		@Bean
-		public UsersApi usersApi() {
-			UsersApi usersApi = Mockito.mock(UsersApi.class);
-			
-			when(usersApi.v2UserGet(Mockito.isNull(), Mockito.isNull(), Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-				.thenReturn(new UserV2().emailAddress(BOT_EMAIL).id(BOT_ID));
-			
-			when(usersApi.v2UserGet(Mockito.isNull(), Mockito.isNull(), Mockito.eq(ROB_EXAMPLE_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-				.thenReturn(new UserV2().emailAddress(ROB_EXAMPLE_EMAIL).id(ROB_EXAMPLE_ID));
-			
-			when(usersApi.v2UserGet(Mockito.isNull(), Mockito.nullable(long.class), Mockito.eq(BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-				.thenReturn(new UserV2().emailAddress(BOT_EMAIL).id(111l));
-			
-			when(usersApi.v2UserGet(any(), any(), any(), any(), any()))
-				.then(a -> new UserV2().id(ROB_EXAMPLE_ID).displayName(ROB_NAME).emailAddress(ROB_EXAMPLE_EMAIL));
-			
-			return usersApi;
-		}
-		
-	}
-	
-	
 	protected void testTemplating(WorkResponse wr, String streamId, String testStemML, String testStemJson) throws IOException, JsonMappingException, JsonProcessingException {
 		rh.accept(wr);
 	    testTemplating(streamId, testStemML, testStemJson);
