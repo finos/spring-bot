@@ -180,7 +180,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 		SymphonyRoom theRoom = null;
 	
 		if (r instanceof SymphonyRoom) {
-			if (((SymphonyRoom) r).getStreamId() != null) {
+			if (((SymphonyRoom) r).getKey() != null) {
 				theRoom = (SymphonyRoom) r;
 			} else {
 				theRoom = loadRoomByName(name);
@@ -219,7 +219,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 			
 		// next, ensure that all the users are in the room
 		
-		String streamId = theRoom.getStreamId();
+		String streamId = theRoom.getKey();
 			
 		users.stream()
 			.filter(u -> u instanceof SymphonyUser)
@@ -234,7 +234,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	@Override
 	public List<SymphonyUser> getChatMembers(SymphonyRoom r) {
 		if (r instanceof SymphonyRoom) {
-			MembershipList ml = rmApi.v2RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
+			MembershipList ml = rmApi.v2RoomIdMembershipListGet(((SymphonyRoom) r).getKey(), null);
 			return ml.stream()
 				.map(m -> loadUserById(m.getId()))
 				.collect(Collectors.toList());	
@@ -246,7 +246,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	@Override
 	public List<SymphonyUser> getChatAdmins(SymphonyRoom r) {
 		if (r instanceof SymphonyRoom) {
-			MembershipList ml = rmApi.v2RoomIdMembershipListGet(((SymphonyRoom) r).getStreamId(), null);
+			MembershipList ml = rmApi.v2RoomIdMembershipListGet(((SymphonyRoom) r).getKey(), null);
 			return ml.stream()
 				.filter(m -> m.isOwner())
 				.map(m -> loadUserById(m.getId()))

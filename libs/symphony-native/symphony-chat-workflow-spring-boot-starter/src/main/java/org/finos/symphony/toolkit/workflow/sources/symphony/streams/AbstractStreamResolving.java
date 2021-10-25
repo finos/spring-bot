@@ -34,7 +34,7 @@ public class AbstractStreamResolving {
 		if (a instanceof SymphonyUser) {
 			return getStreamIdForUser((SymphonyUser) a);
 		} else if (a instanceof SymphonyRoom) {
-			return ((SymphonyRoom) a).getStreamId();
+			return ((SymphonyRoom) a).getKey();
 		} else {
 			throw new UnsupportedOperationException("What is this? "+a);
 		}
