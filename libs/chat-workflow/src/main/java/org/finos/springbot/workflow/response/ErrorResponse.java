@@ -5,9 +5,10 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 
-public class ErrorResponse extends DataResponse {
+public class ErrorResponse extends WorkResponse {
 	
 	public static final String ERRORS_KEY = "error";
 	public static final String MESSAGE_KEY = "message";
@@ -17,7 +18,7 @@ public class ErrorResponse extends DataResponse {
 	}
 	
 	public ErrorResponse(Addressable stream, Throwable e, String templateName) {
-		super(stream, createEntityMap(e), templateName);
+		super(stream, createEntityMap(e), templateName, WorkMode.VIEW, Throwable.class);
 	}
 
 	public static Map<String, Object> createEntityMap(Throwable t) {

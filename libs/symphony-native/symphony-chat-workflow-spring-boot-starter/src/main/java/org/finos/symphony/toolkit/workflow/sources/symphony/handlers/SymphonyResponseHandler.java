@@ -86,10 +86,10 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 	}
 	
 	protected String buildTemplate(DataResponse t) {
-		if (t instanceof WorkResponse) {
-			return workTemplater.template((WorkResponse) t);
-		} else if (t instanceof MessageResponse) {
+		if (t instanceof MessageResponse) {
 			return messageTemplater.template((MessageResponse)t);
+		} else if (t instanceof WorkResponse) {
+			return workTemplater.template((WorkResponse) t);
 		} else {
 			throw new UnsupportedOperationException("Can't template: "+t);
 		}
