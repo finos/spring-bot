@@ -16,6 +16,7 @@ import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.java.mapping.ChatMapping;
 import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
 import org.finos.springbot.workflow.response.WorkResponse;
@@ -37,7 +38,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.util.StreamUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.StreamType;
 import com.symphony.api.model.V4Event;
@@ -54,7 +57,7 @@ import com.symphony.api.model.V4User;
 		SymphonyMockConfiguration.class, 
 		SymphonyWorkflowConfig.class,
 })
-public class HandlerMappingTest extends AbstractHandlerMappingTest {
+public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 	
 	@Autowired
 	ChatRequestChatHandlerMapping hm;
@@ -222,4 +225,20 @@ public class HandlerMappingTest extends AbstractHandlerMappingTest {
 		Assertions.assertEquals("SomeTopic", ((HashTag)secondArgument).getName());
 	}
 	
+
+	@Override
+	protected void assertNoButtons() {
+		try {
+			String data = getMessageData();
+			JsonNode node = new ObjectMapper().readTree(data);
+
+			JsonNode buttons = node.get(ButtonList.KEY).get("contents");
+			Assertions.assertTrue(buttons.size() == 0);
+			Assertions.assertFalse(getMessageContent().contains("<form"));
+		} catch (JsonProcessingException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
 }

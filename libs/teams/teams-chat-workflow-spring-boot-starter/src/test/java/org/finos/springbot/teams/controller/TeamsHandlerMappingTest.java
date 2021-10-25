@@ -1,6 +1,8 @@
 package org.finos.springbot.teams.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.finos.springbot.teams.MockTeamsConfiguration;
@@ -11,20 +13,18 @@ import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
 import org.finos.springbot.tests.controller.OurController;
 import org.finos.springbot.workflow.actions.Action;
-import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.WorkMode;
-import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.java.mapping.ChatMapping;
+import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
 import org.finos.springbot.workflow.response.WorkResponse;
-import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +33,9 @@ import org.springframework.http.MediaType;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.bot.builder.TurnContext;
-import com.microsoft.bot.builder.TurnContextImpl;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ActivityTypes;
 import com.microsoft.bot.schema.Attachment;
@@ -48,13 +48,16 @@ import com.microsoft.bot.schema.teams.TeamsChannelData;
 		MockTeamsConfiguration.class, 
 		TeamsWorkflowConfig.class,
 })
-public class HandlerMappingTest extends AbstractHandlerMappingTest {
+public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	
 	ArgumentCaptor<Activity> msg;
 	TurnContext tc;
 	
 	@Autowired
 	MessageActivityHandler mah;
+	
+	@Autowired
+	ChatRequestChatHandlerMapping hm;
 	
 	
     public static void compareJson(String loadJson, String json) throws JsonMappingException, JsonProcessingException {
@@ -76,28 +79,38 @@ public class HandlerMappingTest extends AbstractHandlerMappingTest {
 		return wr;
 	}
 	
-	
-	
 
 	@Override
 	protected String getMessageData() {
-		return msg.getValue().toString();
+		Activity out = msg.getValue();
+		if (out.getAttachments().size() > 0) {
+			Attachment a1 = out.getAttachments().get(0);
+			try {
+				return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(a1.getContent());
+			} catch (JsonProcessingException e) {
+				throw new RuntimeException(e);
+			}
+			
+			
+		} else {
+			return "";
+		}
 	}
 
 
 	@Override
 	protected String getMessageContent() {
-		return msg.getValue().toString();
+		Activity out = msg.getValue();
+		if (out.getAttachments().size() > 0) {
+			Attachment a1 = out.getAttachments().get(0);
+			return (String) a1.getContent();
+			
+			
+		} else {
+			return out.getText();
+		}
 	}
 
-
-	private List<ChatMapping<ChatRequest>> getMappingsFor(String s) throws Exception {
-		EntityJson jsonObjects = new EntityJson();
-		Message m = smp.apply("<messageML>"+s+"</messageML>", jsonObjects);
-		Action a = new SimpleMessageAction(null, null, m, jsonObjects);
-		return hm.getHandlers(a);
-	}
-	
 
 	@Override
 	protected void execute(String s) throws Exception {
@@ -129,18 +142,39 @@ public class HandlerMappingTest extends AbstractHandlerMappingTest {
 	}
 
 
-	private void pressButton(String s) throws Exception {
-		EntityJson jsonObjects = new EntityJson();
-		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
-		jsonObjects.put("2", new HashTag("SomeTopic"));
-		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
-		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
-		Object fd = new StartClaim();
-		Action a = new FormAction(r, author, fd, s, jsonObjects);
-		Action.CURRENT_ACTION.set(a);
-		mc.accept(a);
+	@Override
+	protected void pressButton(String s) throws Exception {
+//		EntityJson jsonObjects = new EntityJson();
+//		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
+//		jsonObjects.put("2", new HashTag("SomeTopic"));
+//		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
+//		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
+//		Object fd = new StartClaim();
+//		Action a = new FormAction(r, author, fd, s, jsonObjects);
+//		Action.CURRENT_ACTION.set(a);
+//		mc.accept(a);
 	}
-	
-	
-	
+
+
+	@Override
+	protected List<ChatMapping<ChatRequest>> getMappingsFor(Message s) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+ 		Action a = new SimpleMessageAction(null, null, s, map);
+		return hm.getHandlers(a);
+	}
+
+
+	@Override
+	protected void assertHelpResponse(String msg, String data, JsonNode node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	protected void assertNoButtons() {
+		String data = getMessageData();
+		Assertions.assertFalse(data.contains("ActionSet"));
+	}
+
 }
