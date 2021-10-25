@@ -91,7 +91,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	@Test
 	public void checkMethodCallWithChatVariables() throws Exception {
-		execute("ban @gaurav");
+		execute("ban gaurav");
 		Assertions.assertEquals("banWord", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Object firstArgument = oc.lastArguments.get(0);
@@ -149,18 +149,10 @@ public abstract class AbstractHandlerMappingTest {
 		System.out.println(msg);
 		System.out.println(data);
 		
-		
-		Assertions.assertEquals(14, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
-		
-		Assertions.assertTrue(data.contains(" {\n"
-				+ "      \"type\" : \"org.finos.symphony.toolkit.workflow.help.commandDescription\",\n"
-				+ "      \"version\" : \"1.0\",\n"
-				+ "      \"description\" : \"Display this help page\",\n"
-				+ "      \"examples\" : [ \"help\" ]\n"
-				+ "    }"));
-		
-		Assertions.assertTrue(msg.contains("Description"));
+		assertHelpResponse(msg, data, node);
 	}
+
+	protected abstract void assertHelpResponse(String msg, String data, JsonNode node);
 	
 
 	@Test
@@ -270,7 +262,7 @@ public abstract class AbstractHandlerMappingTest {
 		
 	}
 	
-	protected abstract void pressButton(String s);
+	protected abstract void pressButton(String b);
 	
 	@Test
 	public void testButtonPress() throws Exception {

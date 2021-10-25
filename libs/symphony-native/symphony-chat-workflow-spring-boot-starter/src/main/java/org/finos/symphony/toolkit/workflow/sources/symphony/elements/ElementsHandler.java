@@ -135,8 +135,12 @@ public class ElementsHandler implements StreamEventConsumer {
 
 	
 	private EntityJson retrieveData(String formMessageId) {
-		V4Message originatingMessage = messagesApi.v1MessageIdGet(null, null, formMessageId.replace("/", "_").replace("+", "-").replace("=", ""));
-		return jsonConverter.readValue(originatingMessage.getData());
+		if (formMessageId != null) {
+			V4Message originatingMessage = messagesApi.v1MessageIdGet(null, null, formMessageId.replace("/", "_").replace("+", "-").replace("=", ""));
+			return jsonConverter.readValue(originatingMessage.getData());
+		} else {
+			return new EntityJson();
+		}
 	}
 
 
