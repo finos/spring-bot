@@ -5,7 +5,9 @@ import static org.mockito.Mockito.atMost;
 import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
 import org.finos.springbot.tests.controller.OurController;
@@ -16,11 +18,13 @@ import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.java.mapping.ChatMapping;
 import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
+import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.SymphonyMockConfiguration;
 import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.messages.PresentationMLHandler;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
@@ -33,13 +37,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.util.StreamUtils;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.StreamType;
 import com.symphony.api.model.V4Event;
+import com.symphony.api.model.V4Initiator;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageSent;
 import com.symphony.api.model.V4Payload;
 import com.symphony.api.model.V4Stream;
+import com.symphony.api.model.V4SymphonyElementsAction;
 import com.symphony.api.model.V4User;
 
 
@@ -54,6 +61,9 @@ public class HandlerMappingTest extends AbstractHandlerMappingTest {
 	
 	@Autowired
 	PresentationMLHandler mc;
+	
+	@Autowired
+	ElementsHandler eh;
 	
 	@Autowired
 	EntityJsonConverter ejc;
@@ -133,10 +143,57 @@ public class HandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void pressButton(String s) {
-		// TODO Auto-generated method stub
+		oc.lastArguments = null;
+		oc.lastMethod = null;
 		
+		Mockito.clearAllCaches();
+		
+		Map<String, Object> values = new HashMap<>();
+		values.put("action", s);
+		
+		V4Event event = new V4Event()
+			.initiator(new V4Initiator().user(new V4User()
+					.displayName(ROB_NAME)
+					.email(ROB_EXAMPLE_EMAIL)
+					.userId(ROB_EXAMPLE_ID)))
+			.payload(new V4Payload()
+				.symphonyElementsAction(new V4SymphonyElementsAction()
+						.formValues(values)
+						.stream(new V4Stream()
+								.streamType(StreamType.TypeEnum.ROOM.getValue())
+								.streamId(CHAT_ID))));
+		
+		msg = ArgumentCaptor.forClass(String.class);
+		data = ArgumentCaptor.forClass(String.class);
+		att = ArgumentCaptor.forClass(Object.class);		
+		
+		eh.accept(event);
+		
+		Mockito.verify(messagesApi, atMost(1)).v4StreamSidMessageCreatePost(
+				Mockito.nullable(String.class), 
+				Mockito.matches(CHAT_ID),
+				msg.capture(),
+				data.capture(),
+				Mockito.isNull(), 
+				att.capture(), 
+				Mockito.isNull(), 
+				Mockito.isNull());
 	}
 
+
+	@Override
+	protected void assertHelpResponse(String msg, String data, JsonNode node) {
+		Assertions.assertEquals(14, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
+		
+		Assertions.assertTrue(data.contains(" {\n"
+				+ "      \"type\" : \"org.finos.springbot.workflow.help.commandDescription\",\n"
+				+ "      \"version\" : \"1.0\",\n"
+				+ "      \"description\" : \"Display this help page\",\n"
+				+ "      \"examples\" : [ \"help\" ]\n"
+				+ "    }"));
+		
+		Assertions.assertTrue(msg.contains("Description"));
+	}
 	
 
 	@Test
