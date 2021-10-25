@@ -93,7 +93,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Bean 
 	@ConditionalOnMissingBean
 	public SimpleMessageMarkupTemplateProvider markupTemplater(
-			@Value("${teams.templates.prefix:classpath:/templates/teams}") String prefix,
+			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
 			@Value("${teams.templates.suffix:.html}") String suffix,
 			MarkupWriter converter) {
 		return new SimpleMessageMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
@@ -102,7 +102,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsTemplateProvider workTemplater(
-			@Value("${symphony.templates.prefix:classpath:/templates/teams}") String prefix,
+			@Value("${symphony.templates.prefix:classpath:/templates/teams/}") String prefix,
 			@Value("${symphony.templates.suffix:.json}") String suffix,
 			WorkTemplater<JsonNode> formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);

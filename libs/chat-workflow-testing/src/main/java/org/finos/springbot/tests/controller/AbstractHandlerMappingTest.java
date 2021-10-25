@@ -142,17 +142,10 @@ public abstract class AbstractHandlerMappingTest {
 	@Test
 	public void testHelp() throws Exception {
 		execute("help");
-		String msg = getMessageContent();
-		String data = getMessageData();
-		
-		JsonNode node = new ObjectMapper().readTree(data);
-		System.out.println(msg);
-		System.out.println(data);
-		
-		assertHelpResponse(msg, data, node);
+		assertHelpResponse();
 	}
 
-	protected abstract void assertHelpResponse(String msg, String data, JsonNode node);
+	protected abstract void assertHelpResponse() throws Exception;
 	
 
 	@Test
@@ -215,11 +208,7 @@ public abstract class AbstractHandlerMappingTest {
 	@Test
 	public void testThrowsError() throws Exception {
 		execute("throwsError");
-		JsonNode node = new ObjectMapper().readTree(getMessageData());
-		Assertions.assertEquals("Error123", node.get(ErrorResponse.MESSAGE_KEY).asText());
-		Assertions.assertTrue(getMessageContent().contains("${entity.message!'Unknown Error'}"));
-
-		Mockito.clearInvocations();
+		Assertions.assertTrue(getMessageData().contains("Error123"));
 	}
 	
 	@Test

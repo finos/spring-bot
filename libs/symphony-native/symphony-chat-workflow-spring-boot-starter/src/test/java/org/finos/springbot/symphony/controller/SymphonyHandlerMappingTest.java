@@ -185,7 +185,15 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 
 
 	@Override
-	protected void assertHelpResponse(String msg, String data, JsonNode node) {
+	protected void assertHelpResponse() throws Exception {
+		String msg = getMessageContent();
+		String data = getMessageData();
+		
+		JsonNode node = new ObjectMapper().readTree(data);
+		System.out.println(msg);
+		System.out.println(data);
+		
+		
 		Assertions.assertEquals(14, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
 		
 		Assertions.assertTrue(data.contains(" {\n"
