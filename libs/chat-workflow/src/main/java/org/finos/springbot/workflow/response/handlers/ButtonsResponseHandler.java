@@ -11,7 +11,9 @@ import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.Button.Type;
+import org.finos.springbot.workflow.java.mapping.ChatButtonChatHandlerMapping;
 import org.finos.springbot.workflow.java.mapping.ChatHandlerMapping;
+import org.finos.springbot.workflow.java.mapping.ChatMapping;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.springframework.beans.BeansException;
@@ -64,11 +66,14 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 			
 			initExposedHandlerMappings();
 		
-			exposedHandlerMappings.stream()
+			List<ChatMapping<ChatButton>> mappings = exposedHandlerMappings.stream()
 					.flatMap(hm -> hm.getAllHandlers(t.getAddress(), null).stream())
 					.filter(cm -> exposedMatchesObject(cm.getMapping(), o))
 					.filter(cm -> cm.isButtonFor(o, wm))
-					.forEach(cm -> {
+					.collect(Collectors.toList());
+		
+			
+			mappings.forEach(cm -> {
 						ChatButton e = cm.getMapping();
 						String value = cm.getUniqueName();
 						String text = e.buttonText();

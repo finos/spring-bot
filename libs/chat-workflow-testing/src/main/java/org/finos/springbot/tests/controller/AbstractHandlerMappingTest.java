@@ -201,24 +201,17 @@ public abstract class AbstractHandlerMappingTest {
 	public void testFormResponse1() throws Exception {
 		execute("form1");
 		String data = getMessageData();
-		JsonNode node = new ObjectMapper().readTree(data);
-		JsonNode button1 = node.get(ButtonList.KEY).get("contents").get(0);
-		Assertions.assertEquals("go", button1.get("name").textValue());
+		Assertions.assertTrue(data.contains("\"id\" : \"go\"") || data.contains("\"name\" : \"go\""));
 	}
 	
 	@Test
 	public void testFormResponse2() throws Exception {
 		execute("form2");
-		String data = getMessageData();
-		
-		// there are no buttons for form 2.
-		JsonNode node = new ObjectMapper().readTree(data);
-		JsonNode buttons = node.get(ButtonList.KEY).get("contents");
-		Assertions.assertEquals(0, buttons.size());	
-		Assertions.assertFalse(getMessageContent().contains("<form"));
+		assertNoButtons();
 	}
 	
-	
+	protected abstract void assertNoButtons();
+
 	@Test
 	public void testThrowsError() throws Exception {
 		execute("throwsError");
