@@ -2,6 +2,8 @@ package org.finos.springbot.teams.templating;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -10,8 +12,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.finos.springbot.teams.AbstractMockTeamsTest;
+import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.tests.templating.AbstractTemplatingTest;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
@@ -19,7 +23,6 @@ import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.response.WorkResponse;
-import org.finos.springbot.workflow.templating.AbstractTemplatingTest;
 import org.finos.springbot.workflow.templating.Mode;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TypeConverter;
@@ -37,7 +40,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @SpringBootTest(classes = { 
 		AdaptiveCardConverterConfig.class
 })
-public class TemplatingTest extends AbstractTemplatingTest{
+public class TemplatingTest extends AbstractTemplatingTest {
 
 	@Autowired
 	List<TypeConverter<JsonNode>> converters;
@@ -129,5 +132,10 @@ public class TemplatingTest extends AbstractTemplatingTest{
 				.mapToObj(i -> i == 0 ? getChat() : new TeamsChat("idc"+i, "Chat name of "+i))
 				.collect(Collectors.toList());
 	}
+
+
+	public static String loadJson(String string) throws IOException {
+        return StreamUtils.copyToString(MockTeamsConfiguration.class.getResourceAsStream(string), Charset.forName("UTF-8"));
+    }
 
 }

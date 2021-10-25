@@ -163,12 +163,15 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			public ChatHandlerExecutor getExecutor(Action a) {
 				
 				if (a instanceof SimpleMessageAction) {
+					ChatHandlerExecutor out = matchesSimpleMessageAction((SimpleMessageAction)a);
 					
-					if (!canBePerformedHere((SimpleMessageAction) a)) {
-						return null;
+					if (out != null) {
+						if (!canBePerformedHere((SimpleMessageAction) a)) {
+							return null;
+						}	
 					}
 					
-					return matchesSimpleMessageAction((SimpleMessageAction)a);
+					return out;
 				}
 				
 				return null;
