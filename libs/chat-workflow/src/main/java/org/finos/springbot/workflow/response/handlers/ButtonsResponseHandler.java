@@ -91,7 +91,7 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 	}
 	
 	protected boolean exposedMatchesObject(ChatButton e, Object o) {
-		if (e.value().isAssignableFrom(o.getClass())) {
+		if ((o != null) && (e.value().isAssignableFrom(o.getClass()))) {
 			return true;
 		}
 	

@@ -10,6 +10,7 @@ import java.util.stream.IntStream;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
+import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Chat;
@@ -167,7 +168,7 @@ public class SymphonyWorkflowConfig {
 	@Bean 
 	@ConditionalOnMissingBean
 	public SimpleMessageMarkupTemplateProvider markupTemplater(
-			@Value("${symphony.templates.prefix:classpath:/templates/symphony}") String prefix,
+			@Value("${symphony.templates.prefix:classpath:/templates/symphony/}") String prefix,
 			@Value("${symphony.templates.suffix:.ftl}") String suffix,
 			MarkupWriter converter) {
 		return new SimpleMessageMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
@@ -176,7 +177,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyTemplateProvider workTemplater(
-			@Value("${symphony.templates.prefix:classpath:/templates/symphony}") String prefix,
+			@Value("${symphony.templates.prefix:classpath:/templates/symphony/}") String prefix,
 			@Value("${symphony.templates.suffix:.ftl}") String suffix,
 			FormMessageMLConverter formConverter) {
 		return new SymphonyTemplateProvider(prefix, suffix, resourceLoader, formConverter);
