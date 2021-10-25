@@ -1,5 +1,6 @@
 package org.finos.springbot.teams.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +41,8 @@ import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ActivityTypes;
 import com.microsoft.bot.schema.Attachment;
 import com.microsoft.bot.schema.ChannelAccount;
+import com.microsoft.bot.schema.Entity;
+import com.microsoft.bot.schema.Mention;
 import com.microsoft.bot.schema.teams.ChannelInfo;
 import com.microsoft.bot.schema.teams.TeamsChannelData;
 
@@ -114,6 +117,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void execute(String s) throws Exception {
+		s = s.replace("@gaurav", "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Gaurav</span>");
 		tc = Mockito.mock(TurnContext.class);
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
 		msg = ArgumentCaptor.forClass(Activity.class);
@@ -136,14 +140,28 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		ChannelAccount to = new ChannelAccount(""+BOT_ID, BOT_NAME);
 		out.setRecipient(to);
 		
+		out.setEntities(Arrays.asList(gauravEntity()));
+		
+		
 		Mockito.when(tc.getActivity()).thenReturn(out);
 		
 		mah.onTurn(tc);
 	}
 
 
+	private Entity gauravEntity() {
+		Mention out = new Mention();
+		out.setText("<at>Gaurav</at>");
+		ChannelAccount ca = new ChannelAccount();
+		ca.setName("Gaurav P");
+		ca.setId("3276423876");
+		out.setMentioned(ca);
+		return new Entity().setAs(out);
+	}
+
+
 	@Override
-	protected void pressButton(String s) throws Exception {
+	protected void pressButton(String s) {
 //		EntityJson jsonObjects = new EntityJson();
 //		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
 //		jsonObjects.put("2", new HashTag("SomeTopic"));
@@ -165,9 +183,10 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 
 	@Override
-	protected void assertHelpResponse(String msg, String data, JsonNode node) {
-		// TODO Auto-generated method stub
-		
+	protected void assertHelpResponse() throws Exception {
+		String data = getMessageData();
+		System.out.println(data);
+		Assertions.assertTrue(data.contains(" - ${string($data)}\","));
 	}
 
 

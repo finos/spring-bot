@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.finos.springbot.teams.AbstractMockTeamsTest;
 import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
@@ -92,7 +91,7 @@ public class TemplatingTest extends AbstractTemplatingTest {
 			System.out.println("ACTUAL  : " + actualJson);
 			
 	    	// expected template
-			String expectedJson = AbstractMockTeamsTest.loadJson(testName+".json");
+			String expectedJson = loadJson(testName+".json");
 			JsonNode expectedNode = om.readTree(expectedJson);
 			System.out.println("EXPECTED: " + expectedJson);
 			 

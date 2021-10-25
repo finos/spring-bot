@@ -1,0 +1,44 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "${description}",
+                                    "size": "Default",
+                                    "weight": "Bolder",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": 30
+                        },
+                        {
+                            "type": "Column",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": " - ${string($data)}",
+                                    "fontType": "Monospace",
+                                    "$data": "${examples}",
+                                    "wrap": true
+                                }
+                            ],
+                            "width": 60
+                        }
+                    ]
+                }
+            ],
+            "$data": "${form.commands}"
+        }
+    ]
+}
