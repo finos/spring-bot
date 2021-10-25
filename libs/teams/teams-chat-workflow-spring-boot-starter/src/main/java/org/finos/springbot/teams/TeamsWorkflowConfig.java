@@ -17,7 +17,6 @@ import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
-import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.OrderedList;
@@ -194,11 +193,13 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public AddressingChecker teamsAddressingChecker(TeamsConversations conv) {
-		return new InRoomAddressingChecker(() -> {
-			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
-			User u = conv.getUser(tc.getActivity().getRecipient());	
-			return u;
-		}, true);
+//		return new InRoomAddressingChecker(() -> {
+//			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
+//			User u = conv.getUser(tc.getActivity().getRecipient());	
+//			return u;
+//		}, true);
+		
+		return a -> a;
 	}
 //	
 //	@Bean

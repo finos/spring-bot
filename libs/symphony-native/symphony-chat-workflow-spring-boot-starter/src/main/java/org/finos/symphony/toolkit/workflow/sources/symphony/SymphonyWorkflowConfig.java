@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
-import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Chat;
