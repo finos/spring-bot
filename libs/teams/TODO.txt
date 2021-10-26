@@ -1,8 +1,8 @@
+12.  Build the teams form handler
 1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead. (maybe)
 6. Backwards compat.  for deserialization
 7. Convert keys to values with dropdowns/enums in view mode
 9. Validation client-side rendering / numbers
-10.  Get Controller tests working on both teams and symphony
 11.  get symphony to use the new templating classes.
-12.  Build the teams form handler
 13.  Rename group / version number
+14. Saving templates

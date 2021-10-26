@@ -20,7 +20,11 @@ public class UserConverter<X> extends AbstractClassConverter<X> {
 	}
 	
 	protected String getKey(Field ctx) {
-		RequiresUserList rul = ctx.getAnnotation(RequiresUserList.class);
-		return rul == null ? RequiresUserList.USER_LIST_KEY : rul.key(); 
+		if (ctx == null) {
+			return RequiresUserList.USER_LIST_KEY;
+		} else {
+			RequiresUserList rul = ctx.getAnnotation(RequiresUserList.class);
+			return rul == null ? RequiresUserList.USER_LIST_KEY : rul.key(); 
+		}
 	}
 }

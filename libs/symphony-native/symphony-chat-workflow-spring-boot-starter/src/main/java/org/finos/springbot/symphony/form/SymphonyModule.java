@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
+package org.finos.springbot.symphony.form;
 
 import java.io.IOException;
 
@@ -65,8 +65,11 @@ public class SymphonyModule extends Module {
 								throws IOException, JsonProcessingException {
 							
 							TreeNode tn = p.readValueAsTree();
-							if (tn.size() > 0) {
+							if (tn.isArray() && (tn.size() > 0)) {
 								long ul = ((LongNode) tn.get(0)).asLong();
+								return new SymphonyUser(ul);
+							}else if (tn instanceof LongNode) {
+								long ul = ((LongNode) tn).asLong();
 								return new SymphonyUser(ul);
 							} else {
 								return null;

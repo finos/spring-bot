@@ -24,7 +24,7 @@ public class ErrorResponse extends WorkResponse {
 	public static Map<String, Object> createEntityMap(Throwable t) {
 		Map<String, Object> json = new HashMap<>();
 		json.put(ERRORS_KEY, stacktraceToString(t));
-		json.put(MESSAGE_KEY, t.getMessage());
+		json.put(MESSAGE_KEY, t.getMessage() == null ? t.toString() : t.getMessage());
 		return json;
 	}
 	
