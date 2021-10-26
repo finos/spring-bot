@@ -6,26 +6,25 @@ import java.util.Properties;
 
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.teams.form.TeamsModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
 import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
-import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
-import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.OrderedList;
 import org.finos.springbot.workflow.content.Paragraph;
 import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
-import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
+import org.finos.springbot.workflow.form.FormConverter;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TypeConverter;
@@ -43,7 +42,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.bot.builder.TurnContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
@@ -141,7 +141,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser) {
-		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser);
+		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser, formConverter());
 	}
 	
 	@Bean
@@ -184,12 +184,15 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
     	return new BotController(getBotFrameworkHttpAdaptor(), mah);
     }
 
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public FormConverter formConverter() {
-//		return new FormConverter(symphonyRooms());
-//	}
-//	
+	@Bean
+	@ConditionalOnMissingBean
+	public FormConverter formConverter() {
+		ObjectMapper om = new ObjectMapper();
+		om.registerModule(new JavaTimeModule());
+//		om.registerModule(new TeamsModule());
+		return new FormConverter(om);
+	}
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public AddressingChecker teamsAddressingChecker(TeamsConversations conv) {

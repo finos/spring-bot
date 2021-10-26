@@ -2,12 +2,15 @@ package org.finos.springbot.teams.messages;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.content.Addressable;
@@ -47,21 +50,46 @@ public class MessageActivityHandler extends ActivityHandler {
 
 	@Override
 	protected CompletableFuture<Void> onMessageActivity(TurnContext turnContext) {
-		Activity a = turnContext.getActivity();
-		
-		if (a.getValue() != null) {
-			return processForm(turnContext, a);
-		} else {
-			return processMessage(turnContext, a);
+		try {
+			Activity a = turnContext.getActivity();
+			
+			Action action = (a.getValue() != null) ? processForm(turnContext, a) : 
+				processMessage(turnContext, a);
+			
+			CurrentTurnContext.CURRENT_CONTEXT.set(turnContext);
+			
+			try {
+				Action.CURRENT_ACTION.set(action);
+				for (ActionConsumer c : messageConsumers) {
+					c.accept(action);
+				}
+			} finally {
+				Action.CURRENT_ACTION.set(Action.NULL_ACTION);
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Couldn't handle event "+turnContext, e);
+		} finally {
+			CurrentTurnContext.CURRENT_CONTEXT.set(null);
 		}
+
+		// errors are handled using Spring's ErrorHandler rather than this.
+		return new CompletableFuture<Void>();
 	}
 
-	protected CompletableFuture<Void> processForm(TurnContext turnContext, Activity a) {
-		// TODO Auto-generated method stub
-		return null
+	protected FormAction processForm(TurnContext turnContext, Activity a) throws ClassNotFoundException {
+		Map<String, Object> formData = (Map<String, Object>) a.getValue();
+		Object form = formConverter.convert(formData, null);
+		String action = (String) formData.get("action");
+		Map<String, Object> data = new HashMap<>(); // need to load this from somewhere.
+		TeamsChannelData tcd = a.teamsGetChannelData();
+		Addressable rr = teamsConversations.getTeamsChat(tcd);
+		User u = teamsConversations.getUser(a.getFrom());
+		rr = rr == null ? u : rr;
+		return new FormAction(rr, u, form, action, data);
 	}
 
-	protected CompletableFuture<Void> processMessage(TurnContext turnContext, Activity a) {
+	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {
 		Message message = createMessageFromActivity(a);
 		TeamsChannelData tcd = a.teamsGetChannelData();
 		Object data = a.getChannelData();	
@@ -71,21 +99,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		rr = rr == null ? u : rr;
 		SimpleMessageAction sma = new SimpleMessageAction(rr, u, message, data);
 		
-		CurrentTurnContext.CURRENT_CONTEXT.set(turnContext);
-		
-		try {
-			Action.CURRENT_ACTION.set(sma);
-			for (ActionConsumer c : messageConsumers) {
-				c.accept(sma);
-			}
-		} finally {
-			Action.CURRENT_ACTION.set(Action.NULL_ACTION);
-		}
-			
-		CurrentTurnContext.CURRENT_CONTEXT.set(null);
-		
-		// errors are handled using Spring's ErrorHandler rather than this.
-		return new CompletableFuture<Void>();
+		return sma;
 	}
 
 	private Message createMessageFromActivity(Activity a) {

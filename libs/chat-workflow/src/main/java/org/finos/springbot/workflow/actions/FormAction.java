@@ -43,7 +43,7 @@ public class FormAction implements Action {
 
 	@Override
 	public String toString() {
-		return "ElementsAction [formData=" + formData + ", action=" + action
+		return "FormAction [formData=" + formData + ", action=" + action
 				+ ", entityMap=" + entityMap + "]";
 	}
 

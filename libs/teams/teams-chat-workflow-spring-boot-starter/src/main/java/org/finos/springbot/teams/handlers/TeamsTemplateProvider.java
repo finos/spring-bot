@@ -2,6 +2,7 @@ package org.finos.springbot.teams.handlers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.templating.AbstractResourceTemplateProvider;
@@ -14,6 +15,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -83,7 +86,7 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 	@Override
 	protected JsonNode applyTemplate(JsonNode template, WorkResponse t) {
 		
-		JsonNode _$root = om.valueToTree(t.getData());
+		JsonNode _$root = om.valueToTree(getData(t));
 		ObjectNode data = om.createObjectNode();
 		data.set("$root", _$root);
 		
@@ -92,23 +95,31 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 			String templateStr = om.writerWithDefaultPrettyPrinter().writeValueAsString(template);
 
 			System.out.println("TEMPLATE: \n"+templateStr); 
-			System.out.println("DATA: \n"+ dataStr);
+			System.out.println("DATA: \n"+ _$root);
 
-			Value tv = ctx.eval("js", "JSON.stringify(new ACData.Template("+templateStr+").expand("+dataStr+"))");
+			Value tv = singleThreadedEvalLoop(dataStr, templateStr);
 
-			
-//			JsonNode dataNode = om.valueToTree(data);
-//			((ObjectNode)template).set("$data", dataNode);
 			System.out.println("COMBINED: \n"+ tv.asString());
-	
+
 			return om.readTree(tv.asString());
 				
+			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException("Couldn't template response", e);
 		}
-		
-		return template;
+	}
+
+	private synchronized Value singleThreadedEvalLoop(String dataStr, String templateStr) {
+		Value tv = ctx.eval("js", "JSON.stringify(new ACData.Template("+templateStr+").expand("+dataStr+"))");
+		return tv;
+	}
+
+	protected Map<String, Object> getData(WorkResponse t) {
+		 Map<String, Object> out = t.getData();
+		 if (t.getFormClass() != null) {
+			 out.put("formid", t.getFormClass().getCanonicalName());
+		 }
+		 return out;
 	}
 
 }
