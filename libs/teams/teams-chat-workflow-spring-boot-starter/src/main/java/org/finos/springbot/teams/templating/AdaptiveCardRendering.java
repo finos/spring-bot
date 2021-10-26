@@ -20,7 +20,6 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	
 	public static JsonNodeFactory f = new JsonNodeFactory(true);
 
-
 	@Override
 	public JsonNode description(String d) {
 		ObjectNode out = f.objectNode();
@@ -120,7 +119,9 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		submit.put("title", "${text}");
 		submit.put("id", "${name}");
 		submit.put("associatedInputs","auto");
-		submit.putObject("data").put("action", "${name}");
+		ObjectNode map = submit.putObject("data");
+		map.put("action", "${name}");
+		map.put("form", "${$root.formid}");
 		submit.put("$data", "${"+location+"}");
 		actions.add(submit);
 		return out;
@@ -135,7 +136,9 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		submit.put("type", "Action.Submit");
 		submit.put("title", name);
 		submit.put("id", value);
-		submit.putObject("data").put("action", name);
+		ObjectNode map = submit.putObject("data");
+		map.put("action", name);
+		map.put("form", "${root.formid}");
 		actions.add(submit);
 		return out;
 	}

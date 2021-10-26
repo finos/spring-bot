@@ -19,7 +19,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * Takes a bean and converts it into a form with either an editable or display
  * version of MessageML.
  * 
- * @author Rob Moffat
+ * @author Rob Moffat 
  *
  */
 public class AdaptiveCardTemplater extends AbstractTopLevelConverter<JsonNode, WorkMode> {

@@ -34,7 +34,6 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected MarkupTemplateProvider messageTemplater;
 	protected TeamsTemplateProvider workTemplater;
 	
-	
 	public TeamsResponseHandler(
 			AttachmentHandler attachmentHandler,
 			MarkupTemplateProvider messageTemplater,
@@ -48,8 +47,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		if (eh == null) {
 			eh = ctx.getBean(ErrorHandler.class);
 		}
-	}
-	
+	}	
 
 	@Override
 	public void accept(Response t) {
