@@ -1,4 +1,4 @@
-package org.finos.springbot.tests.content;
+package org.finos.springbot.workflow.content;
 
 import java.util.Arrays;
 

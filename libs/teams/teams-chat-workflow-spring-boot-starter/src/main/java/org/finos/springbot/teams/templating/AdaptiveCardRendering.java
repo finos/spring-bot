@@ -119,6 +119,8 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		submit.put("type", "Action.Submit");
 		submit.put("title", "${text}");
 		submit.put("id", "${name}");
+		submit.put("associatedInputs","auto");
+		submit.putObject("data").put("action", "${name}");
 		submit.put("$data", "${"+location+"}");
 		actions.add(submit);
 		return out;
@@ -133,6 +135,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		submit.put("type", "Action.Submit");
 		submit.put("title", name);
 		submit.put("id", value);
+		submit.putObject("data").put("action", name);
 		actions.add(submit);
 		return out;
 	}

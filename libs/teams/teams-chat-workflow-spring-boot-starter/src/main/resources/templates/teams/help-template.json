@@ -27,9 +27,8 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": " - ${string($data)}",
+                                    "text": "${join(foreach(examples,e, ' - ' + e), '\n')}",
                                     "fontType": "Monospace",
-                                    "$data": "${examples}",
                                     "wrap": true
                                 }
                             ],

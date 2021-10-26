@@ -44,9 +44,6 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 				  .allowIO(true)
 				  .build();
 		
-		// load libraries
-		//ctx.eval("js", "https://unpkg.com/adaptivecards-templating/dist/adaptivecards-templating.min.js");
-		
 		load("/js/adaptive-expressions2.min.js");
 		load("/js/adaptivecards-templating2.min.js");		
 	}
@@ -102,7 +99,7 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 			
 //			JsonNode dataNode = om.valueToTree(data);
 //			((ObjectNode)template).set("$data", dataNode);
-//			System.out.println("COMBINED: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(template));
+			System.out.println("COMBINED: \n"+ tv.asString());
 	
 			return om.readTree(tv.asString());
 				

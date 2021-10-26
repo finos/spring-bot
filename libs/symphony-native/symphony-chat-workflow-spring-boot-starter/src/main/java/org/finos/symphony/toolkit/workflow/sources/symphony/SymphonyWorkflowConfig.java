@@ -7,6 +7,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.finos.springbot.symphony.form.ElementsHandler;
+import org.finos.springbot.symphony.form.SymphonyFormConverter;
+import org.finos.springbot.symphony.form.SymphonyModule;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
@@ -22,6 +25,7 @@ import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
+import org.finos.springbot.workflow.form.FormConverter;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.symphony.toolkit.json.EntityJson;
@@ -38,8 +42,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversationsImpl;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.ElementsHandler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.elements.FormConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.FormMessageMLConverter;
 import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.HeaderTagResponseHandler;
@@ -80,6 +82,8 @@ import org.symphonyoss.fin.security.id.Openfigi;
 import org.symphonyoss.fin.security.id.Ticker;
 import org.symphonyoss.taxonomy.Hashtag;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.UserV2;
@@ -311,7 +315,10 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public FormConverter formConverter() {
-		return new FormConverter(symphonyRooms());
+		ObjectMapper om = new ObjectMapper();
+		om.registerModule(new SymphonyModule());
+		om.registerModule(new JavaTimeModule());
+		return new SymphonyFormConverter(om);
 	}
 	
 	@Bean
@@ -325,7 +332,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers, ResponseHandlers rh) {
-		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, rh, symphonyRooms(), validator);
+		return new ElementsHandler(messagesApi, entityJsonConverter(), formConverter(), elementsConsumers, rh, symphonyRooms(), validator);
 	}
 
 }

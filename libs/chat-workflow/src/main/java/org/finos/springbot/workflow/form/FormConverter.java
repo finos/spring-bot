@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.sources.symphony.elements;
+package org.finos.springbot.workflow.form;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,13 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.finos.springbot.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * Converts a form into an object.
@@ -23,16 +20,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
  */
 public class FormConverter {
 	
-	private static Logger LOG = LoggerFactory.getLogger(FormConverter.class);
+	public static Logger LOG = LoggerFactory.getLogger(FormConverter.class);
 	
-	private ObjectMapper om = new ObjectMapper();
+	protected ObjectMapper om = new ObjectMapper();
 	
-	
-	
-	public FormConverter(SymphonyConversations r) {
-		super();
-		om.registerModule(new SymphonyModule());
-		om.registerModule(new JavaTimeModule());
+	public FormConverter(ObjectMapper om) {
+		this.om = om;
 	}
 
 	/**
@@ -63,13 +56,6 @@ public class FormConverter {
 			return om.convertValue(out, c);
 		} catch (Exception e) {
 			LOG.debug("Couldn't convert {} ",formValues, e);
-		}
-		try {
-			if(formValues.containsKey("entity.formdata")){
-				return om.convertValue(formValues.get("entity.formdata"), c);
-			}
-		} catch (Exception e) {
-			LOG.debug("Couldn't convert primitive {} ",formValues, e);
 		}
 		
 		return new FormSubmission(type, out);

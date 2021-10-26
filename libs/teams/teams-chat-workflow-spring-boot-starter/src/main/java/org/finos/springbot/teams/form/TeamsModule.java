@@ -1,4 +1,4 @@
-package org.finos.springbot.teams.elements;
+package org.finos.springbot.teams.form;
 
 import java.io.IOException;
 
@@ -26,12 +26,12 @@ import com.fasterxml.jackson.databind.node.LongNode;
  * 
  * @author Rob Moffat
  */
-public class SymphonyModule extends Module {
+public class TeamsModule extends Module {
 
 	private static final String NAME = "Symphony Workflow Module";
 	
 	private static final Version VERSION = new Version(1, 0, 0, "", 
-			SymphonyModule.class.getPackage().getName().toLowerCase(), 
+			TeamsModule.class.getPackage().getName().toLowerCase(), 
 			"workflow-module");
 
 
@@ -45,7 +45,7 @@ public class SymphonyModule extends Module {
 		return VERSION;
 	}
 		
-	public SymphonyModule() {
+	public TeamsModule() {
 		super();
 	}
 

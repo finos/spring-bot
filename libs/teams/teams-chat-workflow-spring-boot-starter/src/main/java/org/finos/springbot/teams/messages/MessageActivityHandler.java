@@ -13,6 +13,7 @@ import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.form.FormConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -28,24 +29,42 @@ public class MessageActivityHandler extends ActivityHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(MessageActivityHandler.class);
 	
 	TeamsHTMLParser messageParser;
-	//EntityJsonConverter jsonConverter;
 	List<ActionConsumer> messageConsumers;
 	TeamsConversations teamsConversations;
+	FormConverter formConverter;
 	
-	public MessageActivityHandler(List<ActionConsumer> messageConsumers, TeamsConversations teamsConversations, TeamsHTMLParser parser) {
+	public MessageActivityHandler(
+			List<ActionConsumer> messageConsumers, 
+			TeamsConversations teamsConversations, 
+			TeamsHTMLParser parser,
+			FormConverter formConverter) {
 		super();
 		this.messageConsumers = messageConsumers;
 		this.teamsConversations = teamsConversations;
 		this.messageParser = parser;
+		this.formConverter = formConverter;
 	}
 
 	@Override
 	protected CompletableFuture<Void> onMessageActivity(TurnContext turnContext) {
 		Activity a = turnContext.getActivity();
-		TeamsChannelData tcd = a.teamsGetChannelData();
-		Object data = a.getChannelData();
-	
+		
+		if (a.getValue() != null) {
+			return processForm(turnContext, a);
+		} else {
+			return processMessage(turnContext, a);
+		}
+	}
+
+	protected CompletableFuture<Void> processForm(TurnContext turnContext, Activity a) {
+		// TODO Auto-generated method stub
+		return null
+	}
+
+	protected CompletableFuture<Void> processMessage(TurnContext turnContext, Activity a) {
 		Message message = createMessageFromActivity(a);
+		TeamsChannelData tcd = a.teamsGetChannelData();
+		Object data = a.getChannelData();	
 		Addressable rr = teamsConversations.getTeamsChat(tcd);
 		User u = teamsConversations.getUser(a.getFrom());
 		

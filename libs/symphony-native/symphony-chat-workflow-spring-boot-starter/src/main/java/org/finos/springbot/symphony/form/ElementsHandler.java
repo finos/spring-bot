@@ -1,26 +1,27 @@
-package org.finos.springbot.teams.elements;
+package org.finos.springbot.symphony.form;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.finos.springbot.teams.conversations.TeamsConversations;
-import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.json.EntityJsonConverter;
+import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.FormAction;
+import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.form.Button;
+import org.finos.springbot.workflow.form.ButtonList;
+import org.finos.springbot.workflow.form.ErrorHelp;
+import org.finos.springbot.workflow.form.ErrorMap;
+import org.finos.springbot.workflow.form.FormConverter;
+import org.finos.springbot.workflow.form.FormSubmission;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
-import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.FormAction;
-import org.finos.symphony.toolkit.workflow.actions.consumers.ActionConsumer;
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.form.ErrorMap;
-import org.finos.symphony.toolkit.workflow.form.FormSubmission;
-import org.finos.symphony.toolkit.workflow.response.DataResponse;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
+import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
+import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;
@@ -46,19 +47,19 @@ public class ElementsHandler implements StreamEventConsumer {
 	EntityJsonConverter jsonConverter;
 	FormConverter formConverter;
 	List<ActionConsumer> elementsConsumers;
-	TeamsResponseHandler rh;
-	TeamsConversations ruBuilder;
+	SymphonyConversations ruBuilder;
 	Validator v;
+	ResponseHandlers rh;
 	
 	public ElementsHandler(MessagesApi messagesApi, EntityJsonConverter jsonConverter,
-			FormConverter formConverter, List<ActionConsumer> elementsConsumers, TeamsResponseHandler rh, TeamsConversations ruBuilder, Validator v) {
+			FormConverter formConverter, List<ActionConsumer> elementsConsumers, ResponseHandlers rh, SymphonyConversations ruBuilder, Validator v) {
 		this.messagesApi = messagesApi;
 		this.jsonConverter = jsonConverter;
 		this.formConverter = formConverter;
 		this.elementsConsumers = elementsConsumers;
-		this.rh = rh;
 		this.ruBuilder = ruBuilder;
 		this.v = v;
+		this.rh = rh;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -136,8 +137,12 @@ public class ElementsHandler implements StreamEventConsumer {
 
 	
 	private EntityJson retrieveData(String formMessageId) {
-		V4Message originatingMessage = messagesApi.v1MessageIdGet(null, null, formMessageId.replace("/", "_").replace("+", "-").replace("=", ""));
-		return jsonConverter.readValue(originatingMessage.getData());
+		if (formMessageId != null) {
+			V4Message originatingMessage = messagesApi.v1MessageIdGet(null, null, formMessageId.replace("/", "_").replace("+", "-").replace("=", ""));
+			return jsonConverter.readValue(originatingMessage.getData());
+		} else {
+			return new EntityJson();
+		}
 	}
 
 
