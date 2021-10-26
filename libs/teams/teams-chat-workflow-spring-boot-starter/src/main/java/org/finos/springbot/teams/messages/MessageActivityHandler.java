@@ -79,7 +79,9 @@ public class MessageActivityHandler extends ActivityHandler {
 
 	protected FormAction processForm(TurnContext turnContext, Activity a) throws ClassNotFoundException {
 		Map<String, Object> formData = (Map<String, Object>) a.getValue();
-		Object form = formConverter.convert(formData, null);
+		String formName = (String) formData.remove("form");
+		
+		Object form = formConverter.convert(formData, formName);
 		String action = (String) formData.get("action");
 		Map<String, Object> data = new HashMap<>(); // need to load this from somewhere.
 		TeamsChannelData tcd = a.teamsGetChannelData();

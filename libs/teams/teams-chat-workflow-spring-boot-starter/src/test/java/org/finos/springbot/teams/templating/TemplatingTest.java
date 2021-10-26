@@ -14,6 +14,7 @@ import java.util.stream.IntStream;
 import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.teams.handlers.JavascriptSubstitution;
 import org.finos.springbot.tests.templating.AbstractTemplatingTest;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
@@ -34,6 +35,7 @@ import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @SpringBootTest(classes = { 
@@ -50,6 +52,8 @@ public class TemplatingTest extends AbstractTemplatingTest {
 	WorkTemplater<JsonNode> templater;
 	
 	ObjectMapper om;
+	
+	JavascriptSubstitution js = new JavascriptSubstitution();
 	
 	@Override
 	protected Addressable getTo() {
@@ -83,7 +87,8 @@ public class TemplatingTest extends AbstractTemplatingTest {
 	    		data.put(ButtonList.KEY, new ButtonList(
 	    				Arrays.asList(new Button("test", Button.Type.ACTION, "Submit"))));
 	    	}
- 	    	
+
+	    	
 			// actual template
 			new File("target/tests").mkdirs();
 			JsonNode actualNode = templater.convert(workResponse.getFormClass(), translateMode(workResponse));
@@ -107,8 +112,15 @@ public class TemplatingTest extends AbstractTemplatingTest {
 			FileOutputStream out1data = new FileOutputStream("target/tests/"+testName+".data.json");
 			StreamUtils.copy(dataJson, StandardCharsets.UTF_8, out1data);
 			
+			// make sure the substitution works
+			ObjectNode dataOuter = om.createObjectNode();
+			dataOuter.set("$root", _$root);
+			String outerDataJson = om.writerWithDefaultPrettyPrinter().writeValueAsString(dataOuter);
+			System.out.println("COMBINED: "+js.singleThreadedEvalLoop(outerDataJson, actualJson));
+			
 			// do comparison
 			Assertions.assertEquals(expectedNode, actualNode);
+			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}

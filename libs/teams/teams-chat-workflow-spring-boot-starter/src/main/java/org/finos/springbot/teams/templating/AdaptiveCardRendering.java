@@ -31,7 +31,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	}
 	
 	public static String nullProof(Variable v) {
-		return nullProofWithFunction(v, "string");
+		return nullProofWithFunction(v, "");
 	}
 	
 	public static String nullProofWithFunction(Variable v, String function) {
