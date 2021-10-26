@@ -12,7 +12,6 @@ import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.HostAccess;
 import org.graalvm.polyglot.Value;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,15 +19,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.google.common.base.Charsets;
 
 public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, WorkResponse> {
 
 	private final WorkTemplater<JsonNode> formConverter;
 	
 	private ObjectMapper om;
-	
-	private Context ctx; // javascript templating
+	private JavascriptSubstitution js = new JavascriptSubstitution();
 	
 	public TeamsTemplateProvider(
 			String templatePrefix, 
@@ -40,20 +37,6 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 		this.formConverter = formConverter;
 		this.om = new ObjectMapper();
 		this.om.setSerializationInclusion(Include.NON_ABSENT);
-		ctx = Context.newBuilder("js")
-				 .allowHostAccess(HostAccess.ALL)
-				    //allows access to all Java classes
-				  .allowHostClassLookup(className -> true)
-				  .allowIO(true)
-				  .build();
-		
-		load("/js/adaptive-expressions2.min.js");
-		load("/js/adaptivecards-templating2.min.js");		
-	}
-
-	private Value load(String f) throws IOException {
-		Value out = ctx.eval("js", StreamUtils.copyToString(TeamsTemplateProvider.class.getResourceAsStream(f), Charsets.UTF_8));
-		return out;
 	}
 
 	@Override
@@ -95,23 +78,18 @@ public class TeamsTemplateProvider extends AbstractResourceTemplateProvider<Json
 			String templateStr = om.writerWithDefaultPrettyPrinter().writeValueAsString(template);
 
 			System.out.println("TEMPLATE: \n"+templateStr); 
-			System.out.println("DATA: \n"+ _$root);
+			System.out.println("DATA: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(_$root));
 
-			Value tv = singleThreadedEvalLoop(dataStr, templateStr);
+			String tv = js.singleThreadedEvalLoop(dataStr, templateStr);
 
-			System.out.println("COMBINED: \n"+ tv.asString());
+			System.out.println("COMBINED: \n"+ tv);
 
-			return om.readTree(tv.asString());
+			return om.readTree(tv);
 				
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't template response", e);
 		}
-	}
-
-	private synchronized Value singleThreadedEvalLoop(String dataStr, String templateStr) {
-		Value tv = ctx.eval("js", "JSON.stringify(new ACData.Template("+templateStr+").expand("+dataStr+"))");
-		return tv;
 	}
 
 	protected Map<String, Object> getData(WorkResponse t) {
