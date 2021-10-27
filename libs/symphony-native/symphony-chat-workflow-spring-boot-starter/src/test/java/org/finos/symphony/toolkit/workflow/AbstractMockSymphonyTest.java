@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
+import org.finos.springbot.symphony.SymphonyWorkflowConfig;
+import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.SymphonyWorkflowConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

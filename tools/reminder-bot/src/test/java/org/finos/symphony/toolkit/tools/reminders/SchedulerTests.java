@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.content.Addressable;
@@ -23,7 +24,6 @@ import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

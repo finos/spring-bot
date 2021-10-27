@@ -2,10 +2,10 @@ package org.finos.symphony.toolkit.workflow.fixture;
 
 import java.util.Objects;
 
+import org.finos.springbot.symphony.content.CashTag;
+import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 
 @Work()
 public class WeirdObject {

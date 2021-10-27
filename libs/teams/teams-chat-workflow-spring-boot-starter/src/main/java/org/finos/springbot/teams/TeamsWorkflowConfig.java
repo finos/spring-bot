@@ -119,12 +119,6 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 				workTemplater);
 	}
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public WorkTemplater<JsonNode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters) {
-		LOG.info("Setting up Freemarker formMessageMLConverter with {} converters", converters.size());
-		return new AdaptiveCardTemplater(converters, r);
-	}
 //	
 //	@Bean
 //	@ConditionalOnMissingBean
