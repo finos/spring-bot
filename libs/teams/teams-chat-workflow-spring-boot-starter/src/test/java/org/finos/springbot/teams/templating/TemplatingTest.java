@@ -24,8 +24,6 @@ import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.Mode;
-import org.finos.springbot.workflow.templating.Rendering;
-import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,11 +42,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 public class TemplatingTest extends AbstractTemplatingTest {
 
 	@Autowired
-	List<TypeConverter<JsonNode>> converters;
-	
-	@Autowired 
-	Rendering<JsonNode> r;
-	
 	WorkTemplater<JsonNode> templater;
 	
 	ObjectMapper om;
@@ -72,7 +65,6 @@ public class TemplatingTest extends AbstractTemplatingTest {
 
 	@BeforeEach
 	public void doSetup() {
-		templater = new AdaptiveCardTemplater(converters, r);
 		om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
 	}

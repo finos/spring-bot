@@ -8,14 +8,9 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.templating.AbstractResourceTemplateProvider;
 import org.finos.springbot.workflow.templating.Mode;
 import org.finos.springbot.workflow.templating.WorkTemplater;
-import org.graalvm.polyglot.Context;
-import org.graalvm.polyglot.HostAccess;
-import org.graalvm.polyglot.Value;
 import org.springframework.core.io.ResourceLoader;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

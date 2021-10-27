@@ -1,5 +1,7 @@
 package org.finos.springbot.teams.templating;
 
+import java.util.List;
+
 import org.finos.springbot.teams.TeamsWorkflowConfig;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
@@ -10,8 +12,11 @@ import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
+import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.UserConverter;
+import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -32,8 +37,8 @@ public class AdaptiveCardConverterConfig {
 	}
 	
 	@Bean
-	public BooleanConverter booleanConverter(Rendering<JsonNode> r) {
-		return new BooleanConverter(r);
+	public BooleanConverter<JsonNode> booleanConverter(Rendering<JsonNode> r) {
+		return new BooleanConverter<>(r);
 	}
 	
 	@Bean
@@ -70,6 +75,12 @@ public class AdaptiveCardConverterConfig {
 	@Bean
 	public DropdownAnnotationConverter<JsonNode> dropdownAnnotationConverter(Rendering<JsonNode> r) {
 		return new DropdownAnnotationConverter<>(r);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public WorkTemplater<JsonNode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters, Rendering<JsonNode> r) {
+		return new AdaptiveCardTemplater(converters, r);
 	}
 	
 }

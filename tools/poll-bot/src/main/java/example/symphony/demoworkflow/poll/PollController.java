@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.symphony.content.HashTag;
+import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatResponseBody;
@@ -21,8 +23,6 @@ import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;

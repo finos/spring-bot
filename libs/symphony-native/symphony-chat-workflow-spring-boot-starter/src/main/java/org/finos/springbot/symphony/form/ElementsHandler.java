@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.symphony.conversations.SymphonyConversations;
+import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
@@ -20,8 +22,6 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.validation.Errors;

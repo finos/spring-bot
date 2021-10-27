@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatVariable;
@@ -24,7 +25,6 @@ import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
 import org.springframework.stereotype.Controller;
 
 @Controller

@@ -3,11 +3,11 @@ package org.finos.symphony.toolkit.workflow;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import org.finos.springbot.symphony.response.handlers.AttachmentHandler;
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
 import org.finos.springbot.tests.controller.OurController;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.AttachmentHandler;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;

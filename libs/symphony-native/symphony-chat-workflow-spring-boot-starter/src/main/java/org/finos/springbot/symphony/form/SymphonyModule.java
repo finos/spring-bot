@@ -2,10 +2,10 @@ package org.finos.springbot.symphony.form;
 
 import java.io.IOException;
 
+import org.finos.springbot.symphony.content.SymphonyRoom;
+import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;

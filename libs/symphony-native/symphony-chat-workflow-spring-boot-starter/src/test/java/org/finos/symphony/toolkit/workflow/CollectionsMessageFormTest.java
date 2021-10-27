@@ -2,13 +2,13 @@ package org.finos.symphony.toolkit.workflow;
 
 import java.util.Arrays;
 
+import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.fixture.Address;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.fixture.Person;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

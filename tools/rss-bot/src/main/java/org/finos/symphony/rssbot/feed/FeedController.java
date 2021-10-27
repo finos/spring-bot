@@ -2,6 +2,8 @@ package org.finos.symphony.rssbot.feed;
 
 import java.util.Optional;
 
+import org.finos.springbot.symphony.content.SymphonyAddressable;
+import org.finos.springbot.symphony.history.SymphonyHistory;
 import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatResponseBody;
@@ -20,8 +22,6 @@ import org.finos.symphony.rssbot.alerter.FeedListCache;
 import org.finos.symphony.rssbot.alerter.TimedAlerter;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.rssbot.notify.Notifier;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

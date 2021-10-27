@@ -1,7 +1,7 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
+import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

@@ -2,10 +2,10 @@ package org.finos.springbot.symphony.form;
 
 import java.util.Map;
 
+import org.finos.springbot.symphony.content.CashTag;
+import org.finos.springbot.symphony.content.HashTag;
+import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.tests.form.AbstractFormConverterTest;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

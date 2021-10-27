@@ -10,6 +10,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.finos.springbot.symphony.conversations.SymphonyConversations;
+import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
@@ -24,8 +26,6 @@ import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.Reminder;
 import org.finos.symphony.toolkit.tools.reminders.ReminderList;
 import org.finos.symphony.toolkit.tools.reminders.ReminderProperties;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
