@@ -25,28 +25,27 @@ import org.springframework.context.annotation.Configuration;
 public class FreemarkerTypeConverterConfig {
 	
 	@Bean
-	protected Rendering<String>symphonyFreeMarkerRendering() {
+	protected FreemarkerRendering symphonyFreeMarkerRendering() {
 		return new FreemarkerRendering();
 	}
 	
-	
 	@Bean
-	public BeanConverter<String> beanConverter(FreemarkerRendering r) {
+	protected BeanConverter<String> fmBeanConverter(FreemarkerRendering r) {
 		return new BeanConverter<>(r);
 	}
 	
 	@Bean
-	public BooleanConverter<String> booleanConverter(FreemarkerRendering r) {
+	protected BooleanConverter<String> fmBooleanConverter(FreemarkerRendering r) {
 		return new BooleanConverter<>(r);
 	}
 	
 	@Bean
-	public CollectionConverter collectionConverter(FreemarkerRendering r) {
+	protected CollectionConverter fmCollectionConverter(FreemarkerRendering r) {
 		return new CollectionConverter(r);
 	}
 	
 	@Bean
-	public EnumConverter<String> enumConverter(FreemarkerRendering r) {
+	protected EnumConverter<String> fmEnumConverter(FreemarkerRendering r) {
 		return new EnumConverter<>(r);
 	}
 	
@@ -66,23 +65,23 @@ public class FreemarkerTypeConverterConfig {
 //	}
 //	
 	@Bean
-	public TextFieldConverter<String> textFieldConverter(Rendering<String> r) {
+	protected TextFieldConverter<String> fmTextFieldConverter(Rendering<String> r) {
 		return new TextFieldConverter<String>(TextFieldConverter.LOW_PRIORITY, r, String.class, 
 				Number.class, int.class, float.class, double.class, short.class, long.class, byte.class);
 	}
 	
 	@Bean
-	public ChatConverter<String> roomConverter(FreemarkerRendering r) {
+	protected ChatConverter<String> fmRoomConverter(FreemarkerRendering r) {
 		return new ChatConverter<String>(ChatConverter.LOW_PRIORITY, r, SymphonyRoom.class, Chat.class);
 	}
 	
 	@Bean
-	public DropdownAnnotationConverter<String> dropdownAnnotationConverter(FreemarkerRendering r) {
+	protected DropdownAnnotationConverter<String> fmDropdownAnnotationConverter(FreemarkerRendering r) {
 		return new DropdownAnnotationConverter<>(r);
 	}
 	
 	@Bean
-	public UserConverter<String> userConverter(FreemarkerRendering r) {
+	protected UserConverter<String> rmUserConverter(FreemarkerRendering r) {
 		return new UserConverter<>(UserConverter.LOW_PRIORITY, r, User.class);
 	}
 	

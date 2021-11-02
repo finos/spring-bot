@@ -34,9 +34,7 @@ import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
-import org.finos.springbot.workflow.form.FormConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
-import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
@@ -45,6 +43,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -73,6 +72,7 @@ import com.symphony.api.pod.UsersApi;
 	FreemarkerTypeConverterConfig.class, 
 	JerseyAttachmentHandlerConfig.class,
 	DataHandlerCofig.class})
+@ConditionalOnProperty("symphony.apis.0.pod.url")
 public class SymphonyWorkflowConfig {
 		
 	@Autowired
@@ -105,13 +105,13 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageMLParser simpleMessageParser() {
+	public MessageMLParser symphonyMessageMLParser() {
 		return new MessageMLParser();
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MarkupWriter messageMLWriter() {
+	public MarkupWriter symphonyMessageMLWriter() {
 		MarkupWriter out = new MarkupWriter();
 		out.add(Message.class, out.new OrderedTagWriter("messageML"));
 		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
@@ -133,7 +133,7 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean 
 	@ConditionalOnMissingBean
-	public SimpleMessageMarkupTemplateProvider markupTemplater(
+	public SimpleMessageMarkupTemplateProvider symphonyMarkupTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/symphony/}") String prefix,
 			@Value("${symphony.templates.suffix:.ftl}") String suffix,
 			MarkupWriter converter) {
@@ -142,7 +142,7 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public SymphonyTemplateProvider workTemplater(
+	public SymphonyTemplateProvider symphonyWorkTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/symphony/}") String prefix,
 			@Value("${symphony.templates.suffix:.ftl}") String suffix,
 			FreemarkerWorkTemplater formConverter) {
@@ -176,7 +176,7 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public HeaderTagResponseHandler headerTagResponsehandler() {
+	public HeaderTagResponseHandler symphonyHeaderTagResponsehandler() {
 		return new HeaderTagResponseHandler();
 	} 
 	
@@ -184,13 +184,13 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public PresentationMLHandler presentationMLHandler(List<ActionConsumer> messageConsumers) {
-		return new PresentationMLHandler(simpleMessageParser(), ejc, messageConsumers, symphonyRooms(), botIdentity);
+	public PresentationMLHandler symphonyPresentationMLHandler(List<ActionConsumer> messageConsumers) {
+		return new PresentationMLHandler(symphonyMessageMLParser(), ejc, messageConsumers, symphonyRooms(), botIdentity);
 	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public FormConverter formConverter() {
+	public SymphonyFormConverter symphonyFormConverter() {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new SymphonyModule());
 		om.registerModule(new JavaTimeModule());
@@ -199,7 +199,7 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public AddressingChecker defaultAddressingChecker() {
+	public AddressingChecker symphonyDefaultAddressingChecker() {
 		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		SymphonyUser su = new SymphonyUser(symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
 		return new InRoomAddressingChecker(() -> su, true);
@@ -207,8 +207,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers, FormValidationProcessor fvp) {
-		return new ElementsHandler(messagesApi, ejc, formConverter(), elementsConsumers, symphonyRooms(), fvp);
+	public ElementsHandler symphonyElementsHandler(List<ActionConsumer> elementsConsumers, FormValidationProcessor fvp) {
+		return new ElementsHandler(messagesApi, ejc, symphonyFormConverter(), elementsConsumers, symphonyRooms(), fvp);
 	}
 
 }
