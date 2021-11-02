@@ -2,6 +2,7 @@ package org.finos.springbot.symphony;
 
 import java.util.List;
 
+import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
@@ -21,7 +22,6 @@ import org.finos.springbot.symphony.response.handlers.SymphonyResponseHandler;
 import org.finos.springbot.symphony.templating.FreemarkerTypeConverterConfig;
 import org.finos.springbot.symphony.templating.FreemarkerWorkTemplater;
 import org.finos.springbot.symphony.templating.SymphonyTemplateProvider;
-import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;

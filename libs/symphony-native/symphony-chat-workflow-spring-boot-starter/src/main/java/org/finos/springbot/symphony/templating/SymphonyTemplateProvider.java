@@ -40,7 +40,11 @@ public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<S
 			throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
 		}
 		
-		return insert;
+		String defaultTemplate = getTemplateForName("default");
+		
+		String out = defaultTemplate.replace("<!-- Message Content -->", insert);
+		
+		return out;
 	}
 	
 	protected boolean needsButtons(Response r) {

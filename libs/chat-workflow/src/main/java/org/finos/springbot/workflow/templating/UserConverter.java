@@ -21,7 +21,7 @@ public class UserConverter<X> extends AbstractClassConverter<X> {
 	
 	protected String getLocation(Field ctx) {
 		if (ctx == null) {
-			return RequiresUserList.USER_LIST_KEY;
+			return RequiresUserList.USER_LIST_KEY+".contents";
 		} else {
 			RequiresUserList rul = ctx.getAnnotation(RequiresUserList.class);
 			return rul == null ? RequiresUserList.USER_LIST_KEY+ ".contents" : rul.key(); 

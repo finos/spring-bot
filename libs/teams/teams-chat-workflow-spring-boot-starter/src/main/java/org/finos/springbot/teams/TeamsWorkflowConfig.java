@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
 
+import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
 import org.finos.springbot.teams.form.TeamsFormConverter;
@@ -13,7 +14,6 @@ import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
 import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
-import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.content.BlockQuote;
