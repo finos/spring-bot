@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,6 +21,8 @@ import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
+import org.finos.springbot.workflow.form.DropdownList;
+import org.finos.springbot.workflow.form.UserList;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.Mode;
 import org.finos.springbot.workflow.templating.WorkTemplater;
@@ -39,7 +40,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @SpringBootTest(classes = { 
 		AdaptiveCardConverterConfig.class
 })
-public class TemplatingTest extends AbstractTemplatingTest {
+public class TeamsTemplatingTest extends AbstractTemplatingTest {
 
 	@Autowired
 	WorkTemplater<JsonNode> templater;
@@ -123,17 +124,17 @@ public class TemplatingTest extends AbstractTemplatingTest {
 	}
 
 	@Override
-	protected List<User> createSomeUsers(int count) {
-		return IntStream.range(0, count)
+	protected UserList createSomeUsers(int count) {
+		return new UserList(IntStream.range(0, count)
 				.mapToObj(i -> i == 0 ? getUser() : new TeamsUser("idu"+i, "Name of "+i))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()));
 	}
 
 	@Override
-	protected List<Chat> createSomeChats(int count) {
-		return IntStream.range(0, count)
+	protected DropdownList createSomeChats(int count) {
+		return new DropdownList(IntStream.range(0, count)
 				.mapToObj(i -> i == 0 ? getChat() : new TeamsChat("idc"+i, "Chat name of "+i))
-				.collect(Collectors.toList());
+				.collect(Collectors.toList()));
 	}
 
 

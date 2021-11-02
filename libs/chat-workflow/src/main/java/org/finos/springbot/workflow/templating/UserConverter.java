@@ -16,15 +16,15 @@ public class UserConverter<X> extends AbstractClassConverter<X> {
 
 	@Override
 	public X apply(Field ctx, Type t, boolean editMode, Variable v) {
-		return r.renderDropdown(v.field("key"), getKey(ctx), "key", "name", editMode);
+		return r.renderDropdown(v, ".key", getLocation(ctx), ".key", ".name", editMode);
 	}
 	
-	protected String getKey(Field ctx) {
+	protected String getLocation(Field ctx) {
 		if (ctx == null) {
 			return RequiresUserList.USER_LIST_KEY;
 		} else {
 			RequiresUserList rul = ctx.getAnnotation(RequiresUserList.class);
-			return rul == null ? RequiresUserList.USER_LIST_KEY : rul.key(); 
+			return rul == null ? RequiresUserList.USER_LIST_KEY+ ".contents" : rul.key(); 
 		}
 	}
 }

@@ -8,23 +8,22 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.finos.springbot.tests.work.BooleanWork;
 import org.finos.springbot.tests.work.ChatWork;
 import org.finos.springbot.tests.work.CollectionBeanWork;
+import org.finos.springbot.tests.work.CollectionBeanWork.Inner;
 import org.finos.springbot.tests.work.CollectionSingleWork;
 import org.finos.springbot.tests.work.DisplayWork;
 import org.finos.springbot.tests.work.DropdownWork;
 import org.finos.springbot.tests.work.EnumWork;
+import org.finos.springbot.tests.work.EnumWork.TrafficLights;
 import org.finos.springbot.tests.work.IntegerWork;
 import org.finos.springbot.tests.work.NestedWork;
 import org.finos.springbot.tests.work.StringWork;
 import org.finos.springbot.tests.work.TimeWork;
 import org.finos.springbot.tests.work.UserWork;
-import org.finos.springbot.tests.work.CollectionBeanWork.Inner;
-import org.finos.springbot.tests.work.EnumWork.TrafficLights;
 import org.finos.springbot.workflow.annotations.RequiresChatList;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
@@ -33,6 +32,9 @@ import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.form.ButtonList;
+import org.finos.springbot.workflow.form.DropdownList;
+import org.finos.springbot.workflow.form.DropdownList.Item;
+import org.finos.springbot.workflow.form.ErrorMap;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +43,6 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public abstract class AbstractTemplatingTest {
-
 
 	protected abstract Addressable getTo();
 	
@@ -67,11 +68,12 @@ public abstract class AbstractTemplatingTest {
 		ChatWork out = new ChatWork();
 		out.setS(getChat());
 
-		List<Chat> bigList = createSomeChats(10);
+		Object bigList = createSomeChats(10);
 		
 		Map<String, Object> data = new HashMap<>();
 		data.put(RequiresChatList.CHAT_LIST_KEY, bigList);
 		data.put(WorkResponse.OBJECT_KEY, out);
+		data.put(WorkResponse.ERRORS_KEY, new ErrorMap());
 		
 		return new WorkResponse(getTo(), data, null, wm, ChatWork.class);
 	}
@@ -147,23 +149,14 @@ public abstract class AbstractTemplatingTest {
 	private WorkResponse createDropdownWork(WorkMode wm) {
 		DropdownWork out = new DropdownWork();
 		out.setS("one");
-		JsonNodeFactory jnf = new JsonNodeFactory(true);
-		ObjectNode one = jnf.objectNode();
-		one.put("key", "one");
-		one.put("value", "One Value");
-		ObjectNode two = jnf.objectNode();
-		two.put("key", "two");
-		two.put("value", "Two Value");
-		ObjectNode three = jnf.objectNode();
-		three.put("key", "three");
-		three.put("value", "Three Value");
-		ArrayNode an = jnf.arrayNode();
-		an.add(one);
-		an.add(two);
-		an.add(three);
-		Map<String, Object> vals = new HashMap<>();
+		DropdownList an = new DropdownList();
+		an.add(new Item("one", "One value"));
+		an.add(new Item("two", "Two value"));
+		an.add(new Item("three", "Three value"));
+		Map<String,Object> vals = new HashMap<>();
 		vals.put("options", an);
 		vals.put(WorkResponse.OBJECT_KEY, out);
+		vals.put(WorkResponse.ERRORS_KEY, new ErrorMap());
 		return new WorkResponse(getTo(), vals, null, wm, DropdownWork.class);
 	}
 	
@@ -266,21 +259,22 @@ public abstract class AbstractTemplatingTest {
 		return ew;
 	}
 	
-	protected abstract List<User> createSomeUsers(int count);
+	protected abstract DropdownList createSomeUsers(int count);
 	
-	protected abstract List<Chat> createSomeChats(int count);
+	protected abstract DropdownList createSomeChats(int count);
 
 	private WorkResponse createUserWorkResponse(WorkMode wm) {
 		UserWork out = new UserWork();
 		out.setS(getUser());
 
-		List<User> bigList = createSomeUsers(5);
-		List<User> smallList = createSomeUsers(3);
+		Object bigList = createSomeUsers(5);
+		Object smallList = createSomeUsers(3);
 		
 		Map<String, Object> data = new HashMap<>();
 		data.put("biglist", bigList);
 		data.put("smalllist", smallList);
 		data.put(WorkResponse.OBJECT_KEY, out);
+		data.put(WorkResponse.ERRORS_KEY, new ErrorMap());
 		
 		return new WorkResponse(getTo(), data, null, wm, UserWork.class);
 	}
@@ -311,6 +305,7 @@ public abstract class AbstractTemplatingTest {
 		Map<String, Object> data = new HashMap<>();
 		data.put(ButtonList.KEY, bl);
 		data.put(WorkResponse.OBJECT_KEY, out);
+		data.put(WorkResponse.ERRORS_KEY, new ErrorMap());
 		
 		WorkResponse wr = new WorkResponse(getTo(), data, null, WorkMode.EDIT, StringWork.class);
 		testTemplating(wr, "SomeButtons");

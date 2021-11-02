@@ -7,10 +7,10 @@ import java.util.Map;
 
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
-import org.finos.springbot.symphony.json.RoomList;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
+import org.finos.springbot.workflow.form.DropdownList;
 import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.symphony.toolkit.workflow.fixture.RoomAndDropdown;
@@ -30,11 +30,11 @@ public class RoomAndDropdownMessageML extends AbstractMockSymphonyTest {
 	@Autowired
 	EntityJsonConverter ejc;
 	
-	protected RoomList getSomeRooms() {
+	protected DropdownList getSomeRooms() {
 		SymphonyRoom a = new SymphonyRoom("room one", "one");
 		SymphonyRoom b = new SymphonyRoom("tesxt room", "abc123");
 		SymphonyRoom c = new SymphonyRoom("room three", "three");
-		RoomList out = new RoomList();
+		DropdownList out = new DropdownList();
 		out.add(a);
 		out.add(b);
 		out.add(c);

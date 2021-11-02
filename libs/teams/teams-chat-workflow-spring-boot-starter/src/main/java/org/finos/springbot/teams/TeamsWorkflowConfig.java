@@ -6,13 +6,11 @@ import java.util.Properties;
 
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
-import org.finos.springbot.teams.form.TeamsModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
-import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
@@ -25,9 +23,9 @@ import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.springbot.workflow.form.FormConverter;
+import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.springbot.workflow.templating.Rendering;
-import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,8 +132,8 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser) {
-		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser, formConverter());
+	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser, FormValidationProcessor fvp) {
+		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser, formConverter(), fvp);
 	}
 	
 	@Bean

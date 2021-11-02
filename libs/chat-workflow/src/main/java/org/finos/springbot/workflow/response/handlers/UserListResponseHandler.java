@@ -1,12 +1,15 @@
 package org.finos.springbot.workflow.response.handlers;
 
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.finos.springbot.workflow.annotations.RequiresUserList;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.form.DropdownList;
+import org.finos.springbot.workflow.form.DropdownList.Item;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 
@@ -40,9 +43,13 @@ public class UserListResponseHandler implements ResponseHandler {
 				
 				if (a instanceof User) {
 					// writing to a single user
-					wr.getData().put(rcl.key(), Collections.singleton(a));
+					Item i = new Item(a.getKey(), ((User)a).getName());
+					wr.getData().put(rcl.key(), new DropdownList(Collections.singletonList(i)));
 				} else if (a instanceof Chat) {
-					wr.getData().put(rcl.key(), conversations.getChatMembers((Chat) a));;
+					wr.getData().put(rcl.key(), new DropdownList(
+						conversations.getChatMembers((Chat) a).stream()
+							.map(uu -> new Item(uu.getKey(), uu.getName()))
+							.collect(Collectors.toList())));
 				}
 			}
 		}

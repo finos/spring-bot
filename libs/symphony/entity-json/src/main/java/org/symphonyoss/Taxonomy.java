@@ -62,6 +62,7 @@ public class Taxonomy {
 
 	protected String fromTaxonomy(Class<?> class1) {
 		return getId().stream()
+			.filter(t -> t != null)
 			.filter(t -> class1.isAssignableFrom(t.getClass()))
 			.findFirst()
 			.map(te -> te.getValue())

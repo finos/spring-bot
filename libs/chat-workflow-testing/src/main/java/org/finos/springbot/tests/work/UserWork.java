@@ -8,10 +8,10 @@ import org.finos.springbot.workflow.content.User;
 @RequiresUserList(key = "biglist")
 public class UserWork {
 
-	@RequiresUserList(key = "biglist")
+	@RequiresUserList(key = "biglist.contents")
 	User b;
 
-	@RequiresUserList(key = "smalllist")
+	@RequiresUserList(key = "smalllist.contents")
 	User s;
 
 	public User getB() {

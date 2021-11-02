@@ -26,16 +26,25 @@ public final class SymphonyUser extends Mention implements User, SymphonyContent
 		super(createTaxonomy(userId, null, null));
 	}
 	
+	/**
+	 * This ensures that each element of the taxonomy appears in the same place in the list each time
+	 */
 	private static List<TaxonomyElement> createTaxonomy(Long userId, String displayName, String emailAddress) {
 		List<TaxonomyElement> out = new ArrayList<TaxonomyElement>();
 		if (userId != null) {
 			out.add(new UserId(""+userId));
+		} else {
+			out.add(null);
 		}
 		if (displayName != null) {
 			out.add(new DisplayName(displayName));
+		} else {
+			out.add(null);
 		}
 		if (emailAddress != null) {
 			out.add(new EmailAddress(emailAddress));
+		} else {
+			out.add(null);
 		}
 		
 		return out;
@@ -83,9 +92,8 @@ public final class SymphonyUser extends Mention implements User, SymphonyContent
 	}
 
 	@Override
-	@JsonIgnore
 	public String getKey() {
-		return getStreamId();
+		return getUserId();
 	}
 	
 

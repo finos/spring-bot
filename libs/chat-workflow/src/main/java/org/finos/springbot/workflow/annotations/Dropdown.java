@@ -18,10 +18,10 @@ public @interface Dropdown {
 	/**
 	 * Dictates where in the JSON structure to get the options for the dropdown
 	 */
-	public String data();
+	public String data() default "options.contents";
 	
-	public String key();
+	public String key() default ".key";
 	
-	public String value();
+	public String name() default ".name";
 
 }

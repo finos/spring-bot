@@ -9,7 +9,7 @@ import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
 import org.springframework.util.StringUtils;
 
-public class FreemarkerRenderingOld implements Rendering<String> {
+public class FROld implements Rendering<String> {
 
 	@Override
 	public String text(Variable variable, String suffix) {
@@ -98,12 +98,12 @@ public class FreemarkerRenderingOld implements Rendering<String> {
 
 	@Override
 	public String list(List<String> contents) {
-		return "<table>" + contents.stream().reduce(String::concat) + "</table>";
+		return "<table>" + contents.stream().reduce(String::concat).orElse("") + "</table>";
 	}
 
 	@Override
 	public String addFieldName(String field, String value) {
-		return field == null ? "" : "<tr><td><b>" + field + ":</b></td><td>" + value + "</td></tr>";
+		return !StringUtils.hasText(field) ? "" : "<tr><td><b>" + field + ":</b></td><td>" + value + "</td></tr>";
 	}
 
 	@Override

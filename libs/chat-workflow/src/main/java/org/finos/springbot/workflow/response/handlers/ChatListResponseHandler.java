@@ -1,7 +1,11 @@
 package org.finos.springbot.workflow.response.handlers;
 
+import java.util.stream.Collectors;
+
 import org.finos.springbot.workflow.annotations.RequiresChatList;
 import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.form.DropdownList;
+import org.finos.springbot.workflow.form.DropdownList.Item;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 
@@ -31,7 +35,10 @@ public class ChatListResponseHandler implements ResponseHandler {
 			RequiresChatList rcl = c.getAnnotation(RequiresChatList.class);
 				
 			if (rcl != null) {
-				wr.getData().put(rcl.key(), conversations.getAllChats());
+				wr.getData().put(rcl.key(), new DropdownList(
+					conversations.getAllChats().stream()
+						.map(cc -> new Item(cc.getKey(), cc.getName()))
+						.collect(Collectors.toList())));
 			}
 		}
 	}
