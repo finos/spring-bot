@@ -35,5 +35,7 @@ public interface Rendering<X> {
 	X button(String name, String value);
 	
 	X buttons(String location);
+	
+	X table(Variable v, X headers, X body);
 
 }

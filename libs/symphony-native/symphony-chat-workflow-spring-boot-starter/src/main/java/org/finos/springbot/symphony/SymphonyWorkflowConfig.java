@@ -35,6 +35,7 @@ import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.springbot.workflow.form.FormConverter;
+import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
@@ -206,8 +207,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers, ResponseHandlers rh) {
-		return new ElementsHandler(messagesApi, ejc, formConverter(), elementsConsumers, rh, symphonyRooms(), validator);
+	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers, FormValidationProcessor fvp) {
+		return new ElementsHandler(messagesApi, ejc, formConverter(), elementsConsumers, symphonyRooms(), fvp);
 	}
 
 }

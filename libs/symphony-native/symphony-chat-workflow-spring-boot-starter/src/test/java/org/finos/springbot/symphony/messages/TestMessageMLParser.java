@@ -2,6 +2,8 @@ package org.finos.springbot.symphony.messages;
 
 import java.util.HashMap;
 
+import org.finos.springbot.symphony.SymphonyMockConfiguration;
+import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
@@ -15,12 +17,16 @@ import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.java.mapping.MessageMatcher;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.AbstractMockSymphonyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-public class TestMessageMLParser extends AbstractMockSymphonyTest {
+
+@SpringBootTest(classes = { 
+	SymphonyMockConfiguration.class, 
+	SymphonyWorkflowConfig.class})
+public class TestMessageMLParser  {
 
 	MessageMLParser smp = new MessageMLParser();
 	

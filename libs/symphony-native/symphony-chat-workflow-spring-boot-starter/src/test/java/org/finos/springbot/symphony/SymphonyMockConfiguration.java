@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow;
+package org.finos.springbot.symphony;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;

@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.fixture;
+package org.finos.springbot.symphony.history;
 
 import javax.validation.Valid;
 

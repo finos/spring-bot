@@ -39,27 +39,27 @@ public class FreemarkerTypeConverterConfig {
 	public BooleanConverter<String> booleanConverter(FreemarkerRendering r) {
 		return new BooleanConverter<>(r);
 	}
-//	
-//	@Bean
-//	public CollectionConverter collectionConverter() {
-//		return new CollectionConverter();
-//	}
-//	
+	
+	@Bean
+	public CollectionConverter collectionConverter(FreemarkerRendering r) {
+		return new CollectionConverter(r);
+	}
+	
 	@Bean
 	public EnumConverter<String> enumConverter(FreemarkerRendering r) {
 		return new EnumConverter<>(r);
 	}
 	
-	@Bean
-	public HashTagConverter hashTagConverter(FreemarkerRendering r) {
-		return new HashTagConverter(r);
-	}
-	
-	@Bean
-	public CashTagConverter cashTagConverter(FreemarkerRendering r) {
-		return new CashTagConverter(r);
-	}
-	
+//	@Bean
+//	public HashTagConverter hashTagConverter(FreemarkerRendering r) {
+//		return new HashTagConverter(r);
+//	}
+//	
+//	@Bean
+//	public CashTagConverter cashTagConverter(FreemarkerRendering r) {
+//		return new CashTagConverter(r);
+//	}
+//	
 //	@Bean
 //	public TimeConverter timeConverter(FreemarkerRendering r) {
 //		return new TimeConverter(r);

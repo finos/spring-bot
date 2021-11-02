@@ -1,31 +1,40 @@
-package org.finos.symphony.toolkit.workflow;
+package org.finos.springbot.symphony.history;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
+import org.finos.springbot.symphony.SymphonyMockConfiguration;
+import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyRoom;
-import org.finos.springbot.symphony.history.SymphonyHistory;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;
 import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageList;
 
-public class TestHistory extends AbstractMockSymphonyTest {
+@SpringBootTest(classes = { 
+		SymphonyMockConfiguration.class, 
+	SymphonyWorkflowConfig.class,
+})
+public class HistoryTest {
 	
 	@Autowired
 	SymphonyHistory mh;
 	
 	@Autowired
 	EntityJsonConverter ejc;
+	
+	@Autowired
+	MessagesApi messagesApi;
 
 	@Test
 	public void testGetLast() {
