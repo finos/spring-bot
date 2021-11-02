@@ -10,7 +10,6 @@ import org.finos.springbot.workflow.templating.BooleanConverter;
 import org.finos.springbot.workflow.templating.ChatConverter;
 import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
-import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.UserConverter;
@@ -26,60 +25,59 @@ import com.fasterxml.jackson.databind.JsonNode;
 @AutoConfigureBefore({TeamsWorkflowConfig.class})
 public class AdaptiveCardConverterConfig {
 	
-	@Bean
-	public Rendering<JsonNode> adaptiveCardRendering() {
+	@Bean()
+	protected AdaptiveCardRendering adaptiveCardRendering() {
 		return new AdaptiveCardRendering();
 	}
 	
-	@Bean
-	public BeanConverter<JsonNode> beanConverter(Rendering<JsonNode> r) {
+	protected BeanConverter<JsonNode> acBeanConverter(AdaptiveCardRendering r) {
 		return new BeanConverter<JsonNode>(r);
 	}
 	
 	@Bean
-	public BooleanConverter<JsonNode> booleanConverter(Rendering<JsonNode> r) {
+	protected BooleanConverter<JsonNode> acBooleanConverter(AdaptiveCardRendering r) {
 		return new BooleanConverter<>(r);
 	}
 	
 	@Bean
-	public CollectionConverter collectionConverter(Rendering<JsonNode> r) {
+	protected CollectionConverter acCollectionConverter(AdaptiveCardRendering r) {
 		return new CollectionConverter(r);
 	}
 	
 	@Bean
-	public EnumConverter<JsonNode> enumConverter(Rendering<JsonNode> r) {
+	protected EnumConverter<JsonNode> acEnumConverter(AdaptiveCardRendering r) {
 		return new EnumConverter<>(r);
 	}
 	
 	@Bean
-	public TimeConverter timeConverter(Rendering<JsonNode> r) {
+	protected TimeConverter acTimeConverter(AdaptiveCardRendering r) {
 		return new TimeConverter(r);
 	}
 	
 	@Bean
-	public ValidatingTextFieldConverter textFieldConverter(Rendering<JsonNode> r) {
+	protected ValidatingTextFieldConverter acTextFieldConverter(AdaptiveCardRendering r) {
 		return new ValidatingTextFieldConverter(TextFieldConverter.LOW_PRIORITY, r, String.class, 
 				Number.class, int.class, float.class, double.class, short.class, long.class, byte.class);
 	}
 	
 	@Bean
-	public UserConverter<JsonNode> userConverter(Rendering<JsonNode> r) {
+	protected UserConverter<JsonNode> acUserConverter(AdaptiveCardRendering r) {
 		return new UserConverter<>(UserConverter.LOW_PRIORITY, r, User.class);
 	}
 	
 	@Bean
-	public ChatConverter<JsonNode> chatConverter(Rendering<JsonNode> r) {
+	protected ChatConverter<JsonNode> acChatConverter(AdaptiveCardRendering r) {
 		return new ChatConverter<>(ChatConverter.LOW_PRIORITY, r, Chat.class);
 	}
 	
 	@Bean
-	public DropdownAnnotationConverter<JsonNode> dropdownAnnotationConverter(Rendering<JsonNode> r) {
+	protected DropdownAnnotationConverter<JsonNode> acDropdownAnnotationConverter(AdaptiveCardRendering r) {
 		return new DropdownAnnotationConverter<>(r);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public WorkTemplater<JsonNode> adaptiveCardConverter(List<TypeConverter<JsonNode>> converters, Rendering<JsonNode> r) {
+	public AdaptiveCardTemplater adaptiveCardConverter(List<TypeConverter<JsonNode>> converters, AdaptiveCardRendering r) {
 		return new AdaptiveCardTemplater(converters, r);
 	}
 	

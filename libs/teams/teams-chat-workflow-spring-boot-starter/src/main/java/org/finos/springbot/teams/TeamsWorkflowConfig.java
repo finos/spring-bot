@@ -6,11 +6,13 @@ import java.util.Properties;
 
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
+import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
 import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
@@ -26,12 +28,12 @@ import org.finos.springbot.workflow.form.FormConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
 import org.finos.springbot.workflow.templating.Rendering;
-import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,6 +57,7 @@ import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
  */
 @Configuration
 @Import({ChatWorkflowConfig.class, AdaptiveCardConverterConfig.class})
+@ConditionalOnProperty("MicrosoftAppId")
 public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
@@ -90,7 +93,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean 
 	@ConditionalOnMissingBean
-	public SimpleMessageMarkupTemplateProvider markupTemplater(
+	public SimpleMessageMarkupTemplateProvider teamsMarkupTemplater(
 			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
 			@Value("${teams.templates.suffix:.html}") String suffix,
 			MarkupWriter converter) {
@@ -99,10 +102,10 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsTemplateProvider workTemplater(
+	public TeamsTemplateProvider teamsWorkTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/teams/}") String prefix,
 			@Value("${symphony.templates.suffix:.json}") String suffix,
-			WorkTemplater<JsonNode> formConverter) throws IOException {
+			AdaptiveCardTemplater formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
 	}
 	
@@ -129,11 +132,20 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public TeamsConversations teamsConversations() {
 		return new TeamsConversationsImpl();
 	}
+
+	@Bean
+	@ConditionalOnMissingBean
+	public TeamsFormConverter teamsFormConverter() {
+		ObjectMapper om = new ObjectMapper();
+		om.registerModule(new JavaTimeModule());
+//		om.registerModule(new TeamsModule());
+		return new TeamsFormConverter(om);
+	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageActivityHandler messsageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser, FormValidationProcessor fvp) {
-		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser, formConverter(), fvp);
+	public MessageActivityHandler teamsMessageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser, FormValidationProcessor fvp) {
+		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser, teamsFormConverter(), fvp);
 	}
 	
 	@Bean
@@ -172,18 +184,9 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 
 	@Bean
     @ConditionalOnMissingBean
-    public BotController botController(MessageActivityHandler mah) {
+    public BotController teamsBotController(MessageActivityHandler mah) {
     	return new BotController(getBotFrameworkHttpAdaptor(), mah);
     }
-
-	@Bean
-	@ConditionalOnMissingBean
-	public FormConverter formConverter() {
-		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new JavaTimeModule());
-//		om.registerModule(new TeamsModule());
-		return new FormConverter(om);
-	}
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -196,11 +199,5 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 		
 		return a -> a;
 	}
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public ElementsHandler elementsHandler(List<ActionConsumer> elementsConsumers) {
-//		return new ElementsHandler(messagesApi, entityJsonConverter(), new FormConverter(symphonyRooms()), elementsConsumers, symphonyResponseHandler(), symphonyRooms(), validator);
-//	}
 
 }
