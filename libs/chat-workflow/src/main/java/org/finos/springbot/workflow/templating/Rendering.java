@@ -4,6 +4,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
 public interface Rendering<X> {
 
 	X description(String d);
@@ -37,5 +39,9 @@ public interface Rendering<X> {
 	X buttons(String location);
 	
 	X table(Variable v, X headers, X body);
+	
+	public default String extend(String with) {
+		return StringUtils.hasText(with) ? "." + with : "";
+	}
 
 }

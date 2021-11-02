@@ -41,10 +41,10 @@ public class FreemarkerRendering implements Rendering<String> {
 					+ "  <#list entity."+choiceLocation+" as "+index+">"
 					+ indent(indent)
 					+ "   <option value=\"${"+index+choiceKey+"}\""
-					+ " selected=\"${((("+variable.getDataPath()+variableKey+")!'') == "+index+choiceKey+")?string('true','false')}\""
+					+ " selected=\"${((("+variable.getDataPath()+extend(variableKey)+")!'') == "+index+extend(choiceKey)+")?string('true','false')}\""
 					+ ">"
 					+ indent(indent)
-					+ "    ${"+index+choiceValue+"}"
+					+ "    ${"+index+extend(choiceValue)+"}"
 					+ indent(indent)
 					+ "   </option>"
 					+ indent(indent)
@@ -56,9 +56,9 @@ public class FreemarkerRendering implements Rendering<String> {
 			return indent(indent)
 					+ "  <#list entity."+choiceLocation+" as "+index+">"
 					+ indent(indent)
-					+ "   <#if ("+index+choiceKey+" == ("+variable.getDataPath()+variableKey+")!'')>"
+					+ "   <#if ("+index+extend(choiceKey)+" == ("+variable.getDataPath()+extend(variableKey)+")!'')>"
 					+ indent(indent)
-					+ "    ${"+index+choiceValue+"}"
+					+ "    ${"+index+extend(choiceValue)+"}"
 					+ indent(indent)
 					+ "   </#if>"
 					+ indent(indent)

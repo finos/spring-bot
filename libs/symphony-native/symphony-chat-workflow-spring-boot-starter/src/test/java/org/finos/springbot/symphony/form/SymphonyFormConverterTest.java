@@ -17,7 +17,7 @@ public class SymphonyFormConverterTest extends AbstractFormConverterTest {
 	@Override
 	protected void before() {
 		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new SymphonyModule());
+		om.registerModule(new SymphonyFormDeserializerModule());
 		om.registerModule(new JavaTimeModule());
 		fc = new SymphonyFormConverter(om);
 

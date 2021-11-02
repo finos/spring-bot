@@ -13,7 +13,6 @@ import org.finos.springbot.workflow.templating.EnumConverter;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.UserConverter;
-import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +24,12 @@ import com.fasterxml.jackson.databind.JsonNode;
 @AutoConfigureBefore({TeamsWorkflowConfig.class})
 public class AdaptiveCardConverterConfig {
 	
-	@Bean()
+	@Bean
 	protected AdaptiveCardRendering adaptiveCardRendering() {
 		return new AdaptiveCardRendering();
 	}
 	
+	@Bean
 	protected BeanConverter<JsonNode> acBeanConverter(AdaptiveCardRendering r) {
 		return new BeanConverter<JsonNode>(r);
 	}

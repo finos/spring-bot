@@ -146,11 +146,11 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	
 
 	@Override
-	public JsonNode renderDropdown(Variable variable, String location, String key, String value, boolean editMode) {
+	public JsonNode renderDropdown(Variable variable, String variableKey, String location, String key, String value, boolean editMode) {
 		if (editMode) {
 			ObjectNode out = f.objectNode();
 			out.put("type", "Input.ChoiceSet");
-			out.put("value", "${"+variable.getDataPath()+"}");
+			out.put("value", "${"+variable.getDataPath()+extend(variableKey)+"}");
 			out.put("id", variable.getFormFieldName());
 			ArrayNode an = out.putArray("choices");
 			
@@ -170,11 +170,11 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	}
 
 	@Override
-	public JsonNode renderDropdown(Variable variable, Map<String, String> options, boolean editMode) {
+	public JsonNode renderDropdown(Variable variable, String variableKey, Map<String, String> options, boolean editMode) {
 		if (editMode) {
 			ObjectNode out = f.objectNode();
 			out.put("type", "Input.ChoiceSet");
-			out.put("value", "${"+variable.getDataPath()+"}");
+			out.put("value", "${"+variable.getDataPath()+extend(variableKey)+"}");
 			out.put("id", variable.getFormFieldName());
 			ArrayNode an = out.putArray("choices");
 			
@@ -232,6 +232,11 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 			((ObjectNode)in).put("$data", "${"+v.getDataPath()+"}");
 			return in;
 		}
+	}
+
+	@Override
+	public JsonNode table(Variable v, JsonNode headers, JsonNode body) {
+		throw new UnsupportedOperationException("Adaptive Cards doesn't support tables yet");
 	}
 	
 }
