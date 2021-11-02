@@ -1,4 +1,4 @@
-package org.finos.springbot.workflow;
+package org.finos.springbot;
 
 import java.util.ArrayList;
 import java.util.Collections;

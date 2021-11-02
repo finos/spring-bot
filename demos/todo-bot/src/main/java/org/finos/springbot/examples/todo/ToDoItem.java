@@ -3,6 +3,7 @@
  */
 package org.finos.springbot.examples.todo;
 
+import org.finos.springbot.workflow.annotations.RequiresUserList;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.User;
 
@@ -11,6 +12,7 @@ import org.finos.springbot.workflow.content.User;
  *
  */
 @Work
+@RequiresUserList
 public class ToDoItem {
 
 	public enum Status {

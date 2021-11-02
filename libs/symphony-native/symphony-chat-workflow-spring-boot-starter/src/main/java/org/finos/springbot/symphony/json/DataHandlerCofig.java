@@ -7,13 +7,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.CashTag;
 import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.RoomName;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
-import org.finos.springbot.workflow.ChatWorkflowConfig;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.symphony.toolkit.json.EntityJson;

@@ -12,7 +12,7 @@ import org.finos.springbot.workflow.annotations.Work;
  * @author moffrob
  *
  */
-@Work(jsonTypeName = {"", "org.finos.symphony.toolkit.workflow.form.headerDetails"}, index = false)
+@Work(jsonTypeName = {"", "org.finos.symphony.toolkit.workflow.form.headerDetails", "org.finos.springbot.symphony.json.headerDetails"}, index = false)
 public class HeaderDetails {
 	
 	public static final String KEY = "header";

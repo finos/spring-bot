@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.finos.springbot.workflow.annotations.RequiresUserList;
 import org.finos.springbot.workflow.annotations.Work;
 
 /**
@@ -15,6 +16,7 @@ import org.finos.springbot.workflow.annotations.Work;
  *
  */
 @Work
+@RequiresUserList
 public class ToDoList {
 
 	@Valid

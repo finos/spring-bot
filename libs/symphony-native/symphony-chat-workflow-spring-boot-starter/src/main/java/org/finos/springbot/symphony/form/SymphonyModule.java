@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.node.LongNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * Handles conversion of symphony elements' user picker back to User objects.
@@ -70,6 +71,9 @@ public class SymphonyModule extends Module {
 								return new SymphonyUser(ul);
 							}else if (tn instanceof LongNode) {
 								long ul = ((LongNode) tn).asLong();
+								return new SymphonyUser(ul);
+							}else if (tn instanceof TextNode) {
+								long ul = ((TextNode)tn).asLong();
 								return new SymphonyUser(ul);
 							} else {
 								return null;
