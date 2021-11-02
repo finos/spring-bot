@@ -9,7 +9,7 @@ import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.symphony.conversations.SymphonyConversationsImpl;
 import org.finos.springbot.symphony.form.ElementsHandler;
 import org.finos.springbot.symphony.form.SymphonyFormConverter;
-import org.finos.springbot.symphony.form.SymphonyModule;
+import org.finos.springbot.symphony.form.SymphonyFormDeserializerModule;
 import org.finos.springbot.symphony.history.SymphonyHistory;
 import org.finos.springbot.symphony.history.SymphonyHistoryImpl;
 import org.finos.springbot.symphony.json.DataHandlerCofig;
@@ -192,7 +192,7 @@ public class SymphonyWorkflowConfig {
 	@ConditionalOnMissingBean
 	public SymphonyFormConverter symphonyFormConverter() {
 		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new SymphonyModule());
+		om.registerModule(new SymphonyFormDeserializerModule());
 		om.registerModule(new JavaTimeModule());
 		return new SymphonyFormConverter(om);
 	}

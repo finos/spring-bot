@@ -94,7 +94,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		User u = teamsConversations.getUser(a.getFrom());
 		Addressable from = rr == null ? u : rr;
 		return validationProcessor.validationCheck(action, from, form, () -> {
-			return new FormAction(rr, u, form, action, data);
+			return new FormAction(from, u, form, action, data);
 		});
 	}
 

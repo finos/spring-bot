@@ -16,7 +16,7 @@ public class ChatConverter<X> extends AbstractClassConverter<X> {
 
 	@Override
 	public X apply(Field ctx, Type t, boolean editMode, Variable v) {
-		return r.renderDropdown(v, ".key", getLocation(ctx), ".key", ".name", editMode);
+		return r.renderDropdown(v, "key", getLocation(ctx), "key", "name", editMode);
 	}
 	
 	protected String getLocation(Field ctx) {

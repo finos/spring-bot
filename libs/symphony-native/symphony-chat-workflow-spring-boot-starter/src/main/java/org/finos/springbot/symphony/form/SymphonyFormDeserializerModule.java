@@ -27,13 +27,13 @@ import com.fasterxml.jackson.databind.node.TextNode;
  * 
  * @author Rob Moffat
  */
-public class SymphonyModule extends Module {
+public class SymphonyFormDeserializerModule extends Module {
 
-	private static final String NAME = "Symphony Workflow Module";
+	private static final String NAME = "Symphony Form Deserializer Module";
 	
 	private static final Version VERSION = new Version(1, 0, 0, "", 
-			SymphonyModule.class.getPackage().getName().toLowerCase(), 
-			"workflow-module");
+			SymphonyFormDeserializerModule.class.getPackage().getName().toLowerCase(), 
+			"symphony-form-deserializer-module");
 
 
 	@Override
@@ -46,7 +46,7 @@ public class SymphonyModule extends Module {
 		return VERSION;
 	}
 		
-	public SymphonyModule() {
+	public SymphonyFormDeserializerModule() {
 		super();
 	}
 

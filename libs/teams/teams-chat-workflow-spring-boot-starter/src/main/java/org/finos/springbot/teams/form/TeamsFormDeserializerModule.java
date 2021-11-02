@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,20 +19,20 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.deser.Deserializers;
-import com.fasterxml.jackson.databind.node.LongNode;
+import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
  * Handles conversion of symphony elements' user picker back to User objects.
  * 
  * @author Rob Moffat
  */
-public class TeamsModule extends Module {
+public class TeamsFormDeserializerModule extends Module {
 
-	private static final String NAME = "Symphony Workflow Module";
+	private static final String NAME = "Teams Form Deserializer Module";
 	
 	private static final Version VERSION = new Version(1, 0, 0, "", 
-			TeamsModule.class.getPackage().getName().toLowerCase(), 
-			"workflow-module");
+			TeamsFormDeserializerModule.class.getPackage().getName().toLowerCase(), 
+			"teams-form-deserializer-module");
 
 
 	@Override
@@ -44,7 +45,7 @@ public class TeamsModule extends Module {
 		return VERSION;
 	}
 		
-	public TeamsModule() {
+	public TeamsFormDeserializerModule() {
 		super();
 	}
 
@@ -64,9 +65,8 @@ public class TeamsModule extends Module {
 								throws IOException, JsonProcessingException {
 							
 							TreeNode tn = p.readValueAsTree();
-							if (tn.size() > 0) {
-								long ul = ((LongNode) tn.get(0)).asLong();
-								return new TeamsUser(ul);
+							if (tn instanceof TextNode) {
+								return new TeamsUser(tn.toString(), null);
 							} else {
 								return null;
 							}
@@ -79,7 +79,7 @@ public class TeamsModule extends Module {
 						@Override
 						public Chat deserialize(JsonParser p, DeserializationContext ctxt)
 								throws IOException, JsonProcessingException {
-							return new TeamsChat(null, p.getValueAsString());
+							return new TeamsChat(p.getValueAsString(), null);
 						}
 					};
 					

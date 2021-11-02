@@ -8,6 +8,7 @@ import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
 import org.finos.springbot.teams.form.TeamsFormConverter;
+import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
@@ -138,7 +139,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public TeamsFormConverter teamsFormConverter() {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
-//		om.registerModule(new TeamsModule());
+		om.registerModule(new TeamsFormDeserializerModule());
 		return new TeamsFormConverter(om);
 	}
 	
