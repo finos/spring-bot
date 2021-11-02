@@ -16,7 +16,11 @@ public class UserConverter<X> extends AbstractClassConverter<X> {
 
 	@Override
 	public X apply(Field ctx, Type t, boolean editMode, Variable v) {
-		return r.renderDropdown(v, "key", getLocation(ctx), "key", "name", editMode);
+		if (editMode) {
+			return r.renderDropdown(v, "key", getLocation(ctx), "key", "name", editMode);
+		} else {
+			return r.userDisplay(v);
+		}
 	}
 	
 	protected String getLocation(Field ctx) {
