@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow;
+package org.finos.springbot.tests.form;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
-public class TestTableEdit extends AbstractMockSymphonyTest {
+public class AbstrsctTableEditTest {
 	
 
 	public static final User u = new SymphonyUser(123l, "Testy McTestFace", "tmt@example.com");

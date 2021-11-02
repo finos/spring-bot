@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.workflow.fixture;
+package org.finos.springbot.symphony.json;
 
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Chat;

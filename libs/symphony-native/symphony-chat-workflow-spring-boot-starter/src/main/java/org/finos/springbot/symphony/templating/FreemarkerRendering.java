@@ -187,4 +187,20 @@ public class FreemarkerRendering implements Rendering<String> {
 	private String indent(int n) {
 		return "\n"+String.format("%"+n+"s", "");
 	}
+
+	@Override
+	public String table(Variable variable, String headers, String body) {
+		 StringBuilder sb = new StringBuilder();
+	     int depth = ((FreemarkerVariable) variable).depth;
+		 sb.append(formatErrorsAndIndent(variable.getFormFieldName(), depth));
+	     sb.append(indent(depth) + "<table><thead><tr>");
+	     sb.append(headers);
+	     sb.append(indent(depth) + "</tr></thead><tbody>");
+	     sb.append(body);
+	     sb.append(indent(depth) + "</tbody></table>");
+	     return sb.toString();
+	}
+	
+	
+	
 }
