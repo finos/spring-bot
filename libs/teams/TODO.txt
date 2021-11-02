@@ -1,10 +1,11 @@
 1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead. (maybe)
 6. Backwards compat.  for deserialization
-7. Convert keys to values with dropdowns/enums/users in view mode
 13. Rename group / version number
 14. Saving templates
 16. Room membership needs to work.
-15. Write TeamsModule
 18. Client-side validation
-19. Optionality of Spring Boot Starters
 20.  build time editors / viewers (both symphony and teams)
+7. Convert keys to values with dropdowns/enums/users in view mode 
+	- this needs the original options list to be present (I think).   
+	- Also, we need to know what the option was populated with.  This can be done.
+	- We need the conversation API for this.  And to figure out the history API.

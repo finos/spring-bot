@@ -39,9 +39,11 @@ public interface Rendering<X> {
 	X buttons(String location);
 	
 	X table(Variable v, X headers, X body);
-	
+		
 	public default String extend(String with) {
 		return StringUtils.hasText(with) ? "." + with : "";
 	}
+
+	X userDisplay(Variable v);
 
 }

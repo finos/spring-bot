@@ -30,12 +30,16 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		return out;
 	}
 	
-	public static String nullProof(Variable v) {
+	public String nullProof(Variable v) {
 		return nullProofWithFunction(v, "");
 	}
 	
-	public static String nullProofWithFunction(Variable v, String function) {
+	public String nullProofWithFunction(Variable v, String function) {
 		return "${if("+v.getDataPath()+","+function+"("+v.getDataPath()+"),'')}";
+	}
+	
+	public String nullProofWithExtension(Variable v, String ext) {
+		return "${if("+v.getDataPath()+","+v.getDataPath()+extend(ext)+"),'')}";
 	}
 
 	@Override
@@ -164,7 +168,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		} else {
 			ObjectNode out = f.objectNode();
 			out.put("type", "TextBlock");
-			out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
+			out.put("text", nullProofWithExtension(variable, variableKey));  // TODO: This is the value, rather than the looked-up version
 			return out;
 		}
 	}
@@ -189,7 +193,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		} else {
 			ObjectNode out = f.objectNode();
 			out.put("type", "TextBlock");
-			out.put("text", nullProof(variable));  // TODO: This is the value, rather than the looked-up version
+			out.put("text", nullProofWithExtension(variable, variableKey));  // TODO: This is the value, rather than the looked-up version
 			return out;
 		}
 	}

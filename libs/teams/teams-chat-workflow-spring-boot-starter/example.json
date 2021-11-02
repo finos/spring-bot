@@ -1,0 +1,140 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.3",
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "Container",
+			"style": "emphasis",
+			"items": [
+				{
+					"type": "Container",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Items",
+							"wrap": true
+						},
+						{
+							"type": "Container",
+							"style": "default",
+							"items": [
+								{
+									"type": "Container",
+									"style": "emphasis",
+									"items": [
+										{
+											"type": "Container",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "Number",
+													"wrap": true
+												},
+												{
+													"type": "Container",
+													"style": "default",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": 1
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "Container",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "Description",
+													"wrap": true
+												},
+												{
+													"type": "Container",
+													"style": "default",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "hgjhghgjhgj"
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "Container",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "Creator",
+													"wrap": true
+												},
+												{
+													"type": "Container",
+													"style": "default",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": {
+																"key": "29:16m0194KSemAOokDtU-2NeN_GEtM_YyQxQG1j5RxSMD9nhDVgW_dYS_D4urQYv7Y6tQdPqvUEzpVNh7CL2-BY6g",
+																"name": "Rob Moffat"
+															}
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "Container",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "Assign To",
+													"wrap": true
+												},
+												{
+													"type": "Container",
+													"style": "default",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": {
+																"key": "\"29:16m0194KSemAOokDtU-2NeN_GEtM_YyQxQG1j5RxSMD9nhDVgW_dYS_D4urQYv7Y6tQdPqvUEzpVNh7CL2-BY6g\""
+															}
+														}
+													]
+												}
+											]
+										},
+										{
+											"type": "Container",
+											"items": [
+												{
+													"type": "TextBlock",
+													"text": "Status",
+													"wrap": true
+												},
+												{
+													"type": "Container",
+													"style": "default",
+													"items": [
+														{
+															"type": "TextBlock",
+															"text": "OPEN"
+														}
+													]
+												}
+											]
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
