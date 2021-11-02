@@ -8,6 +8,7 @@ import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.ChatWorkflowErrorHandler;
 import org.finos.springbot.workflow.actions.form.FormEditConfig;
 import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.help.HelpController;
 import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.java.converters.CollectionResponseConverter;
@@ -35,11 +36,12 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.OrderComparator;
 import org.springframework.util.ErrorHandler;
+import org.springframework.validation.Validator;
 
 @Configuration
 @Import(value =  { ResolverConfig.class, FormEditConfig.class })
 public class ChatWorkflowConfig {
-
+	
 	@Bean
 	@ConditionalOnMissingBean
 	@Lazy
@@ -147,5 +149,11 @@ public class ChatWorkflowConfig {
 				sorted.forEach(rh -> rh.accept(t, che));
 			}
 		};
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public FormValidationProcessor formValidationProcessor(ResponseHandlers rh, Validator validator) {
+		return new FormValidationProcessor(validator, rh);
 	}
 }

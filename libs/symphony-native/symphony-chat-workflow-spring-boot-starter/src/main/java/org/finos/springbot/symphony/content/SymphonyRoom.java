@@ -25,9 +25,13 @@ public class SymphonyRoom extends Taxonomy implements Chat, SymphonyAddressable 
 		List<TaxonomyElement> out = new ArrayList<TaxonomyElement>();
 		if (streamId != null) {
 			out.add(new StreamID(streamId));
+		} else {
+			out.add(null);
 		}
 		if (name != null) {
-			out.add(new RoomName(name));
+		 	out.add(new RoomName(name));
+		}  else {
+			out.add(null);
 		}
 		
 		return out;
@@ -45,7 +49,6 @@ public class SymphonyRoom extends Taxonomy implements Chat, SymphonyAddressable 
 		return "SymphonyRoom [name=" + getName() + ", streamId=" + getKey() + "]";
 	}
 
-	@JsonIgnore
 	public String getKey() {
 		return fromTaxonomy(StreamID.class);
 	}

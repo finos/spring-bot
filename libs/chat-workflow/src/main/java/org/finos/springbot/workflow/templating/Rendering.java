@@ -14,13 +14,15 @@ public interface Rendering<X> {
 		
 	X renderDropdown(
 		Variable variable, 
-		String location, 
-		String key, 
-		String value,
+		String variableKey,
+		String optionLocation, 
+		String optionKey, 
+		String optionValue,
 		boolean editable);
 	
 	X renderDropdown(
 			Variable variable, 
+			String variableKey,
 			Map<String, String> options,
 			boolean editable);
 

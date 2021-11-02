@@ -17,6 +17,7 @@ import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.FormConverter;
+import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -35,17 +36,20 @@ public class MessageActivityHandler extends ActivityHandler {
 	List<ActionConsumer> messageConsumers;
 	TeamsConversations teamsConversations;
 	FormConverter formConverter;
+	FormValidationProcessor validationProcessor;
 	
 	public MessageActivityHandler(
 			List<ActionConsumer> messageConsumers, 
 			TeamsConversations teamsConversations, 
 			TeamsHTMLParser parser,
-			FormConverter formConverter) {
+			FormConverter formConverter,
+			FormValidationProcessor validationProcessor) {
 		super();
 		this.messageConsumers = messageConsumers;
 		this.teamsConversations = teamsConversations;
 		this.messageParser = parser;
 		this.formConverter = formConverter;
+		this.validationProcessor = validationProcessor;
 	}
 
 	@Override
@@ -56,17 +60,18 @@ public class MessageActivityHandler extends ActivityHandler {
 			Action action = (a.getValue() != null) ? processForm(turnContext, a) : 
 				processMessage(turnContext, a);
 			
-			CurrentTurnContext.CURRENT_CONTEXT.set(turnContext);
-			
-			try {
-				Action.CURRENT_ACTION.set(action);
-				for (ActionConsumer c : messageConsumers) {
-					c.accept(action);
+			if (action != null) {
+				CurrentTurnContext.CURRENT_CONTEXT.set(turnContext);
+				
+				try {
+					Action.CURRENT_ACTION.set(action);
+					for (ActionConsumer c : messageConsumers) {
+						c.accept(action);
+					}
+				} finally {
+					Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 				}
-			} finally {
-				Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 			}
-			
 		} catch (Exception e) {
 			LOG.error("Couldn't handle event "+turnContext, e);
 		} finally {
@@ -87,8 +92,10 @@ public class MessageActivityHandler extends ActivityHandler {
 		TeamsChannelData tcd = a.teamsGetChannelData();
 		Addressable rr = teamsConversations.getTeamsChat(tcd);
 		User u = teamsConversations.getUser(a.getFrom());
-		rr = rr == null ? u : rr;
-		return new FormAction(rr, u, form, action, data);
+		Addressable from = rr == null ? u : rr;
+		return validationProcessor.validationCheck(action, from, form, () -> {
+			return new FormAction(rr, u, form, action, data);
+		});
 	}
 
 	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {

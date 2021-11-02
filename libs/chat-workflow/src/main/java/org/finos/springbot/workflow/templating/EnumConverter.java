@@ -21,7 +21,7 @@ public class EnumConverter<X> extends AbstractSimpleTypeConverter<X> {
 	@Override
 	public X apply(Field ctx, Type t, boolean editMode, Variable variable) {
 		Map<String, String> options = generateEnumOptions((Class<Enum<?>>) t);
-		return r.renderDropdown(variable, options, editMode);
+		return r.renderDropdown(variable, "", options, editMode);
 	}
 
 	protected Map<String, String> generateEnumOptions(Class<Enum<?>> t) {

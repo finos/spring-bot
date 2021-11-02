@@ -3,13 +3,18 @@ package org.finos.springbot.symphony.templating;
 import java.util.List;
 
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
+import org.finos.springbot.symphony.content.SymphonyRoom;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.templating.BeanConverter;
 import org.finos.springbot.workflow.templating.BooleanConverter;
+import org.finos.springbot.workflow.templating.ChatConverter;
 import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
+import org.finos.springbot.workflow.templating.UserConverter;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -66,11 +71,10 @@ public class FreemarkerTypeConverterConfig {
 				Number.class, int.class, float.class, double.class, short.class, long.class, byte.class);
 	}
 	
-//	
-//	@Bean
-//	public ChatConverter<String> roomConverter(FreemarkerRendering r) {
-//		return new ChatConverter<String>(r);
-//	}
+	@Bean
+	public ChatConverter<String> roomConverter(FreemarkerRendering r) {
+		return new ChatConverter<String>(ChatConverter.LOW_PRIORITY, r, SymphonyRoom.class, Chat.class);
+	}
 	
 	@Bean
 	public DropdownAnnotationConverter<String> dropdownAnnotationConverter(FreemarkerRendering r) {
@@ -78,8 +82,8 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
-	public UserConverter userConverter(FreemarkerRendering r) {
-		return new UserConverter(r);
+	public UserConverter<String> userConverter(FreemarkerRendering r) {
+		return new UserConverter<>(UserConverter.LOW_PRIORITY, r, User.class);
 	}
 	
 	

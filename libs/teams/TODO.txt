@@ -1,10 +1,10 @@
 1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead. (maybe)
 6. Backwards compat.  for deserialization
 7. Convert keys to values with dropdowns/enums/users in view mode
-9. Validation client-side rendering / numbers
 13. Rename group / version number
 14. Saving templates
 16. Room membership needs to work.
 15. Write TeamsModule
-17. Move validation into form processor
-11. get symphony to use the new templating classes.
+11. get symphony to use the new templating classes & tests running
+18. Client-side validation
+19. Optionality of Spring Boot Starters
