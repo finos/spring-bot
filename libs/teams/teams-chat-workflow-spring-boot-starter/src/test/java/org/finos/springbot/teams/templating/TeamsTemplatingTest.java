@@ -22,7 +22,7 @@ import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.DropdownList;
-import org.finos.springbot.workflow.form.UserList;
+import org.finos.springbot.workflow.form.DropdownList.Item;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.Mode;
 import org.finos.springbot.workflow.templating.WorkTemplater;
@@ -124,9 +124,10 @@ public class TeamsTemplatingTest extends AbstractTemplatingTest {
 	}
 
 	@Override
-	protected UserList createSomeUsers(int count) {
-		return new UserList(IntStream.range(0, count)
+	protected DropdownList createSomeUsers(int count) {
+		return new DropdownList(IntStream.range(0, count)
 				.mapToObj(i -> i == 0 ? getUser() : new TeamsUser("idu"+i, "Name of "+i))
+				.map(tu -> new Item(tu.getKey(), tu.getName()))
 				.collect(Collectors.toList()));
 	}
 
@@ -134,6 +135,7 @@ public class TeamsTemplatingTest extends AbstractTemplatingTest {
 	protected DropdownList createSomeChats(int count) {
 		return new DropdownList(IntStream.range(0, count)
 				.mapToObj(i -> i == 0 ? getChat() : new TeamsChat("idc"+i, "Chat name of "+i))
+				.map(tu -> new Item(tu.getKey(), tu.getName()))
 				.collect(Collectors.toList()));
 	}
 

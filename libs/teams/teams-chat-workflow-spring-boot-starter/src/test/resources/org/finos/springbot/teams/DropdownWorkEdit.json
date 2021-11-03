@@ -10,8 +10,8 @@
       "value" : "${form.s}",
       "id" : "s",
       "choices" : [ {
-        "$data" : "${options}",
-        "title" : "${value}",
+        "$data" : "${options.contents}",
+        "title" : "${name}",
         "value" : "${key}"
       } ],
       "label" : "S"
@@ -22,6 +22,11 @@
       "type" : "Action.Submit",
       "title" : "${text}",
       "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
       "$data" : "${buttons.contents}"
     } ]
   } ]

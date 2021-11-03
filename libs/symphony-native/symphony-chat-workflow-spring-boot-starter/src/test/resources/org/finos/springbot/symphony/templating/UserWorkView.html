@@ -1,5 +1,13 @@
 <messageML>
-<#-- starting template --><table><tr><td style="width: 200px"><b>B:</b></td><td>${(entity.form.b.id[1].value)!''}</td></tr>
-<tr><td style="width: 200px"><b>S:</b></td><td>${(entity.form.s.id[1].value)!''}</td></tr></table>
+<#-- starting template --><table><tr><td style="width: 200px"><b>B:</b></td><td>
+  <#if entity.form.b??><#list entity.form.b.id as id>
+   <#if id.type == 'com.symphony.api.model.userId'><mention uid="entity.form.b.value" /><#break></#if>
+   <#if id.type == 'com.symphony.user.emailAddress'><mention uid="entity.form.b.value" /><#break></#if>
+   </#list></#if></td></tr>
+<tr><td style="width: 200px"><b>S:</b></td><td>
+  <#if entity.form.s??><#list entity.form.s.id as id>
+   <#if id.type == 'com.symphony.api.model.userId'><mention uid="entity.form.s.value" /><#break></#if>
+   <#if id.type == 'com.symphony.user.emailAddress'><mention uid="entity.form.s.value" /><#break></#if>
+   </#list></#if></td></tr></table>
 <#-- ending template -->
 </messageML>
