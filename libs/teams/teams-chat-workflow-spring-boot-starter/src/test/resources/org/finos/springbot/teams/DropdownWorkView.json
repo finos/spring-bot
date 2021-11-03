@@ -16,7 +16,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.s,string(form.s),'')}"
+          "text" : "${if(form.s,first(where(options.contents, o, o.key == form.s)).name,'')}"
         } ]
       } ]
     } ]

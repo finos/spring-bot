@@ -4,7 +4,7 @@ import org.finos.springbot.workflow.annotations.Dropdown;
 
 public class DropdownWork {
 	
-	@Dropdown(data = "options.contents", key = ".key", name=".name")
+	@Dropdown(data = "options.contents", key = "key", name="name")
 	String s;
 	
 	

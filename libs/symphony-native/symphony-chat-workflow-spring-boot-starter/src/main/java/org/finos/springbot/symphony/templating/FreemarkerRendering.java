@@ -7,7 +7,11 @@ import java.util.Map.Entry;
 
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
+import org.finos.symphony.toolkit.json.EntityJson;
 import org.springframework.util.StringUtils;
+
+import com.symphony.api.model.UserId;
+import com.symphony.user.EmailAddress;
 
 public class FreemarkerRendering implements Rendering<String> {
 
@@ -200,7 +204,15 @@ public class FreemarkerRendering implements Rendering<String> {
 	     sb.append(indent(depth) + "</tbody></table>");
 	     return sb.toString();
 	}
-	
-	
-	
+
+	@Override
+	public String userDisplay(Variable v) {
+		StringBuilder sb = new StringBuilder();
+	    int depth = ((FreemarkerVariable) v).depth;
+		sb.append(indent(depth) + "<#if "+v.getDataPath() + "??><#list "+v.getDataPath() +".id as id>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getSymphonyTypeName(UserId.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getSymphonyTypeName(EmailAddress.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
+	    sb.append(indent(depth) + " </#list></#if>");
+	    return sb.toString();
+	}
 }

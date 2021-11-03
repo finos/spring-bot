@@ -16,7 +16,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.b.key,string(form.b.key),'')}"
+          "text" : "${if(form.b,form.b.name,'')}"
         } ]
       } ]
     }, {
@@ -30,7 +30,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.s.key,string(form.s.key),'')}"
+          "text" : "${if(form.s,form.s.name,'')}"
         } ]
       } ]
     } ]

@@ -30,16 +30,20 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		return out;
 	}
 	
-	public String nullProof(Variable v) {
+	protected String nullProof(Variable v) {
 		return nullProofWithFunction(v, "");
 	}
 	
-	public String nullProofWithFunction(Variable v, String function) {
+	protected String nullProofWithFunction(Variable v, String function) {
 		return "${if("+v.getDataPath()+","+function+"("+v.getDataPath()+"),'')}";
 	}
 	
-	public String nullProofWithExtension(Variable v, String ext) {
-		return "${if("+v.getDataPath()+","+v.getDataPath()+extend(ext)+"),'')}";
+	protected String nullProofWithExtension(Variable v, String ext) {
+		return "${if("+v.getDataPath()+","+v.getDataPath()+extend(ext)+",'')}";
+	}
+	
+	protected String fromOption(Variable v, String ext, String options, String optionsExt, String optionsVal) {
+		return "${if("+v.getDataPath()+extend(ext)+",first(where("+options+", o, o"+extend(optionsExt)+" == "+v.getDataPath()+"))"+extend(optionsVal)+",'')}";
 	}
 
 	@Override
@@ -168,7 +172,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		} else {
 			ObjectNode out = f.objectNode();
 			out.put("type", "TextBlock");
-			out.put("text", nullProofWithExtension(variable, variableKey));  // TODO: This is the value, rather than the looked-up version
+			out.put("text", fromOption(variable, variableKey, location, key, value)); 
 			return out;
 		}
 	}
@@ -241,6 +245,14 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	@Override
 	public JsonNode table(Variable v, JsonNode headers, JsonNode body) {
 		throw new UnsupportedOperationException("Adaptive Cards doesn't support tables yet");
+	}
+
+	@Override
+	public JsonNode userDisplay(Variable v) {
+		ObjectNode out = f.objectNode();
+		out.put("type", "TextBlock");
+		out.put("text", nullProofWithExtension(v, "name"));
+		return out;
 	}
 	
 }
