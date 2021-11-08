@@ -7,6 +7,7 @@ import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.conversations.PlatformConversations;
 
 import com.microsoft.bot.schema.ChannelAccount;
+import com.microsoft.bot.schema.ConversationAccount;
 import com.microsoft.bot.schema.teams.TeamsChannelData;
 
 /**
@@ -17,7 +18,7 @@ import com.microsoft.bot.schema.teams.TeamsChannelData;
  */
 public interface TeamsConversations extends PlatformConversations<TeamsChat, TeamsUser> {
 
-	Addressable getTeamsChat(TeamsChannelData tcd);
+	Addressable getTeamsChat(ConversationAccount conversationAccount);
 
 	public User getUser(ChannelAccount from);
 	

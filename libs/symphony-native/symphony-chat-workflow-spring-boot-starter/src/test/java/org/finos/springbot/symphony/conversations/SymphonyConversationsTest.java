@@ -12,9 +12,6 @@ import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
-import org.finos.springbot.symphony.conversations.SymphonyConversations;
-import org.finos.springbot.symphony.conversations.SymphonyConversationsImpl;
-import org.finos.symphony.toolkit.workflow.AbstractMockSymphonyTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -44,7 +41,7 @@ import com.symphony.api.pod.StreamsApi;
 		SymphonyMockConfiguration.class, 
 	SymphonyWorkflowConfig.class,
 })
-public class ConversationsTest {
+public class SymphonyConversationsTest {
 	
 	@Autowired
 	SymphonyConversationsImpl ruBuilder;

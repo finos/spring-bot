@@ -1,6 +1,7 @@
 package org.finos.springbot.workflow.content.serialization;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -9,6 +10,7 @@ import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Heading;
 import org.finos.springbot.workflow.content.OrderedContent;
 import org.finos.springbot.workflow.content.Table;
+import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
 /**
@@ -19,7 +21,7 @@ import org.springframework.web.util.HtmlUtils;
  */
 public class MarkupWriter implements Function<Content, String> {
 	
-	Map<Class<? extends Content>, Function<Content, String>> tagMap = new HashMap<>();
+	Map<Class<? extends Content>, Function<Content, String>> tagMap = new LinkedHashMap<>();
 	
 	public MarkupWriter(Map<Class<? extends Content>, Function<Content, String>> tagMap) {
 		super();
@@ -71,10 +73,22 @@ public class MarkupWriter implements Function<Content, String> {
 
 		@Override
 		public String apply(Content t) {
-			return "<"+tag+">" + HtmlUtils.htmlEscape(t.getText())+ "</"+tag+">";		
+			return "<"+tag+formatAttributes(t)+">" + HtmlUtils.htmlEscape(t.getText())+ "</"+tag+">";		
+		}	
+		
+		protected String formatAttributes(Content t) {
+			String out = getAttributes(t).entrySet().stream()
+				.map(e -> HtmlUtils.htmlEscape(e.getKey()) + "=\""+HtmlUtils.htmlEscape(e.getValue()) + "\"")
+				.reduce((a, b) -> a+" "+b)
+				.orElse("");
+			return StringUtils.hasText(out) ? " "+out : "";
 		}
 		
+		protected Map<String, String> getAttributes(Content t) {
+			return Collections.emptyMap();
+		}
 	}
+	
 	
 	public class OrderedTagWriter implements Function<Content, String> {
 		
