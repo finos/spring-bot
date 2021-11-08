@@ -1,10 +1,8 @@
-package org.finos.springbot.teams.messages;
+package org.finos.springbot.teams.content;
 
 import java.util.List;
 import java.util.Map;
 
-import org.finos.springbot.teams.content.TeamsChat;
-import org.finos.springbot.teams.content.TeamsContent;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Image;
 import org.finos.springbot.workflow.content.Message;

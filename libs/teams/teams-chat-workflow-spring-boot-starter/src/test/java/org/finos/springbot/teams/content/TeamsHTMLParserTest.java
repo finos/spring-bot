@@ -1,10 +1,11 @@
-package org.finos.springbot.teams.messages;
+package org.finos.springbot.teams.content;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsHTMLParser;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Image;
 import org.finos.springbot.workflow.content.Message;

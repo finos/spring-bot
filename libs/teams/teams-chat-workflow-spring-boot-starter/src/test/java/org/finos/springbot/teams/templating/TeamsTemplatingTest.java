@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.handlers.JavascriptSubstitution;
@@ -141,7 +140,7 @@ public class TeamsTemplatingTest extends AbstractTemplatingTest {
 
 
 	public static String loadJson(String string) throws IOException {
-        return StreamUtils.copyToString(MockTeamsConfiguration.class.getResourceAsStream(string), Charset.forName("UTF-8"));
+        return StreamUtils.copyToString(TeamsTemplatingTest.class.getResourceAsStream(string), Charset.forName("UTF-8"));
     }
 
 }
