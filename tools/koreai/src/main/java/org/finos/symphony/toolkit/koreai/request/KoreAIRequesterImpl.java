@@ -14,6 +14,7 @@ import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -50,7 +51,7 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
     
     protected Client createClient() {
 	String trustStorePath = System.getProperty("javax.net.ssl.trustStore");
-    	if(trustStorePath.contains("$JAVA_HOME")) {
+    	if(StringUtils.hasText(trustStorePath) && trustStorePath.contains("$JAVA_HOME")) {
     		String java_home = System.getenv().get("JAVA_HOME");
     		System.setProperty("javax.net.ssl.trustStore", trustStorePath.replace("$JAVA_HOME", java_home));
     	}
