@@ -7,7 +7,7 @@ import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Tag;
 
 @Work(index = false)
-public class TeamsChat implements Chat, TeamsAddressable, TeamsContent, Tag {
+public class TeamsChat implements Chat, TeamsAddressable, TeamsMention {
 
 	final String key;
 	final String name;
@@ -34,8 +34,8 @@ public class TeamsChat implements Chat, TeamsAddressable, TeamsContent, Tag {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof TeamsChat) {
-			return this.key.equals(((TeamsChat) obj).getKey());
+		if (obj instanceof TeamsMention) {
+			return this.key.equals(((TeamsMention) obj).getKey());
 		} else {
 			return false;
 		}

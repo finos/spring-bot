@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
+import org.finos.springbot.symphony.content.serialization.SymphonyMarkupWriter;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.CodeBlock;
 import org.finos.springbot.workflow.content.Content;
@@ -18,7 +19,6 @@ import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
-import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SymphonyContentConfig {
 
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public MessageMLParser symphonyMessageMLParser() {
@@ -34,8 +35,8 @@ public class SymphonyContentConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MarkupWriter symphonyMessageMLWriter() {
-		MarkupWriter out = new MarkupWriter();
+	public SymphonyMarkupWriter symphonyMessageMLWriter() {
+		SymphonyMarkupWriter out = new SymphonyMarkupWriter();
 		out.add(Message.class, out.new OrderedTagWriter("messageML"));
 		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
 		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));
@@ -53,6 +54,9 @@ public class SymphonyContentConfig {
 		out.add(Word.class, out.new PlainWriter());
 		out.add(Table.class, out.new TableWriter());
 		out.add(Heading.class, out.new HeadingWriter("h"));
+		out.add(Image.class, out.new ImageWriter());
+		out.add(Link.class, out.new LinkWriter());
+
 		out.add(User.class, out.new SimpleTagWriter("mention") {
 
 			@Override
@@ -89,23 +93,6 @@ public class SymphonyContentConfig {
 			
 		});
 		
-		out.add(Image.class, out.new SimpleTagWriter("img") {
-
-			@Override
-			protected Map<String, String> getAttributes(Content t) {
-				return Collections.singletonMap("src", ((Image)t).getUrl());
-			}
-			
-		});
-		
-		out.add(Link.class, out.new SimpleTagWriter("a") {
-
-			@Override
-			protected Map<String, String> getAttributes(Content t) {
-				return Collections.singletonMap("href", ((Link)t).getHRef());
-			}
-			
-		});
 		
 		return out;
 	}

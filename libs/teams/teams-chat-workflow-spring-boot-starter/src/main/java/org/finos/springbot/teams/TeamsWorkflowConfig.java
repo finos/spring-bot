@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.Properties;
 
 import org.finos.springbot.ChatWorkflowConfig;
+import org.finos.springbot.teams.content.TeamsContentConfig;
+import org.finos.springbot.teams.content.TeamsHTMLParser;
+import org.finos.springbot.teams.content.TeamsMarkupWriter;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
 import org.finos.springbot.teams.form.TeamsFormConverter;
@@ -12,25 +15,16 @@ import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
-import org.finos.springbot.teams.messages.TeamsHTMLParser;
+import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
 import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
-import org.finos.springbot.workflow.content.BlockQuote;
-import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.OrderedList;
-import org.finos.springbot.workflow.content.Paragraph;
-import org.finos.springbot.workflow.content.Table;
-import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.User;
-import org.finos.springbot.workflow.content.Word;
-import org.finos.springbot.workflow.content.serialization.MarkupWriter;
-import org.finos.springbot.workflow.form.FormConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
-import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
+import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplateProvider;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,12 +58,14 @@ import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
  *
  */
 @Configuration
-@Import({ChatWorkflowConfig.class, AdaptiveCardConverterConfig.class})
+@Import({
+	ChatWorkflowConfig.class, 
+	TeamsContentConfig.class,
+	AdaptiveCardConverterConfig.class
+})
 @ConditionalOnProperty("MicrosoftAppId")
 public class TeamsWorkflowConfig extends BotDependencyConfiguration {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
-	
+		
 	@Autowired
 	Validator validator;
 	
@@ -82,30 +78,13 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Autowired
 	Rendering<JsonNode> r;
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public MarkupWriter teamsHTMLWriter() {
-		MarkupWriter out = new MarkupWriter();
-		out.add(Message.class, out.new OrderedTagWriter("div"));
-		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
-		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));
-		out.add(UnorderedList.class, out.new OrderedTagWriter("ul", out.new OrderedTagWriter("li")));
-		out.add(BlockQuote.class, out.new SimpleTagWriter("code"));
-		out.add(Word.class, out.new PlainWriter());
-		out.add(Table.class, out.new TableWriter());
-		out.add(BlockQuote.class, out.new SimpleTagWriter("blockquote"));
-		// tags, images, links etc.
-		
-		return out;
-	}
-	
 	@Bean 
 	@ConditionalOnMissingBean
-	public SimpleMessageMarkupTemplateProvider teamsMarkupTemplater(
+	public EntityMarkupTemplateProvider teamsMarkupTemplater(
 			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
 			@Value("${teams.templates.suffix:.html}") String suffix,
-			MarkupWriter converter) {
-		return new SimpleMessageMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
+			TeamsMarkupWriter converter) {
+		return new EntityMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
 	}
 	
 	@Bean
@@ -120,7 +99,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsResponseHandler teamsResponseHandler(
-			SimpleMessageMarkupTemplateProvider markupTemplater,
+			EntityMarkupTemplateProvider markupTemplater,
 			TeamsTemplateProvider workTemplater) {
 		return new TeamsResponseHandler(
 				null,
@@ -166,13 +145,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			TeamsConversations tc) {
 		return new MessageActivityHandler(messageConsumers, tc, parser, teamsFormConverter(), fvp);
 	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public TeamsHTMLParser teamsHTMLParser() {
-		return new TeamsHTMLParser();
-	}
-	
+
 
     @Bean
     @ConditionalOnMissingBean

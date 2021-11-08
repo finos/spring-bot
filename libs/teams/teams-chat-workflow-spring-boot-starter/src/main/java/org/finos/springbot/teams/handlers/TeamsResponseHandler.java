@@ -1,6 +1,10 @@
 package org.finos.springbot.teams.handlers;
 
+import java.util.List;
+
 import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
+import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.response.AttachmentResponse;
@@ -8,7 +12,6 @@ import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandler;
-import org.finos.springbot.workflow.response.templating.MarkupTemplateProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -22,6 +25,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
+import com.microsoft.bot.schema.Entity;
 import com.microsoft.bot.schema.TextFormatTypes;
 
 public class TeamsResponseHandler implements ResponseHandler, ApplicationContextAware {
@@ -31,12 +35,12 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected AttachmentHandler attachmentHandler;
 	protected ApplicationContext ctx;
 	protected ErrorHandler eh;
-	protected MarkupTemplateProvider messageTemplater;
+	protected EntityMarkupTemplateProvider messageTemplater;
 	protected TeamsTemplateProvider workTemplater;
 	
 	public TeamsResponseHandler(
 			AttachmentHandler attachmentHandler,
-			MarkupTemplateProvider messageTemplater,
+			EntityMarkupTemplateProvider messageTemplater,
 			TeamsTemplateProvider workTemplater) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
@@ -62,13 +66,15 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 
 			if (t instanceof MessageResponse) {
 				Object attachment = null;
-				String content = messageTemplater.template((MessageResponse) t);
+				MarkupAndEntities mae = messageTemplater.template((MessageResponse) t);
+				String content = mae.getContents();
+				List<Entity> entities = mae.getEntities();
 				
 				if (t instanceof AttachmentResponse) {
 					attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
 				}
 				
-				sendXMLResponse(content, ((MessageResponse) t).getMessage(), attachment, (TeamsAddressable) t.getAddress(), ctx);
+				sendXMLResponse(content, ((MessageResponse) t).getMessage(), attachment, (TeamsAddressable) t.getAddress(), entities, ctx);
 				
 			} else if (t instanceof WorkResponse) {
 				JsonNode cardJson = workTemplater.template((WorkResponse) t);
@@ -77,9 +83,10 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		}
 	}
 
-	protected void sendXMLResponse(String xml, Content c, Object attachment, TeamsAddressable address, TurnContext ctx) {		
+	protected void sendXMLResponse(String xml, Content c, Object attachment, TeamsAddressable address, List<Entity> entities, TurnContext ctx) {		
 		Activity out = Activity.createMessageActivity();
 		out.setText(xml);
+		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
 		if (attachment != null) {
 			Attachment body = new Attachment();

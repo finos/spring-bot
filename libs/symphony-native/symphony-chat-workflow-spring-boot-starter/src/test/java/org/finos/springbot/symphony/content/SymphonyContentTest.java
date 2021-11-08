@@ -45,7 +45,8 @@ public class SymphonyContentTest extends AbstractContentTest {
 		
 		String out = mw.apply(m);
 		System.out.println(out);
-		Assertions.assertEquals(load("testSymphonyContents.html"), out);		
+		Assertions.assertEquals(load("testSymphonyContents.html"), out);
+		
 	}
 
 	@Test

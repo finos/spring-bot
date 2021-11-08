@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import org.finos.springbot.teams.content.TeamsHTMLParser;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.Action;

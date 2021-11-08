@@ -7,7 +7,7 @@ import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.content.User;
 
 @Work(index = false)
-public final class TeamsUser implements User {
+public final class TeamsUser implements User, TeamsMention {
 			
 	public TeamsUser(String id, String name) {
 		this.key = id;
@@ -34,8 +34,8 @@ public final class TeamsUser implements User {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof TeamsChat) {
-			return this.key.equals(((TeamsChat) obj).getKey());
+		if (obj instanceof TeamsMention) {
+			return this.key.equals(((TeamsMention) obj).getKey());
 		} else {
 			return false;
 		}
