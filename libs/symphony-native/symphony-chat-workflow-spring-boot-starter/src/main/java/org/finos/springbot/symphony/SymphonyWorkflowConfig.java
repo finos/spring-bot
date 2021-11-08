@@ -3,6 +3,7 @@ package org.finos.springbot.symphony;
 import java.util.List;
 
 import org.finos.springbot.ChatWorkflowConfig;
+import org.finos.springbot.symphony.content.SymphonyContentConfig;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
@@ -25,14 +26,6 @@ import org.finos.springbot.symphony.templating.SymphonyTemplateProvider;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
-import org.finos.springbot.workflow.content.BlockQuote;
-import org.finos.springbot.workflow.content.Heading;
-import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.OrderedList;
-import org.finos.springbot.workflow.content.Paragraph;
-import org.finos.springbot.workflow.content.Table;
-import org.finos.springbot.workflow.content.UnorderedList;
-import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.templating.SimpleMessageMarkupTemplateProvider;
@@ -71,6 +64,7 @@ import com.symphony.api.pod.UsersApi;
 	ChatWorkflowConfig.class, 
 	FreemarkerTypeConverterConfig.class, 
 	JerseyAttachmentHandlerConfig.class,
+	SymphonyContentConfig.class,
 	DataHandlerCofig.class})
 @ConditionalOnProperty("symphony.apis.0.pod.url")
 public class SymphonyWorkflowConfig {
@@ -103,33 +97,8 @@ public class SymphonyWorkflowConfig {
 	@Autowired
 	EntityJsonConverter ejc;
 	
-	@Bean
-	@ConditionalOnMissingBean
-	public MessageMLParser symphonyMessageMLParser() {
-		return new MessageMLParser();
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public MarkupWriter symphonyMessageMLWriter() {
-		MarkupWriter out = new MarkupWriter();
-		out.add(Message.class, out.new OrderedTagWriter("messageML"));
-		out.add(Paragraph.class, out.new OrderedTagWriter("p"));
-		out.add(OrderedList.class, out.new OrderedTagWriter("ol", out.new OrderedTagWriter("li")));
-		out.add(UnorderedList.class, out.new OrderedTagWriter("ul", out.new OrderedTagWriter("li")));
-		out.add(BlockQuote.class, out.new SimpleTagWriter("code"));
-		out.add(Word.class, out.new PlainWriter());
-		out.add(Table.class, out.new TableWriter());
-		out.add(Heading.class, out.new HeadingWriter("h"));
-		//out.add(null, out);
-		// user
-		// image
-		// link
-		// hashtag
-		// cashtag
-		
-		return out;
-	}
+	@Autowired 
+	MessageMLParser messageMLParser;
 	
 	@Bean 
 	@ConditionalOnMissingBean
@@ -185,7 +154,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public PresentationMLHandler symphonyPresentationMLHandler(List<ActionConsumer> messageConsumers) {
-		return new PresentationMLHandler(symphonyMessageMLParser(), ejc, messageConsumers, symphonyRooms(), botIdentity);
+		return new PresentationMLHandler(messageMLParser, ejc, messageConsumers, symphonyRooms(), botIdentity);
 	}
 
 	@Bean

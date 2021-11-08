@@ -38,5 +38,9 @@ public interface Message extends Paragraph {
 	public static Message of(Content... c) {
 		return new MessageImpl(Arrays.asList(c));		
 	}
+
+	public static Message of(List<? extends Content> c) {
+		return new MessageImpl(c);
+	}
 	
 }

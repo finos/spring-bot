@@ -1,10 +1,9 @@
-package org.finos.springbot.symphony.messages;
+package org.finos.springbot.symphony.content;
 
 import java.util.HashMap;
 
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
-import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.workflow.annotations.ChatVariable;

@@ -26,7 +26,6 @@ import com.microsoft.bot.builder.ActivityHandler;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
-import com.microsoft.bot.schema.teams.TeamsChannelData;
 
 public class MessageActivityHandler extends ActivityHandler {
 	
@@ -89,8 +88,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		Object form = formConverter.convert(formData, formName);
 		String action = (String) formData.get("action");
 		Map<String, Object> data = new HashMap<>(); // need to load this from somewhere.
-		TeamsChannelData tcd = a.teamsGetChannelData();
-		Addressable rr = teamsConversations.getTeamsChat(tcd);
+		Addressable rr = teamsConversations.getTeamsChat(a.getConversation());
 		User u = teamsConversations.getUser(a.getFrom());
 		Addressable from = rr == null ? u : rr;
 		return validationProcessor.validationCheck(action, from, form, () -> {
@@ -100,9 +98,8 @@ public class MessageActivityHandler extends ActivityHandler {
 
 	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {
 		Message message = createMessageFromActivity(a);
-		TeamsChannelData tcd = a.teamsGetChannelData();
 		Object data = a.getChannelData();	
-		Addressable rr = teamsConversations.getTeamsChat(tcd);
+		Addressable rr = teamsConversations.getTeamsChat(a.getConversation());
 		User u = teamsConversations.getUser(a.getFrom());
 		
 		rr = rr == null ? u : rr;

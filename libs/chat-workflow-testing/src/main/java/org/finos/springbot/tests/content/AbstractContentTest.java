@@ -1,17 +1,29 @@
-package org.finos.springbot.workflow.content;
+package org.finos.springbot.tests.content;
 
 import java.util.Arrays;
 
+import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.CodeBlock;
+import org.finos.springbot.workflow.content.Content;
+import org.finos.springbot.workflow.content.Heading;
+import org.finos.springbot.workflow.content.Image;
+import org.finos.springbot.workflow.content.Link;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.OrderedList;
+import org.finos.springbot.workflow.content.Paragraph;
+import org.finos.springbot.workflow.content.Table;
+import org.finos.springbot.workflow.content.UnorderedList;
+import org.finos.springbot.workflow.content.Word;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class ContentTest {
+public class AbstractContentTest {
 
 	@Test
 	public void testContentEquals() {
 		Message m1 = createMessage();
 		Message m2 = createMessage();
-		Assertions.assertEquals(m1.hashCode(), m2.hashCode());
+		doAssertsOnContent(m1, m2);
 	}
 	
 	@Test
@@ -19,6 +31,18 @@ public class ContentTest {
 		Message m1 = createMessage();
 		Message m2 = createMessage();
 		Assertions.assertTrue(m1.matches(m2));
+	}
+	
+	protected void doAssertsOnContent(Content td1, Content td2) {
+		doAssertsOnObject(td1, td2);
+		Assertions.assertEquals(td1.getText(), td2.getText());
+	}
+
+	protected void doAssertsOnObject(Object td1, Object td2) {
+		Assertions.assertEquals(td1, td2);
+		Assertions.assertEquals(td1.hashCode(), td2.hashCode());
+		Assertions.assertEquals(td1.toString(), td2.toString());
+		Assertions.assertNotEquals(td1, "lemon");
 	}
 
 	/**
@@ -37,8 +61,8 @@ public class ContentTest {
 						Paragraph.of("item 2")),
 			BlockQuote.of("Something wicked this way comes"),
 			CodeBlock.of("<some>code</some>"),
-			Image.of("https://www.bob.com/image", "Some image"),
-			Link.of("http://www.some.link", "This is a link"),
+			Image.of("https://symphony-consultancy.com/assets/images/bot.svg", "Some image"),
+			Link.of("https://symphony-consultancy.com", "This is a link"),
 			Heading.of("Heading 2", 2),
 			Table.of(Arrays.asList(Word.of("Heading 1"), Word.of("Heading 2")), 
 					Arrays.asList(
@@ -60,7 +84,7 @@ public class ContentTest {
 		Message m2 = Message.of(p1_, p2_);
 		
 		
-		Assertions.assertEquals(
+		doAssertsOnContent(
 				m1.without(three),
 				m2);
 	}
@@ -76,7 +100,7 @@ public class ContentTest {
 		Message m2 = Message.of(p1_);
 		
 		
-		Assertions.assertEquals(
+		doAssertsOnContent(
 				m1.removeAtStart(one),
 				m2);
 	}

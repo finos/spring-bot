@@ -51,7 +51,7 @@ public class Taxonomy {
 	protected boolean taxonomyPartMatch(List<TaxonomyElement> a, List<TaxonomyElement> b) {
 		for (TaxonomyElement tea : a) {
 			for (TaxonomyElement teb : b) {
-				if (tea.getClass().equals(teb.getClass())) {
+				if ((tea != null) && (teb != null) && (tea.getClass().equals(teb.getClass()))) {
 					return tea.equals(teb);
 				}
 			}

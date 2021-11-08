@@ -13,12 +13,14 @@ import org.finos.springbot.workflow.annotations.ChatResponseBody;
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.BlockQuote;
+import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.CodeBlock;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.Paragraph;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -148,4 +150,8 @@ public class ToDoController {
 		return out;
 	}
 
+	@ChatRequest(value="members", description="list the members of the chat" )
+	public Message listMembers(AllConversations ac, Chat mine) {
+		return Message.of(ac.getChatMembers(mine));
+	}
 }

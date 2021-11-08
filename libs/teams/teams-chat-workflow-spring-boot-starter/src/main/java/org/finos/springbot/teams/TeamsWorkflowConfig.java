@@ -15,14 +15,17 @@ import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.messages.TeamsHTMLParser;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
 import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
+import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
+import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.OrderedList;
 import org.finos.springbot.workflow.content.Paragraph;
 import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
+import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.finos.springbot.workflow.form.FormConverter;
@@ -45,6 +48,10 @@ import org.springframework.validation.Validator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.microsoft.bot.builder.BotFrameworkAdapter;
+import com.microsoft.bot.builder.TurnContext;
+import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
+import com.microsoft.bot.connector.rest.RestConnectorClient;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
@@ -130,8 +137,15 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean 
 	@ConditionalOnMissingBean
-	public TeamsConversations teamsConversations() {
-		return new TeamsConversationsImpl();
+	public TeamsConversations teamsConversations(BotFrameworkAdapter bfa) {
+		com.microsoft.bot.integration.Configuration conf = getConfiguration();
+		MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
+			conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID), 
+			conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
+			"2f758e82-b31e-4a99-a9dd-e4d4abe351db");
+		mac.setChannelAuthTenant(null);
+		RestConnectorClient rcc = new RestConnectorClient(mac);
+		return new TeamsConversationsImpl(bfa, rcc);
 	}
 
 	@Bean
@@ -145,8 +159,12 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public MessageActivityHandler teamsMessageActivityHandler(List<ActionConsumer> messageConsumers, TeamsHTMLParser parser, FormValidationProcessor fvp) {
-		return new MessageActivityHandler(messageConsumers, teamsConversations(), parser, teamsFormConverter(), fvp);
+	public MessageActivityHandler teamsMessageActivityHandler(
+			List<ActionConsumer> messageConsumers, 
+			TeamsHTMLParser parser, 
+			FormValidationProcessor fvp, 
+			TeamsConversations tc) {
+		return new MessageActivityHandler(messageConsumers, tc, parser, teamsFormConverter(), fvp);
 	}
 	
 	@Bean
@@ -192,13 +210,13 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public AddressingChecker teamsAddressingChecker(TeamsConversations conv) {
-//		return new InRoomAddressingChecker(() -> {
-//			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
-//			User u = conv.getUser(tc.getActivity().getRecipient());	
-//			return u;
-//		}, true);
+		return new InRoomAddressingChecker(() -> {
+			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
+			User u = conv.getUser(tc.getActivity().getRecipient());	
+			return u;
+		}, true);
 		
-		return a -> a;
+//		return a -> a;
 	}
 
 }
