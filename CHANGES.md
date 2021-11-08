@@ -177,3 +177,7 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
 
  - Fix for #241, fixing mock issue
  - Fix for #239, fixing Integration test
+
+# Nov 8, 2021
+
+ - Minor bugfix - KoreAI - JAVA_HOME variable replaced with actual path from System Property
