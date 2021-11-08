@@ -49,6 +49,11 @@ public class KoreAIRequesterImpl implements KoreAIRequester, InitializingBean {
     }
     
     protected Client createClient() {
+	String trustStorePath = System.getProperty("javax.net.ssl.trustStore");
+    	if(trustStorePath.contains("$JAVA_HOME")) {
+    		String java_home = System.getenv().get("JAVA_HOME");
+    		System.setProperty("javax.net.ssl.trustStore", trustStorePath.replace("$JAVA_HOME", java_home));
+    	}
     	return ClientBuilder.newBuilder()
     		.connectTimeout(15, TimeUnit.SECONDS)
     		.readTimeout(15, TimeUnit.SECONDS)
