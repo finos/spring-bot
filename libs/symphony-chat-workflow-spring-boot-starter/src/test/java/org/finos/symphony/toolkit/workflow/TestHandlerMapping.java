@@ -52,6 +52,7 @@ import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.symphonyoss.Taxonomy;
 
 
 @SpringBootTest(classes = {
@@ -96,7 +97,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 	private void execute(String s) throws Exception {
 		EntityJson jsonObjects = new EntityJson();
 		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
-		jsonObjects.put("2", new HashTag("SomeTopic"));
+		jsonObjects.put("2", new Taxonomy(Arrays.asList(new HashTag("SomeTopic"))));
 		Message m = smp.parse("<messageML>/"+s+"</messageML>", jsonObjects);
 		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
 		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
