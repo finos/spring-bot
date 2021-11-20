@@ -26,6 +26,7 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.symphonyoss.Taxonomy;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -376,6 +377,10 @@ public class MessageMLParser {
 							push(new TagFrame<HashTag>((HashTag) o));
 						} else if (o instanceof CashTag) {
 							push(new TagFrame<CashTag>((CashTag) o));
+						} else if (o instanceof Taxonomy
+								&& !((Taxonomy) o).getId().isEmpty()
+								&& ((Taxonomy) o).getId().get(0) instanceof HashTag) {
+							push(new TagFrame<HashTag>((HashTag) ((Taxonomy) o).getId().get(0)));
 						} else {
 							throw new UnsupportedOperationException();
 						}
