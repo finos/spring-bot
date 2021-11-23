@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.teams.TeamsException;
+import org.finos.springbot.teams.content.TeamsConversation;
+import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
@@ -15,28 +18,37 @@ import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.InitializingBean;
 
 import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.builder.TurnContextImpl;
+import com.microsoft.bot.builder.teams.TeamsInfo;
 import com.microsoft.bot.connector.ConnectorClient;
-import com.microsoft.bot.connector.rest.RestConnectorClient;
+import com.microsoft.bot.connector.Conversations;
+import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ChannelAccount;
 import com.microsoft.bot.schema.ConversationAccount;
 import com.microsoft.bot.schema.ConversationsResult;
+import com.microsoft.bot.schema.RoleTypes;
+import com.microsoft.bot.schema.teams.TeamDetails;
+import com.microsoft.bot.schema.teams.TeamsChannelData;
 
-public class TeamsConversationsImpl implements TeamsConversations, InitializingBean {
+public class TeamsConversationsImpl implements TeamsConversations {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsConversationsImpl.class);
 	
-	private BotFrameworkAdapter bfa;
+	//private BotFrameworkAdapter bfa;
 
-	public TeamsConversationsImpl(BotFrameworkAdapter bfa, RestConnectorClient rcc) {
+	public TeamsConversationsImpl() {
 		super();
-		this.bfa = bfa;
 	}
 
+	private Conversations getConversations() {
+		TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
+		ConnectorClient connectorClient = ctx.getTurnState().get(BotFrameworkAdapter.CONNECTOR_CLIENT_KEY);
+		return connectorClient.getConversations();
+	}
+	
 	
 	@Override
 	public boolean isSupported(Chat r) {
@@ -51,9 +63,7 @@ public class TeamsConversationsImpl implements TeamsConversations, InitializingB
 	@Override
 	public Set<Addressable> getAllAddressables() {
 		try {
-			TurnContext turnContext = CurrentTurnContext.CURRENT_CONTEXT.get();
-			CompletableFuture<ConversationsResult> convos = bfa.getConversations((TurnContextImpl) turnContext);
-			return convos.get().getConversations().stream()
+			return getConversations().getConversations().get().getConversations().stream()
 					.map(c -> new TeamsChat(c.getId(), ""))
 					.collect(Collectors.toSet());
 		} catch (Exception e) {
@@ -82,10 +92,8 @@ public class TeamsConversationsImpl implements TeamsConversations, InitializingB
 	@Override
 	public List<TeamsUser> getChatMembers(TeamsChat r) {
 		try {
-			TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
-			ConnectorClient connectorClient = ctx.getTurnState().get(BotFrameworkAdapter.CONNECTOR_CLIENT_KEY);
-			return connectorClient.getConversations().getConversationMembers(r.getKey()).get().stream()
-				.map(cm -> new TeamsUser(cm.getId(), cm.getName()))
+			return getConversations().getConversationMembers(r.getKey()).get().stream()
+				.map(cm -> new TeamsUser(cm.getId(), cm.getName(), cm.getAadObjectId()))
 				.collect(Collectors.toList());
 		} catch (Exception e) {
 			throw new TeamsException("Couldn't do getChatMembers", e);
@@ -94,22 +102,35 @@ public class TeamsConversationsImpl implements TeamsConversations, InitializingB
 
 	@Override
 	public List<TeamsUser> getChatAdmins(TeamsChat r) {
-		return null;
+		try {
+			return getConversations().getConversationMembers(r.getKey()).get().stream()
+				.map(cm -> new TeamsUser(cm.getId(), cm.getName(), cm.getAadObjectId()))
+				.collect(Collectors.toList());
+		} catch (Exception e) {
+			throw new TeamsException("Couldn't do getChatAdmins", e);
+		}
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
-	//	rcc = new RestConnectorClient(null)	
-	}
-
-	@Override
-	public Addressable getTeamsChat(ConversationAccount tcd) {
-		return new TeamsChat(tcd.getId(), tcd.getName());
+	public TeamsAddressable getTeamsChat(TurnContext tc) {
+		ConversationAccount tcd = tc.getActivity().getConversation();
+		if ("groupChat".equals(tcd.getConversationType())) {
+			return new TeamsChat(tcd.getId(), "Group Chat");
+		} else if ("channel".equals(tcd.getConversationType())){
+			try {
+				TeamDetails td = TeamsInfo.getTeamDetails(tc, tc.getActivity().teamsGetTeamId()).get();
+				return new TeamsConversation(td.getAadGroupId(), tcd.getId(), tcd.getName());
+			} catch (Exception e) {
+				throw new TeamsException("Couldn't identify channel details", e);
+			}
+		} else {
+			return null;
+		}
 	}
 
 	@Override
 	public User getUser(ChannelAccount from) {
-		return new TeamsUser(from.getId(), from.getName());
+		return new TeamsUser(from.getId(), from.getName(), from.getAadObjectId());
 	}
 
 }

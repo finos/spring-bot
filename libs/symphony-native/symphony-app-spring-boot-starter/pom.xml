@@ -7,8 +7,8 @@
 	<name>Spring Boot Starter For Symphony Apps</name>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.3-SNAPSHOT</version>
 		<relativePath>../../..</relativePath>
 	</parent>
@@ -32,7 +32,7 @@
 			<version>${spring-boot-oauth.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>

@@ -9,8 +9,8 @@
     <name>Jackson QuickFix Module</name>
     
     <parent>
-        <groupId>org.finos.symphony.toolkit</groupId>
-        <artifactId>symphony-java-toolkit</artifactId>
+        <groupId>org.finos.springbot</groupId>
+        <artifactId>spring-bot</artifactId>
         <version>8.0.3-SNAPSHOT</version>
         <relativePath>../..</relativePath>
     </parent>

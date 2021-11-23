@@ -19,7 +19,6 @@ import org.finos.springbot.symphony.json.DataHandlerCofig;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.symphony.messages.PresentationMLHandler;
 import org.finos.springbot.symphony.response.handlers.AttachmentHandler;
-import org.finos.springbot.symphony.response.handlers.HeaderTagResponseHandler;
 import org.finos.springbot.symphony.response.handlers.JerseyAttachmentHandlerConfig;
 import org.finos.springbot.symphony.response.handlers.SymphonyResponseHandler;
 import org.finos.springbot.symphony.templating.FreemarkerTypeConverterConfig;
@@ -33,6 +32,7 @@ import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplateProvider;
 import org.finos.springbot.workflow.response.templating.Markup;
 import org.finos.springbot.workflow.response.templating.SimpleMarkupTemplateProvider;
+import org.finos.springbot.workflow.tags.HeaderTagResponseHandler;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,14 +147,6 @@ public class SymphonyWorkflowConfig {
 	public SymphonyConversations symphonyRooms() {
 		return new SymphonyConversationsImpl(roomMembershipApi, streamsApi, usersApi, botIdentity);
 	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public HeaderTagResponseHandler symphonyHeaderTagResponsehandler() {
-		return new HeaderTagResponseHandler();
-	} 
-	
-	
 	
 	@Bean
 	@ConditionalOnMissingBean

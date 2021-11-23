@@ -6,16 +6,16 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.AbstractStreamResolving;
-import org.finos.springbot.symphony.TagSupport;
 import org.finos.springbot.symphony.content.CashTag;
 import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.SymphonyAddressable;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
+import org.finos.springbot.symphony.tags.SymphonyTagSupport;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Tag;
-import org.finos.symphony.toolkit.json.EntityJson;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;
@@ -176,7 +176,7 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 		}
 		
 		if (type != null) {
-			msq.setHashtag(TagSupport.formatTag(type));
+			msq.setHashtag(SymphonyTagSupport.formatTag(type));
 		} else if (t != null) {
 			if (t instanceof CashTag) {
 				msq.setCashtag(t.getName());

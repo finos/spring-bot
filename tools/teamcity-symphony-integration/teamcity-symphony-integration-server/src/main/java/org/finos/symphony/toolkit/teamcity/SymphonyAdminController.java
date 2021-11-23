@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.json.VersionSpace;
+import org.finos.springbot.entityjson.ObjectMapperFactory;
+import org.finos.springbot.entityjson.VersionSpace;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;

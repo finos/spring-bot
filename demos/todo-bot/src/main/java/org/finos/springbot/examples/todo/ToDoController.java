@@ -28,7 +28,9 @@ public class ToDoController {
 
 	@ChatRequest(value={"new", "nouveau"}, description = "Create new item list")
 	public ToDoList init() {
-		return new ToDoList();
+		ToDoList out = new ToDoList();
+		out.getItems().add(new ToDoItem("something", null, null, Status.OPEN));
+		return out;
 	}
 	
 	private void reNumber(ToDoList l) {
@@ -49,7 +51,7 @@ public class ToDoController {
 	
 	@ChatButton(value = NewItemDetails.class, buttonText = "add")
 	public ToDoList add(NewItemDetails a, User u, Optional<ToDoList> toDo) {
-		ToDoList out = toDo.orElse(new ToDoList());
+		ToDoList out = toDo.orElse(init());
 		out.getItems().add(new ToDoItem(a.getDescription(), u, a.getAssignTo(), Status.OPEN));
 		reNumber(out);
 		return out;
@@ -57,14 +59,14 @@ public class ToDoController {
 	
 	@ChatButton(value = NewItemDetails.class, buttonText = "cancel")
 	public ToDoList cancel(Optional<ToDoList> toDo) {
-		ToDoList out = toDo.orElse(new ToDoList());
+		ToDoList out = toDo.orElse(init());
 		return out;
 	}
 
 	@ChatRequest(value="show", description = "Show current list of items")
 	@ChatResponseBody(workMode = WorkMode.VIEW)
 	public ToDoList show(Optional<ToDoList> in) {
-		ToDoList out = in.orElse(new ToDoList());
+		ToDoList out = in.orElse(init());
 		reNumber(out);
 		return out;
 	}
@@ -72,7 +74,7 @@ public class ToDoController {
 	@ChatRequest(value="edit", description = "Edit current list of items")
 	@ChatResponseBody(workMode = WorkMode.EDIT)
 	public ToDoList edit(Optional<ToDoList> in) {
-		ToDoList out = in.orElse(new ToDoList());
+		ToDoList out = in.orElse(init());
 		reNumber(out);
 		return out;
 	}
@@ -95,7 +97,7 @@ public class ToDoController {
 
 	@ChatRequest(value="delete {item}", description = "Remove items by number. e.g. \"/delete 5 6 7\"")
 	public ToDoList delete(@ChatVariable(name = "item") List<Word> toDelete, Optional<ToDoList> toDo) {
-		ToDoList out = toDo.orElse(new ToDoList());
+		ToDoList out = toDo.orElse(init());
 		Set<Integer> toRemove = numbers(toDelete);
 		for (Iterator<ToDoItem> iterator = out.getItems().iterator(); iterator.hasNext();) {
 			ToDoItem item = iterator.next();
@@ -122,7 +124,7 @@ public class ToDoController {
 	
 	@ChatRequest(value="complete {items} {by}", description = "Complete items, e.g. \"/complete 1 3 5 @Suresh Rupnar\"")
 	public ToDoList complete(@ChatVariable("items") List<Word> words, @ChatVariable("by") Optional<User> by, User a, Optional<ToDoList> toDo) {
-		ToDoList out = toDo.orElse(new ToDoList());
+		ToDoList out = toDo.orElse(init());
 		User u = by.orElse(a);
 		changeStatus(out, words, u, Status.COMPLETE);
 		return out;
@@ -130,14 +132,14 @@ public class ToDoController {
 	
 	@ChatRequest(value="assign {items} {by}", description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
 	public ToDoList assign(@ChatVariable("items") List<Word> words, @ChatVariable("by") Optional<User> by, User a, Optional<ToDoList> toDo) {
-		ToDoList out = toDo.orElse(new ToDoList());
+		ToDoList out = toDo.orElse(init());
 		User u = by.orElse(a);
 		changeStatus(out, words, u, Status.OPEN);
 		return out;
 	}
 	
 	@ChatRequest(value="test", description = "Prints a  test message on the screen") 
-	public Message testMessage() {
+	public Message testMessage(User from) {
 		Message out = Message.of(
 			Paragraph.of("Some first paragraph"),
 			UnorderedList.of(
@@ -145,7 +147,8 @@ public class ToDoController {
 				Paragraph.of("item 2"),
 				Paragraph.of("item 3")),
 			BlockQuote.of("This one goes out to the one I love\nThis one goes out to the one I left behind"),
-			CodeBlock.of("Some preformatted text"));
+			CodeBlock.of("Some preformatted text"),
+			Paragraph.of(Word.of("Thanks!"), from));
 		
 		return out;
 	}
@@ -154,4 +157,5 @@ public class ToDoController {
 	public Message listMembers(AllConversations ac, Chat mine) {
 		return Message.of(ac.getChatMembers(mine));
 	}
+
 }

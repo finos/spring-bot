@@ -4,25 +4,25 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.3-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.tools</groupId>
+	<groupId>org.finos.springbot.tools</groupId>
 	<artifactId>reminder-bot</artifactId>
 	<name>Reminder Bot</name>
 	<description>Reminder Bot for Managing Reminders</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>org.finos.symphony.toolkit.tools.reminders.ReminderBotApp</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.springbot.tools.reminders.ReminderBotApp</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>

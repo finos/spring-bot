@@ -1,7 +1,7 @@
 package org.finos.symphony.toolkit.koreai.output;
 
 import org.apache.commons.codec.Charsets;
-import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.slf4j.Logger;

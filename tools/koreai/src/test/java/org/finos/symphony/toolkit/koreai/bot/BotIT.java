@@ -5,7 +5,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

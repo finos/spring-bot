@@ -1,9 +1,5 @@
-
 1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead. (maybe)
-6. Backwards compat.  for deserialization
-13. Rename group / version number
 14. Saving templates
-16. Room membership needs to work.
 18. Client-side validation
 20.  build time editors / viewers (both symphony and teams)
 7. Convert keys to values with dropdowns/enums/users in view mode 
@@ -12,4 +8,18 @@
 	- We need the conversation API for this.  And to figure out the history API.
 	
 21.  handle tennant id	
-22.  complete markup writing tests
+22.  thymeleaf templating
+23.  auto-generate manifest?
+24.  factor out headers / tags into common.
+
+
+
+
+Latest App:
+	- Created a bot in the azure portal, added it.  _This is the bot's AAD id_.  Bot needs permission: ChatMessage.Read.All
+	- Create the manifest.  Use the bot's AAD Id in there, otherwise, all unique.  use manifest from src/main/resources.
+	- admin.teams.microsoft.com - upload it there.
+
+	
+Filtering Messages:
+filter=teamsApp/id eq '{teamsAppId}

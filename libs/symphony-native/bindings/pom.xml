@@ -8,8 +8,8 @@
 	<name>Symphony Java Client Bindings</name>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<relativePath>../../..</relativePath>
 		<version>8.0.3-SNAPSHOT</version>
 	</parent>
@@ -245,7 +245,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>identity</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>test</scope>

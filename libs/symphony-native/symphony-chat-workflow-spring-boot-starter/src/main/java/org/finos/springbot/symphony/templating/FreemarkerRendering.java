@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.Variable;
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.springframework.util.StringUtils;
 
 import com.symphony.api.model.UserId;
@@ -210,8 +210,8 @@ public class FreemarkerRendering implements Rendering<String> {
 		StringBuilder sb = new StringBuilder();
 	    int depth = ((FreemarkerVariable) v).depth;
 		sb.append(indent(depth) + "<#if "+v.getDataPath() + "??><#list "+v.getDataPath() +".id as id>");
-		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getSymphonyTypeName(UserId.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
-		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getSymphonyTypeName(EmailAddress.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeNamer(UserId.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeNamer(EmailAddress.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
 	    sb.append(indent(depth) + " </#list></#if>");
 	    return sb.toString();
 	}

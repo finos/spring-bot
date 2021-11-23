@@ -1,11 +1,18 @@
 package org.finos.springbot.teams.handlers;
 
+import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
+import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.data.DataTransport;
+import org.finos.springbot.teams.history.TeamsHistory;
+import org.finos.springbot.teams.history.TeamsHistoryImpl;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
+import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
@@ -18,6 +25,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ErrorHandler;
+import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -37,14 +45,17 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected ErrorHandler eh;
 	protected EntityMarkupTemplateProvider messageTemplater;
 	protected TeamsTemplateProvider workTemplater;
+	protected TeamsHistory teamsHistory;
 	
-	public TeamsResponseHandler(
+	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
 			EntityMarkupTemplateProvider messageTemplater,
-			TeamsTemplateProvider workTemplater) {
+			TeamsTemplateProvider workTemplater,
+			TeamsHistory th) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;
+		this.teamsHistory = th;
 	}
 	
 	protected void initErrorHandler() {
@@ -58,40 +69,44 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		
 		if (t.getAddress() instanceof TeamsAddressable) {		
 
-			TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
-			
-			if (ctx == null) {
-				return;
-			}
-
-			if (t instanceof MessageResponse) {
-				Object attachment = null;
-				MarkupAndEntities mae = messageTemplater.template((MessageResponse) t);
-				String content = mae.getContents();
-				List<Entity> entities = mae.getEntities();
+			try {
+				TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
 				
-				if (t instanceof AttachmentResponse) {
-					attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
+				if (ctx == null) {
+					return;
 				}
-				
-				sendXMLResponse(content, ((MessageResponse) t).getMessage(), attachment, (TeamsAddressable) t.getAddress(), entities, ctx);
-				
-			} else if (t instanceof WorkResponse) {
-				JsonNode cardJson = workTemplater.template((WorkResponse) t);
-				sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), ctx);
+
+				if (t instanceof MessageResponse) {
+					Object attachment = null;
+					MarkupAndEntities mae = messageTemplater.template((MessageResponse) t);
+					String content = mae.getContents();
+					List<Entity> entities = mae.getEntities();
+					
+					if (t instanceof AttachmentResponse) {
+						attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
+					}
+					
+					sendXMLResponse(content, ((MessageResponse) t).getMessage(), attachment, (TeamsAddressable) t.getAddress(), entities, ctx, ((MessageResponse)t).getData());
+					
+				} else if (t instanceof WorkResponse) {
+					JsonNode cardJson = workTemplater.template((WorkResponse) t);
+					sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), ctx, ((WorkResponse)t).getData());
+				}
+			} catch (Exception e) {
+				throw new TeamsException("Couldn't handle response " +t, e);
 			}
 		}
 	}
 
-	protected void sendXMLResponse(String xml, Content c, Object attachment, TeamsAddressable address, List<Entity> entities, TurnContext ctx) {		
+	protected void sendXMLResponse(String xml, Content c, Object attachment, TeamsAddressable address, List<Entity> entities, TurnContext ctx, Map<String, Object> data) throws Exception {		
 		Activity out = Activity.createMessageActivity();
-		out.setText(xml);
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
-		if (attachment != null) {
-			Attachment body = new Attachment();
-			out.getAttachments().add(body);
-		}
+		String dataXml = xml.replace("</div>", "<a href=\"http://kite9.com/,"+ 
+				Base64.getEncoder().encodeToString(
+					StreamUtils.copyToByteArray(TeamsResponseHandler.class.getResourceAsStream("/manifest/color.png"))) + 
+				"\">some link</a></div>");
+		out.setText(dataXml);
 		
 		ctx.sendActivity(out).handle((rr, e) -> {
 			if (e != null) {
@@ -99,20 +114,22 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				LOG.error("message:\n"+xml);
 				initErrorHandler();
 				eh.handleError(e);	
+			} else {
+				teamsHistory.store(address, data);
 			}
 			
 			return null;
 		});
 		
 	}
-	
-	protected void sendCardResponse(JsonNode json, TeamsAddressable address, TurnContext ctx) {		
+
+	protected void sendCardResponse(JsonNode json, TeamsAddressable address, TurnContext ctx, Map<String, Object> data) throws JsonProcessingException {		
 		Activity out = Activity.createMessageActivity();
 		Attachment body = new Attachment();
 		body.setContentType("application/vnd.microsoft.card.adaptive");
 		body.setContent(json);
-		body.setProperties("$data", json);
 		out.getAttachments().add(body);
+		
 		ctx.sendActivity(out).handle((rr, e) -> {
 			if (e != null) {
 				LOG.error(e.getMessage());
@@ -122,6 +139,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				}
 				initErrorHandler();
 				eh.handleError(e);	
+			}  else {
+				teamsHistory.store(address, data);
 			}
 			
 			return null;

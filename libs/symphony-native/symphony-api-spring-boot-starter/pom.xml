@@ -8,21 +8,21 @@
 	<name>Spring Boot Starter For Symphony Bots</name>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.3-SNAPSHOT</version>
 		<relativePath>../../..</relativePath>
 	</parent>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>bindings</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>identity</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>compile</scope>

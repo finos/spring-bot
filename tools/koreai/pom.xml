@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.3-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.tools</groupId>
+	<groupId>org.finos.springbot.tools</groupId>
 	<artifactId>koreai</artifactId>
 	<name>KoreAI Support Bridge</name>
 	<description>Supports Kore AI Bots Communicating On Symphony</description>
@@ -18,22 +18,22 @@
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>org.finos.symphony.toolkit.koreai.KoreAIBot</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.springbot.koreai.KoreAIBot</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>entity-json</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>

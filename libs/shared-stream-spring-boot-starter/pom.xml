@@ -8,8 +8,8 @@
 	<name>Spring Boot Starter For Shared Streams</name>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.3-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
@@ -21,19 +21,19 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>bindings</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>identity</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>entity-json</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
@@ -46,7 +46,7 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>provided</scope>

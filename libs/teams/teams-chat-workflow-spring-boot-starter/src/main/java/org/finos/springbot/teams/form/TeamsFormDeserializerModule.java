@@ -66,7 +66,7 @@ public class TeamsFormDeserializerModule extends Module {
 							
 							TreeNode tn = p.readValueAsTree();
 							if (tn instanceof TextNode) {
-								return new TeamsUser(tn.toString(), null);
+								return new TeamsUser(tn.toString(), null, null);
 							} else {
 								return null;
 							}

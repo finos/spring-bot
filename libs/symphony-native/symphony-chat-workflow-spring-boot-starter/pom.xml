@@ -7,8 +7,8 @@
 	<description>Build Workflows Using Enterprise Chat</description>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.3-SNAPSHOT</version>
 		<relativePath>../../..</relativePath>
 	</parent>
@@ -20,17 +20,17 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
@@ -67,14 +67,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow-testing</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
 
 
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow-testing</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 			<scope>test</scope>

@@ -1,0 +1,85 @@
+{
+	"$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.11/MicrosoftTeams.schema.json",
+	"version": "1.0.0",
+	"manifestVersion": "1.11",
+	"id": "bd33f8b1-b593-433c-926e-44a27c1bd94a",
+	"packageName": "com.package.name",
+	"name": {
+		"short": "RSC App",
+		"full": "Superlate"
+	},
+	"developer": {
+		"name": "DB",
+		"mpnId": "",
+		"websiteUrl": "https://www.db.com",
+		"privacyUrl": "https://www.db.com/privacy",
+		"termsOfUseUrl": "https://www.db.com/tos"
+	},
+	"permissions": [
+		"identity",
+		"messageTeamMembers"
+	],
+	"description": {
+		"short": "lkjlkj",
+		"full": "kjlkjlk"
+	},
+	"icons": {
+		"outline": "outline.png",
+		"color": "color.png"
+	},
+	"accentColor": "#FFFFFF",
+	"staticTabs": [
+		{
+			"entityId": "about",
+			"scopes": [
+				"personal"
+			]
+		}
+	],
+	"bots": [
+		{
+			"botId": "e6d93739-a8ab-412d-a4f6-b6f514a3451a",
+			"scopes": [
+		        "team",
+		        "personal",
+		        "groupchat"
+		      ],
+			"isNotificationOnly": false,
+			"supportsFiles": true
+		}
+	],
+	"validDomains": [],
+	"webApplicationInfo": {
+		"id": "e6d93739-a8ab-412d-a4f6-b6f514a3451a",
+		"resource": "https://RscBasedStoreApp",
+		"applicationPermissions": [
+			"TeamSettings.Read.Group",
+			"ChannelMessage.Read.Group",
+			"TeamSettings.Edit.Group",
+			"ChannelSettings.ReadWrite.Group",
+			"Channel.Create.Group",
+			"Channel.Delete.Group",
+			"TeamsApp.Read.Group",
+			"TeamsTab.Read.Group",
+			"TeamsTab.Create.Group",
+			"TeamsTab.ReadWrite.Group",
+			"TeamsTab.Delete.Group",
+			"Member.Read.Group",
+			"Owner.Read.Group",
+			"ChatSettings.Read.Chat",
+	        "ChatSettings.ReadWrite.Chat",
+	        "ChatMessage.Read.Chat",
+	        "ChatMember.Read.Chat",
+	        "Chat.Manage.Chat",
+	        "TeamsTab.Read.Chat",
+	        "TeamsTab.Create.Chat",
+	        "TeamsTab.Delete.Chat",
+	        "TeamsTab.ReadWrite.Chat",
+	        "TeamsAppInstallation.Read.Chat",
+	        "OnlineMeeting.ReadBasic.Chat",
+	        "Calls.AccessMedia.Chat",
+	        "Calls.JoinGroupCalls.Chat",
+	        "TeamsActivity.Send.Chat"
+		]
+	}
+}

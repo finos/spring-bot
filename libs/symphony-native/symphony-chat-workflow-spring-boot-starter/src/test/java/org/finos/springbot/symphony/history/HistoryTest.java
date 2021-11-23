@@ -5,11 +5,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

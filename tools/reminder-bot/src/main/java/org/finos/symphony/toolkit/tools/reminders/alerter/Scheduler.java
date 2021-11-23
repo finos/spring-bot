@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.workflow.annotations.WorkMode;
@@ -20,7 +21,6 @@ import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.ErrorResponse;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.Reminder;

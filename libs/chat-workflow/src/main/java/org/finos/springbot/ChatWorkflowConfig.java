@@ -29,6 +29,7 @@ import org.finos.springbot.workflow.response.handlers.ChatListResponseHandler;
 import org.finos.springbot.workflow.response.handlers.ResponseHandler;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.springbot.workflow.response.handlers.UserListResponseHandler;
+import org.finos.springbot.workflow.tags.HeaderTagResponseHandler;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -156,4 +157,14 @@ public class ChatWorkflowConfig {
 	public FormValidationProcessor formValidationProcessor(ResponseHandlers rh, Validator validator) {
 		return new FormValidationProcessor(validator, rh);
 	}
+	
+
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public HeaderTagResponseHandler headerTagResponsehandler() {
+		return new HeaderTagResponseHandler();
+	} 
+	
+	
 }
