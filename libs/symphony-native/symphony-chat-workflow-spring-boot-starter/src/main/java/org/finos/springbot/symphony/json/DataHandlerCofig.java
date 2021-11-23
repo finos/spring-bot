@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.finos.springbot.ChatWorkflowConfig;
-import org.finos.springbot.symphony.SymphonyWorkflowConfig;
+import org.finos.springbot.entityjson.EntityJson;
+import org.finos.springbot.entityjson.ObjectMapperFactory;
+import org.finos.springbot.entityjson.VersionSpace;
 import org.finos.springbot.symphony.content.CashTag;
 import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.RoomName;
@@ -16,9 +18,6 @@ import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Chat;
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.slf4j.Logger;
@@ -33,6 +32,7 @@ import org.springframework.context.annotation.ClassPathScanningCandidateComponen
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
+import org.symphonyoss.Taxonomy;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.Cusip;
 import org.symphonyoss.fin.security.id.Isin;
@@ -60,10 +60,10 @@ public class DataHandlerCofig {
 		List<VersionSpace> workAnnotatedversionSpaces = scanForWorkClasses();
 		
 		List<VersionSpace> chatWorkflowVersionSpaces = Arrays.asList(
-			new VersionSpace(EntityJson.getSymphonyTypeName(Security.class), CashTag.class,  "1.0", "0.*"),
-			new VersionSpace(EntityJson.getSymphonyTypeName(Hashtag.class), HashTag.class, "1.0", "0.*"),
-			new VersionSpace(EntityJson.getSymphonyTypeName(Mention.class), SymphonyUser.class, "1.0"), 
-			new VersionSpace(EntityJson.getSymphonyTypeName(Chat.class), SymphonyRoom.class, "1.0"), 
+			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Security.class), CashTag.class,  "1.0", "0.*"),
+			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Hashtag.class), HashTag.class, "1.0", "0.*"),
+			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Mention.class), SymphonyUser.class, "1.0"), 
+			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Chat.class), SymphonyRoom.class, "1.0"), 
 			
 			new VersionSpace(UserId.class, "1.0"), 
 			new VersionSpace(DisplayName.class, "1.0"), 
@@ -114,7 +114,7 @@ public class DataHandlerCofig {
 						.mapToObj(i -> {
 							String t = jsonTypeName[i];
 							if (i == 0) {
-								t = StringUtils.hasText(t) ? t : EntityJson.getSymphonyTypeName(c);
+								t = StringUtils.hasText(t) ? t : EntityJson.getEntityJsonTypeNamer(c);
 								String writeVersion = w.writeVersion();
 								String[] readVersions = w.readVersions();
 								return new VersionSpace(t, c, writeVersion, readVersions);
@@ -133,5 +133,43 @@ public class DataHandlerCofig {
         int dot = cn.lastIndexOf('.');
         String pn = (dot != -1) ? cn.substring(0, dot).intern() : "";
         return pn;
+	}
+
+	/**
+	 * The Symphony client itself uses classes like Isin, Ticker, Mention, UserId when reporting hashtags, cashtags etc.
+	 * This function provides a default set of VersionSpaces to allow these to be deserialized.
+	 */
+	public static VersionSpace[] basicSymphonyVersionSpace() {
+		return new VersionSpace[] { 
+				new VersionSpace(Taxonomy.class, "1.0"),
+				new VersionSpace(Security.class, "1.0", "0.*"),
+				new VersionSpace(Mention.class, "1.0"), 
+				new VersionSpace(UserId.class, "1.0"), 
+				new VersionSpace(Hashtag.class, "1.0"), 
+				ObjectMapperFactory.noVersion(Ticker.class), 
+				ObjectMapperFactory.noVersion(Cusip.class), 
+				ObjectMapperFactory.noVersion(Isin.class), 
+				ObjectMapperFactory.noVersion(Openfigi.class),
+			};
+	}
+
+	/**
+	 * Provides all of the classes in the basicSymphonyVersionSpace (above), as well as any you provide in the
+	 * varargs.
+	 */
+	public static VersionSpace[] extendedSymphonyVersionSpace(List<VersionSpace> second) {
+		VersionSpace[] cc = new VersionSpace[second.size()];
+		return extendedSymphonyVersionSpace(second.toArray(cc));
+	}
+
+	/**
+	 * Provides all of the classes in the basicSymphonyVersionSpace (above), as well as any you provide in the
+	 * varargs.
+	 */
+	public static VersionSpace[] extendedSymphonyVersionSpace(VersionSpace... first) {
+		VersionSpace[] second = basicSymphonyVersionSpace();
+		VersionSpace[] result = Arrays.copyOf(first, first.length + second.length);
+		System.arraycopy(second, 0, result, first.length, second.length);
+		return result;
 	}
 }

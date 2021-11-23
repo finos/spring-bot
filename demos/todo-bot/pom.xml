@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.3-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.demos</groupId>
+	<groupId>org.finos.springbot.demos</groupId>
 	<artifactId>todo-bot</artifactId>
 	<name>To-Do Bot (Demo)</name>
 	<description>Demo Bot for Managing a Todo List</description>
@@ -22,17 +22,17 @@
 
 	<dependencies>
 	    <!-- <dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>  -->
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow-testing</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>

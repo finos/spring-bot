@@ -2,6 +2,7 @@ package org.finos.springbot.symphony.content;
 
 import java.util.HashMap;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
@@ -15,7 +16,6 @@ import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.java.mapping.MessageMatcher;
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

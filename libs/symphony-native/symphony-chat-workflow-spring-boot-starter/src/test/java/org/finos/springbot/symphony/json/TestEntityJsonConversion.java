@@ -4,10 +4,11 @@ import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.springbot.workflow.tags.HeaderDetails;
 import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.junit.jupiter.api.Assertions;

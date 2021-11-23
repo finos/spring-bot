@@ -2,6 +2,7 @@ package org.finos.springbot.symphony.messages;
 
 import java.util.List;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.symphony.json.EntityJsonConverter;
@@ -11,7 +12,6 @@ import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
-import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.content.User;

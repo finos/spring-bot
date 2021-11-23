@@ -1,6 +1,7 @@
 package org.finos.springbot.workflow.conversations;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -67,19 +68,18 @@ public class AllConversations implements Conversations<Chat, User>, ApplicationC
 	public List<User> getChatMembers(Chat r) {
 		return getDelegates().stream()
 				.filter(p -> p.isSupported(r))
-				.map(p -> p.getChatMembers(r))
-				.findFirst()
-				.orElse(null);
+				.flatMap(p -> p.getChatMembers(r).stream())
+				.collect(Collectors.toList());
 	}
 
 	@Override
 	public List<User> getChatAdmins(Chat r) {
 		return getDelegates().stream()
 				.filter(p -> p.isSupported(r))
-				.map(p -> p.getChatAdmins(r))
-				.findFirst()
-				.orElse(null);
+				.flatMap(p -> p.getChatAdmins(r).stream())
+				.collect(Collectors.toList());
 	}
+	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.ctx = applicationContext;

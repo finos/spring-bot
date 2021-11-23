@@ -14,6 +14,9 @@ import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
+import org.finos.springbot.teams.history.AzureBlobStorageTeamsHistory;
+import org.finos.springbot.teams.history.MemoryTeamsHistory;
+import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
@@ -24,7 +27,6 @@ import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
-import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplateProvider;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,15 +39,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Validator;
 
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
-import com.microsoft.bot.connector.rest.RestConnectorClient;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
@@ -63,9 +67,11 @@ import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
 	TeamsContentConfig.class,
 	AdaptiveCardConverterConfig.class
 })
-@ConditionalOnProperty("MicrosoftAppId")
+@ConditionalOnProperty("teams.bot.MicrosoftAppId")
 public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 		
+	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
+	
 	@Autowired
 	Validator validator;
 	
@@ -90,41 +96,72 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsTemplateProvider teamsWorkTemplater(
-			@Value("${symphony.templates.prefix:classpath:/templates/teams/}") String prefix,
-			@Value("${symphony.templates.suffix:.json}") String suffix,
+			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.suffix:.json}") String suffix,
 			AdaptiveCardTemplater formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+	}
+	
+	
+	@Bean(name = "teamsAttachmentDataMapper")
+	public ObjectMapper teamsAttachmentDataMapper() {
+		ObjectMapper out = new ObjectMapper();
+		out.registerModule(new JavaTimeModule());
+		return out;
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsResponseHandler teamsResponseHandler(
 			EntityMarkupTemplateProvider markupTemplater,
-			TeamsTemplateProvider workTemplater) {
+			TeamsTemplateProvider workTemplater,
+			TeamsHistory th) {
 		return new TeamsResponseHandler(
-				null,
+				null,	// attachment handler
 				markupTemplater,
-				workTemplater);
+				workTemplater,
+				th);
 	}
 	
-//	
-//	@Bean
-//	@ConditionalOnMissingBean
-//	public SymphonyHistory symphonyHistory() {
-//		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi, streamsApi, usersApi);
-//	}
+	
+	public static enum StorageType { MEMORY, BLOB, DB };
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public TeamsHistory teamsHistory(
+			@Value("${teams.storage.type:blob}") StorageType st,
+			@Value("${teams.storage.connection-string:}") String blobStorageConnectionString,
+			@Value("${teams.storage.container:workflow-data}") String container) {
+		
+		if ((st == StorageType.MEMORY) || !StringUtils.hasText(blobStorageConnectionString)) {
+			LOG.warn("Not configuring blob storage - using memory to store conversation state.  NOT FOR PRODUCTION");
+			return new MemoryTeamsHistory();	
+		} else if (st == StorageType.BLOB) {
+			BlobServiceClient c = new BlobServiceClientBuilder()
+					.connectionString(blobStorageConnectionString)
+					.buildClient();
+			
+			return new AzureBlobStorageTeamsHistory(c, teamsAttachmentDataMapper(), container);
+		} else {
+			throw new TeamsException("Couldn't configure TeamsHistory with "+st);
+		}
+	}
+
+	@Bean
+	public MicrosoftAppCredentials microsoftGraphCredentials(@Value("${teams.app.tennantId}") String tennantId) {
+		com.microsoft.bot.integration.Configuration conf = getConfiguration();
+		MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
+				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
+				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
+				tennantId,
+				"https://graph.microsoft.com/.default");
+		return mac;
+	}
 	
 	@Bean 
 	@ConditionalOnMissingBean
 	public TeamsConversations teamsConversations(BotFrameworkAdapter bfa) {
-		com.microsoft.bot.integration.Configuration conf = getConfiguration();
-		MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
-			conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID), 
-			conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
-			"2f758e82-b31e-4a99-a9dd-e4d4abe351db");
-		mac.setChannelAuthTenant(null);
-		RestConnectorClient rcc = new RestConnectorClient(mac);
-		return new TeamsConversationsImpl(bfa, rcc);
+		return new TeamsConversationsImpl();
 	}
 
 	@Bean
@@ -159,7 +196,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			
 			@Override
 			public String getProperty(String key) {
-				return ac.getEnvironment().getProperty(key);
+				return ac.getEnvironment().getProperty("teams.bot."+key);
 			}
 			
 			@Override
@@ -188,8 +225,6 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			User u = conv.getUser(tc.getActivity().getRecipient());	
 			return u;
 		}, true);
-		
-//		return a -> a;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.io.StringReader;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.content.CashTag;
 import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.RoomName;
@@ -15,7 +16,6 @@ import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.content.serialization.AbstractContentParser;
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;

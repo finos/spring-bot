@@ -2,8 +2,8 @@ package org.finos.symphony.toolkit.stream.log;
 
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.springbot.entityjson.EntityJson;
+import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.symphony.toolkit.stream.SharedStreamException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -8,8 +8,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.json.VersionSpace;
+import org.finos.springbot.entityjson.ObjectMapperFactory;
+import org.finos.springbot.entityjson.VersionSpace;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;

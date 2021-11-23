@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
 		<version>8.0.0</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.tools</groupId>
+	<groupId>org.finos.springbot.tools</groupId>
 	<artifactId>webhook-bot</artifactId>
 	<name>Webhook Notification Bot</name>
 	<description>Allows Webhook Notification on Symphony</description>
@@ -22,7 +22,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow-spring-boot-starter</artifactId>
 			<version>8.0.0</version>
 		</dependency>

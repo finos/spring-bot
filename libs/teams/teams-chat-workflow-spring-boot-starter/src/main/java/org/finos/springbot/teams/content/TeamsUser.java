@@ -7,13 +7,15 @@ import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.content.User;
 
 @Work(index = false)
-public final class TeamsUser implements User, TeamsMention {
+public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
 			
-	public TeamsUser(String id, String name) {
+	public TeamsUser(String id, String name, String aadObjectId) {
 		this.key = id;
 		this.name = name;
+		this.aadObjectId = aadObjectId;
 	}
-
+	
+	final String aadObjectId;
 	final String key;
 	final String name;
 
@@ -49,4 +51,10 @@ public final class TeamsUser implements User, TeamsMention {
 	public String getKey() {
 		return key;
 	}
+	
+	public String getAadObjectId() {
+		return aadObjectId;
+	}
+
+
 }

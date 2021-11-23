@@ -83,13 +83,14 @@ public class MessageActivityHandler extends ActivityHandler {
 	}
 
 	protected FormAction processForm(TurnContext turnContext, Activity a) throws ClassNotFoundException {
+		@SuppressWarnings("unchecked")
 		Map<String, Object> formData = (Map<String, Object>) a.getValue();
 		String formName = (String) formData.remove("form");
 		
 		Object form = formConverter.convert(formData, formName);
 		String action = (String) formData.get("action");
 		Map<String, Object> data = new HashMap<>(); // need to load this from somewhere.
-		Addressable rr = teamsConversations.getTeamsChat(a.getConversation());
+		Addressable rr = teamsConversations.getTeamsChat(turnContext);
 		User u = teamsConversations.getUser(a.getFrom());
 		Addressable from = rr == null ? u : rr;
 		return validationProcessor.validationCheck(action, from, form, () -> {
@@ -100,7 +101,7 @@ public class MessageActivityHandler extends ActivityHandler {
 	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {
 		Message message = createMessageFromActivity(a);
 		Object data = a.getChannelData();	
-		Addressable rr = teamsConversations.getTeamsChat(a.getConversation());
+		Addressable rr = teamsConversations.getTeamsChat(turnContext);
 		User u = teamsConversations.getUser(a.getFrom());
 		
 		rr = rr == null ? u : rr;
