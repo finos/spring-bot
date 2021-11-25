@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
@@ -38,6 +40,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	
+	private static final String CHAT_KEY = "chat";
+	private static final String TIMESTAMP_KEY = "timestamp";
+
 	private static final Logger LOG = LoggerFactory.getLogger(MessageActivityHandler.class);
 	
 	private static final TypeReference<Map<String, Object>> DATA_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {};
@@ -63,10 +68,15 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 
 	@Override
  	public <X> Optional<X> getLastFromHistory(Class<X> type, TeamsAddressable address) {
+		String expectedTag = getAzureTag(type);
+		String directory = address.getKey();
+		return getLast(type, expectedTag, directory);
+	}
+
+
+	protected <X> Optional<X> getLast(Class<X> type, String expectedTag, String directory) {
 		try {
-			String expectedTag = TagSupport.formatTag(type).replace("-", "_");
-			String directory = address.getKey();
-			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag'").setMaxResultsPerPage(1);
+			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+directory+"'").setMaxResultsPerPage(1);
 			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(5), Context.NONE);
 			Iterator<TaggedBlobItem> it = pi.iterator();
 			if (it.hasNext()) {
@@ -80,40 +90,68 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 			throw new TeamsException("Couldn't access blob storage", e);
 		}
 	}
+	
+	protected <X> List<X> getList(Class<X> type, String expectedTag, String directory, long sinceTimestamp) {
+		try {
+			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+directory+"' AND "+TIMESTAMP_KEY+">='"+sinceTimestamp+"'").setMaxResultsPerPage(1);
+			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(5), Context.NONE);			
+			return StreamSupport.stream(pi.spliterator(), false)
+				.map(tbi -> findObjectInItem(tbi.getName(), type))
+				.filter(x -> x.isPresent())
+				.map(x -> x.get())
+				.collect(Collectors.toList());
+		} catch (Exception e) {
+			throw new TeamsException("Couldn't access blob storage", e);
+		}
+	}
+
+	private String getAzureTag(Tag t) {
+		return getAzureTag(t.getName());	
+	}
+	
+	private <X> String getAzureTag(Class<X> type) {
+		return getAzureTag(TagSupport.formatTag(type));
+	}
+	
+	private String getAzureTag(String s) {
+		return s.replace("-", "_");
+	}
 
 
 	@SuppressWarnings("unchecked")
-	protected <X> Optional<X> findObjectInItem(String item, Class<X> type) throws Exception {
-		Map<String, Object> data = om.readValue(bcc.getBlobClient(item).openInputStream(), DATA_TYPE_REFERENCE);
-		for (Object val : data.values()) {
-			if (val.getClass().getName().equals(type.getName())) {
-				return Optional.of((X) val);
+	protected <X> Optional<X> findObjectInItem(String item, Class<X> type) {
+		try {
+			Map<String, Object> data = om.readValue(bcc.getBlobClient(item).openInputStream(), DATA_TYPE_REFERENCE);
+			for (Object val : data.values()) {
+				if (val.getClass().getName().equals(type.getName())) {
+					return Optional.of((X) val);
+				}
 			}
+			
+			LOG.error("Should have found object of type "+type+" inside azure blob "+item);
+			
+			return Optional.empty();
+		} catch (Exception e) {
+			throw new TeamsException("Couldn't deserialize blob: "+item, e);
 		}
-		
-		LOG.error("Should have found object of type "+type+" inside azure blob "+item);
-		
-		return Optional.empty();
 	}
 
 
 	@Override
 	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, TeamsAddressable address) {
-		return Optional.empty();
+		return getLast(type, getAzureTag(t), address.getKey());
 	}
 
 
 	@Override
 	public <X> List<X> getFromHistory(Class<X> type, TeamsAddressable address, Instant since) {
-		// TODO Auto-generated method stub
-		return null;
+		return getList(type, getAzureTag(type), address.getKey(), since.getEpochSecond());
 	}
 
 
 	@Override
 	public <X> List<X> getFromHistory(Class<X> type, Tag t, TeamsAddressable address, Instant since) {
-		// TODO Auto-generated method stub
-		return null;
+		return getList(type, getAzureTag(t), address.getKey(), since.getEpochSecond());
 	}
 
 	
@@ -134,9 +172,9 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	@Override
 	public void store(TeamsAddressable a, Map<String, Object> data) {
 		try {
-			Map<String, String> tags = getTags(data);
+			Map<String, String> tags = getTags(data, a);
 			if (tags.size() > 0) { 
-				String blobId = UUID.randomUUID().toString();
+				String blobId = createBlobId();
 				String directory = a.getKey();
 				BlobClient bc = bcc.getBlobClient(directory+"/"+blobId);
 				
@@ -151,16 +189,30 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	}
 
 
-	private Map<String, String> getTags(Map<String, Object> data) {
+	/**
+	 * The blob ID should be alphabetically ordered so that newer blobs are 
+	 * earlier in the alphabet.  That's quite tricky, so subtracing from the long of thre current time
+	 * @return
+	 */
+	private String createBlobId() {
+		long ts = Long.MAX_VALUE;
+		ts = ts - System.currentTimeMillis();
+		
+		return ""+ts+"-"+UUID.randomUUID().toString();
+	}
+
+
+	private Map<String, String> getTags(Map<String, Object> data, Addressable a) {
 		HeaderDetails hd = (HeaderDetails) data.get(HeaderDetails.KEY);
 		Map<String, String> out = new HashMap<String, String>();
-		out.put("timestamp", ""+ System.currentTimeMillis());
+		out.put(TIMESTAMP_KEY, ""+ System.currentTimeMillis());
 		if (hd != null) {
 			for (String entry : hd.getTags()) {
-				out.put(entry.replace("-", "_"), "tag");
+				out.put(getAzureTag(entry), "tag");
 			}
 		}
 		
+		out.put(CHAT_KEY, a.getKey());		
 		return out;
 	}
 }

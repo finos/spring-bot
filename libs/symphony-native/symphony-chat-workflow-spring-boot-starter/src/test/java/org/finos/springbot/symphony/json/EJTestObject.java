@@ -4,7 +4,7 @@ import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 
-@Work()
+@Work(jsonTypeName = {"org.finos.symphony.toolkit.workflow.fixture.eJTestObject"})
 public class EJTestObject {
 
 	private Chat r;

@@ -6,7 +6,7 @@ import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Tag;
 import org.symphonyoss.taxonomy.Hashtag;
 
-@Work(index = false)
+@Work(jsonTypeName = "org.symphonyoss.taxonomy.hashtag", index = false)
 public final class HashTag extends Hashtag implements Tag {
 		
 	public HashTag() {

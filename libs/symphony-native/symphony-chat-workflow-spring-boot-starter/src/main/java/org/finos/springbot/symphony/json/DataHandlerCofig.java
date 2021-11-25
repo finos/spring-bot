@@ -59,15 +59,9 @@ public class DataHandlerCofig {
 	public EntityJsonConverter entityJsonConverter() {
 		List<VersionSpace> workAnnotatedversionSpaces = scanForWorkClasses();
 		
-		List<VersionSpace> chatWorkflowVersionSpaces = Arrays.asList(
-			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Security.class), CashTag.class,  "1.0", "0.*"),
-			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Hashtag.class), HashTag.class, "1.0", "0.*"),
-			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Mention.class), SymphonyUser.class, "1.0"), 
-			new VersionSpace(EntityJson.getEntityJsonTypeNamer(Chat.class), SymphonyRoom.class, "1.0"), 
-			
+		List<VersionSpace> chatWorkflowVersionSpaces = Arrays.asList(			
 			new VersionSpace(UserId.class, "1.0"), 
 			new VersionSpace(DisplayName.class, "1.0"), 
-			new VersionSpace(RoomName.class, "1.0"), 
 			new VersionSpace(StreamID.class, "1.0"), 
 			new VersionSpace(EmailAddress.class, "1.0"), 
 			ObjectMapperFactory.noVersion(Ticker.class), 
@@ -114,7 +108,7 @@ public class DataHandlerCofig {
 						.mapToObj(i -> {
 							String t = jsonTypeName[i];
 							if (i == 0) {
-								t = StringUtils.hasText(t) ? t : EntityJson.getEntityJsonTypeNamer(c);
+								t = StringUtils.hasText(t) ? t : EntityJson.getEntityJsonTypeName(c);
 								String writeVersion = w.writeVersion();
 								String[] readVersions = w.readVersions();
 								return new VersionSpace(t, c, writeVersion, readVersions);

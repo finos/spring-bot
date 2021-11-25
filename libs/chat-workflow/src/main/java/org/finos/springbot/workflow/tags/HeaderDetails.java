@@ -2,6 +2,13 @@ package org.finos.springbot.workflow.tags;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.finos.springbot.workflow.annotations.Work;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.util.StdConverter;
 
 /**
  * Used for formatting the header of the bot's messages.
@@ -9,12 +16,32 @@ import java.util.List;
  * @author moffrob
  *
  */
+@Work(jsonTypeName = { 
+		"org.finos.springbot.workflow.tags.headerDetails", 
+		"org.finos.symphony.toolkit.workflow.form.headerDetails" })
 public class HeaderDetails {
+	
+	public static class LegacyHeaderDeserialize extends StdConverter<Object, String> {
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public String convert(Object x) {
+			if (x instanceof Map) {
+				return (String) ((Map<String, Object>)x).get("name");
+			} else if (x instanceof String) {
+				return (String) x;
+			} else {
+				return null;
+			}
+		}		
+	}
 	
 	public static final String KEY = "header";
 
 	private String name;
 	private String description;
+	
+	@JsonDeserialize(contentConverter =  LegacyHeaderDeserialize.class)
 	private List<String> tags = new ArrayList<String>();
 	
 	public HeaderDetails() {
