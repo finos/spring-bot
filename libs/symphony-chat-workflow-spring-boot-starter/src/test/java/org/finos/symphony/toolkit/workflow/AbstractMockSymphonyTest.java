@@ -11,6 +11,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.form.Button;
@@ -28,10 +29,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -53,8 +56,9 @@ import com.symphony.api.pod.UsersApi;
 
 @SpringBootTest(classes = { 
 		AbstractMockSymphonyTest.MockConfiguration.class, 
-	SymphonyWorkflowConfig.class,
+	SymphonyWorkflowConfig.class
 })
+@ActiveProfiles({"proxy"})
 public abstract class AbstractMockSymphonyTest {
 
 	public static final String BOT_EMAIL = "dummybot@example.com";
@@ -89,9 +93,9 @@ public abstract class AbstractMockSymphonyTest {
 	}
 
 	@Configuration
+	@EnableConfigurationProperties(SymphonyApiProperties.class)
 	public static class MockConfiguration {
-	
-
+		
 		@Bean(name=SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
 		public SymphonyIdentity symphonyIdentity() {
 			SymphonyIdentity botIdentity = Mockito.mock(SymphonyIdentity.class);

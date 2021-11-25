@@ -1,5 +1,6 @@
 package example.symphony.demobot;
 
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +22,19 @@ import com.symphony.api.pod.UsersApi;
 public class DemoApplication {
 		
 	@Autowired
-	MessagesApi messagesApi;
+	private MessagesApi messagesApi;
 	
 	@Autowired
-	UsersApi usersApi;
+	private UsersApi usersApi;
+	
+	@Autowired
+	private SymphonyIdentity id;
+	
+	@Autowired
+	private SymphonyApiProperties apiProperties;
 	
 	@Value("${room}")
-	String streamId;
+	private String streamId;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -39,10 +46,6 @@ public class DemoApplication {
 	    messagesApi.v4StreamSidMessageCreatePost(null, streamId, "<messageML>sometestmessage</messageML>", null, null, null, null, null);
 	}
 	 
-
-	@Autowired
-	SymphonyIdentity id;
-	
 	@Bean
 	public StreamEventConsumer consumer() {
 		return event -> {
@@ -62,7 +65,7 @@ public class DemoApplication {
 	
 	@Bean
 	public StreamEventConsumer welcomeMessages() {
-		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id);
+		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id, apiProperties);
 	}
 
 }

@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.stream.welcome;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.VersionSpace;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,25 +35,25 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 			+ "<p>You can address me here by affixing my name to the beginning of a message, like so:</p><br />"
 			+ "<p><mention email=\"${entity.bot.emailAddress}\" /> hi</p>" + "</messageML>";
 
-	MessagesApi messagesApi;
-	SymphonyIdentity botIdentity;
-	String welcomeMessageML;
-	UserV2 u;
-	ObjectMapper om;
+	private MessagesApi messagesApi;
+//	private SymphonyIdentity botIdentity;
+	private String welcomeMessageML;
+	private UserV2 u;
+	private ObjectMapper om;
 	
-	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, String welcomeMessageML) {
+	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, String welcomeMessageML, SymphonyApiProperties apiProperties) {
 		super();
 		this.messagesApi = messagesApi;
-		this.botIdentity = botIdentity;
+//		this.botIdentity = botIdentity;
 		this.welcomeMessageML = welcomeMessageML;
-		u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
+		u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, apiProperties.getConfig().isLocalPOD());
 		om = new ObjectMapper();
 		ObjectMapperFactory.initialize(om, ObjectMapperFactory.extendedSymphonyVersionSpace(
 			VERSION_SPACE));
 	}
 	
-	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity) {
-		this(messagesApi, usersApi, botIdentity, DEFAULT_WELCOME_MESSAGE);
+	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, SymphonyApiProperties apiProperties) {
+		this(messagesApi, usersApi, botIdentity, DEFAULT_WELCOME_MESSAGE, apiProperties);
 	}
 	
 	@Override

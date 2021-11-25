@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.handlers;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
 import org.finos.symphony.toolkit.workflow.response.AttachmentResponse;
@@ -55,8 +56,9 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			MessageMLWriter contentWriter, 
 			DataHandler dataHandler,
 			AttachmentHandler attachmentHandler, 
-			ResourceLoader rl) {
-		super(streamsApi, usersApi);
+			ResourceLoader rl,
+			SymphonyApiProperties symphonyApiProperties) {
+		super(streamsApi, usersApi, symphonyApiProperties);
 		this.messagesApi = messagesApi;
 		this.formMessageMLConverter = formMessageMLConverter;
 		this.contentWriter = contentWriter;
