@@ -12,13 +12,13 @@ import java.util.stream.IntStream;
 
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
-import org.finos.springbot.symphony.json.DataHandler;
-import org.finos.springbot.symphony.json.DataHandlerCofig;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
 import org.finos.springbot.tests.templating.AbstractTemplatingTest;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.data.DataHandler;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.DropdownList;
@@ -33,7 +33,7 @@ import org.springframework.util.StreamUtils;
 
 @SpringBootTest(classes = { 
 		FreemarkerTypeConverterConfig.class,
-		DataHandlerCofig.class,
+		SymphonyDataHandlerCofig.class,
 })
 public class SymphonyTemplatingTest extends AbstractTemplatingTest {
 

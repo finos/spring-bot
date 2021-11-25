@@ -9,7 +9,7 @@ import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyRoom;
-import org.finos.springbot.symphony.json.EntityJsonConverter;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

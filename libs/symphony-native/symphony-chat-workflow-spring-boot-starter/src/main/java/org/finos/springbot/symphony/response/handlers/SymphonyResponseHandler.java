@@ -2,9 +2,9 @@ package org.finos.springbot.symphony.response.handlers;
 
 import org.finos.springbot.symphony.AbstractStreamResolving;
 import org.finos.springbot.symphony.content.SymphonyAddressable;
-import org.finos.springbot.symphony.json.DataHandler;
 import org.finos.springbot.symphony.templating.SymphonyTemplateProvider;
 import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.data.DataHandler;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.DataResponse;
 import org.finos.springbot.workflow.response.MessageResponse;

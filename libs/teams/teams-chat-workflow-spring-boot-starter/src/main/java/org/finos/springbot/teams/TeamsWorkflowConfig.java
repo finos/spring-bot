@@ -10,6 +10,7 @@ import org.finos.springbot.teams.content.TeamsHTMLParser;
 import org.finos.springbot.teams.content.TeamsMarkupWriter;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.teams.data.TeamsDataHandlerConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
@@ -26,6 +27,7 @@ import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.slf4j.Logger;
@@ -65,7 +67,8 @@ import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
 @Import({
 	ChatWorkflowConfig.class, 
 	TeamsContentConfig.class,
-	AdaptiveCardConverterConfig.class
+	AdaptiveCardConverterConfig.class,
+	TeamsDataHandlerConfig.class,
 })
 @ConditionalOnProperty("teams.bot.MicrosoftAppId")
 public class TeamsWorkflowConfig extends BotDependencyConfiguration {
@@ -84,6 +87,9 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	@Autowired
 	Rendering<JsonNode> r;
 	
+	@Autowired
+	EntityJsonConverter ejc;
+	
 	@Bean 
 	@ConditionalOnMissingBean
 	public EntityMarkupTemplateProvider teamsMarkupTemplater(
@@ -100,14 +106,6 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			@Value("${teams.templates.suffix:.json}") String suffix,
 			AdaptiveCardTemplater formConverter) throws IOException {
 		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
-	}
-	
-	
-	@Bean(name = "teamsAttachmentDataMapper")
-	public ObjectMapper teamsAttachmentDataMapper() {
-		ObjectMapper out = new ObjectMapper();
-		out.registerModule(new JavaTimeModule());
-		return out;
 	}
 	
 	@Bean
@@ -141,7 +139,7 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 					.connectionString(blobStorageConnectionString)
 					.buildClient();
 			
-			return new AzureBlobStorageTeamsHistory(c, teamsAttachmentDataMapper(), container);
+			return new AzureBlobStorageTeamsHistory(c, ejc, container);
 		} else {
 			throw new TeamsException("Couldn't configure TeamsHistory with "+st);
 		}

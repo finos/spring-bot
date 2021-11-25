@@ -12,15 +12,19 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.apache.commons.io.Charsets;
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Tag;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.tags.HeaderDetails;
 import org.finos.springbot.workflow.tags.TagSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StreamUtils;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
@@ -29,8 +33,6 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.FindBlobsOptions;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * This uses Azure's blob storage to store the data-history of chats with the bot. 
@@ -45,17 +47,15 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 
 	private static final Logger LOG = LoggerFactory.getLogger(MessageActivityHandler.class);
 	
-	private static final TypeReference<Map<String, Object>> DATA_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {};
-
 	private final BlobContainerClient bcc;
 	private final BlobServiceClient bsc;
-	private final ObjectMapper om;
+	private final EntityJsonConverter ejc;
 	private final String container;
 
-	public AzureBlobStorageTeamsHistory(BlobServiceClient bsc, ObjectMapper om, String container) {
+	public AzureBlobStorageTeamsHistory(BlobServiceClient bsc, EntityJsonConverter ejc, String container) {
 		this.bcc = getContainerClient(bsc, container);
 		this.bsc = bsc;
-		this.om = om;
+		this.ejc = ejc;
 		this.container = container;
 	}
 
@@ -121,7 +121,8 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	@SuppressWarnings("unchecked")
 	protected <X> Optional<X> findObjectInItem(String item, Class<X> type) {
 		try {
-			Map<String, Object> data = om.readValue(bcc.getBlobClient(item).openInputStream(), DATA_TYPE_REFERENCE);
+			String json = StreamUtils.copyToString(bcc.getBlobClient(item).openInputStream(), Charsets.UTF_8);
+			EntityJson data = ejc.readValue(json);
 			for (Object val : data.values()) {
 				if (val.getClass().getName().equals(type.getName())) {
 					return Optional.of((X) val);
@@ -178,7 +179,8 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 				String directory = a.getKey();
 				BlobClient bc = bcc.getBlobClient(directory+"/"+blobId);
 				
-				byte[] dataBytes = om.writeValueAsBytes(data);
+				String out = ejc.writeValue(data);
+				byte[] dataBytes = out.getBytes();
 				bc.upload(new ByteArrayInputStream(dataBytes), dataBytes.length);
 				bc.setTags(tags);
 			}

@@ -31,7 +31,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-json</artifactId>
     </dependency>
-
+	<dependency>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>entity-json</artifactId>
+		<version>8.0.3-SNAPSHOT</version>
+	</dependency>
 
     <!-- for testing -->
     <dependency>

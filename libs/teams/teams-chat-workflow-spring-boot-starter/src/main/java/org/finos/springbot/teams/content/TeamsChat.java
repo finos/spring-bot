@@ -9,8 +9,11 @@ import org.finos.springbot.workflow.content.Tag;
 @Work(index = false)
 public class TeamsChat implements Chat, TeamsAddressable, TeamsMention {
 
-	final String key;
-	final String name;
+	private String key;
+	private String name;
+	
+	public TeamsChat() {
+	}
 	
 	public TeamsChat(String id, String name) {
 		this.key = id;
