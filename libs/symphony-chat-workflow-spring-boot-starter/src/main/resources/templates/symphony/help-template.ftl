@@ -17,7 +17,7 @@
               <td>
                 <ul>
                   <#list command.examples as example>
-                    <li><pre>/${example}</pre></li>
+                    <li><pre style="display:inline">/${example}</pre></li>
                   </#list>  
                 </ul> 
               </td>
