@@ -58,7 +58,7 @@ public class AbstractStreamResolving {
 		if (a.getUserId() != null) {
 			return Long.parseLong(a.getUserId());
 		} else {
-			UserV2 u = usersApi.v2UserGet(null, null, a.getEmailAddress(), null, symphonyApiProperties.getConfig().isLocalPOD());
+			UserV2 u = usersApi.v2UserGet(null, null, a.getEmailAddress(), null, symphonyApiProperties.isLocalPod());
 			if (u == null) {
 				throw new IllegalArgumentException("Couldn't find user: "+a);
 			} else {

@@ -3,7 +3,6 @@
  */
 package org.finos.symphony.toolkit.tools.reminders;
 
-import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHandler;
 import org.finos.symphony.toolkit.workflow.history.History;
@@ -24,13 +23,10 @@ public class WorkflowConfig {
 
 	@Autowired
 	private ReminderProperties reminderProperties;
-	
-	@Autowired
-	private SymphonyApiProperties apiProperties;
 
 	@Bean
 	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
-		return new RoomWelcomeEventConsumer(ma, ua, id, reminderProperties.getWelcomeMessage(), apiProperties);
+		return new RoomWelcomeEventConsumer(ma, ua, id, reminderProperties.getWelcomeMessage());
 	}
 
 	@Bean

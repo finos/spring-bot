@@ -134,7 +134,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 
 	@Override
 	public SymphonyUser loadUserById(Long userId) {
-		UserV2 user = usersApi.v2UserGet(null, userId, null, null, symphonyApiProperties.getConfig().isLocalPOD());
+		UserV2 user = usersApi.v2UserGet(null, userId, null, null, symphonyApiProperties.isLocalPod());
 		return new SymphonyUser(userId, user.getDisplayName(),user.getEmailAddress());
 	}
 	
@@ -142,7 +142,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	
 	@Override
 	public SymphonyUser loadUserByEmail(String name) {
-		UserV2 user = usersApi.v2UserGet(null, null, name, null, symphonyApiProperties.getConfig().isLocalPOD());
+		UserV2 user = usersApi.v2UserGet(null, null, name, null, symphonyApiProperties.isLocalPod());
 		return new SymphonyUser(user.getId(), user.getDisplayName(),user.getEmailAddress());
 	}
 
@@ -269,7 +269,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		com.symphony.api.model.UserV2 u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, symphonyApiProperties.getConfig().isLocalPOD());
+		com.symphony.api.model.UserV2 u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, symphonyApiProperties.isLocalPod());
 		botUserId = u.getId();
 	}
 

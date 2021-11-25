@@ -83,8 +83,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 					apiInstance.getAgentApi(MessagesApi.class), 
 					apiInstance.getPodApi(UsersApi.class),
 					apiInstance.getIdentity(),
-					props.getWelcomeMessageML(),
-					apiProperties
+					props.getWelcomeMessageML()
 				));
 			}
 			
@@ -124,7 +123,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	
 	public StreamEventConsumer koreAIEventHandler(KoreAIRequester requester, ApiInstance api, KoreAIInstanceProperties props) {
 		UsersApi usersApi = api.getPodApi(UsersApi.class);
-		UserV2 u = usersApi.v2UserGet(null, null, api.getIdentity().getEmail(), null, apiProperties.getConfig().isLocalPOD());
+		UserV2 u = usersApi.v2UserGet(null, null, api.getIdentity().getEmail(), null, true);
 		long id = 0;
 		if (u != null) {
 			id = u.getId();

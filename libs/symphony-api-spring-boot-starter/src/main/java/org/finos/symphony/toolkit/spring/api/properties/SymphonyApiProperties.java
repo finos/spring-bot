@@ -1,9 +1,6 @@
 package org.finos.symphony.toolkit.spring.api.properties;
 
 import java.util.List;
-import java.util.Objects;
-
-import javax.annotation.PostConstruct;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -12,17 +9,7 @@ public class SymphonyApiProperties {
 
 	private List<PodProperties> apis;
 	private TrustStoreProperties trustStore;
-	private DefaultConfigProperties config;
-	
-	@PostConstruct
-	public void init() {
-		if(Objects.isNull(config)) {
-			config = new DefaultConfigProperties();
-			config.setLocalPOD(Boolean.TRUE);
-		} else if(Objects.isNull(config.isLocalPOD())) {
-			config.setLocalPOD(Boolean.TRUE);
-		}
-	}
+	private boolean localPod = true;
 
 	public TrustStoreProperties getTrustStore() {
 		return trustStore;
@@ -40,18 +27,14 @@ public class SymphonyApiProperties {
 		this.apis = apis;
 	}
 
-	/**
-	 * @return the config
-	 */
-	public DefaultConfigProperties getConfig() {
-		return config;
+	public boolean isLocalPod() {
+		return localPod;
 	}
 
-	/**
-	 * @param config the config to set
-	 */
-	public void setConfig(DefaultConfigProperties config) {
-		this.config = config;
+	public void setLocalPod(boolean localPod) {
+		this.localPod = localPod;
 	}
+
+	
 
 }
