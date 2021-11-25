@@ -41,19 +41,19 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 	private UserV2 u;
 	private ObjectMapper om;
 	
-	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, String welcomeMessageML, SymphonyApiProperties apiProperties) {
+	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, String welcomeMessageML) {
 		super();
 		this.messagesApi = messagesApi;
 //		this.botIdentity = botIdentity;
 		this.welcomeMessageML = welcomeMessageML;
-		u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, apiProperties.getConfig().isLocalPOD());
+		u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		om = new ObjectMapper();
 		ObjectMapperFactory.initialize(om, ObjectMapperFactory.extendedSymphonyVersionSpace(
 			VERSION_SPACE));
 	}
 	
-	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, SymphonyApiProperties apiProperties) {
-		this(messagesApi, usersApi, botIdentity, DEFAULT_WELCOME_MESSAGE, apiProperties);
+	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity) {
+		this(messagesApi, usersApi, botIdentity, DEFAULT_WELCOME_MESSAGE);
 	}
 	
 	@Override

@@ -9,7 +9,6 @@ import org.finos.symphony.rssbot.alerter.FeedListCache;
 import org.finos.symphony.rssbot.alerter.FeedListCacheImpl;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.rssbot.notify.Notifier;
-import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.symphony.toolkit.workflow.history.History;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
@@ -29,16 +28,13 @@ public class RSSConfig {
 	@Autowired
 	private RSSProperties properties;
 	
-	@Autowired
-	private SymphonyApiProperties apiProperties;
-	
 	public static final String WELCOME_MESSAGE = "<messageML>"
 			+ "<p>Hi, welcome to <b>${entity.stream.roomName}</b></p><br />"
 			+ "<p>To configure RSS feeds in this room type: <b>/subscriptions</b></p></messageML>";
 	
 	@Bean
 	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
-		return new RoomWelcomeEventConsumer(ma, ua, id, WELCOME_MESSAGE, apiProperties);
+		return new RoomWelcomeEventConsumer(ma, ua, id, WELCOME_MESSAGE);
 	}
 	
 	@Bean

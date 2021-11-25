@@ -87,12 +87,9 @@ public class RoomWelcomeEventConsumerIT {
 	@Autowired
 	SymphonyStreamHandlerFactory fact;
 	
-	@Autowired
-	SymphonyApiProperties apiProperties;
-	
 	@Test
 	public void testRoomCreated() {
-		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, apiProperties);
+		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot);
 
 		V4Event event = new V4Event().payload(
 				new V4Payload().roomCreated(
@@ -117,7 +114,7 @@ public class RoomWelcomeEventConsumerIT {
 	
 	@Test
 	public void testUserAdded() {
-		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, WELCOME_MESSAGE, apiProperties);
+		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, WELCOME_MESSAGE);
 
 		V4Event event = new V4Event().payload(
 				new V4Payload().userJoinedRoom(
