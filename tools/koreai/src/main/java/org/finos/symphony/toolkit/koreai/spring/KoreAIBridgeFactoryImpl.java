@@ -44,6 +44,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	private ApiInstanceFactory apiInstanceFactory;
 	private TrustManagerFactory tmf;
 	private PodProperties podProperties;
+	private SymphonyApiProperties apiProperties;
 	
 	public KoreAIBridgeFactoryImpl(ResourceLoader rl, 
 			ObjectMapper om, 
@@ -61,6 +62,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 		this.apiInstanceFactory = aif;
 		this.tmf = tmf;
 		this.podProperties = firstPodProperties(apiProperties);
+		this.apiProperties = apiProperties;
 	}
 
 

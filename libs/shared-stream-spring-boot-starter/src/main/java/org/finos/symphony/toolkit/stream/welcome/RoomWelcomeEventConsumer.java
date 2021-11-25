@@ -3,6 +3,7 @@ package org.finos.symphony.toolkit.stream.welcome;
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.VersionSpace;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,16 +35,16 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 			+ "<p>You can address me here by affixing my name to the beginning of a message, like so:</p><br />"
 			+ "<p><mention email=\"${entity.bot.emailAddress}\" /> hi</p>" + "</messageML>";
 
-	MessagesApi messagesApi;
-	SymphonyIdentity botIdentity;
-	String welcomeMessageML;
-	UserV2 u;
-	ObjectMapper om;
+	private MessagesApi messagesApi;
+//	private SymphonyIdentity botIdentity;
+	private String welcomeMessageML;
+	private UserV2 u;
+	private ObjectMapper om;
 	
 	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, String welcomeMessageML) {
 		super();
 		this.messagesApi = messagesApi;
-		this.botIdentity = botIdentity;
+//		this.botIdentity = botIdentity;
 		this.welcomeMessageML = welcomeMessageML;
 		u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		om = new ObjectMapper();

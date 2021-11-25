@@ -22,7 +22,7 @@ import com.symphony.api.pod.UsersApi;
 public class WorkflowConfig {
 
 	@Autowired
-	ReminderProperties reminderProperties;
+	private ReminderProperties reminderProperties;
 
 	@Bean
 	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
