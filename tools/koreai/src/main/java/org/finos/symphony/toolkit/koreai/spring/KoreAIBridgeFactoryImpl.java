@@ -44,6 +44,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	private ApiInstanceFactory apiInstanceFactory;
 	private TrustManagerFactory tmf;
 	private PodProperties podProperties;
+	private SymphonyApiProperties apiProperties;
 	
 	public KoreAIBridgeFactoryImpl(ResourceLoader rl, 
 			ObjectMapper om, 
@@ -61,6 +62,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 		this.apiInstanceFactory = aif;
 		this.tmf = tmf;
 		this.podProperties = firstPodProperties(apiProperties);
+		this.apiProperties = apiProperties;
 	}
 
 
@@ -81,7 +83,8 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 					apiInstance.getAgentApi(MessagesApi.class), 
 					apiInstance.getPodApi(UsersApi.class),
 					apiInstance.getIdentity(),
-					props.getWelcomeMessageML()
+					props.getWelcomeMessageML(),
+					apiProperties
 				));
 			}
 			
@@ -121,7 +124,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	
 	public StreamEventConsumer koreAIEventHandler(KoreAIRequester requester, ApiInstance api, KoreAIInstanceProperties props) {
 		UsersApi usersApi = api.getPodApi(UsersApi.class);
-		UserV2 u = usersApi.v2UserGet(null, null, api.getIdentity().getEmail(), null, true);
+		UserV2 u = usersApi.v2UserGet(null, null, api.getIdentity().getEmail(), null, apiProperties.getConfig().isLocalPOD());
 		long id = 0;
 		if (u != null) {
 			id = u.getId();

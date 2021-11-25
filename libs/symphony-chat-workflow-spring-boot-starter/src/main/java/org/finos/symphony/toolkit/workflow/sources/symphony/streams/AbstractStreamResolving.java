@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.workflow.sources.symphony.streams;
 
 import java.util.Collections;
 
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
 import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
@@ -24,10 +25,12 @@ public class AbstractStreamResolving {
 
 	protected StreamsApi streamsApi;
 	protected UsersApi usersApi;
+	protected SymphonyApiProperties symphonyApiProperties;
 	
-	public AbstractStreamResolving(StreamsApi streamsApi, UsersApi usersApi) {
+	public AbstractStreamResolving(StreamsApi streamsApi, UsersApi usersApi, SymphonyApiProperties symphonyApiProperties) {
 		this.streamsApi = streamsApi;
 		this.usersApi = usersApi;
+		this.symphonyApiProperties = symphonyApiProperties;
 	}
 
 	public String getStreamFor(SymphonyAddressable a) {
@@ -55,7 +58,7 @@ public class AbstractStreamResolving {
 		if (a.getUserId() != null) {
 			return Long.parseLong(a.getUserId());
 		} else {
-			UserV2 u = usersApi.v2UserGet(null, null, a.getEmailAddress(), null, true);
+			UserV2 u = usersApi.v2UserGet(null, null, a.getEmailAddress(), null, symphonyApiProperties.getConfig().isLocalPOD());
 			if (u == null) {
 				throw new IllegalArgumentException("Couldn't find user: "+a);
 			} else {

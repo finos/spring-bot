@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
@@ -86,9 +87,12 @@ public class RoomWelcomeEventConsumerIT {
 	@Autowired
 	SymphonyStreamHandlerFactory fact;
 	
+	@Autowired
+	SymphonyApiProperties apiProperties;
+	
 	@Test
 	public void testRoomCreated() {
-		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot);
+		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, apiProperties);
 
 		V4Event event = new V4Event().payload(
 				new V4Payload().roomCreated(
@@ -113,7 +117,7 @@ public class RoomWelcomeEventConsumerIT {
 	
 	@Test
 	public void testUserAdded() {
-		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, WELCOME_MESSAGE);
+		RoomWelcomeEventConsumer rwec = new RoomWelcomeEventConsumer(messages, users, bot, WELCOME_MESSAGE, apiProperties);
 
 		V4Event event = new V4Event().payload(
 				new V4Payload().userJoinedRoom(
