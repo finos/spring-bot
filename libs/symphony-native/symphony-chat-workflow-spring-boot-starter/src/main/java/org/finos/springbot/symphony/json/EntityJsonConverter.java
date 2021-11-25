@@ -28,12 +28,12 @@ public class EntityJsonConverter implements DataHandler {
 	}
 	
 	public EntityJsonConverter(ObjectMapper objectMapper, List<VersionSpace> classesToUse) {
-		om = ObjectMapperFactory.initialize(objectMapper, ObjectMapperFactory.extendedSymphonyVersionSpace(classesToUse));		
+		om = ObjectMapperFactory.initialize(objectMapper, DataHandlerCofig.extendedSymphonyVersionSpace(classesToUse));		
 		om.enable(SerializationFeature.INDENT_OUTPUT);
 		om.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		om.registerModule(new JavaTimeModule());
-		om.registerModule(new LegacyHashTagModule());
+		om.registerModule(new LegacyFormatModule());
 	}
 
 	public EntityJson readValue(String json) {

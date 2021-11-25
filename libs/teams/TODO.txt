@@ -1,25 +1,18 @@
+14. Saving templates (GH Ticket)
+18. Client-side validation (GH Ticket)
+
 1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead. (maybe)
-14. Saving templates
-18. Client-side validation
-20.  build time editors / viewers (both symphony and teams)
-7. Convert keys to values with dropdowns/enums/users in view mode 
-	- this needs the original options list to be present (I think).   
-	- Also, we need to know what the option was populated with.  This can be done.
-	- We need the conversation API for this.  And to figure out the history API.
-	
+20. Build time editors / viewers (both symphony and teams)
+
+- We need the conversation API for this.  And to figure out the history API.
+
+7.  Convert keys to values with dropdowns/enums/users in view mode 
+	 - this needs the original options list to be present (I think).   
+ 	 - Also, we need to know what the option was populated with.  This can be done.
+	 
 21.  handle tennant id	
 22.  thymeleaf templating
 23.  auto-generate manifest?
-24.  factor out headers / tags into common.
-
-
-
-
-Latest App:
-	- Created a bot in the azure portal, added it.  _This is the bot's AAD id_.  Bot needs permission: ChatMessage.Read.All
-	- Create the manifest.  Use the bot's AAD Id in there, otherwise, all unique.  use manifest from src/main/resources.
-	- admin.teams.microsoft.com - upload it there.
-
-	
-Filtering Messages:
-filter=teamsApp/id eq '{teamsAppId}
+24.  Remove MSGraph stuff - no longer needed.
+25.  Fix Coverage
+26.  Fix the Bots : ToDo, Claim Bot, News, Demo etc.

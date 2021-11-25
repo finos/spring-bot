@@ -27,11 +27,6 @@
 
 		<!-- teams -->
 		<dependency>
-			<groupId>com.microsoft.graph</groupId>
-			<artifactId>microsoft-graph</artifactId>
-			<version>${ms-graph.version}</version>
-		</dependency>		
-		<dependency>
 			<groupId>com.microsoft.bot</groupId>
 			<artifactId>bot-integration-spring</artifactId>
 			<version>${teams.version}</version>

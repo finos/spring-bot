@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.json;
+package org.finos.springbot.symphony.json;
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
@@ -12,9 +12,8 @@ import java.util.stream.Collectors;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.springbot.entityjson.VersionSpace;
-import org.finos.symphony.toolkit.json.test.ClassWithArray;
-import org.finos.symphony.toolkit.json.test.ClassWithArray.SubClass;
-import org.finos.symphony.toolkit.json.test.ClassWithEnum;
+import org.finos.springbot.symphony.json.DataHandlerCofig;
+import org.finos.springbot.symphony.json.ClassWithArray.SubClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -45,7 +44,7 @@ public class TestSerialization {
 	
 	@BeforeAll
 	public static void setupMapper() {
-		VersionSpace[] vs = ObjectMapperFactory.extendedSymphonyVersionSpace(
+		VersionSpace[] vs = DataHandlerCofig.extendedSymphonyVersionSpace(
 				new VersionSpace(ClassWithEnum.class, "1.0"),
 				new VersionSpace(ClassWithArray.class, "1.0"),
 				new VersionSpace(ClassWithArray.SubClass.class, "1.0"),

@@ -1,8 +1,9 @@
 package org.finos.springbot.symphony.json;
 
-import java.io.IOException;
+import java.io.IOException;import javax.ws.rs.ext.RuntimeDelegate.HeaderDelegate;
 
 import org.finos.springbot.symphony.content.HashTag;
+import org.finos.springbot.workflow.tags.HeaderDetails;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,12 +26,12 @@ import com.fasterxml.jackson.databind.node.TextNode;
  * 
  * @author Rob Moffat
  */
-public class LegacyHashTagModule extends Module {
+public class LegacyFormatModule extends Module {
 
 	private static final String NAME = "Symphony Workflow Module";
 	
 	private static final Version VERSION = new Version(1, 0, 0, "", 
-			LegacyHashTagModule.class.getPackage().getName().toLowerCase(), 
+			LegacyFormatModule.class.getPackage().getName().toLowerCase(), 
 			"legacy-hashtag-module");
 
 
@@ -44,7 +45,7 @@ public class LegacyHashTagModule extends Module {
 		return VERSION;
 	}
 		
-	public LegacyHashTagModule() {
+	public LegacyFormatModule() {
 		super();
 	}
 
@@ -55,6 +56,7 @@ public class LegacyHashTagModule extends Module {
 			@Override
 			public JsonDeserializer<?> findBeanDeserializer(JavaType type, DeserializationConfig config,
 					BeanDescription beanDesc) throws JsonMappingException {
+				
 				
 				if (HashTag.class.isAssignableFrom(type.getRawClass())) {
 					return new JsonDeserializer<HashTag>() {

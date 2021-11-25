@@ -1,4 +1,4 @@
-package org.finos.symphony.toolkit.json.test;
+package org.finos.springbot.symphony.json;
 
 import java.util.List;
 import java.util.Objects;

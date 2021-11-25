@@ -29,7 +29,6 @@ public class ToDoController {
 	@ChatRequest(value={"new", "nouveau"}, description = "Create new item list")
 	public ToDoList init() {
 		ToDoList out = new ToDoList();
-		out.getItems().add(new ToDoItem("something", null, null, Status.OPEN));
 		return out;
 	}
 	

@@ -11,7 +11,7 @@ import org.symphonyoss.TaxonomyElement;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.symphony.user.StreamID;
 
-@Work(index = false)
+@Work(jsonTypeName = { "org.finos.symphony.toolkit.workflow.content.chat" }, index = false)
 public class SymphonyRoom extends Taxonomy implements Chat, SymphonyAddressable {
 
 	public SymphonyRoom() {
@@ -49,6 +49,7 @@ public class SymphonyRoom extends Taxonomy implements Chat, SymphonyAddressable 
 		return "SymphonyRoom [name=" + getName() + ", streamId=" + getKey() + "]";
 	}
 
+	@JsonIgnore
 	public String getKey() {
 		return fromTaxonomy(StreamID.class);
 	}

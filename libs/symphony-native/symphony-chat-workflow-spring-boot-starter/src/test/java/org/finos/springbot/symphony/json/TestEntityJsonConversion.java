@@ -9,19 +9,20 @@ import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.tags.HeaderDetails;
-import org.finos.symphony.toolkit.workflow.fixture.TestObject;
-import org.finos.symphony.toolkit.workflow.fixture.TestObjects;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StreamUtils;
-import org.springframework.validation.Validator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@SpringBootTest(classes = { 
+		DataHandlerCofig.class, 
+})
 public class TestEntityJsonConversion {
 	
 	public static final String WORKFLOW_001 = "workflow_001";
@@ -29,9 +30,6 @@ public class TestEntityJsonConversion {
 	@Autowired
 	EntityJsonConverter converter;
 	
-	@Autowired
-	Validator validator;
-		
 	ObjectMapper om = new ObjectMapper();
 
 	public Object readWorkflowValue(String json) {
@@ -64,16 +62,16 @@ public class TestEntityJsonConversion {
 	}
 	
 	@Test
-	public void testObject() throws Exception {
+	public void testBean() throws Exception {
 
-		TestObject a = new TestObject("83274239874", true, true, "rob@example.com", 234786, 2138);
+		TestBean a = new TestBean("83274239874", true, true, "rob@example.com", 234786, 2138);
 
 		// can we convert to messageML? (something populated)
 		String out = toWorkflowJson(a);
 	
-		compare(out, "{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObject\",\"version\":\"1.0\",\"isin\":\"83274239874\",\"bidAxed\":true,\"askAxed\":true,\"creator\":\"rob@example.com\",\"bidQty\":234786,\"askQty\":2138}}");
+		compare(out, "{\"workflow_001\":{\"type\":\"org.finos.springbot.symphony.json.testBean\",\"version\":\"1.0\",\"isin\":\"83274239874\",\"bidAxed\":true,\"askAxed\":true,\"creator\":\"rob@example.com\",\"bidQty\":234786,\"askQty\":2138}}");
 		
-		TestObject b = (TestObject) readWorkflowValue(out);
+		TestBean b = (TestBean) readWorkflowValue(out);
 		Assertions.assertEquals(a, b);
 	}
 
@@ -83,24 +81,23 @@ public class TestEntityJsonConversion {
 
 		System.out.println("expected: "+new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(joExpected));
 		System.out.println("actual  : "+new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(joOut));
-
 		
 		Assertions.assertEquals(joOut, joExpected);
 	}
 
 	@Test
-	public void testObjects() throws Exception {
+	public void testBeans() throws Exception {
 
-		TestObject a1 = new TestObject("83274239874", true, true, "rob@example.com", 234786, 2138);
-		TestObject a2 = new TestObject("AUD274239874", true, false, "gregb@example.com", 2386, new BigDecimal("234823498.573"));
+		TestBean a1 = new TestBean("83274239874", true, true, "rob@example.com", 234786, 2138);
+		TestBean a2 = new TestBean("AUD274239874", true, false, "gregb@example.com", 2386, new BigDecimal("234823498.573"));
 
-		TestObjects a = new TestObjects(Arrays.asList(a1, a2));
+		TestBeans a = new TestBeans(Arrays.asList(a1, a2));
 
 		String out = toWorkflowJson(a);
-		compare("{\"workflow_001\":{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObjects\",\"version\":\"1.0\",\"items\":[{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObject\",\"version\":\"1.0\",\"isin\":\"83274239874\",\"bidAxed\":true,\"askAxed\":true,\"creator\":\"rob@example.com\",\"bidQty\":234786,\"askQty\":2138},{\"type\":\"org.finos.symphony.toolkit.workflow.fixture.testObject\",\"version\":\"1.0\",\"isin\":\"AUD274239874\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"gregb@example.com\",\"bidQty\":2386,\"askQty\":234823498.573}]}}",
+		compare("{\"workflow_001\":{\"type\":\"org.finos.springbot.symphony.json.testBeans\",\"version\":\"1.0\",\"items\":[{\"type\":\"org.finos.springbot.symphony.json.testBean\",\"version\":\"1.0\",\"isin\":\"83274239874\",\"bidAxed\":true,\"askAxed\":true,\"creator\":\"rob@example.com\",\"bidQty\":234786,\"askQty\":2138},{\"type\":\"org.finos.springbot.symphony.json.testBean\",\"version\":\"1.0\",\"isin\":\"AUD274239874\",\"bidAxed\":true,\"askAxed\":false,\"creator\":\"gregb@example.com\",\"bidQty\":2386,\"askQty\":234823498.573}]}}",
 				out);
 
-		TestObjects b = (TestObjects) readWorkflowValue(out);
+		TestBeans b = (TestBeans) readWorkflowValue(out);
 		Assertions.assertEquals(a, b);
 	}
 	
@@ -111,8 +108,7 @@ public class TestEntityJsonConversion {
 		
 		HeaderDetails hd = (HeaderDetails) ej.get(HeaderDetails.KEY);
 		Assertions.assertEquals(3, hd.getTags().size());
-		HashTag first = new HashTag("symphony-workflow");
-		Assertions.assertEquals(first, hd.getTags().get(0));
+		Assertions.assertEquals("symphony-workflow", hd.getTags().get(0));
 	}
 
 	@Test
@@ -141,7 +137,7 @@ public class TestEntityJsonConversion {
 				+ "    \"u\" : {\n"
 				+ "      \"type\" : \"com.symphony.user.mention\",\n"
 				+ "      \"version\" : \"1.0\",\n"
-				+ "      \"id\" : [ {\n"
+				+ "      \"id\" : [ null, {\n"
 				+ "        \"type\" : \"com.symphony.user.displayName\",\n"
 				+ "        \"version\" : \"1.0\",\n"
 				+ "        \"value\" : \"Robert Moffat\"\n"
