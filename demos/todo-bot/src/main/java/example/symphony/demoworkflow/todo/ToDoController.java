@@ -20,7 +20,7 @@ import example.symphony.demoworkflow.todo.ToDoItem.Status;
 @Controller
 public class ToDoController {
 
-	@ChatRequest(value={"new", "nouveau"}, description = "Create new item list", rooms = {"Suresh_test_room"})
+	@ChatRequest(value={"new", "nouveau"}, description = "Create new item list")
 	public ToDoList init() {
 		return new ToDoList();
 	}
