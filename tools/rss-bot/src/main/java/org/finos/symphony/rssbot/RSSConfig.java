@@ -26,7 +26,7 @@ import com.symphony.api.pod.UsersApi;
 public class RSSConfig {
 	
 	@Autowired
-	RSSProperties properties;
+	private RSSProperties properties;
 	
 	public static final String WELCOME_MESSAGE = "<messageML>"
 			+ "<p>Hi, welcome to <b>${entity.stream.roomName}</b></p><br />"

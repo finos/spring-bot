@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.fixture.NoddyCallback;
 import org.finos.symphony.toolkit.stream.handler.SharedStreamHandlerConfig;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;

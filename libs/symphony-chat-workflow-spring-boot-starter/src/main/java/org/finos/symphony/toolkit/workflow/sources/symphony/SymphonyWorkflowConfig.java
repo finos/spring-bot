@@ -11,6 +11,7 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
 import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
@@ -102,35 +103,38 @@ public class SymphonyWorkflowConfig {
 	
 	@Autowired
 	@Qualifier(SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
-	SymphonyIdentity botIdentity;
+	private SymphonyIdentity botIdentity;
 	
 	@Autowired
-	UsersApi usersApi;
+	private UsersApi usersApi;
 	
 	@Autowired
-	MessagesApi messagesApi; 
+	private MessagesApi messagesApi; 
 	
 	@Autowired
-	RoomMembershipApi roomMembershipApi;
+	private RoomMembershipApi roomMembershipApi;
 	
 	@Autowired
-	StreamsApi streamsApi;
+	private StreamsApi streamsApi;
 
 	@Autowired
-	Validator validator;
+	private Validator validator;
 	
 	@Autowired
-	AttachmentHandler attachmentHandler;
+	private AttachmentHandler attachmentHandler;
 	
 	@Autowired
-	ResourceLoader resourceLoader;
+	private ResourceLoader resourceLoader;
 	
 	@Autowired
 	@Lazy
-	List<TypeConverter> converters;
+	private List<TypeConverter> converters;
 	
 	@Autowired
-	ApplicationContext ac;
+	private ApplicationContext ac;
+	
+	@Autowired
+	private SymphonyApiProperties symphonyProperties;
 	
 	@Bean
 	@ConditionalOnMissingBean
@@ -162,7 +166,8 @@ public class SymphonyWorkflowConfig {
 				messageMLWriter(), 
 				entityJsonConverter(), 
 				attachmentHandler, 
-				resourceLoader);
+				resourceLoader,
+				symphonyProperties);
 	}
 	
 	@Bean
@@ -175,13 +180,13 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyHistory symphonyHistory() {
-		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi, streamsApi, usersApi);
+		return new SymphonyHistoryImpl(entityJsonConverter(), messagesApi, streamsApi, usersApi, symphonyProperties);
 	}
 	
 	@Bean 
 	@ConditionalOnMissingBean
 	public SymphonyConversations symphonyRooms() {
-		return new SymphonyConversationsImpl(roomMembershipApi, streamsApi, usersApi, botIdentity);
+		return new SymphonyConversationsImpl(roomMembershipApi, streamsApi, usersApi, botIdentity, symphonyProperties);
 	}
 	
 	@Bean
@@ -287,7 +292,7 @@ public class SymphonyWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public AddressingChecker defaultAddressingChecker() {
-		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
+		UserV2 symphonyBotUser = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, symphonyProperties.isLocalPod());
 		SymphonyUser su = new SymphonyUser(symphonyBotUser.getDisplayName(), symphonyBotUser.getEmailAddress());
 		return new InRoomAddressingChecker(su, true);
 	}
