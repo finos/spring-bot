@@ -69,8 +69,9 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 		mappingRegistry.acquireReadLock();
 
 		List<ChatMapping<ChatRequest>> out = new ArrayList<>(mappingRegistry.getRegistrations().values());
-
+		
 		mappingRegistry.releaseReadLock();
+		out = out.stream().filter(r -> canBePerformed(a, u, r.getMapping())).collect(Collectors.toList());
 		return out;
 	}
 
@@ -153,6 +154,21 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			throw new UnsupportedOperationException("ChatVariables can only be used for Content subtypes: "+t.getTypeName());
 		}
 	}
+	
+	private boolean canBePerformed(Addressable a, User u, ChatRequest cb) {
+		if ((a instanceof Chat) && (cb.rooms().length > 0)) {
+			if (!roomMatched(cb.rooms(), (Chat) a)) {
+				return false;
+			}
+		}
+		
+		if (cb.admin() && (a instanceof Chat)) {
+			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
+			return chatAdmins.contains(u);
+		} else {
+			return true;
+		}
+	}
 
 	@Override
 	protected MappingRegistration<ChatRequest> createMappingRegistration(ChatRequest mapping, ChatHandlerMethod handlerMethod) {
@@ -180,18 +196,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			private boolean canBePerformedHere(SimpleMessageAction a) {
 				ChatRequest cb = getMapping();
 				
-				if ((a.getAddressable() instanceof Chat) && (cb.rooms().length > 0)) {
-					if (!roomMatched(cb.rooms(), (Chat) a.getAddressable())) {
-						return false;
-					}
-				}
-				
-				if (cb.admin() && (a.getAddressable() instanceof Chat)) {
-					List<User> chatAdmins = conversations.getChatAdmins((Chat) a.getAddressable());
-					return chatAdmins.contains(a.getUser());
-				} else {
-					return true;
-				}
+				return canBePerformed(a.getAddressable(), a.getUser(), cb);
 			}
 		
 			private ChatHandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {

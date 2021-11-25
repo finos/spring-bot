@@ -61,6 +61,7 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 		List<ChatMapping<ChatButton>> out = new ArrayList<>(mappingRegistry.getRegistrations().values());
 
 		mappingRegistry.releaseReadLock();
+		out = out.stream().filter(r -> canBePerformed(a, u, r.getMapping())).collect(Collectors.toList());
 		return out;
 	}
 
@@ -72,6 +73,22 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 				.collect(Collectors.toList());
 
 		return out;
+	}
+	
+	private boolean canBePerformed(Addressable a, User u, ChatButton cb) {
+		
+		if ((a instanceof Chat) && (cb.rooms().length > 0)) {
+			if (!roomMatched(cb.rooms(), (Chat) a)) {
+				return false;
+			}
+		}
+		
+		if (cb.admin() && (a instanceof Chat)) {
+			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
+			return chatAdmins.contains(u);
+		} else {
+			return true;
+		}
 	}
 
 	@Override
@@ -91,17 +108,7 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 			private boolean canBePerformedHere(FormAction a) {
 				ChatButton cb = getMapping();
 			
-				if ((a.getAddressable() instanceof Chat) && (cb.rooms().length > 0)) {
-					if (!roomMatched(cb.rooms(), (Chat) a.getAddressable())) {
-						return false;
-					}
-				}
-				
-				if (cb.admin() && (a.getAddressable() instanceof Chat)) {
-					return conversations.getChatAdmins((Chat) a.getAddressable()).contains(a.getUser());
-				} else {
-					return true;
-				}
+				return canBePerformed(a.getAddressable(), a.getUser(), cb);
 			}
 
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
