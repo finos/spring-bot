@@ -12,10 +12,10 @@ import org.finos.springbot.symphony.content.CashTag;
 import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.SymphonyAddressable;
 import org.finos.springbot.symphony.content.SymphonyUser;
-import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.symphony.tags.SymphonyTagSupport;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Tag;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;

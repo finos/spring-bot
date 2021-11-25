@@ -1,4 +1,4 @@
-package org.finos.springbot.symphony.json;
+package org.finos.springbot.workflow.data;
 
 import org.finos.springbot.workflow.response.DataResponse;
 

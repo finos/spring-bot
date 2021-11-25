@@ -12,11 +12,11 @@ import java.util.function.Consumer;
 
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
-import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.conversations.Conversations;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.ErrorResponse;
 import org.finos.springbot.workflow.response.WorkResponse;

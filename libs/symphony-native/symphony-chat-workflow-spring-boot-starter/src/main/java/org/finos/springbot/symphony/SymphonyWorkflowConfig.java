@@ -10,13 +10,12 @@ import org.finos.springbot.symphony.content.serialization.MessageMLParser;
 import org.finos.springbot.symphony.content.serialization.SymphonyMarkupWriter;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.symphony.conversations.SymphonyConversationsImpl;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
 import org.finos.springbot.symphony.form.ElementsHandler;
 import org.finos.springbot.symphony.form.SymphonyFormConverter;
 import org.finos.springbot.symphony.form.SymphonyFormDeserializerModule;
 import org.finos.springbot.symphony.history.SymphonyHistory;
 import org.finos.springbot.symphony.history.SymphonyHistoryImpl;
-import org.finos.springbot.symphony.json.DataHandlerCofig;
-import org.finos.springbot.symphony.json.EntityJsonConverter;
 import org.finos.springbot.symphony.messages.PresentationMLHandler;
 import org.finos.springbot.symphony.response.handlers.AttachmentHandler;
 import org.finos.springbot.symphony.response.handlers.JerseyAttachmentHandlerConfig;
@@ -28,6 +27,7 @@ import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.Content;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplateProvider;
 import org.finos.springbot.workflow.response.templating.Markup;
@@ -69,7 +69,7 @@ import com.symphony.api.pod.UsersApi;
 	FreemarkerTypeConverterConfig.class, 
 	JerseyAttachmentHandlerConfig.class,
 	SymphonyContentConfig.class,
-	DataHandlerCofig.class})
+	SymphonyDataHandlerCofig.class})
 @ConditionalOnProperty("symphony.apis.0.pod.url")
 public class SymphonyWorkflowConfig {
 		

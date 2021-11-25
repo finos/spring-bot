@@ -18,7 +18,8 @@ import com.fasterxml.jackson.databind.util.StdConverter;
  */
 @Work(jsonTypeName = { 
 		"org.finos.springbot.workflow.tags.headerDetails", 
-		"org.finos.symphony.toolkit.workflow.form.headerDetails" })
+		"org.finos.symphony.toolkit.workflow.form.headerDetails" },
+	index = false)
 public class HeaderDetails {
 	
 	public static class LegacyHeaderDeserialize extends StdConverter<Object, String> {

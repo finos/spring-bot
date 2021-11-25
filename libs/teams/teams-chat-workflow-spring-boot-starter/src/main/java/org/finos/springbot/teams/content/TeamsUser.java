@@ -8,6 +8,9 @@ import org.finos.springbot.workflow.content.User;
 
 @Work(index = false)
 public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
+	
+	public TeamsUser() {
+	}
 			
 	public TeamsUser(String id, String name, String aadObjectId) {
 		this.key = id;
@@ -15,9 +18,9 @@ public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
 		this.aadObjectId = aadObjectId;
 	}
 	
-	final String aadObjectId;
-	final String key;
-	final String name;
+	private String aadObjectId;
+	private String key;
+	private String name;
 
 	@Override
 	public String getName() {

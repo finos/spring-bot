@@ -1,9 +1,8 @@
-package org.finos.springbot.symphony.json;
+package org.finos.springbot.symphony.data;
 
-import java.io.IOException;import javax.ws.rs.ext.RuntimeDelegate.HeaderDelegate;
+import java.io.IOException;
 
 import org.finos.springbot.symphony.content.HashTag;
-import org.finos.springbot.workflow.tags.HeaderDetails;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
