@@ -156,7 +156,13 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 	}
 	
 	private boolean canBePerformed(Addressable a, User u, ChatRequest cb) {
-		if ((a instanceof Chat) && (cb.rooms().length > 0)) {
+		if ((a instanceof Chat) && (cb.excludeRooms().length > 0)) {
+			if (roomMatched(cb.excludeRooms(), (Chat) a)) {
+				return false;
+			}
+		}
+		
+		if ((a instanceof Chat) && ((cb.rooms().length > 0))) {
 			if (!roomMatched(cb.rooms(), (Chat) a)) {
 				return false;
 			}
