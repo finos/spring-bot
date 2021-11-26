@@ -46,7 +46,7 @@ public class DefaultApiInstanceFactory extends TokenManagingApiInstanceFactory {
 	public ApiInstance createApiInstance(SymphonyIdentity id, PodProperties pp, TrustManager[] trustManagers) throws Exception {
 		ApiInstance parent = super.createApiInstance(id, pp, trustManagers);
 		ApiBuilder agentApiBuilder = ((BasicAPIInstance)  parent).agentApiBuilder;
-		AgentHealthHelper agentHealth = new AgentHealthHelper(agentApiBuilder, om);
+		AgentHealthHelper agentHealth = new AgentHealthHelper(agentApiBuilder);
 		HealthCheckingApiInstance out = new HealthCheckingApiInstance(parent, agentHealth);
 		
 		if (registry != null) { 

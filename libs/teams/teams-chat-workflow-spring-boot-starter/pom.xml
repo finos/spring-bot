@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.finos.springbot</groupId>
 		<artifactId>spring-bot</artifactId>
-		<version>8.0.3-SNAPSHOT</version>
+		<version>9.0.0-SNAPSHOT</version>
 		<relativePath>../../..</relativePath>
 	</parent>
 
@@ -22,7 +22,7 @@
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow</artifactId>
-			<version>8.0.3-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- teams -->
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow-testing</artifactId>
-			<version>8.0.3-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 

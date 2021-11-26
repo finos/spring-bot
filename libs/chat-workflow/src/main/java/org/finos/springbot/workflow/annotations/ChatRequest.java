@@ -29,6 +29,11 @@ public @interface ChatRequest {
 	String[] rooms() default {};
 	
 	/**
+	 * A list of rooms which are excluded that the command works in.
+	 */
+	String[] excludeRooms() default {};
+	
+	/**
 	 * Means that the command can only be done by room administrators.
 	 */
 	boolean admin() default false;

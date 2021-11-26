@@ -24,6 +24,11 @@ public @interface ChatButton {
 	String[] rooms() default {};
 	
 	/**
+	 * A list of rooms which are excluded that the button works in.
+	 */
+	String[] excludeRooms() default {};
+	
+	/**
 	 * Means that button can only be actioned by room admins.
 	 */
 	boolean admin() default false;
