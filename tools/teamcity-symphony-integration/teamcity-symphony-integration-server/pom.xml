@@ -54,6 +54,13 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
+		<!-- not sure this should be needed... only used for extended symphony version space. -->
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
+			<version>8.0.3-SNAPSHOT</version>
+		</dependency>
 
 		<!-- For Testing -->
 		<dependency>

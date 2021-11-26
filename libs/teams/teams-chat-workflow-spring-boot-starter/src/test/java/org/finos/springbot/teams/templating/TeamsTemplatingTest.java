@@ -50,7 +50,7 @@ public class TeamsTemplatingTest extends AbstractTemplatingTest {
 	
 	@Override
 	protected Addressable getTo() {
-		return new TeamsUser("abc1234", "Geoff Summersby");
+		return new TeamsUser("abc1234", "Geoff Summersby", "aac123");
 	}
 	
 	@Override
@@ -125,7 +125,7 @@ public class TeamsTemplatingTest extends AbstractTemplatingTest {
 	@Override
 	protected DropdownList createSomeUsers(int count) {
 		return new DropdownList(IntStream.range(0, count)
-				.mapToObj(i -> i == 0 ? getUser() : new TeamsUser("idu"+i, "Name of "+i))
+				.mapToObj(i -> i == 0 ? getUser() : new TeamsUser("idu"+i, "Name of "+i, "aac"+i))
 				.map(tu -> new Item(tu.getKey(), tu.getName()))
 				.collect(Collectors.toList()));
 	}

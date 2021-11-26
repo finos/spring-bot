@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.springbot.entityjson.VersionSpace;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
@@ -64,7 +65,7 @@ public class SymphonyAdminController extends BaseController {
 		this.om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 		
 		ObjectMapperFactory.initialize(om, 
-			ObjectMapperFactory.extendedSymphonyVersionSpace(
+			SymphonyDataHandlerCofig.extendedSymphonyVersionSpace(
 				new VersionSpace(BuildData.class, "1.0")));
 				
 		
