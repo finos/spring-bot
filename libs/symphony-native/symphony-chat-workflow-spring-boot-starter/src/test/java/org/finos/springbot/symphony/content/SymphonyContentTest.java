@@ -3,9 +3,9 @@ package org.finos.springbot.symphony.content;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import org.finos.springbot.symphony.content.serialization.SymphonyMarkupWriter;
 import org.finos.springbot.tests.content.AbstractContentTest;
 import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.serialization.MarkupWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import org.springframework.util.StreamUtils;
 public class SymphonyContentTest extends AbstractContentTest {
 
 	@Autowired
-	MarkupWriter mw;
+	SymphonyMarkupWriter mw;
 
 	@Test
 	public void testSymphonyContents() throws IOException {
@@ -43,7 +43,7 @@ public class SymphonyContentTest extends AbstractContentTest {
 			new HashTag("ht123"), 
 			new SymphonyUser("RR","rr@example.com"));
 		
-		String out = mw.apply(m);
+		String out = mw.apply(m, null);
 		System.out.println(out);
 		Assertions.assertEquals(load("testSymphonyContents.html"), out);
 		
@@ -51,7 +51,7 @@ public class SymphonyContentTest extends AbstractContentTest {
 
 	@Test
 	public void testWriteContent() throws IOException {
-		String out = mw.apply(createMessage());
+		String out = mw.apply(createMessage(), null);
 		System.out.println(out);
 		Assertions.assertEquals(load("testWriteContent.html"), out);
 	}

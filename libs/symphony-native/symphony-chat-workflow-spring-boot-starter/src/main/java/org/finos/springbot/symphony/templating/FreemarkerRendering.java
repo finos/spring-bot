@@ -210,8 +210,8 @@ public class FreemarkerRendering implements Rendering<String> {
 		StringBuilder sb = new StringBuilder();
 	    int depth = ((FreemarkerVariable) v).depth;
 		sb.append(indent(depth) + "<#if "+v.getDataPath() + "??><#list "+v.getDataPath() +".id as id>");
-		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeNamer(UserId.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
-		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeNamer(EmailAddress.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(UserId.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(EmailAddress.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
 	    sb.append(indent(depth) + " </#list></#if>");
 	    return sb.toString();
 	}

@@ -32,7 +32,6 @@ import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplateProvider;
 import org.finos.springbot.workflow.response.templating.Markup;
 import org.finos.springbot.workflow.response.templating.SimpleMarkupTemplateProvider;
-import org.finos.springbot.workflow.tags.HeaderTagResponseHandler;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +43,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
@@ -70,7 +70,7 @@ import com.symphony.api.pod.UsersApi;
 	JerseyAttachmentHandlerConfig.class,
 	SymphonyContentConfig.class,
 	SymphonyDataHandlerCofig.class})
-@ConditionalOnProperty("symphony.apis.0.pod.url")
+@Profile(value = "symphony")
 public class SymphonyWorkflowConfig {
 		
 	@Autowired
