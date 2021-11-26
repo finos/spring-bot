@@ -37,6 +37,11 @@
 			<artifactId>shared-stream-spring-boot-starter</artifactId>
 			<version>8.0.3-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
+			<version>8.0.3-SNAPSHOT</version>
+		</dependency>
 
 		<!-- allows shared stream coordination -->
 		<dependency>

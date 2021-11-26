@@ -8,6 +8,7 @@ import javax.net.ssl.TrustManagerFactory;
 
 import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.springbot.entityjson.VersionSpace;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
@@ -66,7 +67,7 @@ public class KoreAIConfig {
 
 	public static ObjectMapper koreAIObjectMapper() {
 		ObjectMapper out = new ObjectMapper();
-		ObjectMapperFactory.initialize(out, ObjectMapperFactory
+		ObjectMapperFactory.initialize(out, SymphonyDataHandlerCofig
 			.extendedSymphonyVersionSpace( 
 				LogMessage.VERSION_SPACE,	
 				new VersionSpace(KoreAIResponse.class),
