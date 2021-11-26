@@ -32,13 +32,13 @@ public class TimeConverter extends TextFieldConverter<JsonNode> {
 	public JsonNode apply(Field ctx, Type t, boolean editMode, Variable v) {
 		ObjectNode on = (ObjectNode) super.apply(ctx, t, editMode, v);
 		
-		Class<?> cl = (Class<?>) t;
-		
-		String field = editMode ? "value" : "text";
-		
-		if (Instant.class.isAssignableFrom(cl) || ZonedDateTime.class.isAssignableFrom(cl)) {
-			 on.put(field, AdaptiveCardRendering.nullProofWithFunction(v, "formatEpoch"));
-		} 
+//		Class<?> cl = (Class<?>) t;
+//		
+//		String field = editMode ? "value" : "text";
+//		
+//		if (Instant.class.isAssignableFrom(cl) || ZonedDateTime.class.isAssignableFrom(cl)) {
+//			 on.put(field, AdaptiveCardRendering.nullProofWithFunction(v, "formatEpoch"));
+//		} 
 	
 		return on;
 	}

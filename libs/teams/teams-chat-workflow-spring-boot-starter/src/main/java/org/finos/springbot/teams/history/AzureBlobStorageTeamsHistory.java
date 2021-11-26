@@ -1,6 +1,7 @@
 package org.finos.springbot.teams.history;
 
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
@@ -12,7 +13,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import org.apache.commons.io.Charsets;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
@@ -121,7 +121,7 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	@SuppressWarnings("unchecked")
 	protected <X> Optional<X> findObjectInItem(String item, Class<X> type) {
 		try {
-			String json = StreamUtils.copyToString(bcc.getBlobClient(item).openInputStream(), Charsets.UTF_8);
+			String json = StreamUtils.copyToString(bcc.getBlobClient(item).openInputStream(), StandardCharsets.UTF_8);
 			EntityJson data = ejc.readValue(json);
 			for (Object val : data.values()) {
 				if (val.getClass().getName().equals(type.getName())) {

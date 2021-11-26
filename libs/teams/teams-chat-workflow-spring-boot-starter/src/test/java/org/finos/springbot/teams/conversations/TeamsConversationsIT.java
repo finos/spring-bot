@@ -9,7 +9,7 @@ public class TeamsConversationsIT {
 	
 	@Test
 	public void simpleTest() throws Exception {
-		TeamsConversationsImpl tc = new TeamsConversationsImpl("abc13234");
+		TeamsConversationsImpl tc = new TeamsConversationsImpl();
 		tc.afterPropertiesSet();
 		
 		tc.getChatAdmins(new TeamsChat("19:lpBLKAwWu2xklnZ8jmzmhTP_bjSbTYo5xULFVdGi2481@thread.tacv2", "HEYNOW"));

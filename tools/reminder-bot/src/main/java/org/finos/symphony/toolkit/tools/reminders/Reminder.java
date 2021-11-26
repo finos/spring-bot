@@ -6,10 +6,10 @@ package org.finos.symphony.toolkit.tools.reminders;
 import java.time.LocalDateTime;
 
 import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.annotations.Display;
 import org.finos.springbot.workflow.annotations.Template;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
 /**
  * @author Gaurav Pancholi

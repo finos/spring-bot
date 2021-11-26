@@ -1,7 +1,7 @@
 package org.finos.symphony.rssbot.feed;
 
+import org.finos.springbot.workflow.annotations.Display;
 import org.finos.springbot.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Display;
 
 @Work
 public class SubscribeRequest {
