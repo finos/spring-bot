@@ -36,8 +36,6 @@ import com.microsoft.bot.schema.teams.TeamsChannelData;
 public class TeamsConversationsImpl implements TeamsConversations {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsConversationsImpl.class);
-	
-	//private BotFrameworkAdapter bfa;
 
 	public TeamsConversationsImpl() {
 		super();

@@ -130,29 +130,11 @@ public class TimeFinderIT {
 		Addressable a = new Addressable() {
 
 			@Override
-			public int hashCode() {
-				return super.hashCode();
+			public String getKey() {
+				return "testkey";
 			}
 
-			@Override
-			public boolean equals(Object obj) {
-				return super.equals(obj);
-			}
-
-			@Override
-			protected Object clone() throws CloneNotSupportedException {
-				return super.clone();
-			}
-
-			@Override
-			public String toString() {
-				return super.toString();
-			}
-
-			@Override
-			protected void finalize() throws Throwable {
-				super.finalize();
-			}
+		
 		};
 		return a;
 

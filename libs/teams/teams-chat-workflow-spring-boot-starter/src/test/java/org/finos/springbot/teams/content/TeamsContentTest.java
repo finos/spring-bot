@@ -25,18 +25,21 @@ public class TeamsContentTest extends AbstractContentTest {
 	public void testTeamsContents() throws IOException {
 		// tag def
 		doAssertsOnContent(new TeamsChat("id123", "Some Chat"), new TeamsChat("id123", "Some Chat"));
-		doAssertsOnContent(new TeamsUser("id123", "Geoff Z"), new TeamsUser("id123", "Geoff Z"));
+		doAssertsOnContent(new TeamsUser("id123", "Geoff Z", "aad1243"), new TeamsUser("id123", "Geoff Z","aad1243"));
+		doAssertsOnContent(new TeamsConversation("id123", "Geoff Z", "aad1243"), new TeamsConversation("id123", "Geoff Z","aad1243"));
+		
 
 		MarkupAndEntities mae = new MarkupAndEntities();
 		
 		Message m = Message.of(
 			new TeamsChat("id123", "Some Chat"), 
-			new TeamsUser("ht123", "Geoff Z"));
+			new TeamsConversation("aad123", "213", "Big Convo"),
+			new TeamsUser("ht123", "Geoff Z", "aad1243"));
 		
 		String out = mw.apply(m, mae);
 		System.out.println(out);
 		Assertions.assertEquals(load("testTeamsContents.html"), out);		
-		Assertions.assertEquals(2,  mae.getEntities().size());
+		Assertions.assertEquals(3,  mae.getEntities().size());
 		
 		String jsonOut = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(mae.getEntities());
 		System.out.println(jsonOut);
