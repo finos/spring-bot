@@ -15,6 +15,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;
@@ -22,9 +24,10 @@ import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V4MessageList;
 
 @SpringBootTest(classes = { 
-		SymphonyMockConfiguration.class, 
+	SymphonyMockConfiguration.class, 
 	SymphonyWorkflowConfig.class,
 })
+@ActiveProfiles(value = "symphony")
 public class HistoryTest {
 	
 	@Autowired
@@ -33,7 +36,7 @@ public class HistoryTest {
 	@Autowired
 	EntityJsonConverter ejc;
 	
-	@Autowired
+	@MockBean
 	MessagesApi messagesApi;
 
 	@Test

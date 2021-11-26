@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
@@ -36,6 +37,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,8 +57,9 @@ import com.symphony.api.model.V4User;
 
 @SpringBootTest(classes = {
 		SymphonyMockConfiguration.class, 
-		SymphonyWorkflowConfig.class,
+		SymphonyWorkflowConfig.class
 })
+@ActiveProfiles(value = "symphony")
 public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 	
 	@Autowired

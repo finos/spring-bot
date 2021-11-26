@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
-import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Message;
@@ -20,14 +20,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
 
 @SpringBootTest(classes = { 
 	SymphonyMockConfiguration.class, 
-	SymphonyWorkflowConfig.class})
+	SymphonyContentConfig.class,
+	SymphonyDataHandlerCofig.class})
 public class TestMessageMLParser  {
 
-	MessageMLParser smp = new MessageMLParser();
+	@Autowired
+	MessageMLParser smp;
 	
 	@Autowired
 	EntityJsonConverter entityJsonConverter;

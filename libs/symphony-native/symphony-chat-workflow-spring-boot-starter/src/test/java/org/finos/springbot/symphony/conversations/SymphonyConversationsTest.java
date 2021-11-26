@@ -12,12 +12,14 @@ import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
+import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.ConversationSpecificStreamAttributes;
@@ -38,9 +40,10 @@ import com.symphony.api.pod.RoomMembershipApi;
 import com.symphony.api.pod.StreamsApi;
 
 @SpringBootTest(classes = { 
-		SymphonyMockConfiguration.class, 
+	SymphonyMockConfiguration.class, 
 	SymphonyWorkflowConfig.class,
 })
+@ActiveProfiles(value = "symphony")
 public class SymphonyConversationsTest {
 	
 	@Autowired
@@ -108,7 +111,9 @@ public class SymphonyConversationsTest {
 	
 		List<SymphonyUser> chatMembers = ruBuilder.getChatMembers(out);
 		Assertions.assertEquals(
-			Collections.singletonList(new SymphonyUser(123l, ROB_NAME, ROB_EXAMPLE_EMAIL)), 
+			Collections.singletonList(new SymphonyUser(123l, 
+					AbstractHandlerMappingTest.ROB_NAME, 
+					AbstractHandlerMappingTest.ROB_EXAMPLE_EMAIL)), 
 					chatMembers);
 	}
 	
