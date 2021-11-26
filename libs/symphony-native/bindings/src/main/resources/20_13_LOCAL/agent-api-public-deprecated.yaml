@@ -3055,6 +3055,9 @@ paths:
             $ref: '#/definitions/V5DatafeedCreateBody'
       produces:
         - application/json
+      consumes:
+        - application/json
+      
       responses:
         201:
           description: Datafeed sucessfully created.
@@ -3112,13 +3115,14 @@ paths:
             type: array
             items:
               $ref: '#/definitions/V5Datafeed'
-          examples:
-            '200 OK':
-              value:
-                - id: '8e7c8672-220...'
-                  createdAt: 1536346282592
-                - id: '8e7c8672-221...'
-                  createdAt: 1536346282500
+# RM Commented Out: Seems to introduce a problem with the @Produces() attribute.              
+#          examples:
+#            '200 OK':
+#              value:
+#                - id: '8e7c8672-220...'
+#                  createdAt: 1536346282592
+#                - id: '8e7c8672-221...'
+#                  createdAt: 1536346282500
         400:
           description: Bad request.
           schema:

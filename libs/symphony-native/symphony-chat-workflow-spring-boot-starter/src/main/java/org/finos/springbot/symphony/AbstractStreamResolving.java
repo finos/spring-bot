@@ -2,10 +2,18 @@ package org.finos.springbot.symphony;
 
 import java.util.Collections;
 
+<<<<<<< HEAD:libs/symphony-native/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/springbot/symphony/AbstractStreamResolving.java
 import org.finos.springbot.symphony.content.SymphonyAddressable;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.content.Addressable;
+=======
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
+import org.finos.symphony.toolkit.workflow.content.Addressable;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
+import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
+>>>>>>> develop:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/streams/AbstractStreamResolving.java
 
 import com.symphony.api.model.Stream;
 import com.symphony.api.model.UserV2;
@@ -24,10 +32,12 @@ public class AbstractStreamResolving {
 
 	protected StreamsApi streamsApi;
 	protected UsersApi usersApi;
+	protected SymphonyApiProperties symphonyApiProperties;
 	
-	public AbstractStreamResolving(StreamsApi streamsApi, UsersApi usersApi) {
+	public AbstractStreamResolving(StreamsApi streamsApi, UsersApi usersApi, SymphonyApiProperties symphonyApiProperties) {
 		this.streamsApi = streamsApi;
 		this.usersApi = usersApi;
+		this.symphonyApiProperties = symphonyApiProperties;
 	}
 
 	public String getStreamFor(SymphonyAddressable a) {
@@ -55,7 +65,7 @@ public class AbstractStreamResolving {
 		if (a.getUserId() != null) {
 			return Long.parseLong(a.getUserId());
 		} else {
-			UserV2 u = usersApi.v2UserGet(null, null, a.getEmailAddress(), null, true);
+			UserV2 u = usersApi.v2UserGet(null, null, a.getEmailAddress(), null, symphonyApiProperties.isLocalPod());
 			if (u == null) {
 				throw new IllegalArgumentException("Couldn't find user: "+a);
 			} else {

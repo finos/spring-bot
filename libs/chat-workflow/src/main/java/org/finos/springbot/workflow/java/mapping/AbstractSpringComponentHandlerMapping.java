@@ -255,6 +255,16 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 			}
 		}
 	}
+	
+	protected boolean roomMatched(String[] rooms, Chat addressable) {
+		for (String r : rooms) {
+			if (addressable.getName().equals(r)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 
 	abstract static class MappingRegistration<T> implements ChatMapping<T> {
@@ -289,18 +299,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		public String getUniqueName() {
 			return name;
 		}
-		
-		protected boolean roomMatched(String[] rooms, Chat addressable) {
-			for (String r : rooms) {
-				if (addressable.getName().equals(r)) {
-					return true;
-				}
-			}
-			
-			return false;
-		}
-
-		
 		
 	}
 
