@@ -16,6 +16,7 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.conversations.Conversations;
+import org.finos.symphony.toolkit.workflow.help.HelpPage;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
@@ -119,6 +120,10 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
 				MappingRegistration<?> me = this;
+				
+				if(a.getData().get("form").getClass() == HelpPage.class) {
+					return null;
+				}
 					
 				if (!a.getAction().equals(this.getUniqueName())) {
 					return null;
