@@ -17,7 +17,7 @@
             <tr>
             <td>
             	<#if command.button>
-			    	<button name="${command.uniqueName}" type="action">${command.buttonName}</button>
+			    	<button name="${command.buttonName}" type="action">${command.buttonName}</button>
 			    <#else>
 		      	</#if>
             </td>
