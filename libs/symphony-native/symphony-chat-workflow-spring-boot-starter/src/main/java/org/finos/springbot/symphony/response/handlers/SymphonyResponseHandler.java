@@ -13,6 +13,7 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandler;
 import org.finos.springbot.workflow.response.templating.Markup;
 import org.finos.springbot.workflow.response.templating.MarkupTemplateProvider;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -44,8 +45,9 @@ public class SymphonyResponseHandler extends AbstractStreamResolving implements 
 			DataHandler dataHandler,
 			AttachmentHandler attachmentHandler,
 			MarkupTemplateProvider<Markup> messageTemplater,
-			SymphonyTemplateProvider workTemplater) {
-		super(streamsApi, usersApi);
+			SymphonyTemplateProvider workTemplater,
+			SymphonyApiProperties apiProperties) {
+		super(streamsApi, usersApi, apiProperties);
 		this.messagesApi = messagesApi;
 		this.dataHandler = dataHandler;
 		this.attachmentHandler = attachmentHandler;

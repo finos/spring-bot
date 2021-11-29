@@ -13,6 +13,7 @@ import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
+import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

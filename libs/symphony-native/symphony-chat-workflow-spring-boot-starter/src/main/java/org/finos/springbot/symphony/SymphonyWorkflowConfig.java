@@ -33,6 +33,7 @@ import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplatePr
 import org.finos.springbot.workflow.response.templating.Markup;
 import org.finos.springbot.workflow.response.templating.SimpleMarkupTemplateProvider;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,6 +41,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -71,11 +73,15 @@ import com.symphony.api.pod.UsersApi;
 	SymphonyContentConfig.class,
 	SymphonyDataHandlerCofig.class})
 @Profile(value = "symphony")
+@EnableConfigurationProperties(SymphonyApiProperties.class)
 public class SymphonyWorkflowConfig {
 		
 	@Autowired
 	@Qualifier(SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
 	SymphonyIdentity botIdentity;
+	
+	@Autowired
+	SymphonyApiProperties apiProperties;
 	
 	@Autowired
 	UsersApi usersApi;
@@ -132,20 +138,21 @@ public class SymphonyWorkflowConfig {
 				ejc, 
 				attachmentHandler, 
 				markupTemplater,
-				workTemplater);
+				workTemplater,
+				apiProperties);
 	}
 
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public SymphonyHistory symphonyHistory() {
-		return new SymphonyHistoryImpl(ejc, messagesApi, streamsApi, usersApi);
+		return new SymphonyHistoryImpl(ejc, messagesApi, streamsApi, usersApi, apiProperties);
 	}
 	
 	@Bean 
 	@ConditionalOnMissingBean
 	public SymphonyConversations symphonyRooms() {
-		return new SymphonyConversationsImpl(roomMembershipApi, streamsApi, usersApi, botIdentity);
+		return new SymphonyConversationsImpl(roomMembershipApi, streamsApi, usersApi, botIdentity, apiProperties);
 	}
 	
 	@Bean
