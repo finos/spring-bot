@@ -25,9 +25,12 @@ public class AbstractDataHandlerConfig {
 
 	@Autowired
 	ApplicationContext ac;
-
 	
 	protected List<VersionSpace> scanForWorkClasses() {
+		return scanForWorkClasses(ac);
+	}
+	
+	public static List<VersionSpace> scanForWorkClasses(ApplicationContext ac) {
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);
 		scanner.addIncludeFilter(new AnnotationTypeFilter(Work.class));
 		Set<BeanDefinition> toAdd = scanner.findCandidateComponents(getPackageName(ChatWorkflowConfig.class));
@@ -70,7 +73,7 @@ public class AbstractDataHandlerConfig {
 		return versionSpaces;
 	}
 
-	protected String getPackageName(Class<?> c) {
+	private static String getPackageName(Class<?> c) {
 		String cn = c.getName();
         int dot = cn.lastIndexOf('.');
         String pn = (dot != -1) ? cn.substring(0, dot).intern() : "";

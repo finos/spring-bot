@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-<<<<<<< HEAD:libs/symphony-native/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/springbot/symphony/history/SymphonyHistoryImpl.java
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.AbstractStreamResolving;
 import org.finos.springbot.symphony.content.CashTag;
@@ -17,19 +16,7 @@ import org.finos.springbot.symphony.tags.SymphonyTagSupport;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
-=======
-import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Tag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.TagSupport;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.CashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyAddressable;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
-import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
->>>>>>> develop:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/history/SymphonyHistoryImpl.java
 
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.model.MessageSearchQuery;
@@ -51,13 +38,8 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 	}
 
 	@Override
-<<<<<<< HEAD:libs/symphony-native/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/springbot/symphony/history/SymphonyHistoryImpl.java
 	public <X> Optional<X> getLastFromHistory(Class<X> type, SymphonyAddressable address) {
 		return getRelevantObject(getLastEntityJsonFromHistory(type, address), type); 
-=======
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Addressable address) {
-		return getRelevantObject(getLastEntityJsonFromHistory(type, address), type);
->>>>>>> develop:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/history/SymphonyHistoryImpl.java
 	}
 
 	@Override
@@ -192,16 +174,8 @@ public class SymphonyHistoryImpl extends AbstractStreamResolving implements Symp
 		return msq;
 	}
 
-<<<<<<< HEAD:libs/symphony-native/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/springbot/symphony/history/SymphonyHistoryImpl.java
 	@Override
 	public boolean isSupported(Addressable a) {
 		return a instanceof SymphonyAddressable;
 	}
-
-	
-
-	
-
-=======
->>>>>>> develop:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/history/SymphonyHistoryImpl.java
 }

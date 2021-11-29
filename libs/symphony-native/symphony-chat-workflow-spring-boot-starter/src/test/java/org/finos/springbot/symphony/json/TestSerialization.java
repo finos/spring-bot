@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.entities.VersionSpaceHelp;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.springbot.entityjson.VersionSpace;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
 import org.finos.springbot.symphony.json.ClassWithArray.SubClass;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -44,7 +44,7 @@ public class TestSerialization {
 	
 	@BeforeAll
 	public static void setupMapper() {
-		VersionSpace[] vs = SymphonyDataHandlerCofig.extendedSymphonyVersionSpace(
+		VersionSpace[] vs = VersionSpaceHelp.extendedSymphonyVersionSpace(
 				new VersionSpace(ClassWithEnum.class, "1.0"),
 				new VersionSpace(ClassWithArray.class, "1.0"),
 				new VersionSpace(ClassWithArray.SubClass.class, "1.0"),

@@ -30,15 +30,16 @@
 		<!-- symphony support -->
 		<module>libs/symphony-native/identity</module>
 		<module>libs/symphony-native/bindings</module>
+		<module>libs/symphony-native/entities</module>
 		<module>libs/symphony-native/symphony-api-spring-boot-starter</module>
 		<module>libs/symphony-native/symphony-app-spring-boot-starter</module>
+		<module>libs/symphony-native/shared-stream-spring-boot-starter</module>
 		<module>libs/symphony-native/symphony-chat-workflow-spring-boot-starter</module>
 
 		<!-- teams support -->
 		<module>libs/teams/teams-chat-workflow-spring-boot-starter</module>
 
 		<!-- general modules -->
-		<module>libs/shared-stream-spring-boot-starter</module>
 		<module>libs/quickfix-json</module>
 
 		<!-- tools -->
