@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,7 +11,6 @@ import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.workflow.actions.Action;
 import org.finos.symphony.toolkit.workflow.actions.FormAction;
 import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
-import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
 import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.CodeBlock;
@@ -24,9 +21,7 @@ import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.content.Word;
 import org.finos.symphony.toolkit.workflow.fixture.OurController;
 import org.finos.symphony.toolkit.workflow.fixture.StartClaim;
-import org.finos.symphony.toolkit.workflow.fixture.TestObject;
 import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.form.FormSubmission;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatHandlerMappingActionConsumer;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatMapping;
 import org.finos.symphony.toolkit.workflow.java.mapping.ChatRequestChatHandlerMapping;
@@ -49,10 +44,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
+import org.symphonyoss.Taxonomy;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.symphonyoss.Taxonomy;
 
 
 @SpringBootTest(classes = {
@@ -223,13 +218,14 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 				+ "      \"type\" : \"org.finos.symphony.toolkit.workflow.help.commandDescription\",\n"
 				+ "      \"version\" : \"1.0\",\n"
 				+ "      \"description\" : \"Display this help page\",\n"
-				+ "      \"examples\" : [ \"help\" ]\n"
+				+ "      \"buttonName\" : \"help\",\n"
+				+ "      \"examples\" : [ \"help\" ],\n"
+				+ "      \"button\" : true\n"
 				+ "    }"));
 		
-		Assertions.assertTrue(msg.getValue().contains("<tr>\n"
-				+ "            <th>Description</th>\n"
-				+ "            <th>Type... </th>\n"
-				+ "          </tr>"));
+		Assertions.assertTrue(msg.getValue().contains("<th>Button</th>"));
+		Assertions.assertTrue(msg.getValue().contains("<th>Or Type... </th>"));
+		Assertions.assertTrue(msg.getValue().contains("<th>Description</th>"));
 
 	}
 	

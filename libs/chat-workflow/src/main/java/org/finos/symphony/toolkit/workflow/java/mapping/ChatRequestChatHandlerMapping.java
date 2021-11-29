@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -200,7 +201,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 
 				if (a instanceof FormAction) {
 
-					if (((FormAction) a).getData().get("form").getClass() != HelpPage.class) {
+					if (Objects.nonNull(((FormAction)a).getData().get("form")) && ((FormAction) a).getData().get("form").getClass() != HelpPage.class) {
 						return null;
 					}
 
