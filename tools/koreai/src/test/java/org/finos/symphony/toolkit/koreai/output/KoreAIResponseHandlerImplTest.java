@@ -8,9 +8,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.finos.springbot.entities.VersionSpaceHelp;
 import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.springbot.entityjson.VersionSpace;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;
@@ -72,7 +72,7 @@ public class KoreAIResponseHandlerImplTest {
     @BeforeEach
     public void setup() throws Exception {
        	om = new ObjectMapper();
-    		ObjectMapperFactory.initialize(om, SymphonyDataHandlerCofig
+    		ObjectMapperFactory.initialize(om, VersionSpaceHelp
     			.extendedSymphonyVersionSpace(
     				new VersionSpace(KoreAIResponse.class)));
 

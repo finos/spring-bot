@@ -8,22 +8,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-<<<<<<< HEAD:libs/symphony-native/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/springbot/symphony/conversations/SymphonyConversationsImpl.java
 import org.finos.springbot.symphony.AbstractStreamResolving;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
-=======
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyUser;
-import org.finos.symphony.toolkit.workflow.sources.symphony.streams.AbstractStreamResolving;
->>>>>>> develop:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/conversations/SymphonyConversationsImpl.java
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;

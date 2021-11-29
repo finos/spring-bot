@@ -122,15 +122,11 @@ public class MessageMLParser extends AbstractContentParser<String, EntityJson>{
 						} else if (o instanceof HashTag) {
 							push(new TagFrame<HashTag>(qName, (HashTag) o));
 						} else if (o instanceof CashTag) {
-<<<<<<< HEAD:libs/symphony-native/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/springbot/symphony/content/serialization/MessageMLParser.java
 							push(new TagFrame<CashTag>(qName, (CashTag) o));
-=======
-							push(new TagFrame<CashTag>((CashTag) o));
 						} else if (o instanceof Taxonomy
 								&& !((Taxonomy) o).getId().isEmpty()
 								&& ((Taxonomy) o).getId().get(0) instanceof HashTag) {
-							push(new TagFrame<HashTag>((HashTag) ((Taxonomy) o).getId().get(0)));
->>>>>>> develop:libs/symphony-chat-workflow-spring-boot-starter/src/main/java/org/finos/symphony/toolkit/workflow/sources/symphony/messages/MessageMLParser.java
+							push(new TagFrame<HashTag>(qName, (HashTag) ((Taxonomy) o).getId().get(0)));
 						} else {
 							throw new UnsupportedOperationException();
 						}
