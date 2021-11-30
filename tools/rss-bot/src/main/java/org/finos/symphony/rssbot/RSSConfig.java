@@ -3,6 +3,7 @@
  */
 package org.finos.symphony.rssbot;
 
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.rssbot.alerter.ArticleSender;
@@ -28,13 +29,16 @@ public class RSSConfig {
 	@Autowired
 	private RSSProperties properties;
 	
+	@Autowired
+	private EntityJsonConverter ejc;
+	
 	public static final String WELCOME_MESSAGE = "<messageML>"
 			+ "<p>Hi, welcome to <b>${entity.stream.roomName}</b></p><br />"
 			+ "<p>To configure RSS feeds in this room type: <b>/subscriptions</b></p></messageML>";
 	
 	@Bean
 	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
-		return new RoomWelcomeEventConsumer(ma, ua, id, WELCOME_MESSAGE);
+		return new RoomWelcomeEventConsumer(ma, ua, id, WELCOME_MESSAGE, ejc);
 	}
 	
 	@Bean
