@@ -9,7 +9,7 @@ env:
   BOT2PRIVATEKEY: ${{ secrets.BOT2PRIVATEKEY }}
   BOT2CERTIFICATE: ${{ secrets.BOT2CERTIFICATE }}
 
-on: [pull_request]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -41,6 +41,6 @@ jobs:
         server-password: CI_DEPLOY_PASSWORD
     - name: Download deps and plugins
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
-    - name: Build (not on master)
+    - name: Build 
       run: mvn install 
        
