@@ -1,4 +1,4 @@
-name: sjt-main-build
+name: sjt-build
 
 env:
   CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
@@ -9,11 +9,7 @@ env:
   BOT2PRIVATEKEY: ${{ secrets.BOT2PRIVATEKEY }}
   BOT2CERTIFICATE: ${{ secrets.BOT2CERTIFICATE }}
 
-on:
-  push:
-   branches:
-     - master
-     - develop
+on: [pull_request]
 
 jobs:
   build:
@@ -45,10 +41,6 @@ jobs:
         server-password: CI_DEPLOY_PASSWORD
     - name: Download deps and plugins
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
-    - name: Build + Test
-      run: mvn verify --settings .github/workflows/settings.xml 
-    - name: Coverage 
-      uses: codecov/codecov-action@v1
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+    - name: Build (not on master)
+      run: mvn install 
        
