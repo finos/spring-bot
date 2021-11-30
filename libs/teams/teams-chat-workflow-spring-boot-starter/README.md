@@ -4,5 +4,5 @@
 
 This module implements the Chat Workflow API for Microsoft Teams. 
 
-For complete documentation, head over to [our docs location](https://robmoffat.github.io/spring-bot-docs).
+For complete documentation, head over to [our docs location](https://finos.github.io/symphony-java-toolkit).
 

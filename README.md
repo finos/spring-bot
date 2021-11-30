@@ -76,7 +76,7 @@ This is a highly convenient abstraction which works with Spring Boot's use of [J
 
 Provides Spring-Based configuration and auto-wiring for Symphony APIs.  This is perfect if you are building a Symphony Bot using Spring Boot.
 
- - [View the README](libs/symphony-api-spring-boot-starter/README.md)
+ - [View the README](libs/symphony-native/symphony-api-spring-boot-starter/README.md)
  - [Read the Bot-Building Tutorial](tutorials/Spring-Boot-Bot.md)
  - [View Demo Bot Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-bot)
 
@@ -94,7 +94,7 @@ This provides you with an out-of-the-box way to get started and build an app wit
 
 This is a utility that helps you serialize/deserialize JSON in a format suitable for the JSON data payload of a Symphony Message, using Jackson.
 
- - [View the README](libs/symphony-native/entity-json/README.md)
+ - [View the README](libs/entity-json/README.md)
  - [Read the Tutorial](tutorials/Entity-JSON.md)
  
 ## QuickFIX Support
@@ -103,7 +103,7 @@ This is a utility that helps you serialize/deserialize QuickFIX messages into JS
 
 Although this is not reliant on Symphony code, it is adjacent tech and so might be useful for sending FIX payloads within Symphony.
 
- - [View the README](libs/symphony-native/quickfix-json/README.md)
+ - [View the README](libs/quickfix-json/README.md)
  
  
 ## Symphony Shared Stream
