@@ -1,5 +1,6 @@
 package example.symphony.demobot;
 
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class DemoApplication {
 	
 	@Autowired
 	private SymphonyIdentity id;
+	
+	@Autowired
+	private EntityJsonConverter ejc;
 	
 	@Value("${room}")
 	private String streamId;
@@ -61,7 +65,7 @@ public class DemoApplication {
 	
 	@Bean
 	public StreamEventConsumer welcomeMessages() {
-		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id);
+		return new RoomWelcomeEventConsumer(messagesApi, usersApi, id, ejc);
 	}
 
 }
