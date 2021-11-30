@@ -234,7 +234,7 @@ If you are using JWT Authentication, then you can pass through the `Authenticati
 
 ## Tutorial
 
- - [Read the App-Building Tutorial](../../tutorials/Spring-Boot-App.md)
+ - [Read the App-Building Tutorial](../../../tutorials/Spring-Boot-App.md)
 
 
 

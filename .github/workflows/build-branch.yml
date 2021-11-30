@@ -1,4 +1,4 @@
-name: sjt-build
+name: sjt-branch-build
 
 env:
   CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}

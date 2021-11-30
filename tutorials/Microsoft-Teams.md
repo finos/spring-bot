@@ -26,9 +26,7 @@ We are going to create an `App`, which is something that is available in the Tea
 
 - Click `New App`
 
-![](teams/Screenshot%202021-10-21%20at%2011.50.39.png)
-
--  Name The App
+- Name The App
 
 ![](teams/app-name.png)
 
