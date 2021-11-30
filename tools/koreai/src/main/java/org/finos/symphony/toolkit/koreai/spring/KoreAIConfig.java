@@ -98,6 +98,10 @@ public class KoreAIConfig implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		addVersionSpaces(ejc);
+	}
+
+	public static void addVersionSpaces(EntityJsonConverter ejc) {
 		ejc.addVersionSpace(new VersionSpace(KoreAIResponse.class));
 		ejc.addVersionSpace(new VersionSpace(ObjectNode.class));
 		ejc.addVersionSpace(new VersionSpace(V4User.class));
