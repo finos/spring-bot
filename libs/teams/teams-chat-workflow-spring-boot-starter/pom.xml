@@ -37,6 +37,13 @@
 	        <artifactId>bot-azure</artifactId>
 	        <version>${teams.version}</version>
 	        <scope>compile</scope>
+	        <exclusions>
+	        	<!-- this is already included by spring -->
+	        	<exclusion>
+	        		<groupId>org.json</groupId>
+	        		<artifactId>json</artifactId>
+	        	</exclusion>
+	        </exclusions>
       	</dependency>
 		<dependency>
 			<groupId>com.microsoft.bot</groupId>

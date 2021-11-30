@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;

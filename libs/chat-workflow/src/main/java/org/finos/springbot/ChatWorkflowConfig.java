@@ -8,6 +8,7 @@ import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.ChatWorkflowErrorHandler;
 import org.finos.springbot.workflow.actions.form.FormEditConfig;
 import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.help.HelpController;
 import org.finos.springbot.workflow.history.AllHistory;
@@ -40,7 +41,10 @@ import org.springframework.util.ErrorHandler;
 import org.springframework.validation.Validator;
 
 @Configuration
-@Import(value =  { ResolverConfig.class, FormEditConfig.class })
+@Import(value =  { 
+		ResolverConfig.class, 
+		FormEditConfig.class,
+		DataHandlerConfig.class })
 public class ChatWorkflowConfig {
 	
 	@Bean

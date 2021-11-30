@@ -25,22 +25,22 @@ import org.finos.springbot.workflow.java.mapping.ChatMapping;
 import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ActivityTypes;
 import com.microsoft.bot.schema.Attachment;
 import com.microsoft.bot.schema.ChannelAccount;
+import com.microsoft.bot.schema.ConversationAccount;
 import com.microsoft.bot.schema.Entity;
 import com.microsoft.bot.schema.Mention;
 import com.microsoft.bot.schema.teams.ChannelInfo;
@@ -51,6 +51,7 @@ import com.microsoft.bot.schema.teams.TeamsChannelData;
 		MockTeamsConfiguration.class, 
 		TeamsWorkflowConfig.class,
 })
+@ActiveProfiles("teams")
 public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	
 	ArgumentCaptor<Activity> msg;
@@ -73,7 +74,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		tc = Mockito.mock(TurnContext.class);
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
 		msg = ArgumentCaptor.forClass(Activity.class);
-		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));
+		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));		
 		TeamsChat theRoom = new TeamsChat( "abc123", "tesxt room");
 		WorkResponse wr = new WorkResponse(theRoom, ob5, wm);
 		ButtonList bl = (ButtonList) wr.getData().get(ButtonList.KEY);
@@ -128,6 +129,9 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		a.setContentType(MediaType.TEXT_HTML_VALUE);
 		a.setContent("<div>"+s+"</div>");
 		out.setAttachment(a);
+		
+		ConversationAccount conv = new ConversationAccount(ROB_EXAMPLE_EMAIL);
+		out.setConversation(conv);
 		
 		TeamsChannelData tcd = new TeamsChannelData();
 		ChannelInfo ci = new ChannelInfo(CHAT_ID, OurController.SOME_ROOM);
