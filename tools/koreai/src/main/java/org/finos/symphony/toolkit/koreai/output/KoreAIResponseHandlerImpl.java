@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.koreai.output;
 
 import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.codec.Charsets;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.Address;
@@ -12,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.symphony.api.agent.MessagesApi;
