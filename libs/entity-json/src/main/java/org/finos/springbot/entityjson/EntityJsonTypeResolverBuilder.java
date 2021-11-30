@@ -1,8 +1,8 @@
 package org.finos.springbot.entityjson;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo.As;
@@ -38,9 +38,21 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 @SuppressWarnings("serial")
 public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 	
-	private VersionSpace[] allowed;
+	private List<VersionSpace> allowed;
 	
-	public EntityJsonTypeResolverBuilder(TypeFactory typeFactory, VersionSpace... allowed) {
+	public void addVersionSpace(VersionSpace vs) {
+		for (VersionSpace v: allowed) {
+			if (v.getToUse().equals(vs.getToUse())) {
+				if (!v.equals(vs)) {
+					throw new IllegalArgumentException("Version Space already contains "+vs.getToUse());
+				}
+			}
+		}
+		
+		allowed.add(vs);
+	}
+	
+	public EntityJsonTypeResolverBuilder(TypeFactory typeFactory, List<VersionSpace> allowed) {
 		super(DefaultTyping.JAVA_LANG_OBJECT, new PolymorphicTypeValidator.Base() {
 
 			@Override
@@ -74,13 +86,14 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		});
 
 		this.inclusion(As.PROPERTY);
-
+		this.allowed = allowed;
+		
 		this.init(Id.NAME, new ClassNameIdResolver(typeFactory.constructType(Object.class), typeFactory, _subtypeValidator) {
 
 			@Override
 			public String idFromValue(Object value) {
 				Class<?> c = value.getClass();
-				Optional<VersionSpace> vs = Arrays.stream(allowed)
+				Optional<VersionSpace> vs = allowed.stream()
 					.filter(v -> v.getToUse().equals(c))
 					.findFirst();
 				
@@ -93,7 +106,7 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 
 			@Override
 			public JavaType typeFromId(DatabindContext context, String id) throws IOException {
-				Optional<VersionSpace> vs = Arrays.stream(allowed)
+				Optional<VersionSpace> vs = allowed.stream()
 						.filter(v -> v.typeName.equals(id))
 						.findFirst();
 				
@@ -126,10 +139,6 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 		});
 		
 		this._typeProperty = "type";
-		this.allowed = allowed;
-
-		
-		
 	}
 	
 	public DeserializationProblemHandler getVersionHandler() {
@@ -142,19 +151,25 @@ public class EntityJsonTypeResolverBuilder extends DefaultTypeResolverBuilder {
 				if ("version".equals(propertyName)) {
 					String versionNumber = ctxt.readValue(p, String.class);
 					
+					JsonMappingException jme = null;
+					
 					for (VersionSpace versionSpace : allowed) {
 						if (versionSpace.typeMatches(beanOrClass)) {
 							if (versionSpace.versionMatches(versionNumber)) {
 								// ok
 								return true;
 							} else {
-								throw JsonMappingException.from(p, 
+								jme = JsonMappingException.from(p, 
 										"Version of object "+beanOrClass+
 										" was "+versionNumber+
 										" but versionSpace "+versionSpace.typeName+
 										" requires "+versionSpace.getVersions());
 							}
 						}
+					}
+					
+					if (jme != null) {
+						throw jme;
 					}
 					
 					return true;	// probably won't get here,

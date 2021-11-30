@@ -9,7 +9,7 @@ import org.symphonyoss.TaxonomyElement;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.Ticker;
 
-@Work(jsonTypeName = "org.symphonyoss.fin.security", index = false)
+@Work(jsonTypeName = "org.symphonyoss.fin.security", index = false, readVersions = {"0.*"} )
 public final class CashTag extends Security implements Tag {
 	
 	public CashTag() {

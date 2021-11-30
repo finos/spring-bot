@@ -1,7 +1,9 @@
 package org.finos.symphony.toolkit.koreai.output;
 
-import org.apache.commons.codec.Charsets;
+import java.nio.charset.StandardCharsets;
+
 import org.finos.springbot.entityjson.EntityJson;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.slf4j.Logger;
@@ -10,7 +12,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import com.symphony.api.agent.MessagesApi;
@@ -29,20 +30,20 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
     private final boolean skipEmptyAnswers;
     private final boolean sendErrorsToSymphony;
     private ResourceLoader rl;
-    private ObjectMapper symphonyObjectMapper;
+    private EntityJsonConverter ejc;
     private String templatePrefix;
 
     public KoreAIResponseHandlerImpl(MessagesApi messagesApi, 
     		ResourceLoader rl, 
     		boolean skipEmptyAnswers, 
     		boolean sendErrorsToSymphony,
-    		ObjectMapper symphonyObjectMapper,
+    		EntityJsonConverter ejc,
     		String templatePrefix) {
         this.messagesApi = messagesApi;
         this.skipEmptyAnswers = skipEmptyAnswers;
         this.sendErrorsToSymphony = sendErrorsToSymphony;
         this.rl = rl;
-        this.symphonyObjectMapper = symphonyObjectMapper;
+        this.ejc = ejc;
         this.templatePrefix = templatePrefix;
     }
 
@@ -85,7 +86,7 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
 
 	private String loadResourceOrShowError(Resource r) {
 		try {
-			return StreamUtils.copyToString(r.getInputStream(), Charsets.UTF_8);
+			return StreamUtils.copyToString(r.getInputStream(), StandardCharsets.UTF_8);
 		} catch (Exception e) {
 			LOG.error("Problem loading template:", e);
 			return "<messageML><div>Couldn't load template: "+e.getMessage()+"</div></messageML>";
@@ -97,7 +98,7 @@ public class KoreAIResponseHandlerImpl implements KoreAIResponseHandler {
     	out.put("koreai", on);
     	String json;
 		try {
-			json = symphonyObjectMapper.writeValueAsString(out);
+			json = ejc.writeValue(out);
 			messagesApi.v4StreamSidMessageCreatePost(null, to.getRoomStreamID(), template, json, null, null, null, null);
 		} catch (Exception e) {
 			if (sendErrorsToSymphony) {

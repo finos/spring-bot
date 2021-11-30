@@ -14,14 +14,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.util.StringUtils;
 
-public class AbstractDataHandlerConfig {
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-	private static final Logger LOG = LoggerFactory.getLogger(AbstractDataHandlerConfig.class);
+public class DataHandlerConfig {
+
+	private static final Logger LOG = LoggerFactory.getLogger(DataHandlerConfig.class);
 
 	@Autowired
 	ApplicationContext ac;
@@ -29,6 +36,21 @@ public class AbstractDataHandlerConfig {
 	protected List<VersionSpace> scanForWorkClasses() {
 		return scanForWorkClasses(ac);
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public EntityJsonConverter entityJsonConverter() {
+		List<VersionSpace> workAnnotatedversionSpaces = scanForWorkClasses();
+		
+		ObjectMapper om = new ObjectMapper();
+		om.enable(SerializationFeature.INDENT_OUTPUT);
+		om.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
+		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		om.registerModule(new JavaTimeModule());
+				
+		return new EntityJsonConverter(om, workAnnotatedversionSpaces);
+	}
+	
 	
 	public static List<VersionSpace> scanForWorkClasses(ApplicationContext ac) {
 		ClassPathScanningCandidateComponentProvider scanner = new ClassPathScanningCandidateComponentProvider(false);

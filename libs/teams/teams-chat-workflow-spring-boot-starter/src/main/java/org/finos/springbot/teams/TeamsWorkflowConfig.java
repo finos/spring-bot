@@ -10,7 +10,6 @@ import org.finos.springbot.teams.content.TeamsHTMLParser;
 import org.finos.springbot.teams.content.TeamsMarkupWriter;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
-import org.finos.springbot.teams.data.TeamsDataHandlerConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
@@ -68,7 +67,6 @@ import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
 	ChatWorkflowConfig.class, 
 	TeamsContentConfig.class,
 	AdaptiveCardConverterConfig.class,
-	TeamsDataHandlerConfig.class,
 })
 @Profile("teams")
 public class TeamsWorkflowConfig extends BotDependencyConfiguration {

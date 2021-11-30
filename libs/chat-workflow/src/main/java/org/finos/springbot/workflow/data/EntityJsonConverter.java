@@ -1,6 +1,10 @@
 package org.finos.springbot.workflow.data;
 
+import java.util.List;
+
 import org.finos.springbot.entityjson.EntityJson;
+import org.finos.springbot.entityjson.EntityJsonTypeResolverBuilder;
+import org.finos.springbot.entityjson.VersionSpace;
 import org.finos.springbot.workflow.response.DataResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +20,12 @@ public class EntityJsonConverter implements DataHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(EntityJsonConverter.class);
 
 	ObjectMapper om;
+	EntityJsonTypeResolverBuilder ejtsb;
 	
-	public EntityJsonConverter(ObjectMapper om) {
+	public EntityJsonConverter(ObjectMapper om, List<VersionSpace> initial) {
+		ejtsb = new EntityJsonTypeResolverBuilder(om.getTypeFactory(), initial);
+		om.setDefaultTyping(ejtsb);
+		om.addHandler(ejtsb.getVersionHandler());
 		this.om = om;
 	}
 
@@ -54,6 +62,10 @@ public class EntityJsonConverter implements DataHandler {
 
 	public ObjectMapper getObjectMapper() {
 		return om;
+	}
+	
+	public void addVersionSpace(VersionSpace vs) {
+		ejtsb.addVersionSpace(vs);
 	}
 
 	@Override
