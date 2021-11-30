@@ -45,8 +45,10 @@ public class TeamsHTMLParser extends AbstractContentParser<String, List<Entity>>
 			ObjectNode on = (ObjectNode) props.get("mentioned");
 			String id = on.get("id").asText();
 			String name = on.get("name").asText();
-			TeamsChat out = new TeamsChat(id, name);
-			return out;
+			// FIXME:  need to decide whether a chat or a user.
+			throw new UnsupportedOperationException("Not coded");
+//			TeamsChat out = new TeamsChat(id, name);
+//			return out;
 		}
 
 		@Override
