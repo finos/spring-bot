@@ -7,7 +7,7 @@ import java.util.stream.IntStream;
 
 import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.springbot.entityjson.VersionSpace;
-import org.finos.springbot.workflow.data.AbstractDataHandlerConfig;
+import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.stream.Participant;

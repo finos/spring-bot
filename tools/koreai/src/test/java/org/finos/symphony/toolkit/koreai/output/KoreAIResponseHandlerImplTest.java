@@ -43,7 +43,6 @@ import freemarker.template.Version;
  * @author rodriva
  */
 @ExtendWith(SpringExtension.class)
-
 public class KoreAIResponseHandlerImplTest {
 
     private KoreAIResponseHandler output;

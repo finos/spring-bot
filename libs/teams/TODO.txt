@@ -1,5 +1,6 @@
 14. Saving templates (GH Ticket)
 18. Client-side validation (GH Ticket)
+25.  Fix Coverage
 
 1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead. (maybe)
 20. Build time editors / viewers (both symphony and teams)
@@ -13,6 +14,4 @@
 21.  handle tennant id	
 22.  thymeleaf templating
 23.  auto-generate manifest?
-24.  Remove MSGraph stuff - no longer needed.
-25.  Fix Coverage
 26.  Fix the Bots : ToDo, Claim Bot, News, Demo etc.

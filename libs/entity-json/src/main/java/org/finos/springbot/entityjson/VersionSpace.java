@@ -1,6 +1,7 @@
 package org.finos.springbot.entityjson;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -72,6 +73,28 @@ public class VersionSpace {
 	public String toString() {
 		return "VersionSpace [typeName=" + typeName + ", writeVersion=" + writeVersion + ", readVersions="
 				+ Arrays.toString(readVersions) + ", toUse=" + toUse + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.hashCode(readVersions);
+		result = prime * result + Objects.hash(toUse, typeName, writeVersion);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		VersionSpace other = (VersionSpace) obj;
+		return Arrays.equals(readVersions, other.readVersions) && Objects.equals(toUse, other.toUse)
+				&& Objects.equals(typeName, other.typeName) && Objects.equals(writeVersion, other.writeVersion);
 	}
 
 }

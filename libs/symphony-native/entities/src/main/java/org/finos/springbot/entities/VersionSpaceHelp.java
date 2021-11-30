@@ -22,8 +22,8 @@ public class VersionSpaceHelp {
 	 * The Symphony client itself uses classes like Isin, Ticker, Mention, UserId when reporting hashtags, cashtags etc.
 	 * This function provides a default set of VersionSpaces to allow these to be deserialized.
 	 */
-	public static VersionSpace[] basicSymphonyVersionSpace() {
-		return new VersionSpace[] { 
+	public static List<VersionSpace> basicSymphonyVersionSpace() {
+		return Arrays.asList( 
 				new VersionSpace(Taxonomy.class, "1.0"),
 				new VersionSpace(Security.class, "1.0", "0.*"),
 				new VersionSpace(Mention.class, "1.0"), 
@@ -32,28 +32,8 @@ public class VersionSpaceHelp {
 				ObjectMapperFactory.noVersion(Ticker.class), 
 				ObjectMapperFactory.noVersion(Cusip.class), 
 				ObjectMapperFactory.noVersion(Isin.class), 
-				ObjectMapperFactory.noVersion(Openfigi.class),
-			};
-	}
-
-	/**
-	 * Provides all of the classes in the basicSymphonyVersionSpace (above), as well as any you provide in the
-	 * varargs.
-	 */
-	public static VersionSpace[] extendedSymphonyVersionSpace(List<VersionSpace> second) {
-		VersionSpace[] cc = new VersionSpace[second.size()];
-		return extendedSymphonyVersionSpace(second.toArray(cc));
-	}
-
-	/**
-	 * Provides all of the classes in the basicSymphonyVersionSpace (above), as well as any you provide in the
-	 * varargs.
-	 */
-	public static VersionSpace[] extendedSymphonyVersionSpace(VersionSpace... first) {
-		VersionSpace[] second = basicSymphonyVersionSpace();
-		VersionSpace[] result = Arrays.copyOf(first, first.length + second.length);
-		System.arraycopy(second, 0, result, first.length, second.length);
-		return result;
+				ObjectMapperFactory.noVersion(Openfigi.class)
+			);
 	}
 
 }

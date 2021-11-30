@@ -6,9 +6,8 @@ import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.net.ssl.TrustManagerFactory;
 
-import org.finos.springbot.entityjson.ObjectMapperFactory;
 import org.finos.springbot.entityjson.VersionSpace;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
@@ -16,9 +15,9 @@ import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
-import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -27,14 +26,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.symphony.api.model.V4User;
 
 @Configuration
 @EnableConfigurationProperties({KoreAIProperties.class, SymphonyApiProperties.class})
 @EnableWebMvc
-public class KoreAIConfig {
+public class KoreAIConfig implements InitializingBean {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIConfig.class);
 	public static final String KORE_AI_BRIDGE_FACTORY_BEAN = "KoreAiBridgeFactoryBean";
@@ -58,25 +56,10 @@ public class KoreAIConfig {
 	@Autowired(required = false)
 	@Named(SymphonyApiTrustManagersConfig.SYMPHONY_TRUST_MANAGERS_BEAN)
 	TrustManagerFactory tmf;
-		
-	@Bean
-	@ConditionalOnMissingBean
-	public ObjectMapper symphonyObjectMapper() {
-		return koreAIObjectMapper();
-	}
-
-	public static ObjectMapper koreAIObjectMapper() {
-		ObjectMapper out = new ObjectMapper();
-		ObjectMapperFactory.initialize(out, SymphonyDataHandlerCofig
-			.extendedSymphonyVersionSpace( 
-				LogMessage.VERSION_SPACE,	
-				new VersionSpace(KoreAIResponse.class),
-				new VersionSpace(ObjectNode.class),
-				new VersionSpace(V4User.class)));
-
-		return out;
-	}
 	
+	@Autowired
+	EntityJsonConverter ejc;
+		
 	@Bean
 	@ConditionalOnMissingBean
 	public ExceptionConsumer exceptionConsumer() {
@@ -88,7 +71,7 @@ public class KoreAIConfig {
 	public KoreAIBridgeFactory koreAIBridgeFactory() {
 		return new KoreAIBridgeFactoryImpl(
 			rl, 
-			symphonyObjectMapper(), 
+			ejc, 
 			koreProperties, 
 			sshf, 
 			symphonyAPIInstanceFactory, 
@@ -111,6 +94,13 @@ public class KoreAIConfig {
 		LOG.info("Constructed {} bridges", out.size());
 		out.forEach(c -> LOG.debug(c.getInstance().getIdentity().getEmail()));
 		return out;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		ejc.addVersionSpace(new VersionSpace(KoreAIResponse.class));
+		ejc.addVersionSpace(new VersionSpace(ObjectNode.class));
+		ejc.addVersionSpace(new VersionSpace(V4User.class));
 	}
 	
 }
