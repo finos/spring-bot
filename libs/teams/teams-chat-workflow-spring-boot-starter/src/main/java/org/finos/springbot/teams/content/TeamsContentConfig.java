@@ -1,5 +1,7 @@
 package org.finos.springbot.teams.content;
 
+import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
+import org.finos.springbot.teams.content.serialization.TeamsMarkupWriter;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.CodeBlock;
 import org.finos.springbot.workflow.content.Heading;
@@ -12,11 +14,13 @@ import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class TeamsContentConfig {
+	
 	
 
 	@Bean
@@ -41,8 +45,8 @@ public class TeamsContentConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsHTMLParser teamsHTMLParser() {
-		return new TeamsHTMLParser();
+	public TeamsHTMLParser teamsHTMLParser(ApplicationContext ctx) {
+		return new TeamsHTMLParser(ctx);
 	}
 	
 }

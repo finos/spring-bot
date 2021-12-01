@@ -4,8 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.finos.springbot.teams.content.TeamsChat;
-import org.finos.springbot.teams.content.TeamsHTMLParser;
+import org.finos.springbot.teams.content.serialization.ParseContext;
+import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
+import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Image;
 import org.finos.springbot.workflow.content.Message;
@@ -15,13 +16,24 @@ import org.finos.springbot.workflow.content.UnorderedList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.bot.schema.Entity;
 
+@SpringBootTest(classes = {
+		TeamsContentConfig.class,
+})
 public class TeamsHTMLParserTest {
 
-	TeamsHTMLParser parser = new TeamsHTMLParser();
+	@Autowired
+	TeamsHTMLParser parser;
+	
+	@MockBean
+	TeamsConversations tc;
 	
 	@Test
 	public void testSimpleImageMessageParse() {
@@ -75,14 +87,21 @@ public class TeamsHTMLParserTest {
 				 "{\"type\":\"mention\",\"text\":\"<at>General</at>\",\"mentioned\":{\"id\":\"29:1-XAcnCve4eHbCHU4O8XHbx5Sx3cM2CxKtU4BbXmv1e99zp-4oUdX-8mP8SkToJzfkXxd4c1bQvSeAZGowOQwdv2h20lH6c-bbWTPRrdhi68\",\"name\":\"General\"}}"
 		};
 		List<Entity> entities = parseEntities(someEntities);
-				
-		Message m = parser.apply(" <div><div><span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Rob's Echo App</span>&nbsp;ask <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">Suresh Rupnar</span>&nbsp;for <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"2\">General</span></div></div>", entities);
+		ParseContext pc = new ParseContext(new TeamsChannel("abc123", "rando"), entities);
 		
-		List<TeamsChat> mentions1 = m.only(TeamsChat.class);
+		Mockito.when(tc.getTeamsChannels(Mockito.any())).thenReturn(Arrays.asList(
+				new TeamsChannel("bhhs", null)
+				));
+				
+		Message m = parser.apply(" <div><div><span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Rob's Echo App</span>&nbsp;ask <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">Suresh Rupnar</span>&nbsp;for <span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"2\">General</span></div></div>", pc);
+		
+		List<TeamsMention> mentions1 = m.only(TeamsMention.class);
 		
 		Assertions.assertEquals(3, mentions1.size());
 		Assertions.assertEquals("Suresh Rupnar", mentions1.get(1).getName());
 		Assertions.assertEquals("abc123", mentions1.get(0).getKey());
+		Assertions.assertEquals("bhhs", mentions1.get(2).getKey());
+		
 		
 	}
 

@@ -8,7 +8,7 @@ import java.util.List;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.TeamsWorkflowConfig;
-import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

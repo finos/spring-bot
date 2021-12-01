@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 
 import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.TeamsWorkflowConfig;
-import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
@@ -75,7 +75,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
 		msg = ArgumentCaptor.forClass(Activity.class);
 		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));		
-		TeamsChat theRoom = new TeamsChat( "abc123", "tesxt room");
+		TeamsMultiwayChat theRoom = new TeamsMultiwayChat( "abc123", "tesxt room");
 		WorkResponse wr = new WorkResponse(theRoom, ob5, wm);
 		ButtonList bl = (ButtonList) wr.getData().get(ButtonList.KEY);
 		Button submit = new Button("submit", Type.ACTION, "GO");

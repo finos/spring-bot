@@ -6,8 +6,8 @@ import java.util.Properties;
 
 import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.teams.content.TeamsContentConfig;
-import org.finos.springbot.teams.content.TeamsHTMLParser;
-import org.finos.springbot.teams.content.TeamsMarkupWriter;
+import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
+import org.finos.springbot.teams.content.serialization.TeamsMarkupWriter;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
 import org.finos.springbot.teams.form.TeamsFormConverter;

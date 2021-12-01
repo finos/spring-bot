@@ -4,7 +4,11 @@
 25.  Fix Coverage
 
 20. Build time editors / viewers (both symphony and teams)
-22. Thymeleaf templating
+22. Thymeleaf templating, review ALL tests
+28. BDK Version of Symphony
+29. Time editing 
+
+30.  Make welcome listener generic teams and symph
 
 7.  Convert keys to values with dropdowns/enums/users in view mode 
 	 - this needs the original options list to be present (I think).   
