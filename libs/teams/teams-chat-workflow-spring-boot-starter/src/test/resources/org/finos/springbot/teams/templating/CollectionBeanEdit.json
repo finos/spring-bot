@@ -33,7 +33,7 @@
                   "style" : "default",
                   "items" : [ {
                     "type" : "TextBlock",
-                    "text" : "${if($data.s,string($data.s),'')}"
+                    "text" : "${if($data.s,($data.s),'')}"
                   } ]
                 } ]
               }, {
@@ -71,7 +71,11 @@
                   "actions" : [ {
                     "type" : "Action.Submit",
                     "title" : "Edit",
-                    "id" : "form.innerstable-edit-row"
+                    "id" : "form.innerstable-edit-row",
+                    "data" : {
+                      "action" : "Edit",
+                      "form" : "${root.formid}"
+                    }
                   } ]
                 } ]
               } ]
@@ -82,7 +86,11 @@
             "actions" : [ {
               "type" : "Action.Submit",
               "title" : "Delete Selected",
-              "id" : "form.innerstable-delete-rows"
+              "id" : "form.innerstable-delete-rows",
+              "data" : {
+                "action" : "Delete Selected",
+                "form" : "${root.formid}"
+              }
             } ]
           } ]
         } ]
@@ -94,6 +102,11 @@
       "type" : "Action.Submit",
       "title" : "${text}",
       "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
       "$data" : "${buttons.contents}"
     } ]
   } ]

@@ -28,7 +28,7 @@
               "style" : "default",
               "items" : [ {
                 "type" : "TextBlock",
-                "text" : "${if($data.s,string($data.s),'')}"
+                "text" : "${if($data.s,($data.s),'')}"
               } ]
             } ]
           }, {

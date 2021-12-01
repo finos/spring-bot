@@ -28,7 +28,7 @@
               "style" : "default",
               "items" : [ {
                 "type" : "TextBlock",
-                "text" : "${if(form.a.s,string(form.a.s),'')}"
+                "text" : "${if(form.a.s,(form.a.s),'')}"
               } ]
             } ]
           } ]
@@ -57,7 +57,7 @@
               "style" : "default",
               "items" : [ {
                 "type" : "TextBlock",
-                "text" : "${if(form.b.s,string(form.b.s),'')}"
+                "text" : "${if(form.b.s,(form.b.s),'')}"
               } ]
             } ]
           } ]

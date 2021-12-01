@@ -16,7 +16,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.i,formatEpoch(form.i),'')}"
+          "text" : "${if(form.i,(form.i),'')}"
         } ]
       } ]
     }, {
@@ -30,7 +30,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.ldt,string(form.ldt),'')}"
+          "text" : "${if(form.ldt,(form.ldt),'')}"
         } ]
       } ]
     }, {
@@ -44,7 +44,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.zid,string(form.zid),'')}"
+          "text" : "${if(form.zid,(form.zid),'')}"
         } ]
       } ]
     }, {
@@ -58,7 +58,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.ld,string(form.ld),'')}"
+          "text" : "${if(form.ld,(form.ld),'')}"
         } ]
       } ]
     }, {
@@ -72,7 +72,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.lt,string(form.lt),'')}"
+          "text" : "${if(form.lt,(form.lt),'')}"
         } ]
       } ]
     }, {
@@ -86,7 +86,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.zdt,formatEpoch(form.zdt),'')}"
+          "text" : "${if(form.zdt,(form.zdt),'')}"
         } ]
       } ]
     } ]
