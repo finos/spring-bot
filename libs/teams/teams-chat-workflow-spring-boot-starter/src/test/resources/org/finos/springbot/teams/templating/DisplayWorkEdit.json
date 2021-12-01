@@ -7,7 +7,7 @@
     "style" : "emphasis",
     "items" : [ {
       "type" : "Input.Text",
-      "value" : "${if(form.s,string(form.s),'')}",
+      "value" : "${if(form.s,(form.s),'')}",
       "id" : "s",
       "label" : "Some crazy name"
     }, null ]
@@ -17,6 +17,11 @@
       "type" : "Action.Submit",
       "title" : "${text}",
       "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
       "$data" : "${buttons.contents}"
     } ]
   } ]

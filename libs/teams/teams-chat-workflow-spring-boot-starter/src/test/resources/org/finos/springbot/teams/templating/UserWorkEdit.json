@@ -8,9 +8,9 @@
     "items" : [ {
       "type" : "Input.ChoiceSet",
       "value" : "${form.b.key}",
-      "id" : "b.key",
+      "id" : "b",
       "choices" : [ {
-        "$data" : "${biglist}",
+        "$data" : "${biglist.contents}",
         "title" : "${name}",
         "value" : "${key}"
       } ],
@@ -18,9 +18,9 @@
     }, {
       "type" : "Input.ChoiceSet",
       "value" : "${form.s.key}",
-      "id" : "s.key",
+      "id" : "s",
       "choices" : [ {
-        "$data" : "${smalllist}",
+        "$data" : "${smalllist.contents}",
         "title" : "${name}",
         "value" : "${key}"
       } ],
@@ -32,6 +32,11 @@
       "type" : "Action.Submit",
       "title" : "${text}",
       "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
       "$data" : "${buttons.contents}"
     } ]
   } ]

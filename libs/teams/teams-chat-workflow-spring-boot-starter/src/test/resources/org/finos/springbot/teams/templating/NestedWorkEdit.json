@@ -19,7 +19,7 @@
           "style" : "emphasis",
           "items" : [ {
             "type" : "Input.Text",
-            "value" : "${if(form.a.s,string(form.a.s),'')}",
+            "value" : "${if(form.a.s,(form.a.s),'')}",
             "id" : "a.s",
             "label" : "S"
           } ]
@@ -39,7 +39,7 @@
           "style" : "emphasis",
           "items" : [ {
             "type" : "Input.Text",
-            "value" : "${if(form.b.s,string(form.b.s),'')}",
+            "value" : "${if(form.b.s,(form.b.s),'')}",
             "id" : "b.s",
             "label" : "S"
           } ]
@@ -52,6 +52,11 @@
       "type" : "Action.Submit",
       "title" : "${text}",
       "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
       "$data" : "${buttons.contents}"
     } ]
   } ]

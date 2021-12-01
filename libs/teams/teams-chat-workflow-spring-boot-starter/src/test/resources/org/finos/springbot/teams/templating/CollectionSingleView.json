@@ -16,7 +16,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if($data,string($data),'')}",
+          "text" : "${if($data,($data),'')}",
           "$data" : "${form.ints}"
         } ]
       } ]
@@ -31,7 +31,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if($data,string($data),'')}",
+          "text" : "${if($data,($data),'')}",
           "$data" : "${form.strings}"
         } ]
       } ]

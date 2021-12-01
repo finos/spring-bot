@@ -21,7 +21,7 @@
             "style" : "default",
             "items" : [ {
               "type" : "TextBlock",
-              "text" : "${if($data,string($data),'')}"
+              "text" : "${if($data,($data),'')}"
             }, {
               "type" : "ColumnSet",
               "separator" : true,
@@ -42,7 +42,11 @@
                   "actions" : [ {
                     "type" : "Action.Submit",
                     "title" : "Edit",
-                    "id" : "form.intstable-edit-row"
+                    "id" : "form.intstable-edit-row",
+                    "data" : {
+                      "action" : "Edit",
+                      "form" : "${root.formid}"
+                    }
                   } ]
                 } ]
               } ]
@@ -53,7 +57,11 @@
             "actions" : [ {
               "type" : "Action.Submit",
               "title" : "Delete Selected",
-              "id" : "form.intstable-delete-rows"
+              "id" : "form.intstable-delete-rows",
+              "data" : {
+                "action" : "Delete Selected",
+                "form" : "${root.formid}"
+              }
             } ]
           } ]
         } ]
@@ -74,7 +82,7 @@
             "style" : "default",
             "items" : [ {
               "type" : "TextBlock",
-              "text" : "${if($data,string($data),'')}"
+              "text" : "${if($data,($data),'')}"
             }, {
               "type" : "ColumnSet",
               "separator" : true,
@@ -95,7 +103,11 @@
                   "actions" : [ {
                     "type" : "Action.Submit",
                     "title" : "Edit",
-                    "id" : "form.stringstable-edit-row"
+                    "id" : "form.stringstable-edit-row",
+                    "data" : {
+                      "action" : "Edit",
+                      "form" : "${root.formid}"
+                    }
                   } ]
                 } ]
               } ]
@@ -106,7 +118,11 @@
             "actions" : [ {
               "type" : "Action.Submit",
               "title" : "Delete Selected",
-              "id" : "form.stringstable-delete-rows"
+              "id" : "form.stringstable-delete-rows",
+              "data" : {
+                "action" : "Delete Selected",
+                "form" : "${root.formid}"
+              }
             } ]
           } ]
         } ]
@@ -118,6 +134,11 @@
       "type" : "Action.Submit",
       "title" : "${text}",
       "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
       "$data" : "${buttons.contents}"
     } ]
   } ]
