@@ -1,12 +1,12 @@
 <messageML>
 <#-- starting template -->
-<form id="org.finos.springbot.tests.work.ChatWork"><table><tr><td style="width: 200px"><b>S:</b></td><td>
+<form id="org.finos.springbot.tests.work.DropdownWork"><table><tr><td style="width: 200px"><b>S:</b></td><td>
   <span class="tempo-text-color--red">${entity.errors.contents['s']!''}</span>
   <div style="min-height: 100px;"><select 
    name="s"
    data-placeholder="Choose s">
-    <#list entity.chatlist.contents as iB>
-     <option value="${iBkey}" selected="${(((entity.form.s.key)!'') == iB.key)?string('true','false')}">
+    <#list entity.options.contents as iB>
+     <option value="${iBkey}" selected="${(((entity.form.s)!'') == iB.key)?string('true','false')}">
       ${iB.name}
      </option>
    </#list>
