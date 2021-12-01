@@ -3,14 +3,13 @@ package org.finos.springbot.teams.conversations;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.teams.TeamsException;
-import org.finos.springbot.teams.content.TeamsConversation;
 import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.content.TeamsChannel;
 import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.content.Addressable;
@@ -21,17 +20,11 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
-import com.microsoft.bot.builder.TurnContextImpl;
 import com.microsoft.bot.builder.teams.TeamsInfo;
 import com.microsoft.bot.connector.ConnectorClient;
 import com.microsoft.bot.connector.Conversations;
-import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ChannelAccount;
 import com.microsoft.bot.schema.ConversationAccount;
-import com.microsoft.bot.schema.ConversationsResult;
-import com.microsoft.bot.schema.RoleTypes;
-import com.microsoft.bot.schema.teams.TeamDetails;
-import com.microsoft.bot.schema.teams.TeamsChannelData;
 
 public class TeamsConversationsImpl implements TeamsConversations {
 	
@@ -62,7 +55,7 @@ public class TeamsConversationsImpl implements TeamsConversations {
 	public Set<Addressable> getAllAddressables() {
 		try {
 			return getConversations().getConversations().get().getConversations().stream()
-					.map(c -> new TeamsChat(c.getId(), ""))
+					.map(c -> new TeamsMultiwayChat(c.getId(), ""))
 					.collect(Collectors.toSet());
 		} catch (Exception e) {
 			throw new TeamsException("Couldn't do getAllAddressables", e);
@@ -110,25 +103,53 @@ public class TeamsConversationsImpl implements TeamsConversations {
 	}
 
 	@Override
-	public TeamsAddressable getTeamsChat(TurnContext tc) {
+	public TeamsAddressable getTeamsAddressable(TurnContext tc) {
 		ConversationAccount tcd = tc.getActivity().getConversation();
 		if ("groupChat".equals(tcd.getConversationType())) {
-			return new TeamsChat(tcd.getId(), "Group Chat");
+			return new TeamsMultiwayChat(tcd.getId(), "Group Chat");
 		} else if ("channel".equals(tcd.getConversationType())){
-			try {
-				TeamDetails td = TeamsInfo.getTeamDetails(tc, tc.getActivity().teamsGetTeamId()).get();
-				return new TeamsConversation(td.getAadGroupId(), tcd.getId(), tcd.getName());
-			} catch (Exception e) {
-				throw new TeamsException("Couldn't identify channel details", e);
-			}
+			return new TeamsChannel(tcd.getId(), tcd.getName());
 		} else {
+			// one-to-one chat.
 			return null;
 		}
 	}
 
 	@Override
-	public User getUser(ChannelAccount from) {
+	public TeamsAddressable getAddressable(ChannelAccount from) {
+		if (isChannel(from)) {
+			return new TeamsChannel(from.getId(), from.getName());
+		} else {
+			return new TeamsUser(from.getId(), from.getName(), from.getAadObjectId());
+		}
+	}
+
+	@Override
+	public List<TeamsChannel> getTeamsChannels(TurnContext tc) {
+		try {
+			return TeamsInfo.getTeamChannels(tc, null).get().stream()
+				.map(ci -> new TeamsChannel(ci.getId(), ci.getName()))
+				.collect(Collectors.toList());
+		} catch (Exception e) {
+			throw new TeamsException("Couldn't get channel list ", e);
+		}
+	}
+
+	@Override
+	public boolean isChannel(ChannelAccount ca) {
+		TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
+		List<TeamsChannel> channels = getTeamsChannels(tc);
+		return channels.stream()
+			.filter(x -> x.getKey().equals(ca.getId()))
+			.findFirst()
+			.isPresent();
+	}
+
+	@Override
+	public TeamsUser getUser(ChannelAccount from) {
 		return new TeamsUser(from.getId(), from.getName(), from.getAadObjectId());
 	}
+	
+	
 
 }

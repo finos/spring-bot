@@ -1,8 +1,9 @@
-package org.finos.springbot.teams.content;
+package org.finos.springbot.teams.content.serialization;
 
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import org.finos.springbot.teams.content.TeamsMention;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.serialization.MarkupWriter;

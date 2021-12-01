@@ -3,24 +3,37 @@ package org.finos.springbot.teams.content;
 import java.util.Objects;
 
 import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Tag;
-import org.finos.springbot.workflow.content.User;
 
+/**
+ * A channel exists within a team.  You can @-mention it.  It contains conversations.
+ * 
+ * @author rob@kite9.com
+ *
+ */
 @Work(index = false)
-public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
+public class TeamsChannel implements Chat, TeamsChat, TeamsMention {
+
+	String key;
+	String name;
 	
-	public TeamsUser() {
+	public void setKey(String key) {
+		this.key = key;
 	}
-			
-	public TeamsUser(String id, String name, String aadObjectId) {
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public TeamsChannel() {
+		super();
+	}
+
+	public TeamsChannel(String id, String name) {
 		this.key = id;
 		this.name = name;
-		this.aadObjectId = aadObjectId;
 	}
-	
-	private String aadObjectId;
-	private String key;
-	private String name;
 
 	@Override
 	public String getName() {
@@ -55,22 +68,4 @@ public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
 		return key;
 	}
 	
-	public String getAadObjectId() {
-		return aadObjectId;
-	}
-
-	public void setAadObjectId(String aadObjectId) {
-		this.aadObjectId = aadObjectId;
-	}
-
-	public void setKey(String key) {
-		this.key = key;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	
-
 }

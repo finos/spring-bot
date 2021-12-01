@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.handlers.JavascriptSubstitution;
 import org.finos.springbot.tests.templating.AbstractTemplatingTest;
@@ -55,7 +55,7 @@ public class TeamsTemplatingTest extends AbstractTemplatingTest {
 	
 	@Override
 	protected Chat getChat() {
-		return new TeamsChat("chatID123", "Some Chat Channel");
+		return new TeamsMultiwayChat("chatID123", "Some Chat Channel");
 	}
 
 	@Override
@@ -133,7 +133,7 @@ public class TeamsTemplatingTest extends AbstractTemplatingTest {
 	@Override
 	protected DropdownList createSomeChats(int count) {
 		return new DropdownList(IntStream.range(0, count)
-				.mapToObj(i -> i == 0 ? getChat() : new TeamsChat("idc"+i, "Chat name of "+i))
+				.mapToObj(i -> i == 0 ? getChat() : new TeamsMultiwayChat("idc"+i, "Chat name of "+i))
 				.map(tu -> new Item(tu.getKey(), tu.getName()))
 				.collect(Collectors.toList()));
 	}
