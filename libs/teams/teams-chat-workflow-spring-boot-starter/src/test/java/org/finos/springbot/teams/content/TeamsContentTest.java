@@ -40,7 +40,7 @@ public class TeamsContentTest extends AbstractContentTest {
 		String out = mw.apply(m, mae);
 		System.out.println(out);
 		Assertions.assertEquals(load("testTeamsContents.html"), out);		
-		Assertions.assertEquals(3,  mae.getEntities().size());
+		Assertions.assertEquals(2,  mae.getEntities().size());
 		
 		String jsonOut = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(mae.getEntities());
 		System.out.println(jsonOut);

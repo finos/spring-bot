@@ -1,15 +1,8 @@
 [ {
   "type" : "mention",
-  "text" : "<at>Some Chat</at>",
-  "mentioned" : {
-    "id" : "id123",
-    "name" : "Some Chat"
-  }
-}, {
-  "type" : "mention",
   "text" : "<at>Big Convo</at>",
   "mentioned" : {
-    "id" : "213",
+    "id" : "aad123",
     "name" : "Big Convo"
   }
 }, {

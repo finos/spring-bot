@@ -31,8 +31,8 @@ public class TeamsMultiwayChat implements Chat, TeamsChat {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof TeamsMention) {
-			return this.key.equals(((TeamsMention) obj).getKey());
+		if (obj instanceof TeamsMultiwayChat) {
+			return this.key.equals(((TeamsMultiwayChat) obj).getKey());
 		} else {
 			return false;
 		}

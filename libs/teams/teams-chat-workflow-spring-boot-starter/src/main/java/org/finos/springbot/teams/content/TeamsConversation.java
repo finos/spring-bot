@@ -50,8 +50,8 @@ public class TeamsConversation implements Chat, TeamsAddressable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof TeamsMention) {
-			return this.key.equals(((TeamsMention) obj).getKey());
+		if (obj instanceof TeamsConversation) {
+			return this.key.equals(((TeamsConversation) obj).getKey());
 		} else {
 			return false;
 		}
