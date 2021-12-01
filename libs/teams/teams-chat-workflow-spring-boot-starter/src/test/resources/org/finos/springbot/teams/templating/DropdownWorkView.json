@@ -1,0 +1,24 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Container",
+      "items" : [ {
+        "type" : "TextBlock",
+        "text" : "S",
+        "wrap" : true
+      }, {
+        "type" : "Container",
+        "style" : "default",
+        "items" : [ {
+          "type" : "TextBlock",
+          "text" : "${if(form.s,first(where(options.contents, o, o.key == form.s)).name,'')}"
+        } ]
+      } ]
+    } ]
+  } ]
+}

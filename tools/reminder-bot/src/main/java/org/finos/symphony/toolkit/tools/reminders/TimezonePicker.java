@@ -1,7 +1,7 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.sources.symphony.handlers.freemarker.annotations.Dropdown;
+import org.finos.springbot.workflow.annotations.Dropdown;
+import org.finos.springbot.workflow.annotations.Work;
 
 @Work
 public class TimezonePicker {

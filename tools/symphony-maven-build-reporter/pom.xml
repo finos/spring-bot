@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
-		<version>8.0.5-SNAPSHOT</version>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>9.0.0-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.tools</groupId>
+	<groupId>org.finos.springbot.tools</groupId>
 	<artifactId>symphony-maven-build-reporter</artifactId>
 	<packaging>jar</packaging>
 	<name>Symphony Maven Build Reporter</name>
@@ -36,15 +36,15 @@
 			<version>2.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>bindings</artifactId>
-			<version>8.0.5-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>identity</artifactId>
-			<version>8.0.5-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>

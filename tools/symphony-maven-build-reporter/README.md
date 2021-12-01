@@ -147,7 +147,7 @@ Having done this, you can refer to this variable within your project's `pom.xml`
 
 ```
 
-**NB:** This JSON format is defined by the [Symphony Identity Module](../../libs/identity/README.md).  
+**NB:** This JSON format is defined by the [Symphony Identity Module](../../libs/symphony-native/identity/README.md).  
 
 
 ### Build Details

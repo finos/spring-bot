@@ -8,8 +8,13 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.json.VersionSpace;
+import org.finos.springbot.entities.VersionSpaceHelp;
+import org.finos.springbot.entityjson.ObjectMapperFactory;
+import org.finos.springbot.entityjson.VersionSpace;
+import org.finos.springbot.symphony.SymphonyWorkflowConfig;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.workflow.data.DataHandlerConfig;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilder;
@@ -17,14 +22,15 @@ import org.finos.symphony.toolkit.koreai.response.KoreAIResponseBuilderImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -41,8 +47,10 @@ import freemarker.template.Version;
 /**
  * @author rodriva
  */
-@ExtendWith(SpringExtension.class)
-
+@SpringBootTest(classes = {
+		DataHandlerConfig.class,
+		SymphonyDataHandlerCofig.class
+})
 public class KoreAIResponseHandlerImplTest {
 
     private KoreAIResponseHandler output;
@@ -66,17 +74,13 @@ public class KoreAIResponseHandlerImplTest {
 
     List<String> streamId; 
     
-    ObjectMapper om;
+    @Autowired
+    EntityJsonConverter ejc;
     
     @BeforeEach
     public void setup() throws Exception {
-       	om = new ObjectMapper();
-    		ObjectMapperFactory.initialize(om, ObjectMapperFactory
-    			.extendedSymphonyVersionSpace(
-    				new VersionSpace(KoreAIResponse.class)));
-
     	this.builder = new KoreAIResponseBuilderImpl(new ObjectMapper(), JsonNodeFactory.instance); 
-        this.output = new KoreAIResponseHandlerImpl(api, rl, true, true, om, "classpath:/test-templates");
+        this.output = new KoreAIResponseHandlerImpl(api, rl, true, true, ejc, "classpath:/test-templates");
         Mockito.when(api.v4StreamSidMessageCreatePost(Mockito.isNull(), Mockito.anyString(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull(), Mockito.isNull()))
         	.then((a) -> {
         		streamId.add(a.getArgument(1));
@@ -106,18 +110,23 @@ public class KoreAIResponseHandlerImplTest {
         this.output.handle(a, resp);
         Assertions.assertEquals(contents("/koreai/templates/default/message.ftl"), messageMLResponse.get(0));
         System.out.println(jsonResponse);
-        Assertions.assertEquals(contents("response-form-out.json"), jsonResponse.get(0));
+        jsonEquals(contents("response-form-out.json"), jsonResponse.get(0));
         Assertions.assertEquals("abc1234", streamId.get(0));
     }
     
-    @Test
+    private void jsonEquals(String expected, String actual) throws JsonMappingException, JsonProcessingException {
+		ObjectMapper om = new ObjectMapper();
+		Assertions.assertEquals(om.readTree(expected), om.readTree(actual));
+	}
+
+	@Test
     public void testMessageAnswer() throws Exception {
     	Address a = new Address(1l, "alf", "angstrom", "alf@example.com", "m3");
     	KoreAIResponse resp =builder.formatResponse(contents("response-message.json"));
         this.output.handle(a, resp);
         Assertions.assertEquals(contents("/koreai/templates/default/message.ftl"), messageMLResponse.get(0));
         System.out.println(jsonResponse);
-        Assertions.assertEquals(contents("response-message-out.json"), jsonResponse.get(0));
+        jsonEquals(contents("response-message-out.json"), jsonResponse.get(0));
         Assertions.assertEquals("m3", streamId.get(0));
     }
     
@@ -138,7 +147,7 @@ public class KoreAIResponseHandlerImplTest {
 			
 			StringWriter out = new StringWriter();
 			ObjectNode jo = JsonNodeFactory.instance.objectNode(); 
-			JsonNode o = om.readTree(json);
+			JsonNode o = new ObjectMapper().readTree(json);
 			jo.set("entity", o);
 			System.out.println("Processing: "+json);
 			t.process(jo, out);

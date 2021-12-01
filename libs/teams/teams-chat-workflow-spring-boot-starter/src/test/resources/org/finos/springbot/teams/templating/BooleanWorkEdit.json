@@ -1,0 +1,23 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Input.Toggle",
+      "value" : "${form.s}",
+      "id" : "s",
+      "title" : "S"
+    } ]
+  }, {
+    "type" : "ActionSet",
+    "actions" : [ {
+      "type" : "Action.Submit",
+      "title" : "${text}",
+      "id" : "${name}",
+      "$data" : "${buttons.contents}"
+    } ]
+  } ]
+}

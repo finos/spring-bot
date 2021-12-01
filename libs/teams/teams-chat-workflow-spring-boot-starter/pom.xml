@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
+	<name>Spring Boot Starter For Chat Workflow Microsoft Teams Adapter</name>
+	<description>Build Workflows Using Enterprise Chat</description>
+
+	<parent>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>9.0.0-SNAPSHOT</version>
+		<relativePath>../../..</relativePath>
+	</parent>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>chat-workflow</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- teams -->
+		<dependency>
+			<groupId>com.microsoft.bot</groupId>
+			<artifactId>bot-integration-spring</artifactId>
+			<version>${teams.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+	        <groupId>com.microsoft.bot</groupId>
+	        <artifactId>bot-azure</artifactId>
+	        <version>${teams.version}</version>
+	        <scope>compile</scope>
+	        <exclusions>
+	        	<!-- this is already included by spring -->
+	        	<exclusion>
+	        		<groupId>org.json</groupId>
+	        		<artifactId>json</artifactId>
+	        	</exclusion>
+	        </exclusions>
+      	</dependency>
+		<dependency>
+			<groupId>com.microsoft.bot</groupId>
+			<artifactId>bot-builder</artifactId>
+			<version>${teams.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- for parsing html sent to bot -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>${jsoup.version}</version>
+		</dependency>
+
+		<!-- for templating adaptive cards -->
+		<dependency>
+			<groupId>org.graalvm.js</groupId>
+			<artifactId>js</artifactId>
+			<version>${graalvm.version}</version>
+		</dependency>
+
+		<!-- for testing -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>chat-workflow-testing</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+			<scope>test</scope>
+		</dependency>
+
+
+
+	</dependencies>
+
+</project>

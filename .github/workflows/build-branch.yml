@@ -1,0 +1,46 @@
+name: sjt-branch-build
+
+env:
+  CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
+  CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  PGP_SKIP: ${{ secrets.PGP_SKIP }}
+  BOT1PRIVATEKEY: ${{ secrets.BOT1PRIVATEKEY }}
+  BOT2PRIVATEKEY: ${{ secrets.BOT2PRIVATEKEY }}
+  BOT2CERTIFICATE: ${{ secrets.BOT2CERTIFICATE }}
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    - name: Cache Maven dependencies
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-mvn-modules
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+    - uses: actions/checkout@master
+    - uses: gaurav-nelson/github-action-markdown-link-check@v1
+      with:
+        use-quiet-mode: yes
+    - name: Set up JDK
+      uses: actions/setup-java@v1
+      with:
+        java-version: 8
+        server-id: ossrh
+        server-username: CI_DEPLOY_USERNAME
+        server-password: CI_DEPLOY_PASSWORD
+    - name: Download deps and plugins
+      run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
+    - name: Build 
+      run: mvn install 
+       

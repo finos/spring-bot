@@ -10,22 +10,22 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.springbot.entityjson.EntityJson;
+import org.finos.springbot.symphony.conversations.SymphonyConversations;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.conversations.Conversations;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.ErrorResponse;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.Reminder;
 import org.finos.symphony.toolkit.tools.reminders.ReminderList;
 import org.finos.symphony.toolkit.tools.reminders.ReminderProperties;
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.conversations.Conversations;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
-import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +75,7 @@ public class Scheduler {
         LOG.info("TimedAlerter waking");
 
         if (leaderService.isLeader(self)) {
-            Set<Addressable> allRooms = rooms.getAllConversations();
+            Set<Addressable> allRooms = rooms.getAllAddressables();
 			allRooms.forEach(s -> action.accept(s));
             LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
         } else {

@@ -3,13 +3,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.finos.symphony.toolkit</groupId>
-	<artifactId>symphony-java-toolkit</artifactId>
-	<version>8.0.5-SNAPSHOT</version>
+	<groupId>org.finos.springbot</groupId>
+	<artifactId>spring-bot</artifactId>
+	<version>9.0.0-SNAPSHOT</version>
+
 	<packaging>pom</packaging>
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
-	<url>https://github.com/finos/symphony-java-toolkit</url>
+	<url>https://github.com/finos/spring-bot</url>
 
 	<parent>
 		<groupId>org.finos</groupId>
@@ -18,22 +19,38 @@
 	</parent>
 
 	<modules>
-		<module>libs/identity</module>
-		<module>libs/bindings</module>
-		<module>libs/symphony-api-spring-boot-starter</module>
-		<module>libs/symphony-app-spring-boot-starter</module>
-		<module>libs/entity-json</module>
-		<module>libs/shared-stream-spring-boot-starter</module>
 		<module>libs/chat-workflow</module>
-		<module>libs/symphony-chat-workflow-spring-boot-starter</module>
+		
+		<!-- test resources for chat-workflow -->
+		<module>libs/chat-workflow-testing</module>
+
+		<!-- for storing data in JSON format -->
+		<module>libs/entity-json</module>
+	
+		<!-- symphony support -->
+		<module>libs/symphony-native/identity</module>
+		<module>libs/symphony-native/bindings</module>
+		<module>libs/symphony-native/entities</module>
+		<module>libs/symphony-native/symphony-api-spring-boot-starter</module>
+		<module>libs/symphony-native/symphony-app-spring-boot-starter</module>
+		<module>libs/symphony-native/shared-stream-spring-boot-starter</module>
+		<module>libs/symphony-native/symphony-chat-workflow-spring-boot-starter</module>
+
+		<!-- teams support -->
+		<module>libs/teams/teams-chat-workflow-spring-boot-starter</module>
+
+		<!-- general modules -->
 		<module>libs/quickfix-json</module>
 
+		<!-- tools -->
 		<module>tools/koreai</module>
 		<module>tools/rss-bot</module>
 		<module>tools/teamcity-symphony-integration</module>
 		<module>tools/symphony-maven-build-reporter</module>
 		<module>tools/poll-bot</module>
 		<module>tools/reminder-bot</module>
+
+		<!-- demos -->
 		<module>demos/demo-bot</module>
 		<module>demos/demo-app</module>
 		<module>demos/todo-bot</module>
@@ -59,6 +76,9 @@
 		<corenlp.version>3.9.2</corenlp.version>
 		<sutime-models.version>1.3.5</sutime-models.version>
 		<rometools.version>1.15.0</rometools.version>
+		<teams.version>4.14.0</teams.version>
+		<jsoup.version>1.14.3</jsoup.version>
+		<graalvm.version>21.2.0</graalvm.version>
 
 		<!-- this configures the build reporter -->
 		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
@@ -112,10 +132,10 @@
 	</developers>
 
 	<scm>
-		<developerConnection>scm:git:https://github.com/finos/symphony-java-toolkit</developerConnection>
-		<connection>scm:git@github.com:finos/symphony-java-toolkit.git</connection>
+		<developerConnection>scm:git:https://github.com/finos/spring-bot</developerConnection>
+		<connection>scm:git@github.com:finos/spring-bot.git</connection>
 		<tag>HEAD</tag>
-		<url>https://github.com/finos/symphony-java-toolkit</url>
+		<url>https://github.com/finos/spring-bot</url>
 	</scm>
 
 	<build>
@@ -219,7 +239,7 @@
 
 	<!-- since we are building the build reporter, this must refer to an earlier, 
 		built version -->
-	<!-- <build> <extensions> <extension> <groupId>org.finos.symphony.toolkit</groupId> 
+	<!-- <build> <extensions> <extension> <groupId>org.finos.springbot</groupId> 
 		<artifactId>symphony-maven-build-reporter</artifactId> <version>4.59.6</version> 
 		</extension> </extensions> </build> -->
 

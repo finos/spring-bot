@@ -7,6 +7,7 @@ import java.util.List;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandler;
 import org.finos.symphony.toolkit.koreai.output.KoreAIResponseHandlerImpl;
 import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
@@ -38,7 +39,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIBridgeFactoryImpl.class);
 	
 	private ResourceLoader rl;
-	private ObjectMapper om;
+	private EntityJsonConverter ejc;
 	private KoreAIProperties koreAIProperties;
 	private SymphonyStreamHandlerFactory sshf;
 	private ApiInstanceFactory apiInstanceFactory;
@@ -47,7 +48,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	private SymphonyApiProperties apiProperties;
 	
 	public KoreAIBridgeFactoryImpl(ResourceLoader rl, 
-			ObjectMapper om, 
+			EntityJsonConverter ejc, 
 			KoreAIProperties koreAIProperties,  
 			SymphonyStreamHandlerFactory sshf,  
 			ApiInstanceFactory aif, 
@@ -56,7 +57,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 			) {
 		super();
 		this.rl = rl;
-		this.om = om;
+		this.ejc = ejc;
 		this.koreAIProperties = koreAIProperties;
 		this.sshf = sshf;
 		this.apiInstanceFactory = aif;
@@ -83,7 +84,8 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 					apiInstance.getAgentApi(MessagesApi.class), 
 					apiInstance.getPodApi(UsersApi.class),
 					apiInstance.getIdentity(),
-					props.getWelcomeMessageML()
+					props.getWelcomeMessageML(),
+					ejc
 				));
 			}
 			
@@ -102,7 +104,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 		return new KoreAIResponseHandlerImpl(api.getAgentApi(MessagesApi.class), rl, 
 				properties.isSkipEmptyResponses(), 
 				properties.isSendErrorsToSymphony(),
-				om,
+				ejc,
 				koreAIProperties.getTemplatePrefix());	
 	}
 	
@@ -129,12 +131,12 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 			id = u.getId();
 		}
 		
-		return new KoreAIEventHandler(api.getIdentity(), id, requester, om, props.isOnlyAddressed());
+		return new KoreAIEventHandler(api.getIdentity(), id, requester, ejc, props.isOnlyAddressed());
 	}
 	
 	public ApiInstance symphonyAPIInstance(KoreAIInstanceProperties props) {
 		try {
-			SymphonyIdentity symphonyBotIdentity = IdentityProperties.instantiateIdentityFromDetails(rl, props.getSymphonyBot(), om);
+			SymphonyIdentity symphonyBotIdentity = IdentityProperties.instantiateIdentityFromDetails(rl, props.getSymphonyBot(), ejc.getObjectMapper());
 			TrustManager[] tms = tmf == null ? null: tmf.getTrustManagers();
 			ApiInstance apiInstance = apiInstanceFactory.createApiInstance(symphonyBotIdentity, podProperties, tms);
 			LOG.info("Constructed API Factory for {} ",props.getName());

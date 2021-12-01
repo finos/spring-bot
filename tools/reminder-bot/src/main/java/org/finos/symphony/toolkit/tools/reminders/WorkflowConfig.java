@@ -3,11 +3,12 @@
  */
 package org.finos.symphony.toolkit.tools.reminders;
 
+import org.finos.springbot.symphony.conversations.SymphonyConversations;
+import org.finos.springbot.workflow.actions.consumers.ChatWorkflowErrorHandler;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
-import org.finos.symphony.toolkit.workflow.actions.consumers.ChatWorkflowErrorHandler;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.conversations.SymphonyConversations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,10 +24,13 @@ public class WorkflowConfig {
 
 	@Autowired
 	private ReminderProperties reminderProperties;
+	
+	@Autowired
+	private EntityJsonConverter ejc;
 
 	@Bean
 	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
-		return new RoomWelcomeEventConsumer(ma, ua, id, reminderProperties.getWelcomeMessage());
+		return new RoomWelcomeEventConsumer(ma, ua, id, reminderProperties.getWelcomeMessage(), ejc);
 	}
 
 	@Bean

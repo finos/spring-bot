@@ -5,8 +5,8 @@ import java.time.temporal.ChronoUnit;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import org.finos.symphony.toolkit.workflow.annotations.Template;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
+import org.finos.springbot.workflow.annotations.Template;
+import org.finos.springbot.workflow.annotations.Work;
 
 
 @Work

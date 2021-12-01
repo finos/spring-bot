@@ -7,21 +7,22 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
-import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
-import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.conversations.Conversations;
-import org.finos.symphony.toolkit.workflow.form.Button;
-import org.finos.symphony.toolkit.workflow.form.Button.Type;
-import org.finos.symphony.toolkit.workflow.form.ButtonList;
-import org.finos.symphony.toolkit.workflow.form.ErrorMap;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
+import org.finos.springbot.symphony.content.HashTag;
+import org.finos.springbot.symphony.content.SymphonyUser;
+import org.finos.springbot.workflow.annotations.ChatButton;
+import org.finos.springbot.workflow.annotations.ChatRequest;
+import org.finos.springbot.workflow.annotations.ChatResponseBody;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.Conversations;
+import org.finos.springbot.workflow.form.Button;
+import org.finos.springbot.workflow.form.ButtonList;
+import org.finos.springbot.workflow.form.ErrorMap;
+import org.finos.springbot.workflow.form.Button.Type;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ public class PollController {
 	@Autowired
 	SymphonyIdentity botIdentity;
 	
-	public boolean isMe(User u) {
+	public boolean isMe(SymphonyUser u) {
 		return u.getEmailAddress().equals(botIdentity.getEmail());
 	}
 	
@@ -82,7 +83,7 @@ public class PollController {
 		p.setOptions(options);
 		p.setId(id);
 		
-		List<User> users = rooms.getChatMembers(r);
+		List<SymphonyUser> users = rooms.getChatMembers(r);
 		List<WorkResponse> out = users.stream()
 			.filter(u -> !isMe(u))
 			.map(u -> createResponseForUser(cf, options, id, buttons, u))

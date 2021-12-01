@@ -1,0 +1,25 @@
+<messageML>
+<#-- starting template --><table><tr><td style="width: 200px"><b>Ints:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['ints']!''}</span>
+  
+  <table><thead><tr><td><b>Value</b></td>
+  </tr></thead><tbody>
+  <#list entity.form.ints as iB>
+   <tr>
+  <td>${(iB)!''}</td>
+  </tr>
+  </#list>
+  </tbody></table></td></tr>
+<tr><td style="width: 200px"><b>Strings:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['strings']!''}</span>
+  
+  <table><thead><tr><td><b>Value</b></td>
+  </tr></thead><tbody>
+  <#list entity.form.strings as iB>
+   <tr>
+  <td>${(iB)!''}</td>
+  </tr>
+  </#list>
+  </tbody></table></td></tr></table>
+<#-- ending template -->
+</messageML>

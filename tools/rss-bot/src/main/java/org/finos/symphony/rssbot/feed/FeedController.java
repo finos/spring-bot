@@ -2,25 +2,26 @@ package org.finos.symphony.rssbot.feed;
 
 import java.util.Optional;
 
+import org.finos.springbot.symphony.content.SymphonyAddressable;
+import org.finos.springbot.symphony.history.SymphonyHistory;
+import org.finos.springbot.workflow.annotations.ChatButton;
+import org.finos.springbot.workflow.annotations.ChatRequest;
+import org.finos.springbot.workflow.annotations.ChatResponseBody;
+import org.finos.springbot.workflow.annotations.ChatVariable;
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.content.Word;
+import org.finos.springbot.workflow.conversations.Conversations;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.MessageResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.rssbot.alerter.FeedListCache;
 import org.finos.symphony.rssbot.alerter.TimedAlerter;
 import org.finos.symphony.rssbot.load.FeedLoader;
 import org.finos.symphony.rssbot.notify.Notifier;
-import org.finos.symphony.toolkit.workflow.annotations.ChatButton;
-import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
-import org.finos.symphony.toolkit.workflow.annotations.ChatResponseBody;
-import org.finos.symphony.toolkit.workflow.annotations.ChatVariable;
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.content.Word;
-import org.finos.symphony.toolkit.workflow.conversations.Conversations;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.history.SymphonyHistory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class FeedController {
 	ResponseHandlers rh;
 	
 	@ChatRequest(value="subscriptions", description = "Show RSS Feeds Published In This Room")
-	public FeedList getFeedList(Addressable a) {
+	public FeedList getFeedList(SymphonyAddressable a) {
 		Optional<FeedList> fl = hist.getLastFromHistory(FeedList.class, a);
 		FeedList ob = fl.orElse(new FeedList());
 		return ob;
@@ -99,7 +100,7 @@ public class FeedController {
 
 	@ChatRequest(description = "Stop Feeding (can be resumed later)",  value="pause")
 	@ChatButton(buttonText = "pause", value = FeedList.class)
-	public FeedList pause(FeedListCache rc, Addressable a, User author) {
+	public FeedList pause(FeedListCache rc, SymphonyAddressable a, User author) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
 		fl.paused = true;
@@ -109,7 +110,7 @@ public class FeedController {
 
 	@ChatRequest(value="resume", description = "Resume feeds if paused")
 	@ChatButton(buttonText = "resume", value = FeedList.class)
-	public FeedList resume(FeedListCache rc, Addressable a, User author) {
+	public FeedList resume(FeedListCache rc, SymphonyAddressable a, User author) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
 		fl.paused = false;
@@ -118,11 +119,11 @@ public class FeedController {
 	}
 	
 	@ChatRequest(description = "Fetch latest news now", value="latest") 
-	public void latest(TimedAlerter ta, History hist, Addressable a) {
+	public void latest(TimedAlerter ta, History hist, SymphonyAddressable a) {
 		FeedList fl = getFeedList(a);
 		int count = ta.allItems(a, fl);
 		if (count == 0) {
-			rh.accept(new MessageResponse(a, Message.of(Word.build("No New News Items"))));
+			rh.accept(new MessageResponse(a, Message.of("No New News Items")));
 		}
 	}
 	
@@ -134,7 +135,7 @@ public class FeedController {
 	}
 	
 	@ChatButton(buttonText = "Add Filter", value = Filter.class) 
-	public FeedList filter(Filter f, Addressable a, User author) {
+	public FeedList filter(Filter f, SymphonyAddressable a, User author) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
 		fl.filters.add(f);
@@ -144,7 +145,7 @@ public class FeedController {
 	
 	
 	@ChatRequest(description = "Only room admins can modify the feeds", value="makeAdminOnly") 
-	public FeedList makeAdminOnly(Addressable a, User author) {
+	public FeedList makeAdminOnly(SymphonyAddressable a, User author) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
 		fl.adminOnly = true;
@@ -152,7 +153,7 @@ public class FeedController {
 	}
 	
 	@ChatRequest(value="notAdminOnly", description = "Any room member can modify the feeds (default)") 
-	public FeedList notAdminOnly(Addressable a, User author) {
+	public FeedList notAdminOnly(SymphonyAddressable a, User author) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
 		fl.adminOnly = false;
@@ -160,7 +161,7 @@ public class FeedController {
 	}
 	
 	@ChatRequest(description = "Set the rate of refresh (in minutes) e.g. \"/every 10\"", value="every {mins}") 
-	public FeedList every(Addressable a, User author, @ChatVariable(name = "mins") Word mins) {
+	public FeedList every(SymphonyAddressable a, User author, @ChatVariable(name = "mins") Word mins) {
 		FeedList fl = getFeedList(a);
 		adminCheck(author, a, fl);
 		Integer minInt = Integer.parseInt(mins.getText());

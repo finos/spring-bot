@@ -2,10 +2,10 @@ package example.symphony.demoworkflow.poll;
 
 import java.util.List;
 
-import org.finos.symphony.toolkit.workflow.annotations.Template;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.HashTag;
+import org.finos.springbot.symphony.content.HashTag;
+import org.finos.springbot.workflow.annotations.Template;
+import org.finos.springbot.workflow.annotations.Work;
+import org.finos.springbot.workflow.content.User;
 
 @Work
 @Template(view="result")

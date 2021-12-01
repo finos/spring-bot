@@ -1,3 +1,0 @@
-symphony.bot:
-  identity:
-    location: classpath:/pemId1.json

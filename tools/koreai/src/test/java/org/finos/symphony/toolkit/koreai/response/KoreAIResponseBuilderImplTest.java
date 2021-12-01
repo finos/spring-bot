@@ -2,10 +2,14 @@ package org.finos.symphony.toolkit.koreai.response;
 
 import java.io.IOException;
 
+import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.workflow.data.DataHandlerConfig;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,12 +19,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.google.common.base.Charsets;
 
+@SpringBootTest(classes = {
+		DataHandlerConfig.class,
+		SymphonyDataHandlerCofig.class,
+})
 public class KoreAIResponseBuilderImplTest {
 
 	private KoreAIResponseBuilderImpl processor = 
 		new KoreAIResponseBuilderImpl(new ObjectMapper(), JsonNodeFactory.instance);
 	
-	private ObjectMapper symphonyMapper = KoreAIConfig.koreAIObjectMapper();
+	@Autowired
+	EntityJsonConverter ejc;
 	
 	@Test
 	public void test1() throws IOException {
@@ -68,16 +77,18 @@ public class KoreAIResponseBuilderImplTest {
 	}
 
 	public void cannedTest(String input) throws IOException, JsonProcessingException, JsonMappingException {
+		KoreAIConfig.addVersionSpaces(ejc);
+		
 		// output
 		String json = load(input);
 		KoreAIResponse response = processor.formatResponse(json);
-		String out = symphonyMapper.writerWithDefaultPrettyPrinter().writeValueAsString(response);
+		String out = ejc.getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(response);
 		System.out.println(out);
 		
 		// expected
 		String expectedStr = load("expected-"+input);
-		JsonNode expectedTree = symphonyMapper.readTree(expectedStr);
-		String expected = symphonyMapper.writerWithDefaultPrettyPrinter().writeValueAsString(expectedTree);
+		JsonNode expectedTree = ejc.getObjectMapper().readTree(expectedStr);
+		String expected = ejc.getObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(expectedTree);
 		System.out.println(expected);
 				
 		Assertions.assertEquals(expected, out);

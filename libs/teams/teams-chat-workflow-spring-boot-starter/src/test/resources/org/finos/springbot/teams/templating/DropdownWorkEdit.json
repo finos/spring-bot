@@ -1,0 +1,33 @@
+{
+  "$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version" : "1.3",
+  "type" : "AdaptiveCard",
+  "body" : [ {
+    "type" : "Container",
+    "style" : "emphasis",
+    "items" : [ {
+      "type" : "Input.ChoiceSet",
+      "value" : "${form.s}",
+      "id" : "s",
+      "choices" : [ {
+        "$data" : "${options.contents}",
+        "title" : "${name}",
+        "value" : "${key}"
+      } ],
+      "label" : "S"
+    } ]
+  }, {
+    "type" : "ActionSet",
+    "actions" : [ {
+      "type" : "Action.Submit",
+      "title" : "${text}",
+      "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
+      "$data" : "${buttons.contents}"
+    } ]
+  } ]
+}
