@@ -1,0 +1,17 @@
+14. Saving templates (GH Ticket)
+18. Client-side validation (GH Ticket)
+25.  Fix Coverage
+
+1. Convert KoreAI, TeamCity and Maven Build Reporter to use Chat Workflow instead. (maybe)
+20. Build time editors / viewers (both symphony and teams)
+
+- We need the conversation API for this.  And to figure out the history API.
+
+7.  Convert keys to values with dropdowns/enums/users in view mode 
+	 - this needs the original options list to be present (I think).   
+ 	 - Also, we need to know what the option was populated with.  This can be done.
+	 
+21.  handle tennant id	
+22.  thymeleaf templating
+23.  auto-generate manifest?
+26.  Fix the Bots : ToDo, Claim Bot, News, Demo etc.

@@ -57,7 +57,7 @@ This provides a JAX-RS standard, **Type-Safe** means of interacting with [Sympho
 
 This is used in preference to Symphony's own API as the configuration can be left to spring boot, and you can use Spring's starters for JAX-RS to build your application.
 
-[View The README](libs/bindings/README.md)
+[View The README](libs/symphony-native/bindings/README.md)
 
 ## Symphony Java Client Identity
 
@@ -70,13 +70,13 @@ This is used in preference to Symphony's own API as the configuration can be lef
 
 This is a highly convenient abstraction which works with Spring Boot's use of [Jackson](https://github.com/FasterXML/jackson) and [YAML](https://yaml.org) to describe Bot and App identities in Java.
 
-[View The README](libs/identity/README.md)
+[View The README](libs/symphony-native/identity/README.md)
 
 ## Symphony API Spring Boot Starter
 
 Provides Spring-Based configuration and auto-wiring for Symphony APIs.  This is perfect if you are building a Symphony Bot using Spring Boot.
 
- - [View the README](libs/symphony-api-spring-boot-starter/README.md)
+ - [View the README](libs/symphony-native/symphony-api-spring-boot-starter/README.md)
  - [Read the Bot-Building Tutorial](tutorials/Spring-Boot-Bot.md)
  - [View Demo Bot Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-bot)
 
@@ -86,7 +86,7 @@ If you are building a Symphony App, there are multiple concerns around app secur
 
 This provides you with an out-of-the-box way to get started and build an app with all of these concerns taken care of.
 
- - [View the README](libs/symphony-app-spring-boot-starter/README.md)
+ - [View the README](libs/symphony-native/symphony-app-spring-boot-starter/README.md)
  - [Read the App-Building Tutorial](tutorials/Spring-Boot-App.md)
  - [View Demo App Code](https://github.com/finos/symphony-java-toolkit/tree/master/demos/demo-app)
 
@@ -110,7 +110,7 @@ Although this is not reliant on Symphony code, it is adjacent tech and so might 
 
 The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
 
- - [View the README](libs/shared-stream-spring-boot-starter/README.md)
+ - [View the README](libs/symphony-native/shared-stream-spring-boot-starter/README.md)
  
 ## Chat Workflow / Chat Workflow Symphony Starter
 

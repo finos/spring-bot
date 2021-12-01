@@ -9,7 +9,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.springbot.entityjson.EntityJson;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIInstanceProperties.Addressed;
@@ -21,7 +22,6 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.model.StreamType.TypeEnum;
 import com.symphony.api.model.V4Event;
@@ -45,17 +45,17 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 	private SymphonyIdentity botIdentity;
 	private KoreAIRequester requester;
 	private Addressed onlyAddressed = Addressed.TRUE;
-	private ObjectMapper symphonyObjectMapper;
+	private EntityJsonConverter ejc;
 	private Long botUserId;
 
 	public KoreAIEventHandler(SymphonyIdentity botIdentity, 
 			long id, 
 			KoreAIRequester requester, 
-			ObjectMapper symphonyObjectMapper, 
+			EntityJsonConverter ejc, 
 			Addressed onlyAddressed) {
 		this.botIdentity = botIdentity;
 		this.requester = requester;
-		this.symphonyObjectMapper = symphonyObjectMapper;
+		this.ejc = ejc;
 		this.onlyAddressed = onlyAddressed;
 		this.botUserId = id;
 	}
@@ -164,7 +164,7 @@ public class KoreAIEventHandler implements StreamEventConsumer {
 	}
 
 	private EntityJson parseEntityJson(String data) throws JsonProcessingException {
-		return symphonyObjectMapper.readValue(data, EntityJson.class);
+		return ejc.readValue(data);
 	}
 
 	private Address buildAddress(V4User from, V4Stream stream) {

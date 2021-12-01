@@ -11,19 +11,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.finos.springbot.symphony.content.SymphonyRoom;
+import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.FormAction;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.Conversations;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.toolkit.stream.Participant;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.tools.reminders.alerter.Scheduler;
-import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.FormAction;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.conversations.Conversations;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -42,7 +42,7 @@ import com.symphony.api.pod.StreamsApi;
 public class SchedulerTests {
 
 	@Mock
-	History history;
+	History<Addressable> history;
 
 	@Mock
 	ResponseHandlers responseHandlers;
@@ -51,7 +51,7 @@ public class SchedulerTests {
 	LeaderService leaderService;
 
 	@Mock
-	Conversations rooms;
+	Conversations<Chat, User> rooms;
 
 	@InjectMocks
 	Scheduler scheduler = new Scheduler();
@@ -65,7 +65,7 @@ public class SchedulerTests {
 				.thenReturn(reminderList());
 
 		when(leaderService.isLeader(Mockito.any())).thenReturn(true);
-		when(rooms.getAllConversations()).thenReturn(createStreams());
+		when(rooms.getAllAddressables()).thenReturn(createStreams());
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
 		ArgumentCaptor<WorkResponse> argumentCaptor = ArgumentCaptor.forClass(WorkResponse.class);

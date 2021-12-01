@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,6 +17,8 @@ import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.finos.springbot.entityjson.VersionSpace;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,7 +108,8 @@ public class NotifierTest {
 		ServerPaths serverPaths = new ServerPaths("target", "target", "target","target");
 
 		// test loading of file
-		controller = new SymphonyAdminController(server, serverPaths, wcm, rl);
+		EntityJsonConverter ejc = new EntityJsonConverter(new ObjectMapper(), new ArrayList<VersionSpace>());
+		controller = new SymphonyAdminController(server, serverPaths, wcm, ejc, rl);
 		notificator = new SymphonyNotificator(notificatorRegistry, controller, rl, server);
 		
 		Mockito.when(server.getRootUrl()).thenReturn("http://some.url");

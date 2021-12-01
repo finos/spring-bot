@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.json.VersionSpace;
+import org.finos.springbot.entityjson.VersionSpace;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
@@ -31,13 +31,11 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.AbstractView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.symphony.api.agent.DatafeedApi;
 import com.symphony.api.bindings.ApiBuilder;
 import com.symphony.api.bindings.ConfigurableApiBuilder;
 import com.symphony.api.bindings.cxf.CXFApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.id.json.SymphonyIdentityModule;
 import com.symphony.api.model.V5DatafeedCreateBody;
 
 import jetbrains.buildServer.controllers.BaseController;
@@ -51,23 +49,19 @@ public class SymphonyAdminController extends BaseController {
 	private static final Logger log = Logger.getLogger(SymphonyAdminPage.class);
 	private static final String CONTROLLER_PATH = "/saveSettings.html";
 	private static final String CONFIG_PATH = "/symphony-config.json";
-	private ObjectMapper om;
+	private EntityJsonConverter ejc;
 	private String configFile;
 	private ResourceLoader rl;
 
-	public SymphonyAdminController(@NotNull SBuildServer server, @NotNull ServerPaths serverPaths,
+	public SymphonyAdminController(
+			@NotNull SBuildServer server, 
+			@NotNull ServerPaths serverPaths,
 			@NotNull WebControllerManager manager,
+			EntityJsonConverter ejc,
 			ResourceLoader rl) throws IOException {
 		manager.registerController(CONTROLLER_PATH, this);
-		this.om = new ObjectMapper();
-		this.om.registerModule(new SymphonyIdentityModule());
-		this.om.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-		
-		ObjectMapperFactory.initialize(om, 
-			ObjectMapperFactory.extendedSymphonyVersionSpace(
-				new VersionSpace(BuildData.class, "1.0")));
-				
-		
+		this.ejc = ejc;
+		this.ejc.addVersionSpace(new VersionSpace(BuildData.class, "1.0"));
 		this.configFile = serverPaths.getConfigDir() + CONFIG_PATH;
 		this.rl = rl;
 	}
@@ -134,7 +128,7 @@ public class SymphonyAdminController extends BaseController {
 	
 	public Config getConfig() {
 		try {
-			Config c = om.readValue(new File(this.configFile), Config.class);
+			Config c = ejc.getObjectMapper().readValue(new File(this.configFile), Config.class);
 			packCerts(c);
 			return c;
 		} catch (Exception e) {
@@ -159,7 +153,7 @@ public class SymphonyAdminController extends BaseController {
 	public void setConfig(Config c) {
 		try {
 			
-			om.writeValue(new File(this.configFile), c);
+			ejc.getObjectMapper().writeValue(new File(this.configFile), c);
 			log.info("SYMPHONY wrote config: "+new ObjectMapper().writeValueAsString(c));
 		} catch (Exception e) {
 			log.error("Couldn't save symphony config: "+configFile, e);
@@ -167,7 +161,7 @@ public class SymphonyAdminController extends BaseController {
 	}
 
 	public ObjectMapper getObjectMapper() {
-		return om;
+		return ejc.getObjectMapper();
 	}
 	
 

@@ -4,13 +4,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
-		<version>8.0.5-SNAPSHOT</version>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>9.0.0-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.demos</groupId>
+	<groupId>org.finos.springbot.demos</groupId>
 	<artifactId>todo-bot</artifactId>
 	<name>To-Do Bot (Demo)</name>
 	<description>Demo Bot for Managing a Todo List</description>
@@ -21,11 +21,11 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+	    <!-- <dependency>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
-			<version>8.0.5-SNAPSHOT</version>
-		</dependency>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>  -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -33,39 +33,14 @@
 
 		<!-- allow for instant persistence -->
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>compile</scope>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.inject</groupId>
-			<artifactId>jersey-hk2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.connectors</groupId>
-			<artifactId>jersey-apache-connector</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-multipart</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>chat-workflow-testing</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

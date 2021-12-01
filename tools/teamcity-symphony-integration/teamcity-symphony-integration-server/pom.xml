@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit.tools</groupId>
+		<groupId>org.finos.springbot.tools</groupId>
 		<artifactId>teamcity-symphony-integration</artifactId>
-		<version>8.0.5-SNAPSHOT</version>
+		<version>9.0.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>teamcity-symphony-integration-server</artifactId>
@@ -36,15 +36,15 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>entity-json</artifactId>
-			<version>8.0.5-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-api-spring-boot-starter</artifactId>
-			<version>8.0.5-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 			<!-- this stops us pulling in spring boot, which seems to cause a classloading 
 				issue for teamcity -->
 			<exclusions>
@@ -53,6 +53,13 @@
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		
+		<!-- not sure this should be needed... only used for extended symphony version space. -->
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- For Testing -->

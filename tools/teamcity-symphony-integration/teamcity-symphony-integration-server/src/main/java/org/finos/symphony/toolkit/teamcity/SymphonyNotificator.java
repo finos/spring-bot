@@ -11,7 +11,7 @@ import java.util.Set;
 import org.apache.commons.compress.utils.Charsets;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.log4j.Logger;
-import org.finos.symphony.toolkit.json.EntityJson;
+import org.finos.springbot.entityjson.EntityJson;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.core.io.Resource;

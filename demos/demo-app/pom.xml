@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-		<groupId>org.finos.symphony.toolkit</groupId>
-		<artifactId>symphony-java-toolkit</artifactId>
-		<version>8.0.5-SNAPSHOT</version>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>9.0.0-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
-	<groupId>org.finos.symphony.toolkit.demos</groupId>
+	<groupId>org.finos.springbot.demos</groupId>
 	<artifactId>demo-app</artifactId>
 	<name>Symphony Demo App</name>
 	<description>Example of symphony-app-spring-boot-starter use</description>
@@ -35,10 +35,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
+			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-app-spring-boot-starter</artifactId>
 			<scope>compile</scope>
-			<version>8.0.5-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>

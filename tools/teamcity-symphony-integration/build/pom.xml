@@ -5,9 +5,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	
 	<parent>
-		<groupId>org.finos.symphony.toolkit.tools</groupId>
+		<groupId>org.finos.springbot.tools</groupId>
 		<artifactId>teamcity-symphony-integration</artifactId>
-		<version>8.0.5-SNAPSHOT</version>
+		<version>9.0.0-SNAPSHOT</version>
 	</parent>
 	
 	<artifactId>build</artifactId>
@@ -20,9 +20,9 @@
 	
 	<dependencies>
 		<dependency>
-			<groupId>org.finos.symphony.toolkit.tools</groupId>
+			<groupId>org.finos.springbot.tools</groupId>
 			<artifactId>teamcity-symphony-integration-server</artifactId>
-			<version>8.0.5-SNAPSHOT</version>
+			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>

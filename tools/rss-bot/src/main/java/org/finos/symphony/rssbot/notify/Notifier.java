@@ -1,14 +1,14 @@
 package org.finos.symphony.rssbot.notify;
 
+import org.finos.springbot.symphony.content.SymphonyRoom;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.response.ErrorResponse;
+import org.finos.springbot.workflow.response.MessageResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.rssbot.RSSProperties;
 import org.finos.symphony.rssbot.feed.SubscribeRequest;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Chat;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.response.ErrorResponse;
-import org.finos.symphony.toolkit.workflow.response.MessageResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
-import org.finos.symphony.toolkit.workflow.sources.symphony.content.SymphonyRoom;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;

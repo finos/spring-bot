@@ -10,17 +10,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import org.finos.symphony.toolkit.workflow.actions.Action;
-import org.finos.symphony.toolkit.workflow.actions.SimpleMessageAction;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.content.Content;
-import org.finos.symphony.toolkit.workflow.content.Message;
-import org.finos.symphony.toolkit.workflow.content.OrderedContent;
-import org.finos.symphony.toolkit.workflow.content.User;
-import org.finos.symphony.toolkit.workflow.history.History;
-import org.finos.symphony.toolkit.workflow.response.Response;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
+import org.finos.springbot.symphony.content.SymphonyUser;
+import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.SimpleMessageAction;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Content;
+import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.content.OrderedContent;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.response.Response;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -109,28 +110,7 @@ public class TimeFinderIT {
 	}
 
 	private User getUser() {
-		User user = new User() {
-			@Override
-			public String getEmailAddress() {
-				return "New Address";
-			}
-
-			@Override
-			public Type getTagType() {
-				return null;
-			}
-
-			@Override
-			public String getName() {
-				return "Sherlock Holmes";
-			}
-
-			@Override
-			public String getText() {
-				return null;
-			}
-		};
-		return user;
+		return new SymphonyUser("Sherlock Holmes", "sherlock.holmes@mail.com");
 
 	}
 
@@ -158,29 +138,11 @@ public class TimeFinderIT {
 		Addressable a = new Addressable() {
 
 			@Override
-			public int hashCode() {
-				return super.hashCode();
+			public String getKey() {
+				return "testkey";
 			}
 
-			@Override
-			public boolean equals(Object obj) {
-				return super.equals(obj);
-			}
-
-			@Override
-			protected Object clone() throws CloneNotSupportedException {
-				return super.clone();
-			}
-
-			@Override
-			public String toString() {
-				return super.toString();
-			}
-
-			@Override
-			protected void finalize() throws Throwable {
-				super.finalize();
-			}
+		
 		};
 		return a;
 

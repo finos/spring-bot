@@ -27,7 +27,6 @@ import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.google.common.base.Charsets;
 
 @ExtendWith(SpringExtension.class)
-
 public class KoreAIRequesterImplTest {
 	
 	public WireMockServer wireMockRule = new WireMockServer(9998);

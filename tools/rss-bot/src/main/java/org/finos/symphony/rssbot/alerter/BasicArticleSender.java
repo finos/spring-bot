@@ -1,10 +1,10 @@
 package org.finos.symphony.rssbot.alerter;
 
+import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.response.WorkResponse;
+import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.symphony.rssbot.feed.Article;
-import org.finos.symphony.toolkit.workflow.annotations.WorkMode;
-import org.finos.symphony.toolkit.workflow.content.Addressable;
-import org.finos.symphony.toolkit.workflow.response.WorkResponse;
-import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
 
 public class BasicArticleSender implements ArticleSender {
 
