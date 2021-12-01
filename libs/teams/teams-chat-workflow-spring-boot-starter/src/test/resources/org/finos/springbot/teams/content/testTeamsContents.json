@@ -7,6 +7,13 @@
   }
 }, {
   "type" : "mention",
+  "text" : "<at>Big Convo</at>",
+  "mentioned" : {
+    "id" : "213",
+    "name" : "Big Convo"
+  }
+}, {
+  "type" : "mention",
   "text" : "<at>Geoff Z</at>",
   "mentioned" : {
     "id" : "ht123",
