@@ -69,7 +69,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	}
 	
 	private ObjectNode rows(String style, List<JsonNode> rows) {
-		return rows(style, rows.toArray(JsonNode[]::new));
+		return rows(style, rows.toArray(s -> new JsonNode[s]));
 	}
 	
 	private ObjectNode rows(String style, JsonNode... rows) {
