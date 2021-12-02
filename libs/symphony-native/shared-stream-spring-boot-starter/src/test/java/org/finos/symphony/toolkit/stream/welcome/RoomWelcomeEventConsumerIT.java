@@ -2,6 +2,7 @@ package org.finos.symphony.toolkit.stream.welcome;
 
 import java.util.regex.Pattern;
 
+import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
@@ -48,7 +49,8 @@ import com.symphony.api.pod.UsersApi;
 			SymphonyApiConfig.class,
 			SymphonyApiAutowireConfig.class,
 			SharedStreamHandlerConfig.class,
- 			SharedStreamSingleBotConfig.class
+ 			SharedStreamSingleBotConfig.class,
+ 			DataHandlerConfig.class
 		}
 	)
 @ActiveProfiles("develop")

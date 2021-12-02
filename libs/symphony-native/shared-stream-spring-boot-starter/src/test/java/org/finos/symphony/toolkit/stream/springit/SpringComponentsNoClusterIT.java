@@ -1,5 +1,6 @@
 package org.finos.symphony.toolkit.stream.springit;
 
+import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiAutowireConfig;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.builders.CXFApiBuilderConfig;
@@ -42,7 +43,8 @@ import com.symphony.api.id.SymphonyIdentity;
 			SymphonyApiConfig.class,
 			SymphonyApiAutowireConfig.class,
 			SharedStreamHandlerConfig.class,
- 			SharedStreamSingleBotConfig.class
+ 			SharedStreamSingleBotConfig.class,
+ 			DataHandlerConfig.class
 		}
 	)
 @ActiveProfiles("develop")
