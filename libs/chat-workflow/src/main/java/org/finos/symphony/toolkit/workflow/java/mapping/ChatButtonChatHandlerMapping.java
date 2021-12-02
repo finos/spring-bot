@@ -91,7 +91,7 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 			}
 		}
 		
-		if (cb.admin() && (a instanceof Chat)) {
+		if (Objects.nonNull(u) && cb.admin() && (a instanceof Chat)) {
 			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
 			return chatAdmins.contains(u);
 		} else {
