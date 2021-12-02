@@ -4,27 +4,30 @@ import java.util.Objects;
 
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Chat;
-import org.finos.springbot.workflow.content.Tag;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+/**
+ * A Conversation happens inside a channel.
+ * 
+ * @author rob@kite9.com
+ *
+ */
 @Work(index = false)
-public class TeamsConversation implements Chat, TeamsAddressable, TeamsMention {
+public class TeamsConversation implements Chat, TeamsAddressable {
 
-	final String aadGroupId;
-	final String key;
-	final String name;
-	
-	public TeamsConversation(String aadGroupId, String id, String name) {
-		this.aadGroupId = aadGroupId;
+	String key;
+	String name;
+
+	public TeamsConversation() {
+		super();
+	}
+
+	public TeamsConversation(String id, String name) {
 		this.key = id;
 		this.name = name;
 	}
 
-	public String getAadGroupId() {
-		return aadGroupId;
-	}
-	
 	@JsonIgnore
 	public String getMessageId() {
 		return key.substring(key.lastIndexOf("messageid=")+10);
@@ -41,31 +44,30 @@ public class TeamsConversation implements Chat, TeamsAddressable, TeamsMention {
 	}
 
 	@Override
-	public String getText() {
-		return "@"+name;
-	}
-
-	@Override
 	public int hashCode() {
 		return Objects.hash(key);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof TeamsMention) {
-			return this.key.equals(((TeamsMention) obj).getKey());
+		if (obj instanceof TeamsConversation) {
+			return this.key.equals(((TeamsConversation) obj).getKey());
 		} else {
 			return false;
 		}
 	}
 
-	@Override
-	public Type getTagType() {
-		return Tag.MENTION;
-	}
-
 	public String getKey() {
 		return key;
+	}
+	
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

@@ -16,7 +16,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.s.key,string(form.s.key),'')}"
+          "text" : "${if(form.s.key,first(where(chatlist.contents, o, o.key == form.s)).name,'')}"
         } ]
       } ]
     } ]

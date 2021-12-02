@@ -39,8 +39,8 @@ public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof TeamsMention) {
-			return this.key.equals(((TeamsMention) obj).getKey());
+		if (obj instanceof TeamsUser) {
+			return this.key.equals(((TeamsUser) obj).getKey());
 		} else {
 			return false;
 		}
@@ -59,5 +59,18 @@ public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
 		return aadObjectId;
 	}
 
+	public void setAadObjectId(String aadObjectId) {
+		this.aadObjectId = aadObjectId;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
 
 }

@@ -22,13 +22,11 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -117,7 +115,8 @@ public class SymphonyApiConfig {
 	}
 
 	private PodProperties getMainPodProperties() {	
-		if (!StringUtils.isEmpty(podId)) {
+		if (StringUtils.hasText(podId)) {
+			LOG.info("Main Pod Id: "+podId);
 			for (PodProperties pp : symphonyProperties.getApis()) {
 				if (podId.equals(pp.getId())) {
 					return pp;
@@ -126,6 +125,7 @@ public class SymphonyApiConfig {
 		} 
 		
 		if (!CollectionUtils.isEmpty(symphonyProperties.getApis())) {
+			LOG.info("Using first pod as main pod");
 			return symphonyProperties.getApis().get(0);
 		}
 		

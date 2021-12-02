@@ -74,7 +74,8 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 
 	@Override
 	public List<ChatHandlerExecutor> getExecutors(Action a) {
-		List<ChatHandlerExecutor> out = getAllHandlers(a.getAddressable(), a.getUser()).stream()
+		List<ChatMapping<ChatRequest>> allHandlers = getAllHandlers(a.getAddressable(), a.getUser());
+		List<ChatHandlerExecutor> out = allHandlers.stream()
 				.map(m -> m.getExecutor(a))
 				.filter(f -> f != null)
 				.collect(Collectors.toList());
