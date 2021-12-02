@@ -1,23 +1,14 @@
 14. Saving templates (GH Ticket)
-18. Client-side validation (GH Ticket)
-27.  Fix the TeamsChat / TeamsUser issue.
-25.  Fix Coverage
-
-20. Build time editors / viewers (both symphony and teams)
+25. Fix Coverage
+26. Fix the Bots : ToDo, Claim Bot, News, Demo etc.
 22. Thymeleaf templating, review ALL tests
 28. BDK Version of Symphony
-29. Time editing 
 31. Data for previous forms.
 
-
-
-
-
 30.  Make welcome listener generic teams and symph
-
+20. Build time editors / viewers (both symphony and teams)
 7.  Convert keys to values with dropdowns/enums/users in view mode 
 	 - this needs the original options list to be present (I think).   
  	 - Also, we need to know what the option was populated with.  This can be done.
 	 
 21.  handle tennant id/ default tennant id on teams.
-26.  Fix the Bots : ToDo, Claim Bot, News, Demo etc.
