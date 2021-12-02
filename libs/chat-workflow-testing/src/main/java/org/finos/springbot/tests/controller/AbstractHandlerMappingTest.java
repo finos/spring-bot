@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.charset.Charset;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.finos.springbot.workflow.actions.Action;
@@ -244,12 +246,21 @@ public abstract class AbstractHandlerMappingTest {
 		
 	}
 	
-	protected abstract void pressButton(String b);
+	protected abstract void pressButton(String b, Map<String, Object> contents);
 	
 	@Test
 	public void testButtonPress() throws Exception {
-		pressButton(OurController.class.getName()+"-startNewClaim");
+		Map<String, Object> form = new HashMap<>();
+		form.put("amount", 45f);
+		form.put("description", "desc");
+		form.put("form", StartClaim.class.getName());
+		
+		pressButton(OurController.class.getName()+"-startNewClaim", form);
 		Assertions.assertEquals("startNewClaim", oc.lastMethod);
+		StartClaim sc = (StartClaim) oc.lastArguments.get(0);
+		Assertions.assertEquals(45f, sc.amount);
+		Assertions.assertEquals("desc", sc.description);
+		
 	}
 
 }

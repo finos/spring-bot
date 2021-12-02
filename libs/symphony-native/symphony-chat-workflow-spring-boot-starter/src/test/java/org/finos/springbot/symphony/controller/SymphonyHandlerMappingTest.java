@@ -147,13 +147,12 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 	}
 
 	@Override
-	protected void pressButton(String s) {
+	protected void pressButton(String s, Map<String, Object> values) {
 		oc.lastArguments = null;
 		oc.lastMethod = null;
 		
 		Mockito.clearAllCaches();
 		
-		Map<String, Object> values = new HashMap<>();
 		values.put("action", s);
 		
 		V4Event event = new V4Event()
@@ -164,6 +163,7 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 			.payload(new V4Payload()
 				.symphonyElementsAction(new V4SymphonyElementsAction()
 						.formValues(values)
+						.formId((String) values.remove("form"))
 						.stream(new V4Stream()
 								.streamType(StreamType.TypeEnum.ROOM.getValue())
 								.streamId(CHAT_ID))));
@@ -183,6 +183,7 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 				att.capture(), 
 				Mockito.isNull(), 
 				Mockito.isNull());
+		
 	}
 
 

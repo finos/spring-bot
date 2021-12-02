@@ -22,7 +22,6 @@ import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.WorkMode;
-import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
@@ -136,7 +135,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		s = "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">"+BOT_NAME+"</span>" + s;
 		
 		mockConversations();
-		mockTurnContext(s);
+		mockTurnContext(s, null);
 		mah.onTurn(tc);
 	}
 	
@@ -164,24 +163,20 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	}
 
 
-	private void mockTurnContext(String s) {
+	private void mockTurnContext(String s, Map<String, Object> formData) {
 		tc = Mockito.mock(TurnContext.class);
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
 
 		msg = ArgumentCaptor.forClass(Activity.class);
 		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));
 		
-		Activity out = createActivity(s);
+		Activity out = createActivity(s, formData);
 		Mockito.when(tc.getActivity()).thenReturn(out);
 	}
 
 
-	private Activity createActivity(String s) {
+	private Activity createActivity(String s, Map<String, Object> formData) {
 		Activity out = new Activity(ActivityTypes.MESSAGE);
-		Attachment a = new Attachment();
-		a.setContentType(MediaType.TEXT_HTML_VALUE);
-		a.setContent("<div>"+s+"</div>");
-		out.setAttachment(a);
 		
 		ConversationAccount conv = new ConversationAccount(CHAT_ID);
 		out.setConversation(conv);
@@ -200,6 +195,18 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		out.setRecipient(to);
 		
 		out.setEntities(Arrays.asList(botEntity(), gauravEntity()));
+		
+		if (formData != null) {
+			formData.put("action", s);
+			out.setValue(formData);
+		} else {
+			Attachment a = new Attachment();
+			a.setContentType(MediaType.TEXT_HTML_VALUE);
+			a.setContent("<div>"+s+"</div>");
+			out.setAttachment(a);
+		}
+
+		
 		return out;
 	}
 
@@ -231,16 +238,10 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 
 	@Override
-	protected void pressButton(String s) {
-//		EntityJson jsonObjects = new EntityJson();
-//		jsonObjects.put("1", new SymphonyUser(123l, "gaurav", "gaurav@example.com"));
-//		jsonObjects.put("2", new HashTag("SomeTopic"));
-//		Chat r = new SymphonyRoom("The Room Where It Happened", "abc123");
-//		User author = new SymphonyUser(ROB_EXAMPLE_ID, ROB_NAME, ROB_EXAMPLE_EMAIL);
-//		Object fd = new StartClaim();
-//		Action a = new FormAction(r, author, fd, s, jsonObjects);
-//		Action.CURRENT_ACTION.set(a);
-//		mc.accept(a);
+	protected void pressButton(String s, Map<String, Object> formData) {
+		mockConversations();
+		mockTurnContext(s, formData);
+		mah.onTurn(tc);
 	}
 
 
