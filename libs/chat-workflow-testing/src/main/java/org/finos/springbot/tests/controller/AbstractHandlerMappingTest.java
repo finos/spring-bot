@@ -1,18 +1,12 @@
 package org.finos.springbot.tests.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.finos.springbot.workflow.actions.Action;
-import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
-import org.finos.springbot.workflow.content.BlockQuote;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.CodeBlock;
 import org.finos.springbot.workflow.content.Message;
@@ -20,22 +14,13 @@ import org.finos.springbot.workflow.content.Paragraph;
 import org.finos.springbot.workflow.content.Table;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
-import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.java.mapping.ChatMapping;
 import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
-import org.finos.springbot.workflow.response.ErrorResponse;
-import org.finos.springbot.workflow.response.WorkResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.StreamUtils;
-
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @ExtendWith(SpringExtension.class)
