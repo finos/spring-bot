@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-import org.finos.springbot.teams.content.TeamsHTMLParser;
+import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.teams.content.serialization.ParseContext;
+import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.Action;
@@ -57,20 +60,18 @@ public class MessageActivityHandler extends ActivityHandler {
 		try {
 			Activity a = turnContext.getActivity();
 			
-			Action action = (a.getValue() != null) ? processForm(turnContext, a) : 
-				processMessage(turnContext, a);
-			
-			if (action != null) {
+			try {
 				CurrentTurnContext.CURRENT_CONTEXT.set(turnContext);
-				
-				try {
+				Action action = (a.getValue() != null) ? processForm(turnContext, a) : processMessage(turnContext, a);
+			
+				if (action != null) {
 					Action.CURRENT_ACTION.set(action);
 					for (ActionConsumer c : messageConsumers) {
 						c.accept(action);
 					}
-				} finally {
-					Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 				}
+			} finally {
+				Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 			}
 		} catch (Exception e) {
 			LOG.error("Couldn't handle event "+turnContext, e);
@@ -90,7 +91,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		Object form = formConverter.convert(formData, formName);
 		String action = (String) formData.get("action");
 		Map<String, Object> data = new HashMap<>(); // need to load this from somewhere.
-		Addressable rr = teamsConversations.getTeamsChat(turnContext);
+		Addressable rr = teamsConversations.getTeamsAddressable(turnContext);
 		User u = teamsConversations.getUser(a.getFrom());
 		Addressable from = rr == null ? u : rr;
 		return validationProcessor.validationCheck(action, from, form, () -> {
@@ -99,10 +100,10 @@ public class MessageActivityHandler extends ActivityHandler {
 	}
 
 	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {
-		Message message = createMessageFromActivity(a);
 		Object data = a.getChannelData();	
-		Addressable rr = teamsConversations.getTeamsChat(turnContext);
-		User u = teamsConversations.getUser(a.getFrom());
+		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext);
+		TeamsUser u = teamsConversations.getUser(a.getFrom());
+		Message message = createMessageFromActivity(a, rr);
 		
 		rr = rr == null ? u : rr;
 		SimpleMessageAction sma = new SimpleMessageAction(rr, u, message, data);
@@ -110,13 +111,14 @@ public class MessageActivityHandler extends ActivityHandler {
 		return sma;
 	}
 
-	private Message createMessageFromActivity(Activity a) {
+	private Message createMessageFromActivity(Activity a, TeamsAddressable within) {
 		if (a.getAttachments() != null) {
 			List<Attachment> attachments = new ArrayList<>(a.getAttachments());
 			Collections.reverse(attachments);
 			for (Attachment attachment : attachments) {
 				if (MediaType.TEXT_HTML_VALUE.equals(attachment.getContentType())) {
-					return messageParser.apply((String) attachment.getContent(), a.getEntities());
+					ParseContext pc = new ParseContext(within, a.getEntities());
+					return messageParser.apply((String) attachment.getContent(), pc);
 				}
 			}
 		}

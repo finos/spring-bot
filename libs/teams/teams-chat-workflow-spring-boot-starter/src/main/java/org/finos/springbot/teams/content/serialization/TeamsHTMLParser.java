@@ -1,8 +1,14 @@
-package org.finos.springbot.teams.content;
+package org.finos.springbot.teams.content.serialization;
 
 import java.util.List;
 import java.util.Map;
 
+import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.content.TeamsChannel;
+import org.finos.springbot.teams.content.TeamsContent;
+import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.teams.conversations.TeamsConversations;
+import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Image;
 import org.finos.springbot.workflow.content.Message;
@@ -14,6 +20,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.NodeVisitor;
+import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -27,30 +34,74 @@ import com.microsoft.bot.schema.Entity;
  * @author Rob Moffat
  *
  */
-public class TeamsHTMLParser extends AbstractContentParser<String, List<Entity>> {
+public class TeamsHTMLParser extends AbstractContentParser<String, ParseContext> {
 	
-	protected static class MentionFrame extends TextFrame<TeamsContent> {
+	private ApplicationContext ctx;
+	private TeamsConversations tc;
+	
+	public TeamsHTMLParser(ApplicationContext ctx) {
+		super();
+		this.ctx = ctx;
+	}
+	
+	private TeamsConversations getTC() {
+		if (tc == null) {
+			tc = ctx.getBean(TeamsConversations.class);
+		}
+		
+		return tc;
+	}
 
-		String id;
+	protected class MentionFrame extends TextFrame<TeamsContent> {
+
 		Entity e;
+		TeamsAddressable ta;
 
-		public MentionFrame(String qName, Entity e) {
+		public MentionFrame(String qName, Entity e, TeamsAddressable ta) {
 			super(qName);
 			this.e = e;
+			this.ta = ta;
 		}
 
 		@Override
 		public TeamsContent getContents() {
+			// you can only really mention other users and other channels in the
+			// team.  So, work out which it is.
+			
 			Map<String, JsonNode> props = e.getProperties();
 			ObjectNode on = (ObjectNode) props.get("mentioned");
-			String id = on.get("id").asText();
 			String name = on.get("name").asText();
-			// FIXME:  need to decide whether a chat or a user.
-			throw new UnsupportedOperationException("Not coded");
-//			TeamsChat out = new TeamsChat(id, name);
-//			return out;
+			String id = on.get("id").asText();
+			
+			if (ta instanceof TeamsChannel) {
+				TeamsChannel tc = getMentionAsTeamsChannel(name);
+				
+				if (tc != null) {
+					tc.setName(name);
+					return tc;
+				}
+			}
+			
+			return new TeamsUser(id, name, null);
 		}
 
+		private TeamsChannel getMentionAsTeamsChannel(String name) {
+			List<TeamsChannel> allChannels = getTC().getTeamsChannels(CurrentTurnContext.CURRENT_CONTEXT.get());
+			return allChannels.stream()
+					.filter(x ->  matchName(x, name))
+					.findFirst()
+					.orElse(null);
+			
+		}
+
+		private boolean matchName(TeamsChannel x, String name) {
+			if (x.getName() == null) {
+				return "General".equals(name);
+			} else {
+				return x.getName().equals(name);
+			}
+		}
+		
 		@Override
 		public void push(Content c) {
 			throw new UnsupportedOperationException("Can't nest content in tag");
@@ -63,7 +114,7 @@ public class TeamsHTMLParser extends AbstractContentParser<String, List<Entity>>
 
 	}
 	
-	public Message apply(String message, List<Entity> ctx) {
+	public Message apply(String message, ParseContext ctx) {
 
 		Content [] out = { null };
 		
@@ -92,8 +143,8 @@ public class TeamsHTMLParser extends AbstractContentParser<String, List<Entity>>
 				} else if (isStartMention(qName, attributes)) {
 					String entityId = attributes.get("itemid");
 					int intEntityId = Integer.parseInt(entityId);
-					Entity e = ctx.get(intEntityId);
-					push(new MentionFrame(qName, e));
+					Entity e = ctx.entities.get(intEntityId);
+					push(new MentionFrame(qName, e, ctx.within));
 				} else if (isStartTable(qName, attributes)) {
 					push(new TableFrame(qName));
 				} else if (isStartParaListItemOrCell(qName, attributes)) {

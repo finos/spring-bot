@@ -2,7 +2,7 @@ package org.finos.springbot.teams.form;
 
 import java.io.IOException;
 
-import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
@@ -79,7 +79,7 @@ public class TeamsFormDeserializerModule extends Module {
 						@Override
 						public Chat deserialize(JsonParser p, DeserializationContext ctxt)
 								throws IOException, JsonProcessingException {
-							return new TeamsChat(p.getValueAsString(), null);
+							return new TeamsMultiwayChat(p.getValueAsString(), null);
 						}
 					};
 					

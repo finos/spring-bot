@@ -7,32 +7,32 @@
     "style" : "emphasis",
     "items" : [ {
       "type" : "Input.Text",
-      "value" : "${if(form.i,formatEpoch(form.i),'')}",
+      "value" : "${if(form.i,(form.i),'')}",
       "id" : "i",
       "label" : "I"
     }, {
       "type" : "Input.Text",
-      "value" : "${if(form.ldt,string(form.ldt),'')}",
+      "value" : "${if(form.ldt,(form.ldt),'')}",
       "id" : "ldt",
       "label" : "Ldt"
     }, {
       "type" : "Input.Text",
-      "value" : "${if(form.zid,string(form.zid),'')}",
+      "value" : "${if(form.zid,(form.zid),'')}",
       "id" : "zid",
       "label" : "Zid"
     }, {
       "type" : "Input.Text",
-      "value" : "${if(form.ld,string(form.ld),'')}",
+      "value" : "${if(form.ld,(form.ld),'')}",
       "id" : "ld",
       "label" : "Ld"
     }, {
       "type" : "Input.Text",
-      "value" : "${if(form.lt,string(form.lt),'')}",
+      "value" : "${if(form.lt,(form.lt),'')}",
       "id" : "lt",
       "label" : "Lt"
     }, {
       "type" : "Input.Text",
-      "value" : "${if(form.zdt,formatEpoch(form.zdt),'')}",
+      "value" : "${if(form.zdt,(form.zdt),'')}",
       "id" : "zdt",
       "label" : "Zdt"
     } ]
@@ -42,6 +42,11 @@
       "type" : "Action.Submit",
       "title" : "${text}",
       "id" : "${name}",
+      "associatedInputs" : "auto",
+      "data" : {
+        "action" : "${name}",
+        "form" : "${$root.formid}"
+      },
       "$data" : "${buttons.contents}"
     } ]
   } ]

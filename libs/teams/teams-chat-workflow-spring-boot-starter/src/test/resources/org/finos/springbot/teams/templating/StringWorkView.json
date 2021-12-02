@@ -16,7 +16,7 @@
         "style" : "default",
         "items" : [ {
           "type" : "TextBlock",
-          "text" : "${if(form.s,string(form.s),'')}"
+          "text" : "${if(form.s,(form.s),'')}"
         } ]
       } ]
     } ]

@@ -1,4 +1,9 @@
 <messageML>
-<#-- starting template --><table><tr><td style="width: 200px"><b>S:</b></td><td>${entity.form.s.id[1].value!''}</td></tr></table>
+<#-- starting template --><table><tr><td style="width: 200px"><b>S:</b></td><td>
+    <#list entity.chatlist.contents as iB>
+     <#if (iB.key == (entity.form.s.key)!'')>
+      ${iB.name}
+     </#if>
+    </#list></td></tr></table>
 <#-- ending template -->
 </messageML>

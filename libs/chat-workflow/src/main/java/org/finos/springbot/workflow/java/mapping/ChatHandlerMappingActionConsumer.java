@@ -32,7 +32,7 @@ public class ChatHandlerMappingActionConsumer extends AbstractAddressedActionCon
 				e.execute();
 
 			} catch (Throwable ex) {
-				LOG.error("Coulnd't process {}, error {}", t, ex.getLocalizedMessage());
+				LOG.error("Couldn't process {}, error {}", t, ex.getLocalizedMessage());
 				errorHandler.handleError(ex);
 			}
 

@@ -1,6 +1,6 @@
 package org.finos.springbot.teams.conversations;
 
-import org.finos.springbot.teams.content.TeamsChat;
+import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.junit.jupiter.api.Test;
 
 public class TeamsConversationsIT {
