@@ -55,6 +55,7 @@ import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
 import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
+import com.microsoft.bot.schema.ChannelAccount;
 
 /**
  * Symphony beans needing the workflow bean to be defined.
@@ -218,7 +219,8 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	public AddressingChecker teamsAddressingChecker(TeamsConversations conv) {
 		return new InRoomAddressingChecker(() -> {
 			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
-			User u = conv.getUser(tc.getActivity().getRecipient());	
+			ChannelAccount recipient = tc.getActivity().getRecipient();
+			User u = conv.getUser(recipient);	
 			return u;
 		}, true);
 	}
