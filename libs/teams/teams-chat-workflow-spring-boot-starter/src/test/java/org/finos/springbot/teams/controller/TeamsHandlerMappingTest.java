@@ -8,7 +8,12 @@ import java.util.concurrent.CompletableFuture;
 
 import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.TeamsWorkflowConfig;
+import org.finos.springbot.teams.content.TeamsChannel;
+import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsMultiwayChat;
+import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.teams.conversations.TeamsConversations;
+import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
@@ -17,7 +22,10 @@ import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Message;
+import org.finos.springbot.workflow.data.DataHandlerConfig;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.form.ButtonList;
@@ -29,6 +37,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -50,11 +59,14 @@ import com.microsoft.bot.schema.teams.TeamsChannelData;
 @SpringBootTest(classes = {
 		MockTeamsConfiguration.class, 
 		TeamsWorkflowConfig.class,
+		DataHandlerConfig.class
 })
 @ActiveProfiles("teams")
 public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	
 	ArgumentCaptor<Activity> msg;
+	ArgumentCaptor<Map<String, Object>> data;
+	
 	TurnContext tc;
 	
 	@Autowired
@@ -63,6 +75,14 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	@Autowired
 	ChatRequestChatHandlerMapping hm;
 	
+	@MockBean
+	TeamsHistory th;
+	
+	@MockBean
+	TeamsConversations conv;
+	
+	@Autowired
+	EntityJsonConverter ejc;
 	
     public static void compareJson(String loadJson, String json) throws JsonMappingException, JsonProcessingException {
         ObjectMapper om = new ObjectMapper();
@@ -73,8 +93,10 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	protected WorkResponse createWorkAddSubmit(WorkMode wm, Object ob5) {
 		tc = Mockito.mock(TurnContext.class);
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
+		
 		msg = ArgumentCaptor.forClass(Activity.class);
-		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));		
+		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));	
+				
 		TeamsMultiwayChat theRoom = new TeamsMultiwayChat( "abc123", "tesxt room");
 		WorkResponse wr = new WorkResponse(theRoom, ob5, wm);
 		ButtonList bl = (ButtonList) wr.getData().get(ButtonList.KEY);
@@ -84,21 +106,13 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected String getMessageData() {
-		Activity out = msg.getValue();
-		if (out.getAttachments().size() > 0) {
-			Attachment a1 = out.getAttachments().get(0);
-			try {
-				return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(a1.getContent());
-			} catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
-			}
-			
-			
-		} else {
-			return "";
-		}
+		data = ArgumentCaptor.forClass(Map.class);
+		Mockito.verify(th).store(Mockito.any(), data.capture());
+
+		return ejc.writeValue(data.getValue());
 	}
 
 
@@ -118,20 +132,61 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void execute(String s) throws Exception {
-		s = s.replace("@gaurav", "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">Gaurav</span>");
+		s = s.replace("@gaurav", "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">gaurav</span>");
+		s = "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">"+BOT_NAME+"</span>" + s;
+		
+		mockConversations();
+		mockTurnContext(s);
+		mah.onTurn(tc);
+	}
+	
+	private void mockConversations() {
+		Mockito.when(conv.getUser(Mockito.any())).thenAnswer(iom -> {
+			ChannelAccount ca = (ChannelAccount) iom.getArgument(0);
+			if (ca.getName().equals(ROB_NAME)) {
+				return new TeamsUser("directchatid", ROB_NAME, ROB_EXAMPLE_EMAIL);
+			} else if (ca.getName().equals(BOT_NAME)) {
+				return new TeamsUser(""+BOT_ID, BOT_NAME, BOT_EMAIL);
+			}
+			
+			return null;
+		});
+		
+		Mockito.when(conv.isSupported(Mockito.any(TeamsChat.class))).thenReturn(true);
+		Mockito.when(conv.isSupported(Mockito.any(TeamsUser.class))).thenReturn(true);
+
+		
+		Mockito.when(conv.getTeamsAddressable(Mockito.any()))
+			.thenReturn(new TeamsChannel(CHAT_ID, OurController.SOME_ROOM));
+	
+		Mockito.when(conv.getChatAdmins(Mockito.any()))
+			.thenAnswer(iom -> Arrays.asList( new TeamsUser("directchatid", ROB_NAME, ROB_EXAMPLE_EMAIL)));
+	}
+
+
+	private void mockTurnContext(String s) {
 		tc = Mockito.mock(TurnContext.class);
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
+
 		msg = ArgumentCaptor.forClass(Activity.class);
 		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));
 		
+		Activity out = createActivity(s);
+		Mockito.when(tc.getActivity()).thenReturn(out);
+	}
+
+
+	private Activity createActivity(String s) {
 		Activity out = new Activity(ActivityTypes.MESSAGE);
 		Attachment a = new Attachment();
 		a.setContentType(MediaType.TEXT_HTML_VALUE);
 		a.setContent("<div>"+s+"</div>");
 		out.setAttachment(a);
 		
-		ConversationAccount conv = new ConversationAccount(ROB_EXAMPLE_EMAIL);
+		ConversationAccount conv = new ConversationAccount(CHAT_ID);
 		out.setConversation(conv);
+		conv.setConversationType("channel");
+		conv.setName(OurController.SOME_ROOM);
 		
 		TeamsChannelData tcd = new TeamsChannelData();
 		ChannelInfo ci = new ChannelInfo(CHAT_ID, OurController.SOME_ROOM);
@@ -141,24 +196,35 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		ChannelAccount ca = new ChannelAccount(""+ROB_EXAMPLE_ID, ROB_NAME);
 		out.setFrom(ca);
 		
-		ChannelAccount to = new ChannelAccount(""+BOT_ID, BOT_NAME);
+		ChannelAccount to = botChannelAccount();
 		out.setRecipient(to);
 		
-		out.setEntities(Arrays.asList(gauravEntity()));
-		
-		
-		Mockito.when(tc.getActivity()).thenReturn(out);
-		
-		mah.onTurn(tc);
+		out.setEntities(Arrays.asList(botEntity(), gauravEntity()));
+		return out;
+	}
+
+
+	private ChannelAccount botChannelAccount() {
+		return new ChannelAccount(""+BOT_ID, BOT_NAME);
 	}
 
 
 	private Entity gauravEntity() {
 		Mention out = new Mention();
-		out.setText("<at>Gaurav</at>");
+		out.setText("<at>gaurav</at>");
 		ChannelAccount ca = new ChannelAccount();
-		ca.setName("Gaurav P");
+		ca.setName("gaurav");
 		ca.setId("3276423876");
+		out.setMentioned(ca);
+		return new Entity().setAs(out);
+	}
+	
+	private Entity botEntity() {
+		Mention out = new Mention();
+		out.setText("<at>"+BOT_NAME+"</at>");
+		ChannelAccount ca = new ChannelAccount();
+		ca.setName(BOT_NAME);
+		ca.setId(""+BOT_ID);
 		out.setMentioned(ca);
 		return new Entity().setAs(out);
 	}
@@ -190,7 +256,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	protected void assertHelpResponse() throws Exception {
 		String data = getMessageData();
 		System.out.println(data);
-		Assertions.assertTrue(data.contains(" - ${string($data)}\","));
+		Assertions.assertTrue(data.contains("\"examples\" : [ \"optionals {thing} {user} {lastword}\" ]"));
 	}
 
 
