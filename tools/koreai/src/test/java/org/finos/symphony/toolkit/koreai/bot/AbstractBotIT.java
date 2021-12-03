@@ -10,9 +10,9 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.KoreAIBot;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
-import org.finos.symphony.toolkit.stream.cluster.HealthSupplier;
 import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
 import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.jupiter.api.AfterAll;
@@ -26,7 +26,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StreamUtils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.matching.EqualToPattern;
 import com.google.common.base.Charsets;
@@ -47,7 +46,7 @@ public abstract class AbstractBotIT {
 	protected List<SymphonyStreamHandler> ssh;
 
 	@Autowired
-	protected ObjectMapper symphonyObjectMapper;
+	protected EntityJsonConverter ejc;
 	
 	@MockBean
 	ExceptionConsumer ec;
