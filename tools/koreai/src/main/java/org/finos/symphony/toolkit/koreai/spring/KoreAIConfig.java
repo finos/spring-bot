@@ -6,7 +6,9 @@ import java.util.stream.Collectors;
 import javax.inject.Named;
 import javax.net.ssl.TrustManagerFactory;
 
+import org.finos.springbot.entities.VersionSpaceHelp;
 import org.finos.springbot.entityjson.VersionSpace;
+import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
@@ -23,6 +25,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -32,6 +35,7 @@ import com.symphony.api.model.V4User;
 @Configuration
 @EnableConfigurationProperties({KoreAIProperties.class, SymphonyApiProperties.class})
 @EnableWebMvc
+@Import(DataHandlerConfig.class)
 public class KoreAIConfig implements InitializingBean {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(KoreAIConfig.class);
@@ -105,6 +109,8 @@ public class KoreAIConfig implements InitializingBean {
 		ejc.addVersionSpace(new VersionSpace(KoreAIResponse.class));
 		ejc.addVersionSpace(new VersionSpace(ObjectNode.class));
 		ejc.addVersionSpace(new VersionSpace(V4User.class));
+		VersionSpaceHelp.basicSymphonyVersionSpace()
+			.stream().forEach(vs -> ejc.addVersionSpace(vs));
 	}
 	
 }

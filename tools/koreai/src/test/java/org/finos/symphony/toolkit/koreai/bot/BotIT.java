@@ -104,7 +104,7 @@ public class BotIT extends AbstractBotIT {
 		m.getId().add(new UserId("1234"));
 		EntityJson ej = new EntityJson();
 		ej.put("m1", m);
-		String data = symphonyObjectMapper.writeValueAsString(ej);
+		String data = ejc.writeValue(ej);
 		
 		V4Event in = new V4Event()
 				.initiator(new V4Initiator()
