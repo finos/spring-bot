@@ -40,8 +40,8 @@ public class FreemarkerTypeConverterConfig {
 	}
 	
 	@Bean
-	protected CollectionConverter fmCollectionConverter(FreemarkerRendering r) {
-		return new CollectionConverter(r);
+	protected TableConverter fmCollectionConverter(FreemarkerRendering r) {
+		return new TableConverter(r);
 	}
 	
 	@Bean

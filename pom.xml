@@ -39,14 +39,10 @@
 		<!-- teams support -->
 		<module>libs/teams/teams-chat-workflow-spring-boot-starter</module>
 
-		<!-- general modules -->
-		<module>libs/quickfix-json</module>
-
 		<!-- tools -->
 		<module>tools/koreai</module>
 		<module>tools/rss-bot</module>
 		<module>tools/teamcity-symphony-integration</module>
-		<module>tools/symphony-maven-build-reporter</module>
 		<module>tools/poll-bot</module>
 		<module>tools/reminder-bot</module>
 

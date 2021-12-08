@@ -13,14 +13,17 @@ import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.history.AzureBlobStorageTeamsHistory;
 import org.finos.springbot.teams.history.MemoryTeamsHistory;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
-import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
-import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterConfig;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplater;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafConverterConfig;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplater;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
@@ -28,7 +31,6 @@ import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
-import org.finos.springbot.workflow.templating.Rendering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,6 @@ import org.springframework.validation.Validator;
 
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.bot.builder.BotFrameworkAdapter;
@@ -68,6 +69,7 @@ import com.microsoft.bot.schema.ChannelAccount;
 	ChatWorkflowConfig.class, 
 	TeamsContentConfig.class,
 	AdaptiveCardConverterConfig.class,
+	ThymeleafConverterConfig.class
 })
 @Profile("teams")
 public class TeamsWorkflowConfig extends BotDependencyConfiguration {
@@ -84,9 +86,6 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	ApplicationContext ac;
 	
 	@Autowired
-	Rendering<JsonNode> r;
-	
-	@Autowired
 	EntityJsonConverter ejc;
 	
 	@Bean 
@@ -100,23 +99,34 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsTemplateProvider teamsWorkTemplater(
+	public AdaptiveCardTemplateProvider adaptiveCardWorkTemplater(
 			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
 			@Value("${teams.templates.suffix:.json}") String suffix,
 			AdaptiveCardTemplater formConverter) throws IOException {
-		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+		return new AdaptiveCardTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ThymeleafTemplateProvider thymeleafWorkTemplater(
+			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.suffix:.html}") String suffix,
+			ThymeleafTemplater formConverter) throws IOException {
+		return new ThymeleafTemplateProvider(prefix, suffix, resourceLoader, formConverter);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsResponseHandler teamsResponseHandler(
 			EntityMarkupTemplateProvider markupTemplater,
-			TeamsTemplateProvider workTemplater,
+			AdaptiveCardTemplateProvider formTemplater,
+			ThymeleafTemplateProvider displayTemplater,
 			TeamsHistory th) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
 				markupTemplater,
-				workTemplater,
+				formTemplater,
+				displayTemplater,
 				th);
 	}
 	
