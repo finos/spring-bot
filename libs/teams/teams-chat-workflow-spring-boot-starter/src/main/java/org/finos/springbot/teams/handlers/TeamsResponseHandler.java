@@ -9,7 +9,10 @@ import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
+import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
@@ -41,17 +44,20 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected ApplicationContext ctx;
 	protected ErrorHandler eh;
 	protected EntityMarkupTemplateProvider messageTemplater;
-	protected TeamsTemplateProvider workTemplater;
+	protected AdaptiveCardTemplateProvider workTemplater;
+	protected ThymeleafTemplateProvider displayTemplater;
 	protected TeamsHistory teamsHistory;
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
 			EntityMarkupTemplateProvider messageTemplater,
-			TeamsTemplateProvider workTemplater,
+			AdaptiveCardTemplateProvider workTemplater,
+			ThymeleafTemplateProvider displayTemplater, 
 			TeamsHistory th) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;
+		this.displayTemplater = displayTemplater;
 		this.teamsHistory = th;
 	}
 	
@@ -83,11 +89,19 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
 					}
 					
-					sendXMLResponse(content, ((MessageResponse) t).getMessage(), attachment, (TeamsAddressable) t.getAddress(), entities, ctx, ((MessageResponse)t).getData());
+					sendXMLResponse(content, attachment, (TeamsAddressable) t.getAddress(), entities, ctx, ((MessageResponse)t).getData());
 					
 				} else if (t instanceof WorkResponse) {
-					JsonNode cardJson = workTemplater.template((WorkResponse) t);
-					sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), ctx, ((WorkResponse)t).getData());
+					WorkResponse wr = (WorkResponse) t;
+					if (requiresAdaptiveCard(wr)) {
+						JsonNode cardJson = workTemplater.template(wr);
+						sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), ctx, wr.getData());
+					} else {
+						MarkupAndEntities mae = displayTemplater.template(wr);
+						String content = mae.getContents();
+						List<Entity> entities = mae.getEntities();
+						sendXMLResponse(content, null, (TeamsAddressable) t.getAddress(), entities, ctx, wr.getData());
+					}
 				}
 			} catch (Exception e) {
 				throw new TeamsException("Couldn't handle response " +t, e);
@@ -95,7 +109,11 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		}
 	}
 
-	protected void sendXMLResponse(String xml, Content c, Object attachment, TeamsAddressable address, List<Entity> entities, TurnContext ctx, Map<String, Object> data) throws Exception {		
+	private boolean requiresAdaptiveCard(WorkResponse wr) {
+		return wr.getMode() == WorkMode.EDIT || ThymeleafTemplateProvider.needsButtons(wr);
+	}
+
+	protected void sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, TurnContext ctx, Map<String, Object> data) throws Exception {		
 		Activity out = Activity.createMessageActivity();
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);

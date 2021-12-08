@@ -65,6 +65,12 @@
 			<artifactId>js</artifactId>
 			<version>${graalvm.version}</version>
 		</dependency>
+		
+		<!-- for templating xml/html @work -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
 
 		<!-- for testing -->
 		<dependency>

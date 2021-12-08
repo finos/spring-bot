@@ -1,1 +1,0 @@
-{"object001":{"Header":{"BeginString":"FIX.5.0","MsgType":"6","SenderCompID":"Deutsche Bank","TargetCompID":"Credit Suisse"},"Body":{"IOIID":"638d5f83-ab40-4c3e-aebe-15bc2620996f","IOIQty":"1000","IOITransType":"N","Side":"B","Symbol":"MSFT","Text":"Place My Order!"},"Trailer":{}}}
