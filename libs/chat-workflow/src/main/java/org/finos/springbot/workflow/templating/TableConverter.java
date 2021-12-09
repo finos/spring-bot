@@ -1,4 +1,4 @@
-package org.finos.springbot.symphony.templating;
+package org.finos.springbot.workflow.templating;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -11,14 +11,6 @@ import java.util.Optional;
 import org.finos.springbot.workflow.actions.form.TableAddRow;
 import org.finos.springbot.workflow.actions.form.TableDeleteRows;
 import org.finos.springbot.workflow.actions.form.TableEditRow;
-import org.finos.springbot.workflow.templating.AbstractTableConverter;
-import org.finos.springbot.workflow.templating.ComplexTypeConverter;
-import org.finos.springbot.workflow.templating.Rendering;
-import org.finos.springbot.workflow.templating.SimpleTypeConverter;
-import org.finos.springbot.workflow.templating.TypeConverter;
-import org.finos.springbot.workflow.templating.Variable;
-import org.finos.springbot.workflow.templating.WithField;
-import org.finos.springbot.workflow.templating.WithType;
 import org.springframework.util.StringUtils;
 
 public class TableConverter extends AbstractTableConverter<String> {
@@ -54,7 +46,7 @@ public class TableConverter extends AbstractTableConverter<String> {
 	}
 
 	private static String indent(Variable variable) {
-		return indent(((FreemarkerVariable) variable).depth);
+		return indent(variable.getDepth());
 	}
 	
 	public static String endIterator(Variable variable) {
@@ -117,10 +109,10 @@ public class TableConverter extends AbstractTableConverter<String> {
 		}
 
 		if (editMode) {
-			out.add("<td " + CENTER_ALIGN + "><button name=\"" + variable.getFormFieldName() + "." + TableDeleteRows.ACTION_SUFFIX
-					+ "\">Delete</button></td>");
-			out.add("<td " + CENTER_ALIGN + "><button name=\"" + variable.getFormFieldName() + "." + TableAddRow.ACTION_SUFFIX
-					+ "\">New</button></td>");
+			String deleteId = variable.getFormFieldName() + "." + TableDeleteRows.ACTION_SUFFIX;
+			out.add("<td " + CENTER_ALIGN + ">"+r.button("Delete", deleteId)+"</td>");
+			String newId = variable.getFormFieldName() + "." + TableAddRow.ACTION_SUFFIX;
+			out.add("<td " + CENTER_ALIGN + ">"+r.button("New", newId)+"</td>");
 		}
 		
 		return out.stream().reduce(String::concat).orElse(CENTER_ALIGN);

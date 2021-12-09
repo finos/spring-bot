@@ -1,10 +1,10 @@
-22. Thymeleaf templating, review ALL tests
 26. Fix the Bots : ToDo, Claim Bot, News, Demo etc.
 28. BDK Version of Symphony (Suresh)
 31. Data for previous forms in Teams (do we really need this?  Actually achievable if we have some kind of message Id...)
 32. Allow buttons on thymeleaf display versions.
 33. fix coverage so that it works cross-project
 34. merge changes from master
+35. Reading writing azure blob with tag in conversation.
 
 30.  Make welcome listener generic teams and symph.  move to chat-workflow.
 

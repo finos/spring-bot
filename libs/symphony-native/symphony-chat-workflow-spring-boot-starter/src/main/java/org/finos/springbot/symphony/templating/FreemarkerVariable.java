@@ -60,4 +60,9 @@ public class FreemarkerVariable implements Variable {
 		return getDataPath() + ".error";
 	}
 
+	@Override
+	public int getDepth() {
+		return depth;
+	}
+
 }
