@@ -12,7 +12,7 @@ import org.finos.springbot.workflow.templating.Mode;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 
-public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<String, WorkResponse> {
+public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<String, String, WorkResponse> {
 
 	private final FreemarkerWorkTemplater formConverter;
 	

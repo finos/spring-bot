@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 
+import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.templating.AbstractResourceTemplateProvider;
 import org.finos.springbot.workflow.templating.Mode;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, WorkResponse> {
+public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, JsonNode, WorkResponse> {
 
 	private final WorkTemplater<JsonNode> formConverter;
 	
@@ -52,8 +53,9 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 	}
 	
 	protected boolean needsButtons(WorkResponse r) {
-		// TODO Auto-generated method stub
-		return false;
+		Map<String, Object> data = r.getData();
+		ButtonList bl = (ButtonList) data.get(ButtonList.KEY);
+		return ((bl != null) && (bl.getContents().size() > 0));
 	}
 
 	@Override

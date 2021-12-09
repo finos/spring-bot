@@ -66,6 +66,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			eh = ctx.getBean(ErrorHandler.class);
 		}
 	}	
+	
+	enum TemplateType { ADAPTIVE_CARD, THYMELEAF };
 
 	@Override
 	public void accept(Response t) {
@@ -93,7 +95,9 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
-					if (requiresAdaptiveCard(wr)) {
+					TemplateType tt = getTemplateType(wr);
+ 					 
+					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
 						sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), ctx, wr.getData());
 					} else {
@@ -109,6 +113,21 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		}
 	}
 
+	protected TemplateType getTemplateType(WorkResponse wr) {
+		TemplateType tt;
+		if (displayTemplater.hasTemplate(wr)) {
+			tt = TemplateType.THYMELEAF;
+		} else if (workTemplater.hasTemplate(wr)) {
+			tt = TemplateType.ADAPTIVE_CARD;
+		} else if (requiresAdaptiveCard(wr)) {
+			tt = TemplateType.ADAPTIVE_CARD;
+		} else {
+			tt = TemplateType.THYMELEAF;
+		}
+		
+		return tt;
+	}
+
 	private boolean requiresAdaptiveCard(WorkResponse wr) {
 		return wr.getMode() == WorkMode.EDIT || ThymeleafTemplateProvider.needsButtons(wr);
 	}
@@ -117,11 +136,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		Activity out = Activity.createMessageActivity();
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
-		String dataXml = xml.replace("</div>", "<a href=\"http://kite9.com/,"+ 
-				Base64.getEncoder().encodeToString(
-					StreamUtils.copyToByteArray(TeamsResponseHandler.class.getResourceAsStream("/manifest/color.png"))) + 
-				"\">some link</a></div>");
-		out.setText(dataXml);
+		out.setText(xml);
 		
 		ctx.sendActivity(out).handle((rr, e) -> {
 			if (e != null) {

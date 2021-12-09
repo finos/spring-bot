@@ -53,11 +53,18 @@ public class ThymeleafVariable implements Variable {
 	}
 	
 	public String getDataPath() {
-		return (parent != null ? parent.getDataPath() + "." : "") + segment;
+		return (parent != null ? parent.getDataPath() + "?." : "") + segment;
 	}
 	
 	public String getErrorPath() {
-		return getDataPath() + ".error";
+		return getDataPath() + "?.error";
 	}
+
+	@Override
+	public String toString() {
+		return getDataPath();
+	}
+	
+	
 
 }

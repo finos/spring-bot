@@ -41,8 +41,8 @@ public class AdaptiveCardConverterConfig {
 	}
 	
 	@Bean
-	protected CollectionConverter acCollectionConverter(AdaptiveCardRendering r) {
-		return new CollectionConverter(r);
+	protected CollectionConverter<JsonNode> acCollectionConverter(AdaptiveCardRendering r) {
+		return new CollectionConverter<>(r);
 	}
 	
 	@Bean

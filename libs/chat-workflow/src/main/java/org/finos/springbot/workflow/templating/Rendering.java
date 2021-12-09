@@ -32,7 +32,7 @@ public interface Rendering<X> {
 	
 	X checkBox(Variable variable, boolean editable);
 
-	X collection(Type t, Variable v, X in, boolean editable);
+	X collection(Type t, Variable collection, Variable item, X in, boolean editable);
 
 	X button(String name, String value);
 	

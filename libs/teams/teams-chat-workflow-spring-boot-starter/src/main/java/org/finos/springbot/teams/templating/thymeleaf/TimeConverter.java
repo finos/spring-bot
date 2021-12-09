@@ -9,14 +9,13 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.finos.springbot.workflow.templating.Variable;
 
-public class TimeConverter extends TextFieldConverter<MarkupAndEntities> {
+public class TimeConverter extends TextFieldConverter<String> {
 
-	public TimeConverter(Rendering<MarkupAndEntities> r) {
+	public TimeConverter(Rendering<String> r) {
 		super(LOW_PRIORITY, r, 
 			Instant.class, 
 			LocalDateTime.class, 
@@ -27,8 +26,8 @@ public class TimeConverter extends TextFieldConverter<MarkupAndEntities> {
 	}
 
 	@Override
-	public MarkupAndEntities apply(Field ctx, Type t, boolean editMode, Variable v) {
-		MarkupAndEntities on = super.apply(ctx, t, editMode, v);
+	public String apply(Field ctx, Type t, boolean editMode, Variable v) {
+		String on = super.apply(ctx, t, editMode, v);
 		
 //		Class<?> cl = (Class<?>) t;
 //		

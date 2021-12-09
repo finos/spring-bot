@@ -10,7 +10,7 @@ import org.finos.springbot.workflow.response.MessageResponse;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 
-public abstract class AbstractMarkupTemplateProvider<X extends Markup> extends AbstractResourceTemplateProvider<X, MessageResponse> implements MarkupTemplateProvider<X> {
+public abstract class AbstractMarkupTemplateProvider<X extends Markup> extends AbstractResourceTemplateProvider<X, X, MessageResponse> implements MarkupTemplateProvider<X> {
 
 	public static final String MESSAGE_AREA = "<!-- Message Content -->";
 	

@@ -226,7 +226,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	}
 
 	@Override
-	public JsonNode collection(Type t, Variable v, JsonNode in, boolean editable) {
+	public JsonNode collection(Type t, Variable v, Variable i, JsonNode in, boolean editable) {
 		if (editable) {
 			JsonNode cb = addFieldName("Select", checkBox(v, true));
 			JsonNode edit = button("Edit", v.getDataPath()+TableEditRow.EDIT_SUFFIX);
