@@ -126,7 +126,7 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
                 at = m.end();
                 result = m.find();
             } while (result);
-            sb.append(in.substring(m.end()));
+            sb.append(in.substring(at));
             return sb.toString();
         }
         return in;
