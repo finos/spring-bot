@@ -155,9 +155,8 @@ public class FreemarkerRendering implements Rendering<String> {
 	}
 
 	@Override
-	public String button(String name, String value) {
-		// TODO Auto-generated method stub
-		return null;
+	public String button(String text, String id) {
+		return "<button name=\"" + id + "\">"+text+"</button>";
 	}
 
 	@Override

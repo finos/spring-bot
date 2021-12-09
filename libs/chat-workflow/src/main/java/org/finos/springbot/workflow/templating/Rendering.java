@@ -34,7 +34,7 @@ public interface Rendering<X> {
 
 	X collection(Type t, Variable collection, Variable item, X in, boolean editable);
 
-	X button(String name, String value);
+	X button(String text, String id);
 	
 	X buttons(String location);
 	

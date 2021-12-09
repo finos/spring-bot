@@ -137,16 +137,16 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	}
 
 	@Override
-	public JsonNode button(String name, String value) {
+	public JsonNode button(String text, String id) {
 		ObjectNode out = f.objectNode();
 		out.put("type", "ActionSet");
 		ArrayNode actions = out.putArray("actions");
 		ObjectNode submit = f.objectNode();
 		submit.put("type", "Action.Submit");
-		submit.put("title", name);
-		submit.put("id", value);
+		submit.put("title", text);
+		submit.put("id", id);
 		ObjectNode map = submit.putObject("data");
-		map.put("action", name);
+		map.put("action", text);
 		map.put("form", "${root.formid}");
 		actions.add(submit);
 		return out;
