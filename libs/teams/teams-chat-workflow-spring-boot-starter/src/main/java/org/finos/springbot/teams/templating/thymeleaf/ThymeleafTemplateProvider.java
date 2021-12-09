@@ -4,7 +4,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,7 +96,7 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 		Matcher m = ENTITY_FINDER.matcher(done);
 		List<Entity> entities = new ArrayList<Entity>();
 		
-		done = m.replaceAll(x -> {
+		done = replaceAll(done, m, x -> {
 			Mention men = new Mention();
 			men.setMentioned(new ChannelAccount(x.group(1), x.group(2)));
 			Entity out = new Entity();
@@ -105,4 +109,26 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 		return new MarkupAndEntities(done, entities);
 	}
 	
+	/**
+	 * Added this here since it's only available since Java1.9 in Matcher.
+	 */
+	public String replaceAll(String in, Matcher m, Function<MatchResult, String> replacer) {
+        Objects.requireNonNull(replacer);
+        int at = 0;
+        boolean result = m.find();
+        
+        if (result) {
+            StringBuilder sb = new StringBuilder();
+            do {
+            	sb.append(in.substring(at, m.start()));
+                String replacement =  replacer.apply(m.toMatchResult());
+                sb.append(replacement);
+                at = m.end();
+                result = m.find();
+            } while (result);
+            sb.append(in.substring(m.end()));
+            return sb.toString();
+        }
+        return in;
+    }
 }
