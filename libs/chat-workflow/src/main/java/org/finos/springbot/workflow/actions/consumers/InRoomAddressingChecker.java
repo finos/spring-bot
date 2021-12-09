@@ -33,7 +33,7 @@ public class InRoomAddressingChecker implements AddressingChecker {
 			}
 			
 			if (a instanceof SimpleMessageAction) {
-				SimpleMessageAction sma = (SimpleMessageAction) a;
+ 				SimpleMessageAction sma = (SimpleMessageAction) a;
 				
 				Optional<Tag> firstUserMention = sma.getMessage().getNth(Tag.class, 0); 
 				User bot = theBot.get();

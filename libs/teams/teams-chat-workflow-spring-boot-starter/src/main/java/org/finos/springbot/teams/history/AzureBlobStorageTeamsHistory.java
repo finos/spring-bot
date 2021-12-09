@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -76,7 +77,7 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 
 	protected <X> Optional<X> getLast(Class<X> type, String expectedTag, String directory) {
 		try {
-			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+directory+"'").setMaxResultsPerPage(1);
+			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+getAzureTag(directory)+"'").setMaxResultsPerPage(1);
 			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(5), Context.NONE);
 			Iterator<TaggedBlobItem> it = pi.iterator();
 			if (it.hasNext()) {
@@ -93,7 +94,7 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	
 	protected <X> List<X> getList(Class<X> type, String expectedTag, String directory, long sinceTimestamp) {
 		try {
-			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+directory+"' AND "+TIMESTAMP_KEY+">='"+sinceTimestamp+"'").setMaxResultsPerPage(1);
+			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+getAzureTag(directory)+"' AND "+TIMESTAMP_KEY+">='"+sinceTimestamp+"'").setMaxResultsPerPage(1);
 			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(5), Context.NONE);			
 			return StreamSupport.stream(pi.spliterator(), false)
 				.map(tbi -> findObjectInItem(tbi.getName(), type))
@@ -114,7 +115,7 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	}
 	
 	private String getAzureTag(String s) {
-		return s.replace("-", "_");
+		return s.replaceAll("[^0-9a-zA-Z]","_");
 	}
 
 
@@ -206,6 +207,12 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 
 	private Map<String, String> getTags(Map<String, Object> data, Addressable a) {
 		HeaderDetails hd = (HeaderDetails) data.get(HeaderDetails.KEY);
+		
+		if (hd.getTags().size() ==0) {
+			// don't store
+			return Collections.emptyMap();
+		}
+		
 		Map<String, String> out = new HashMap<String, String>();
 		out.put(TIMESTAMP_KEY, ""+ System.currentTimeMillis());
 		if (hd != null) {
@@ -214,7 +221,7 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 			}
 		}
 		
-		out.put(CHAT_KEY, a.getKey());		
+		out.put(CHAT_KEY, getAzureTag(a.getKey()));		
 		return out;
 	}
 }

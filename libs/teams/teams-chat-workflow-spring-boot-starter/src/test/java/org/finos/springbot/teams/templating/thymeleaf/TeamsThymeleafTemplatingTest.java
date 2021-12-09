@@ -12,8 +12,7 @@ import java.util.stream.IntStream;
 
 import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
-import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterConfig;
-import org.finos.springbot.teams.templating.adaptivecard.JavascriptSubstitution;
+import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.tests.templating.AbstractTemplatingTest;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
@@ -25,7 +24,6 @@ import org.finos.springbot.workflow.form.DropdownList;
 import org.finos.springbot.workflow.form.DropdownList.Item;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.templating.Mode;
-import org.finos.springbot.workflow.templating.WorkTemplater;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,21 +32,20 @@ import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 @SpringBootTest(classes = { 
-		AdaptiveCardConverterConfig.class
+		ThymeleafConverterConfig.class
 })
 public class TeamsThymeleafTemplatingTest extends AbstractTemplatingTest {
 
 	@Autowired
-	WorkTemplater<String> templater;
+	ThymeleafTemplater templater;
+	
+	ThymeleafTemplateProvider provider;
 	
 	ObjectMapper om;
-	
-	JavascriptSubstitution js = new JavascriptSubstitution();
-	
+		
 	@Override
 	protected Addressable getTo() {
 		return new TeamsUser("abc1234", "Geoff Summersby", "aac123");
@@ -68,10 +65,18 @@ public class TeamsThymeleafTemplatingTest extends AbstractTemplatingTest {
 	public void doSetup() {
 		om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
+		provider = new ThymeleafTemplateProvider(null, null, null, templater);
 	}
 
 	@Override
 	protected void testTemplating(WorkResponse workResponse, String testName) {
+		Mode translateMode = translateMode(workResponse);
+
+		if (translateMode == Mode.FORM) {
+			return;
+			// can't edit with thymeleaf in teams.
+		}
+		
 	    try {		
 	    	// populate with at least one button
 	    	Map<String, Object> data = workResponse.getData();
@@ -84,20 +89,18 @@ public class TeamsThymeleafTemplatingTest extends AbstractTemplatingTest {
 	    	
 			// actual template
 			new File("target/tests").mkdirs();
-			JsonNode actualNode = templater.convert(workResponse.getFormClass(), translateMode(workResponse));
-			String actualJson = om.writerWithDefaultPrettyPrinter().writeValueAsString(actualNode);
-			System.out.println("ACTUAL  : " + actualJson);
+			String actualHtml = templater.convert(workResponse.getFormClass(), translateMode);
+			System.out.println("ACTUAL  : " + actualHtml);
 			
 	    	// expected template
-			String expectedJson = loadJson(testName+".json");
-			JsonNode expectedNode = om.readTree(expectedJson);
-			System.out.println("EXPECTED: " + expectedJson);
+			String expectedHtml = loadHtml(testName+".html");
+			System.out.println("EXPECTED: " + expectedHtml);
 			 
 			// write expected/actual
-			FileOutputStream out1 = new FileOutputStream("target/tests/"+testName+".json");
-			StreamUtils.copy(actualJson, StandardCharsets.UTF_8, out1);
-			FileOutputStream out1ex = new FileOutputStream("target/tests/"+testName+".expected.json");
-			StreamUtils.copy(expectedJson, StandardCharsets.UTF_8, out1ex);
+			FileOutputStream out1 = new FileOutputStream("target/tests/"+testName+".html");
+			StreamUtils.copy(actualHtml, StandardCharsets.UTF_8, out1);
+			FileOutputStream out1ex = new FileOutputStream("target/tests/"+testName+".expected.html");
+			StreamUtils.copy(expectedHtml, StandardCharsets.UTF_8, out1ex);
 			
 			// write data
 			JsonNode _$root = om.valueToTree(workResponse.getData());
@@ -106,13 +109,11 @@ public class TeamsThymeleafTemplatingTest extends AbstractTemplatingTest {
 			StreamUtils.copy(dataJson, StandardCharsets.UTF_8, out1data);
 			
 			// make sure the substitution works
-			ObjectNode dataOuter = om.createObjectNode();
-			dataOuter.set("$root", _$root);
-			String outerDataJson = om.writerWithDefaultPrettyPrinter().writeValueAsString(dataOuter);
-			System.out.println("COMBINED: "+js.singleThreadedEvalLoop(outerDataJson, actualJson));
+			MarkupAndEntities combined = provider.applyTemplate(actualHtml, workResponse);
+			System.out.println("COMBINED: "+combined.getContents());
 			
 			// do comparison
-			Assertions.assertEquals(expectedNode, actualNode);
+			Assertions.assertEquals(expectedHtml, actualHtml);
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -140,7 +141,7 @@ public class TeamsThymeleafTemplatingTest extends AbstractTemplatingTest {
 	}
 
 
-	public static String loadJson(String string) throws IOException {
+	public static String loadHtml(String string) throws IOException {
         return StreamUtils.copyToString(TeamsThymeleafTemplatingTest.class.getResourceAsStream(string), Charset.forName("UTF-8"));
     }
 

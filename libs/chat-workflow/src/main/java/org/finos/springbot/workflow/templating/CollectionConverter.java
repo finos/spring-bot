@@ -30,7 +30,7 @@ public class CollectionConverter<X> extends AbstractComplexTypeConverter<X> {
 			TypeConverter<X> elementTypeConverter = controller.getConverter(null, elementClass, controller);
 			Variable child = variable.index();
 			X propertyPanel = elementTypeConverter.apply(null, controller, elementClass, false, child, collectionValues());
-			return r.collection(elementClass, variable, propertyPanel, editMode);
+			return r.collection(elementClass, variable, child, propertyPanel, editMode);
 		} else {
 			return r.textField(variable, false);
 		}

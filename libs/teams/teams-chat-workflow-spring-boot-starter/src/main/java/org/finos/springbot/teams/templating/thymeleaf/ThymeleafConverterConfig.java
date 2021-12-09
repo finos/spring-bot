@@ -3,7 +3,6 @@ package org.finos.springbot.teams.templating.thymeleaf;
 import java.util.List;
 
 import org.finos.springbot.teams.TeamsWorkflowConfig;
-import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.templating.BeanConverter;
@@ -30,22 +29,22 @@ public class ThymeleafConverterConfig {
 	}
 	
 	@Bean
-	protected BeanConverter<MarkupAndEntities> tlBeanConverter(ThymeleafRendering r) {
-		return new BeanConverter<MarkupAndEntities>(r);
+	protected BeanConverter<String> tlBeanConverter(ThymeleafRendering r) {
+		return new BeanConverter<>(r);
 	}
 	
 	@Bean
-	protected BooleanConverter<MarkupAndEntities> tlBooleanConverter(ThymeleafRendering r) {
+	protected BooleanConverter<String> tlBooleanConverter(ThymeleafRendering r) {
 		return new BooleanConverter<>(r);
 	}
 	
 	@Bean
-	protected CollectionConverter<MarkupAndEntities> tlCollectionConverter(ThymeleafRendering r) {
+	protected CollectionConverter<String> tlCollectionConverter(ThymeleafRendering r) {
 		return new CollectionConverter<>(r);
 	}
 	
 	@Bean
-	protected EnumConverter<MarkupAndEntities> tlEnumConverter(ThymeleafRendering r) {
+	protected EnumConverter<String> tlEnumConverter(ThymeleafRendering r) {
 		return new EnumConverter<>(r);
 	}
 	
@@ -55,29 +54,29 @@ public class ThymeleafConverterConfig {
 	}
 	
 	@Bean
-	protected TextFieldConverter<MarkupAndEntities> textFieldConverter(ThymeleafRendering r) {
+	protected TextFieldConverter<String> textFieldConverter(ThymeleafRendering r) {
 		return new TextFieldConverter<>(TextFieldConverter.LOW_PRIORITY, r, String.class, 
 				Number.class, int.class, float.class, double.class, short.class, long.class, byte.class);
 	}
 	
 	@Bean
-	protected UserConverter<MarkupAndEntities> tlUserConverter(ThymeleafRendering r) {
+	protected UserConverter<String> tlUserConverter(ThymeleafRendering r) {
 		return new UserConverter<>(UserConverter.LOW_PRIORITY, r, User.class);
 	}
 	
 	@Bean
-	protected ChatConverter<MarkupAndEntities> tlChatConverter(ThymeleafRendering r) {
+	protected ChatConverter<String> tlChatConverter(ThymeleafRendering r) {
 		return new ChatConverter<>(ChatConverter.LOW_PRIORITY, r, Chat.class);
 	}
 	
 	@Bean
-	protected DropdownAnnotationConverter<MarkupAndEntities> tlDropdownAnnotationConverter(ThymeleafRendering r) {
+	protected DropdownAnnotationConverter<String> tlDropdownAnnotationConverter(ThymeleafRendering r) {
 		return new DropdownAnnotationConverter<>(r);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ThymeleafTemplater thymeleafConverter(List<TypeConverter<MarkupAndEntities>> converters, ThymeleafRendering r) {
+	public ThymeleafTemplater thymeleafConverter(List<TypeConverter<String>> converters, ThymeleafRendering r) {
 		return new ThymeleafTemplater(converters, r);
 	}
 	

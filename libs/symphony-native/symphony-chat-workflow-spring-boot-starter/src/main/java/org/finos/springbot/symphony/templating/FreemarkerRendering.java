@@ -149,7 +149,7 @@ public class FreemarkerRendering implements Rendering<String> {
 	}
 
 	@Override
-	public String collection(Type t, Variable v, String in, boolean editable) {
+	public String collection(Type t, Variable v, Variable i, String in, boolean editable) {
 		// TODO Auto-generated method stub
 		return null;
 	}

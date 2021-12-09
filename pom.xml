@@ -110,14 +110,6 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>vladimirpar</id>
-			<name>Vladimir Parnashvili</name>
-			<email>vladimir.parnashvili@db.com</email>
-			<roles>
-				<role>developer</role>
-			</roles>
-		</developer>
-		<developer>
 			<id>sureshrupnar</id>
 			<name>Suresh Rupnar</name>
 			<email>suresh.rupnar@db.com</email>
@@ -202,9 +194,9 @@
 							</execution>
 							<execution>
 								<id>report</id>
-								<phase>test</phase>
+				                <phase>verify</phase>
 								<goals>
-									<goal>report</goal>
+									<goal>report-aggregate</goal>
 								</goals>
 							</execution>
 						</executions>

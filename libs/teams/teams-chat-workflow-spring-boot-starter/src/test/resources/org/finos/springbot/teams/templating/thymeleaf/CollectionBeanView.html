@@ -1,0 +1,2 @@
+<div xmlns:th="http://www.thymeleaf.org"><table><tr><td style="width: 200px"><b>Inners:</b></td><td><div th:each="iB : ${form?.inners}"><table><tr><td style="width: 200px"><b>String Field:</b></td><td><span th:text="${iB?.s}">text</span></td></tr>
+<tr><td style="width: 200px"><b>Boolean field:</b></td><td><span th:text="${iB?.b ? 'Y' : 'N'}">boolean</span></td></tr></table></div></td></tr></table></div>

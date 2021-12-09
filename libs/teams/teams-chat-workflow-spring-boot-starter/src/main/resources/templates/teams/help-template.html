@@ -6,7 +6,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr th:each="command : ${entity.form.commands}">
+    <tr th:each="command : ${form.commands}">
       <td th:text="${command.description}">Some Command</td>
       <td>
         <ul>
