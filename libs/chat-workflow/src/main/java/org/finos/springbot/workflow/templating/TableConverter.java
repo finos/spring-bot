@@ -54,7 +54,7 @@ public class TableConverter<X> extends AbstractTableConverter<X> {
 
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
 			X cellContent = ((SimpleTypeConverter<X>)elementTypeConverter).apply(null, controller, elementClass, false, subVar, cellDetail);
-			out.add(cellContent);
+			out.add(getR().tableCell(Collections.emptyMap(), cellContent));
 		} else if (elementTypeConverter instanceof ComplexTypeConverter) {
 			List<X> cellContents = ((ComplexTypeConverter<X>)elementTypeConverter).withFields(controller, elementClass, false, subVar, cellDetail);
 			out.addAll(cellContents);
@@ -84,7 +84,7 @@ public class TableConverter<X> extends AbstractTableConverter<X> {
 		List<X> out = new ArrayList<X>();
  
 		if (elementTypeConverter instanceof SimpleTypeConverter) {
-			out.add(getR().description("Value"));
+			out.add(getR().tableCell(Collections.emptyMap(), getR().description("Value")));
 		} else if (elementTypeConverter instanceof ComplexTypeConverter) {
 			out.addAll(((ComplexTypeConverter<X>)elementTypeConverter).withFields(controller, elementClass, editMode, variable, cellDetail));
 		} else {
@@ -122,9 +122,9 @@ public class TableConverter<X> extends AbstractTableConverter<X> {
             public X apply(Field f, boolean editMode, Variable variable, WithType<X> contentHandler) {
                 Map<String, String> align = numberClass(f.getType()) ? RIGHT_ALIGN : (boolClass(f.getType()) ? CENTER_ALIGN : Collections.emptyMap());
                 Type t = f.getGenericType();
-                return StringUtils.hasText(getFieldNameOrientation(f)) ? getR().tableCell(
-                		align, contentHandler.apply(null, contentHandler, t, editMode, variable, null))
-                	: getR().description("");
+                return StringUtils.hasText(getFieldNameOrientation(f)) ? 
+                		getR().tableCell(align, contentHandler.apply(null, contentHandler, t, editMode, variable, null))
+                	: getR().tableCell(align, getR().description(""));
             }
         };
 

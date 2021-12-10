@@ -1,8 +1,8 @@
 <div xmlns:th="http://www.thymeleaf.org"><table><tr><td style="width: 200px"><b>Inners:</b></td><td>
-  <table><thead><tr><td ><span>String Field</span></td>
+  <table><thead><tr><td><span>String Field</span></td>
 <td style="text-align:center;"><span>Boolean field</span></td>
   </tr></thead><tbody>
-  <tr th:each="iB : ${form?.inners}"><td ><span th:text="${iB?.s}">text</span></td>
+  <tr th:each="iB : ${form?.inners}"><td><span th:text="${iB?.s}">text</span></td>
 <td style="text-align:center;"><span th:text="${iB?.b ? 'Y' : 'N'}">boolean</span></td>
   </tr>
   </tbody></table></td></tr></table></div>

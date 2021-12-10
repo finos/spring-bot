@@ -1,12 +1,12 @@
 <div xmlns:th="http://www.thymeleaf.org"><table><tr><td style="width: 200px"><b>Ints:</b></td><td>
-  <table><thead><tr><span>Value</span>
+  <table><thead><tr><td><span>Value</span></td>
   </tr></thead><tbody>
-  <tr th:each="iB : ${form?.ints}"><span th:text="${iB}">text</span>
+  <tr th:each="iB : ${form?.ints}"><td><span th:text="${iB}">text</span></td>
   </tr>
   </tbody></table></td></tr>
 <tr><td style="width: 200px"><b>Strings:</b></td><td>
-  <table><thead><tr><span>Value</span>
+  <table><thead><tr><td><span>Value</span></td>
   </tr></thead><tbody>
-  <tr th:each="iB : ${form?.strings}"><span th:text="${iB}">text</span>
+  <tr th:each="iB : ${form?.strings}"><td><span th:text="${iB}">text</span></td>
   </tr>
   </tbody></table></td></tr></table></div>

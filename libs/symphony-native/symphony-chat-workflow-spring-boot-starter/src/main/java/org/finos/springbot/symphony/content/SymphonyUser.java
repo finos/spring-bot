@@ -17,7 +17,7 @@ import com.symphony.user.StreamID;
 import com.symphony.user.UserId;
 
 @Work(jsonTypeName = { "com.symphony.user.mention", "org.finos.symphony.toolkit.workflow.content.userDef"}, index = false)
-@JsonIncludeProperties("id")
+@JsonIncludeProperties({"id", "version"})
 public final class SymphonyUser extends Mention implements User, SymphonyContent, SymphonyAddressable, Tag {
 		
 	public SymphonyUser() {

@@ -9,7 +9,10 @@ import org.symphonyoss.TaxonomyElement;
 import org.symphonyoss.fin.Security;
 import org.symphonyoss.fin.security.id.Ticker;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 @Work(jsonTypeName = "org.symphonyoss.fin.security", index = false, readVersions = {"0.*"} )
+@JsonIncludeProperties({"id", "version"})
 public final class CashTag extends Security implements Tag {
 	
 	public CashTag() {
