@@ -14,7 +14,7 @@ public class ThymeleafRendering implements TableRendering<String> {
 
 	@Override
 	public String description(String d) {
-		return new String("<span>"+d+"</span>");
+		return "<span>"+d+"</span>";
 	}
 
 	@Override
@@ -99,14 +99,14 @@ public class ThymeleafRendering implements TableRendering<String> {
 	@Override
 	public String table(Variable variable, String headers, String body) {
 		 StringBuilder sb = new StringBuilder();
-	     int depth = ((ThymeleafVariable) variable).depth;
+	     int depth = variable.getDepth();
 	     sb.append(indent(depth) + "<table><thead><tr>");
 	     sb.append(headers);
 	     sb.append(indent(depth) + "</tr></thead><tbody>");
 	     sb.append(body);
 	     sb.append(indent(depth) + "</tbody></table>");
 	     return sb.toString();
-	} 
+	}
 	
 	@Override
 	public String tableCell(Map<String, String> attributes, String content) {
@@ -114,7 +114,9 @@ public class ThymeleafRendering implements TableRendering<String> {
 			.map(e -> e.getKey()+"=\""+e.getValue()+"\"")
 			.reduce("", (a, b) -> a+" "+b)
 			.trim();
-		return "<td "+atts+">"+content+"</td>";
+		atts = atts.length() > 0 ? " "+atts : atts;
+
+		return "<td"+atts+">"+content+"</td>";
 	}
 	
 	protected String indent(Variable variable) {

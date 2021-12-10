@@ -1,4 +1,4 @@
-26. Fix the Bots : ToDo, Claim Bot, News, Demo etc.
+26. Fix the Bots : Claim Bot, News, Demo etc.
 28. BDK Version of Symphony (Suresh)
 31. Data for previous forms in Teams (do we really need this?  Actually achievable if we have some kind of message Id...)
 32. Allow buttons on thymeleaf display versions.

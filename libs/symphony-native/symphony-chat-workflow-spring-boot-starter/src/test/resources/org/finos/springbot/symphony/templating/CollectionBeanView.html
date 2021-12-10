@@ -2,12 +2,12 @@
 <#-- starting template --><table><tr><td style="width: 200px"><b>Inners:</b></td><td>
   <span class="tempo-text-color--red">${entity.errors.contents['inners']!''}</span>
   
-  <table><thead><tr><td><b>String Field</b></td><td style="text-align:center;" ><b>Boolean field</b></td>
+  <table><thead><tr><td><span>String Field</span></td>
+<td style="text-align:center;"><span>Boolean field</span></td>
   </tr></thead><tbody>
   <#list entity.form.inners as iB>
-   <tr>
-  <td >${(iB.s)!''}</td>
-  <td style="text-align:center;" >${(iB.b)?string("Y", "N")}</td>
+   <tr><td>${(iB.s)!''}</td>
+<td style="text-align:center;">${(iB.b)?string("Y", "N")}</td>
   </tr>
   </#list>
   </tbody></table></td></tr></table>

@@ -198,7 +198,7 @@ public class FreemarkerRendering implements TableRendering<String> {
 	@Override
 	public String table(Variable variable, String headers, String body) {
 		 StringBuilder sb = new StringBuilder();
-	     int depth = ((FreemarkerVariable) variable).depth;
+	     int depth = variable.getDepth();
 		 sb.append(formatErrorsAndIndent(variable.getFormFieldName(), depth));
 	     sb.append(indent(depth) + "<table><thead><tr>");
 	     sb.append(headers);
@@ -215,15 +215,10 @@ public class FreemarkerRendering implements TableRendering<String> {
 			.reduce("", (a, b) -> a+" "+b)
 			.trim();
 		atts = atts.length() > 0 ? " "+atts : atts;
-		
+
 		return "<td"+atts+">"+content+"</td>";
 	}
 	
-	@Override
-	public String tableHeaderRow(List<String> contents) {
-		return contents.stream().reduce((a, b) -> a + "\n" + b).orElse("");
-	}
-
 	protected String beginIterator(Variable variable, Variable reg) {
 		return indent(variable) + "<#list "+variable.getDataPath()+" as "+reg.getDataPath()+">";
 	}
@@ -246,6 +241,12 @@ public class FreemarkerRendering implements TableRendering<String> {
 		sb.append(endIterator(variable));
 		return sb.toString();
 	}
+	
+	@Override
+	public String tableHeaderRow(List<String> contents) {
+		return contents.stream().reduce((a, b) -> a + "\n" + b).orElse("");
+	}
+
 	
 	@Override
 	public String tableRowCheckBox(Variable variable, Variable subVar) {
