@@ -10,7 +10,7 @@ public interface Rendering<X> {
 
 	X description(String d);
 
-	X list(Class<?> of, List<X> contents, boolean editable);
+	X list(List<X> contents);
 
 	X addFieldName(String field, X value);
 		
@@ -38,8 +38,6 @@ public interface Rendering<X> {
 	
 	X buttons(String location);
 	
-	X table(Variable v, X headers, X body);
-		
 	public default String extend(String with) {
 		return StringUtils.hasText(with) ? "." + with : "";
 	}

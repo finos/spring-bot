@@ -8,9 +8,9 @@ import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.templating.BeanConverter;
 import org.finos.springbot.workflow.templating.BooleanConverter;
 import org.finos.springbot.workflow.templating.ChatConverter;
-import org.finos.springbot.workflow.templating.CollectionConverter;
 import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
+import org.finos.springbot.workflow.templating.TableConverter;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.UserConverter;
@@ -39,8 +39,8 @@ public class ThymeleafConverterConfig {
 	}
 	
 	@Bean
-	protected CollectionConverter<String> tlCollectionConverter(ThymeleafRendering r) {
-		return new CollectionConverter<>(r);
+	protected TableConverter<String> tlTableConverter(ThymeleafRendering r) {
+		return new TableConverter<>(r);
 	}
 	
 	@Bean

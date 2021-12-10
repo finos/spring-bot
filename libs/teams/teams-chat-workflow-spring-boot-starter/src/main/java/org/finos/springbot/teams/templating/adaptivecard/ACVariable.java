@@ -12,7 +12,7 @@ public class ACVariable implements Variable {
 	
 	public final String segment;
 	private final ACVariable parent;
-	public final int depth;
+	private final int depth;
 	
 	public ACVariable(String name) {
 		this(1, name);
@@ -67,6 +67,11 @@ public class ACVariable implements Variable {
 	
 	public String getErrorPath() {
 		return getDataPath() + ".error";
+	}
+
+	@Override
+	public int getDepth() {
+		return depth;
 	}
 
 }

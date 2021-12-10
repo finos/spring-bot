@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -97,13 +96,15 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 		List<Entity> entities = new ArrayList<Entity>();
 		
 		done = replaceAll(done, m, x -> {
+			String copy = "<at>"+x.group(2)+"</at>";
 			Mention men = new Mention();
 			men.setMentioned(new ChannelAccount(x.group(1), x.group(2)));
+			men.setText(copy);
 			Entity out = new Entity();
 			out.setAs(men);
 			out.setType("mention");
 			entities.add(out);	
-			return "<at>"+x.group(2)+"</at>";
+			return copy;
 		});
 		
 		return new MarkupAndEntities(done, entities);

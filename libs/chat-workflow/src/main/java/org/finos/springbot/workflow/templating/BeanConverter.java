@@ -30,7 +30,7 @@ public class BeanConverter<X> extends AbstractComplexTypeConverter<X> {
 		if (showDetails.expand()) {
 			Class<?> element = (Class<?>) t;
 			List<X> contents = withFields(controller, element, editMode, variable, propertyPanel(showDetails));
-			return r.list(element, contents, editMode);
+			return r.list(contents);
 		} else {
 			return r.description("some object");
 		}

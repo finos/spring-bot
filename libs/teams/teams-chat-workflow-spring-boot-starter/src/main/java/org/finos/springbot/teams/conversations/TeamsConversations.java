@@ -29,4 +29,6 @@ public interface TeamsConversations extends PlatformConversations<TeamsChat, Tea
 	
 	public boolean isChannel(ChannelAccount ca);
 	
+	public TeamsUser lookupUser(String userId);
+		
 }

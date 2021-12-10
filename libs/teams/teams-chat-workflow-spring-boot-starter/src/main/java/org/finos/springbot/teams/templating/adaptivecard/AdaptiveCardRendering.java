@@ -63,7 +63,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	}
 		
 	@Override
-	public ObjectNode list(Class<?> on, List<JsonNode> contents, boolean editMode) {
+	public ObjectNode list(List<JsonNode> contents) {
 		ObjectNode out = rows("emphasis", contents);
 		return out;
 	}
@@ -241,11 +241,6 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 			((ObjectNode)in).put("$data", "${"+v.getDataPath()+"}");
 			return in;
 		}
-	}
-
-	@Override
-	public JsonNode table(Variable v, JsonNode headers, JsonNode body) {
-		throw new UnsupportedOperationException("Adaptive Cards doesn't support tables yet");
 	}
 
 	@Override
