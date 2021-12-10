@@ -64,6 +64,11 @@ public class ThymeleafVariable implements Variable {
 	public String toString() {
 		return getDataPath();
 	}
+
+	@Override
+	public int getDepth() {
+		return depth;
+	}
 	
 	
 

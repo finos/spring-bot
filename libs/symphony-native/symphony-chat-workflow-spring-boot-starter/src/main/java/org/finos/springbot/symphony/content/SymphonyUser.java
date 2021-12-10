@@ -9,6 +9,7 @@ import org.finos.springbot.workflow.content.User;
 import org.symphonyoss.TaxonomyElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.symphony.user.DisplayName;
 import com.symphony.user.EmailAddress;
 import com.symphony.user.Mention;
@@ -16,6 +17,7 @@ import com.symphony.user.StreamID;
 import com.symphony.user.UserId;
 
 @Work(jsonTypeName = { "com.symphony.user.mention", "org.finos.symphony.toolkit.workflow.content.userDef"}, index = false)
+@JsonIncludeProperties("id")
 public final class SymphonyUser extends Mention implements User, SymphonyContent, SymphonyAddressable, Tag {
 		
 	public SymphonyUser() {

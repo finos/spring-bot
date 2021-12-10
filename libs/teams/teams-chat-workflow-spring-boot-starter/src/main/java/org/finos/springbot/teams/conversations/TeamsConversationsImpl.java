@@ -3,6 +3,7 @@ package org.finos.springbot.teams.conversations;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.teams.TeamsException;
@@ -12,6 +13,7 @@ import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
+import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
@@ -148,6 +150,17 @@ public class TeamsConversationsImpl implements TeamsConversations {
 	@Override
 	public TeamsUser getUser(ChannelAccount from) {
 		return new TeamsUser(from.getId(), from.getName(), from.getAadObjectId());
+	}
+
+	@Override
+	public TeamsUser lookupUser(String userId) {
+		try {
+			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();
+			TeamsAddressable ta = getTeamsAddressable(tc);
+			return getUser(getConversations().getConversationMember(userId, ta.getKey()).get());
+		} catch (Exception e) {
+			throw new TeamsException("Couldn't lookup user", e);
+		}
 	}
 	
 	

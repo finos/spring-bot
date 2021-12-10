@@ -173,10 +173,10 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsFormConverter teamsFormConverter() {
+	public TeamsFormConverter teamsFormConverter(TeamsConversations tc) {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
-		om.registerModule(new TeamsFormDeserializerModule());
+		om.registerModule(new TeamsFormDeserializerModule(tc));
 		return new TeamsFormConverter(om);
 	}
 	
@@ -186,8 +186,9 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			List<ActionConsumer> messageConsumers, 
 			TeamsHTMLParser parser, 
 			FormValidationProcessor fvp, 
-			TeamsConversations tc) {
-		return new MessageActivityHandler(messageConsumers, tc, parser, teamsFormConverter(), fvp);
+			TeamsConversations tc,
+			TeamsFormConverter fc) {
+		return new MessageActivityHandler(messageConsumers, tc, parser, fc, fvp);
 	}
 
 

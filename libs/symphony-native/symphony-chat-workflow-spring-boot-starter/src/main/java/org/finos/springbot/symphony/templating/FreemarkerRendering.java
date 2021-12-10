@@ -6,14 +6,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.finos.springbot.entityjson.EntityJson;
-import org.finos.springbot.workflow.templating.Rendering;
+import org.finos.springbot.workflow.actions.form.TableDeleteRows;
+import org.finos.springbot.workflow.actions.form.TableEditRow;
+import org.finos.springbot.workflow.templating.TableRendering;
 import org.finos.springbot.workflow.templating.Variable;
 import org.springframework.util.StringUtils;
 
 import com.symphony.api.model.UserId;
 import com.symphony.user.EmailAddress;
 
-public class FreemarkerRendering implements Rendering<String> {
+public class FreemarkerRendering implements TableRendering<String> {
 
 	@Override
 	public String description(String d) {
@@ -21,7 +23,7 @@ public class FreemarkerRendering implements Rendering<String> {
 	}
 
 	@Override
-	public String list(Class<?> of, List<String> contents, boolean editable) {
+	public String list(List<String> contents) {
 		return "<table>" + contents.stream().reduce((a, b) -> a + "\n" + b).orElse("") + "</table>";
 	}
 
@@ -147,6 +149,8 @@ public class FreemarkerRendering implements Rendering<String> {
 			
 		}
 	}
+	
+	
 
 	@Override
 	public String collection(Type t, Variable v, Variable i, String in, boolean editable) {
@@ -202,6 +206,56 @@ public class FreemarkerRendering implements Rendering<String> {
 	     sb.append(body);
 	     sb.append(indent(depth) + "</tbody></table>");
 	     return sb.toString();
+	}
+	
+	@Override
+	public String tableCell(Map<String, String> attributes, String content) {
+		String atts = attributes.entrySet().stream()
+			.map(e -> e.getKey()+"=\""+e.getValue()+"\"")
+			.reduce("", (a, b) -> a+" "+b)
+			.trim();
+		atts = atts.length() > 0 ? " "+atts : atts;
+		
+		return "<td"+atts+">"+content+"</td>";
+	}
+	
+	@Override
+	public String tableHeaderRow(List<String> contents) {
+		return contents.stream().reduce((a, b) -> a + "\n" + b).orElse("");
+	}
+
+	protected String beginIterator(Variable variable, Variable reg) {
+		return indent(variable) + "<#list "+variable.getDataPath()+" as "+reg.getDataPath()+">";
+	}
+
+	protected String indent(Variable variable) {
+		return indent(variable.getDepth());
+	}
+	
+	protected String endIterator(Variable variable) {
+		return indent(variable) + "</#list>";
+	}
+	
+	@Override
+	public String tableRow(Variable variable, Variable subVar, List<String> cells) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(beginIterator(variable, subVar));
+		sb.append(indent(subVar) + " <tr>");
+		sb.append(cells.stream().reduce((a, b) -> a + "\n" + b).orElse(""));
+		sb.append(indent(subVar) + "</tr>");
+		sb.append(endIterator(variable));
+		return sb.toString();
+	}
+	
+	@Override
+	public String tableRowCheckBox(Variable variable, Variable subVar) {
+		return "<checkbox name=\""+ variable.getFormFieldName() + ".${" + subVar.getDataPath() + "?index}." + TableDeleteRows.SELECT_SUFFIX + "\" />";
+	}
+
+	@Override
+	public String tableRowEditButton(Variable variable, Variable subVar) {
+		String editId = variable.getFormFieldName() + "[${" + subVar.getDataPath() + "?index}]." + TableEditRow.EDIT_SUFFIX;
+		return button("Edit", editId);
 	}
 
 	@Override

@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.finos.springbot.workflow.templating.Rendering;
+import org.finos.springbot.workflow.templating.TableRendering;
 import org.finos.springbot.workflow.templating.Variable;
 import org.springframework.util.StringUtils;
 
 
-public class ThymeleafRendering implements Rendering<String> {
+public class ThymeleafRendering implements TableRendering<String> {
 
 	@Override
 	public String description(String d) {
@@ -18,7 +18,7 @@ public class ThymeleafRendering implements Rendering<String> {
 	}
 
 	@Override
-	public String list(Class<?> of, List<String> contents, boolean editable) {
+	public String list(List<String> contents) {
 		return "<table>" + contents.stream().reduce((a, b) -> a + "\n" + b).orElse("") + "</table>";
 	}
 
@@ -29,11 +29,12 @@ public class ThymeleafRendering implements Rendering<String> {
 
 	@Override
 	public String renderDropdown(Variable variable, String variableKey, String choiceLocation, String choiceKey, String choiceValue, boolean editable) {
-		String index = variable.index().getDataPath();
+		Variable index = variable.index();
+		String indexName = index.getDataPath();
 		int indent = ((ThymeleafVariable) variable).depth;
 
 		return indent(indent)
-				+ "  <div th:each=\""+index+" : ${"+choiceLocation+"}\">"
+				+ "  <div th:each=\""+indexName+" : ${"+choiceLocation+"}\">"
 				+ indent(indent)
 				+ "   <span th:if=\"${"+index+extend(choiceKey)+"} == ${"+variable.getDataPath()+extend(variableKey)+"}\""
 				+ " th:text=\"${"+index+extend(choiceValue)+"}\">choice</span>"
@@ -106,6 +107,46 @@ public class ThymeleafRendering implements Rendering<String> {
 	     sb.append(indent(depth) + "</tbody></table>");
 	     return sb.toString();
 	} 
+	
+	@Override
+	public String tableCell(Map<String, String> attributes, String content) {
+		String atts = attributes.entrySet().stream()
+			.map(e -> e.getKey()+"=\""+e.getValue()+"\"")
+			.reduce("", (a, b) -> a+" "+b)
+			.trim();
+		return "<td "+atts+">"+content+"</td>";
+	}
+	
+	protected String indent(Variable variable) {
+		return indent(variable.getDepth());
+	}
+	
+	@Override
+	public String tableRow(Variable variable, Variable subVar, List<String> cells) {
+		StringBuilder sb = new StringBuilder();
+		String indexName = subVar.getDataPath();
+		String choiceLocation = variable.getDataPath();
+		sb.append(indent(subVar));
+		sb.append("<tr th:each=\""+indexName+" : ${"+choiceLocation+"}\">");
+		sb.append(cells.stream().reduce((a, b) -> a + "\n" + b).orElse(""));
+		sb.append(indent(subVar) + "</tr>");
+		return sb.toString();
+	}
+	
+	@Override
+	public String tableHeaderRow(List<String> contents) {
+		return contents.stream().reduce((a, b) -> a + "\n" + b).orElse("");
+	}
+
+	@Override
+	public String tableRowCheckBox(Variable variable, Variable r) {
+		throw new UnsupportedOperationException("Teams can't do edit mode");
+	}
+	
+	@Override
+	public String tableRowEditButton(Variable variable, Variable subVar) {
+		throw new UnsupportedOperationException("Teams can't do edit mode");
+	}
 
 	@Override
 	public String userDisplay(Variable v) {
