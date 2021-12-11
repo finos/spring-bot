@@ -5,7 +5,7 @@
 
 	<groupId>org.finos.symphony.toolkit</groupId>
 	<artifactId>symphony-java-toolkit</artifactId>
-	<version>7.20.3-SNAPSHOT</version>
+	<version>8.0.6-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Symphony Java Toolkit</name>
 	<description>A collection of Java projects for building Symphony bots and apps</description>
@@ -24,33 +24,41 @@
 		<module>libs/symphony-app-spring-boot-starter</module>
 		<module>libs/entity-json</module>
 		<module>libs/shared-stream-spring-boot-starter</module>
-		<module>libs/chat-workflow-spring-boot-starter</module>
+		<module>libs/chat-workflow</module>
+		<module>libs/symphony-chat-workflow-spring-boot-starter</module>
 		<module>libs/quickfix-json</module>
-		
+
 		<module>tools/koreai</module>
 		<module>tools/rss-bot</module>
 		<module>tools/teamcity-symphony-integration</module>
 		<module>tools/symphony-maven-build-reporter</module>
-		<module>tools/poll-bot</module>		
-		<!-- <module>tools/webhook-bot</module>  -->
-		
+		<module>tools/poll-bot</module>
+		<module>tools/reminder-bot</module>
 		<module>demos/demo-bot</module>
-		<module>demos/demo-app</module>		
+		<module>demos/demo-app</module>
 		<module>demos/todo-bot</module>
-		<module>demos/claim-bot</module>		
+		<module>demos/claim-bot</module>
 	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>2.4.4</spring-boot.version>
-		<spring-boot-oauth.version>2.4.4</spring-boot-oauth.version>
+		<spring-boot.version>2.5.5</spring-boot.version>
+		<spring-boot-oauth.version>2.5.5</spring-boot-oauth.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
 
 		<!-- this must match the version from the spring boot pom -->
-		<jackson-databind.version>2.10.0</jackson-databind.version>
-		<jackson.version>2.10.0</jackson.version>
+		<jackson-databind.version>2.12.5</jackson-databind.version>
+		<jackson.version>2.12.5</jackson.version>
+		<cxf.version>3.3.4</cxf.version>
+		<commons-logging.version>1.2</commons-logging.version>
+		<wiremock.version>2.25.1</wiremock.version>
+		<bouncy-castle.version>1.67</bouncy-castle.version>
+		<commonmark.version>0.15.2</commonmark.version>
+		<corenlp.version>3.9.2</corenlp.version>
+		<sutime-models.version>1.3.5</sutime-models.version>
+		<rometools.version>1.15.0</rometools.version>
 
 		<!-- this configures the build reporter -->
 		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
@@ -97,14 +105,6 @@
 			<id>sureshrupnar</id>
 			<name>Suresh Rupnar</name>
 			<email>suresh.rupnar@db.com</email>
-			<roles>
-				<role>developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>amsidhlokhande</id>
-			<name>Amsidh Lokhande</name>
-			<email>amsidh-babasha.lokhande@db.com</email>
 			<roles>
 				<role>developer</role>
 			</roles>

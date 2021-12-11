@@ -30,7 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.User;
+import com.symphony.api.model.UserV2;
 import com.symphony.api.pod.UsersApi;
 
 public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
@@ -44,6 +44,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	private ApiInstanceFactory apiInstanceFactory;
 	private TrustManagerFactory tmf;
 	private PodProperties podProperties;
+	private SymphonyApiProperties apiProperties;
 	
 	public KoreAIBridgeFactoryImpl(ResourceLoader rl, 
 			ObjectMapper om, 
@@ -61,6 +62,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 		this.apiInstanceFactory = aif;
 		this.tmf = tmf;
 		this.podProperties = firstPodProperties(apiProperties);
+		this.apiProperties = apiProperties;
 	}
 
 
@@ -121,7 +123,7 @@ public class KoreAIBridgeFactoryImpl implements KoreAIBridgeFactory {
 	
 	public StreamEventConsumer koreAIEventHandler(KoreAIRequester requester, ApiInstance api, KoreAIInstanceProperties props) {
 		UsersApi usersApi = api.getPodApi(UsersApi.class);
-		User u = usersApi.v1UserGet(api.getIdentity().getEmail(), null, true);
+		UserV2 u = usersApi.v2UserGet(null, null, api.getIdentity().getEmail(), null, true);
 		long id = 0;
 		if (u != null) {
 			id = u.getId();

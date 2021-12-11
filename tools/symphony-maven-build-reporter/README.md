@@ -18,7 +18,7 @@ Add the following to your `pom.xml` file in maven:
       
         <extensions>
             <extension>
-                <groupId>com.db.symphonyp</groupId>
+                <groupId>org.finos.symphony.toolkit</groupId>
                 <artifactId>maven-symphony-reporter</artifactId>
                 <version>1.0.24</version>
             </extension>

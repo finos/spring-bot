@@ -2,9 +2,9 @@
 room: y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==
 
 symphony:
-  trust-store:
-    location: classpath:/example-trust.crt
-    type: PEMS
+#  trust-store:
+#    location: classpath:/example-trust.crt
+#    type: PEMS
   apis:
   - id: develop
     pod:

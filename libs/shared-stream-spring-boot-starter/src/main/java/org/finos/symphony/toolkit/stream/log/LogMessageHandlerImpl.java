@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.finos.symphony.toolkit.json.EntityJson;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
-import org.finos.symphony.toolkit.stream.MessagingVersionSpace;
 import org.finos.symphony.toolkit.stream.SharedStreamException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +31,7 @@ public class LogMessageHandlerImpl implements LogMessageHandler {
 		this.clusterName = clusterName;
 		this.streamId = streamId;
 		this.om = ObjectMapperFactory.initialize(
-			ObjectMapperFactory.extendedSymphonyVersionSpace(MessagingVersionSpace.THIS));
+			ObjectMapperFactory.extendedSymphonyVersionSpace(LogMessage.VERSION_SPACE));
 		this.messagesApi = messagesApi;
 		this.environmentSuffix = environmentSuffix == null ? "prod" : environmentSuffix;
 	}

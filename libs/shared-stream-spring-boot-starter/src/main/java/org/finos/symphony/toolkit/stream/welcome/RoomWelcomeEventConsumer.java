@@ -1,8 +1,8 @@
 package org.finos.symphony.toolkit.stream.welcome;
 
 import org.finos.symphony.toolkit.json.EntityJson;
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.agent.MessagesApi;
 import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.User;
+import com.symphony.api.model.UserV2;
 import com.symphony.api.model.V4Event;
 import com.symphony.api.model.V4RoomCreated;
 import com.symphony.api.model.V4UserJoinedRoom;
@@ -25,6 +25,8 @@ import com.symphony.api.pod.UsersApi;
  */
 public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 	
+	public static final VersionSpace VERSION_SPACE = new VersionSpace(V4RoomCreated.class, "1.0");
+
 	private static final Logger LOG = LoggerFactory.getLogger(RoomWelcomeEventConsumer.class);
 	
 	private static final String DEFAULT_WELCOME_MESSAGE = "<messageML>"
@@ -32,21 +34,21 @@ public class RoomWelcomeEventConsumer implements StreamEventConsumer {
 			+ "<p>You can address me here by affixing my name to the beginning of a message, like so:</p><br />"
 			+ "<p><mention email=\"${entity.bot.emailAddress}\" /> hi</p>" + "</messageML>";
 
-	MessagesApi messagesApi;
-	SymphonyIdentity botIdentity;
-	String welcomeMessageML;
-	User u;
-	ObjectMapper om;
+	private MessagesApi messagesApi;
+//	private SymphonyIdentity botIdentity;
+	private String welcomeMessageML;
+	private UserV2 u;
+	private ObjectMapper om;
 	
 	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity, String welcomeMessageML) {
 		super();
 		this.messagesApi = messagesApi;
-		this.botIdentity = botIdentity;
+//		this.botIdentity = botIdentity;
 		this.welcomeMessageML = welcomeMessageML;
-		u = usersApi.v1UserGet(botIdentity.getEmail(), null, true);
+		u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
 		om = new ObjectMapper();
 		ObjectMapperFactory.initialize(om, ObjectMapperFactory.extendedSymphonyVersionSpace(
-			new VersionSpace(V4RoomCreated.class.getPackage().getName(), "1.0")));
+			VERSION_SPACE));
 	}
 	
 	public RoomWelcomeEventConsumer(MessagesApi messagesApi, UsersApi usersApi, SymphonyIdentity botIdentity) {

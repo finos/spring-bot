@@ -56,5 +56,11 @@ public abstract class TaxonomyElement {
 	@JsonIgnore
 	public abstract String getSymbolPrefix();
 
+	@Override
+	public String toString() {
+		return "TaxonomyElement [value=" + value + ", prefix=" + getSymbolPrefix()+"]";
+	}
+
+	
 	
 }

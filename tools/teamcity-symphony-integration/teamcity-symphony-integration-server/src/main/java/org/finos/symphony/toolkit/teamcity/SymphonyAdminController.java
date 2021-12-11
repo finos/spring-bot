@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.finos.symphony.toolkit.json.EntityJsonTypeResolverBuilder.VersionSpace;
 import org.finos.symphony.toolkit.json.ObjectMapperFactory;
+import org.finos.symphony.toolkit.json.VersionSpace;
 import org.finos.symphony.toolkit.spring.api.builders.ApiBuilderFactory;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstance;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
@@ -38,6 +38,7 @@ import com.symphony.api.bindings.ConfigurableApiBuilder;
 import com.symphony.api.bindings.cxf.CXFApiBuilder;
 import com.symphony.api.id.SymphonyIdentity;
 import com.symphony.api.id.json.SymphonyIdentityModule;
+import com.symphony.api.model.V5DatafeedCreateBody;
 
 import jetbrains.buildServer.controllers.BaseController;
 import jetbrains.buildServer.controllers.FormUtil;
@@ -64,7 +65,7 @@ public class SymphonyAdminController extends BaseController {
 		
 		ObjectMapperFactory.initialize(om, 
 			ObjectMapperFactory.extendedSymphonyVersionSpace(
-				new VersionSpace(BuildData.class.getPackage().getName(), "1.0")));
+				new VersionSpace(BuildData.class, "1.0")));
 				
 		
 		this.configFile = serverPaths.getConfigDir() + CONFIG_PATH;
@@ -94,7 +95,7 @@ public class SymphonyAdminController extends BaseController {
 	protected ModelAndView testConfig() throws IOException, Exception {
 		// this is to make sure config is ok
 		DatafeedApi df = getAPI(DatafeedApi.class);
-		df.createDatafeed(null, null);
+		df.createDatafeed(null, null, new V5DatafeedCreateBody());
 		return null;
 	}
 

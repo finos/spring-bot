@@ -43,10 +43,30 @@ public class Taxonomy {
 		if (id == null) {
 			if (other.id != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!taxonomyPartMatch(id, other.id)) 
 			return false;
 		return true;
 	}
 	
+	protected boolean taxonomyPartMatch(List<TaxonomyElement> a, List<TaxonomyElement> b) {
+		for (TaxonomyElement tea : a) {
+			for (TaxonomyElement teb : b) {
+				if (tea.getClass().equals(teb.getClass())) {
+					return tea.equals(teb);
+				}
+			}
+		}
+		
+		return false;
+	}
+
+	protected String fromTaxonomy(Class<?> class1) {
+		return getId().stream()
+			.filter(t -> class1.isAssignableFrom(t.getClass()))
+			.findFirst()
+			.map(te -> te.getValue())
+			.orElse(null);
+	}
+
 	
 }

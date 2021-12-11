@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>7.20.3-SNAPSHOT</version>
+		<version>8.0.6-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -16,15 +16,16 @@
 	<description>Demo Chat Workflow bot for creating polls</description>
 
 	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>example.symphony.demoworkflow.PollBot</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.finos.symphony.toolkit</groupId>
-			<artifactId>chat-workflow-spring-boot-starter</artifactId>
-			<version>7.20.3-SNAPSHOT</version>
-		</dependency>
+    <dependency>
+      <groupId>org.finos.symphony.toolkit</groupId>
+      <artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
+      <version>8.0.6-SNAPSHOT</version>
+    </dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
