@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
 import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
@@ -51,8 +52,8 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	private List<User> defaultAdministrators = new ArrayList<User>();
 	private long botUserId;
 	
-	public SymphonyConversationsImpl(RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi, SymphonyIdentity botIdentity) {
-		super(streamsApi, usersApi);
+	public SymphonyConversationsImpl(RoomMembershipApi rmApi, StreamsApi streamsApi, UsersApi usersApi, SymphonyIdentity botIdentity, SymphonyApiProperties symphonyApiProperties) {
+		super(streamsApi, usersApi, symphonyApiProperties);
 		this.rmApi = rmApi;
 		this.botIdentity = botIdentity;
 	}
@@ -133,7 +134,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 
 	@Override
 	public SymphonyUser loadUserById(Long userId) {
-		UserV2 user = usersApi.v2UserGet(null, userId, null, null, true);
+		UserV2 user = usersApi.v2UserGet(null, userId, null, null, symphonyApiProperties.isLocalPod());
 		return new SymphonyUser(userId, user.getDisplayName(),user.getEmailAddress());
 	}
 	
@@ -141,7 +142,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 	
 	@Override
 	public SymphonyUser loadUserByEmail(String name) {
-		UserV2 user = usersApi.v2UserGet(null, null, name, null, true);
+		UserV2 user = usersApi.v2UserGet(null, null, name, null, symphonyApiProperties.isLocalPod());
 		return new SymphonyUser(user.getId(), user.getDisplayName(),user.getEmailAddress());
 	}
 
@@ -268,7 +269,7 @@ public class SymphonyConversationsImpl extends AbstractStreamResolving implement
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		com.symphony.api.model.UserV2 u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, true);
+		com.symphony.api.model.UserV2 u = usersApi.v2UserGet(null, null, botIdentity.getEmail(), null, symphonyApiProperties.isLocalPod());
 		botUserId = u.getId();
 	}
 

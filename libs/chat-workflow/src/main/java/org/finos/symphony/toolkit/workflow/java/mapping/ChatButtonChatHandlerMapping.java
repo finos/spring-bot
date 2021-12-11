@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.finos.symphony.toolkit.workflow.actions.Action;
@@ -16,6 +17,7 @@ import org.finos.symphony.toolkit.workflow.content.Addressable;
 import org.finos.symphony.toolkit.workflow.content.Chat;
 import org.finos.symphony.toolkit.workflow.content.User;
 import org.finos.symphony.toolkit.workflow.conversations.Conversations;
+import org.finos.symphony.toolkit.workflow.help.HelpPage;
 import org.finos.symphony.toolkit.workflow.java.converters.ResponseConverter;
 import org.finos.symphony.toolkit.workflow.java.resolvers.WorkflowResolversFactory;
 import org.finos.symphony.toolkit.workflow.response.handlers.ResponseHandlers;
@@ -61,6 +63,7 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 		List<ChatMapping<ChatButton>> out = new ArrayList<>(mappingRegistry.getRegistrations().values());
 
 		mappingRegistry.releaseReadLock();
+		out = out.stream().filter(r -> canBePerformed(a, u, r.getMapping())).collect(Collectors.toList());
 		return out;
 	}
 
@@ -72,6 +75,28 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 				.collect(Collectors.toList());
 
 		return out;
+	}
+	
+	private boolean canBePerformed(Addressable a, User u, ChatButton cb) {
+		
+		if ((a instanceof Chat) && (cb.excludeRooms().length > 0)) {
+			if (roomMatched(cb.excludeRooms(), (Chat) a)) {
+				return false;
+			}
+		}
+		
+		if ((a instanceof Chat) && (cb.rooms().length > 0)) {
+			if (!roomMatched(cb.rooms(), (Chat) a)) {
+				return false;
+			}
+		}
+		
+		if (Objects.nonNull(u) && cb.admin() && (a instanceof Chat)) {
+			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
+			return chatAdmins.contains(u);
+		} else {
+			return true;
+		}
 	}
 
 	@Override
@@ -91,21 +116,15 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 			private boolean canBePerformedHere(FormAction a) {
 				ChatButton cb = getMapping();
 			
-				if ((a.getAddressable() instanceof Chat) && (cb.rooms().length > 0)) {
-					if (!roomMatched(cb.rooms(), (Chat) a.getAddressable())) {
-						return false;
-					}
-				}
-				
-				if (cb.admin() && (a.getAddressable() instanceof Chat)) {
-					return conversations.getChatAdmins((Chat) a.getAddressable()).contains(a.getUser());
-				} else {
-					return true;
-				}
+				return canBePerformed(a.getAddressable(), a.getUser(), cb);
 			}
 
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
 				MappingRegistration<?> me = this;
+				
+				if(Objects.nonNull(a.getData().get("form")) && a.getData().get("form").getClass() == HelpPage.class) {
+					return null;
+				}
 					
 				if (!a.getAction().equals(this.getUniqueName())) {
 					return null;

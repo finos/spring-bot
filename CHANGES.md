@@ -177,3 +177,15 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
 
  - Fix for #241, fixing mock issue
  - Fix for #239, fixing Integration test
+
+# Nov 8, 2021
+
+ - Minor bugfix - KoreAI - JAVA_HOME variable replaced with actual path from System Property
+ 
+# Nov 29, 2021
+
+ - Fix for #264 - For ChatRequest and ChatButton - room exclusion feature
+ - Fix for #262 and #235 - For ChatRequest and ChatButton - rooms parameter
+ - Fix for #260 - We can search user from different POD as well
+ - Fix for #259 - Buttons are now visible on HelpPage
+  

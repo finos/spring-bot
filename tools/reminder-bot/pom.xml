@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>8.0.4-SNAPSHOT</version>
+		<version>8.0.6-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
-			<version>8.0.4-SNAPSHOT</version>
+			<version>8.0.6-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

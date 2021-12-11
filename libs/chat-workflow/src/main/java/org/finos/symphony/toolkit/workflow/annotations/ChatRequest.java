@@ -29,6 +29,11 @@ public @interface ChatRequest {
 	String[] rooms() default {};
 	
 	/**
+	 * A list of rooms which are excluded that the command works in.
+	 */
+	String[] excludeRooms() default {};
+	
+	/**
 	 * Means that the command can only be done by room administrators.
 	 */
 	boolean admin() default false;
@@ -37,5 +42,11 @@ public @interface ChatRequest {
 	 * Whether or not to show this command on the help menu
 	 */
 	boolean addToHelp() default true;
+	
+	/**
+	 * Whether this command can be exposed as a button Help Page
+	 * @return
+	 */
+	boolean isButtonOnHelpPage() default true;
 	
 }
