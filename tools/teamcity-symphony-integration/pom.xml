@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>7.20.3-SNAPSHOT</version>
+		<version>8.0.6-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 	
@@ -16,8 +16,10 @@
 	<packaging>pom</packaging>
 
 	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<teamcity-version>2019.1</teamcity-version>
 	</properties>
+	
 	<repositories>
 		<repository>
 			<id>JetBrains</id>

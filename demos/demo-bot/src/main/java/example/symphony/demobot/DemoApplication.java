@@ -21,13 +21,16 @@ import com.symphony.api.pod.UsersApi;
 public class DemoApplication {
 		
 	@Autowired
-	MessagesApi messagesApi;
+	private MessagesApi messagesApi;
 	
 	@Autowired
-	UsersApi usersApi;
+	private UsersApi usersApi;
+	
+	@Autowired
+	private SymphonyIdentity id;
 	
 	@Value("${room}")
-	String streamId;
+	private String streamId;
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
@@ -39,10 +42,6 @@ public class DemoApplication {
 	    messagesApi.v4StreamSidMessageCreatePost(null, streamId, "<messageML>sometestmessage</messageML>", null, null, null, null, null);
 	}
 	 
-
-	@Autowired
-	SymphonyIdentity id;
-	
 	@Bean
 	public StreamEventConsumer consumer() {
 		return event -> {

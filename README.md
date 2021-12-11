@@ -1,30 +1,44 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 ![sjt-build](https://github.com/finos/symphony-java-toolkit/workflows/sjt-build/badge.svg)
-[![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://codecov.io/gh/finos/symphony-java-toolkit)
+[![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://app.codecov.io/gh/finos/symphony-java-toolkit)
 ![License](https://img.shields.io/github/license/finos/symphony-java-toolkit)
 [![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)
 
-## What This Is
+# What This Is
 
 This project is a set of libraries aimed at facilitating creating Bots and Apps for the [Symphony Chat Platform](https://symphony.com) using Java and [Spring Boot](https://spring.io/projects/spring-boot).
 
 This project contains the following:
 
-- Symphony Java Client Bindings
-- Symphony Java Client Identity
-- Symphony API Spring-Boot Starter
-- Symphony App Spring-Boot Starter
-- Symphony JSON Support
-- Symphony FIX Support
-- A Symphony Maven Build Notifier
-- A TeamCity Build Notifier
-- Symphony Shared Stream
-- Chat Workflow
-- KoreAI Connector
-- Tutorials for getting started
-- Demo bots and apps
+- **Libraries**
+  - Symphony Java Client Bindings
+  - Symphony Java Client Identity
+  - Symphony API Spring-Boot Starter
+  - Symphony App Spring-Boot Starter
+  - Symphony JSON Support
+  - Symphony FIX Support
+  - Symphony Shared Stream
+  - Chat Workflow
+  
+- **Tools**
+  - A Symphony Maven Build Notifier
+  - A TeamCity Build Notifier
+  - KoreAI Bridge Connector
+  - RSS News bot
+  - Reminder Bot (tbc)
+  - Webhook Bot (tbc)
+  
+- **Tutorials for getting started**
+
+- **Demo bots and apps**
+  - Demo Bot
+  - Demo App
+  - Claim Bot
+  - To-Do Bot
 
 Read further to see what each of these includes.
+
+# Libraries
 
 ## Overview and Dependencies
 
@@ -91,6 +105,26 @@ Although this is not reliant on Symphony code, it is adjacent tech and so might 
 
  - [View the README](libs/quickfix-json/README.md)
  
+ 
+## Symphony Shared Stream
+
+The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
+
+ - [View the README](libs/shared-stream-spring-boot-starter/README.md)
+ 
+## Chat Workflow / Chat Workflow Symphony Starter
+
+Chat Workflow provides interfaces and utilities for expressing bot workflows in Spring.
+
+The Chat Workflow Symphony Starter implements this for symphony.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
+
+ - [View the README](libs/chat-workflow/README.md)
+ - [View the Documentation Site](https://finos.github.io/symphony-java-toolkit) 
+
+# Tools
+
+_All bots are deployed into maven central as executable jars_.
+
 ## Maven Build Reporter
 
 Provides a maven extension that allows you to report build results into a Symphony chat room.  
@@ -102,36 +136,28 @@ Provides a maven extension that allows you to report build results into a Sympho
 Allows you to report your TeamCity builds into Symphony chat rooms, using a bot.
 
  - [View the README](tools/teamcity-symphony-integration/README.md)
- 
-## Symphony Shared Stream
 
-The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
-
- - [View the README](libs/shared-stream-spring-boot-starter/README.md)
- 
-## Chat Workflow
-
-This module provides a one-stop-shop for constructing work-flows in Java.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
-
- - [View the README](libs/chat-workflow-spring-boot-starter/README.md)
- - [View the Tutorial](tutorials/Chat-Workflow.md) 
- - [Demo To-Do List Bot](demos/todo-bot/README.md)
- - [Demo Claim Bot](demos/claim-bot/README.md)
- - [RSS News Bot](tools/rss-bot/README.md)
- - [Poll Bot](tools/poll-bot/README.md)
- 
 ## Kore-AI Bridge
 
 This is a Spring Boot App that acts as a middleman between a Symphony bot and a KoreAI bot, allowing you to expose your KoreAI bot as a bot on Symphony.  [Kore.AI](https://kore.ai/) is a low code/no code environment for building chat bots.
 
  - [View the README](tools/koreai/README.md)
 
-## License
+## Poll Bot
+
+A bot for running polls in a Symphony chat room.  Built using chat-workflow.
+
+ - [View the README](tools/poll-bot/README.md)
+
+## News (RSS) Bot
+
+A bot for feeding news into a Symphony chat room.  Built using chat-workflow.
+
+- [View the README](tools/rss-bot/README.md)
+
+# License
 
 This project is licensed under the [Apache 2.0 License](LICENSE).
-
-## Running The Demo Bots
-
 
 
 ## Releasing This Project (For Maintainers)
@@ -146,7 +172,7 @@ In order to do a release:
 
 ```
 mvn clean test -P symphony-ci
-mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no> -DartifactId=\*  -DgroupId=\*
+mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
 mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then push to git
@@ -159,3 +185,4 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 
 4.  Perform release on github with same number
  
+

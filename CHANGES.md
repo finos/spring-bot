@@ -134,4 +134,58 @@
  - Fix for #163, Error Reporting Could Be Better with some update
  - Fix for #182, Symphony Chat Workflow Annotations Documentation
 
+## Jun 24, 2021
+ - Fix for #190, Chat Workflow documentation in the wrong place
+ - Fix for #180, Kore AI Bot Health Unreliable
+ - Fix for #171, Chat Workflow Delete/Checkbox alignment display
+ - Fix for #141, Handle Primitives in Chat Workflow
+
+## Jul 28, 2021
+ - Fix for #183, camelcase issue for methods
+ - Fix for #192, FormConverter doesn't use same object mapper as EntityJsonConverter
+ - Migrated from InstantConverter to TimeConverter, which supports Zone and LocaldateTime
  
+## Sep 9, 2021
+ - Fix for #214, support for escape character
+
+## Sep 13, 2021
+
+Major release of chat workflow.  Most interfaces for this changed.  See migration guide for details.
+
+ - Fix for #210, removed EntityJSON parameter from freemarker templating engine
+ - Fix for #209, support for Dynamic Dropdowns, and room dropdowns
+ - Fix for #178, proper error reporting inside symphony
+ - Fix for #173, use of HandlerMapping pattern, removal of Workflow class.
+ - Fix for #172, better Response class hierarchy
+ - Fix for #168, spring scanning for @Work annotation classes
+ - Fix for #164, help provision now generic, not part of symphony code
+ - Fix for #113, trying to improve serialization of Entity JSON format
+ - Fix for #196, mapping of EntityJson tags are Content objects.
+ - Fix for #174, Addressable object hierarchy improved
+
+# Sep 27, 2021
+
+ - Fix for #221, Reminder Bot not starting
+ - Fix for #223, help command not working by calling bot name
+
+# Oct 13, 2021
+
+ - Symphony API version upgraded to v20.13 by #238
+ - Fix for #232, Un-marshelling of historical objects 
+
+# Oct 20, 2021
+
+ - Fix for #241, fixing mock issue
+ - Fix for #239, fixing Integration test
+
+# Nov 8, 2021
+
+ - Minor bugfix - KoreAI - JAVA_HOME variable replaced with actual path from System Property
+ 
+# Nov 29, 2021
+
+ - Fix for #264 - For ChatRequest and ChatButton - room exclusion feature
+ - Fix for #262 and #235 - For ChatRequest and ChatButton - rooms parameter
+ - Fix for #260 - We can search user from different POD as well
+ - Fix for #259 - Buttons are now visible on HelpPage
+  

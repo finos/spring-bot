@@ -1,7 +1,6 @@
 package com.symphony.api.bindings;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -19,9 +18,13 @@ import com.symphony.api.agent.SystemApi;
 import com.symphony.api.bindings.Streams.Worker;
 import com.symphony.api.model.AckId;
 import com.symphony.api.model.Datafeed;
-import com.symphony.api.model.V2HealthCheckResponse;
+import com.symphony.api.model.V2Error;
+import com.symphony.api.model.V3Health;
+import com.symphony.api.model.V3HealthStatus;
 import com.symphony.api.model.V4Event;
+import com.symphony.api.model.V4Message;
 import com.symphony.api.model.V5Datafeed;
+import com.symphony.api.model.V5DatafeedCreateBody;
 import com.symphony.api.model.V5EventList;
 
 /**
@@ -45,12 +48,21 @@ public class AgentIT extends AbstractIT {
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
 		String in = asString(this.getClass().getResourceAsStream("/pizza.json"));
 		
-		messageAPi.v4StreamSidMessageCreatePost(null, ROOM,
+		V4Message done = messageAPi.v4StreamSidMessageCreatePost(null, ROOM,
 				"<messageML>" + 
 				"  Hello. Here is an important message with an" + 
 				"  <div class=\"entity\" data-entity-id=\"object001\" />" + 
 				"  included." + 
 				"</messageML>", in, null, null, null, null);
+		
+		// updating messages currently not supported on develop pod
+//		// try updating the message
+//		V4Message second = messageAPi.v4StreamSidMessageMidUpdatePost(null, ROOM, done.getMessageId(), "<messageML>This is updated</messageML>", in, null, null);
+//		
+//		// read the message back
+//		V4Message third = messageAPi.v1MessageIdGet(null, null, done.getMessageId());
+//		
+//		Assertions.assertEquals(second.getMessage(), third.getMessage());
 	}
 	
 	@ParameterizedTest
@@ -118,7 +130,7 @@ public class AgentIT extends AbstractIT {
 		
 		String lastAck = "";
 		
-		private V5Datafeed datafeed;
+		V5Datafeed datafeed;
 		private DatafeedApi api;
 
 		public V5Supplier(DatafeedApi api, V5Datafeed datafeed) {
@@ -129,12 +141,16 @@ public class AgentIT extends AbstractIT {
 
 		@Override
 		public List<V4Event> get() {
-			AckId ackId = new AckId().ackId(lastAck);
-			System.out.println("waiting for messages");
-			V5EventList el = api.readDatafeed(null, null, datafeed.getId(), ackId);
-			System.out.println("Recieved event list containing "+el.getEvents().size()+" events ackId "+el.getAckId());
-			this.lastAck = el.getAckId()+"grf";
-			return el.getEvents();
+			if (datafeed != null) {
+				AckId ackId = new AckId().ackId(lastAck);
+				System.out.println("waiting for messages");
+				V5EventList el = api.readDatafeed(null, null, datafeed.getId(), ackId);
+				System.out.println("Recieved event list containing "+el.getEvents().size()+" events ackId "+el.getAckId());
+				this.lastAck = el.getAckId()+"grf";
+				return el.getEvents();
+			} else {
+				return null;
+			}
 		}
 		
 		
@@ -142,16 +158,26 @@ public class AgentIT extends AbstractIT {
 
 	@ParameterizedTest
 	@MethodSource("setupConfigurations")
-	@Disabled
 	public void testStreamsV5(TestClientStrategy s) throws Exception {
 		DatafeedApi dfApi = s.getAgentApi(DatafeedApi.class);
 		MessagesApi messageAPi = s.getAgentApi(MessagesApi.class);
 
-		V5Datafeed datafeed = dfApi.createDatafeed(null, null);
+		// ensure a clean slate
+		dfApi.listDatafeed(null, null, "testy").stream()
+			.forEach(df -> dfApi.deleteDatafeed(df.getId(), null, null));
 
+		// create the new datafeed
+		V5DatafeedCreateBody body = new V5DatafeedCreateBody();
+		body.setTag("testy");
+		V5Datafeed datafeed = dfApi.createDatafeed(null, null, body);
 		System.out.println("Datafeed ID: "+datafeed.getId());
+		
+		// should be able to list
+		List<V5Datafeed> foundFeeds = dfApi.listDatafeed(null, null, "testy");
+		Assertions.assertEquals(1, foundFeeds.size());
+		Assertions.assertEquals(datafeed.getId(), foundFeeds.get(0).getId());
 
-		Supplier<List<V4Event>> supplier = new V5Supplier(dfApi, datafeed);
+		V5Supplier supplier = new V5Supplier(dfApi, datafeed);
 
 		final int[] count = { 0 };
 		final Worker<V4Event> w = Streams.createWorker(supplier, e -> e.printStackTrace());
@@ -174,17 +200,28 @@ public class AgentIT extends AbstractIT {
 			messageAPi.v4StreamSidMessageCreatePost(null, ROOM, "<messageML>"+toSend+"</messageML>", null, null, null, null, null);
 			Thread.yield();
 		}
+		
+		supplier.datafeed = null;
+		
+		// try deleting the datafeed
+		V2Error error = dfApi.deleteDatafeed(datafeed.getId(), null, null);
+		Assertions.assertNull(error);
+		
+		// should be able to list
+		foundFeeds = dfApi.listDatafeed(null, null, "testy");
+		Assertions.assertEquals(0, foundFeeds.size());
 	}
 	
 	@ParameterizedTest
 	@MethodSource("setupConfigurations")
 	public void testHealthEndpoint(TestClientStrategy s) throws Exception {
 		SystemApi systemApi = s.getAgentApi(SystemApi.class);
-		V2HealthCheckResponse resp = systemApi.v2HealthCheckGet(false, null, null, null, null, null, null, null, null, null);
-		String json = new ObjectMapper().writeValueAsString(resp);
-		Assertions.assertTrue(resp.isPodConnectivity());
-		Assertions.assertTrue(resp.isKeyManagerConnectivity());
-		Assertions.assertTrue(resp.isAgentServiceUser());
+		V3Health v3Health = systemApi.v3ExtendedHealth();
+		String json = new ObjectMapper().writeValueAsString(v3Health);
+		Assertions.assertTrue(v3Health.getStatus().equals(V3HealthStatus.UP));
+		Assertions.assertTrue(v3Health.getServices().get("pod").getStatus().equals(V3HealthStatus.UP));
+		Assertions.assertTrue(v3Health.getServices().get("key_manager").getStatus().equals(V3HealthStatus.UP));
+		Assertions.assertTrue(v3Health.getUsers().get("agentservice").getStatus().equals(V3HealthStatus.UP));
 		System.out.println(json);
 	}
 	

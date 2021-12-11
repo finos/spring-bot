@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.finos.symphony.toolkit</groupId>
 		<artifactId>symphony-java-toolkit</artifactId>
-		<version>7.20.3-SNAPSHOT</version>
+		<version>8.0.6-SNAPSHOT</version>
 		<relativePath>../..</relativePath>
 	</parent>
 
@@ -18,13 +18,13 @@
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>bindings</artifactId>
-			<version>7.20.3-SNAPSHOT</version>
+			<version>8.0.6-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.symphony.toolkit</groupId>
 			<artifactId>identity</artifactId>
-			<version>7.20.3-SNAPSHOT</version>
+			<version>8.0.6-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -69,7 +69,7 @@
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-rs-client</artifactId>
-			<version>3.3.4</version>
+			<version>${cxf.version}</version>
 			<scope>provided</scope>
 		</dependency>
 
