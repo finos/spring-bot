@@ -12,7 +12,7 @@ import org.finos.springbot.workflow.templating.TableRendering;
 import org.finos.springbot.workflow.templating.Variable;
 import org.springframework.util.StringUtils;
 
-import com.symphony.api.model.UserId;
+import com.symphony.user.UserId;
 import com.symphony.user.EmailAddress;
 
 public class FreemarkerRendering implements TableRendering<String> {
@@ -46,7 +46,7 @@ public class FreemarkerRendering implements TableRendering<String> {
 					+ indent(indent)
 					+ "  <#list entity."+choiceLocation+" as "+index+">"
 					+ indent(indent)
-					+ "   <option value=\"${"+index+choiceKey+"}\""
+					+ "   <option value=\"${"+index+extend(choiceKey)+"}\""
 					+ " selected=\"${((("+variable.getDataPath()+extend(variableKey)+")!'') == "+index+extend(choiceKey)+")?string('true','false')}\""
 					+ ">"
 					+ indent(indent)
@@ -264,9 +264,10 @@ public class FreemarkerRendering implements TableRendering<String> {
 		StringBuilder sb = new StringBuilder();
 	    int depth = ((FreemarkerVariable) v).depth;
 		sb.append(indent(depth) + "<#if "+v.getDataPath() + "??><#list "+v.getDataPath() +".id as id>");
-		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(UserId.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
-		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(EmailAddress.class)+"'><mention uid=\""+v.getDataPath()+".value\" /><#break></#if>");
-	    sb.append(indent(depth) + " </#list></#if>");
+		sb.append(indent(depth) + " <#if id??>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(UserId.class)+"'><mention uid=\"${id.value}\" /><#break></#if>");
+		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(EmailAddress.class)+"'><mention email=\"${id.value}\" /><#break></#if>");
+	    sb.append(indent(depth) + " </#if></#list></#if>");
 	    return sb.toString();
 	}
 }

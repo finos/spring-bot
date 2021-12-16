@@ -10,11 +10,11 @@ import java.util.List;
 
 import javax.inject.Named;
 
+import org.finos.springbot.symphony.stream.handler.ExceptionConsumer;
+import org.finos.springbot.symphony.stream.handler.SymphonyStreamHandler;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.KoreAIBot;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIConfig;
-import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.extension.ExtendWith;

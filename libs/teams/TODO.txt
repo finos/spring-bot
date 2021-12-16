@@ -4,11 +4,13 @@
 32. Allow buttons on thymeleaf display versions.
 33. fix coverage so that it works cross-project
 34. merge changes from master
-35. Reading writing azure blob with tag in conversation.
+35. Reading writing azure blob with tag in conversation.  Still some issue here.
 
 30.  Make welcome listener generic teams and symph.  move to chat-workflow.
+31.  Tutorials: ToDo and claim tutorials - make them work with both.
 
-20. Build-time editors / viewers (both symphony and teams)
+20. Build time editors / viewers (both symphony and teams)
+36. Cash Tag/HashTag editor/viewer (symphony)
 
 7.  Convert keys to values with dropdowns/enums/users in view mode 
 	 - this needs the original options list to be present (I think).   

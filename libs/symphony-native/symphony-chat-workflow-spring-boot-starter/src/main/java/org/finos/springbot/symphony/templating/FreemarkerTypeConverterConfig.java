@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
 import org.finos.springbot.symphony.content.SymphonyRoom;
+import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.templating.BeanConverter;
@@ -11,7 +12,6 @@ import org.finos.springbot.workflow.templating.BooleanConverter;
 import org.finos.springbot.workflow.templating.ChatConverter;
 import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
-import org.finos.springbot.workflow.templating.Rendering;
 import org.finos.springbot.workflow.templating.TableConverter;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
@@ -50,13 +50,13 @@ public class FreemarkerTypeConverterConfig {
 		return new EnumConverter<>(r);
 	}
 	
+	@Bean
+	public UserConverter<String> hashTagConverter(FreemarkerRendering r) {
+		return new UserConverter<String>(UserConverter.LOW_PRIORITY, r, SymphonyUser.class);
+	}
+	
 //	@Bean
-//	public HashTagConverter hashTagConverter(FreemarkerRendering r) {
-//		return new HashTagConverter(r);
-//	}
-//	
-//	@Bean
-//	public CashTagConverter cashTagConverter(FreemarkerRendering r) {
+//	public ChatConverter<String> cashTagConverter(FreemarkerRendering r) {
 //		return new CashTagConverter(r);
 //	}
 //	
@@ -66,7 +66,7 @@ public class FreemarkerTypeConverterConfig {
 //	}
 //	
 	@Bean
-	protected TextFieldConverter<String> fmTextFieldConverter(Rendering<String> r) {
+	protected TextFieldConverter<String> fmTextFieldConverter(FreemarkerRendering r) {
 		return new TextFieldConverter<String>(TextFieldConverter.LOW_PRIORITY, r, String.class, 
 				Number.class, int.class, float.class, double.class, short.class, long.class, byte.class);
 	}
