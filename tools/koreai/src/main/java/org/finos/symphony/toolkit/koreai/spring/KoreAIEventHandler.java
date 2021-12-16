@@ -10,11 +10,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.finos.springbot.entityjson.EntityJson;
+import org.finos.springbot.symphony.stream.StreamEventConsumer;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.Address;
 import org.finos.symphony.toolkit.koreai.request.KoreAIRequester;
 import org.finos.symphony.toolkit.koreai.spring.KoreAIInstanceProperties.Addressed;
-import org.finos.symphony.toolkit.stream.StreamEventConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.symphonyoss.TaxonomyElement;

@@ -8,6 +8,8 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import org.finos.springbot.symphony.content.HashTag;
+import org.finos.springbot.symphony.stream.Participant;
+import org.finos.springbot.symphony.stream.cluster.LeaderService;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
@@ -21,8 +23,6 @@ import org.finos.symphony.rssbot.feed.Feed;
 import org.finos.symphony.rssbot.feed.FeedList;
 import org.finos.symphony.rssbot.feed.Filter;
 import org.finos.symphony.rssbot.load.FeedLoader;
-import org.finos.symphony.toolkit.stream.Participant;
-import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

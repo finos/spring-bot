@@ -20,6 +20,8 @@ import org.finos.springbot.symphony.messages.PresentationMLHandler;
 import org.finos.springbot.symphony.response.handlers.AttachmentHandler;
 import org.finos.springbot.symphony.response.handlers.JerseyAttachmentHandlerConfig;
 import org.finos.springbot.symphony.response.handlers.SymphonyResponseHandler;
+import org.finos.springbot.symphony.response.templating.SymphonyMarkupTemplateProvider;
+import org.finos.springbot.symphony.stream.single.SharedStreamSingleBotConfig;
 import org.finos.springbot.symphony.templating.FreemarkerTypeConverterConfig;
 import org.finos.springbot.symphony.templating.FreemarkerWorkTemplater;
 import org.finos.springbot.symphony.templating.SymphonyTemplateProvider;
@@ -34,13 +36,11 @@ import org.finos.springbot.workflow.response.templating.Markup;
 import org.finos.springbot.workflow.response.templating.SimpleMarkupTemplateProvider;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
-import org.finos.symphony.toolkit.stream.single.SharedStreamSingleBotConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -112,12 +112,12 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean 
 	@ConditionalOnMissingBean
-	public SimpleMarkupTemplateProvider symphonyMarkupTemplater(
+	public SymphonyMarkupTemplateProvider symphonyMarkupTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/symphony/}") String prefix,
 			@Value("${symphony.templates.suffix:.ftl}") String suffix,
 			SymphonyMarkupWriter converter) {
 		BiFunction<Content, Markup, String> cms = converter;
- 		return new SimpleMarkupTemplateProvider(prefix, suffix, resourceLoader, cms);
+ 		return new SymphonyMarkupTemplateProvider(prefix, suffix, resourceLoader, cms);
 	}
 	
 	@Bean

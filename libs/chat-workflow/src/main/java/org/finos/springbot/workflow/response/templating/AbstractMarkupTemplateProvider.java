@@ -32,7 +32,12 @@ public abstract class AbstractMarkupTemplateProvider<X extends Markup> extends A
 	protected X applyTemplate(X template, MessageResponse t) {
 		X context = createContext(t);
 		String markup = converter.apply(t.getMessage(), context);
+		markup = prepareMarkupForInsertion(markup);
 		return toMarkup(template.getContents().replace(MESSAGE_AREA, markup), context);
+	}
+
+	protected String prepareMarkupForInsertion(String markup) {
+		return markup;
 	}
 
 	protected abstract X createContext(MessageResponse t);
