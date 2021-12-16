@@ -155,6 +155,12 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	
 
 	@Override
+	public JsonNode renderUserDropdown(Variable variable, String optionLocation, String optionKey, String optionValue,
+			boolean editable) {
+		return renderDropdown(variable, "key", optionLocation, optionKey, optionValue, editable);
+	}
+
+	@Override
 	public JsonNode renderDropdown(Variable variable, String variableKey, String location, String key, String value, boolean editMode) {
 		if (editMode) {
 			ObjectNode out = f.objectNode();
