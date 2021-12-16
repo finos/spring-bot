@@ -14,6 +14,13 @@ public interface Rendering<X> {
 
 	X addFieldName(String field, X value);
 		
+	X renderUserDropdown(
+			Variable variable, 
+			String optionLocation, 
+			String optionKey, 
+			String optionValue,
+			boolean editable);
+	
 	X renderDropdown(
 		Variable variable, 
 		String variableKey,

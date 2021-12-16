@@ -9,6 +9,8 @@ import org.finos.springbot.workflow.templating.TableRendering;
 import org.finos.springbot.workflow.templating.Variable;
 import org.springframework.util.StringUtils;
 
+import com.fasterxml.jackson.databind.JsonNode;
+
 
 public class ThymeleafRendering implements TableRendering<String> {
 
@@ -52,6 +54,12 @@ public class ThymeleafRendering implements TableRendering<String> {
 	private String convertToIf(Entry<String, String> e, Variable v, String variableKey) {
 		return "   <span th:if=\"${"+v.getDataPath()+variableKey+"?.name} == '"+e.getKey()+"'\">"  	
 				+ e.getValue()+"</span>";
+	}
+	
+	@Override
+	public String renderUserDropdown(Variable variable, String optionLocation, String optionKey, String optionValue,
+			boolean editable) {
+		return renderDropdown(variable, "key", optionLocation, optionKey, optionValue, editable);
 	}
 
 	@Override

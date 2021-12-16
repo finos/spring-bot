@@ -31,6 +31,14 @@ public class FreemarkerRendering implements TableRendering<String> {
 	public String addFieldName(String field, String value) {
 		return !StringUtils.hasText(field) ? "" : "<tr><td style=\"width: 200px\"><b>" + field + ":</b></td><td>" + value + "</td></tr>";
 	}
+	
+	
+
+	@Override
+	public String renderUserDropdown(Variable variable, String optionLocation, String optionKey, String optionValue,
+			boolean editable) {
+		return renderDropdown(variable, "id[0].value", optionLocation, optionKey, optionValue, editable);
+	}
 
 	@Override
 	public String renderDropdown(Variable variable, String variableKey, String choiceLocation, String choiceKey, String choiceValue, boolean editable) {
