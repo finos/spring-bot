@@ -270,7 +270,7 @@ public class FreemarkerRendering implements TableRendering<String> {
 	@Override
 	public String userDisplay(Variable v) {
 		StringBuilder sb = new StringBuilder();
-	    int depth = ((FreemarkerVariable) v).depth;
+	    int depth = v.getDepth();
 		sb.append(indent(depth) + "<#if "+v.getDataPath() + "??><#list "+v.getDataPath() +".id as id>");
 		sb.append(indent(depth) + " <#if id??>");
 		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(UserId.class)+"'><mention uid=\"${id.value}\" /><#break></#if>");
