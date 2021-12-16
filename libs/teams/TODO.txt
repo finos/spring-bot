@@ -12,6 +12,7 @@
 20. Build time editors / viewers (both symphony and teams)
 36. Cash Tag/HashTag editor/viewer (symphony)
 37.  Userlist is only needed when in edit mode.
+38.  EditMode in teams?
 
 7.  Convert keys to values with dropdowns/enums/users in view mode 
 	 - this needs the original options list to be present (I think).   
