@@ -10,59 +10,60 @@ import org.finos.springbot.workflow.templating.Variable;
  */
 public class ACVariable implements Variable {
 	
-	public final String segment;
-	private final ACVariable parent;
+	public static final String FORM_IDENTIFIER = "form-field:";
+	
+	public static final String FORM_INCREMENT = "#increment";
+	
+	
+	public final String formPath;
+	public final String dataPath;
 	private final int depth;
 	
-	public ACVariable(String name) {
-		this(1, name);
+	public ACVariable(String formPath, String dataPath) {
+		this(1, formPath, dataPath);
 	}
 	
-	private ACVariable(int depth, String var) {
-		this.segment = var;
+	private ACVariable(int depth, String formPath, String dataPath) {
+		this.formPath = formPath;
+		this.dataPath = dataPath;
 		this.depth = depth;
-		this.parent = null;
 	}
 	
-	private ACVariable(ACVariable parent2, String seg) {
-		this.segment = seg;
-		this.parent = parent2;
-		this.depth = parent2.depth + 1;
+	private String append(String a, String b) {
+		return a.length() > 0 ? a + "." + b : b;
 	}
 
 	public ACVariable field(String seg) {
-		if (segment.length()==0) {
-			return new ACVariable(seg);
-		} else {
-			return new ACVariable(this, seg);
-		}
+		return new ACVariable(depth+1, append(formPath,seg), append(dataPath,seg));
+	}
+
+	private String getDataIndexString() {
+		return "[[index:"+dataPath+"]]";
 	}
 	
+	
 	public ACVariable index() {
-		return new ACVariable(depth + 1, "$data");
+		return new ACVariable(depth + 1, formPath + getDataIndexString(), "$data");
 	}
 	
 	public String getDisplayName() {
-		return segment.replaceAll("(.)(\\p{Upper})", "$1 $2").toLowerCase();
+		int hasDot = dataPath.lastIndexOf(".");
+		String lastPart = hasDot > -1 ? dataPath.substring(hasDot+1) : dataPath;
+		return lastPart.replaceAll("(.)(\\p{Upper})", "$1 $2").toLowerCase();
 	}
 
 	public String getFormFieldName() {
-		String dp = getInnerDataPath();
-		int formStart = dp.indexOf("form.");
-		if (formStart > -1) {
-			return dp.substring(formStart+5);
-		} else {
-			return segment;
-		}
+		String out = FORM_IDENTIFIER + formPath;
+		return out;
 	}
 	
-	public String getInnerDataPath() {
-		return (parent != null ? parent.getInnerDataPath() + "." : "") + segment;
+	public String getFormIncrement() {
+		return FORM_INCREMENT+formPath;
 	}
 	
 	
 	public String getDataPath() {
-		return getInnerDataPath();
+		return dataPath;
 	}
 	
 	public String getErrorPath() {

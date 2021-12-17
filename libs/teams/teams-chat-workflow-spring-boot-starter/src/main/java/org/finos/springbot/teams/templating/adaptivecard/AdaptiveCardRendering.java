@@ -1,10 +1,13 @@
 package org.finos.springbot.teams.templating.adaptivecard;
 
+import static org.finos.springbot.teams.history.StorageIDResponseHandler.STORAGE_ID_KEY;
+
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.workflow.actions.form.TableDeleteRows;
 import org.finos.springbot.workflow.actions.form.TableEditRow;
 import org.finos.springbot.workflow.templating.Rendering;
@@ -131,6 +134,7 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		ObjectNode map = submit.putObject("data");
 		map.put("action", "${name}");
 		map.put("form", "${$root.formid}");
+		map.put(STORAGE_ID_KEY, "${$root."+STORAGE_ID_KEY+"}");
 		submit.put("$data", "${"+location+"}");
 		actions.add(submit);
 		return out;
@@ -146,8 +150,9 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 		submit.put("title", text);
 		submit.put("id", id);
 		ObjectNode map = submit.putObject("data");
-		map.put("action", text);
+		map.put("action", id);
 		map.put("form", "${root.formid}");
+		map.put(STORAGE_ID_KEY, "${$root."+STORAGE_ID_KEY+"}");
 		actions.add(submit);
 		return out;
 	}
@@ -234,13 +239,20 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 	@Override
 	public JsonNode collection(Type t, Variable v, Variable i, JsonNode in, boolean editable) {
 		if (editable) {
-			JsonNode cb = addFieldName("Select", checkBox(v, true));
-			JsonNode edit = button("Edit", v.getDataPath()+TableEditRow.EDIT_SUFFIX);
+			
+			ObjectNode cb1 = AdaptiveCardRendering.f.objectNode();
+			cb1.put("type", "Input.Toggle");
+			cb1.put("value", "false");
+			cb1.put("id", i.getFormFieldName());
+			
+			JsonNode cb = addFieldName("Select", cb1);
+			JsonNode edit = button("Edit", i.getFormFieldName()+"."+TableEditRow.EDIT_SUFFIX);
 			ObjectNode footer = columns(cb, edit);
 			ObjectNode out = rows("default", in, footer);
 			out.put("$data", "${"+v.getDataPath()+"}");
+			out.put(ACVariable.FORM_INCREMENT, ((ACVariable) i).formPath);
 			
-			JsonNode delete = button("Delete Selected", v.getDataPath()+TableDeleteRows.ACTION_SUFFIX);
+			JsonNode delete = button("Delete Selected", v.getFormFieldName()+"."+TableDeleteRows.ACTION_SUFFIX);
 			
 			return rows("", out, delete);
 		} else {

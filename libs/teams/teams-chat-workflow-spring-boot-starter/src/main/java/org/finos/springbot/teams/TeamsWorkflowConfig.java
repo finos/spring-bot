@@ -15,6 +15,7 @@ import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.history.AzureBlobStorageTeamsHistory;
 import org.finos.springbot.teams.history.MemoryTeamsHistory;
+import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
@@ -130,6 +131,12 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 				th);
 	}
 	
+	@Bean
+	@ConditionalOnMissingBean
+	public StorageIDResponseHandler teamsStorageIDResponseHandler(TeamsHistory th) {
+		return new StorageIDResponseHandler(th);
+	}
+	
 	
 	public static enum StorageType { MEMORY, BLOB, DB };
 	
@@ -187,8 +194,9 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			TeamsHTMLParser parser, 
 			FormValidationProcessor fvp, 
 			TeamsConversations tc,
+			TeamsHistory th,
 			TeamsFormConverter fc) {
-		return new MessageActivityHandler(messageConsumers, tc, parser, fc, fvp);
+		return new MessageActivityHandler(messageConsumers, tc, th, parser, fc, fvp);
 	}
 
 

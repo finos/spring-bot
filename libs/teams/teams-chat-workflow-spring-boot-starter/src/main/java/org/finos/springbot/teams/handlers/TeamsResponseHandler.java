@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
@@ -145,7 +146,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				initErrorHandler();
 				eh.handleError(e);	
 			} else {
-				teamsHistory.store(address, data);
+				performStorage(address, data);
 			}
 			
 			return null;
@@ -169,13 +170,19 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				}
 				initErrorHandler();
 				eh.handleError(e);	
-			}  else {
-				teamsHistory.store(address, data);
+			} else {
+				performStorage(address, data);
 			}
 			
 			return null;
 		});
 		
+	}
+
+	protected void performStorage(TeamsAddressable address, Map<String, Object> data) {
+		if (data.containsKey(StorageIDResponseHandler.STORAGE_ID_KEY)) {
+			teamsHistory.store((String) data.get(StorageIDResponseHandler.STORAGE_ID_KEY), address, data);
+		}
 	}
 
 	@Override

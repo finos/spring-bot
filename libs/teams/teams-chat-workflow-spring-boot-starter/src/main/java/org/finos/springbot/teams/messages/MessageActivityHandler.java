@@ -2,24 +2,24 @@ package org.finos.springbot.teams.messages;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.content.serialization.ParseContext;
 import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
 import org.finos.springbot.teams.conversations.TeamsConversations;
+import org.finos.springbot.teams.history.StorageIDResponseHandler;
+import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
-import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.form.FormConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.slf4j.Logger;
@@ -38,18 +38,21 @@ public class MessageActivityHandler extends ActivityHandler {
 	TeamsHTMLParser messageParser;
 	List<ActionConsumer> messageConsumers;
 	TeamsConversations teamsConversations;
+	TeamsHistory teamsHistory;
 	FormConverter formConverter;
 	FormValidationProcessor validationProcessor;
 	
 	public MessageActivityHandler(
 			List<ActionConsumer> messageConsumers, 
 			TeamsConversations teamsConversations, 
+			TeamsHistory teamsHistory,
 			TeamsHTMLParser parser,
 			FormConverter formConverter,
 			FormValidationProcessor validationProcessor) {
 		super();
 		this.messageConsumers = messageConsumers;
 		this.teamsConversations = teamsConversations;
+		this.teamsHistory = teamsHistory;
 		this.messageParser = parser;
 		this.formConverter = formConverter;
 		this.validationProcessor = validationProcessor;
@@ -87,16 +90,21 @@ public class MessageActivityHandler extends ActivityHandler {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> formData = (Map<String, Object>) a.getValue();
 		String formName = (String) formData.remove("form");
+		String messageId = (String) formData.remove(StorageIDResponseHandler.STORAGE_ID_KEY);
 		
 		Object form = formConverter.convert(formData, formName);
 		String action = (String) formData.get("action");
-		Map<String, Object> data = new HashMap<>(); // need to load this from somewhere.
-		Addressable rr = teamsConversations.getTeamsAddressable(turnContext);
-		User u = teamsConversations.getUser(a.getFrom());
-		Addressable from = rr == null ? u : rr;
+		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext);
+		TeamsUser u = teamsConversations.getUser(a.getFrom());
+		TeamsAddressable from = rr == null ? u : rr;
+		Map<String, Object> data = retrieveData(messageId, rr);
 		return validationProcessor.validationCheck(action, from, form, () -> {
 			return new FormAction(from, u, form, action, data);
 		});
+	}
+
+	private Map<String, Object> retrieveData(String messageId, TeamsAddressable ta) {
+		return teamsHistory.retrieve(messageId, ta).orElseGet(() -> new EntityJson());
 	}
 
 	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {

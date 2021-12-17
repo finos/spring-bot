@@ -1,6 +1,7 @@
 package org.finos.springbot.teams.history;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
@@ -25,6 +26,7 @@ import org.finos.springbot.workflow.tags.HeaderDetails;
 import org.finos.springbot.workflow.tags.TagSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StreamUtils;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -32,6 +34,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.FindBlobsOptions;
 
@@ -172,11 +175,10 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	
 
 	@Override
-	public void store(TeamsAddressable a, Map<String, Object> data) {
+	public void store(String blobId, TeamsAddressable a, Map<String, Object> data) {
 		try {
 			Map<String, String> tags = getTags(data, a);
 			if (tags.size() > 0) { 
-				String blobId = createBlobId();
 				String directory = a.getKey();
 				BlobClient bc = bcc.getBlobClient(directory+"/"+blobId);
 				
@@ -192,12 +194,33 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	}
 
 
+	@Override
+	public <X> Optional<Map<String, Object>> retrieve(String blobId, TeamsAddressable a) {
+		try {
+			BlobClient bc = bcc.getBlobClient(a.getKey()+"/"+blobId);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bc.download(baos);
+			if (baos.size() == 0) {
+				return Optional.empty();
+			}
+			EntityJson out = ejc.readValue(new String(baos.toByteArray(), StandardCharsets.UTF_8));
+			return Optional.of(out);
+		} catch (BlobStorageException e) {
+			if (e.getResponse().getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+				return Optional.empty();
+			}
+			LOG.warn("Couldn't retrieve: "+blobId, e);
+			return Optional.empty();
+		}
+	}
+
+
 	/**
 	 * The blob ID should be alphabetically ordered so that newer blobs are 
 	 * earlier in the alphabet.  That's quite tricky, so subtracing from the long of thre current time
 	 * @return
 	 */
-	private String createBlobId() {
+	public String createStorageId() {
 		long ts = Long.MAX_VALUE;
 		ts = ts - System.currentTimeMillis();
 		

@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.workflow.content.Addressable;
@@ -45,9 +46,25 @@ public class MemoryTeamsHistory implements TeamsHistory {
 	}
 
 	@Override
-	public void store(TeamsAddressable a, Map<String, Object> data) {
+	public String createStorageId() {
+		long ts = Long.MAX_VALUE;
+		ts = ts - System.currentTimeMillis();
+		
+		return ""+ts+"-"+UUID.randomUUID().toString();
+	}
+
+	@Override
+	public void store(String storageId, TeamsAddressable a, Map<String, Object> data) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public <X> Optional<Map<String, Object>> retrieve(String storageId, TeamsAddressable a) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 }
