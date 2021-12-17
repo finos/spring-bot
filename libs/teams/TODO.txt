@@ -21,3 +21,13 @@
 21.  handle tennant id/ default tennant id on teams ?
 
 We need the concept of 'me' in teams - you can't mention yourself!
+
+
+
+symphony form post:
+action=items[0].table-update
+number=1
+description=Asdas
+creator=347583113331315
+assignTo=347583113331825
+status=OPEN

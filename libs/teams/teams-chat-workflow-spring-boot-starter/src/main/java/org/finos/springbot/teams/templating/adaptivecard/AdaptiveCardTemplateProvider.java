@@ -2,8 +2,13 @@ package org.finos.springbot.teams.templating.adaptivecard;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.finos.springbot.teams.templating.MatcherUtil;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.templating.AbstractResourceTemplateProvider;
@@ -15,6 +20,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.TextNode;
+import com.oracle.truffle.regex.tregex.util.json.JsonObject;
 
 public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, JsonNode, WorkResponse> {
 
@@ -78,15 +85,56 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 			System.out.println("DATA: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(_$root));
 
 			String tv = js.singleThreadedEvalLoop(dataStr, templateStr);
-
-			System.out.println("COMBINED: \n"+ tv);
-
-			return om.readTree(tv);
-				
+			JsonNode combined = om.readTree(tv);
+			handleFormFieldNames(new HashMap<String, Integer>(), combined, null, null);
+			
+			System.out.println("COMBINED: \n"+ om.writerWithDefaultPrettyPrinter().writeValueAsString(combined));
+			return combined;
 			
 		} catch (Exception e) {
 			throw new RuntimeException("Couldn't template response", e);
 		}
+	}
+	
+	static final Pattern INDEX_REPLACER = Pattern.compile("\\[\\[index:(.*?)\\]\\]");
+
+	private void handleFormFieldNames(Map<String, Integer> indexes, JsonNode n, ObjectNode parent, String fieldName) {
+		if (n.isTextual() && (n.asText().startsWith(ACVariable.FORM_IDENTIFIER))) {
+			String out = n.asText().substring(ACVariable.FORM_IDENTIFIER.length());
+			
+			Matcher m = INDEX_REPLACER.matcher(out);
+			out = MatcherUtil.replaceAll(out, m, r -> {
+				String group1 = r.group(1);
+				int currentInt = indexes.getOrDefault(group1, 0);
+				return "["+currentInt+"]";
+			});
+			
+			parent.replace(fieldName, TextNode.valueOf(out));
+			
+		} else if (n.isArray()) {
+			for (JsonNode jsonNode : n) {
+				handleFormFieldNames(indexes, jsonNode, null, null);
+			}
+		} else if (n.isObject()) {
+			ObjectNode on = ((ObjectNode) n);
+			
+			for (Iterator<String> iterator = on.fieldNames(); iterator.hasNext();) {
+				String field = iterator.next();
+				JsonNode value = on.get(field);
+				handleFormFieldNames(indexes, value, on, field);
+			}
+			
+			if (n.has(ACVariable.FORM_INCREMENT)) {
+				// we need to increment here.
+				String out = ((ObjectNode)n).remove(ACVariable.FORM_INCREMENT).asText();
+				Matcher m = INDEX_REPLACER.matcher(out);
+				if (m.find(out.lastIndexOf("[["))) {
+					String group1 = m.group(1);
+					int currentInt = indexes.getOrDefault(group1, 0);
+					indexes.put(group1, currentInt+1);
+				}
+			}
+		} 
 	}
 
 	protected Map<String, Object> getData(WorkResponse t) {

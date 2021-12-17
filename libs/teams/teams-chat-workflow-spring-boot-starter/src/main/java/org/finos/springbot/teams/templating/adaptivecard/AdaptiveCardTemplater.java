@@ -33,7 +33,7 @@ public class AdaptiveCardTemplater extends AbstractTopLevelConverter<JsonNode, W
 	
 	@Override
 	public JsonNode convert(Class<?> c, Mode m) {
-		Variable v = new ACVariable("form");
+		Variable v = new ACVariable("", "form");
 		
 		JsonNodeFactory fact = new JsonNodeFactory(true);
 		ObjectNode top = fact.objectNode();
