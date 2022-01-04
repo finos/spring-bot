@@ -271,11 +271,15 @@ public class FreemarkerRendering implements TableRendering<String> {
 	public String userDisplay(Variable v) {
 		StringBuilder sb = new StringBuilder();
 	    int depth = v.getDepth();
-		sb.append(indent(depth) + "<#if "+v.getDataPath() + "??><#list "+v.getDataPath() +".id as id>");
+		sb.append(indent(depth) + "<#if "+v.getDataPath() + "??><#if "+v.getDataPath() + ".id??><#list "+v.getDataPath() +".id as id>");
 		sb.append(indent(depth) + " <#if id??>");
 		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(UserId.class)+"'><mention uid=\"${id.value}\" /><#break></#if>");
 		sb.append(indent(depth) + " <#if id.type == '"+EntityJson.getEntityJsonTypeName(EmailAddress.class)+"'><mention email=\"${id.value}\" /><#break></#if>");
-	    sb.append(indent(depth) + " </#if></#list></#if>");
+	    sb.append(indent(depth) + " </#if></#list>");
+	    
+	    sb.append(indent(depth) + " <#elseif "+v.getDataPath() + ".name??>");
+	    sb.append(indent(depth) +"  ${"+ v.getDataPath()+".name}");
+	    sb.append(indent(depth) + "</#if></#if>");
 	    return sb.toString();
 	}
 }

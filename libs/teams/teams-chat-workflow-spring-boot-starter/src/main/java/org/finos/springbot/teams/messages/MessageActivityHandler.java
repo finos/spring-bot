@@ -97,7 +97,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext);
 		TeamsUser u = teamsConversations.getUser(a.getFrom());
 		TeamsAddressable from = rr == null ? u : rr;
-		Map<String, Object> data = retrieveData(messageId, rr);
+		Map<String, Object> data = retrieveData(messageId, from);
 		return validationProcessor.validationCheck(action, from, form, () -> {
 			return new FormAction(from, u, form, action, data);
 		});

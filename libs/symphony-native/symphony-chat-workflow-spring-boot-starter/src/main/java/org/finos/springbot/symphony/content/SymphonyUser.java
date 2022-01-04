@@ -75,7 +75,6 @@ public final class SymphonyUser extends Mention implements User, SymphonyContent
 		return fromTaxonomy(StreamID.class);
 	}
 
-	@JsonIgnore
 	@Override
 	public String getName() {
 		return fromTaxonomy(DisplayName.class);

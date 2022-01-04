@@ -1,4 +1,4 @@
-package example.symphony.demoworkflow.expenses;
+package example.springbot.expenses;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,14 +11,14 @@ import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
-import org.finos.springbot.workflow.conversations.Conversations;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import example.symphony.demoworkflow.expenses.OpenedClaim.Status;
+import example.springbot.expenses.OpenedClaim.Status;
 
 @Controller
 public class ClaimController {
@@ -31,7 +31,7 @@ public class ClaimController {
 	}
 	
 	@Autowired
-	Conversations conversations;
+	AllConversations conversations;
 	
 	@ChatButton(value = NewClaim.class,  buttonText = "add")
 	public List<Response> add(NewClaim sc, User u, Addressable from) {
@@ -52,11 +52,14 @@ public class ClaimController {
 	}
 
 	@ChatButton(value=OpenedClaim.class, buttonText = "Approve", rooms={"Claim Approval Room"})
-	public OpenedClaim approve(OpenedClaim c, User currentUser) {
+	public List<Response> approve(OpenedClaim c, User currentUser, Chat approvalRoom) {
 		if (c.status == Status.OPEN) {
 			c.approvedBy = currentUser;
 			c.status = Status.APPROVED;
-			return c;
+			return Arrays.asList(
+					new WorkResponse(c.author, c, WorkMode.VIEW),
+					new WorkResponse(approvalRoom, c, WorkMode.VIEW));
+					
 		} else {
 			throw new RuntimeException("Claim should be in OPEN mode");
 		}
