@@ -1,4 +1,4 @@
-package example.symphony.demoworkflow.expenses;
+package example.springbot.expenses;
 
 import javax.validation.constraints.Min;
 

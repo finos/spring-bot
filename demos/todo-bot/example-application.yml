@@ -1,5 +1,20 @@
-#set the room for the bot to post in.  Bot (and you) should be members of this room
-room: y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==
+
+teams:
+  storage:
+#    Enable this for persistent storage of chat data
+#    type: blob
+#    connection-string: DefaultEndpointsProtocol=https;AccountName=<your account name>;AccountKey=<some key>;EndpointSuffix=core.windows.net
+  app:
+    tennantId: 
+  bot:
+    MicrosoftAppPassword: <password>
+    MicrosoftAppId: <appid>
+
+# Remove one of these profiles if you only want to run on a single platform.
+
+spring:
+  profiles:
+    active: teams,symphony
 
 symphony:
   # allows instances of the bot to coordinate and choose a leader

@@ -122,13 +122,26 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			EntityMarkupTemplateProvider markupTemplater,
 			AdaptiveCardTemplateProvider formTemplater,
 			ThymeleafTemplateProvider displayTemplater,
-			TeamsHistory th) {
+			TeamsHistory th,
+			BotFrameworkAdapter bfa, 
+			MicrosoftAppCredentials mac,
+			ChannelAccount botAccount) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
 				markupTemplater,
 				formTemplater,
 				displayTemplater,
-				th);
+				th,
+				bfa,
+				mac,
+				botAccount);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ChannelAccount botAccount(@Value("${teams.bot.id:}") String id) {
+		ChannelAccount out = new ChannelAccount(id);
+		return out;
 	}
 	
 	@Bean
@@ -162,13 +175,12 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	}
 
 	@Bean
-	public MicrosoftAppCredentials microsoftGraphCredentials(@Value("${teams.app.tennantId}") String tennantId) {
+	public MicrosoftAppCredentials microsoftCredentials(@Value("${teams.app.tennantId}") String tennantId) {
 		com.microsoft.bot.integration.Configuration conf = getConfiguration();
 		MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
 				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
 				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
-				tennantId,
-				"https://graph.microsoft.com/.default");
+				tennantId);
 		return mac;
 	}
 	
@@ -203,7 +215,8 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public BotFrameworkHttpAdapter getBotFrameworkHttpAdaptor() {
-        return new AdapterWithErrorHandler(getConfiguration());
+    	AdapterWithErrorHandler out = new AdapterWithErrorHandler(getConfiguration());
+    	return out;
     }
     
     @Override

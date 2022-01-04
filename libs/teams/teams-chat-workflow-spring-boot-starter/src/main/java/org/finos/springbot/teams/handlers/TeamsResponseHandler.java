@@ -1,8 +1,9 @@
 package org.finos.springbot.teams.handlers;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
@@ -14,7 +15,6 @@ import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplatePro
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.annotations.WorkMode;
-import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.Response;
@@ -26,16 +26,23 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.ErrorHandler;
-import org.springframework.util.StreamUtils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
+import com.microsoft.bot.builder.TurnContextImpl;
+import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
+import com.microsoft.bot.schema.ChannelAccount;
+import com.microsoft.bot.schema.ConversationAccount;
+import com.microsoft.bot.schema.ConversationReference;
 import com.microsoft.bot.schema.Entity;
+import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.TextFormatTypes;
+import com.oracle.truffle.api.dsl.CreateCast;
 
 public class TeamsResponseHandler implements ResponseHandler, ApplicationContextAware {
 	
@@ -48,18 +55,27 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected AdaptiveCardTemplateProvider workTemplater;
 	protected ThymeleafTemplateProvider displayTemplater;
 	protected TeamsHistory teamsHistory;
+	protected BotFrameworkAdapter bfa;
+	protected MicrosoftAppCredentials mac;
+	protected ChannelAccount botAccount;
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
 			EntityMarkupTemplateProvider messageTemplater,
 			AdaptiveCardTemplateProvider workTemplater,
 			ThymeleafTemplateProvider displayTemplater, 
-			TeamsHistory th) {
+			TeamsHistory th, 
+			BotFrameworkAdapter bfa, 
+			MicrosoftAppCredentials mac,
+			ChannelAccount botAccount) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;
 		this.displayTemplater = displayTemplater;
 		this.teamsHistory = th;
+		this.bfa = bfa;
+		this.mac = mac;
+		this.botAccount = botAccount;
 	}
 	
 	protected void initErrorHandler() {
@@ -76,12 +92,6 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		if (t.getAddress() instanceof TeamsAddressable) {		
 
 			try {
-				TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
-				
-				if (ctx == null) {
-					return;
-				}
-
 				if (t instanceof MessageResponse) {
 					Object attachment = null;
 					MarkupAndEntities mae = messageTemplater.template((MessageResponse) t);
@@ -92,7 +102,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
 					}
 					
-					sendXMLResponse(content, attachment, (TeamsAddressable) t.getAddress(), entities, ctx, ((MessageResponse)t).getData());
+					sendXMLResponse(content, attachment, (TeamsAddressable) t.getAddress(), entities, ((MessageResponse)t).getData());
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
@@ -100,12 +110,12 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
  					 
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
-						sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), ctx, wr.getData());
+						sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), wr.getData());
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
 						String content = mae.getContents();
 						List<Entity> entities = mae.getEntities();
-						sendXMLResponse(content, null, (TeamsAddressable) t.getAddress(), entities, ctx, wr.getData());
+						sendXMLResponse(content, null, (TeamsAddressable) t.getAddress(), entities, wr.getData());
 					}
 				}
 			} catch (Exception e) {
@@ -133,13 +143,13 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		return wr.getMode() == WorkMode.EDIT || ThymeleafTemplateProvider.needsButtons(wr);
 	}
 
-	protected void sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, TurnContext ctx, Map<String, Object> data) throws Exception {		
+	protected void sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, Map<String, Object> data) throws Exception {		
 		Activity out = Activity.createMessageActivity();
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
 		out.setText(xml);
 		
-		ctx.sendActivity(out).handle((rr, e) -> {
+		handleActivity(out, address).handle((rr, e) -> {
 			if (e != null) {
 				LOG.error(e.getMessage());
 				LOG.error("message:\n"+xml);
@@ -154,14 +164,36 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		
 	}
 
-	protected void sendCardResponse(JsonNode json, TeamsAddressable address, TurnContext ctx, Map<String, Object> data) throws JsonProcessingException {		
+	protected ChannelAccount getBotAccount() {
+		return botAccount;
+	}
+
+	protected CompletableFuture<?> handleActivity(Activity activity, TeamsAddressable to) throws Exception {
+		TurnContext ctx = CurrentTurnContext.CURRENT_CONTEXT.get();
+		
+		ConversationReference cr;
+		
+		if (ctx != null) {
+			cr = ctx.getActivity().getConversationReference();
+		} else {
+			cr = createConversationReference(to);
+		}
+		
+		return bfa.continueConversation(mac.getAppId(), cr, tc -> {
+			return tc.sendActivity(activity)
+					.thenApply(a -> null);
+		});
+		
+	}
+
+	protected void sendCardResponse(JsonNode json, TeamsAddressable address, Map<String, Object> data) throws Exception {		
 		Activity out = Activity.createMessageActivity();
 		Attachment body = new Attachment();
 		body.setContentType("application/vnd.microsoft.card.adaptive");
 		body.setContent(json);
 		out.getAttachments().add(body);
 		
-		ctx.sendActivity(out).handle((rr, e) -> {
+		handleActivity(out, address).handle((rr, e) -> {
 			if (e != null) {
 				LOG.error(e.getMessage());
 				try {
@@ -177,6 +209,28 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			return null;
 		});
 		
+	}
+
+	private ConversationReference createConversationReference(TeamsAddressable address) {
+		ConversationAccount ca = new ConversationAccount(address.getKey());
+		ca.setTenantId(mac.getChannelAuthTenant());
+		ca.setConversationType("personal");
+//		out.setConversation(ca);
+//		out.setChannelData(mac.getChannelAuthTenant());
+//		out.setChannelId("msteams");
+//		out.setFrom(botAccount);
+//		out.setServiceUrl("https://smba.trafficmanager.net/uk/");
+//		out.setType("message");
+//		
+		ConversationReference cr = new ConversationReference();
+		cr.setBot(botAccount);
+		cr.setConversation(ca);
+		cr.setServiceUrl("https://smba.trafficmanager.net/uk/");
+		cr.setLocale("en-GB");
+		cr.setUser(new ChannelAccount(address.getKey()));
+		cr.setChannelId("msteams");
+//		cr.setActivityId(UUID.randomUUID().toString());
+		return cr;
 	}
 
 	protected void performStorage(TeamsAddressable address, Map<String, Object> data) {
