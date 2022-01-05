@@ -123,25 +123,14 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			AdaptiveCardTemplateProvider formTemplater,
 			ThymeleafTemplateProvider displayTemplater,
 			TeamsHistory th,
-			BotFrameworkAdapter bfa, 
-			MicrosoftAppCredentials mac,
-			ChannelAccount botAccount) {
+			TeamsConversations tc) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
 				markupTemplater,
 				formTemplater,
 				displayTemplater,
 				th,
-				bfa,
-				mac,
-				botAccount);
-	}
-	
-	@Bean
-	@ConditionalOnMissingBean
-	public ChannelAccount botAccount(@Value("${teams.bot.id:}") String id) {
-		ChannelAccount out = new ChannelAccount(id);
-		return out;
+				tc);
 	}
 	
 	@Bean
@@ -186,8 +175,12 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Bean 
 	@ConditionalOnMissingBean
-	public TeamsConversations teamsConversations(BotFrameworkAdapter bfa) {
-		return new TeamsConversationsImpl();
+	public TeamsConversations teamsConversations(
+			BotFrameworkAdapter bfa, 
+			MicrosoftAppCredentials mac, 
+			@Value("${teams.bot.id:}") String id) {
+		ChannelAccount botAccount = new ChannelAccount(id);
+		return new TeamsConversationsImpl(bfa, mac, botAccount);
 	}
 
 	@Bean

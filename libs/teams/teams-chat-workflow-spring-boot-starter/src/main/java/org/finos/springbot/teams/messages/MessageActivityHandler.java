@@ -94,7 +94,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		
 		Object form = formConverter.convert(formData, formName);
 		String action = (String) formData.get("action");
-		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext);
+		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext.getActivity().getConversation());
 		TeamsUser u = teamsConversations.getUser(a.getFrom());
 		TeamsAddressable from = rr == null ? u : rr;
 		Map<String, Object> data = retrieveData(messageId, from);
@@ -109,7 +109,7 @@ public class MessageActivityHandler extends ActivityHandler {
 
 	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {
 		Object data = a.getChannelData();	
-		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext);
+		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext.getActivity().getConversation());
 		TeamsUser u = teamsConversations.getUser(a.getFrom());
 		Message message = createMessageFromActivity(a, rr);
 		
