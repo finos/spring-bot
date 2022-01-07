@@ -12,6 +12,7 @@ import org.finos.springbot.workflow.templating.CollectionConverter;
 import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
+import org.finos.springbot.workflow.templating.TimeConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.UserConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -57,8 +58,8 @@ public class AdaptiveCardConverterConfig {
 	
 	@Bean
 	@Qualifier("adaptivecard")
-	protected TimeConverter acTimeConverter(AdaptiveCardRendering r) {
-		return new TimeConverter(r);
+	protected TimeConverter<JsonNode> acTimeConverter(AdaptiveCardRendering r) {
+		return new TimeConverter<JsonNode>(r);
 	}
 	
 	@Bean

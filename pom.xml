@@ -211,12 +211,15 @@
 								<include>**/*IT.java</include>
 								<include>**/Test*.java</include>
 							</includes>
-							<systemPropertyVariables>
+							<systemPropertyVariable>
 								<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
 								<symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
 								<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
 								<proxy>${symphony-proxy}</proxy>
-							</systemPropertyVariables>
+								<microsoft-app-id>${microsoft-app-id}</microsoft-app-id>
+								<microsoft-app-password>${microsoft-app-id}</microsoft-app-password>
+								<microsoft-tennant-id>${microsoft-tennnant-id}</microsoft-tennant-id>
+							</systemPropertyVariable>
 						</configuration>
 					</plugin>
 				</plugins>

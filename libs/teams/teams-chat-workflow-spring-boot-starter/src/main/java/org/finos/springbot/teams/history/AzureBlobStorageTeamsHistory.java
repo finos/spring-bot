@@ -79,9 +79,11 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 
 
 	protected <X> Optional<X> getLast(Class<X> type, String expectedTag, String directory) {
+		String query = "@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+getAzureTag(directory)+"'";
 		try {
-			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+getAzureTag(directory)+"'").setMaxResultsPerPage(1);
-			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(5), Context.NONE);
+			LOG.info("Query: "+query);
+			FindBlobsOptions fbo = new FindBlobsOptions(query).setMaxResultsPerPage(1);
+			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(15), Context.NONE);
 			Iterator<TaggedBlobItem> it = pi.iterator();
 			if (it.hasNext()) {
 				TaggedBlobItem tbi = it.next();
@@ -91,7 +93,8 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 				return Optional.empty();
 			}
 		} catch (Exception e) {
-			throw new TeamsException("Couldn't access blob storage", e);
+			LOG.error("Couldn't access blob storage with query "+query, e);
+			return Optional.empty();
 		}
 	}
 	

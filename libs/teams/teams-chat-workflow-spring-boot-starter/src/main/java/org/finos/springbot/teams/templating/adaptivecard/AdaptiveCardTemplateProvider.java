@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.finos.springbot.teams.templating.MatcherUtil;
+import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.templating.AbstractResourceTemplateProvider;
@@ -19,16 +20,17 @@ import org.springframework.core.io.ResourceLoader;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import com.oracle.truffle.regex.tregex.util.json.JsonObject;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, JsonNode, WorkResponse> {
 
 	private final WorkTemplater<JsonNode> formConverter;
 	
-	private ObjectMapper om;
-	private JavascriptSubstitution js = new JavascriptSubstitution();
+	protected ObjectMapper om;
+	protected JavascriptSubstitution js = new JavascriptSubstitution();
 	
 	public AdaptiveCardTemplateProvider(
 			String templatePrefix, 
@@ -39,16 +41,18 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 		super(templatePrefix, templateSuffix, rl);
 		this.formConverter = formConverter;
 		this.om = new ObjectMapper();
+		this.om.registerModule(new JavaTimeModule());
 		this.om.setSerializationInclusion(Include.NON_ABSENT);
+		this.om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	}
 
 	@Override
 	protected JsonNode getDefaultTemplate(WorkResponse r) {
 		JsonNode insert;
-		if (WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
+		if ((WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) || (r.getMode() == WorkMode.EDIT)) {
 			Class<?> c = ((WorkResponse) r).getFormClass();
 			insert = formConverter.convert(c, Mode.FORM);
-		} else if (WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
+		} else if ((WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) || (r.getMode() == WorkMode.VIEW)) {
 			Class<?> c = ((WorkResponse) r).getFormClass();
 			boolean needsButtons = needsButtons(r);						
 			insert = formConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);

@@ -12,6 +12,7 @@ import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
 import org.finos.springbot.workflow.templating.TableConverter;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
+import org.finos.springbot.workflow.templating.TimeConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.UserConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -55,8 +56,8 @@ public class ThymeleafConverterConfig {
 	
 	@Bean
 	@Qualifier("thymeleaf")
-	protected TimeConverter tlTimeConverter(ThymeleafRendering r) {
-		return new TimeConverter(r);
+	protected TimeConverter<String> tlTimeConverter(ThymeleafRendering r) {
+		return new TimeConverter<String>(r);
 	}
 	
 	@Bean
