@@ -1,8 +1,7 @@
 FRIDAY
 
-38. Claim Bot APPROVE Button appears in wrong room - already fixed?  We need to merge now...
 32. Allow buttons on thymeleaf display versions.
-26. Fix the Bots : Claim Bot, News, Demo etc.
+26. Fix the Bots : News, Demo etc.
 38. HelpPage reference in *ChatHandlerMapping
 
 
@@ -33,3 +32,8 @@ SURESH ?
 28. BDK Version of Symphony (Suresh)
 20. Build time editors / viewers (both symphony and teams)
 36. Cash Tag/HashTag editor/viewer (symphony)
+
+
+AFTER RELEASE
+
+- Rework leader election so that it is platform agnostic.

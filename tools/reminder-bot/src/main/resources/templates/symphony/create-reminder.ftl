@@ -3,7 +3,7 @@
     accent="tempo-bg-color--blue">
     <header>
 <form
-  id="org.finos.symphony.toolkit.tools.reminders.Reminder">
+  id="org.finos.springbot.tools.reminders.Reminder">
  <table>
  <tr><td><b>Description:</b></td><td>
   <span class="tempo-text-color--red">${entity.errors.contents['description']!''}</span>
@@ -30,7 +30,7 @@
       <#if entity?? && entity.header?? && entity.header.tags?? && entity.header.tags?size != 0>
         <ul>
           <#list entity.header.tags as tag>
-            <li><hash tag="${tag.value}" /></li>
+            <li><hash tag="${tag}" /></li>
           </#list>
         </ul>
       </#if>
