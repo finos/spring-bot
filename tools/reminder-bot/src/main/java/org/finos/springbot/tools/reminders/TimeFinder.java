@@ -11,7 +11,6 @@ import java.util.Properties;
 
 import javax.annotation.PostConstruct;
 
-import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.actions.consumers.AbstractActionConsumer;
@@ -19,7 +18,8 @@ import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.slf4j.Logger;
@@ -36,16 +36,16 @@ public class TimeFinder extends AbstractActionConsumer  {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TimeFinder.class);
 
-	SymphonyConversations symphonyRooms;
-	History h;
+	AllConversations rooms;
+	AllHistory h;
     ReminderProperties reminderProperties;
     ResponseHandlers rh;
 	StanfordCoreNLP stanfordCoreNLP;
 	
-	public TimeFinder(ErrorHandler errorHandler, SymphonyConversations symphonyRooms, History h,
+	public TimeFinder(ErrorHandler errorHandler, AllConversations rooms, AllHistory h,
 			ReminderProperties reminderProperties, ResponseHandlers rh) {
 		super(errorHandler);
-		this.symphonyRooms = symphonyRooms;
+		this.rooms = rooms;
 		this.h = h;
 		this.reminderProperties = reminderProperties;
 		this.rh = rh;

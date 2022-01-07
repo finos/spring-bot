@@ -96,11 +96,15 @@ public class MessageActivityHandler extends ActivityHandler {
 		String action = (String) formData.get("action");
 		TeamsAddressable rr = teamsConversations.getTeamsAddressable(turnContext.getActivity().getConversation());
 		TeamsUser u = teamsConversations.getUser(a.getFrom());
-		TeamsAddressable from = rr == null ? u : rr;
+		TeamsAddressable from = takeUser(rr) ? u : rr;
 		Map<String, Object> data = retrieveData(messageId, from);
 		return validationProcessor.validationCheck(action, from, form, () -> {
 			return new FormAction(from, u, form, action, data);
 		});
+	}
+
+	private boolean takeUser(TeamsAddressable rr) {
+		return (rr instanceof TeamsUser) || (rr==null);
 	}
 
 	private Map<String, Object> retrieveData(String messageId, TeamsAddressable ta) {
@@ -113,7 +117,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		TeamsUser u = teamsConversations.getUser(a.getFrom());
 		Message message = createMessageFromActivity(a, rr);
 		
-		rr = rr == null ? u : rr;
+		rr = takeUser(rr) ? u : rr;
 		SimpleMessageAction sma = new SimpleMessageAction(rr, u, message, data);
 		
 		return sma;

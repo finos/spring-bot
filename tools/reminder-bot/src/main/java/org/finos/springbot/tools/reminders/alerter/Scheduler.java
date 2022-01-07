@@ -9,9 +9,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import org.finos.springbot.symphony.conversations.SymphonyConversations;
-import org.finos.springbot.symphony.stream.Participant;
-import org.finos.springbot.symphony.stream.cluster.LeaderService;
+//import org.finos.springbot.symphony.stream.Participant;
+//import org.finos.springbot.symphony.stream.cluster.LeaderService;
 import org.finos.springbot.tools.reminders.Reminder;
 import org.finos.springbot.tools.reminders.ReminderList;
 import org.finos.springbot.tools.reminders.ReminderProperties;
@@ -28,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.symphony.api.pod.StreamsApi;
+//import com.symphony.api.pod.StreamsApi;
 
 @Component
 public class Scheduler {
@@ -46,18 +45,15 @@ public class Scheduler {
 
     @Autowired
     ReminderProperties rp;
-
-    @Autowired
-    SymphonyConversations symphonyRooms;
-
-    @Autowired
-    StreamsApi streams;
-
-    @Autowired
-    LeaderService leaderService;
-
-    @Autowired
-    Participant self;
+//
+//    @Autowired
+//    StreamsApi streams;
+//
+//    @Autowired
+//    LeaderService leaderService;
+//
+//    @Autowired
+//    Participant self;
 
     @Scheduled(cron = "0 0/5 * * * MON-FRI")
     public void everyFiveMinutesWeekday() {
@@ -67,13 +63,13 @@ public class Scheduler {
     public void onAllStreams(Consumer<Addressable> action) {
         LOG.info("TimedAlerter waking");
 
-        if (leaderService.isLeader(self)) {
+  //      if (leaderService.isLeader(self)) {
             Set<Addressable> allRooms = rooms.getAllAddressables();
 			allRooms.forEach(s -> action.accept(s));
             LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
-        } else {
-            LOG.info("Not leader, sleeping");
-        }
+//        } else {
+//            LOG.info("Not leader, sleeping");
+//        }
     }
 
 

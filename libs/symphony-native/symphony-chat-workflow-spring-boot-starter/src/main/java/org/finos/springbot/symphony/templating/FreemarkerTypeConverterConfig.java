@@ -14,6 +14,7 @@ import org.finos.springbot.workflow.templating.DropdownAnnotationConverter;
 import org.finos.springbot.workflow.templating.EnumConverter;
 import org.finos.springbot.workflow.templating.TableConverter;
 import org.finos.springbot.workflow.templating.TextFieldConverter;
+import org.finos.springbot.workflow.templating.TimeConverter;
 import org.finos.springbot.workflow.templating.TypeConverter;
 import org.finos.springbot.workflow.templating.UserConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -61,11 +62,12 @@ public class FreemarkerTypeConverterConfig {
 		return new UserConverter<String>(UserConverter.LOW_PRIORITY, r, SymphonyUser.class);
 	}
 
-//	@Bean
-//	public TimeConverter timeConverter(FreemarkerRendering r) {
-//		return new TimeConverter(r);
-//	}
-//	
+	@Bean
+	@Qualifier("freemarker")
+	public TimeConverter<String> timeConverter(FreemarkerRendering r) {
+		return new TimeConverter<String>(r);
+	}
+	
 	@Bean
 	@Qualifier("freemarker")
 	protected TextFieldConverter<String> fmTextFieldConverter(FreemarkerRendering r) {

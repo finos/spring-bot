@@ -2,14 +2,13 @@ package org.finos.springbot.teams;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
 import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.teams.content.TeamsContentConfig;
 import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
 import org.finos.springbot.teams.content.serialization.TeamsMarkupWriter;
 import org.finos.springbot.teams.conversations.TeamsConversations;
-import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
@@ -37,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -50,13 +48,9 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
-import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
-import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
-import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
 import com.microsoft.bot.schema.ChannelAccount;
 
 /**
@@ -70,10 +64,11 @@ import com.microsoft.bot.schema.ChannelAccount;
 	ChatWorkflowConfig.class, 
 	TeamsContentConfig.class,
 	AdaptiveCardConverterConfig.class,
-	ThymeleafConverterConfig.class
+	ThymeleafConverterConfig.class,
+	TeamsConversationsConfig.class
 })
 @Profile("teams")
-public class TeamsWorkflowConfig extends BotDependencyConfiguration {
+public class TeamsWorkflowConfig {
 		
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
 	
@@ -82,9 +77,6 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	
 	@Autowired
 	ResourceLoader resourceLoader;
-	
-	@Autowired
-	ApplicationContext ac;
 	
 	@Autowired
 	EntityJsonConverter ejc;
@@ -163,25 +155,6 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 		}
 	}
 
-	@Bean
-	public MicrosoftAppCredentials microsoftCredentials(@Value("${teams.app.tennantId}") String tennantId) {
-		com.microsoft.bot.integration.Configuration conf = getConfiguration();
-		MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
-				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
-				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
-				tennantId);
-		return mac;
-	}
-	
-	@Bean 
-	@ConditionalOnMissingBean
-	public TeamsConversations teamsConversations(
-			BotFrameworkAdapter bfa, 
-			MicrosoftAppCredentials mac, 
-			@Value("${teams.bot.id:}") String id) {
-		ChannelAccount botAccount = new ChannelAccount(id);
-		return new TeamsConversationsImpl(bfa, mac, botAccount);
-	}
 
 	@Bean
 	@ConditionalOnMissingBean
@@ -203,40 +176,11 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			TeamsFormConverter fc) {
 		return new MessageActivityHandler(messageConsumers, tc, th, parser, fc, fvp);
 	}
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    public BotFrameworkHttpAdapter getBotFrameworkHttpAdaptor() {
-    	AdapterWithErrorHandler out = new AdapterWithErrorHandler(getConfiguration());
-    	return out;
-    }
     
-    @Override
-	public com.microsoft.bot.integration.Configuration getConfiguration() {
-    	return new com.microsoft.bot.integration.Configuration() {
-			
-			@Override
-			public String getProperty(String key) {
-				return ac.getEnvironment().getProperty("teams.bot."+key);
-			}
-			
-			@Override
-			public String[] getProperties(String key) {
-				throw new UnsupportedOperationException("Couldn't getProperties for "+key);
-			}
-			
-			@Override
-			public Properties getProperties() {
-				throw new UnsupportedOperationException();
-			}
-		};
-	}
-
 	@Bean
     @ConditionalOnMissingBean
-    public BotController teamsBotController(MessageActivityHandler mah) {
-    	return new BotController(getBotFrameworkHttpAdaptor(), mah);
+    public BotController teamsBotController(MessageActivityHandler mah, BotFrameworkHttpAdapter bfa) {
+    	return new BotController(bfa, mah);
     }
 	
 	@Bean

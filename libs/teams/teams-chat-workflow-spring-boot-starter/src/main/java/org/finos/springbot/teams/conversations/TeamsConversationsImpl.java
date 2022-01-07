@@ -204,8 +204,9 @@ public class TeamsConversationsImpl implements TeamsConversations {
 			return new TeamsMultiwayChat(tcd.getId(), "Group Chat");
 		} else if ("channel".equals(tcd.getConversationType())){
 			return new TeamsChannel(tcd.getId(), tcd.getName());
+		} else if ("personal".equals(tcd.getConversationType())) {
+			return new TeamsUser(tcd.getId(), tcd.getName(), tcd.getAadObjectId());
 		} else {
-			// one-to-one chat.
 			return null;
 		}
 	}

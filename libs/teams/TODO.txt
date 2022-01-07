@@ -1,15 +1,18 @@
 FRIDAY
 
-32. Allow buttons on thymeleaf display versions.
-26. Fix the Bots : News, Demo etc.
+26. Fix the Bots : 
+ - Reminder, 
+ - News, 
+ - ToDo.
 38. HelpPage reference in *ChatHandlerMapping
+32. Allow buttons on thymeleaf display versions.
 
 
 MONDAY
 
 30.  Make welcome listener generic teams and symph.  move to chat-workflow.
 33. fix coverage so that it works cross-project
-35. Reading writing azure blob with tag in conversation.  Also write disk version. Still some issue here. (is there? - need ITs)
+35. Reading writing azure blob with tag in conversation.  Also write disk version. Still some issue here. (is there? - need ITs.  ok, this WILL FAIL if there is no match, some deserialization issue)
 
 
 RELEASE PROCESS
@@ -36,4 +39,6 @@ SURESH ?
 
 AFTER RELEASE
 
-- Rework leader election so that it is platform agnostic.
+- Rework leader election so that it is platform agnostic.  Also, reinstate this back into reminder bot.
+
+
