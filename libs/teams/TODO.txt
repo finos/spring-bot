@@ -1,24 +1,35 @@
 FRIDAY
 
-34. merge changes from master
+38. Claim Bot APPROVE Button appears in wrong room - already fixed?  We need to merge now...
 32. Allow buttons on thymeleaf display versions.
-38.  Claim Bot APPROVE Button appears in wrong room - already fixed?  We need to merge now...
 26. Fix the Bots : Claim Bot, News, Demo etc.
+38. HelpPage reference in *ChatHandlerMapping
 
 
+MONDAY
 
+30.  Make welcome listener generic teams and symph.  move to chat-workflow.
 33. fix coverage so that it works cross-project
 35. Reading writing azure blob with tag in conversation.  Also write disk version. Still some issue here. (is there? - need ITs)
 
-30.  Make welcome listener generic teams and symph.  move to chat-workflow.
-31.  Tutorials: ToDo and claim tutorials - make them work with both (Teams takes priority).
 
-37.  Userlist is only needed when in edit mode.
+RELEASE PROCESS
 
-We need the concept of 'me' in teams - you can't mention yourself!
+- Can we release the project into maven central with the new groupId?
+- rename the project in github
+- Tutorials: ToDo and claim tutorials - make them work with both (Teams takes priority).
+- domain name
+- article about no code/low code
 
+
+OTHER MINOR ISSUES SPOTTED
+
+ - Userlist is only needed when in edit mode.
+ - We need the concept of 'me' in teams - you can't mention yourself!
+
+
+SURESH ?
 
 28. BDK Version of Symphony (Suresh)
-
 20. Build time editors / viewers (both symphony and teams)
 36. Cash Tag/HashTag editor/viewer (symphony)

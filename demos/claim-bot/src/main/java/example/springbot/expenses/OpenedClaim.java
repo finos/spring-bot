@@ -53,6 +53,10 @@ public class OpenedClaim {
 	public void setApprovedBy(User approvedBy) {
 		this.approvedBy = approvedBy;
 	}
+	
+	public User getApprovedBy() {
+		return approvedBy;
+	}
 
 	public User getPaidBy() {
 		return paidBy;

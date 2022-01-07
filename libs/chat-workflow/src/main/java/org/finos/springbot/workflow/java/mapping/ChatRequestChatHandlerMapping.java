@@ -20,7 +20,6 @@ import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
@@ -38,12 +37,11 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 
 	private WorkflowResolversFactory wrf;
 	private ResponseConverters converters;
-	private AllConversations conversations;
 	
 	public ChatRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseConverters converters, AllConversations conversations) {
+		super(conversations);
 		this.wrf = wrf;
 		this.converters = converters;
-		this.conversations = conversations;
 	}
 
 	@Override
@@ -153,28 +151,11 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 					"ChatVariables can only be used for Content subtypes: " + t.getTypeName());
 		}
 	}
-
+	
 	private boolean canBePerformed(Addressable a, User u, ChatRequest cb) {
-		if ((a instanceof Chat) && (cb.excludeRooms().length > 0)) {
-			if (roomMatched(cb.excludeRooms(), (Chat) a)) {
-				return false;
-			}
-		}
-
-		if ((a instanceof Chat) && ((cb.rooms().length > 0))) {
-			if (!roomMatched(cb.rooms(), (Chat) a)) {
-				return false;
-			}
-		}
-
-		if (cb.admin() && (a instanceof Chat)) {
-			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
-			return chatAdmins.contains(u);
-		} else {
-			return true;
-		}
+		return canBePerformed(a, u, cb.excludeRooms(), cb.rooms(), cb.admin());
 	}
-
+	
 	@Override
 	protected MappingRegistration<ChatRequest> createMappingRegistration(ChatRequest mapping,
 			ChatHandlerMethod handlerMethod) {
