@@ -4,12 +4,16 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -25,7 +29,13 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	private boolean detectHandlerMethodsInAncestorContexts = false;
 	
 	protected MappingRegistry mappingRegistry = new MappingRegistry();
+	protected AllConversations conversations;
 	
+	public AbstractSpringComponentHandlerMapping(AllConversations conversations) {
+		super();
+		this.conversations = conversations;
+	}
+
 	/**
 	 * 
 	 * Detects handler methods at initialization.
@@ -303,6 +313,33 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 	}
 
 	protected abstract MappingRegistration<T> createMappingRegistration(T mapping, ChatHandlerMethod handlerMethod);
+
+	
+
+	protected boolean canBePerformed(Addressable a, User u, String[] excludeRooms, String[] includeRooms, boolean isAdmin) {
+		if ((a instanceof Chat) && (excludeRooms.length > 0)) {
+			if (roomMatched(excludeRooms, (Chat) a)) {
+				return false;
+			}
+		}
+
+		if (includeRooms.length > 0) {
+			if (a instanceof Chat) {
+				if (!roomMatched(includeRooms, (Chat) a)) {
+					return false;
+				} 
+			} else {
+				return false;
+			}
+		}
+
+		if (isAdmin && (a instanceof Chat)) {
+			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
+			return chatAdmins.contains(u);
+		} else {
+			return true;
+		}
+	}
 
 	
 }
