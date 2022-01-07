@@ -1,15 +1,19 @@
-32. Allow buttons on thymeleaf display versions.
-26. Fix the Bots : Claim Bot, News, Demo etc.
-33. fix coverage so that it works cross-project
+FRIDAY
+
 34. merge changes from master
+32. Allow buttons on thymeleaf display versions.
+38.  Claim Bot APPROVE Button appears in wrong room - already fixed?  We need to merge now...
+26. Fix the Bots : Claim Bot, News, Demo etc.
+
+
+
+33. fix coverage so that it works cross-project
 35. Reading writing azure blob with tag in conversation.  Also write disk version. Still some issue here. (is there? - need ITs)
 
 30.  Make welcome listener generic teams and symph.  move to chat-workflow.
 31.  Tutorials: ToDo and claim tutorials - make them work with both (Teams takes priority).
 
 37.  Userlist is only needed when in edit mode.
-
-21.  handle tennant id/ default tennant id on teams ?
 
 We need the concept of 'me' in teams - you can't mention yourself!
 
@@ -18,15 +22,3 @@ We need the concept of 'me' in teams - you can't mention yourself!
 
 20. Build time editors / viewers (both symphony and teams)
 36. Cash Tag/HashTag editor/viewer (symphony)
-38.  Claim Bot APPROVE Button appears in wrong room - already fixed?
-
-
-
-
-activityId	"1641315569340" (id=265)	
-bot	ChannelAccount  (id=282)	
-channelId	"msteams" (id=260)	
-conversation	ConversationAccount  (id=261)	
-locale	"en-GB" (id=266)	
-serviceUrl	"https://smba.trafficmanager.net/uk/" (id=283)	
-user	ChannelAccount  (id=264)	
