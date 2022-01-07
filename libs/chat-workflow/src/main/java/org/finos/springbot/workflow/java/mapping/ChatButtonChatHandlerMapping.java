@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.workflow.actions.Action;
@@ -16,6 +17,7 @@ import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.help.HelpPage;
 import org.finos.springbot.workflow.java.converters.ResponseConverters;
 import org.finos.springbot.workflow.java.resolvers.WorkflowResolversFactory;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -86,7 +88,7 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 			}
 		}
 		
-		if (cb.admin() && (a instanceof Chat)) {
+		if (Objects.nonNull(u) && cb.admin() && (a instanceof Chat)) {
 			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
 			return chatAdmins.contains(u);
 		} else {
@@ -116,6 +118,10 @@ public class ChatButtonChatHandlerMapping extends AbstractSpringComponentHandler
 
 			private ChatHandlerExecutor matchesFormAction(FormAction a) {
 				MappingRegistration<?> me = this;
+				
+				if(Objects.nonNull(a.getData().get("form")) && a.getData().get("form").getClass() == HelpPage.class) {
+					return null;
+				}
 					
 				if (!a.getAction().equals(this.getUniqueName())) {
 					return null;
