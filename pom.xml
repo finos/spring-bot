@@ -207,6 +207,8 @@
 								<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
 								<symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
 								<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
+								<symphony-develop-bot3-identity>${symphony-develop-bot3-identity}</symphony-develop-bot3-identity>
+								<symphony-develop-bot4-identity>${symphony-develop-bot4-identity}</symphony-develop-bot4-identity>
 								<proxy>${symphony-proxy}</proxy>
 							</systemPropertyVariables>
 						</configuration>
