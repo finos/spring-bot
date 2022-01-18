@@ -1,31 +1,29 @@
 package com.symphony.api.id;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.symphony.api.id.testing.TestIdentityProvider;
 
 public class JSONTest {
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testLoadAndSavePem() throws IOException {
-		
-		String privateKey = StreamHelp.asString(this.getClass().getResourceAsStream("/privatekey.pem"));
-		String cert = StreamHelp.asString(this.getClass().getResourceAsStream("/cert.pem"));
-		SymphonyIdentity in = new PemSymphonyIdentity(privateKey, new String[] { cert }, "rob@example.com");
-		
-		ObjectMapper om = new ObjectMapper();
-		
-		String json1 = om.writeValueAsString(in);
-		String expected = StreamHelp.asString(this.getClass().getResourceAsStream("/pemId.json"));
-		Assertions.assertEquals(expected, json1);
-	
-		SymphonyIdentity out = om.readValue(json1, SymphonyIdentity.class);
+
+		Map<String, Object> id = StreamHelp.getProperties("symphony-develop-bot2-identity", Map.class);
+
+		SymphonyIdentity in = new PemSymphonyIdentity((String) id.get("privateKey"),
+				new String[] { (String) ((ArrayList<String>) id.get("chain")).get(0) }, (String) id.get("email"));
+
+		SymphonyIdentity out = TestIdentityProvider.getIdentity("symphony-develop-bot2-identity");
 		Assertions.assertEquals(in.getPrivateKey(), out.getPrivateKey());
 		Assertions.assertEquals(in.getCertificateChain()[0], out.getCertificateChain()[0]);
 		Assertions.assertEquals(in.getCommonName(), out.getCommonName());
 		Assertions.assertEquals(in.getEmail(), out.getEmail());
-	}
+}
 }
