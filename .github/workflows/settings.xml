@@ -23,7 +23,7 @@
        </symphony-develop-bot2-identity>
        <symphony-develop-bot3-identity>
          {  
-          "chain": ["${env.BOT3CERTCHAIN}"],
+          "chain": [ "${env.BOT3CERTCHAIN}" ],
        "privateKey": "${env.BOT3PRIVATEKEY}",
        "publicKey": "${env.BOT3PUBLICKEY}",
        "email":"symphony.practice.bot3@list.db.com",
@@ -33,7 +33,7 @@
        </symphony-develop-bot3-identity>
        <symphony-develop-bot4-identity>
          {  
-          "chain": ["${env.BOT4CERTCHAIN}"],
+          "chain": [ "${env.BOT4CERTCHAIN}" ],
        "email":"symphony.practice.bot4@list.db.com",
        "commonName":"symphony.practice.bot4"
        }
