@@ -1,12 +1,11 @@
 package org.finos.symphony.toolkit.workflow.fixture;
 
-import org.finos.symphony.toolkit.workflow.annotations.ChatRequest;
-import org.finos.symphony.toolkit.workflow.annotations.Work;
-import org.finos.symphony.toolkit.workflow.content.Word;
-
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
+
+import org.finos.symphony.toolkit.workflow.annotations.Work;
 
 @Work()
 public class TestObjects {

@@ -15,7 +15,6 @@ import org.finos.symphony.toolkit.workflow.sources.symphony.json.EntityJsonConve
 import org.finos.symphony.toolkit.workflow.sources.symphony.json.HeaderDetails;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.skyscreamer.jsonassert.JSONCompare;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StreamUtils;
 import org.springframework.validation.Validator;

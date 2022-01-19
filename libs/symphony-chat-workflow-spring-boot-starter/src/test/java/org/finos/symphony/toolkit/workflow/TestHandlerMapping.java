@@ -376,6 +376,7 @@ public class TestHandlerMapping extends AbstractMockSymphonyTest {
 		Mockito.clearInvocations();
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testOptionalPresent() throws Exception {
 		execute("optionals zib zab zob <span class=\"entity\" data-entity-id=\"1\">@gaurav</span> pingu");
