@@ -7,7 +7,6 @@ import java.lang.reflect.Proxy;
 import org.finos.symphony.toolkit.spring.api.properties.PodProperties;
 
 import com.symphony.api.bindings.ApiWrapper;
-import com.symphony.api.id.SymphonyIdentity;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;

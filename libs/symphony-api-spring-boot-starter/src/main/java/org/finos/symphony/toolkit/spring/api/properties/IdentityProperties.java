@@ -69,6 +69,7 @@ public class IdentityProperties {
 		this.certificates = certificates;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static SymphonyIdentity instantiateIdentityFromDetails(ResourceLoader loader, IdentityProperties details, ObjectMapper om) throws IOException {
 		if (!StringUtils.isEmpty(details.getLocation())) {
 			Resource r = loader.getResource(details.getLocation());

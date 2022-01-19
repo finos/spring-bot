@@ -25,6 +25,7 @@ import com.symphony.api.login.AuthenticationApi;
 import com.symphony.api.model.OboAuthResponse;
 import com.symphony.api.model.Token;
 
+@SuppressWarnings("deprecation")
 public class TokenManagingOboApiInstanceFactory extends AbstractGenericInstanceTokenManagingFactory<OboIdentity>
 		implements OboInstanceFactory {
 

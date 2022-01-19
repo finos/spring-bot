@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.id.json.SymphonyIdentityModule;
+import com.symphony.api.id.testing.StreamHelp;
 
 public class LoadTest {
 	public static final String EMAIL = "thing@thang.com";

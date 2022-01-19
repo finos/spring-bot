@@ -10,6 +10,7 @@ import org.springframework.security.jwt.crypto.sign.SignatureVerifier;
  * @author robmoffat
  *
  */
+@SuppressWarnings("deprecation")
 public interface SignatureVerifierProvider {
 
 	public SignatureVerifier getSignatureVerifier(Map<String, Object> claims);

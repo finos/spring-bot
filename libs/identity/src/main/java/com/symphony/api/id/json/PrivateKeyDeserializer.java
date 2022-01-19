@@ -11,6 +11,8 @@ import com.symphony.api.id.PemSymphonyIdentity;
 
 public class PrivateKeyDeserializer extends StdDeserializer<PrivateKey> {
 
+	private static final long serialVersionUID = 6341652693034225553L;
+
 	public PrivateKeyDeserializer() {
 		this(null);
 	}

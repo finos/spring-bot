@@ -5,7 +5,6 @@ import org.finos.symphony.toolkit.stream.cluster.ClusterMemberImpl;
 import org.finos.symphony.toolkit.stream.cluster.HealthSupplier;
 import org.finos.symphony.toolkit.stream.cluster.LeaderService;
 import org.finos.symphony.toolkit.stream.cluster.Multicaster;
-import org.finos.symphony.toolkit.stream.cluster.messages.ClusterMessage;
 
 public class TestClusterMember extends ClusterMemberImpl {
 	

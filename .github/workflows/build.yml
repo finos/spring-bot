@@ -51,7 +51,7 @@ jobs:
       run: mvn verify --settings .github/workflows/settings.xml 
     - name: Build (not on master)
       if: github.ref != 'refs/heads/master'
-      run: mvn install 
+      run: mvn install --settings .github/workflows/settings.xml
     - name: Coverage (on master)
       if: github.ref == 'refs/heads/master'
       uses: codecov/codecov-action@v1

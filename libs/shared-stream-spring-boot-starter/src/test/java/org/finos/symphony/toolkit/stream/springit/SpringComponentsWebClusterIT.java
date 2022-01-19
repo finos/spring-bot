@@ -69,9 +69,10 @@ public class SpringComponentsWebClusterIT {
 	@Autowired
 	SymphonyStreamHandlerFactory handlerFactory;
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testCallEndpoint() throws Exception {
-		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, Collections.singletonList(noddyCallback)).getFilter();
+//		SymphonyLeaderEventFilter lef = (SymphonyLeaderEventFilter) handlerFactory.createBean(apiInstance, Collections.singletonList(noddyCallback)).getFilter();
 
 		int sc = WebClient.create(self.getDetails())
 			.post()

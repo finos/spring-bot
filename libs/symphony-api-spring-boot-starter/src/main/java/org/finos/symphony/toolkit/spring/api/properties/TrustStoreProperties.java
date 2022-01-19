@@ -1,7 +1,5 @@
 package org.finos.symphony.toolkit.spring.api.properties;
 
-import java.util.List;
-
 public class TrustStoreProperties {
 
 	public enum Type { PEMS, JKS, PKCS12, INLINE_PEMS }

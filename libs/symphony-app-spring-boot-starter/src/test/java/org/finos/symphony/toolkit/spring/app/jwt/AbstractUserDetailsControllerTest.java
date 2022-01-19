@@ -19,7 +19,6 @@ import org.finos.symphony.toolkit.spring.app.id.BCCertificateTools;
 import org.finos.symphony.toolkit.spring.app.id.CertificateTools;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -28,7 +27,6 @@ import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.bindings.AbstractApiBuilder;
@@ -36,6 +34,7 @@ import com.symphony.api.bindings.JWTHelper;
 import com.symphony.api.model.PodCertificate;
 import com.symphony.api.pod.PodApi;
 
+@SuppressWarnings("deprecation")
 public abstract class AbstractUserDetailsControllerTest extends AbstractTest {
 
 	@Autowired

@@ -22,13 +22,11 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -116,6 +114,7 @@ public class SymphonyApiConfig {
 		return bif.createApiInstance(id, pp, trustManagerFactory == null ? null : trustManagerFactory.getTrustManagers());
 	}
 
+	@SuppressWarnings("deprecation")
 	private PodProperties getMainPodProperties() {	
 		if (!StringUtils.isEmpty(podId)) {
 			for (PodProperties pp : symphonyProperties.getApis()) {

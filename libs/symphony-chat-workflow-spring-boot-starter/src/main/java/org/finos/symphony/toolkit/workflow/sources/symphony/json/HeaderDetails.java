@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.workflow.sources.symphony.json;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.finos.symphony.toolkit.workflow.annotations.Work;

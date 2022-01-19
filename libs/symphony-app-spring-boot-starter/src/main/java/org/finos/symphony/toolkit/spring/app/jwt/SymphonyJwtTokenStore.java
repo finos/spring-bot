@@ -36,6 +36,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Rob Moffat
  *
  */
+@SuppressWarnings("deprecation")
 public class SymphonyJwtTokenStore implements TokenStore {
 
 	protected List<SignatureVerifierProvider> signatureVerifierProviders;

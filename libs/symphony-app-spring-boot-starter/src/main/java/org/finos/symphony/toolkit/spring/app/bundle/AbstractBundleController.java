@@ -29,6 +29,7 @@ public abstract class AbstractBundleController extends AbstractJsonController {
 		return  getApplicationRoot(request) + iconPath;
 	}
 
+	@SuppressWarnings("deprecation")
 	protected String getAllowOrigins(HttpServletRequest request) throws URISyntaxException {
 		String applicationRoot = getApplicationRoot(request);
 		if (StringUtils.isEmpty(p.getAllowOrigins())) {

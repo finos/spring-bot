@@ -71,7 +71,8 @@ public class WithFieldTest {
         @Display(visible = true)
         private String lastName;
 
-        private Date dateOfBirth;
+        @SuppressWarnings("unused")
+		private Date dateOfBirth;
 
         @Display(name = "")
         private String city;

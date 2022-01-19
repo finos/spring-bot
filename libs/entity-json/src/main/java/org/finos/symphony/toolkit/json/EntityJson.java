@@ -12,6 +12,8 @@ import java.util.Map;
  */
 public final class EntityJson extends LinkedHashMap<String, Object>{
 
+	private static final long serialVersionUID = -3709809524774317335L;
+
 	public EntityJson() {
 		super();
 	}
