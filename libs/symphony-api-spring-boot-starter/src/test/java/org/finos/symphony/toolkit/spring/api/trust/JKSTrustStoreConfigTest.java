@@ -18,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.symphony.api.id.PemSymphonyIdentity;
+import com.symphony.api.id.testing.StreamHelp;
 
 @ExtendWith(SpringExtension.class)
 

@@ -46,6 +46,7 @@ public abstract class AbstractController implements SymphonyController {
 	 * @throws URISyntaxException if the url cannot be created
 	 * @return path for the application
 	 */
+	@SuppressWarnings("deprecation")
 	protected String getApplicationRoot(HttpServletRequest request) throws URISyntaxException {
 		if (!StringUtils.isEmpty(p.getBaseUrl())) {
 			return p.getBaseUrl();
@@ -62,6 +63,7 @@ public abstract class AbstractController implements SymphonyController {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	public Map<String, String> decodeQuery(String qs) {
 		if (StringUtils.isEmpty(qs)) {
 			return Collections.emptyMap();

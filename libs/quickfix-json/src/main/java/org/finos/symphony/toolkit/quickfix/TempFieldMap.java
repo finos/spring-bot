@@ -15,6 +15,8 @@ import quickfix.Group;
  */
 public class TempFieldMap extends FieldMap {
 
+	private static final long serialVersionUID = -3100743622763939444L;
+
 	private List<Field<?>> fieldOrder = new ArrayList<>();
 	
 	private List<FieldMap> tempGroups = new ArrayList<>();

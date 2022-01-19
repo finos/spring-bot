@@ -11,6 +11,8 @@ import com.symphony.api.id.PemSymphonyIdentity;
 
 public class CertificateDeserializer extends StdDeserializer<X509Certificate> {
 
+	private static final long serialVersionUID = -3560852312063083210L;
+
 	public CertificateDeserializer() {
 		this(null);
 	}
