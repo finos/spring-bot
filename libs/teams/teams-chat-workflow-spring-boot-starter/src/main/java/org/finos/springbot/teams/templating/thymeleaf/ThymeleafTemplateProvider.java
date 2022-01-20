@@ -35,10 +35,11 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 	public ThymeleafTemplateProvider(
 			String templatePrefix, 
 			String templateSuffix, 
-			ResourceLoader rl, 
+			ResourceLoader rl,
+			String defaultTemplateName,
 			ThymeleafTemplater converter
 		) {
-		super(templatePrefix, templateSuffix, rl);
+		super(templatePrefix, templateSuffix, defaultTemplateName, rl);
 		this.converter = converter;
 		this.templateEngine = new SpringTemplateEngine();
 		this.templateEngine.setTemplateResolver(new StringTemplateResolver());

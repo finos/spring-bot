@@ -9,9 +9,9 @@ import org.springframework.core.io.ResourceLoader;
 
 public class SymphonyMarkupTemplateProvider extends SimpleMarkupTemplateProvider {
 
-	public SymphonyMarkupTemplateProvider(String templatePrefix, String templateSuffix, ResourceLoader rl,
+	public SymphonyMarkupTemplateProvider(String templatePrefix, String templateSuffix, String defaultTemplateName, ResourceLoader rl,
 			BiFunction<Content, Markup, String> converter) {
-		super(templatePrefix, templateSuffix, rl, converter);
+		super(templatePrefix, templateSuffix, defaultTemplateName, rl, converter);
 	}
 
 	/**

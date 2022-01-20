@@ -13,6 +13,8 @@ DEV TASKS
 	- Still some issue here. (is there? - need ITs, maybe update library?.  ok, this WILL FAIL if there is no match, some deserialization issue)
 
 Teams Bean clash
+Symphony: don't bother to add the tags to a message where there is no form data.
+symphony- submit bug report for messagebuilder
 
 RELEASE PROCESS
 

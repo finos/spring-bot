@@ -8,9 +8,9 @@ import org.springframework.core.io.ResourceLoader;
 
 public class SimpleMarkupTemplateProvider extends AbstractMarkupTemplateProvider<Markup> {
 
-	public SimpleMarkupTemplateProvider(String templatePrefix, String templateSuffix, ResourceLoader rl,
+	public SimpleMarkupTemplateProvider(String templatePrefix, String templateSuffix, String defaultTemplateName, ResourceLoader rl,
 			BiFunction<Content, Markup, String> converter) {
-		super(templatePrefix, templateSuffix, rl, converter);
+		super(templatePrefix, templateSuffix, defaultTemplateName, rl, converter);
 	}
 
 	@Override

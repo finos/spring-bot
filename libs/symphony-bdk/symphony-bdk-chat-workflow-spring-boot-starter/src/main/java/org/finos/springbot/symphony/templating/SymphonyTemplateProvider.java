@@ -20,10 +20,11 @@ public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<S
 	public SymphonyTemplateProvider(
 			String templatePrefix, 
 			String templateSuffix, 
+			String defaultTemplateName,
 			ResourceLoader rl, 
 			FreemarkerWorkTemplater formConverter
 		) {
-		super(templatePrefix, templateSuffix, rl);
+		super(templatePrefix, templateSuffix, defaultTemplateName, rl);
 		this.formConverter = formConverter;
 	}
 
