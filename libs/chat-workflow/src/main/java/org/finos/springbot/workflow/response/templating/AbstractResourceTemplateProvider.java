@@ -16,12 +16,14 @@ public abstract class AbstractResourceTemplateProvider<T, F, V extends DataRespo
 
 	protected final String templatePrefix;
 	protected final String templateSuffix;
+	protected final String defaultTemplateName;
 	protected final ResourceLoader rl;
 
-	public AbstractResourceTemplateProvider(String templatePrefix, String templateSuffix, ResourceLoader rl) {
+	public AbstractResourceTemplateProvider(String templatePrefix, String templateSuffix, String defaultTemplateName, ResourceLoader rl) {
 		super();
 		this.templatePrefix = templatePrefix;
 		this.templateSuffix = templateSuffix;
+		this.defaultTemplateName = defaultTemplateName;
 		this.rl = rl;
 	}
 	
@@ -88,5 +90,9 @@ public abstract class AbstractResourceTemplateProvider<T, F, V extends DataRespo
 	 * and return a default template.
 	 */
 	protected abstract F getDefaultTemplate(V r);
+	
+	protected String getDefaultTemplateName() {
+		return defaultTemplateName;
+	}
 
 }

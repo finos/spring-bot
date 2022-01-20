@@ -35,10 +35,11 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 	public AdaptiveCardTemplateProvider(
 			String templatePrefix, 
 			String templateSuffix, 
+			String defaultTemplateName,
 			ResourceLoader rl, 
 			WorkTemplater<JsonNode> formConverter
 		) throws IOException {
-		super(templatePrefix, templateSuffix, rl);
+		super(templatePrefix, templateSuffix, defaultTemplateName, rl);
 		this.formConverter = formConverter;
 		this.om = new ObjectMapper();
 		this.om.registerModule(new JavaTimeModule());

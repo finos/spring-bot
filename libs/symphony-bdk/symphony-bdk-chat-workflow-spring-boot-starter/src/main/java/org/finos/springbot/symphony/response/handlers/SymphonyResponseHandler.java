@@ -1,6 +1,7 @@
 package org.finos.springbot.symphony.response.handlers;
 
 import java.io.ByteArrayInputStream;
+import java.lang.reflect.Field;
 import java.util.Collections;
 
 import org.finos.springbot.symphony.SymphonyException;
@@ -107,12 +108,19 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 		try {
 			if (address instanceof SymphonyAddressable) {
 				String streamId = sr.getStreamFor((SymphonyAddressable) address);
-				MessageBuilder out = Message.builder().content(template).data(data);
+				MessageBuilder mb = Message.builder().content(template);
+
 				if (attachment != null) {
 					Attachment a = new Attachment(new ByteArrayInputStream(attachment), filename);
-					out = out.attachments(Collections.singletonList(a));
+					mb = mb.attachments(Collections.singletonList(a));
 				}
-				messagesApi.send(streamId, out.build());
+
+				// workaround for symphony's crazy assumptions about what might be in fields.
+				Message out = mb.build();
+				setPrivateField("data", out, data);
+				setPrivateField("content", out, template);
+				
+				messagesApi.send(streamId, out);
 			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -121,6 +129,12 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 			initErrorHandler();
 			eh.handleError(e);
 		}
+	}
+
+	private void setPrivateField(String string, Message out, String data) throws Exception {
+		Field f = Message.class.getDeclaredField(string);
+		f.setAccessible(true);
+		f.set(out, data);
 	}
 
 	@Override

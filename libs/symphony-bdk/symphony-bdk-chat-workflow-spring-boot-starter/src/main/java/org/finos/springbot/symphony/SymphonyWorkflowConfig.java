@@ -95,9 +95,10 @@ public class SymphonyWorkflowConfig {
 	public SymphonyMarkupTemplateProvider symphonyMarkupTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/symphony/}") String prefix,
 			@Value("${symphony.templates.suffix:.ftl}") String suffix,
+			@Value("${symphony.templates.markup.default:default-message}") String messageDefault,
 			SymphonyMarkupWriter converter) {
 		BiFunction<Content, Markup, String> cms = converter;
- 		return new SymphonyMarkupTemplateProvider(prefix, suffix, resourceLoader, cms);
+ 		return new SymphonyMarkupTemplateProvider(prefix, suffix, messageDefault, resourceLoader, cms);
 	}
 	
 	@Bean
@@ -105,8 +106,9 @@ public class SymphonyWorkflowConfig {
 	public SymphonyTemplateProvider symphonyWorkTemplater(
 			@Value("${symphony.templates.prefix:classpath:/templates/symphony/}") String prefix,
 			@Value("${symphony.templates.suffix:.ftl}") String suffix,
+			@Value("${symphony.templates.work.default:default-work}") String workDefault,
 			FreemarkerWorkTemplater formConverter) {
-		return new SymphonyTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+		return new SymphonyTemplateProvider(prefix, suffix, workDefault, resourceLoader, formConverter);
 	}
 	
 	@Bean
