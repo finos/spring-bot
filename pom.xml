@@ -8,8 +8,8 @@
 	<version>9.0.0-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
-	<name>Symphony Java Toolkit</name>
-	<description>A collection of Java projects for building Symphony bots and apps</description>
+	<name>Spring Bot</name>
+	<description>A collection of Java projects for building bots on Symphony and Teams</description>
 	<url>https://github.com/finos/spring-bot</url>
 
 	<parent>
@@ -28,6 +28,8 @@
 		<module>libs/entity-json</module>
 	
 		<!-- symphony support -->
+                <module>libs/symphony-bdk/symphony-bdk-chat-workflow-spring-boot-starter</module>
+
 		<module>libs/symphony-native/identity</module>
 		<module>libs/symphony-native/bindings</module>
 		<module>libs/symphony-native/entities</module>
