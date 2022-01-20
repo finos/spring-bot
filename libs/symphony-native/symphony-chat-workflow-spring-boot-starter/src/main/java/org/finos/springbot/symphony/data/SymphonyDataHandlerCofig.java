@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.finos.springbot.entities.VersionSpaceHelp;
 import org.finos.springbot.entityjson.VersionSpace;
-import org.finos.springbot.symphony.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
+import org.finos.springbot.workflow.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

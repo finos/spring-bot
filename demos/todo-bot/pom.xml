@@ -23,14 +23,14 @@
 	<dependencies>
 	    <dependency>
 			<groupId>org.finos.springbot</groupId>
-			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
+			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
 			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
-	    <dependency>
+	 <!--   <dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
 			<version>9.0.0-SNAPSHOT</version>
-		</dependency>		
+		</dependency>		-->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>

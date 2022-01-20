@@ -3,7 +3,6 @@
  */
 package org.finos.springbot.tools.rssbot;
 
-import org.finos.springbot.symphony.stream.welcome.RoomWelcomeEventConsumer;
 import org.finos.springbot.tools.rssbot.alerter.ArticleSender;
 import org.finos.springbot.tools.rssbot.alerter.CachingCheckingArticleSender;
 import org.finos.springbot.tools.rssbot.alerter.FeedListCache;
@@ -13,6 +12,7 @@ import org.finos.springbot.tools.rssbot.notify.Notifier;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
+import org.finos.springbot.workflow.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;

@@ -12,15 +12,15 @@ DEV TASKS
 	- Also write disk version. 
 	- Still some issue here. (is there? - need ITs, maybe update library?.  ok, this WILL FAIL if there is no match, some deserialization issue)
 
+Teams Bean clash
 
 RELEASE PROCESS
 
 - Rename project in Github (arrange meeting this week).
 - Can we release the project into maven central with the new groupId?
-- rename the project in github
 - Tutorials: ToDo and claim tutorials - make them work with both (Teams takes priority).
 - domain name
-- article about no code/low code
+- article about no code/low code.
 
 
 OTHER MINOR ISSUES SPOTTED
@@ -32,7 +32,6 @@ OTHER MINOR ISSUES SPOTTED
 
 SURESH ?
 
-28. BDK Version of Symphony (Suresh)
 20. Build time editors / viewers (both symphony and teams)
 36. Cash Tag/HashTag editor/viewer (symphony)
 
