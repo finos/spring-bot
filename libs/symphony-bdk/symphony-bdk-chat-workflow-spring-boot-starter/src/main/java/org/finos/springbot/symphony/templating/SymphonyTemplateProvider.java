@@ -42,7 +42,7 @@ public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<S
 			throw new SymphonyException("Don't know how to construct default template for "+r);
 		}
 		
-		String defaultTemplate = getTemplateForName("default");
+		String defaultTemplate = getTemplateForName(getDefaultTemplateName());
 		
 		String out = defaultTemplate.replace("<!-- Message Content -->", insert);
 		

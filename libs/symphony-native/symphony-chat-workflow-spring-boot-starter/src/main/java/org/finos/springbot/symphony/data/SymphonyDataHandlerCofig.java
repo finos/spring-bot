@@ -7,7 +7,6 @@ import org.finos.springbot.entities.VersionSpaceHelp;
 import org.finos.springbot.entityjson.VersionSpace;
 import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
-import org.finos.springbot.workflow.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +41,6 @@ public class SymphonyDataHandlerCofig implements InitializingBean {
 		return Arrays.asList(			
 				new VersionSpace(DisplayName.class, "1.0"), 
 				new VersionSpace(StreamID.class, "1.0"), 
-				new VersionSpace(EmailAddress.class, "1.0"), 
-				RoomWelcomeEventConsumer.VERSION_SPACE);
+				new VersionSpace(EmailAddress.class, "1.0"));
 	}
 }

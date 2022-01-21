@@ -84,28 +84,31 @@ public class TeamsWorkflowConfig {
 	@Bean 
 	@ConditionalOnMissingBean
 	public EntityMarkupTemplateProvider teamsMarkupTemplater(
-			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
-			@Value("${teams.templates.suffix:.html}") String suffix,
+			@Value("${teams.templates.markup.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.markup.suffix:.html}") String suffix,
+			@Value("${teams.templates.markup.default:default}") String defaultName,
 			TeamsMarkupWriter converter) {
-		return new EntityMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
+		return new EntityMarkupTemplateProvider(prefix, suffix, defaultName, resourceLoader, converter);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public AdaptiveCardTemplateProvider adaptiveCardWorkTemplater(
-			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
-			@Value("${teams.templates.suffix:.json}") String suffix,
+			@Value("${teams.templates.card.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.card.suffix:.json}") String suffix,
+			@Value("${teams.templates.card.default:default}") String defaultName,
 			AdaptiveCardTemplater formConverter) throws IOException {
-		return new AdaptiveCardTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+		return new AdaptiveCardTemplateProvider(prefix, suffix, defaultName, resourceLoader, formConverter);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public ThymeleafTemplateProvider thymeleafWorkTemplater(
-			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
-			@Value("${teams.templates.suffix:.html}") String suffix,
+			@Value("${teams.templates.thymeleaf.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.thymeleaf.suffix:.html}") String suffix,
+			@Value("${teams.templates.thymeleaf.default:default}") String defaultName,
 			ThymeleafTemplater formConverter) throws IOException {
-		return new ThymeleafTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+		return new ThymeleafTemplateProvider(prefix, suffix, defaultName, resourceLoader, formConverter);
 	}
 	
 	@Bean

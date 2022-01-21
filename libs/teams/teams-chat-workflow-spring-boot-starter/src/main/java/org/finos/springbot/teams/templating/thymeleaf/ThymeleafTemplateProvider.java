@@ -35,8 +35,8 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 	public ThymeleafTemplateProvider(
 			String templatePrefix, 
 			String templateSuffix, 
-			ResourceLoader rl,
 			String defaultTemplateName,
+			ResourceLoader rl,
 			ThymeleafTemplater converter
 		) {
 		super(templatePrefix, templateSuffix, defaultTemplateName, rl);
@@ -59,7 +59,7 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 			throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
 		}
 		
-		String defaultTemplate = getTemplateForName("default");
+		String defaultTemplate = getTemplateForName(getDefaultTemplateName());
 		String replacedText = defaultTemplate.replace("<!-- Message Content -->", insert);
 		return replacedText;
 	}
