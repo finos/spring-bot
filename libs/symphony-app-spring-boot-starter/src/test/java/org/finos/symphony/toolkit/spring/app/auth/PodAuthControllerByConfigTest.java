@@ -68,7 +68,7 @@ public class PodAuthControllerByConfigTest extends AbstractTest {
         	.contentType(MediaType.APPLICATION_JSON))
         	.andDo(print())
         	.andExpect(jsonPath("$.appId", containsString("appid123")))
-    		.andExpect(jsonPath("$.tokenA", containsString("someAppId/")))
+    		.andExpect(jsonPath("$.tokenA", containsString("bob/")))
     		.andExpect(status().isOk());
     }
 	
