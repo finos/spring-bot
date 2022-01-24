@@ -38,6 +38,9 @@
            "commonName":"symphony.practice.bot4"
          }
        </symphony-develop-bot4-identity>
+       <symphony-develop-bot5-inline-pem>${env.BOT5CERTIFICATE}</symphony-develop-bot5-inline-pem>
+       <symphony-develop-bot6-private-key>${env.BOT6PRIVATEKEY}</symphony-develop-bot6-private-key>
+       <symphony-develop-bot7-certificate>${env.BOT7CERTIFICATE}</symphony-develop-bot7-certificate>
        <symphony-test-identity>
          {
            "privateKey": "${env.BOT1PRIVATEKEY}",
