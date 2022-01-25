@@ -8,4 +8,9 @@ symphony:
   app: 
     name: Testular
     identity:
-      location: classpath:/test-identity.json
+      email: robski.moff@example.com
+      privateKey: ${symphony-develop-bot6-private-key}
+      certificates: ${symphony-develop-bot7-certificate}
+      commonName: someAppId
+
+

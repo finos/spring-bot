@@ -38,7 +38,7 @@ public class BundleTest extends AbstractTest {
         	get("/symphony-app/bundle.json")
         	.contentType(MediaType.APPLICATION_JSON))
         	.andDo(print())
-        	.andExpect(jsonPath("$.applications[0].id", containsString("someAppId")))
+        	.andExpect(jsonPath("$.applications[0].id", containsString("bob")))
     		.andExpect(jsonPath("$.applications[0].url", containsString("http://localhost/symphony-app/testgroup-controller.html")))
         	.andExpect(jsonPath("$.applications[0].name", containsString("Testular")))
         	.andExpect(status().isOk());

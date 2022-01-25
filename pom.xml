@@ -18,7 +18,7 @@
 	</parent>
 
 	<modules>
-		<module>libs/identity</module>
+		 <module>libs/identity</module>
 		<module>libs/bindings</module>
 		<module>libs/symphony-api-spring-boot-starter</module>
 		<module>libs/symphony-app-spring-boot-starter</module>
@@ -209,6 +209,9 @@
 								<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
 								<symphony-develop-bot3-identity>${symphony-develop-bot3-identity}</symphony-develop-bot3-identity>
 								<symphony-develop-bot4-identity>${symphony-develop-bot4-identity}</symphony-develop-bot4-identity>
+								<symphony-develop-bot5-inline-pem>${symphony-develop-bot5-inline-pem}</symphony-develop-bot5-inline-pem>
+								<symphony-develop-bot6-private-key>${symphony-develop-bot6-private-key}</symphony-develop-bot6-private-key>
+								<symphony-develop-bot7-certificate>${symphony-develop-bot7-certificate}</symphony-develop-bot7-certificate>
 								<proxy>${symphony-proxy}</proxy>
 							</systemPropertyVariables>
 						</configuration>

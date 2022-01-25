@@ -27,7 +27,7 @@ public class PageControllerTest extends AbstractTest {
         	.andDo(print())
         	.andExpect(content().string(containsString("<script type=\"text/javascript\" src=\"https://www.symphony.com/resources/api/v1.0/symphony-api.js\"")))
            	.andExpect(content().string(containsString("<script type=\"text/javascript\" src=\"http://localhost/symphony-app/starter-include.js\"></script>")))
-           	.andExpect(content().string(containsString("const id = \"someAppId\";")))
+           	.andExpect(content().string(containsString("const id = \"bob\";")))
             .andExpect(content().string(containsString("Testular Controller")))
     		.andExpect(status().isOk());
     }
@@ -40,7 +40,7 @@ public class PageControllerTest extends AbstractTest {
         	.contentType(MediaType.TEXT_HTML))
         	.andDo(print())
         	.andExpect(content().string(containsString("<script type=\"text/javascript\" src=\"https://www.symphony.com/resources/api/v1.0/symphony-api.js\"")))
-           	.andExpect(content().string(containsString("const id = \"someAppId\";")))
+           	.andExpect(content().string(containsString("const id = \"bob\";")))
            	.andExpect(content().string(containsString("const inServices =  [\"modules\",\"applications-nav\",\"ui\",\"share\",\"extended-user-info\"];")))
             .andExpect(content().string(containsString("My First Symphony App Page")))
     		.andExpect(status().isOk());
@@ -53,7 +53,7 @@ public class PageControllerTest extends AbstractTest {
         	get("/symphony-app/starter-include.js"))
         	.andDo(print())
         	.andExpect(content().string(containsString("\"http:\\/\\/localhost\\/symphony-app\\/starter-app-page.html\"")))
-           	.andExpect(content().string(containsString("const appId = \"someAppId\";")))
+           	.andExpect(content().string(containsString("const appId = \"bob\";")))
             .andExpect(content().string(containsString("const appName = \"Testular\";")))
     		.andExpect(status().isOk());
     }
