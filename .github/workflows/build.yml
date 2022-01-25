@@ -13,6 +13,9 @@ env:
   BOT3PUBLICKEY: ${{ secrets.BOT3PUBLICKEY }}
   BOT3P12PASSWORD: ${{ secrets.BOT3P12PASSWORD }}
   BOT4CERTCHAIN: ${{ secrets.BOT4CERTCHAIN }}
+  BOT5CERTIFICATE: ${{ secrets.BOT5CERTIFICATE }}
+  BOT6PRIVATEKEY: ${{ secrets.BOT6PRIVATEKEY }}
+  BOT7CERTIFICATE: ${{ secrets.BOT7CERTIFICATE }}
 
 on: [push, pull_request]
 
@@ -51,7 +54,7 @@ jobs:
       run: mvn verify --settings .github/workflows/settings.xml 
     - name: Build (not on master)
       if: github.ref != 'refs/heads/master'
-      run: mvn install 
+      run: mvn install --settings .github/workflows/settings.xml
     - name: Coverage (on master)
       if: github.ref == 'refs/heads/master'
       uses: codecov/codecov-action@v1

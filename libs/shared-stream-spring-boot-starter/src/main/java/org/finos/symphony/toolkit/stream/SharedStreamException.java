@@ -2,6 +2,8 @@ package org.finos.symphony.toolkit.stream;
 
 public class SharedStreamException extends RuntimeException {
 
+	private static final long serialVersionUID = 8791238818865993828L;
+
 	public SharedStreamException() {
 		super();
 	}

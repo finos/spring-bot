@@ -19,6 +19,7 @@ import com.symphony.api.model.ExtensionAppTokens;
 import com.symphony.api.model.PodCertificate;
 import com.symphony.api.pod.PodApi;
 
+@SuppressWarnings("deprecation")
 public abstract class AbstractPodTokenStrategy<X> implements PodTokenStrategy, SignatureVerifierProvider {
 
 	public static final Logger LOG = LoggerFactory.getLogger(PodTokenStrategy.class);
@@ -86,6 +87,7 @@ public abstract class AbstractPodTokenStrategy<X> implements PodTokenStrategy, S
 
 	protected abstract PodApi getPodApi(Map<String, Object> claims) throws Exception;
 
+	@SuppressWarnings("unchecked")
 	protected String getCompanyId(Map<String, Object> claims) {
 		if (claims.containsKey("user")) {
 			return ""+((Map<String, Object>) claims.get("user")).get("companyId");

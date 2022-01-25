@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class PublicKeySerializer extends StdSerializer<PublicKey> {
 
+	private static final long serialVersionUID = 361864405116507647L;
+
 	public PublicKeySerializer(Class<PublicKey> t) {
 		super(t);
 	}

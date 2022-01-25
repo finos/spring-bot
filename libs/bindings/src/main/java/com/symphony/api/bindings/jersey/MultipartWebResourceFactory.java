@@ -85,7 +85,8 @@ public final class MultipartWebResourceFactory implements InvocationHandler {
 
     private static final MultivaluedMap<String, Object> EMPTY_HEADERS = new MultivaluedHashMap<>();
     private static final Form EMPTY_FORM = new Form();
-    private static final List<Class> PARAM_ANNOTATION_CLASSES = Arrays.<Class>asList(PathParam.class, QueryParam.class,
+    @SuppressWarnings("rawtypes")
+	private static final List<Class> PARAM_ANNOTATION_CLASSES = Arrays.<Class>asList(PathParam.class, QueryParam.class,
             HeaderParam.class, CookieParam.class, MatrixParam.class, FormParam.class, Multipart.class);
 
     /**
@@ -143,7 +144,7 @@ public final class MultipartWebResourceFactory implements InvocationHandler {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
         if (args == null && method.getName().equals("toString")) {
             return toString();
@@ -369,7 +370,8 @@ public final class MultipartWebResourceFactory implements InvocationHandler {
         return result;
     }
 
-    private boolean hasAnyParamAnnotation(final Map<Class, Annotation> anns) {
+    @SuppressWarnings("rawtypes")
+	private boolean hasAnyParamAnnotation(final Map<Class, Annotation> anns) {
         for (final Class paramAnnotationClass : PARAM_ANNOTATION_CLASSES) {
             if (anns.containsKey(paramAnnotationClass)) {
                 return true;
@@ -378,7 +380,8 @@ public final class MultipartWebResourceFactory implements InvocationHandler {
         return false;
     }
 
-    private Object[] convert(final Collection value) {
+    @SuppressWarnings("rawtypes")
+	private Object[] convert(final Collection value) {
         return value.toArray();
     }
 

@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.api.id.SymphonyIdentity;
 
+@SuppressWarnings("deprecation")
 @EnableResourceServer
 @Configuration
 public class SymphonyAppResourceServerConfigurer implements ResourceServerConfigurer {

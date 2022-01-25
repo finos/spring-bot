@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 public class CertificateSerializer extends StdSerializer<X509Certificate> {
 
+	private static final long serialVersionUID = 8405575193245227509L;
+
 	public CertificateSerializer(Class<X509Certificate> t) {
 		super(t);
 	}

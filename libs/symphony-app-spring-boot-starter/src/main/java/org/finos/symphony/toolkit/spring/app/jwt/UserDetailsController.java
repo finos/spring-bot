@@ -26,6 +26,7 @@ import com.symphony.api.id.SymphonyIdentity;
  * 
  * @author Rob Moffat
  */
+@SuppressWarnings("deprecation")
 public class UserDetailsController extends AbstractJsonController {
 	
 	public static final String USER_DETAILS_PATH = "/userDetails";

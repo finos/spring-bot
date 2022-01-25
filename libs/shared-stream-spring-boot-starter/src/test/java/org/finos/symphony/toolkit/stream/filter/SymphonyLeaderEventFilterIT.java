@@ -15,7 +15,6 @@ import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
 import org.finos.symphony.toolkit.stream.log.LogMessage;
 import org.finos.symphony.toolkit.stream.log.LogMessageType;
 import org.finos.symphony.toolkit.stream.log.SymphonyRoomSharedLog;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

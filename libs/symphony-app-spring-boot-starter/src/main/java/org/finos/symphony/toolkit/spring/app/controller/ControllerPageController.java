@@ -26,6 +26,7 @@ public class ControllerPageController extends ThymeleafPageController {
 				Collections.emptyMap());
 	}
 
+	@SuppressWarnings("deprecation")
 	protected Map<String, Object> buildModel(HttpServletRequest request) throws Exception {
 		Map<String, Object> out = super.buildModel(request);
 		String qs = request.getQueryString();

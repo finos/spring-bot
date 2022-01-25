@@ -1,7 +1,5 @@
 package org.finos.symphony.toolkit.spring.api.trust;
 
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,15 +11,14 @@ import javax.net.ssl.X509TrustManager;
 import org.finos.symphony.toolkit.spring.api.TestApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.util.StreamUtils;
 
 import com.symphony.api.id.PemSymphonyIdentity;
+import com.symphony.api.id.testing.StreamHelp;
 
 @ExtendWith(SpringExtension.class)
 

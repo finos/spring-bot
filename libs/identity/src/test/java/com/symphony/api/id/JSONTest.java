@@ -7,6 +7,7 @@ import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.symphony.api.id.testing.StreamHelp;
 import com.symphony.api.id.testing.TestIdentityProvider;
 
 public class JSONTest {
