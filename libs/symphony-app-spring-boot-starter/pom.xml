@@ -76,4 +76,33 @@
 		</dependency>
 	</dependencies>
 
+ <build>
+    <plugins>
+	    <plugin>
+	      <groupId>com.google.code.maven-replacer-plugin</groupId>
+	      <artifactId>replacer</artifactId>
+	      <version>1.5.3</version>
+	      <executions>
+	        <execution>
+	          <phase>compile</phase>
+	          <goals>
+	            <goal>replace</goal>
+	          </goals>
+	        </execution>
+	      </executions>
+	      <configuration>
+	        <basedir>${basedir}</basedir>
+	        <includes>
+	          <include>noAppId.json</include>
+	        </includes>
+	        <replacements>
+	          <replacement>
+	            <token>%symphony-develop-bot8-no-app-id%</token>
+	            <value>${symphony-develop-bot8-no-app-id}</value>
+	          </replacement>
+	        </replacements>
+	      </configuration>
+	    </plugin>
+    </plugins>
+  </build>
 </project>
