@@ -64,8 +64,8 @@
 		<java.version>1.8</java.version>
 
 		<!-- this must match the version from the spring boot pom -->
-		<jackson-databind.version>2.12.5</jackson-databind.version>
-		<jackson.version>2.12.5</jackson.version>
+		<jackson-databind.version>2.13.0</jackson-databind.version>
+		<jackson.version>2.13.0</jackson.version>
 		<cxf.version>3.3.4</cxf.version>
 		<commons-logging.version>1.2</commons-logging.version>
 		<wiremock.version>2.25.1</wiremock.version>
@@ -77,6 +77,7 @@
 		<teams.version>4.14.0</teams.version>
 		<jsoup.version>1.14.3</jsoup.version>
 		<graalvm.version>21.2.0</graalvm.version>
+		<symphony-bdk.version>2.5.0</symphony-bdk.version>
 
 		<!-- this configures the build reporter -->
 		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
@@ -251,6 +252,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			
+            <dependency>
+                <groupId>org.finos.symphony.bdk</groupId>
+                <artifactId>symphony-bdk-bom</artifactId>
+                <version>${symphony-bdk.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
 		</dependencies>
 	</dependencyManagement>
