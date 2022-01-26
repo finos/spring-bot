@@ -30,7 +30,6 @@ import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
-import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplateProvider;
 import org.finos.springbot.workflow.response.templating.Markup;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +44,9 @@ import org.springframework.validation.Validator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.symphony.bdk.core.config.model.BdkBotConfig;
 import com.symphony.bdk.core.config.model.BdkConfig;
 import com.symphony.bdk.core.service.message.MessageService;
+import com.symphony.bdk.core.service.session.SessionService;
 import com.symphony.bdk.core.service.stream.StreamService;
 import com.symphony.bdk.core.service.user.UserService;
 import com.symphony.bdk.gen.api.RoomMembershipApi;
@@ -133,10 +132,10 @@ public class SymphonyWorkflowConfig {
 	@Bean 
 	@ConditionalOnMissingBean
 	public SymphonyConversations symphonyConversations(
-			BdkConfig config, 
 			UserService userService,
+			SessionService sessionService,
 			@Value("${bot.local-pod-lookup:true}") boolean localPodLookup) {
-		return new SymphonyConversationsImpl(streamsApi, userService, config.getBot(), localPodLookup);
+		return new SymphonyConversationsImpl(streamsApi, userService, sessionService, localPodLookup);
 	}
 	
 	@Bean
@@ -156,8 +155,8 @@ public class SymphonyWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public AddressingChecker symphonyDefaultAddressingChecker(BdkConfig botConfig, SymphonyConversations sc) {
-		SymphonyUser su = sc.loadUserByUsername(botConfig.getBot().getUsername());
+	public AddressingChecker symphonyDefaultAddressingChecker(SessionService ss, SymphonyConversations sc) {
+		SymphonyUser su = sc.loadUserById(ss.getSession().getId());
 		return new InRoomAddressingChecker(() -> su, true);
 	}
 	

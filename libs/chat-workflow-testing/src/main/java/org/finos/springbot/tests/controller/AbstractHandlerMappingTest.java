@@ -20,10 +20,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 
 @ExtendWith(SpringExtension.class)
+@TestPropertySource(
+		properties = {
+			"bdk.bot.username="+AbstractHandlerMappingTest.BOT_NAME	
+		})
 public abstract class AbstractHandlerMappingTest {
 	
 	public static final String BOT_NAME = "Dummy Bot";

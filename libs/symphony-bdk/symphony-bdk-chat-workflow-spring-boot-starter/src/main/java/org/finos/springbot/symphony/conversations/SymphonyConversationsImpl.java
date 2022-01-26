@@ -6,8 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.finos.springbot.symphony.SymphonyException;
 import org.finos.springbot.symphony.content.SymphonyAddressable;
@@ -20,16 +20,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.symphony.bdk.core.config.model.BdkBotConfig;
 import com.symphony.bdk.core.service.pagination.model.PaginationAttribute;
+import com.symphony.bdk.core.service.session.SessionService;
 import com.symphony.bdk.core.service.stream.StreamService;
 import com.symphony.bdk.core.service.user.UserService;
+import com.symphony.bdk.gen.api.model.MemberInfo;
 import com.symphony.bdk.gen.api.model.StreamAttributes;
 import com.symphony.bdk.gen.api.model.StreamFilter;
 import com.symphony.bdk.gen.api.model.StreamType;
 import com.symphony.bdk.gen.api.model.StreamType.TypeEnum;
 import com.symphony.bdk.gen.api.model.UserV2;
-import com.symphony.bdk.gen.api.model.V2MemberInfo;
 import com.symphony.bdk.gen.api.model.V2RoomSearchCriteria;
 import com.symphony.bdk.gen.api.model.V3RoomAttributes;
 import com.symphony.bdk.gen.api.model.V3RoomDetail;
@@ -45,22 +45,22 @@ public class SymphonyConversationsImpl implements SymphonyConversations, Initial
 	
 	private static final Logger LOG = LoggerFactory.getLogger(SymphonyConversationsImpl.class);
 
-	protected final BdkBotConfig botIdentity;
 	private List<User> defaultAdministrators = new ArrayList<User>();
 	private long botUserId;
 	private final UserService userService;
 	private final StreamService streamsApi;
+	private final SessionService sessionService;
 	private final boolean localPodLookup; 
 	
 	public SymphonyConversationsImpl(
 			StreamService streamsApi, 
 			UserService userService,
-			BdkBotConfig botIdentity,
+			SessionService sessionService,
 			boolean localPodLookup) {
-		this.botIdentity = botIdentity;
 		this.userService = userService;
 		this.streamsApi = streamsApi;
 		this.localPodLookup = localPodLookup;
+		this.sessionService = sessionService;
 	}
 	
 	
@@ -188,7 +188,7 @@ public class SymphonyConversationsImpl implements SymphonyConversations, Initial
 	
 	@Override
 	public SymphonyUser loadUserByEmail(String name) {
-		List<UserV2> users = userService.listUsersByEmails(Collections.singletonList(name));
+		List<UserV2> users = userService.listUsersByEmails(Collections.singletonList(name), localPodLookup, true);
 		if (users.size() == 1) {
 			UserV2 user = users.get(0);
 			return new SymphonyUser(user.getId(), user.getDisplayName(),user.getEmailAddress());
@@ -283,28 +283,30 @@ public class SymphonyConversationsImpl implements SymphonyConversations, Initial
 
 	@Override
 	public List<SymphonyUser> getChatMembers(SymphonyRoom r) {
-		if (r instanceof SymphonyRoom) {
-			Stream<V2MemberInfo> ml = streamsApi.listAllStreamMembers(r.getKey());
-			return ml
-				.map(e -> new SymphonyUser(e.getUser().getUserId(), e.getUser().getDisplayName(), e.getUser().getEmail()))
-				.collect(Collectors.toList());	
-		} else {
-			throw new SymphonyException("Not a room: "+r);
-		}
+		return getUsersInternal(r, f -> true);
 	}
 
 	@Override
 	public List<SymphonyUser> getChatAdmins(SymphonyRoom r) {
+		return getUsersInternal(r, f -> f.getOwner());
+	}
+
+
+	protected List<SymphonyUser> getUsersInternal(SymphonyRoom r, Predicate<MemberInfo> filter) {
 		if (r instanceof SymphonyRoom) {
-			Stream<V2MemberInfo> ml = streamsApi.listAllStreamMembers(r.getKey());
-			return ml
-				.filter(e -> e.getIsOwner())
-				.map(e -> new SymphonyUser(e.getUser().getUserId(), e.getUser().getDisplayName(), e.getUser().getEmail()))
+			List<MemberInfo> ml = streamsApi.listRoomMembers(r.getKey());
+			List<Long> ids = ml.stream()
+					.filter(filter)
+					.map(e -> e.getId()).collect(Collectors.toList());
+			
+			List<UserV2> users = userService.listUsersByIds(ids, localPodLookup, true);
+
+			return users.stream()
+				.map(e -> new SymphonyUser(e.getId(), e.getDisplayName(), e.getEmailAddress()))
 				.collect(Collectors.toList());	
 		} else {
 			throw new SymphonyException("Not a room: "+r);
 		}
-
 	}
 
 
@@ -319,7 +321,7 @@ public class SymphonyConversationsImpl implements SymphonyConversations, Initial
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		botUserId = Long.parseLong(loadUserByUsername(botIdentity.getUsername()).getUserId());	
+		botUserId = sessionService.getSession().getId();	
 	}
 
 

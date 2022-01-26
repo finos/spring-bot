@@ -15,6 +15,7 @@ DEV TASKS
 Teams Bean clash
 Symphony: don't bother to add the tags to a message where there is no form data.
 symphony- submit bug report for messagebuilder
+teams - request gets sent multiple times
 
 RELEASE PROCESS
 

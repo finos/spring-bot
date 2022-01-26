@@ -2,10 +2,7 @@ package org.finos.springbot.symphony.controller;
 
 import static org.mockito.Mockito.atMost;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.nio.charset.Charset;
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +25,6 @@ import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.java.mapping.ChatMapping;
 import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
 import org.finos.springbot.workflow.response.WorkResponse;
-import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -43,13 +39,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.symphony.bdk.core.service.message.MessageService;
-import com.symphony.bdk.gen.api.MessagesApi;
+import com.symphony.bdk.core.service.message.model.Attachment;
 import com.symphony.bdk.gen.api.model.StreamType;
-import com.symphony.bdk.gen.api.model.V4Event;
+import com.symphony.bdk.gen.api.model.V4Initiator;
 import com.symphony.bdk.gen.api.model.V4Message;
 import com.symphony.bdk.gen.api.model.V4MessageSent;
-import com.symphony.bdk.gen.api.model.V4Payload;
 import com.symphony.bdk.gen.api.model.V4Stream;
+import com.symphony.bdk.gen.api.model.V4SymphonyElementsAction;
 import com.symphony.bdk.gen.api.model.V4User;
 import com.symphony.bdk.spring.events.RealTimeEvent;
 
@@ -102,11 +98,10 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 		jsonObjects.put("2", new HashTag("SomeTopic"));
 		String dataStr = ejc.writeValue(jsonObjects);
 		
-		V4Event event = new V4Event()
-			.payload(new V4Payload()
-				.messageSent(new V4MessageSent()
+		V4MessageSent v4ms = new V4MessageSent()
 						.message(new V4Message()
 							.user(new V4User()
+								.username(ROB_NAME)
 								.displayName(ROB_NAME)
 								.email(ROB_EXAMPLE_EMAIL)
 								.userId(ROB_EXAMPLE_ID))
@@ -114,13 +109,13 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 								.streamType(StreamType.TypeEnum.ROOM.getValue())
 								.streamId(CHAT_ID))
 							.message("<messageML>/"+s+"</messageML>")
-							.data(dataStr))));
+							.data(dataStr));
 		
 		msg = ArgumentCaptor.forClass(com.symphony.bdk.core.service.message.model.Message.class);	
 		
-		RealTimeEvent<V4Event> rte = new RealTimeEvent<>(null, event);
+		RealTimeEvent<V4MessageSent> rte = new RealTimeEvent<>(null, v4ms);
 		
-		mc.accept(rte);
+		mc.onApplicationEvent(rte);
 		
 		Mockito.verify(messagesApi, atMost(1)).send(Mockito.matches(CHAT_ID), msg.capture());
 	}
@@ -132,7 +127,11 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected String getMessageContent() {
-		return msg.getValue().getContent()
+		return msg.getValue().getContent();
+	}
+	
+	protected List<Attachment> getAttachments() {
+		return msg.getValue().getAttachments();
 	}
 
 	@Override
@@ -144,34 +143,27 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 		
 		values.put("action", s);
 		
-		V4Event event = new V4Event()
-			.initiator(new V4Initiator().user(new V4User()
+		V4Initiator initiator = new V4Initiator().user(new V4User()
 					.displayName(ROB_NAME)
 					.email(ROB_EXAMPLE_EMAIL)
-					.userId(ROB_EXAMPLE_ID)))
-			.payload(new V4Payload()
-				.symphonyElementsAction(new V4SymphonyElementsAction()
+					.userId(ROB_EXAMPLE_ID));
+		
+		V4SymphonyElementsAction action = new V4SymphonyElementsAction()
 						.formValues(values)
 						.formId((String) values.remove("form"))
 						.stream(new V4Stream()
 								.streamType(StreamType.TypeEnum.ROOM.getValue())
-								.streamId(CHAT_ID))));
+								.streamId(CHAT_ID));
 		
-		msg = ArgumentCaptor.forClass(String.class);
-		data = ArgumentCaptor.forClass(String.class);
-		att = ArgumentCaptor.forClass(Object.class);		
+		RealTimeEvent<V4SymphonyElementsAction> event = new RealTimeEvent<V4SymphonyElementsAction>(initiator, action);
+		
+		msg = ArgumentCaptor.forClass(com.symphony.bdk.core.service.message.model.Message.class);	
 		
 		eh.accept(event);
 		
-		Mockito.verify(messagesApi, atMost(1)).v4StreamSidMessageCreatePost(
-				Mockito.nullable(String.class), 
+		Mockito.verify(messagesApi, atMost(1)).send(
 				Mockito.matches(CHAT_ID),
-				msg.capture(),
-				data.capture(),
-				Mockito.isNull(), 
-				att.capture(), 
-				Mockito.isNull(), 
-				Mockito.isNull());
+				msg.capture());
 		
 	}
 
@@ -191,9 +183,7 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 		Assertions.assertTrue(data.contains(" {\n"
 				+ "      \"type\" : \"org.finos.springbot.workflow.help.commandDescription\",\n"
 				+ "      \"version\" : \"1.0\",\n"
-				+ "      \"description\" : \"Display this help page\",\n"
-				+ "      \"examples\" : [ \"help\" ]\n"
-				+ "    }"));
+				+ "      \"description\" : \"Display this help page\",\n"));
 		
 		Assertions.assertTrue(msg.contains("Description"));
 	}
@@ -202,12 +192,10 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 	@Test
 	public void testAttachmentResponse() throws Exception {
 		execute("attachment");
-		FileDataBodyPart fdbp = (FileDataBodyPart) att.getValue();
-		String contents = StreamUtils.copyToString(
-			new FileInputStream((File) fdbp.getEntity()), 
-			Charset.defaultCharset());
-		
-
+		List<Attachment> attachments = getAttachments();
+		Assertions.assertEquals(1, attachments.size());
+		Attachment first = attachments.get(0);
+		String contents = StreamUtils.copyToString(first.getContent(), StandardCharsets.UTF_8);
 		Assertions.assertEquals("payload", contents);
 	}
 	

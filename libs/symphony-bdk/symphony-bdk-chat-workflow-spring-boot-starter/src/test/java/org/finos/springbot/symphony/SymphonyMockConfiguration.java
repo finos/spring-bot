@@ -1,47 +1,52 @@
 package org.finos.springbot.symphony;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import org.finos.springbot.symphony.response.handlers.AttachmentHandler;
+import java.util.Arrays;
+import java.util.Collections;
+
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
 import org.finos.springbot.tests.controller.OurController;
-import org.finos.springbot.workflow.response.AttachmentResponse;
-import org.finos.symphony.toolkit.spring.api.SymphonyApiConfig;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.MockReset;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import com.symphony.api.agent.DatafeedApi;
-import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.model.MemberInfo;
-import com.symphony.api.model.MembershipList;
-import com.symphony.api.model.RoomAttributes;
-import com.symphony.api.model.RoomDetail;
-import com.symphony.api.model.Stream;
-import com.symphony.api.model.UserV2;
-import com.symphony.api.model.V3RoomAttributes;
-import com.symphony.api.model.V3RoomDetail;
-import com.symphony.api.pod.RoomMembershipApi;
-import com.symphony.api.pod.StreamsApi;
-import com.symphony.api.pod.UsersApi;
+import com.symphony.bdk.core.auth.AuthSession;
+import com.symphony.bdk.core.service.datafeed.DatafeedLoop;
+import com.symphony.bdk.core.service.session.SessionService;
 import com.symphony.bdk.core.service.stream.StreamService;
+import com.symphony.bdk.core.service.user.UserService;
+import com.symphony.bdk.gen.api.model.MemberInfo;
+import com.symphony.bdk.gen.api.model.Stream;
+import com.symphony.bdk.gen.api.model.UserSystemInfo;
+import com.symphony.bdk.gen.api.model.UserV2;
+import com.symphony.bdk.gen.api.model.V2UserAttributes;
+import com.symphony.bdk.gen.api.model.V2UserDetail;
+import com.symphony.bdk.gen.api.model.V3RoomAttributes;
+import com.symphony.bdk.gen.api.model.V3RoomDetail;
 
-@Configuration
-public class SymphonyMockConfiguration {
+
+@TestConfiguration
+public class SymphonyMockConfiguration implements InitializingBean {
+
+	@MockBean(reset = MockReset.NONE)
+	StreamService streamsApi;
+	
+	@MockBean(reset = MockReset.NONE)
+	UserService usersApi;
+	
+	@MockBean(reset = MockReset.NONE)
+	AuthSession authSession;
 	
 	@MockBean
-	DatafeedApi datafeedApi;
+	DatafeedLoop datafeedLoop;
 	
-	@Bean(name=SymphonyApiConfig.SINGLE_BOT_IDENTITY_BEAN)
-	public SymphonyIdentity symphonyIdentity() {
-		SymphonyIdentity botIdentity = Mockito.mock(SymphonyIdentity.class);
-		Mockito.when(botIdentity.getEmail()).then((i) -> AbstractHandlerMappingTest.BOT_EMAIL);
-		return botIdentity;
-	}
+	@MockBean
+	SessionService sessionApi;
 	
 	@Bean
 	public LocalValidatorFactoryBean localValidatorFactoryBean() {
@@ -49,51 +54,75 @@ public class SymphonyMockConfiguration {
 	}
 	
 	
+	
 	@Bean
 	public OurController ourController() {
 		return new OurController();
 	}
 	
-	@Bean
-	public StreamService streamsApi() {
-		StreamService streamsApi = Mockito.mock(StreamService.class);
-		Mockito.when(streamsApi.v1ImCreatePost(Mockito.anyList(), Mockito.isNull()))
+	public void mockSessionApi() {
+		Mockito.when(sessionApi.getSession()).thenReturn(
+			new UserV2()
+				.emailAddress(AbstractHandlerMappingTest.BOT_EMAIL)
+				.id(AbstractHandlerMappingTest.BOT_ID));
+	}
+	
+	public void mockStreamsApi() {
+		Mockito.when(streamsApi.create(Mockito.anyList()))
 				.thenReturn(new Stream().id(AbstractHandlerMappingTest.CHAT_ID));
 		
-		Mockito.when(streamsApi.v3RoomIdInfoGet(Mockito.eq(AbstractHandlerMappingTest.CHAT_ID), Mockito.isNull()))
+		Mockito.when(streamsApi.getRoomInfo(Mockito.eq(AbstractHandlerMappingTest.CHAT_ID)))
 				.thenReturn(new V3RoomDetail()
 					.roomAttributes(new V3RoomAttributes().name(OurController.SOME_ROOM)));
 		
-		return streamsApi;
+		Mockito.when(streamsApi.listRoomMembers(Mockito.anyString()))
+			.thenReturn(Arrays.asList(
+				new MemberInfo().id(AbstractHandlerMappingTest.BOT_ID).owner(false),
+				new MemberInfo().id(AbstractHandlerMappingTest.ROB_EXAMPLE_ID).owner(true)));
+		
 	}
 	
-	@Bean
-	public UsersApi usersApi() {
-		UsersApi usersApi = Mockito.mock(UsersApi.class);
+	public void mockUsersApi() {		
+		UserV2 botUser = new UserV2()
+			.username(AbstractHandlerMappingTest.BOT_NAME)
+			.displayName(AbstractHandlerMappingTest.BOT_NAME)
+			.emailAddress(AbstractHandlerMappingTest.BOT_EMAIL)
+			.id(AbstractHandlerMappingTest.BOT_ID);
+
+		UserV2 robUser = new UserV2()
+				.username(AbstractHandlerMappingTest.ROB_NAME)
+				.displayName(AbstractHandlerMappingTest.ROB_NAME)
+				.emailAddress(AbstractHandlerMappingTest.ROB_EXAMPLE_EMAIL)
+				.id(AbstractHandlerMappingTest.ROB_EXAMPLE_ID);
 		
-		when(usersApi.v2UserGet(Mockito.isNull(), Mockito.isNull(), Mockito.eq(AbstractHandlerMappingTest.BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-			.thenReturn(new UserV2().emailAddress(AbstractHandlerMappingTest.BOT_EMAIL).id(AbstractHandlerMappingTest.BOT_ID));
+		when(usersApi.listUsersByEmails(Mockito.eq(Collections.singletonList(AbstractHandlerMappingTest.BOT_EMAIL)), Mockito.anyBoolean(), Mockito.anyBoolean()))
+			.thenReturn(Collections.singletonList(botUser));
 		
-		when(usersApi.v2UserGet(Mockito.isNull(), Mockito.isNull(), Mockito.eq(AbstractHandlerMappingTest.ROB_EXAMPLE_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-			.thenReturn(new UserV2().emailAddress(AbstractHandlerMappingTest.ROB_EXAMPLE_EMAIL).id(AbstractHandlerMappingTest.ROB_EXAMPLE_ID));
+		when(usersApi.listUsersByEmails(Mockito.eq(Collections.singletonList(AbstractHandlerMappingTest.ROB_EXAMPLE_EMAIL)), Mockito.anyBoolean(), Mockito.anyBoolean()))
+			.thenReturn(Collections.singletonList(robUser));
 		
-		when(usersApi.v2UserGet(Mockito.isNull(), Mockito.nullable(long.class), Mockito.eq(AbstractHandlerMappingTest.BOT_EMAIL), Mockito.isNull(), Mockito.anyBoolean()))
-			.thenReturn(new UserV2().emailAddress(AbstractHandlerMappingTest.BOT_EMAIL).id(111l));
+		when(usersApi.listUsersByIds(Mockito.eq(Collections.singletonList(AbstractHandlerMappingTest.BOT_ID)), Mockito.anyBoolean(), Mockito.anyBoolean()))
+			.thenReturn(Collections.singletonList(botUser));
 		
-		when(usersApi.v2UserGet(any(), any(), any(), any(), any()))
-			.then(a -> new UserV2().id(AbstractHandlerMappingTest.ROB_EXAMPLE_ID).displayName(AbstractHandlerMappingTest.ROB_NAME).emailAddress(AbstractHandlerMappingTest.ROB_EXAMPLE_EMAIL));
+		when(usersApi.listUsersByIds(Mockito.eq(Collections.singletonList(AbstractHandlerMappingTest.ROB_EXAMPLE_ID)), Mockito.anyBoolean(), Mockito.anyBoolean()))
+			.thenReturn(Collections.singletonList(robUser));
 		
-		return usersApi;
+		when(usersApi.getUserDetail(Mockito.anyLong()))
+			.thenReturn(new V2UserDetail()
+					.userSystemInfo(new UserSystemInfo().id(AbstractHandlerMappingTest.ROB_EXAMPLE_ID))
+					.userAttributes(new V2UserAttributes()
+							.displayName(AbstractHandlerMappingTest.ROB_NAME)
+							.emailAddress(AbstractHandlerMappingTest.ROB_EXAMPLE_EMAIL)));
+		
+		
 	}
 
-	@Bean
-	public RoomMembershipApi roomMembershipApi() throws Exception {
-		RoomMembershipApi rmApi = Mockito.mock(RoomMembershipApi.class);
-		MembershipList out = new MembershipList();
-		out.add(new MemberInfo().id(AbstractHandlerMappingTest.BOT_ID).owner(false));
-		out.add(new MemberInfo().id(AbstractHandlerMappingTest.ROB_EXAMPLE_ID).owner(true));
-		Mockito.when(rmApi.v2RoomIdMembershipListGet(Mockito.anyString(), Mockito.isNull())).thenReturn(out);
-		return rmApi;
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		mockStreamsApi();
+		mockUsersApi();
+		mockSessionApi();
 	}
-	
+
 }
