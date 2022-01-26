@@ -18,10 +18,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.symphony.api.agent.MessagesApi;
-import com.symphony.api.model.MessageSearchQuery;
-import com.symphony.api.model.V4Message;
-import com.symphony.api.model.V4MessageList;
+import com.symphony.bdk.core.service.message.MessageService;
+import com.symphony.bdk.core.service.pagination.model.PaginationAttribute;
+import com.symphony.bdk.gen.api.model.MessageSearchQuery;
+import com.symphony.bdk.gen.api.model.V4Message;
 
 @SpringBootTest(classes = { 
 	SymphonyMockConfiguration.class, 
@@ -37,19 +37,13 @@ public class HistoryTest {
 	EntityJsonConverter ejc;
 	
 	@MockBean
-	MessagesApi messagesApi;
+	MessageService messagesApi;
 
 	@Test
 	public void testGetLast() {
 		TestObjects to = new TestObjects();
-		Mockito.when(messagesApi.v1MessageSearchPost(Mockito.any(), 
-			Mockito.isNull(), Mockito.isNull(), Mockito.anyInt(), 
-			Mockito.anyInt(), Mockito.any(), Mockito.any())).thenAnswer(a -> {
-				V4MessageList out = new V4MessageList();
-				out.addAll(Arrays.asList(makeMessage(to)));
-					
-				return out;
-			});
+		Mockito.when(messagesApi.searchMessages(Mockito.any(), Mockito.any())) 
+			.thenAnswer(a -> Arrays.asList(makeMessage(to)));
 		
 		TestObjects out = mh.getLastFromHistory(TestObjects.class, new SymphonyRoom("someroom", "abc123"))
 			.orElseThrow(() -> new RuntimeException());
@@ -65,14 +59,8 @@ public class HistoryTest {
 		TestObjects two = new TestObjects();
 		TestObjects three = new TestObjects();
 
-		Mockito.when(messagesApi.v1MessageSearchPost(Mockito.any(), 
-			Mockito.isNull(), Mockito.isNull(), Mockito.anyInt(), 
-			Mockito.anyInt(), Mockito.any(), Mockito.any())).thenAnswer(a -> {
-				V4MessageList out = new V4MessageList();
-				out.addAll(Arrays.asList(makeMessage(one), makeMessage(two), makeMessage(three)));
-					
-				return out;
-			});
+		Mockito.when(messagesApi.searchMessages(Mockito.any(), Mockito.any())) 
+			.thenAnswer(a -> Arrays.asList(makeMessage(one), makeMessage(two), makeMessage(three)));
 		
 		
 		List<TestObjects> out = mh.getFromHistory(
@@ -85,17 +73,12 @@ public class HistoryTest {
 		Assertions.assertEquals(two, out.get(1));
 		Assertions.assertEquals(three, out.get(2));
 		
-		Mockito.verify(messagesApi).v1MessageSearchPost(
+		Mockito.verify(messagesApi).searchMessages(
 			Mockito.argThat(e -> {
 				MessageSearchQuery msq = (MessageSearchQuery) e;
 				return msq.getHashtag().equals(TestObjects.class.getCanonicalName().replace(".", "-").toLowerCase());
 			}),
-			Mockito.isNull(),
-			Mockito.isNull(),
-			Mockito.eq(0), 
-			Mockito.eq(50), 
-			Mockito.isNull(),
-			Mockito.isNull());
+			Mockito.isA(PaginationAttribute.class));
 		
 	}
 

@@ -47,21 +47,6 @@
 			<scope>test</scope>
 		</dependency>
 
-
-
-
 	</dependencies>
-	
-	<dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.finos.symphony.bdk</groupId>
-                <artifactId>symphony-bdk-bom</artifactId>
-                <version>2.5.0</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
 </project>
