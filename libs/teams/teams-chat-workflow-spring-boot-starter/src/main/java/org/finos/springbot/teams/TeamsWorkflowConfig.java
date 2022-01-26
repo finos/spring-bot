@@ -24,6 +24,7 @@ import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplater;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafConverterConfig;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplater;
+import org.finos.springbot.teams.templating.thymeleaf.ThymleafEngineConfig;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
@@ -63,10 +64,13 @@ import com.microsoft.bot.schema.ChannelAccount;
 @Import({
 	ChatWorkflowConfig.class, 
 	TeamsContentConfig.class,
+	ThymleafEngineConfig.class,
 	AdaptiveCardConverterConfig.class,
 	ThymeleafConverterConfig.class,
 	TeamsConversationsConfig.class
 })
+
+
 @Profile("teams")
 public class TeamsWorkflowConfig {
 		
