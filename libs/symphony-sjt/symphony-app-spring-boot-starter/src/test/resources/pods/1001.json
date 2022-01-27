@@ -1,8 +1,0 @@
-{
-	"appId" : "obo-example",
-	"companyId" : "1001",
-	"eventType" : "appEnabled",
-	"payload" : {
-		"baseUrl" : "http://localhost:8000"
-	}
-}
