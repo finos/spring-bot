@@ -1,12 +1,12 @@
 remote_theme: robmoffat/bot-jekyll-theme
 title: Spring Bot
 name: Spring Bot
-subtitle: Platform agnostic, annotation-driven bot creation framework.
-description: Platform agnostic, annotation-driven bot creation framework.
+subtitle: Annotation-driven bot creation framework for Microsoft Teams and Symphony
+description: Annotation-driven bot creation framework for Microsoft Teams and Symphony
 email: rob@kite9.com
-baseurl: "/symphony-java-toolkit" # the subpath of your site, e.g. /blog
+baseurl: "/spring-bot" # the subpath of your site, e.g. /blog
 include: ['_pages']
-url: https://finos.github.io/symphony-java-toolkit
+url: https://finos.github.io/spring-bot
 author: Finos
 
 plugins:
