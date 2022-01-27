@@ -16,6 +16,7 @@ env:
   BOT5CERTIFICATE: ${{ secrets.BOT5CERTIFICATE }}
   BOT6PRIVATEKEY: ${{ secrets.BOT6PRIVATEKEY }}
   BOT7CERTIFICATE: ${{ secrets.BOT7CERTIFICATE }}
+  BOT8PRIVATEKEY: ${{ secrets.BOT8PRIVATEKEY }}
 
 on: [push, pull_request]
 
