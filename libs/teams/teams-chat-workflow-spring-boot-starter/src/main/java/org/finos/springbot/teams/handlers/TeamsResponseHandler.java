@@ -132,18 +132,20 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		out.setTextFormat(TextFormatTypes.XML);
 		out.setText(xml);
 		
-		teamsConversations.handleActivity(out, address).handle((rr, e) -> {
-			if (e != null) {
-				LOG.error(e.getMessage());
-				LOG.error("message:\n"+xml);
-				initErrorHandler();
-				eh.handleError(e);	
-			} else {
-				performStorage(address, data);
-			}
-			
-			return null;
-		});
+		teamsConversations
+			.handleActivity(out, address)
+			.handle((rr, e) -> {
+					if (e != null) {
+						LOG.error(e.getMessage());
+						LOG.error("message:\n"+xml);
+						initErrorHandler();
+						eh.handleError(e);	
+					} else {
+						performStorage(address, data);
+					}
+					
+					return null;
+				});
 		
 	}
 

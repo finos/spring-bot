@@ -1,7 +1,6 @@
 package org.finos.symphony.toolkit.tools.reminders;
 
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,7 +21,8 @@ import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.OrderedContent;
 import org.finos.springbot.workflow.content.User;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
@@ -48,7 +48,10 @@ public class TimeFinderIT {
 	ReminderProperties reminderProperties;
 
 	@Mock
-	History history;
+	AllHistory history;
+	
+	@Mock
+	AllConversations allConversations;
 
 	@Mock
 	ErrorHandler eh;

@@ -1,5 +1,6 @@
 package org.finos.springbot.teams.conversations;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,7 @@ import org.springframework.test.context.TestPropertySource;
 	"teams.bot.MicrosoftAppPassword=${microsoft-app-password}",
 	"teams.app.tennantId=${microsoft-tennant-id}"
 })
+@Disabled("Not sure if we will have integration tests for this?  ")
 public class TeamsConversationsIT {
 
 	
