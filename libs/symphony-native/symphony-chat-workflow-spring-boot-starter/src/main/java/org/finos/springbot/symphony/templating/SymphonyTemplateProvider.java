@@ -12,17 +12,18 @@ import org.finos.springbot.workflow.templating.Mode;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StreamUtils;
 
-public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<String, WorkResponse> {
+public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<String, String, WorkResponse> {
 
 	private final FreemarkerWorkTemplater formConverter;
 	
 	public SymphonyTemplateProvider(
 			String templatePrefix, 
 			String templateSuffix, 
+			String defaultTemplateName,
 			ResourceLoader rl, 
 			FreemarkerWorkTemplater formConverter
 		) {
-		super(templatePrefix, templateSuffix, rl);
+		super(templatePrefix, templateSuffix, defaultTemplateName, rl);
 		this.formConverter = formConverter;
 	}
 
@@ -40,7 +41,7 @@ public class SymphonyTemplateProvider extends AbstractResourceTemplateProvider<S
 			throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
 		}
 		
-		String defaultTemplate = getTemplateForName("default");
+		String defaultTemplate = getTemplateForName(getDefaultTemplateName());
 		
 		String out = defaultTemplate.replace("<!-- Message Content -->", insert);
 		

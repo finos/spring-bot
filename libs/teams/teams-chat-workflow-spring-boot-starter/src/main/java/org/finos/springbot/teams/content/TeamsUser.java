@@ -6,6 +6,8 @@ import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.content.User;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 @Work(index = false)
 public final class TeamsUser implements User, TeamsMention, TeamsAddressable {
 	

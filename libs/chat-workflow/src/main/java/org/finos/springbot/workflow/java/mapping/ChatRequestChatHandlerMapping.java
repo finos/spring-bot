@@ -9,38 +9,39 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.help.HelpPage;
 import org.finos.springbot.workflow.java.converters.ResponseConverters;
 import org.finos.springbot.workflow.java.mapping.WildcardContent.Arity;
 import org.finos.springbot.workflow.java.resolvers.WorkflowResolversFactory;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
+
 public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandlerMapping<ChatRequest> {
 
 	private WorkflowResolversFactory wrf;
 	private ResponseConverters converters;
-	private AllConversations conversations;
 	
 	public ChatRequestChatHandlerMapping(WorkflowResolversFactory wrf, ResponseConverters converters, AllConversations conversations) {
-		super();
+		super(conversations);
 		this.wrf = wrf;
 		this.converters = converters;
-		this.conversations = conversations;
 	}
 
 	@Override
@@ -60,13 +61,11 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 
 		return out;
 	}
-	
+
 	@Override
 	public List<ChatMapping<ChatRequest>> getAllHandlers(Addressable a, User u) {
 		mappingRegistry.acquireReadLock();
-
 		List<ChatMapping<ChatRequest>> out = new ArrayList<>(mappingRegistry.getRegistrations().values());
-		
 		mappingRegistry.releaseReadLock();
 		out = out.stream().filter(r -> canBePerformed(a, u, r.getMapping())).collect(Collectors.toList());
 		return out;
@@ -114,7 +113,6 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 					public String toString() {
 						return "Word [" + trimmedWord + "]";
 					}
-
 				};
 			}
 		}).collect(Collectors.toList());
@@ -127,7 +125,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 		return Arrays.stream(params).filter(m -> m.getParameterAnnotation(ChatVariable.class) != null).map(m -> {
 			ChatVariable cv = m.getParameterAnnotation(ChatVariable.class);
 			Type t = m.getGenericParameterType();
-			
+
 			if ((t instanceof Class) && (Content.class.isAssignableFrom((Class<?>) t))) {
 				return new WildcardContent(cv, getContentClassFromType(t), Arity.ONE);
 			} else if (t.getTypeName().startsWith(Optional.class.getName())) {
@@ -136,7 +134,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			} else if ((t.getTypeName().startsWith(List.class.getName())) ||
 					(t.getTypeName().startsWith(Collection.class.getName()))) {
 				ParameterizedType pt = (ParameterizedType) t;
-				return new WildcardContent(cv, getContentClassFromType(pt.getActualTypeArguments()[0]), Arity.LIST);				
+				return new WildcardContent(cv, getContentClassFromType(pt.getActualTypeArguments()[0]), Arity.LIST);
 			}
 			
 			throw new UnsupportedOperationException("Can't set up wildcard for type: "+t.getTypeName()+" on "+mapping);
@@ -149,83 +147,82 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 		if ((t instanceof Class) && (Content.class.isAssignableFrom((Class<?>) t))) {
 			return (Class<? extends Content>) t;
 		} else {
-			throw new UnsupportedOperationException("ChatVariables can only be used for Content subtypes: "+t.getTypeName());
+			throw new UnsupportedOperationException(
+					"ChatVariables can only be used for Content subtypes: " + t.getTypeName());
 		}
 	}
 	
 	private boolean canBePerformed(Addressable a, User u, ChatRequest cb) {
-		if ((a instanceof Chat) && (cb.excludeRooms().length > 0)) {
-			if (roomMatched(cb.excludeRooms(), (Chat) a)) {
-				return false;
-			}
-		}
-		
-		if ((a instanceof Chat) && ((cb.rooms().length > 0))) {
-			if (!roomMatched(cb.rooms(), (Chat) a)) {
-				return false;
-			}
-		}
-		
-		if (cb.admin() && (a instanceof Chat)) {
-			List<User> chatAdmins = conversations.getChatAdmins((Chat) a);
-			return chatAdmins.contains(u);
-		} else {
-			return true;
-		}
+		return canBePerformed(a, u, cb.excludeRooms(), cb.rooms(), cb.admin());
 	}
-
-	@Override
-	protected MappingRegistration<ChatRequest> createMappingRegistration(ChatRequest mapping, ChatHandlerMethod handlerMethod) {
 	
+	@Override
+	protected MappingRegistration<ChatRequest> createMappingRegistration(ChatRequest mapping,
+			ChatHandlerMethod handlerMethod) {
+
 		List<WildcardContent> wildcards = createWildcardContent(mapping, handlerMethod);
-		List<MessageMatcher> matchers = createMessageMatchers(mapping, wildcards); 
-		
+		List<MessageMatcher> matchers = createMessageMatchers(mapping, wildcards);
+
 		return new MappingRegistration<ChatRequest>(mapping, handlerMethod) {
-			
+
 			@Override
 			public ChatHandlerExecutor getExecutor(Action a) {
-				
+
 				if (a instanceof SimpleMessageAction) {
-					ChatHandlerExecutor out = matchesSimpleMessageAction((SimpleMessageAction)a);
-					
-					if (out != null) {
-						if (!canBePerformedHere((SimpleMessageAction) a)) {
-							return null;
-						}	
+
+					if (!canBePerformedHere((SimpleMessageAction) a)) {
+						return null;
 					}
-					
-					return out;
+
+					return matchesSimpleMessageAction((SimpleMessageAction) a);
 				}
-				
+
+				if (a instanceof FormAction) {
+
+					if (Objects.nonNull(((FormAction)a).getData().get("form")) && ((FormAction) a).getData().get("form").getClass() != HelpPage.class) {
+						return null;
+					}
+
+					if (!canBePerformedHere((FormAction) a)) {
+						return null;
+					}
+
+					return matchesFormAction((FormAction) a);
+				}
+
 				return null;
 			}
-			
-			private boolean canBePerformedHere(SimpleMessageAction a) {
+
+			private boolean canBePerformedHere(Action a) {
 				ChatRequest cb = getMapping();
-				
+
 				return canBePerformed(a.getAddressable(), a.getUser(), cb);
 			}
-		
+
 			private ChatHandlerExecutor matchesSimpleMessageAction(SimpleMessageAction a) {
 				return pathMatches(a.getMessage(), a);
+			}
+
+			private ChatHandlerExecutor matchesFormAction(FormAction a) {
+				return pathMatches(Message.of(Word.of(a.getAction())), a);
 			}
 
 			private ChatHandlerExecutor pathMatches(Message words, Action a) {
 				MappingRegistration<?> me = this;
 				ChatHandlerExecutor bestMatch = null;
-				
+
 				for (MessageMatcher messageMatcher : matchers) {
 					Map<ChatVariable, Object> map = new HashMap<>();
-					
+
 					if (messageMatcher.consume(words, map)) {
 						if ((bestMatch == null) || (bestMatch.getReplacements().size() < map.size())) {
 							bestMatch = new AbstractHandlerExecutor(wrf, converters) {
-	
+
 								@Override
 								public Map<ChatVariable, Object> getReplacements() {
 									return map;
 								}
-	
+
 								@Override
 								public Action action() {
 									return a;
@@ -235,13 +232,10 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 								public ChatMapping<?> getOriginatingMapping() {
 									return me;
 								}
-	
 							};
 						}
 					}
-					
 				}
-					
 				return bestMatch;
 			}
 
@@ -251,5 +245,4 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 			}
 		};
 	}
-
 }

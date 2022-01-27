@@ -11,7 +11,7 @@ import org.finos.springbot.workflow.content.User;
  * @author rupnsur
  *
  */
-@Work
+@Work(index = false)
 @RequiresUserList
 public class NewItemDetails {
 	

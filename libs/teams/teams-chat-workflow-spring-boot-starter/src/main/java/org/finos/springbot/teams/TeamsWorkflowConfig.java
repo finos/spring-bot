@@ -2,25 +2,29 @@ package org.finos.springbot.teams;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Properties;
 
 import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.teams.content.TeamsContentConfig;
 import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
 import org.finos.springbot.teams.content.serialization.TeamsMarkupWriter;
 import org.finos.springbot.teams.conversations.TeamsConversations;
-import org.finos.springbot.teams.conversations.TeamsConversationsImpl;
+import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.handlers.TeamsTemplateProvider;
 import org.finos.springbot.teams.history.AzureBlobStorageTeamsHistory;
 import org.finos.springbot.teams.history.MemoryTeamsHistory;
+import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
-import org.finos.springbot.teams.templating.AdaptiveCardConverterConfig;
-import org.finos.springbot.teams.templating.AdaptiveCardTemplater;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterConfig;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplater;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafConverterConfig;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplater;
+import org.finos.springbot.teams.templating.thymeleaf.ThymleafEngineConfig;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
@@ -28,13 +32,11 @@ import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
-import org.finos.springbot.workflow.templating.Rendering;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -45,16 +47,11 @@ import org.springframework.validation.Validator;
 
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
-import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
-import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.spring.BotController;
-import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
 import com.microsoft.bot.schema.ChannelAccount;
 
 /**
@@ -67,10 +64,15 @@ import com.microsoft.bot.schema.ChannelAccount;
 @Import({
 	ChatWorkflowConfig.class, 
 	TeamsContentConfig.class,
+	ThymleafEngineConfig.class,
 	AdaptiveCardConverterConfig.class,
+	ThymeleafConverterConfig.class,
+	TeamsConversationsConfig.class
 })
+
+
 @Profile("teams")
-public class TeamsWorkflowConfig extends BotDependencyConfiguration {
+public class TeamsWorkflowConfig {
 		
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
 	
@@ -81,43 +83,59 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 	ResourceLoader resourceLoader;
 	
 	@Autowired
-	ApplicationContext ac;
-	
-	@Autowired
-	Rendering<JsonNode> r;
-	
-	@Autowired
 	EntityJsonConverter ejc;
 	
 	@Bean 
 	@ConditionalOnMissingBean
 	public EntityMarkupTemplateProvider teamsMarkupTemplater(
-			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
-			@Value("${teams.templates.suffix:.html}") String suffix,
+			@Value("${teams.templates.markup.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.markup.suffix:.html}") String suffix,
+			@Value("${teams.templates.markup.default:default}") String defaultName,
 			TeamsMarkupWriter converter) {
-		return new EntityMarkupTemplateProvider(prefix, suffix, resourceLoader, converter);
+		return new EntityMarkupTemplateProvider(prefix, suffix, defaultName, resourceLoader, converter);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsTemplateProvider teamsWorkTemplater(
-			@Value("${teams.templates.prefix:classpath:/templates/teams/}") String prefix,
-			@Value("${teams.templates.suffix:.json}") String suffix,
+	public AdaptiveCardTemplateProvider adaptiveCardWorkTemplater(
+			@Value("${teams.templates.card.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.card.suffix:.json}") String suffix,
+			@Value("${teams.templates.card.default:default}") String defaultName,
 			AdaptiveCardTemplater formConverter) throws IOException {
-		return new TeamsTemplateProvider(prefix, suffix, resourceLoader, formConverter);
+		return new AdaptiveCardTemplateProvider(prefix, suffix, defaultName, resourceLoader, formConverter);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ThymeleafTemplateProvider thymeleafWorkTemplater(
+			@Value("${teams.templates.thymeleaf.prefix:classpath:/templates/teams/}") String prefix,
+			@Value("${teams.templates.thymeleaf.suffix:.html}") String suffix,
+			@Value("${teams.templates.thymeleaf.default:default}") String defaultName,
+			ThymeleafTemplater formConverter) throws IOException {
+		return new ThymeleafTemplateProvider(prefix, suffix, defaultName, resourceLoader, formConverter);
 	}
 	
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsResponseHandler teamsResponseHandler(
 			EntityMarkupTemplateProvider markupTemplater,
-			TeamsTemplateProvider workTemplater,
-			TeamsHistory th) {
+			AdaptiveCardTemplateProvider formTemplater,
+			ThymeleafTemplateProvider displayTemplater,
+			TeamsHistory th,
+			TeamsConversations tc) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
 				markupTemplater,
-				workTemplater,
-				th);
+				formTemplater,
+				displayTemplater,
+				th,
+				tc);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public StorageIDResponseHandler teamsStorageIDResponseHandler(TeamsHistory th) {
+		return new StorageIDResponseHandler(th);
 	}
 	
 	
@@ -144,29 +162,13 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 		}
 	}
 
-	@Bean
-	public MicrosoftAppCredentials microsoftGraphCredentials(@Value("${teams.app.tennantId}") String tennantId) {
-		com.microsoft.bot.integration.Configuration conf = getConfiguration();
-		MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
-				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
-				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
-				tennantId,
-				"https://graph.microsoft.com/.default");
-		return mac;
-	}
-	
-	@Bean 
-	@ConditionalOnMissingBean
-	public TeamsConversations teamsConversations(BotFrameworkAdapter bfa) {
-		return new TeamsConversationsImpl();
-	}
 
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsFormConverter teamsFormConverter() {
+	public TeamsFormConverter teamsFormConverter(TeamsConversations tc) {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
-		om.registerModule(new TeamsFormDeserializerModule());
+		om.registerModule(new TeamsFormDeserializerModule(tc));
 		return new TeamsFormConverter(om);
 	}
 	
@@ -176,42 +178,16 @@ public class TeamsWorkflowConfig extends BotDependencyConfiguration {
 			List<ActionConsumer> messageConsumers, 
 			TeamsHTMLParser parser, 
 			FormValidationProcessor fvp, 
-			TeamsConversations tc) {
-		return new MessageActivityHandler(messageConsumers, tc, parser, teamsFormConverter(), fvp);
+			TeamsConversations tc,
+			TeamsHistory th,
+			TeamsFormConverter fc) {
+		return new MessageActivityHandler(messageConsumers, tc, th, parser, fc, fvp);
 	}
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    public BotFrameworkHttpAdapter getBotFrameworkHttpAdaptor() {
-        return new AdapterWithErrorHandler(getConfiguration());
-    }
     
-    @Override
-	public com.microsoft.bot.integration.Configuration getConfiguration() {
-    	return new com.microsoft.bot.integration.Configuration() {
-			
-			@Override
-			public String getProperty(String key) {
-				return ac.getEnvironment().getProperty("teams.bot."+key);
-			}
-			
-			@Override
-			public String[] getProperties(String key) {
-				throw new UnsupportedOperationException("Couldn't getProperties for "+key);
-			}
-			
-			@Override
-			public Properties getProperties() {
-				throw new UnsupportedOperationException();
-			}
-		};
-	}
-
 	@Bean
     @ConditionalOnMissingBean
-    public BotController teamsBotController(MessageActivityHandler mah) {
-    	return new BotController(getBotFrameworkHttpAdaptor(), mah);
+    public BotController teamsBotController(MessageActivityHandler mah, BotFrameworkHttpAdapter bfa) {
+    	return new BotController(bfa, mah);
     }
 	
 	@Bean

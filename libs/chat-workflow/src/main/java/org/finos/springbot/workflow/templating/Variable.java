@@ -19,5 +19,7 @@ public interface Variable {
 	public String getDataPath();
 	
 	public String getErrorPath();
+	
+	public int getDepth();
 
 }

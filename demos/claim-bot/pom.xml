@@ -17,13 +17,18 @@
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>example.symphony.demoworkflow.DemoWorkflowApp</spring-boot.run.main-class>
+		<spring-boot.run.main-class>example.springbot.ClaimWorkflowApp</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
-		<dependency>
+	    <dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+	    <dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
 			<version>9.0.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -35,6 +40,11 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -60,11 +70,6 @@
 		<dependency>
 			<groupId>org.glassfish.jersey.media</groupId>
 			<artifactId>jersey-media-multipart</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

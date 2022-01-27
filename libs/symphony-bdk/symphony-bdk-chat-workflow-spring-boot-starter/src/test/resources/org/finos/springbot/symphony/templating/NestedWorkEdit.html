@@ -1,0 +1,22 @@
+<messageML>
+<#-- starting template -->
+<form id="org.finos.springbot.tests.work.NestedWork"><table><tr><td style="width: 200px"><b>A:</b></td><td><table><tr><td style="width: 200px"><b>S:</b></td><td>
+   <span class="tempo-text-color--red">${entity.errors.contents['a.s']!''}</span>
+   <text-field 
+    name="a.s"
+    placeholder="">${(entity.form.a.s)!''}</text-field></td></tr></table></td></tr>
+<tr><td style="width: 200px"><b>B:</b></td><td><table><tr><td style="width: 200px"><b>S:</b></td><td>
+   <span class="tempo-text-color--red">${entity.errors.contents['b.s']!''}</span>
+   <text-field 
+    name="b.s"
+    placeholder="">${(entity.form.b.s)!''}</text-field></td></tr></table></td></tr></table>
+  <p><#list entity.buttons.contents as button>
+    <button 
+         name="${button.name}"
+         type="${button.buttonType?lower_case}">
+      ${button.text}
+    </button>
+  </#list></p>
+</form>
+<#-- ending template -->
+</messageML>
