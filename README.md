@@ -20,7 +20,7 @@ Chat Workflow provides interfaces, annotations and utilities for expressing bot 
 The Chat Workflow Symphony Starter implements this for symphony.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
 
  - [View the README](libs/chat-workflow/README.md)
- - [View the Documentation Site](https://finos.github.io/symphony-java-toolkit) 
+ - [View the Documentation Site](https://finos.github.io/spring-bot) 
  
 ## Chat Workflow Testing
 
