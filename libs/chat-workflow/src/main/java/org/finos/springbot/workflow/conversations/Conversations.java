@@ -28,5 +28,10 @@ public interface Conversations<C extends Chat, U extends User> {
 	public List<U> getChatMembers(C r);
 	
 	public List<U> getChatAdmins(C r);
+		
+	/**
+	 * Returns true if the user, u is the bot.
+	 */
+	public boolean isThisBot(User u);
 	
 }

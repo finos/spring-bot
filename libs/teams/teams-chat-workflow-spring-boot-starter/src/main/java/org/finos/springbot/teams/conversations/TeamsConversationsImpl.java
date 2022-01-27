@@ -254,4 +254,9 @@ public class TeamsConversationsImpl implements TeamsConversations {
 		cr.setChannelId("msteams");
 		return cr;
 	}
+
+	@Override
+	public boolean isThisBot(User u) {
+		return u.getKey().equals(botAccount.getId());
+	}
 }

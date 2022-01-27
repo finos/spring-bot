@@ -8,7 +8,6 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.symphony.content.HashTag;
-import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatResponseBody;
@@ -16,21 +15,17 @@ import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.conversations.AllConversations;
-import org.finos.springbot.workflow.conversations.Conversations;
 import org.finos.springbot.workflow.form.Button;
+import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.ErrorMap;
-import org.finos.springbot.workflow.form.Button.Type;
 import org.finos.springbot.workflow.history.AllHistory;
-import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-
-import com.symphony.api.id.SymphonyIdentity;
 
 @Controller
 public class PollController {
@@ -47,11 +42,8 @@ public class PollController {
 	@Autowired
 	TaskScheduler taskScheduler;
 	
-	@Autowired
-	SymphonyIdentity botIdentity;
-	
-	public boolean isMe(SymphonyUser u) {
-		return u.getEmailAddress().equals(botIdentity.getEmail());
+	public boolean isMe(User u) {
+		return rooms.isThisBot(u);
 	}
 	
 	
@@ -85,7 +77,7 @@ public class PollController {
 		p.setOptions(options);
 		p.setId(id);
 		
-		List<SymphonyUser> users = rooms.getChatMembers(r);
+		List<User> users = rooms.getChatMembers(r);
 		List<WorkResponse> out = users.stream()
 			.filter(u -> !isMe(u))
 			.map(u -> createResponseForUser(cf, options, id, buttons, u))
@@ -112,7 +104,7 @@ public class PollController {
 	}
 
 	@ChatButton(value = Poll.class, showWhen = WorkMode.VIEW, buttonText = "End Poll Now")
-	public Result end(Poll p, Chat r, History h) {
+	public Result end(Poll p, Chat r, AllHistory h) {
 		List<Answer> responses = h.getFromHistory(Answer.class, p.getId(), null, null);
 
 		List<Integer> counts = new ArrayList<>(p.getOptions().size());

@@ -9,6 +9,7 @@ import org.finos.springbot.tools.rssbot.alerter.FeedListCache;
 import org.finos.springbot.tools.rssbot.alerter.FeedListCacheImpl;
 import org.finos.springbot.tools.rssbot.load.FeedLoader;
 import org.finos.springbot.tools.rssbot.notify.Notifier;
+import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
@@ -17,10 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.symphony.api.agent.MessagesApi;
-import com.symphony.api.id.SymphonyIdentity;
-import com.symphony.api.pod.UsersApi;
 
 @Configuration
 @EnableConfigurationProperties(RSSProperties.class)
@@ -37,8 +34,8 @@ public class RSSConfig {
 			+ "<p>To configure RSS feeds in this room type: <b>/subscriptions</b></p></messageML>";
 	
 	@Bean
-	RoomWelcomeEventConsumer rwec(MessagesApi ma, UsersApi ua, SymphonyIdentity id) {
-		return new RoomWelcomeEventConsumer(ma, ua, id, WELCOME_MESSAGE, ejc);
+	RoomWelcomeEventConsumer rwec(ResponseHandlers rh) {
+		return new RoomWelcomeEventConsumer(rh, a -> Message.of(WELCOME_MESSAGE));
 	}
 	
 	@Bean

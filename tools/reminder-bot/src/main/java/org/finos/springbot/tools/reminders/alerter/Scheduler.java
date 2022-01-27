@@ -45,15 +45,6 @@ public class Scheduler {
 
     @Autowired
     ReminderProperties rp;
-//
-//    @Autowired
-//    StreamsApi streams;
-//
-//    @Autowired
-//    LeaderService leaderService;
-//
-//    @Autowired
-//    Participant self;
 
     @Scheduled(cron = "0 0/5 * * * MON-FRI")
     public void everyFiveMinutesWeekday() {

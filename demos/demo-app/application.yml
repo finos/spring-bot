@@ -1,7 +1,0 @@
-symphony:
-  app:
-    name: "Rob's Demo App"
-    base-url: https://localhost
-    controller-javascript: /demo-app-starter.js
-
-  
