@@ -32,10 +32,7 @@ public class DefaultIDLocationTest extends AbstractTest {
 	
 	@Test
 	public void testIdentityGeneration() throws Exception {
-		System.out.println(" id " +id.getCommonName());
 		Assertions.assertEquals("bob", id.getCommonName());
-		//Assertions.assertTrue(new File("./crazyAppId.json").exists());
-		//deleteFile();
 	}
 
 	private static void deleteFile() {
