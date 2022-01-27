@@ -65,7 +65,7 @@ public class TeamsThymeleafTemplatingTest extends AbstractTemplatingTest {
 	public void doSetup() {
 		om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
-		provider = new ThymeleafTemplateProvider(null, null, null, templater);
+		provider = new ThymeleafTemplateProvider(null, null, null, null, templater);
 	}
 
 	@Override

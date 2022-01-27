@@ -11,14 +11,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.finos.springbot.symphony.content.SymphonyRoom;
-import org.finos.springbot.symphony.stream.Participant;
-import org.finos.springbot.symphony.stream.cluster.LeaderService;
+import org.finos.springbot.testing.content.TestRoom;
 import org.finos.springbot.tools.reminders.Reminder;
 import org.finos.springbot.tools.reminders.ReminderList;
 import org.finos.springbot.tools.reminders.alerter.Scheduler;
-import org.finos.springbot.workflow.actions.Action;
-import org.finos.springbot.workflow.actions.FormAction;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
@@ -36,10 +32,6 @@ import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.symphony.api.model.StreamAttributes;
-import com.symphony.api.model.StreamList;
-import com.symphony.api.pod.StreamsApi;
-
 @ExtendWith(MockitoExtension.class)
 public class SchedulerTests {
 
@@ -48,9 +40,6 @@ public class SchedulerTests {
 
 	@Mock
 	ResponseHandlers responseHandlers;
-
-	@Mock
-	LeaderService leaderService;
 
 	@Mock
 	Conversations<Chat, User> rooms;
@@ -66,7 +55,6 @@ public class SchedulerTests {
 		when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
 				.thenReturn(reminderList());
 
-		when(leaderService.isLeader(Mockito.any())).thenReturn(true);
 		when(rooms.getAllAddressables()).thenReturn(createStreams());
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
@@ -82,14 +70,13 @@ public class SchedulerTests {
 
 	@Test
 	public void handleFeedNonLeaderTest() {
-		when(leaderService.isLeader(Mockito.any())).thenReturn(false);
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers, VerificationModeFactory.noInteractions()).accept(Mockito.any(WorkResponse.class));
 
 	}
 
 	private Set<Addressable> createStreams() {
-		return Collections.singleton(new SymphonyRoom("test", "1234"));
+		return Collections.singleton(new TestRoom("test", "1234"));
 	}
 
 	private Optional<ReminderList> reminderList() {

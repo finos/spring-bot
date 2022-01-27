@@ -19,7 +19,7 @@ import org.finos.springbot.workflow.content.User;
 
 @Work
 @Template(edit = "create-reminder", view="display-reminder")
-@RequiresUserListre
+@RequiresUserList
 public class Reminder {
 	
 	String description;

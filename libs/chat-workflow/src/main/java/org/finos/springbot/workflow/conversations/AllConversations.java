@@ -85,4 +85,12 @@ public class AllConversations implements Conversations<Chat, User>, ApplicationC
 		this.ctx = applicationContext;
 	}
 
+
+	@Override
+	public boolean isThisBot(User u) {
+		return getDelegates().stream()
+			.filter(d -> d.isThisBot(u))
+			.count() > 0;
+	}
+
 }

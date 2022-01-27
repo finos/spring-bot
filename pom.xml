@@ -28,29 +28,19 @@
 		<module>libs/entity-json</module>
 	
 		<!-- symphony support -->
-                <module>libs/symphony-bdk/symphony-bdk-chat-workflow-spring-boot-starter</module>
-
-		<module>libs/symphony-native/identity</module>
-		<module>libs/symphony-native/bindings</module>
-		<module>libs/symphony-native/entities</module>
-		<module>libs/symphony-native/symphony-api-spring-boot-starter</module>
-		<module>libs/symphony-native/symphony-app-spring-boot-starter</module>
-		<module>libs/symphony-native/shared-stream-spring-boot-starter</module>
-		<module>libs/symphony-native/symphony-chat-workflow-spring-boot-starter</module>
+		<module>libs/symphony/entities</module>
+        <module>libs/symphony-bdk/symphony-bdk-chat-workflow-spring-boot-starter</module>
 
 		<!-- teams support -->
 		<module>libs/teams/teams-chat-workflow-spring-boot-starter</module>
 
 		<!-- tools -->
-		<module>tools/koreai</module>
 		<module>tools/rss-bot</module>
-		<module>tools/teamcity-symphony-integration</module>
 		<module>tools/poll-bot</module>
 		<module>tools/reminder-bot</module>
 
 		<!-- demos -->
 		<module>demos/demo-bot</module>
-		<module>demos/demo-app</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
 	</modules>
