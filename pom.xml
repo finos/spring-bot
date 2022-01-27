@@ -35,7 +35,7 @@
 		<module>libs/teams/teams-chat-workflow-spring-boot-starter</module>
 
 		<!-- tools -->
-		<module>tools/rss-bot</module>
+		<!-- <module>tools/rss-bot</</module> -->
 		<module>tools/poll-bot</module>
 		<module>tools/reminder-bot</module>
 
