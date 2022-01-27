@@ -8,32 +8,32 @@
     "items" : [ {
       "type" : "Input.Text",
       "value" : "${if(form.i,(form.i),'')}",
-      "id" : "i",
+      "id" : "form-field:i",
       "label" : "I"
     }, {
       "type" : "Input.Text",
       "value" : "${if(form.ldt,(form.ldt),'')}",
-      "id" : "ldt",
+      "id" : "form-field:ldt",
       "label" : "Ldt"
     }, {
       "type" : "Input.Text",
       "value" : "${if(form.zid,(form.zid),'')}",
-      "id" : "zid",
+      "id" : "form-field:zid",
       "label" : "Zid"
     }, {
       "type" : "Input.Text",
       "value" : "${if(form.ld,(form.ld),'')}",
-      "id" : "ld",
+      "id" : "form-field:ld",
       "label" : "Ld"
     }, {
       "type" : "Input.Text",
       "value" : "${if(form.lt,(form.lt),'')}",
-      "id" : "lt",
+      "id" : "form-field:lt",
       "label" : "Lt"
     }, {
       "type" : "Input.Text",
       "value" : "${if(form.zdt,(form.zdt),'')}",
-      "id" : "zdt",
+      "id" : "form-field:zdt",
       "label" : "Zdt"
     } ]
   }, {
@@ -45,7 +45,8 @@
       "associatedInputs" : "auto",
       "data" : {
         "action" : "${name}",
-        "form" : "${$root.formid}"
+        "form" : "${$root.formid}",
+        "storageId" : "${$root.storageId}"
       },
       "$data" : "${buttons.contents}"
     } ]

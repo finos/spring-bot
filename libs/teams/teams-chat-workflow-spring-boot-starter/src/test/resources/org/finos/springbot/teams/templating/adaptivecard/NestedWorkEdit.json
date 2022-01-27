@@ -20,7 +20,7 @@
           "items" : [ {
             "type" : "Input.Text",
             "value" : "${if(form.a.s,(form.a.s),'')}",
-            "id" : "a.s",
+            "id" : "form-field:a.s",
             "label" : "S"
           } ]
         } ]
@@ -40,7 +40,7 @@
           "items" : [ {
             "type" : "Input.Text",
             "value" : "${if(form.b.s,(form.b.s),'')}",
-            "id" : "b.s",
+            "id" : "form-field:b.s",
             "label" : "S"
           } ]
         } ]
@@ -55,7 +55,8 @@
       "associatedInputs" : "auto",
       "data" : {
         "action" : "${name}",
-        "form" : "${$root.formid}"
+        "form" : "${$root.formid}",
+        "storageId" : "${$root.storageId}"
       },
       "$data" : "${buttons.contents}"
     } ]

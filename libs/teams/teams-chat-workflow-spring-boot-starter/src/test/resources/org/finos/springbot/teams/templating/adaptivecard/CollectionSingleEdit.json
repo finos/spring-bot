@@ -30,8 +30,8 @@
                 "verticalContentAlignment" : "Center",
                 "items" : [ {
                   "type" : "Input.Toggle",
-                  "value" : "${form.ints}",
-                  "id" : "ints",
+                  "value" : "false",
+                  "id" : "form-field:ints[[index:form.ints]]",
                   "title" : "Select"
                 } ]
               }, {
@@ -42,25 +42,28 @@
                   "actions" : [ {
                     "type" : "Action.Submit",
                     "title" : "Edit",
-                    "id" : "form.intstable-edit-row",
+                    "id" : "form-field:ints[[index:form.ints]].table-edit-row",
                     "data" : {
-                      "action" : "Edit",
-                      "form" : "${root.formid}"
+                      "action" : "form-field:ints[[index:form.ints]].table-edit-row",
+                      "form" : "${root.formid}",
+                      "storageId" : "${$root.storageId}"
                     }
                   } ]
                 } ]
               } ]
             } ],
-            "$data" : "${form.ints}"
+            "$data" : "${form.ints}",
+            "#increment" : "ints[[index:form.ints]]"
           }, {
             "type" : "ActionSet",
             "actions" : [ {
               "type" : "Action.Submit",
               "title" : "Delete Selected",
-              "id" : "form.intstable-delete-rows",
+              "id" : "form-field:ints.table-delete-rows",
               "data" : {
-                "action" : "Delete Selected",
-                "form" : "${root.formid}"
+                "action" : "form-field:ints.table-delete-rows",
+                "form" : "${root.formid}",
+                "storageId" : "${$root.storageId}"
               }
             } ]
           } ]
@@ -91,8 +94,8 @@
                 "verticalContentAlignment" : "Center",
                 "items" : [ {
                   "type" : "Input.Toggle",
-                  "value" : "${form.strings}",
-                  "id" : "strings",
+                  "value" : "false",
+                  "id" : "form-field:strings[[index:form.strings]]",
                   "title" : "Select"
                 } ]
               }, {
@@ -103,25 +106,28 @@
                   "actions" : [ {
                     "type" : "Action.Submit",
                     "title" : "Edit",
-                    "id" : "form.stringstable-edit-row",
+                    "id" : "form-field:strings[[index:form.strings]].table-edit-row",
                     "data" : {
-                      "action" : "Edit",
-                      "form" : "${root.formid}"
+                      "action" : "form-field:strings[[index:form.strings]].table-edit-row",
+                      "form" : "${root.formid}",
+                      "storageId" : "${$root.storageId}"
                     }
                   } ]
                 } ]
               } ]
             } ],
-            "$data" : "${form.strings}"
+            "$data" : "${form.strings}",
+            "#increment" : "strings[[index:form.strings]]"
           }, {
             "type" : "ActionSet",
             "actions" : [ {
               "type" : "Action.Submit",
               "title" : "Delete Selected",
-              "id" : "form.stringstable-delete-rows",
+              "id" : "form-field:strings.table-delete-rows",
               "data" : {
-                "action" : "Delete Selected",
-                "form" : "${root.formid}"
+                "action" : "form-field:strings.table-delete-rows",
+                "form" : "${root.formid}",
+                "storageId" : "${$root.storageId}"
               }
             } ]
           } ]
@@ -137,7 +143,8 @@
       "associatedInputs" : "auto",
       "data" : {
         "action" : "${name}",
-        "form" : "${$root.formid}"
+        "form" : "${$root.formid}",
+        "storageId" : "${$root.storageId}"
       },
       "$data" : "${buttons.contents}"
     } ]

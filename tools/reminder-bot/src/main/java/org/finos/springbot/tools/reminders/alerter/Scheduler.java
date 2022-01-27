@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 //import org.finos.springbot.symphony.stream.cluster.LeaderService;
 import org.finos.springbot.tools.reminders.Reminder;
 import org.finos.springbot.tools.reminders.ReminderList;
-import org.finos.springbot.tools.reminders.ReminderProperties;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.conversations.AllConversations;
@@ -23,30 +22,25 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 
-//import com.symphony.api.pod.StreamsApi;
 
-@Component
 public class Scheduler {
 
     public static Logger LOG = LoggerFactory.getLogger(Scheduler.class);
 
-    @Autowired
-    ResponseHandlers responseHandlers;
+    private final ResponseHandlers responseHandlers;
+    private final AllHistory h;
+    private final AllConversations rooms;
+    
+    public Scheduler(ResponseHandlers responseHandlers, AllHistory h, AllConversations rooms) {
+		super();
+		this.responseHandlers = responseHandlers;
+		this.h = h;
+		this.rooms = rooms;
+	}
 
-    @Autowired
-    AllHistory h;
-
-    @Autowired
-    AllConversations rooms;
-
-    @Autowired
-    ReminderProperties rp;
-
-    @Scheduled(cron = "0 0/5 * * * MON-FRI")
+	@Scheduled(cron = "0 0/5 * * * MON-FRI")
     public void everyFiveMinutesWeekday() {
         onAllStreams(s -> handleFeed(s));
     }
