@@ -2,7 +2,6 @@ package org.finos.springbot.tools.rssbot.load;
 
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,8 +10,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.Status.Family;
 
+import org.finos.springbot.tools.rssbot.JerseyApiBuilder;
+import org.finos.springbot.tools.rssbot.ProxyProperties;
 import org.finos.springbot.tools.rssbot.feed.Feed;
-import org.finos.symphony.toolkit.spring.api.properties.ProxyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -21,7 +21,6 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
-import com.symphony.api.bindings.jersey.JerseyApiBuilder;
 
 public class FeedLoader {
 	
