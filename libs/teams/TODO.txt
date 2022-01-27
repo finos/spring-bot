@@ -11,7 +11,6 @@ DEV TASKS
 	- Also write disk version. 
 	- Still some issue here. (is there? - need ITs, maybe update library?.  ok, this WILL FAIL if there is no match, some deserialization issue)
 
-symphony- submit bug report for messagebuilder
 teams - request gets sent multiple times
 
 RELEASE PROCESS
@@ -39,5 +38,6 @@ SURESH ?
 AFTER RELEASE
 
 - Rework leader election so that it is platform agnostic.  Also, reinstate this back into reminder bot.   DELETE THIS.
+- symphony- submit bug report for messagebuilder
 
 
