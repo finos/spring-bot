@@ -31,7 +31,6 @@ Some useful functionality for testing your bots without having to integrate with
 This is a utility that helps you serialize/deserialize JSON in a JSON format which contains enough information about java types to reconstruct objects.
 
  - [View the README](libs/entity-json/README.md)
- - [Read the Tutorial](tutorials/Entity-JSON.md)
 
 ## Symphony BDK Chat Workflow Spring Boot Starter
 
@@ -48,18 +47,6 @@ This is a utility that helps you serialize/deserialize JSON in a JSON format whi
 # Tools
 
 _All bots are deployed into maven central as executable jars_.
- 
-## TeamCity Build Notifier
-
-Allows you to report your TeamCity builds into Symphony chat rooms, using a bot.
-
- - [View the README](tools/teamcity-symphony-integration/README.md)
-
-## Kore-AI Bridge
-
-This is a Spring Boot App that acts as a middleman between a Symphony bot and a KoreAI bot, allowing you to expose your KoreAI bot as a bot on Symphony.  [Kore.AI](https://kore.ai/) is a low code/no code environment for building chat bots.
-
- - [View the README](tools/koreai/README.md)
 
 ## Poll Bot
 
@@ -72,6 +59,14 @@ A bot for running polls in a Symphony chat room.  Built using chat-workflow.
 A bot for feeding news into a Symphony chat room.  Built using chat-workflow.
 
 - [View the README](tools/rss-bot/README.md)
+
+
+## Reminder Bot
+
+Reads the contents of a room and creates reminders based on future events mentioned therein.
+
+- [View the README](tools/reminder-bot/README.md)
+
 
 # License
 
