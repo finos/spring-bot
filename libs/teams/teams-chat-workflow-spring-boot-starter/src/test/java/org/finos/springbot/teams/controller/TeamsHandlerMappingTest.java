@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.MockTeamsConfiguration;
@@ -41,12 +40,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.servlet.resource.ResourceResolver;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibm.icu.impl.data.ResourceReader;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ActivityTypes;
@@ -182,10 +179,10 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 						U out;
 						try {
 							out = fn.apply(arg1, arg2);
+							return CompletableFuture.completedFuture(out);
 						} catch (Throwable e) {
-							return CompletableFuture.failedFuture(e);
+							return failed(e);
 						} 
-						return CompletableFuture.completedFuture(out);
 					}
 					
 				};
@@ -193,6 +190,11 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 				
 	}
 
+	public static <R> CompletableFuture<R> failed(Throwable error) {
+	    CompletableFuture<R> future = new CompletableFuture<>();
+	    future.completeExceptionally(error);
+	    return future;
+	}
 	
 	private void mockTurnContext(String s, Map<String, Object> formData) {
 		tc = Mockito.mock(TurnContext.class);
