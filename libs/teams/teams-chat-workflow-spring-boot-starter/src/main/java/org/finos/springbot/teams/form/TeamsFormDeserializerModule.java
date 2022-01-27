@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 
@@ -22,7 +23,7 @@ import com.fasterxml.jackson.databind.deser.Deserializers;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 /**
- * Handles conversion of symphony elements' user picker back to User objects.
+ * Handles conversion of teams user picker back to User objects.
  * 
  * @author Rob Moffat
  */
@@ -34,6 +35,8 @@ public class TeamsFormDeserializerModule extends Module {
 			TeamsFormDeserializerModule.class.getPackage().getName().toLowerCase(), 
 			"teams-form-deserializer-module");
 
+	private TeamsConversations tc;
+	
 
 	@Override
 	public String getModuleName() {
@@ -45,8 +48,9 @@ public class TeamsFormDeserializerModule extends Module {
 		return VERSION;
 	}
 		
-	public TeamsFormDeserializerModule() {
+	public TeamsFormDeserializerModule(TeamsConversations tc) {
 		super();
+		this.tc = tc;
 	}
 
 	@Override
@@ -66,7 +70,7 @@ public class TeamsFormDeserializerModule extends Module {
 							
 							TreeNode tn = p.readValueAsTree();
 							if (tn instanceof TextNode) {
-								return new TeamsUser(tn.toString(), null, null);
+								return tc.lookupUser(((TextNode)tn).asText());
 							} else {
 								return null;
 							}

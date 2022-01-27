@@ -1,9 +1,11 @@
 package org.finos.springbot.teams.history;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,6 +26,7 @@ import org.finos.springbot.workflow.tags.HeaderDetails;
 import org.finos.springbot.workflow.tags.TagSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.StreamUtils;
 
 import com.azure.core.http.rest.PagedIterable;
@@ -31,6 +34,7 @@ import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.TaggedBlobItem;
 import com.azure.storage.blob.options.FindBlobsOptions;
 
@@ -75,9 +79,11 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 
 
 	protected <X> Optional<X> getLast(Class<X> type, String expectedTag, String directory) {
+		String query = "@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+getAzureTag(directory)+"'";
 		try {
-			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+directory+"'").setMaxResultsPerPage(1);
-			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(5), Context.NONE);
+			LOG.info("Query: "+query);
+			FindBlobsOptions fbo = new FindBlobsOptions(query).setMaxResultsPerPage(1);
+			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(15), Context.NONE);
 			Iterator<TaggedBlobItem> it = pi.iterator();
 			if (it.hasNext()) {
 				TaggedBlobItem tbi = it.next();
@@ -87,13 +93,14 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 				return Optional.empty();
 			}
 		} catch (Exception e) {
-			throw new TeamsException("Couldn't access blob storage", e);
+			LOG.error("Couldn't access blob storage with query "+query, e);
+			return Optional.empty();
 		}
 	}
 	
 	protected <X> List<X> getList(Class<X> type, String expectedTag, String directory, long sinceTimestamp) {
 		try {
-			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+directory+"' AND "+TIMESTAMP_KEY+">='"+sinceTimestamp+"'").setMaxResultsPerPage(1);
+			FindBlobsOptions fbo = new FindBlobsOptions("@container='"+container+"' AND "+expectedTag+"='tag' AND "+CHAT_KEY+"='"+getAzureTag(directory)+"' AND "+TIMESTAMP_KEY+">='"+sinceTimestamp+"'").setMaxResultsPerPage(1);
 			PagedIterable<TaggedBlobItem> pi = bsc.findBlobsByTags(fbo, Duration.ofSeconds(5), Context.NONE);			
 			return StreamSupport.stream(pi.spliterator(), false)
 				.map(tbi -> findObjectInItem(tbi.getName(), type))
@@ -114,7 +121,7 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	}
 	
 	private String getAzureTag(String s) {
-		return s.replace("-", "_");
+		return s.replaceAll("[^0-9a-zA-Z]","_");
 	}
 
 
@@ -171,11 +178,10 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	
 
 	@Override
-	public void store(TeamsAddressable a, Map<String, Object> data) {
+	public void store(String blobId, TeamsAddressable a, Map<String, Object> data) {
 		try {
 			Map<String, String> tags = getTags(data, a);
 			if (tags.size() > 0) { 
-				String blobId = createBlobId();
 				String directory = a.getKey();
 				BlobClient bc = bcc.getBlobClient(directory+"/"+blobId);
 				
@@ -191,12 +197,33 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 	}
 
 
+	@Override
+	public <X> Optional<Map<String, Object>> retrieve(String blobId, TeamsAddressable a) {
+		try {
+			BlobClient bc = bcc.getBlobClient(a.getKey()+"/"+blobId);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			bc.download(baos);
+			if (baos.size() == 0) {
+				return Optional.empty();
+			}
+			EntityJson out = ejc.readValue(new String(baos.toByteArray(), StandardCharsets.UTF_8));
+			return Optional.of(out);
+		} catch (BlobStorageException e) {
+			if (e.getResponse().getStatusCode() == HttpStatus.NOT_FOUND.value()) {
+				return Optional.empty();
+			}
+			LOG.warn("Couldn't retrieve: "+blobId, e);
+			return Optional.empty();
+		}
+	}
+
+
 	/**
 	 * The blob ID should be alphabetically ordered so that newer blobs are 
 	 * earlier in the alphabet.  That's quite tricky, so subtracing from the long of thre current time
 	 * @return
 	 */
-	private String createBlobId() {
+	public String createStorageId() {
 		long ts = Long.MAX_VALUE;
 		ts = ts - System.currentTimeMillis();
 		
@@ -206,6 +233,12 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 
 	private Map<String, String> getTags(Map<String, Object> data, Addressable a) {
 		HeaderDetails hd = (HeaderDetails) data.get(HeaderDetails.KEY);
+		
+		if (hd.getTags().size() ==0) {
+			// don't store
+			return Collections.emptyMap();
+		}
+		
 		Map<String, String> out = new HashMap<String, String>();
 		out.put(TIMESTAMP_KEY, ""+ System.currentTimeMillis());
 		if (hd != null) {
@@ -214,7 +247,7 @@ public class AzureBlobStorageTeamsHistory implements TeamsHistory {
 			}
 		}
 		
-		out.put(CHAT_KEY, a.getKey());		
+		out.put(CHAT_KEY, getAzureTag(a.getKey()));		
 		return out;
 	}
 }

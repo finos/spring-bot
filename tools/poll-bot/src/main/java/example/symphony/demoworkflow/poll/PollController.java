@@ -15,11 +15,13 @@ import org.finos.springbot.workflow.annotations.ChatResponseBody;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.conversations.Conversations;
 import org.finos.springbot.workflow.form.Button;
 import org.finos.springbot.workflow.form.ButtonList;
 import org.finos.springbot.workflow.form.ErrorMap;
 import org.finos.springbot.workflow.form.Button.Type;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
@@ -37,10 +39,10 @@ public class PollController {
 	ResponseHandlers rh;
 	
 	@Autowired
-	History h;
+	AllHistory h;
 	
 	@Autowired
-	Conversations rooms;
+	AllConversations rooms;
 	
 	@Autowired
 	TaskScheduler taskScheduler;

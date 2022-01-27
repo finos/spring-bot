@@ -10,10 +10,17 @@ public interface Rendering<X> {
 
 	X description(String d);
 
-	X list(Class<?> of, List<X> contents, boolean editable);
+	X list(List<X> contents);
 
 	X addFieldName(String field, X value);
 		
+	X renderUserDropdown(
+			Variable variable, 
+			String optionLocation, 
+			String optionKey, 
+			String optionValue,
+			boolean editable);
+	
 	X renderDropdown(
 		Variable variable, 
 		String variableKey,
@@ -32,14 +39,12 @@ public interface Rendering<X> {
 	
 	X checkBox(Variable variable, boolean editable);
 
-	X collection(Type t, Variable v, X in, boolean editable);
+	X collection(Type t, Variable collection, Variable item, X in, boolean editable);
 
-	X button(String name, String value);
+	X button(String text, String id);
 	
 	X buttons(String location);
 	
-	X table(Variable v, X headers, X body);
-		
 	public default String extend(String with) {
 		return StringUtils.hasText(with) ? "." + with : "";
 	}

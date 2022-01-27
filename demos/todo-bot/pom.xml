@@ -21,11 +21,16 @@
 	</properties>
 
 	<dependencies>
-	    <!-- <dependency>
+	    <dependency>
 			<groupId>org.finos.springbot</groupId>
-			<artifactId>symphony-chat-workflow-spring-boot-starter</artifactId>
+			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
 			<version>9.0.0-SNAPSHOT</version>
-		</dependency>  -->
+		</dependency>
+	    <dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -33,14 +38,29 @@
 
 		<!-- allow for instant persistence -->
 		<dependency>
-			<groupId>org.finos.springbot</groupId>
-			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
-			<version>9.0.0-SNAPSHOT</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.finos.springbot</groupId>
-			<artifactId>chat-workflow-testing</artifactId>
-			<version>9.0.0-SNAPSHOT</version>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.core</groupId>
+			<artifactId>jersey-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.inject</groupId>
+			<artifactId>jersey-hk2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.connectors</groupId>
+			<artifactId>jersey-apache-connector</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-multipart</artifactId>
 		</dependency>
 	</dependencies>
 

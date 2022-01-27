@@ -171,7 +171,7 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
 # Oct 13, 2021
 
  - Symphony API version upgraded to v20.13 by #238
- - Fix for #232, Un-marshelling of historical objects 
+ - Fix for #232, Un-marshalling of historical objects 
 
 # Oct 20, 2021
 
@@ -181,3 +181,11 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
 # Nov 8, 2021
 
  - Minor bugfix - KoreAI - JAVA_HOME variable replaced with actual path from System Property
+ 
+# Nov 29, 2021
+
+ - Fix for #264 - For ChatRequest and ChatButton - room exclusion feature
+ - Fix for #262 and #235 - For ChatRequest and ChatButton - rooms parameter
+ - Fix for #260 - We can search user from different POD as well
+ - Fix for #259 - Buttons are now visible on HelpPage
+  

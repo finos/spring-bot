@@ -9,9 +9,9 @@ import org.springframework.core.io.ResourceLoader;
 
 public class EntityMarkupTemplateProvider extends AbstractMarkupTemplateProvider<MarkupAndEntities>  {
 
-	public EntityMarkupTemplateProvider(String templatePrefix, String templateSuffix, ResourceLoader rl,
+	public EntityMarkupTemplateProvider(String templatePrefix, String templateSuffix, String defaultTemplateName, ResourceLoader rl,
 			BiFunction<Content, MarkupAndEntities, String> converter) {
-		super(templatePrefix, templateSuffix, rl, converter);
+		super(templatePrefix, templateSuffix, defaultTemplateName, rl, converter);
 	}
 
 	@Override

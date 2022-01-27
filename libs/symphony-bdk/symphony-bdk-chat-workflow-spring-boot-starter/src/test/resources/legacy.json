@@ -1,0 +1,81 @@
+{
+	"workflow_001": {
+		"type": "org.finos.symphony.toolkit.tools.reminders.reminderList",
+		"version": "1.0",
+		"reminders": [],
+		"timeZone": "US/Alaska"
+	},
+	"errors": {
+		"type": "org.finos.symphony.toolkit.workflow.form.errorMap",
+		"version": "1.0",
+		"contents": {
+			
+		}
+	},
+	"buttons": {
+		"type": "org.finos.symphony.toolkit.workflow.form.buttonList",
+		"version": "1.0",
+		"contents": [
+			{
+				"type": "org.finos.symphony.toolkit.workflow.form.button",
+				"version": "1.0",
+				"name": "wf-edit",
+				"buttonType": "ACTION",
+				"text": "Edit"
+			}
+		]
+	},
+	"header": {
+		"type": "org.finos.symphony.toolkit.workflow.form.headerDetails",
+		"version": "1.0",
+		"name": "Reminder List",
+		"description": "List of reminders to be conveyed",
+		"tags": [
+			{
+				"name": "symphony-workflow",
+				"id": "symphony-workflow",
+				"tagType": "HASH"
+			},
+			{
+				"name": "org-finos-symphony-toolkit-tools-reminders-reminderlist",
+				"id": "org-finos-symphony-toolkit-tools-reminders-reminderlist",
+				"tagType": "HASH"
+			},
+			{
+				"name": "org-finos-symphony-toolkit-tools-reminders-workflowconfig",
+				"id": "org-finos-symphony-toolkit-tools-reminders-workflowconfig",
+				"tagType": "HASH"
+			}
+		]
+	},
+	"keyword1": {
+		"type": "org.symphonyoss.taxonomy",
+		"version": "1.0",
+		"id": [
+			{
+				"type": "org.symphonyoss.taxonomy.hashtag",
+				"value": "symphony-workflow"
+			}
+		]
+	},
+	"keyword2": {
+		"type": "org.symphonyoss.taxonomy",
+		"version": "1.0",
+		"id": [
+			{
+				"type": "org.symphonyoss.taxonomy.hashtag",
+				"value": "org-finos-symphony-toolkit-tools-reminders-reminderlist"
+			}
+		]
+	},
+	"keyword3": {
+		"type": "org.symphonyoss.taxonomy",
+		"version": "1.0",
+		"id": [
+			{
+				"type": "org.symphonyoss.taxonomy.hashtag",
+				"value": "org-finos-symphony-toolkit-tools-reminders-workflowconfig"
+			}
+		]
+	}
+}

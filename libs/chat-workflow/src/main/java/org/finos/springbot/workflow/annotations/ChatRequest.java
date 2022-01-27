@@ -43,4 +43,10 @@ public @interface ChatRequest {
 	 */
 	boolean addToHelp() default true;
 	
+	/**
+	 * Whether this command can be exposed as a button Help Page
+	 * @return
+	 */
+	boolean isButtonOnHelpPage() default true;
+	
 }

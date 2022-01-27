@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import org.finos.springbot.entityjson.EntityJson;
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.springbot.symphony.stream.handler.SymphonyStreamHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

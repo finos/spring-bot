@@ -1,0 +1,18 @@
+<messageML>
+<#-- starting template -->
+<form id="org.finos.springbot.tests.work.DisplayWork"><table><tr><td style="width: 200px"><b>Some crazy name:</b></td><td>
+  <span class="tempo-text-color--red">${entity.errors.contents['s']!''}</span>
+  <text-field 
+   name="s"
+   placeholder="">${(entity.form.s)!''}</text-field></td></tr>
+</table>
+  <p><#list entity.buttons.contents as button>
+    <button 
+         name="${button.name}"
+         type="${button.buttonType?lower_case}">
+      ${button.text}
+    </button>
+  </#list></p>
+</form>
+<#-- ending template -->
+</messageML>

@@ -1,1 +1,0 @@
-{"object001":{"Header":{"BeginString":"FIX.5.0","MsgType":"W"},"Body":{"NoMDEntries":[{"MDEntryType":"0","MDEntryPx":"1.5","MDEntrySize":"25","MDEntryTime":"12:00:00.000"},{"MDEntryType":"1","MDEntryPx":"1.35","MDEntrySize":"1225","MDEntryTime":"12:00:00.000"}]},"Trailer":{"#6123":"User Defined Field Value"}}}

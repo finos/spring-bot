@@ -8,15 +8,15 @@ import javax.net.ssl.TrustManagerFactory;
 
 import org.finos.springbot.entities.VersionSpaceHelp;
 import org.finos.springbot.entityjson.VersionSpace;
+import org.finos.springbot.symphony.stream.handler.ExceptionConsumer;
+import org.finos.springbot.symphony.stream.handler.SymphonyStreamHandler;
+import org.finos.springbot.symphony.stream.handler.SymphonyStreamHandlerFactory;
 import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.symphony.toolkit.koreai.response.KoreAIResponse;
 import org.finos.symphony.toolkit.spring.api.SymphonyApiTrustManagersConfig;
 import org.finos.symphony.toolkit.spring.api.factories.ApiInstanceFactory;
 import org.finos.symphony.toolkit.spring.api.properties.SymphonyApiProperties;
-import org.finos.symphony.toolkit.stream.handler.ExceptionConsumer;
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandlerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;

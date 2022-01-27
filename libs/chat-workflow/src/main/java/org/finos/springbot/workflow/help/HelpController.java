@@ -76,7 +76,7 @@ public class HelpController implements ApplicationContextAware {
 		ChatRequest e = hm.getMapping();
 		ChatHandlerMethod m = hm.getHandlerMethod();
 		String d = StringUtils.hasText(e.description()) ? e.description() : defaultDescription(m.getMethod());
-		return new CommandDescription(d, Arrays.asList(e.value()));
+		return new CommandDescription(e.isButtonOnHelpPage(), e.value()[0], d, Arrays.asList(e.value()));
 	}
 
 	@SuppressWarnings("unchecked")

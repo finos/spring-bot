@@ -1,8 +1,8 @@
 package example.symphony.demobot;
 
+import org.finos.springbot.symphony.stream.StreamEventConsumer;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
-import org.finos.symphony.toolkit.stream.StreamEventConsumer;
-import org.finos.symphony.toolkit.stream.welcome.RoomWelcomeEventConsumer;
+import org.finos.springbot.workflow.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;

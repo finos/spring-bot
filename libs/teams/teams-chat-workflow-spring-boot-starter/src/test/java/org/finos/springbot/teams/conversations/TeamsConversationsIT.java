@@ -1,17 +1,29 @@
 package org.finos.springbot.teams.conversations;
 
-import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 
+
+@SpringBootTest(classes = { 
+		TeamsConversationsConfig.class, 
+	})
+@TestPropertySource(properties = {
+	"teams.bot.MicrosoftAppId=${microsoft-app-id}",
+	"teams.bot.MicrosoftAppPassword=${microsoft-app-password}",
+	"teams.app.tennantId=${microsoft-tennant-id}"
+})
 public class TeamsConversationsIT {
 
-	String tenantId = "2f758e82-b31e-4a99-a9dd-e4d4abe351db";
 	
-//	@Test
-//	public void simpleTest() throws Exception {
-//		TeamsConversationsImpl tc = new TeamsConversationsImpl();
-//		tc.afterPropertiesSet();
-//		
-//		tc.getChatAdmins(new TeamsChat("19:lpBLKAwWu2xklnZ8jmzmhTP_bjSbTYo5xULFVdGi2481@thread.tacv2", "HEYNOW"));
-//	}
+	@Autowired
+	TeamsConversations tc;
+	
+	@Test
+	public void simpleTest() throws Exception {
+		tc.getAllAddressables();
+	}
+	
 }
+

@@ -1,0 +1,3 @@
+<div xmlns:th="http://www.thymeleaf.org"><table><tr><td style="width: 200px"><b>S:</b></td><td>
+    <div th:each="iB : ${options.contents}">
+     <span th:if="${iB.key} == ${form?.s}" th:text="${iB.name}">choice</span>  </div></td></tr></table></div>

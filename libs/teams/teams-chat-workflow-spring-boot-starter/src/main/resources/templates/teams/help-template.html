@@ -1,0 +1,20 @@
+<table xmlns:th="http://www.thymeleaf.org">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Type... </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr th:each="command : ${form.commands}">
+      <td th:text="${command.description}">Some Command</td>
+      <td>
+        <ul>
+          <li th:each="example : ${command.examples}">
+            <pre style="display:inline" th:text="${example}" >Example</pre>
+          </li>
+        </ul> 
+      </td>
+    </tr>
+  </tbody>  
+</table>

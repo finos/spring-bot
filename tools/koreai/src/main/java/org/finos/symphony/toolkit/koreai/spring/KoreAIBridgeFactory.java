@@ -1,6 +1,6 @@
 package org.finos.symphony.toolkit.koreai.spring;
 
-import org.finos.symphony.toolkit.stream.handler.SymphonyStreamHandler;
+import org.finos.springbot.symphony.stream.handler.SymphonyStreamHandler;
 
 public interface KoreAIBridgeFactory {
 

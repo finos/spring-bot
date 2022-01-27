@@ -109,7 +109,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	@Override
 	protected String getMessageData() {
 		data = ArgumentCaptor.forClass(Map.class);
-		Mockito.verify(th).store(Mockito.any(), data.capture());
+		Mockito.verify(th).store(Mockito.any(), Mockito.any(), data.capture());
 
 		return ejc.writeValue(data.getValue());
 	}

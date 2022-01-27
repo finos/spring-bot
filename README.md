@@ -16,12 +16,10 @@ This project contains the following:
   - Symphony API Spring-Boot Starter
   - Symphony App Spring-Boot Starter
   - Symphony JSON Support
-  - Symphony FIX Support
   - Symphony Shared Stream
   - Chat Workflow
   
 - **Tools**
-  - A Symphony Maven Build Notifier
   - A TeamCity Build Notifier
   - KoreAI Bridge Connector
   - RSS News bot
@@ -97,15 +95,6 @@ This is a utility that helps you serialize/deserialize JSON in a format suitable
  - [View the README](libs/entity-json/README.md)
  - [Read the Tutorial](tutorials/Entity-JSON.md)
  
-## QuickFIX Support
-
-This is a utility that helps you serialize/deserialize QuickFIX messages into JSON Format, as described [here](https://github.com/FIXTradingCommunity/fix-json-encoding-spec/blob/master/Encoding_FIX_using_JSON-User_Guide.md).
-
-Although this is not reliant on Symphony code, it is adjacent tech and so might be useful for sending FIX payloads within Symphony.
-
- - [View the README](libs/quickfix-json/README.md)
- 
- 
 ## Symphony Shared Stream
 
 The purpose of this module is to provide a drop-in stream consumer for Symphony that allows a cluster of bot replicas to coordinate work.  That is, prevent the problem of two or more bots simultaneously consuming and processing the same Symphony message.
@@ -124,12 +113,6 @@ The Chat Workflow Symphony Starter implements this for symphony.  It is intended
 # Tools
 
 _All bots are deployed into maven central as executable jars_.
-
-## Maven Build Reporter
-
-Provides a maven extension that allows you to report build results into a Symphony chat room.  
-
- - [View the README](tools/symphony-maven-build-reporter/README.md)
  
 ## TeamCity Build Notifier
 
@@ -185,3 +168,4 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 
 4.  Perform release on github with same number
  
+

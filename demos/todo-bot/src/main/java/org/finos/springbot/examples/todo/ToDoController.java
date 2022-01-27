@@ -40,7 +40,7 @@ public class ToDoController {
 	}
 	
 	@ChatRequest(value="add", description = "Add an item")
-	@ChatButton(value = ToDoList.class, buttonText = "Add")
+	//@ChatButton(value = ToDoList.class, buttonText = "Add")
 	@ChatResponseBody(workMode = WorkMode.EDIT)
 	public NewItemDetails add1(User author) {
 		NewItemDetails out = new NewItemDetails();
