@@ -8,7 +8,7 @@
     "items" : [ {
       "type" : "Input.Text",
       "value" : "${if(form.s,(form.s),'')}",
-      "id" : "s",
+      "id" : "form-field:s",
       "label" : "S"
     } ]
   }, {
@@ -20,7 +20,8 @@
       "associatedInputs" : "auto",
       "data" : {
         "action" : "${name}",
-        "form" : "${$root.formid}"
+        "form" : "${$root.formid}",
+        "storageId" : "${$root.storageId}"
       },
       "$data" : "${buttons.contents}"
     } ]

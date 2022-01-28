@@ -1,7 +1,7 @@
 package org.finos.springbot.tools.rssbot.feed;
 
+import org.finos.springbot.tools.rssbot.ProxyProperties;
 import org.finos.springbot.workflow.annotations.Work;
-import org.finos.symphony.toolkit.spring.api.properties.ProxyProperties;
 
 @Work
 public class Feed {

@@ -8,7 +8,7 @@
     "items" : [ {
       "type" : "Input.Toggle",
       "value" : "${form.s}",
-      "id" : "s",
+      "id" : "form-field:s",
       "title" : "S"
     } ]
   }, {
@@ -20,7 +20,8 @@
       "associatedInputs" : "auto",
       "data" : {
         "action" : "${name}",
-        "form" : "${$root.formid}"
+        "form" : "${$root.formid}",
+        "storageId" : "${$root.storageId}"
       },
       "$data" : "${buttons.contents}"
     } ]

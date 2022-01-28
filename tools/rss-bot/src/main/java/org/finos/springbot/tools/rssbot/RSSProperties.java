@@ -2,7 +2,6 @@ package org.finos.springbot.tools.rssbot;
 
 import java.util.List;
 
-import org.finos.symphony.toolkit.spring.api.properties.ProxyProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("symphony.rss")

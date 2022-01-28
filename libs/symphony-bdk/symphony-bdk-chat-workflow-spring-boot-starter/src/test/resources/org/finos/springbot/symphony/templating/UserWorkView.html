@@ -1,13 +1,21 @@
 <messageML>
 <#-- starting template --><table><tr><td style="width: 200px"><b>B:</b></td><td>
-  <#if entity.form.b??><#list entity.form.b.id as id>
-   <#if id.type == 'com.symphony.api.model.userId'><mention uid="entity.form.b.value" /><#break></#if>
-   <#if id.type == 'com.symphony.user.emailAddress'><mention uid="entity.form.b.value" /><#break></#if>
-   </#list></#if></td></tr>
+  <#if entity.form.b??><#if entity.form.b.id??><#list entity.form.b.id as id>
+   <#if id??>
+   <#if id.type == 'com.symphony.user.userId'><mention uid="${id.value}" /><#break></#if>
+   <#if id.type == 'com.symphony.user.emailAddress'><mention email="${id.value}" /><#break></#if>
+   </#if></#list>
+   <#elseif entity.form.b.name??>
+    ${entity.form.b.name}
+  </#if></#if></td></tr>
 <tr><td style="width: 200px"><b>S:</b></td><td>
-  <#if entity.form.s??><#list entity.form.s.id as id>
-   <#if id.type == 'com.symphony.api.model.userId'><mention uid="entity.form.s.value" /><#break></#if>
-   <#if id.type == 'com.symphony.user.emailAddress'><mention uid="entity.form.s.value" /><#break></#if>
-   </#list></#if></td></tr></table>
+  <#if entity.form.s??><#if entity.form.s.id??><#list entity.form.s.id as id>
+   <#if id??>
+   <#if id.type == 'com.symphony.user.userId'><mention uid="${id.value}" /><#break></#if>
+   <#if id.type == 'com.symphony.user.emailAddress'><mention email="${id.value}" /><#break></#if>
+   </#if></#list>
+   <#elseif entity.form.s.name??>
+    ${entity.form.s.name}
+  </#if></#if></td></tr></table>
 <#-- ending template -->
 </messageML>

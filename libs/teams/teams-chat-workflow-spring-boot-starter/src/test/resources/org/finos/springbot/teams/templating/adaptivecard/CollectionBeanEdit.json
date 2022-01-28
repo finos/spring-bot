@@ -59,8 +59,8 @@
                 "verticalContentAlignment" : "Center",
                 "items" : [ {
                   "type" : "Input.Toggle",
-                  "value" : "${form.inners}",
-                  "id" : "inners",
+                  "value" : "false",
+                  "id" : "form-field:inners[[index:form.inners]]",
                   "title" : "Select"
                 } ]
               }, {
@@ -71,25 +71,28 @@
                   "actions" : [ {
                     "type" : "Action.Submit",
                     "title" : "Edit",
-                    "id" : "form.innerstable-edit-row",
+                    "id" : "form-field:inners[[index:form.inners]].table-edit-row",
                     "data" : {
-                      "action" : "Edit",
-                      "form" : "${root.formid}"
+                      "action" : "form-field:inners[[index:form.inners]].table-edit-row",
+                      "form" : "${root.formid}",
+                      "storageId" : "${$root.storageId}"
                     }
                   } ]
                 } ]
               } ]
             } ],
-            "$data" : "${form.inners}"
+            "$data" : "${form.inners}",
+            "#increment" : "inners[[index:form.inners]]"
           }, {
             "type" : "ActionSet",
             "actions" : [ {
               "type" : "Action.Submit",
               "title" : "Delete Selected",
-              "id" : "form.innerstable-delete-rows",
+              "id" : "form-field:inners.table-delete-rows",
               "data" : {
-                "action" : "Delete Selected",
-                "form" : "${root.formid}"
+                "action" : "form-field:inners.table-delete-rows",
+                "form" : "${root.formid}",
+                "storageId" : "${$root.storageId}"
               }
             } ]
           } ]
@@ -105,7 +108,8 @@
       "associatedInputs" : "auto",
       "data" : {
         "action" : "${name}",
-        "form" : "${$root.formid}"
+        "form" : "${$root.formid}",
+        "storageId" : "${$root.storageId}"
       },
       "$data" : "${buttons.contents}"
     } ]

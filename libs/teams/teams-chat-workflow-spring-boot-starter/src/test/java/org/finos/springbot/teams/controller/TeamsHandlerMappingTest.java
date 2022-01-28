@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.teams.TeamsWorkflowConfig;
@@ -51,6 +52,7 @@ import com.microsoft.bot.schema.ChannelAccount;
 import com.microsoft.bot.schema.ConversationAccount;
 import com.microsoft.bot.schema.Entity;
 import com.microsoft.bot.schema.Mention;
+import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.teams.ChannelInfo;
 import com.microsoft.bot.schema.teams.TeamsChannelData;
 
@@ -117,6 +119,8 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected String getMessageContent() {
+		msg = ArgumentCaptor.forClass(Activity.class);
+		Mockito.verify(conv).handleActivity(msg.capture(), Mockito.any());
 		Activity out = msg.getValue();
 		if (out.getAttachments().size() > 0) {
 			Attachment a1 = out.getAttachments().get(0);
@@ -160,9 +164,38 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	
 		Mockito.when(conv.getChatAdmins(Mockito.any()))
 			.thenAnswer(iom -> Arrays.asList( new TeamsUser("directchatid", ROB_NAME, ROB_EXAMPLE_EMAIL)));
+		
+		msg = ArgumentCaptor.forClass(Activity.class);
+		Mockito.when(conv.handleActivity(msg.capture(), Mockito.any()))
+			.thenAnswer(a -> {
+				ResourceResponse arg1 = new ResourceResponse("blah");
+				Throwable arg2 = null;
+				
+				return new CompletableFuture<ResourceResponse>() {
+					
+					@Override
+					public <U> CompletableFuture<U> handle(
+							BiFunction<? super ResourceResponse, Throwable, ? extends U> fn) {
+						U out;
+						try {
+							out = fn.apply(arg1, arg2);
+							return CompletableFuture.completedFuture(out);
+						} catch (Throwable e) {
+							return failed(e);
+						} 
+					}
+					
+				};
+			});	
+				
 	}
 
-
+	public static <R> CompletableFuture<R> failed(Throwable error) {
+	    CompletableFuture<R> future = new CompletableFuture<>();
+	    future.completeExceptionally(error);
+	    return future;
+	}
+	
 	private void mockTurnContext(String s, Map<String, Object> formData) {
 		tc = Mockito.mock(TurnContext.class);
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
