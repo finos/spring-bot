@@ -20,7 +20,7 @@
 	<modules>
 		<module>libs/identity</module>
 		<module>libs/bindings</module>
-		<module>libs/symphony-api-spring-boot-starter</module> 
+		<module>libs/symphony-api-spring-boot-starter</module>
 		<module>libs/symphony-app-spring-boot-starter</module>
 		<module>libs/entity-json</module>
 		<module>libs/shared-stream-spring-boot-starter</module>
@@ -123,6 +123,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.1.1</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
