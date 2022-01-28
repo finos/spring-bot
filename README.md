@@ -4,8 +4,8 @@
 
 |Version          |Number                 |Status                  |
 |-----------------|-----------------------|------------------------|
+|Spring Bot            |(unreleased)      |![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg)
 |Symphony Java Toolkit |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)|![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg?branch=symphony-java-toolkit-master)|
-|Spring Bot            |(unreleased)      |![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg?branch=spring-bot-master)
 
 # Main Documentation
 
