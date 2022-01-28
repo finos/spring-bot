@@ -1,11 +1,10 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
-![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg)
 [![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://app.codecov.io/gh/finos/symphony-java-toolkit)
 ![License](https://img.shields.io/github/license/finos/spring-bot)
 
-|-----------------|-----------------------|
-|Symphony Java Toolkit |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)|
-|Spring Bot            |(unreleased)      |
+|-----------------|-----------------------|------------------------|
+|Symphony Java Toolkit |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)|![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg?branch=symphony-java-toolkit-master)|
+|Spring Bot            |(unreleased)      |![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg?branch=spring-bot-master)
 
 # Main Documentation
 
