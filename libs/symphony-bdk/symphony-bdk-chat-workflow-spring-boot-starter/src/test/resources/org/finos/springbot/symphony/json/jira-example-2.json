@@ -23,7 +23,8 @@
     "id" : [ {
       "type" : "org.symphonyoss.taxonomy.hashtag",
       "version" : "1.0",
-      "value" : "#production"
+      "value" : "#production",
+      "name" : "production"
     } ]
   },
   "jiraIssueCreated" : {

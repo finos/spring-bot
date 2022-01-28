@@ -189,3 +189,8 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - Fix for #260 - We can search user from different POD as well
  - Fix for #259 - Buttons are now visible on HelpPage
   
+# Jan 27 2022
+
+ - Beta version of Spring Bot
+ - Microsoft Teams Connectivity
+ - Dependency on Symphony BDK

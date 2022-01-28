@@ -8,8 +8,6 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 import org.finos.springbot.symphony.content.HashTag;
-import org.finos.springbot.symphony.stream.Participant;
-import org.finos.springbot.symphony.stream.cluster.LeaderService;
 import org.finos.springbot.tools.rssbot.feed.Article;
 import org.finos.springbot.tools.rssbot.feed.Feed;
 import org.finos.springbot.tools.rssbot.feed.FeedList;
@@ -17,9 +15,8 @@ import org.finos.springbot.tools.rssbot.feed.Filter;
 import org.finos.springbot.tools.rssbot.load.FeedLoader;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Chat;
-import org.finos.springbot.workflow.conversations.Conversations;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.ErrorResponse;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
@@ -30,7 +27,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import com.rometools.rome.feed.synd.SyndEntry;
-import com.symphony.api.pod.StreamsApi;
 
 @Component
 public class TimedAlerter {
@@ -43,19 +39,10 @@ public class TimedAlerter {
 	ResponseHandlers responseHandler;
 	
 	@Autowired
-	Conversations r;
+	AllConversations r;
 	
 	@Autowired
-	History h;
-	
-	@Autowired
-	StreamsApi streams;
-	
-	@Autowired
-	LeaderService leaderService;
-	
-	@Autowired
-	Participant self;
+	AllHistory h;
 	
 	@Autowired
 	FeedLoader loader;
@@ -87,7 +74,7 @@ public class TimedAlerter {
 	 */
 	@Scheduled(fixedRate = 60000)
 	public void checkForFeedRefreshes() {
-		if (leaderService.isLeader(self)) {
+	//	if (leaderService.isLeader(self)) {
 			Instant now = Instant.now();
 			for (Map.Entry<Addressable, FeedList> e : flc.getKnownFeeds().entrySet()) {
 				if (!e.getValue().isPaused()) {
@@ -97,20 +84,20 @@ public class TimedAlerter {
 					}
 				}
 			}
-		}
+	//	}
 	}
 
 	public int onAllStreams(Function<Addressable, Integer> action) {
 		LOG.info("TimedAlerter waking");
 		int[] count = { 0 };
 
-		if (leaderService.isLeader(self)) {
+		//if (leaderService.isLeader(self)) {
 			Set<Addressable> allRooms = r.getAllAddressables();
 			allRooms.stream().forEach(s -> count[0] += action.apply(s));
 			LOG.info("TimedAlerter processed "+allRooms.size()+" streams ");
-		} else {
-			LOG.info("Not leader, sleeping");
-		}
+//		} else {
+//			LOG.info("Not leader, sleeping");
+//		}
 		
 		return count[0];
 	}

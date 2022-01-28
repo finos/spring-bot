@@ -16,17 +16,15 @@ import org.finos.springbot.tools.reminders.Reminder;
 import org.finos.springbot.tools.reminders.ReminderList;
 import org.finos.springbot.tools.reminders.alerter.Scheduler;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Chat;
-import org.finos.springbot.workflow.content.User;
-import org.finos.springbot.workflow.conversations.Conversations;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
@@ -36,22 +34,23 @@ import org.mockito.junit.jupiter.MockitoExtension;
 public class SchedulerTests {
 
 	@Mock
-	History<Addressable> history;
+	AllHistory history;
 
 	@Mock
 	ResponseHandlers responseHandlers;
 
 	@Mock
-	Conversations<Chat, User> rooms;
+	AllConversations rooms;
 
-	@InjectMocks
-	Scheduler scheduler = new Scheduler();
+
+	Scheduler scheduler;
 
 	LocalDateTime expectedTime = LocalDateTime.now();
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void handleFeedLeaderTest() {
+		scheduler = new Scheduler(responseHandlers, history, rooms);
 		when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
 				.thenReturn(reminderList());
 
@@ -69,6 +68,7 @@ public class SchedulerTests {
 	}
 
 	@Test
+	@Disabled("We don't have leadership election at the moment-all bots are leaders")
 	public void handleFeedNonLeaderTest() {
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers, VerificationModeFactory.noInteractions()).accept(Mockito.any(WorkResponse.class));

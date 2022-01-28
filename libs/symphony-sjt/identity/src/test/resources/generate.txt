@@ -1,2 +1,0 @@
- winpty openssl req  -nodes -new -x509  -keyout privatekey.pem -out cert.pem -subj '/CN=bob'
-winpty openssl pkcs12 -export -out example.p12 -inkey privatekey.pem -in cert.pem

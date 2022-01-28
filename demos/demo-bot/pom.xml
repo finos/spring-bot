@@ -18,7 +18,7 @@
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>example.symphony.demobot.DemoApplication</spring-boot.run.main-class>
+		<spring-boot.run.main-class>example.springbot.demobot.DemoApplication</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -32,41 +32,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
-			<artifactId>symphony-api-spring-boot-starter</artifactId>
+			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
 			<version>9.0.0-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.finos.springbot</groupId>
-			<artifactId>shared-stream-spring-boot-starter</artifactId>
-			<version>9.0.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.core</groupId>
-			<artifactId>jersey-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.inject</groupId>
-			<artifactId>jersey-hk2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.connectors</groupId>
-			<artifactId>jersey-apache-connector</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.glassfish.jersey.media</groupId>
-			<artifactId>jersey-media-multipart</artifactId>
-		</dependency>
+
 	</dependencies>
 
 	<build>

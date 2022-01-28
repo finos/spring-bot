@@ -1,6 +1,0 @@
-# Auto Configure
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.finos.springbot.symphony.stream.handler.SharedStreamHandlerConfig, \
-  org.finos.springbot.symphony.stream.web.SharedStreamWebConfig, \
-  org.finos.springbot.symphony.stream.single.SharedStreamSingleBotConfig
-  

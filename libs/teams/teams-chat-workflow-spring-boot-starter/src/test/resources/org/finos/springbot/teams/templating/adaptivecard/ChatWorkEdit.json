@@ -8,7 +8,7 @@
     "items" : [ {
       "type" : "Input.ChoiceSet",
       "value" : "${form.s.key}",
-      "id" : "s",
+      "id" : "form-field:s",
       "choices" : [ {
         "$data" : "${chatlist.contents}",
         "title" : "${name}",
@@ -25,7 +25,8 @@
       "associatedInputs" : "auto",
       "data" : {
         "action" : "${name}",
-        "form" : "${$root.formid}"
+        "form" : "${$root.formid}",
+        "storageId" : "${$root.storageId}"
       },
       "$data" : "${buttons.contents}"
     } ]

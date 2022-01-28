@@ -6,7 +6,7 @@
    name="b"
    data-placeholder="Choose b">
     <#list entity.biglist.contents as iB>
-     <option value="${iBkey}" selected="${(((entity.form.b.key)!'') == iB.key)?string('true','false')}">
+     <option value="${iB.key}" selected="${(((entity.form.b.id[0].value)!'') == iB.key)?string('true','false')}">
       ${iB.name}
      </option>
    </#list>
@@ -17,7 +17,7 @@
    name="s"
    data-placeholder="Choose s">
     <#list entity.smalllist.contents as iB>
-     <option value="${iBkey}" selected="${(((entity.form.s.key)!'') == iB.key)?string('true','false')}">
+     <option value="${iB.key}" selected="${(((entity.form.s.id[0].value)!'') == iB.key)?string('true','false')}">
       ${iB.name}
      </option>
    </#list>

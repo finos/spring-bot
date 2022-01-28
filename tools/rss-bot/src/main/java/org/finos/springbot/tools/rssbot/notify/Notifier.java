@@ -15,14 +15,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.util.HtmlUtils;
 
-import com.symphony.api.agent.MessagesApi;
-
 public class Notifier implements InitializingBean {
 
 	public static final Logger LOG = LoggerFactory.getLogger(Notifier.class);
-
-	@Autowired
-	MessagesApi api;
 	
 	@Autowired
 	RSSProperties properties;
