@@ -288,9 +288,9 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void assertHelpResponse() throws Exception {
-		String data = getMessageData();
+		String data = getMessageContent();
 		System.out.println(data);
-		Assertions.assertTrue(data.contains("\"examples\" : [ \"optionals {thing} {user} {lastword}\" ]"));
+		Assertions.assertTrue(data.contains("<pre style=\"display:inline\" >optionals {thing} {user} {lastword}</pre>"));
 	}
 
 
@@ -300,4 +300,12 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		Assertions.assertFalse(data.contains("ActionSet"));
 	}
 
+
+	@Override
+	protected void assertThrowsResponse() {
+		String message = getMessageContent();
+		Assertions.assertTrue(message.contains("Error123"));
+	}
+
+	
 }

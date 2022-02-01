@@ -200,8 +200,10 @@ public abstract class AbstractHandlerMappingTest {
 	@Test
 	public void testThrowsError() throws Exception {
 		execute("throwsError");
-		Assertions.assertTrue(getMessageData().contains("Error123"));
+		assertThrowsResponse();
 	}
+	
+	protected abstract void assertThrowsResponse();
 	
 	@Test
 	public void testOptionalPresent() throws Exception {
