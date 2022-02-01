@@ -10,7 +10,7 @@
     
     <hr />
     
-    <form id="org.finos.symphony.rssbot.feed.FeedList"><p>
+    <form id="org.finos.springbot.tool.rssbot.feed.FeedList"><p>
         <button name="add" type="action">Add</button>
     </p></form>  
     
@@ -32,9 +32,9 @@
     </tbody></table>
     <#if entity.form.paused == false>
       <form id="org.finos.symphony.rssbot.feed.FeedList"><p>
-        <button name="org.finos.symphony.rssbot.feed.FeedController-add" type="action">Add</button>
+        <button name="org.finos.springbot.tool.rssbot.feed.FeedController-newSubscribeRequest" type="action">Add</button>
         <button name="wf-edit" type="action">Edit</button>
-        <button name="org.finos.symphony.rssbot.feed.FeedController-pause" type="action">Pause</button>
+        <button name="org.finos.springbot.tool.rssbot.feed.FeedController-pause" type="action">Pause</button>
     </p></form>  
     </#if>
     
@@ -47,7 +47,7 @@
       <b>Feeds are currently suspended. Click "resume" below to continue feeding in this room</b>
     <hr />
     <form id="org.finos.symphony.rssbot.feed.FeedList"><p>
-        <button name="org.finos.symphony.rssbot.feed.FeedController-resume" type="action">Resume</button>
+        <button name="org.finos.springbot.tool.rssbot.feed.FeedController-resume" type="action">Resume</button>
     </p></form>    
     </#if>
     
