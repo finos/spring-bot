@@ -193,6 +193,12 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+					      <excludes>
+					      	<exclude>org/finos/springbot/tool/**/*</exclude>
+					      	<exclude>org/finos/springboot/demo/**/*</exclude>
+					      </excludes>
+					    </configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
