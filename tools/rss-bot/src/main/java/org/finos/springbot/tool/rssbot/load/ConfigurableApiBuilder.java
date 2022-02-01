@@ -1,9 +1,9 @@
-package org.finos.springbot.tool.rssbot;
+package org.finos.springbot.tool.rssbot.load;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
 
-public interface ConfigurableApiBuilder extends ApiBuilder {
+public interface ConfigurableApiBuilder {
 
 	void setUrl(String baseUrl);
 	void setProxyDetails(String proxyHost, String user, String password, int port);

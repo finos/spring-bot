@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.Response.Status.Family;
 
-import org.finos.springbot.tool.rssbot.JerseyApiBuilder;
 import org.finos.springbot.tool.rssbot.ProxyProperties;
 import org.finos.springbot.tool.rssbot.feed.Feed;
 import org.slf4j.Logger;
@@ -73,19 +72,9 @@ public class FeedLoader {
 		throw new FeedException("Couldn't download feed with any proxy", last);
 	}
 	
-	public class JaxRSJerseyApiBuilder extends JerseyApiBuilder {
-		
-		public JaxRSJerseyApiBuilder(String url) {
-			super(url);
-		}
-
-		public WebTarget newWebTarget(String uri) {
-			return super.newWebTarget(uri);
-		}
-	}
 
 	public InputStream downloadContent(String url, ProxyProperties pp) throws MalformedURLException {
-		JaxRSJerseyApiBuilder jab = new JaxRSJerseyApiBuilder(url);
+		JerseyApiBuilder jab = new JerseyApiBuilder(url);
 		
 		if (pp != null) {
 			pp.configure(jab);
