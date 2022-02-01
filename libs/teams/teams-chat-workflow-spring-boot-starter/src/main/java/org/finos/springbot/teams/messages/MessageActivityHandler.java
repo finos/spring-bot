@@ -60,6 +60,11 @@ public class MessageActivityHandler extends ActivityHandler {
 
 	@Override
 	protected CompletableFuture<Void> onMessageActivity(TurnContext turnContext) {
+		return CompletableFuture.completedFuture(null)
+			.thenRun(() -> handleActivity(turnContext));
+	}
+
+	protected void handleActivity(TurnContext turnContext) {
 		try {
 			Activity a = turnContext.getActivity();
 			
@@ -81,9 +86,6 @@ public class MessageActivityHandler extends ActivityHandler {
 		} finally {
 			CurrentTurnContext.CURRENT_CONTEXT.set(null);
 		}
-
-		// errors are handled using Spring's ErrorHandler rather than this.
-		return new CompletableFuture<Void>();
 	}
 
 	protected FormAction processForm(TurnContext turnContext, Activity a) throws ClassNotFoundException {
