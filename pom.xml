@@ -197,6 +197,8 @@
 								<exclude>org/finos/springbot/tool/**/*</exclude>
 								<exclude>org/finos/springboot/demo/**/*</exclude>
 							</excludes>
+		                    <destFile>${maven.multiModuleProjectDirectory}/target/combined.exec</destFile>
+		                    <append>true</append>
 						</configuration>
 					</plugin>
 					<plugin>
