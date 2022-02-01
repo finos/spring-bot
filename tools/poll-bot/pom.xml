@@ -12,8 +12,8 @@
 
 	<groupId>org.finos.springbot.tools</groupId>
 	<artifactId>poll-bot</artifactId>
-	<name>Poll Bot (Demo)</name>
-	<description>Demo Chat Workflow bot for creating polls</description>
+	<name>Poll Bot</name>
+	<description>Chat Workflow Bot for Creating Polls</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
