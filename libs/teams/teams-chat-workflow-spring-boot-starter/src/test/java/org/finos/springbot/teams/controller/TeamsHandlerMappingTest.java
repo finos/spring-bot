@@ -44,6 +44,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ActivityTypes;
@@ -124,7 +125,18 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		Activity out = msg.getValue();
 		if (out.getAttachments().size() > 0) {
 			Attachment a1 = out.getAttachments().get(0);
-			return (String) a1.getContent();
+			
+			if (a1.getContent() instanceof String) {
+				return (String) a1.getContent();
+			} else if (a1.getContent() instanceof ObjectNode) {
+				try {
+					return new ObjectMapper().writeValueAsString(a1.getContent());
+				} catch (JsonProcessingException e) {
+					throw new RuntimeException("Couldn't get JSON", e);
+				}
+			} else {
+				throw new RuntimeException("Can't figure out message content");
+			}
 			
 			
 		} else {
