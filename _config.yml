@@ -6,7 +6,7 @@ description: Annotation-driven bot creation framework for Microsoft Teams and Sy
 email: rob@kite9.com
 baseurl: "/" # the subpath of your site, e.g. /blog
 include: ['_pages']
-url: https://finos.github.io/spring-bot
+url: https://springbot.finos.org
 author: Finos
 
 plugins:
