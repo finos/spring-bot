@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.finos.springbot.workflow.annotations.Template;
 import org.finos.springbot.workflow.annotations.Work;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Work
 @Template(

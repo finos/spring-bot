@@ -1,5 +1,7 @@
 package org.finos.springbot.tool.rssbot;
 
+import org.finos.springbot.tool.rssbot.load.ConfigurableApiBuilder;
+
 public class ProxyProperties {
 
 	public static final String NO_PROXY = "<none>";

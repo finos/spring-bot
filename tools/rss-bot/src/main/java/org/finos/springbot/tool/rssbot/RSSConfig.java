@@ -10,8 +10,7 @@ import org.finos.springbot.tool.rssbot.alerter.FeedListCacheImpl;
 import org.finos.springbot.tool.rssbot.load.FeedLoader;
 import org.finos.springbot.tool.rssbot.notify.Notifier;
 import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.data.EntityJsonConverter;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.finos.springbot.workflow.welcome.RoomWelcomeEventConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +25,7 @@ public class RSSConfig {
 	@Autowired
 	private RSSProperties properties;
 	
-	@Autowired
-	private EntityJsonConverter ejc;
-	
-	public static final String WELCOME_MESSAGE = "<messageML>"
-			+ "<p>Hi, welcome to <b>${entity.stream.roomName}</b></p><br />"
-			+ "<p>To configure RSS feeds in this room type: <b>/subscriptions</b></p></messageML>";
+	public static final String WELCOME_MESSAGE = "I am the RSS Bot.  \nTo configure RSS feeds in this room type: /subscriptions";
 	
 	@Bean
 	RoomWelcomeEventConsumer rwec(ResponseHandlers rh) {
@@ -54,7 +48,7 @@ public class RSSConfig {
 	}
 	
 	@Bean
-	public ArticleSender articleSender(ResponseHandlers rh, History h) {
+	public ArticleSender articleSender(ResponseHandlers rh, AllHistory h) {
 		return new CachingCheckingArticleSender(rh, h);
 	}
 

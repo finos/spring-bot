@@ -1,4 +1,4 @@
-package org.finos.springbot.tool.rssbot;
+package org.finos.springbot.tool.rssbot.load;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
@@ -14,7 +14,6 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.springframework.http.client.reactive.ReactorResourceFactory;
 
 /**
  * Provides a basic Jersey client creation wrapper which includes:
@@ -45,12 +44,6 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 	public JerseyApiBuilder(String url, KeyManager[] keyManagers) {
 		super(url, keyManagers);
 	}
-
-	@Override
-	public <X> X getApi(Class<X> c) {
-		WebTarget wt = newWebTarget();
-		return buildProxy(c, wt);
-	}
 	
 	protected WebTarget newWebTarget(String url) {
 		try {
@@ -66,7 +59,7 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		}
 	}
 	
-	protected WebTarget newWebTarget() {
+	public WebTarget newWebTarget() {
 		return newWebTarget(this.url);
 	}
 
@@ -96,11 +89,6 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 		}
 		
 		return config;
-	}
-
-	protected <X> X buildProxy(Class<X> c, WebTarget wt) {
-		X out = WebResourceFactory.newResource(c, wt);
-		return out;
 	}
 
 	@Override

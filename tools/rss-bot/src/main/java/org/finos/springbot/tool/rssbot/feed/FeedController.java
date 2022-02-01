@@ -18,7 +18,7 @@ import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
-import org.finos.springbot.workflow.conversations.Conversations;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.history.History;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
@@ -47,7 +47,7 @@ public class FeedController {
 	Notifier n;
 	
 	@Autowired
-	Conversations r;
+	AllConversations r;
 	
 	@Autowired
 	ResponseHandlers rh;

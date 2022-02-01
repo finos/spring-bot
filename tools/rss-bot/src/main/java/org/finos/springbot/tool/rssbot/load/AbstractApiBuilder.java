@@ -1,4 +1,4 @@
-package org.finos.springbot.tool.rssbot;
+package org.finos.springbot.tool.rssbot.load;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
