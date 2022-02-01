@@ -4,9 +4,9 @@ name: Spring Bot
 subtitle: Annotation-driven bot creation framework for Microsoft Teams and Symphony
 description: Annotation-driven bot creation framework for Microsoft Teams and Symphony
 email: rob@kite9.com
-baseurl: "/spring-bot" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 include: ['_pages']
-url: https://finos.github.io/spring-bot
+url: https://springbot.finos.org
 author: Finos
 
 plugins:
