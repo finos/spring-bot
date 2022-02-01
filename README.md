@@ -1,5 +1,5 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
-[![Coverage](https://img.shields.io/codecov/c/github/finos/symphony-java-toolkit)](https://app.codecov.io/gh/finos/symphony-java-toolkit)
+[![codecov](https://codecov.io/gh/finos/spring-bot/branch/spring-bot-develop/graph/badge.svg?token=CSa0aaqYD0)](https://codecov.io/gh/finos/spring-bot)
 ![License](https://img.shields.io/github/license/finos/spring-bot)
 
 |Version          |Number                 |Status                  |
