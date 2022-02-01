@@ -51,7 +51,7 @@ jobs:
     - name: Build + Test
       run: mvn verify --settings .github/workflows/settings.xml 
     - name: Coverage 
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v2
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
        

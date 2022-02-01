@@ -28,8 +28,6 @@ public class AdaptiveCardTemplater extends AbstractTopLevelConverter<JsonNode, W
 	public AdaptiveCardTemplater(List<TypeConverter<JsonNode>> fieldConverters, Rendering<JsonNode> r) {
 		super(fieldConverters, r);
 	}
-
-	public static final String JUST_BUTTONS_FORM = "just-buttons-form";
 	
 	@Override
 	public JsonNode convert(Class<?> c, Mode m) {
@@ -40,9 +38,12 @@ public class AdaptiveCardTemplater extends AbstractTopLevelConverter<JsonNode, W
 		top.put("$schema", "http://adaptivecards.io/schemas/adaptive-card.json");
 		top.put("version", "1.3");
 		top.put("type","AdaptiveCard");
-		JsonNode contents = apply(null, this, c, m==Mode.FORM, v, topLevelFieldOutput());
 		ArrayNode body = top.putArray("body");
-		body.add(contents);
+		
+		if (c != null) {
+			JsonNode contents = apply(null, this, c, m==Mode.FORM, v, topLevelFieldOutput());
+			body.add(contents);
+		}
 		
 		if (m == Mode.DISPLAY_WITH_BUTTONS || m == Mode.FORM) {
 			// add some buttons
