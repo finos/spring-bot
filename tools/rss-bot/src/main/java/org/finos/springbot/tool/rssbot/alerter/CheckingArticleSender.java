@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.finos.springbot.tool.rssbot.feed.Article;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 
 /**
@@ -12,9 +12,9 @@ import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
  */
 public class CheckingArticleSender extends BasicArticleSender {
 	
-	History h;
+	AllHistory h;
 	
-	public CheckingArticleSender(ResponseHandlers responseHandler, History h) {
+	public CheckingArticleSender(ResponseHandlers responseHandler, AllHistory h) {
 		super(responseHandler);
 		this.h = h;
 	}
