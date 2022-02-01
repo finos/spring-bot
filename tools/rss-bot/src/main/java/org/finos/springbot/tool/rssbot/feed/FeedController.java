@@ -19,7 +19,7 @@ import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.conversations.AllConversations;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.slf4j.Logger;
@@ -119,7 +119,7 @@ public class FeedController {
 	}
 	
 	@ChatRequest(description = "Fetch latest news now", value="latest") 
-	public void latest(TimedAlerter ta, History hist, SymphonyAddressable a) {
+	public void latest(TimedAlerter ta, AllHistory hist, SymphonyAddressable a) {
 		FeedList fl = getFeedList(a);
 		int count = ta.allItems(a, fl);
 		if (count == 0) {

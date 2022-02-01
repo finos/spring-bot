@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.finos.springbot.tool.rssbot.feed.Article;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.history.History;
+import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 
 /**
@@ -23,7 +23,7 @@ public class CachingCheckingArticleSender extends CheckingArticleSender {
 	
 	Map<Addressable, SoftReference<Set<Article>>> alreadySent = new HashMap<>();
 
-	public CachingCheckingArticleSender(ResponseHandlers responseHandler, History h) {
+	public CachingCheckingArticleSender(ResponseHandlers responseHandler, AllHistory h) {
 		super(responseHandler, h);
 	}
 	
