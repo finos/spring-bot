@@ -41,6 +41,8 @@
 		<module>demos/demo-bot</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
+		
+		<module>libs/chat-workflow-coverage</module>
 	</modules>
 
 	<properties>
@@ -184,22 +186,7 @@
 									<goal>prepare-agent</goal>
 								</goals>
 							</execution>
-							<execution>
-								<id>report</id>
-								<phase>verify</phase>
-								<goals>
-									<goal>report-aggregate</goal>
-								</goals>
-							</execution>
 						</executions>
-						<configuration>
-							<excludes>
-								<exclude>org/finos/springbot/tool/**/*</exclude>
-								<exclude>org/finos/springboot/demo/**/*</exclude>
-							</excludes>
-		                    <destFile>${maven.multiModuleProjectDirectory}/target/combined.exec</destFile>
-		                    <append>true</append>
-						</configuration>
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
