@@ -235,10 +235,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		}
 		
 		protected ChatHandlerMethod createHandlerMethod(Object handler, Method method) {
-			if (handler instanceof String) {
-				return new ChatHandlerMethod((String) handler,
-						obtainApplicationContext().getAutowireCapableBeanFactory(), method);
-			}
 			return new ChatHandlerMethod(handler, method);
 		}
 		

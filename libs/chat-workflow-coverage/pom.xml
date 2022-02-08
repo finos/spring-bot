@@ -5,6 +5,7 @@
 	<artifactId>chat-workflow-coverage</artifactId>
 	<name>Chat Workflow Coverage Report</name>
 	<description>Used For Jacoco</description>
+	<packaging>pom</packaging>
 
 	<parent>
 		<groupId>org.finos.springbot</groupId>
@@ -18,7 +19,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
-<profiles>
+	<profiles>
     	<profile>
 			<!-- this profile generates code coverage, should be run by the ci server -->
 			<id>symphony-ci</id>
