@@ -41,7 +41,7 @@ public abstract class AbstractHandlerMappingTest {
 	public static final String CHAT_ID = "abc123";
 
 	@Autowired
-	OurController oc;
+	protected OurController oc;
 	
 	@Autowired
 	ChatRequestChatHandlerMapping hm;
