@@ -27,7 +27,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(
 		properties = {
-			"bdk.bot.username="+AbstractHandlerMappingTest.BOT_NAME	
+			"bdk.bot.username="+AbstractHandlerMappingTest.BOT_NAME,
+			"logging.level.org.finos.springbot=TRACE"
 		})
 public abstract class AbstractHandlerMappingTest {
 	
