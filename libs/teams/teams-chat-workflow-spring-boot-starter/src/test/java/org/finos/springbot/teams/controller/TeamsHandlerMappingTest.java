@@ -147,6 +147,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void execute(String s) throws Exception {
+		oc.lastMethod = null;
 		s = s.replace("@gaurav", "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">gaurav</span>");
 		s = "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">"+BOT_NAME+"</span>" + s;
 		
