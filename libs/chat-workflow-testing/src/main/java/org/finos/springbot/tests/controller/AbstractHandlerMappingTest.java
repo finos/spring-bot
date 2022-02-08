@@ -48,7 +48,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(15, hm.getHandlerMethods().size());
+		Assertions.assertEquals(17, hm.getHandlerMethods().size());
 		getMappingsFor(Message.of("list"));
 	}
 
@@ -80,6 +80,18 @@ public abstract class AbstractHandlerMappingTest {
 		Assertions.assertEquals("doCommand", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Assertions.assertTrue(Message.class.isAssignableFrom(oc.lastArguments.get(0).getClass()));
+	}
+	
+	@Test
+	public void checkNoMethodCall1() throws Exception {
+		execute("excluded");
+		Assertions.assertEquals(null, oc.lastMethod);
+	}
+	
+	@Test
+	public void checkNoMethodCall2() throws Exception {
+		execute("excluded2");
+		Assertions.assertEquals(null, oc.lastMethod);
 	}
 	
 	@Test

@@ -250,16 +250,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 						"Try setting value / buttonText to disambiguate the annotations. ");
 			}
 		}
-
-		public void unregister(T mapping) {
-			this.readWriteLock.writeLock().lock();
-			try {
-				this.registry.remove(mapping);
-			}
-			finally {
-				this.readWriteLock.writeLock().unlock();
-			}
-		}
 	}
 	
 	protected boolean roomMatched(String[] rooms, Chat addressable) {
