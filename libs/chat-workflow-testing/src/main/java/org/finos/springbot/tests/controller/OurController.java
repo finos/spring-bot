@@ -52,7 +52,7 @@ public class OurController {
 		return Arrays.asList(new TestObject());
 	}
 	
-	@ChatButton(value = StartClaim.class, buttonText = "start", rooms={"The Room Where It Happened"})
+	@ChatButton(value = StartClaim.class, buttonText = "start", rooms={SOME_ROOM, "Some other room"})
 	public TestObject startNewClaim(StartClaim sc) {
 		// can't run without StartClaim, returns form to begin a process..
 		// user fills it in and this runs.
@@ -78,6 +78,21 @@ public class OurController {
 		lastMethod = "doCommand";
 	}
 
+	@ChatRequest(value="excluded", excludeRooms = {SOME_ROOM}) 
+	public void dontDoCommand(Message m) {
+		// shouldn't happen as room is excluded
+		lastArguments = Collections.singletonList(m);
+		lastMethod = "doCommand";
+	}
+	
+	@ChatRequest(value="excluded2", rooms = {"Secret room"}) 
+	public void dontDoCommand2(Message m) {
+		// shouldn't happen as room is excluded
+		lastArguments = Collections.singletonList(m);
+		lastMethod = "doCommand";
+	}
+
+	
 	
 	@ChatRequest("show {user}") 
 	public void userDetails(@ChatVariable("user") User u) {

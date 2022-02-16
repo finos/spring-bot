@@ -44,6 +44,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ActivityTypes;
@@ -124,7 +125,18 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		Activity out = msg.getValue();
 		if (out.getAttachments().size() > 0) {
 			Attachment a1 = out.getAttachments().get(0);
-			return (String) a1.getContent();
+			
+			if (a1.getContent() instanceof String) {
+				return (String) a1.getContent();
+			} else if (a1.getContent() instanceof ObjectNode) {
+				try {
+					return new ObjectMapper().writeValueAsString(a1.getContent());
+				} catch (JsonProcessingException e) {
+					throw new RuntimeException("Couldn't get JSON", e);
+				}
+			} else {
+				throw new RuntimeException("Can't figure out message content");
+			}
 			
 			
 		} else {
@@ -135,6 +147,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void execute(String s) throws Exception {
+		oc.lastMethod = null;
 		s = s.replace("@gaurav", "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">gaurav</span>");
 		s = "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">"+BOT_NAME+"</span>" + s;
 		
@@ -288,9 +301,9 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void assertHelpResponse() throws Exception {
-		String data = getMessageData();
+		String data = getMessageContent();
 		System.out.println(data);
-		Assertions.assertTrue(data.contains("\"examples\" : [ \"optionals {thing} {user} {lastword}\" ]"));
+		Assertions.assertTrue(data.contains("<pre style=\"display:inline\" >optionals {thing} {user} {lastword}</pre>"));
 	}
 
 
@@ -300,4 +313,12 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		Assertions.assertFalse(data.contains("ActionSet"));
 	}
 
+
+	@Override
+	protected void assertThrowsResponse() {
+		String message = getMessageContent();
+		Assertions.assertTrue(message.contains("Error123"));
+	}
+
+	
 }

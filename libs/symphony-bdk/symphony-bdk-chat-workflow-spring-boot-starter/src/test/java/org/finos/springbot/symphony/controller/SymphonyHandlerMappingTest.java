@@ -229,4 +229,10 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	}
 
+
+	@Override
+	protected void assertThrowsResponse() {
+		Assertions.assertTrue(getMessageData().contains("Error123"));
+	}
+
 }

@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.finos.springbot</groupId>
@@ -20,16 +18,16 @@
 
 	<modules>
 		<module>libs/chat-workflow</module>
-		
+
 		<!-- test resources for chat-workflow -->
 		<module>libs/chat-workflow-testing</module>
 
 		<!-- for storing data in JSON format -->
 		<module>libs/entity-json</module>
-	
+
 		<!-- symphony support -->
 		<module>libs/symphony/entities</module>
-        <module>libs/symphony-bdk/symphony-bdk-chat-workflow-spring-boot-starter</module>
+		<module>libs/symphony-bdk/symphony-bdk-chat-workflow-spring-boot-starter</module>
 
 		<!-- teams support -->
 		<module>libs/teams/teams-chat-workflow-spring-boot-starter</module>
@@ -43,6 +41,8 @@
 		<module>demos/demo-bot</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
+		
+		<module>libs/chat-workflow-coverage</module>
 	</modules>
 
 	<properties>
@@ -133,7 +133,8 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration> <!-- add this to disable checking -->
+				<configuration>
+					<!-- add this to disable checking -->
 					<doclint>none</doclint>
 					<failOnError>false</failOnError>
 					<source>8</source>
@@ -183,13 +184,6 @@
 							<execution>
 								<goals>
 									<goal>prepare-agent</goal>
-								</goals>
-							</execution>
-							<execution>
-								<id>report</id>
-				                <phase>verify</phase>
-								<goals>
-									<goal>report-aggregate</goal>
 								</goals>
 							</execution>
 						</executions>
@@ -242,14 +236,14 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
-            <dependency>
-                <groupId>org.finos.symphony.bdk</groupId>
-                <artifactId>symphony-bdk-bom</artifactId>
-                <version>${symphony-bdk.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+
+			<dependency>
+				<groupId>org.finos.symphony.bdk</groupId>
+				<artifactId>symphony-bdk-bom</artifactId>
+				<version>${symphony-bdk.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 
 		</dependencies>
 	</dependencyManagement>

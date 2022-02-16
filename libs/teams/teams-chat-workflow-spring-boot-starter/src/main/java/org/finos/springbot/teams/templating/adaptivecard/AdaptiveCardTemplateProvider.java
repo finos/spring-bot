@@ -47,6 +47,23 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 		this.om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	}
 
+	
+	
+	
+	@Override
+	public JsonNode template(WorkResponse t) {
+		if (t == null) {
+			// in this case, just provide the button template
+			return formConverter.convert(null, Mode.DISPLAY_WITH_BUTTONS);
+
+		} else {
+			return super.template(t);
+		}
+	}
+
+
+
+
 	@Override
 	protected JsonNode getDefaultTemplate(WorkResponse r) {
 		JsonNode insert;
@@ -55,8 +72,7 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 			insert = formConverter.convert(c, Mode.FORM);
 		} else if ((WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) || (r.getMode() == WorkMode.VIEW)) {
 			Class<?> c = ((WorkResponse) r).getFormClass();
-			boolean needsButtons = needsButtons(r);						
-			insert = formConverter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
+			insert = formConverter.convert(c, Mode.DISPLAY);
 		} else {
 			throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
 		}
@@ -76,7 +92,7 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 	}
 
 	@Override
-	protected JsonNode applyTemplate(JsonNode template, WorkResponse t) {
+	public JsonNode applyTemplate(JsonNode template, WorkResponse t) {
 		
 		JsonNode _$root = om.valueToTree(getData(t));
 		ObjectNode data = om.createObjectNode();

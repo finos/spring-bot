@@ -27,7 +27,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @TestPropertySource(
 		properties = {
-			"bdk.bot.username="+AbstractHandlerMappingTest.BOT_NAME	
+			"bdk.bot.username="+AbstractHandlerMappingTest.BOT_NAME,
+			"logging.level.org.finos.springbot=TRACE"
 		})
 public abstract class AbstractHandlerMappingTest {
 	
@@ -40,14 +41,14 @@ public abstract class AbstractHandlerMappingTest {
 	public static final String CHAT_ID = "abc123";
 
 	@Autowired
-	OurController oc;
+	protected OurController oc;
 	
 	@Autowired
 	ChatRequestChatHandlerMapping hm;
 	
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(15, hm.getHandlerMethods().size());
+		Assertions.assertEquals(17, hm.getHandlerMethods().size());
 		getMappingsFor(Message.of("list"));
 	}
 
@@ -79,6 +80,18 @@ public abstract class AbstractHandlerMappingTest {
 		Assertions.assertEquals("doCommand", oc.lastMethod);
 		Assertions.assertEquals(1,  oc.lastArguments.size());
 		Assertions.assertTrue(Message.class.isAssignableFrom(oc.lastArguments.get(0).getClass()));
+	}
+	
+	@Test
+	public void checkNoMethodCall1() throws Exception {
+		execute("excluded");
+		Assertions.assertEquals(null, oc.lastMethod);
+	}
+	
+	@Test
+	public void checkNoMethodCall2() throws Exception {
+		execute("excluded2");
+		Assertions.assertEquals(null, oc.lastMethod);
 	}
 	
 	@Test
@@ -200,8 +213,10 @@ public abstract class AbstractHandlerMappingTest {
 	@Test
 	public void testThrowsError() throws Exception {
 		execute("throwsError");
-		Assertions.assertTrue(getMessageData().contains("Error123"));
+		assertThrowsResponse();
 	}
+	
+	protected abstract void assertThrowsResponse();
 	
 	@Test
 	public void testOptionalPresent() throws Exception {
