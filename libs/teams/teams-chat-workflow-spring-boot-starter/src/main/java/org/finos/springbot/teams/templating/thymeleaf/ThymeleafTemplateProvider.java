@@ -53,8 +53,7 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 			insert = converter.convert(c, Mode.FORM);
 		} else if (WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
 			Class<?> c = ((WorkResponse) r).getFormClass();
-			boolean needsButtons = needsButtons(r);						
-			insert = converter.convert(c, needsButtons ? Mode.DISPLAY_WITH_BUTTONS : Mode.DISPLAY);
+			insert = converter.convert(c, Mode.DISPLAY);
 		} else {
 			throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
 		}

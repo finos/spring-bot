@@ -12,9 +12,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.finos.springbot.testing.content.TestRoom;
-import org.finos.springbot.tools.reminders.Reminder;
-import org.finos.springbot.tools.reminders.ReminderList;
-import org.finos.springbot.tools.reminders.alerter.Scheduler;
+import org.finos.springbot.tool.reminders.Reminder;
+import org.finos.springbot.tool.reminders.ReminderList;
+import org.finos.springbot.tool.reminders.alerter.Scheduler;
 import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.history.AllHistory;

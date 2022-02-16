@@ -235,10 +235,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 		}
 		
 		protected ChatHandlerMethod createHandlerMethod(Object handler, Method method) {
-			if (handler instanceof String) {
-				return new ChatHandlerMethod((String) handler,
-						obtainApplicationContext().getAutowireCapableBeanFactory(), method);
-			}
 			return new ChatHandlerMethod(handler, method);
 		}
 		
@@ -252,16 +248,6 @@ public abstract class AbstractSpringComponentHandlerMapping<T> extends Applicati
 						handlerMethod + "\nto " + mapping + ": There is already '" +
 						existingHandlerMethod.getBean() + "' bean method\n" + existingHandlerMethod + " mapped. \n" +
 						"Try setting value / buttonText to disambiguate the annotations. ");
-			}
-		}
-
-		public void unregister(T mapping) {
-			this.readWriteLock.writeLock().lock();
-			try {
-				this.registry.remove(mapping);
-			}
-			finally {
-				this.readWriteLock.writeLock().unlock();
 			}
 		}
 	}

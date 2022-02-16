@@ -12,12 +12,12 @@
 
 	<groupId>org.finos.springbot.tools</groupId>
 	<artifactId>poll-bot</artifactId>
-	<name>Poll Bot (Demo)</name>
-	<description>Demo Chat Workflow bot for creating polls</description>
+	<name>Poll Bot</name>
+	<description>Chat Workflow Bot for Creating Polls</description>
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>example.symphony.demoworkflow.PollBot</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.springbot.tool.poll.PollBot</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>

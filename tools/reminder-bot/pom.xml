@@ -17,7 +17,7 @@
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>org.finos.springbot.tools.reminders.ReminderBotApp</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.springbot.tool.reminders.ReminderBotApp</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -35,14 +35,6 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
-
-		<!-- allow for instant persistence -->
-		<!--dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>compile</scope>
-		<dependency>-->
-		
 
 		<!-- https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-corenlp -->
 		<dependency>
@@ -75,6 +67,8 @@
 		</dependency>
 
     </dependencies>
+    
+    
 
 	<build>
 		<plugins>

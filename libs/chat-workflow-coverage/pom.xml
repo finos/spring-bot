@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>chat-workflow-coverage</artifactId>
+	<name>Chat Workflow Coverage Report</name>
+	<description>Used For Jacoco</description>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>9.0.0-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
+	</parent>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+
+	<profiles>
+    	<profile>
+			<!-- this profile generates code coverage, should be run by the ci server -->
+			<id>symphony-ci</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+						<version>0.8.2</version>
+						<executions>
+							<execution>
+								<id>report</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>report-aggregate</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<excludes>
+								<exclude>org/finos/springbot/tool/**/*</exclude>
+								<exclude>org/finos/springboot/demo/**/*</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+
+	<dependencies>
+	
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>chat-workflow</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>chat-workflow-testing</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>entity-json</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>entities</artifactId>
+			<version>9.0.0-SNAPSHOT</version>
+		</dependency>
+
+	</dependencies>
+
+</project>

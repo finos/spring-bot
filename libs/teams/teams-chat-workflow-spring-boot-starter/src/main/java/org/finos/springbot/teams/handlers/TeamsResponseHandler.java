@@ -2,6 +2,9 @@ package org.finos.springbot.teams.handlers;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
@@ -28,9 +31,11 @@ import org.springframework.util.ErrorHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
 import com.microsoft.bot.schema.Entity;
+import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.TextFormatTypes;
 
 public class TeamsResponseHandler implements ResponseHandler, ApplicationContextAware {
@@ -67,25 +72,28 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		}
 	}	
 	
-	enum TemplateType { ADAPTIVE_CARD, THYMELEAF };
+	enum TemplateType { ADAPTIVE_CARD, THYMELEAF, BOTH };
 
 	@Override
 	public void accept(Response t) {
 		
 		if (t.getAddress() instanceof TeamsAddressable) {		
+			TeamsAddressable ta = (TeamsAddressable) t.getAddress();
 
 			try {
 				if (t instanceof MessageResponse) {
+					MessageResponse mr = (MessageResponse)t;
 					Object attachment = null;
-					MarkupAndEntities mae = messageTemplater.template((MessageResponse) t);
+					MarkupAndEntities mae = messageTemplater.template(mr);
 					String content = mae.getContents();
 					List<Entity> entities = mae.getEntities();
 					
 					if (t instanceof AttachmentResponse) {
-						attachment = attachmentHandler.formatAttachment((AttachmentResponse) t);
+						attachment = attachmentHandler.formatAttachment((AttachmentResponse) mr);
 					}
 					
-					sendXMLResponse(content, attachment, (TeamsAddressable) t.getAddress(), entities, ((MessageResponse)t).getData());
+					sendXMLResponse(content, attachment, ta, entities, mr.getData())
+						.handle(handleErrorAndStorage(content, ta, mr.getData()));
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
@@ -93,12 +101,17 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
  					 
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
-						sendCardResponse(cardJson, (TeamsAddressable) t.getAddress(), wr.getData());
+						sendCardResponse(cardJson, ta, wr.getData())
+							.handle(handleErrorAndStorage(cardJson, ta, wr.getData()));
+						;
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
 						String content = mae.getContents();
 						List<Entity> entities = mae.getEntities();
-						sendXMLResponse(content, null, (TeamsAddressable) t.getAddress(), entities, wr.getData());
+						sendXMLResponse(content, null, ta, entities, wr.getData())
+							.handle(handleButtonsIfNeeded(tt, wr))
+							.handle(handleErrorAndStorage(content, ta, wr.getData()));
+						
 					}
 				}
 			} catch (Exception e) {
@@ -113,8 +126,10 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			tt = TemplateType.THYMELEAF;
 		} else if (workTemplater.hasTemplate(wr)) {
 			tt = TemplateType.ADAPTIVE_CARD;
-		} else if (requiresAdaptiveCard(wr)) {
+		} else if (wr.getMode() == WorkMode.EDIT) {
 			tt = TemplateType.ADAPTIVE_CARD;
+		} else if (ThymeleafTemplateProvider.needsButtons(wr)) {
+			tt = TemplateType.BOTH;
 		} else {
 			tt = TemplateType.THYMELEAF;
 		}
@@ -122,56 +137,66 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		return tt;
 	}
 
-	private boolean requiresAdaptiveCard(WorkResponse wr) {
-		return wr.getMode() == WorkMode.EDIT || ThymeleafTemplateProvider.needsButtons(wr);
-	}
-
-	protected void sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, Map<String, Object> data) throws Exception {		
+	protected CompletableFuture<ResourceResponse> sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, Map<String, Object> data) throws Exception {		
 		Activity out = Activity.createMessageActivity();
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
 		out.setText(xml);
-		
-		teamsConversations
-			.handleActivity(out, address)
-			.handle((rr, e) -> {
-					if (e != null) {
-						LOG.error(e.getMessage());
-						LOG.error("message:\n"+xml);
-						initErrorHandler();
-						eh.handleError(e);	
-					} else {
-						performStorage(address, data);
-					}
-					
-					return null;
-				});
-		
+		return teamsConversations.handleActivity(out, address);
 	}
 
-	protected void sendCardResponse(JsonNode json, TeamsAddressable address, Map<String, Object> data) throws Exception {		
+	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleButtonsIfNeeded(TemplateType tt, WorkResponse wr) {
+		return (rr, e) -> {
+			try {
+				if (e == null) {
+					if (tt == TemplateType.BOTH) {
+						// we also need to send the buttons.  
+						JsonNode buttonsJson = workTemplater.template(null);
+						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, wr);
+						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
+					} else {
+						return null;
+					}
+
+				} else {
+					throw e;
+				}
+			} catch (Throwable e1) {
+				throw new RuntimeException("Passing on exception", e);
+			}
+		};
+	}
+	
+	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data) {
+		return (rr, e) -> {
+				if (e != null) {
+					LOG.error(e.getMessage());
+					if (out instanceof ObjectNode){
+						try {
+							LOG.error("json:\n"+new ObjectMapper().writeValueAsString(out));
+						} catch (JsonProcessingException e1) {
+						}
+					} else {
+						LOG.error("message:\n"+out);						
+					} 
+					
+					initErrorHandler();
+					eh.handleError(e);	
+				} else {
+					performStorage(address, data);
+				}
+				
+				return null;
+			};
+	}
+
+	protected CompletableFuture<ResourceResponse> sendCardResponse(JsonNode json, TeamsAddressable address, Map<String, Object> data) throws Exception {		
 		Activity out = Activity.createMessageActivity();
 		Attachment body = new Attachment();
 		body.setContentType("application/vnd.microsoft.card.adaptive");
 		body.setContent(json);
 		out.getAttachments().add(body);
-		
-		teamsConversations.handleActivity(out, address).handle((rr, e) -> {
-			if (e != null) {
-				LOG.error(e.getMessage());
-				try {
-					LOG.error("json:\n"+new ObjectMapper().writeValueAsString(json));
-				} catch (JsonProcessingException e1) {
-				}
-				initErrorHandler();
-				eh.handleError(e);	
-			} else {
-				performStorage(address, data);
-			}
-			
-			return null;
-		});
-		
+		return teamsConversations.handleActivity(out, address);
 	}
 
 	protected void performStorage(TeamsAddressable address, Map<String, Object> data) {
