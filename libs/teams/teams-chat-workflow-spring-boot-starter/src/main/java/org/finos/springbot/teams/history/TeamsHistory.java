@@ -1,8 +1,5 @@
 package org.finos.springbot.teams.history;
 
-import java.util.Map;
-import java.util.Optional;
-
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.workflow.history.PlatformHistory;
 
@@ -16,13 +13,6 @@ import org.finos.springbot.workflow.history.PlatformHistory;
  */
 public interface TeamsHistory extends PlatformHistory<TeamsAddressable> {
 	
-	/**
-	 * Returns a unique ID that can be used to retrieve/store data.
-	 */
-	public String createStorageId();
 
-	public void store(String storageId, TeamsAddressable a, Map<String, Object> data);
-	
-	public <X> Optional<Map<String, Object>> retrieve(String storageId, TeamsAddressable a);
 	
 }

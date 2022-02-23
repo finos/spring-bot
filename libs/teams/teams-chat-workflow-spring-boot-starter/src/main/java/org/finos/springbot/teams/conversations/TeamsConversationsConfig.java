@@ -2,6 +2,7 @@ package org.finos.springbot.teams.conversations;
 
 import java.util.Properties;
 
+import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -32,9 +33,10 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 	public TeamsConversations teamsConversations(
 			BotFrameworkAdapter bfa, 
 			MicrosoftAppCredentials mac, 
-			@Value("${teams.bot.id:}") String id) {
+			@Value("${teams.bot.id:}") String id,
+			TeamsStateStorage teamsState) {
 		ChannelAccount botAccount = new ChannelAccount(id);
-		return new TeamsConversationsImpl(bfa, mac, botAccount);
+		return new StateStorageBasedTeamsConversations(bfa, mac, botAccount, teamsState);
 	}
 	
 

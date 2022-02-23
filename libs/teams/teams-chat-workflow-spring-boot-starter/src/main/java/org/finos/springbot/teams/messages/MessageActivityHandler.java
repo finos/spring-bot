@@ -13,7 +13,7 @@ import org.finos.springbot.teams.content.serialization.ParseContext;
 import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
-import org.finos.springbot.teams.history.TeamsHistory;
+import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.FormAction;
@@ -38,21 +38,21 @@ public class MessageActivityHandler extends ActivityHandler {
 	TeamsHTMLParser messageParser;
 	List<ActionConsumer> messageConsumers;
 	TeamsConversations teamsConversations;
-	TeamsHistory teamsHistory;
+	TeamsStateStorage teamsStateStorage;
 	FormConverter formConverter;
 	FormValidationProcessor validationProcessor;
 	
 	public MessageActivityHandler(
 			List<ActionConsumer> messageConsumers, 
 			TeamsConversations teamsConversations, 
-			TeamsHistory teamsHistory,
+			TeamsStateStorage teamsStateStorage,
 			TeamsHTMLParser parser,
 			FormConverter formConverter,
 			FormValidationProcessor validationProcessor) {
 		super();
 		this.messageConsumers = messageConsumers;
 		this.teamsConversations = teamsConversations;
-		this.teamsHistory = teamsHistory;
+		this.teamsStateStorage = teamsStateStorage;
 		this.messageParser = parser;
 		this.formConverter = formConverter;
 		this.validationProcessor = validationProcessor;
@@ -110,7 +110,7 @@ public class MessageActivityHandler extends ActivityHandler {
 	}
 
 	private Map<String, Object> retrieveData(String messageId, TeamsAddressable ta) {
-		return teamsHistory.retrieve(messageId, ta).orElseGet(() -> new EntityJson());
+		return teamsStateStorage.retrieve(ta.getKey()+"/"+messageId).orElseGet(() -> new EntityJson());
 	}
 
 	protected SimpleMessageAction processMessage(TurnContext turnContext, Activity a) {

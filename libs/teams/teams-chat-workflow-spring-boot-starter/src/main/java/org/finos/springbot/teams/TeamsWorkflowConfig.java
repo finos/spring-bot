@@ -12,12 +12,13 @@ import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.history.AzureBlobStorageTeamsHistory;
-import org.finos.springbot.teams.history.MemoryTeamsHistory;
+import org.finos.springbot.teams.history.StateStorageBasedTeamsHistory;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
+import org.finos.springbot.teams.state.AzureBlobStateStorage;
+import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterConfig;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplater;
@@ -37,12 +38,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.Validator;
 
 import com.azure.storage.blob.BlobServiceClient;
@@ -121,7 +122,7 @@ public class TeamsWorkflowConfig {
 			EntityMarkupTemplateProvider markupTemplater,
 			AdaptiveCardTemplateProvider formTemplater,
 			ThymeleafTemplateProvider displayTemplater,
-			TeamsHistory th,
+			TeamsStateStorage th,
 			TeamsConversations tc) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
@@ -134,32 +135,28 @@ public class TeamsWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public StorageIDResponseHandler teamsStorageIDResponseHandler(TeamsHistory th) {
+	public StorageIDResponseHandler teamsStorageIDResponseHandler(TeamsStateStorage th) {
 		return new StorageIDResponseHandler(th);
 	}
-	
-	
-	public static enum StorageType { MEMORY, BLOB, DB };
-	
+		
 	@Bean
+	@ConditionalOnProperty(name = "teams.storage.type", havingValue = "blob")
 	@ConditionalOnMissingBean
-	public TeamsHistory teamsHistory(
-			@Value("${teams.storage.type:blob}") StorageType st,
+	public TeamsStateStorage teamsAzureBlobStateStorage(
 			@Value("${teams.storage.connection-string:}") String blobStorageConnectionString,
 			@Value("${teams.storage.container:workflow-data}") String container) {
 		
-		if ((st == StorageType.MEMORY) || !StringUtils.hasText(blobStorageConnectionString)) {
-			LOG.warn("Not configuring blob storage - using memory to store conversation state.  NOT FOR PRODUCTION");
-			return new MemoryTeamsHistory();	
-		} else if (st == StorageType.BLOB) {
-			BlobServiceClient c = new BlobServiceClientBuilder()
-					.connectionString(blobStorageConnectionString)
-					.buildClient();
+		BlobServiceClient c = new BlobServiceClientBuilder()
+				.connectionString(blobStorageConnectionString)
+				.buildClient();
 			
-			return new AzureBlobStorageTeamsHistory(c, ejc, container);
-		} else {
-			throw new TeamsException("Couldn't configure TeamsHistory with "+st);
-		}
+		return new AzureBlobStateStorage(c, ejc, container);
+	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public TeamsHistory teamsHistory(TeamsStateStorage tss) {
+		return new StateStorageBasedTeamsHistory(tss);
 	}
 
 
@@ -179,9 +176,9 @@ public class TeamsWorkflowConfig {
 			TeamsHTMLParser parser, 
 			FormValidationProcessor fvp, 
 			TeamsConversations tc,
-			TeamsHistory th,
+			TeamsStateStorage teamsStateStorage,
 			TeamsFormConverter fc) {
-		return new MessageActivityHandler(messageConsumers, tc, th, parser, fc, fvp);
+		return new MessageActivityHandler(messageConsumers, tc, teamsStateStorage, parser, fc, fvp);
 	}
     
 	@Bean

@@ -1,18 +1,18 @@
 package org.finos.springbot.teams.handlers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
-import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
+import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.workflow.annotations.WorkMode;
@@ -21,6 +21,7 @@ import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandler;
+import org.finos.springbot.workflow.tags.HeaderDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -48,7 +49,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected EntityMarkupTemplateProvider messageTemplater;
 	protected AdaptiveCardTemplateProvider workTemplater;
 	protected ThymeleafTemplateProvider displayTemplater;
-	protected TeamsHistory teamsHistory;
+	protected TeamsStateStorage teamsState;
 	protected TeamsConversations teamsConversations;
 	
 	public TeamsResponseHandler( 
@@ -56,13 +57,13 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			EntityMarkupTemplateProvider messageTemplater,
 			AdaptiveCardTemplateProvider workTemplater,
 			ThymeleafTemplateProvider displayTemplater, 
-			TeamsHistory th, 
+			TeamsStateStorage th, 
 			TeamsConversations tc) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;
 		this.displayTemplater = displayTemplater;
-		this.teamsHistory = th;
+		this.teamsState = th;
 		this.teamsConversations = tc;
 	}
 	
@@ -200,9 +201,24 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	}
 
 	protected void performStorage(TeamsAddressable address, Map<String, Object> data) {
-		if (data.containsKey(StorageIDResponseHandler.STORAGE_ID_KEY)) {
-			teamsHistory.store((String) data.get(StorageIDResponseHandler.STORAGE_ID_KEY), address, data);
+		String dataKey = (String) data.get(StorageIDResponseHandler.STORAGE_ID_KEY);
+		if (dataKey != null) {
+			// first, store data for message
+			Map<String, String> tags = createStorageTags(data, address);
+			String file = address.getKey()+"/"+dataKey;
+			teamsState.store(file, tags, data);			
 		}
+	}
+	
+	protected Map<String, String> createStorageTags(Map<String, Object> data, TeamsAddressable address) {
+		Map<String, String> out = new HashMap<String, String>();
+		HeaderDetails h = (HeaderDetails) data.get(HeaderDetails.KEY);
+		if (h != null) {
+			h.getTags().forEach(t -> out.put(t, TeamsStateStorage.PRESENT));
+		}
+		
+		out.put(TeamsStateStorage.ADDRESSABLE_KEY, address.getKey());
+		return out;
 	}
 
 	@Override

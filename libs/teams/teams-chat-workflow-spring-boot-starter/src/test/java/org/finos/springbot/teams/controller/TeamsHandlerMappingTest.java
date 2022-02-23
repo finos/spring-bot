@@ -14,8 +14,8 @@ import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.conversations.TeamsConversations;
-import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
+import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.tests.controller.AbstractHandlerMappingTest;
 import org.finos.springbot.tests.controller.OurController;
@@ -78,7 +78,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	ChatRequestChatHandlerMapping hm;
 	
 	@MockBean
-	TeamsHistory th;
+	TeamsStateStorage th;
 	
 	@MockBean
 	TeamsConversations conv;
@@ -151,12 +151,12 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 		s = s.replace("@gaurav", "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"1\">gaurav</span>");
 		s = "<span itemscope=\"\" itemtype=\"http://schema.skype.com/Mention\" itemid=\"0\">"+BOT_NAME+"</span>" + s;
 		
-		mockConversations();
+		mockSetup();
 		mockTurnContext(s, null);
 		mah.onTurn(tc);
 	}
 	
-	private void mockConversations() {
+	private void mockSetup() {
 		Mockito.when(conv.getUser(Mockito.any())).thenAnswer(iom -> {
 			ChannelAccount ca = (ChannelAccount) iom.getArgument(0);
 			if (ca.getName().equals(ROB_NAME)) {
@@ -201,6 +201,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 				};
 			});	
 				
+		Mockito.when(th.createStorageId()).thenReturn("abc123");
 	}
 
 	public static <R> CompletableFuture<R> failed(Throwable error) {
@@ -285,7 +286,7 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 
 	@Override
 	protected void pressButton(String s, Map<String, Object> formData) {
-		mockConversations();
+		mockSetup();
 		mockTurnContext(s, formData);
 		mah.onTurn(tc);
 	}

@@ -2,11 +2,11 @@ package org.finos.springbot.teams.history;
 
 import java.util.Map;
 
+import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandler;
-import org.finos.springbot.workflow.tags.TagSupport;
 
 /**
  * This class is responsible for generating a unique storage ID number and adding it 
@@ -22,9 +22,9 @@ public class StorageIDResponseHandler implements ResponseHandler {
 	
 	public static final String STORAGE_ID_KEY = "storageId";
 	
-	private final TeamsHistory th;
+	private final TeamsStateStorage th;
 	
-	public StorageIDResponseHandler(TeamsHistory th) {
+	public StorageIDResponseHandler(TeamsStateStorage th) {
 		this.th = th;
 	}
 

@@ -16,6 +16,7 @@ import org.finos.springbot.tool.reminders.Reminder;
 import org.finos.springbot.tool.reminders.ReminderList;
 import org.finos.springbot.tool.reminders.alerter.Scheduler;
 import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.WorkResponse;
@@ -51,10 +52,9 @@ public class SchedulerTests {
 	@Test
 	public void handleFeedLeaderTest() {
 		scheduler = new Scheduler(responseHandlers, history, rooms);
-		when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class)))
-				.thenReturn(reminderList());
+		when(history.getLastFromHistory(Mockito.any(Class.class), Mockito.any(Addressable.class))).thenReturn(reminderList());
 
-		when(rooms.getAllAddressables()).thenReturn(createStreams());
+		when(rooms.getAllChats()).thenReturn(createStreams());
 		scheduler.everyFiveMinutesWeekday();
 		verify(responseHandlers).accept(Mockito.any(WorkResponse.class));
 		ArgumentCaptor<WorkResponse> argumentCaptor = ArgumentCaptor.forClass(WorkResponse.class);
@@ -75,7 +75,7 @@ public class SchedulerTests {
 
 	}
 
-	private Set<Addressable> createStreams() {
+	private Set<Chat> createStreams() {
 		return Collections.singleton(new TestRoom("test", "1234"));
 	}
 

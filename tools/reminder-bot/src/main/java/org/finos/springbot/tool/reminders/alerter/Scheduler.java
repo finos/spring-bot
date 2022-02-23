@@ -13,6 +13,7 @@ import org.finos.springbot.tool.reminders.Reminder;
 import org.finos.springbot.tool.reminders.ReminderList;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.history.AllHistory;
 import org.finos.springbot.workflow.response.ErrorResponse;
@@ -20,6 +21,7 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandlers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Scheduled;
 
 
@@ -38,7 +40,7 @@ public class Scheduler {
 		this.rooms = rooms;
 	}
 
-	@Scheduled(cron = "0 0/5 * * * MON-FRI")
+	@Scheduled(initialDelay = 0, fixedDelay = 100000000) //, cron = "0 0/5 * * * MON-FRI")
     public void everyFiveMinutesWeekday() {
         onAllStreams(s -> handleFeed(s));
     }
@@ -47,7 +49,7 @@ public class Scheduler {
         LOG.info("TimedAlerter waking");
 
   //      if (leaderService.isLeader(self)) {
-            Set<Addressable> allRooms = rooms.getAllAddressables();
+            Set<Chat> allRooms = rooms.getAllChats();
 			allRooms.forEach(s -> action.accept(s));
             LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
 //        } else {
