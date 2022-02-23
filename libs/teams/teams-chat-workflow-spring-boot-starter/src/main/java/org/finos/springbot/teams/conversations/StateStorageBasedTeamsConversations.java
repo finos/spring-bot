@@ -68,7 +68,7 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 		
 		Optional<Map<String, Object>> data = tss.retrieve(ADDRESSABLE_INFO);
 		
-		if (data.isEmpty()) {
+		if (!data.isPresent()) {
 			Map<String, String> tags = new HashMap<>();
 			tags.put(ADDRESSABLE_INFO, TeamsStateStorage.PRESENT);
 			tags.put(ADDRESSABLE_TYPE, to instanceof Chat ? CHAT : USER);
