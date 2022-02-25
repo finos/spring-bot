@@ -104,7 +104,5 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 - Release it.
 
 4.  Perform release on github with same number
-
-5. Test Sync
  
 
