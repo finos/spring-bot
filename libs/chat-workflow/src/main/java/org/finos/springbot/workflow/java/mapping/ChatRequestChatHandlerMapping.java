@@ -179,7 +179,7 @@ public class ChatRequestChatHandlerMapping extends AbstractSpringComponentHandle
 
 				if (a instanceof FormAction) {
 
-					if (Objects.nonNull(((FormAction)a).getData().get("form")) && ((FormAction) a).getData().get("form").getClass() != HelpPage.class) {
+					if (Objects.nonNull(((FormAction)a).getData().get("form")) && !HelpPage.class.isAssignableFrom(((FormAction) a).getData().get("form").getClass())) {
 						return null;
 					}
 
