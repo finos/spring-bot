@@ -73,8 +73,17 @@ public class HelpController implements ApplicationContextAware {
 	private CommandDescription convertToCommandDescriptions(ChatMapping<ChatRequest> hm) {
 		ChatRequest e = hm.getMapping();
 		ChatHandlerMethod m = hm.getHandlerMethod();
-		String d = StringUtils.hasText(e.description()) ? e.description() : defaultDescription(m.getMethod());
-		return new CommandDescription(e.isButtonOnHelpPage(), e.value()[0], d, e.helpOrder(), Arrays.asList(e.value()));
+		String description = StringUtils.hasText(e.description()) ? e.description() : defaultDescription(m.getMethod());
+
+		boolean addButton = e.isButtonOnHelpPage();
+		if(addButton) {
+			addButton = Arrays.stream(e.value())
+					.flatMap(cmd -> Arrays.stream(cmd.split("\\s")))
+					.map(word -> word.startsWith("{") && word.endsWith("}"))
+					.noneMatch(Boolean::booleanValue);
+		}
+
+		return new CommandDescription(addButton, e.value()[0], description, e.helpOrder(), Arrays.asList(e.value()));
 	}
 
 	@SuppressWarnings("unchecked")
