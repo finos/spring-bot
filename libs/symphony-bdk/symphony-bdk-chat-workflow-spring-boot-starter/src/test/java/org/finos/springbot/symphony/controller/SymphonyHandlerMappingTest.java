@@ -1,11 +1,12 @@
 package org.finos.springbot.symphony.controller;
 
-import static org.mockito.Mockito.atMost;
-
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.symphony.bdk.core.service.message.MessageService;
+import com.symphony.bdk.core.service.message.model.Attachment;
+import com.symphony.bdk.gen.api.model.*;
+import com.symphony.bdk.spring.events.RealTimeEvent;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.SymphonyWorkflowConfig;
@@ -35,19 +36,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.StreamUtils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.symphony.bdk.core.service.message.MessageService;
-import com.symphony.bdk.core.service.message.model.Attachment;
-import com.symphony.bdk.gen.api.model.StreamType;
-import com.symphony.bdk.gen.api.model.V4Initiator;
-import com.symphony.bdk.gen.api.model.V4Message;
-import com.symphony.bdk.gen.api.model.V4MessageSent;
-import com.symphony.bdk.gen.api.model.V4Stream;
-import com.symphony.bdk.gen.api.model.V4SymphonyElementsAction;
-import com.symphony.bdk.gen.api.model.V4User;
-import com.symphony.bdk.spring.events.RealTimeEvent;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+
+import static org.mockito.Mockito.atMost;
 
 
 @SpringBootTest(classes = {
@@ -179,12 +172,37 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 		
 		
 		Assertions.assertEquals(14, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
-		
-		Assertions.assertTrue(data.contains(" {\n"
-				+ "      \"type\" : \"org.finos.springbot.workflow.help.commandDescription\",\n"
-				+ "      \"version\" : \"1.0\",\n"
-				+ "      \"description\" : \"Display this help page\",\n"));
-		
+
+		String desc = null;
+		for(JsonNode commandNode : node.get(WorkResponse.OBJECT_KEY).get("commands")) {
+			desc = commandNode.get("description").asText();
+
+			//Button suppressed for commands with parameters
+			if("Add User To Topic".equalsIgnoreCase(desc)
+					|| "Ban Word".equalsIgnoreCase(desc)
+					|| "Do List".equalsIgnoreCase(desc)
+					|| "Process1".equalsIgnoreCase(desc)
+					|| "Process2".equalsIgnoreCase(desc)
+					|| "Remove User From Room".equalsIgnoreCase(desc)
+					|| "User Details".equalsIgnoreCase(desc)
+					|| "User Details2".equalsIgnoreCase(desc)) {
+				Assertions.assertFalse(commandNode.get("button").asBoolean());
+
+			} else if("Attachment".equalsIgnoreCase(desc) //Button enabled for commands without parameters
+					|| "Do Command".equalsIgnoreCase(desc)
+					|| "Do blah with a form".equalsIgnoreCase(desc)
+					|| "Form2".equalsIgnoreCase(desc)
+					|| "Throws Error".equalsIgnoreCase(desc)) {
+				Assertions.assertTrue(commandNode.get("button").asBoolean());
+
+			} else if("Display this help page".equalsIgnoreCase(desc)) { //help test
+				Assertions.assertTrue(commandNode.get("button").asBoolean());
+				Assertions.assertTrue(commandNode.get("type").asText()
+						.equalsIgnoreCase("org.finos.springbot.workflow.help.commandDescription")
+						&& commandNode.get("version").asText().equalsIgnoreCase("1.0"));
+			}
+		}
+
 		Assertions.assertTrue(msg.contains("Description"));
 	}
 	
