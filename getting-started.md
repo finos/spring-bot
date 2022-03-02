@@ -47,6 +47,14 @@ Chat Platforms like Symphony, Slack or Microsoft Teams are perfect for workflows
 
 4.  _Bots_ allow us to provide the interface between a workflow (expressed as Java code) on the one hand, and messages on the platform on the other.
 
+### How Can Spring Bot Help?
+
+As we will show in this tutorial, we are going to compose this workflow over different rooms, but those rooms will be on _different chat platforms_.  
+
+- Our Sales Team are going to talk with the bot on Microsoft Teams.  The sales teams will talk to the bot there to raise their expense claim.
+- Our Approvers will be in a room on Symphony.  They will receive the expense claim in _their_ restricted room, where they can approve it.
+- The bot will then reply back to the sales team, to let them know their claim was processed.
+
 ## Building Claim Bot
 
 Create a new Spring Boot project and add the dependencies + configuration for your chat platform.
