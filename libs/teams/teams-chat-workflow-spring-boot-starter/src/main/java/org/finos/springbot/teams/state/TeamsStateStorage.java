@@ -7,10 +7,15 @@ import java.util.Optional;
 public interface TeamsStateStorage {
 
 	public static final String PRESENT = "tag";
-	public static final String ADDRESSABLE_KEY = "chat";
+	public static final String ADDRESSABLE_KEY = "addressable";
 
 	public class Filter {
 		
+		@Override
+		public String toString() {
+			return "Filter [key=" + key + ", value=" + value + ", operator=" + operator + "]";
+		}
+
 		final String key;
 		final String value;
 		final String operator;
@@ -34,7 +39,7 @@ public interface TeamsStateStorage {
 	
 	public void store(String file, Map<String, String> tags, Map<String, Object> data); 
 	
-	public Iterable<Map<String, Object>> retrieve(List<Filter> tags, int maxPageSize);
+	public Iterable<Map<String, Object>> retrieve(List<Filter> tags, boolean singleResultOnly);
 
 	public Optional<Map<String, Object>> retrieve(String file);
 

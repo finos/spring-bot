@@ -47,7 +47,7 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		List<Filter> tags = new ArrayList<>();
 		tags.add(new Filter(TagSupport.formatTag(type)));
 		tags.add(new Filter(ADDRESSABLE_KEY,address.getKey(), "="));
-		return findObjectFromItem(type, tss.retrieve(tags, 1), true);
+		return findObjectFromItem(type, tss.retrieve(tags, true), true);
 
 	}
 
@@ -55,7 +55,7 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		List<Filter> tags = new ArrayList<>();
 		tags.add(new Filter(expectedTag.getName()));
 		tags.add(new Filter(ADDRESSABLE_KEY,address.getKey(), "="));
-		return findObjectFromItem(type, tss.retrieve(tags, 1), true);
+		return findObjectFromItem(type, tss.retrieve(tags, true), true);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -64,7 +64,7 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		while (it.hasNext()) {
 			Map<String, Object> map = it.next();
 			for (Object val : map.values()) {
-				if (val.getClass().getName().equals(type.getName())) {
+				if (type.isAssignableFrom(val.getClass())) {
 					return Optional.of((X) val);
 				}
 			}
@@ -86,7 +86,7 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		while (it.hasNext()) {
 			Map<String, Object> map = it.next();
 			for (Object val : map.values()) {
-				if (val.getClass().getName().equals(type.getName())) {
+				if (type.isAssignableFrom(val.getClass())) {
 					out.add((X) val);
 				}
 			}
@@ -100,7 +100,7 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		tags.add(new Filter(expectedTag));
 		tags.add(new Filter(ADDRESSABLE_KEY, directory, "="));
 		tags.add(new Filter(TIMESTAMP_KEY, ""+sinceTimestamp , ">="));
-		return findObjectsFromItems(type, tss.retrieve(tags, 20));
+		return findObjectsFromItems(type, tss.retrieve(tags, false));
 	}
 
 	@Override

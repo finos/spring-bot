@@ -68,7 +68,7 @@ import com.microsoft.bot.schema.ChannelAccount;
 	ThymleafEngineConfig.class,
 	AdaptiveCardConverterConfig.class,
 	ThymeleafConverterConfig.class,
-	TeamsConversationsConfig.class
+	TeamsConversationsConfig.class,
 })
 
 

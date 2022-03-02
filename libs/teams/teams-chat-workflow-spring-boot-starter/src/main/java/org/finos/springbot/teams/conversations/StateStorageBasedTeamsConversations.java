@@ -1,5 +1,7 @@
 package org.finos.springbot.teams.conversations;
 
+import static org.finos.springbot.teams.state.TeamsStateStorage.ADDRESSABLE_KEY;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,17 +42,17 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 	@Override
 	public Set<Addressable> getAllAddressables() {
 		List<Filter> filters = new ArrayList<>();
-		filters.add(new Filter(ADDRESSABLE_INFO, "tag", "="));
-		Iterable<Map<String, Object>> it = tss.retrieve(filters, 20);
+		filters.add(new Filter(ADDRESSABLE_INFO));
+		Iterable<Map<String, Object>> it = tss.retrieve(filters, false);
 		return new HashSet<>(StateStorageBasedTeamsHistory.findObjectsFromItems(Addressable.class, it));
 	}
 
 	@Override
 	public Set<TeamsChat> getAllChats() {
 		List<Filter> filters = new ArrayList<>();
-		filters.add(new Filter(ADDRESSABLE_INFO, "tag", "="));
+		filters.add(new Filter(ADDRESSABLE_INFO));
 		filters.add(new Filter(ADDRESSABLE_TYPE, CHAT, "="));
-		Iterable<Map<String, Object>> it = tss.retrieve(filters, 20);
+		Iterable<Map<String, Object>> it = tss.retrieve(filters, false);
 		return new HashSet<>(StateStorageBasedTeamsHistory.findObjectsFromItems(TeamsChat.class, it));
 	}
 
@@ -66,12 +68,13 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 	protected void ensureRoomRecorded(TeamsAddressable to) {
 		String file = to.getKey()+"/addressable";
 		
-		Optional<Map<String, Object>> data = tss.retrieve(ADDRESSABLE_INFO);
+		Optional<Map<String, Object>> data = tss.retrieve(file);
 		
 		if (!data.isPresent()) {
 			Map<String, String> tags = new HashMap<>();
 			tags.put(ADDRESSABLE_INFO, TeamsStateStorage.PRESENT);
 			tags.put(ADDRESSABLE_TYPE, to instanceof Chat ? CHAT : USER);
+			tags.put(ADDRESSABLE_KEY, to.getKey());
 			EntityJson ej = new EntityJson();
 			ej.put(ADDRESSABLE_INFO, to);
 			tss.store(file, tags, ej);

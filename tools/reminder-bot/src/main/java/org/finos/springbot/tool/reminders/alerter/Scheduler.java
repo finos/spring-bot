@@ -40,7 +40,7 @@ public class Scheduler {
 		this.rooms = rooms;
 	}
 
-	@Scheduled(initialDelay = 0, fixedDelay = 100000000) //, cron = "0 0/5 * * * MON-FRI")
+	@Scheduled(cron = "0 0/5 * * * MON-FRI")
     public void everyFiveMinutesWeekday() {
         onAllStreams(s -> handleFeed(s));
     }
