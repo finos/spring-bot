@@ -33,18 +33,15 @@ layout: home
 <section class="front-page"><div class="inner" markdown="1">
 
 
-# Platform Bindings
+# How It Works
 
-Spring Bot is designed to be an _abstraction layer_ on top of other Java bot libraries.  i.e it handles the concerns above, and leaves the connectivity and API logic to lower-level libraries.  
+SpringBot is designed to be an _abstraction layer_ on top of other Java bot libraries.  i.e it handles the concerns above, and leaves the connectivity and API logic to lower-level libraries.  
 
 This means that you can build bots in Spring Bot that will work **concurrently** on different chat-platforms.
 
 Currently we have just have bindings for [Symphony](symphony.md) and  [Microsoft Teams](https://www.microsoft.com/en-GB/microsoft-teams/group-chat-software).
 
-</div></section>
-
-
-<section class="front-page-alt"><div class="inner">
+</div>
 <div class="flex">
 <div class="item" style="flex-basis: 100%"><h1>One Quick Example</h1></div>
 <div class="item" markdown="1">
@@ -192,21 +189,7 @@ This is Microsoft Teams Mobile again.
  
 </div></div></section>
 
-<section class="front-page-alt"><div class="inner" markdown="1">
-
-
-# Platform Bindings
-
-Spring Bot is designed to be an _abstraction layer_ on top of other Java bot libraries.  i.e it handles the concerns above, and leaves the connectivity and API logic to lower-level libraries.  
-
-This means that you can build bots in Spring Bot that will work **concurrently** on different chat-platforms.
-
-Currently we have just have bindings for [Symphony](symphony.md) and  [Microsoft Teams](https://www.microsoft.com/en-GB/microsoft-teams/group-chat-software).
-
-</div></section>
-
-
-<section class="front-page"><div class="inner flex"><aside markdown="1">
+<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
 
 Read the [Getting Started](getting-started) tutorial to see how...
 
