@@ -200,11 +200,11 @@ Allows you to poll the members of a room, providing a question and a list of ans
 
 </div></div></section>
 
-<section class="footer"><div class="inner footer">
+<section class="footer">
    <a href="https://db.com"><img id="dbicon" src="assets/images/index/Deutsche_Bank-Logo.svg" class="corp-logo" alt="DB" title="Deutsche Bank">
   </a>
   <a href="https://www.finos.org"><img id="finosicon" src="assets/images/index/finos_wordmark.svg"  class="corp-logo" alt="FINOS" title="FINOS">
   </a>
   <a href="https://kite9.com"><img id="kite9icon" src="assets/images/index/kite9logo.svg"  class="corp-logo" alt="DB" title="Kite9">
   </a>
-</div></section>
+</section>
