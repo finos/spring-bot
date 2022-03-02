@@ -171,9 +171,9 @@ This button will then appear on my To-Do List.
 
 Spring Bot is designed to be an _abstraction layer_ on top of other Java bot libraries.  i.e it handles the concerns above, and leaves the connectivity and API logic to lower-level libraries.  
 
-This means that you can build bots in Spring Bot that will work concurrently on different chat-platforms.
+This means that you can build bots in Spring Bot that will work **concurrently** on different chat-platforms.
 
-Currently we have just have bindings for [Symphony](symphony.md) with MS Teams coming next.
+Currently we have just have bindings for [Symphony](symphony.md) and  [Microsoft Teams](https://www.microsoft.com/en-GB/microsoft-teams/group-chat-software).
 
 </div></section>
 
