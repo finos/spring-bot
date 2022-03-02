@@ -105,6 +105,12 @@ When I type `/new` the bot responds with an empty To-Do list like so.
 
 ![Empty To-Do list](/assets/images/index/new.png)
 
+</div><div class="item"  markdown="1">
+
+This is the same code running on Microsoft Teams mobile.
+
+</div><div class="item"  markdown="1">
+
 ![Empty To-Do list Teams](/assets/images/index/new-teams.png)
 
 </div><div class="item"  markdown="1">
@@ -140,11 +146,19 @@ This button will then appear on my To-Do List.
 
 ![Add Button](/assets/images/index/add.png)
 
+</div><div class="item"  markdown="1">
+
+Pressing that button gives me a form to fill in, containing the `NewItemDetails` fields.
+
+This is Microsoft Teams Mobile again.
+
+</div><div class="item"  markdown="1">
+
 ![Add Button](/assets/images/index/add-teams.jpeg)
 
 </div><div class="item"  markdown="1">
 
-... and so on. [Tutorial continues here.](getting-started.md)
+... and so on. [Tutorial continues here.](symphony.md)
 
 </div></div>
 

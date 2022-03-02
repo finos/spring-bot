@@ -5,7 +5,7 @@ nav_order: 3
 nav-menu: true
 ---
 
-# A To-Do List Using Spring Bot on Symphony
+# A To-Do List Using Spring Bot
 {: no_toc }
 
 <details open markdown="block">
@@ -18,7 +18,7 @@ nav-menu: true
 </details>
 
 This tutorial will take you through the process of creating a new Spring Bot application
-and running it inside the Symphony container.
+and running it inside the Symphony container.  Note: the code for this bot will also work on Microsoft Teams, but you'll have to follow the steps on the [Teams Tutorial](Microsoft-Teams.md) to make it work there too. 
 
 We're going to build a "To Do" list with the following features:
 
