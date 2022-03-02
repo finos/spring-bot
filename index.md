@@ -79,7 +79,9 @@ This creates a new command for the bot.  When I type `/help`, the bot responds w
 
 </div><div class="item"  markdown="1">
 
-![Help Page](/assets/images/index/help.png)
+![Help Page on Symphony](/assets/images/index/help.png)
+
+![Help Page on Teams](/assets/images/index/help-teams.jpeg)
 
 </div><div class="item"  markdown="1">
 
@@ -88,6 +90,8 @@ When I type `/new` the bot responds with an empty To-Do list like so.
 </div><div class="item"  markdown="1">
 
 ![Empty To-Do list](/assets/images/index/new.png)
+
+![Empty To-Do list Teams](/assets/images/index/new-teams.png)
 
 </div><div class="item"  markdown="1">
 
@@ -121,6 +125,8 @@ This button will then appear on my To-Do List.
 </div><div class="item"  markdown="1">
 
 ![Add Button](/assets/images/index/add.png)
+
+![Add Button](/assets/images/index/add-teams.jpeg)
 
 </div><div class="item"  markdown="1">
 

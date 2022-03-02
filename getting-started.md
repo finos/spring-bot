@@ -177,7 +177,7 @@ If I get the amount _wrong_, I have to fix the validation error:
 
 ![Validation Failure](assets/images/getting-started/validation.png)
 
-But, if the form validates, the a new `OpenedClaim` is returned.  
+But, if the form validates, the a new `OpenedClaim` is returned.  This is the Symphony view:  
 
 ![Claim Created](assets/images/getting-started/created.png)
 
