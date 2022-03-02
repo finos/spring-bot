@@ -165,9 +165,13 @@ So far, we have no way for the user to submit this form.  So let's add a button 
   }
 ```
 
-Let's see how that works.   When I type `/open`, the Claim Bot responds with a form:
+Let's see how that works.   When I type `/open` on Symphony, the Claim Bot responds with a form:
 
 ![Starting A Claim](assets/images/getting-started/open.png)
+
+On Microsoft Teams, it looks like this:
+
+![Starting A Claim](assets/images/getting-started/open-teams.png)
 
 If I get the amount _wrong_, I have to fix the validation error:
 
@@ -194,7 +198,7 @@ In Spring Bot, private rooms are represented with `Chat` objects.   We can creat
 ```java
 
   @Autowired
-  Conversations conversations;                                                              (1)
+  AllConversations conversations;                                                           (1)
  
   @ChatButton(value = NewClaim.class,  buttonText = "add")                                 
   public List<Response> add(NewClaim sc, User u, Addressable from) {                        (2)
@@ -229,16 +233,18 @@ In order for this to work, we have to go and create our room on the chat platfor
 
 Let's add the `Approve` button to the `OpenedClaim` form, so that people in the `Claim Approval Room` can approve the claim.  Again, this goes into our `ClaimController` class:
 
-
 ```java
   @ChatButton(value=OpenedClaim.class, buttonText = "Approve", rooms={"Claim Approval Room"})(1)
-  public OpenedClaim approve(OpenedClaim c, User currentUser) {
+  public List<Response> approve(OpenedClaim c, User currentUser) {
     if (c.status == Status.OPEN) {                                                           (2)
       c.approvedBy = currentUser;
       c.status = Status.APPROVED;
-      return c;
+      		return Arrays.asList(                                                           (3)
+					new WorkResponse(c.author, c, WorkMode.VIEW),
+					new WorkResponse(approvalRoom, c, WorkMode.VIEW));
+	
     } else {
-      throw new RuntimeException("Claim should be in OPEN mode");                            (3)
+      throw new RuntimeException("Claim should be in OPEN mode");                            (4)
     }
   }
 ```
@@ -246,7 +252,9 @@ Let's add the `Approve` button to the `OpenedClaim` form, so that people in the 
 Notes:
 1.  Here, we are adding a button called `Approve` to the `OpenedClaim` form.   The `rooms` part of the annotation is a check to make sure the button _only appears_ in the `Claim Approval Room`.
 2.  This is the happy path - when someone presses the `Approve` button, it sets the `approvedBy` field and changes the status.
-3.  This is the bad path - we throw an exception if the `OpenedClaim` is in the wrong state.
+3.  Approving the claim sends the approved claim to two places - one copy is returned back to the approval room, the other is sent back to the original author of the claim.
+4.  This is the bad path - we throw an exception if the `OpenedClaim` is in the wrong state.
+
 
 Let's see that happening.  Here's our `Claim Approval Room` with the `OpenedClaim` message in it:
 
@@ -259,6 +267,10 @@ Here it is once we've approved it (note the status changes to APPROVED:
 And, here's what happens if we hit the "Approve" button again:
 
 ![Double Approval](/assets/images/getting-started/error.png)
+
+Meanwhile, the orignal author of the claim (who might have created it on Teams) gets their copy:
+
+![Approved Claim in Teams](/assets/images/getting-started/approved-teams.png)
 
 ### 6. Next Steps
  
@@ -275,5 +287,9 @@ Hopefully in this short tutorial, you can see how you would achieve these steps.
 The bot _always_ supports the user typing `/help`, which will reveal the commands relevant to the current room (via inspecting the `@ChatRequest` annotation.  e.g.
 
 ![Help](/assets/images/getting-started/help.png)
+
+In Teams this looks like this:
+
+![Help](/assets/images/getting-started/help-teams.png)
 
 Depending on the arguments of the command, they may be shows as buttons, or suggestions of what to type.
