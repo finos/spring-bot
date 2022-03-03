@@ -16,10 +16,11 @@ nav-menu: true
 {:toc}
 </details>
 
-todo;
-mention todo list.
+# Choice of Chat Platforms
 
-more details in the javadocs.
+- To enable Symphony support, add the Symphony spring boot starter and add `-Dspring.profiles.active=symphony` (or add to `application.yml`)
+- To enable Teams support, add the Teams spring booXTt starter and add `-Dspring.profiles.active=teams` (or add to `application.yml`)
+- To support both platforms concurrently, add both starters and add `-Dspring.profiles.active=symphony,teams` (or add to `application.yml`)
 
 # Basic Workflow
 
@@ -393,7 +394,7 @@ Supplied, there are 3 main things you can return from your controller methods.  
 |`List<Response>` instance|*All* of those `Response`s are sent to the `ResponseHandlers` bean.|
 |`@Work`-annotated object|This is converted into a `Response` by the `WorkResponseConverter`, which considers templating from `@ChatResponseBody` and returns into the chat it came from|
 
-## `ResponseHandlers`
+## Response Handlers
 
 Instead of relying on the return object, you can `@Autowire` an instance of `ResponseHandlers` into your controller. 
 
@@ -435,7 +436,7 @@ We use the `Content` class structure for parsing messages _arriving_ into your c
 
 # Conversations API
 
-You can get details of the chats and 1-1 conversations your bot is engaged in by `@Autowire`-ing the `Conversations` bean into your code.  If you are working with multiple chat platforms concurrently, you may need to wire in a platform-specific bean, such as `SymphonyConversations`.  This gives you functionality such as:
+You can get details of the chats and 1-1 conversations your bot is engaged in by `@Autowire`-ing the `AllConversations` bean into your code.  If you are working with multiple chat platforms concurrently, you may need to wire in a platform-specific bean, such as `SymphonyConversations` or `TeamsConversations`.  This gives you functionality such as:
 
  - Find out all the conversations containing your bot
  - Creating new rooms/topics (i.e. a `Chat`)
@@ -443,7 +444,7 @@ You can get details of the chats and 1-1 conversations your bot is engaged in by
  - Finding out who is an administrator for a given `Chat`.
 
 ```java
-public interface Conversations {
+public interface AllConversations {
 
   /**
    * Returns all the conversations that the bot is a member of.
@@ -470,25 +471,21 @@ As an example, this API is used by the [Reminder Bot](/reminder-bot), whose `Tim
 ```java
   public void onAllStreams(Consumer<Addressable> action) {
         LOG.info("TimedAlerter waking");
-
-        if (leaderService.isLeader(self)) {
-            Set<Addressable> allRooms = rooms.getAllConversations();
-            allRooms.forEach(s -> action.accept(s));
-            LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
-        } else {
-            LOG.info("Not leader, sleeping");
-        }
+        Set<Addressable> allRooms = conversationsApi.getAllConversations();
+        allRooms.forEach(s -> action.accept(s));
+        LOG.info("TimedAlerter processed " + allRooms.size() + " streams ");
     }
 ```
 
-# History API
 
-You can pull back historic data from any `Addressable` by `@Autowire`-ing the `History` bean into your code.  If you are working with multiple chat platforms concurrently, you may need to wire in a platform-specific bean, such as `SymphonyHistory`.  This gives you functionality such as:
+# History
+
+You can pull back historic data from any `Addressable` by `@Autowire`-ing the `AllHistory` bean into your code.  If you are working with multiple chat platforms concurrently, you may need to wire in a platform-specific bean, such as `SymphonyHistory` or `TeamsHistory`.  This gives you functionality such as:
 
  - `getLastFromHistory`: returns an `Optional` containing the last `@Work` annotated-object in a given `Addressable` history of a particular class.
  - `getFromHistory`: returns a `List` containing all of the `@Work` annotated-objects in a given `Addressable` history of a particular class.
 
-As an example of use, in the [Poll Bot]() there is a button to "End The Poll Now", which is implemented in this way:
+As an example of use, in the Poll Bot there is a button to "End The Poll Now", which is implemented in this way:
 
 ```java
   @ChatButton(value = Poll.class, showWhen = WorkMode.VIEW, buttonText = "End Poll Now")
@@ -498,6 +495,8 @@ As an example of use, in the [Poll Bot]() there is a button to "End The Poll Now
     // further code
     
 ```
+
+The mechanism for storing history varies on the implementation.  For Teams, history is stored in an Azure Blob Storage, wheras with Symphony, the JSON payload of chat messages forms the history.
 
 # Addressing Checkers
 
@@ -517,19 +516,32 @@ or prefix the command with a slash, like so:
 
 You can override the default `AddressingChecker` bean with your your own implementation if you want to.
 
-# Templating `@Work` Objects
+# Templating
 
-When you send a POJO with the `@Work` annotation to a chat room, it will get rendered in the room in a platform-specific way.  As discussed before, for Symphony this means a [Freemarker](https://https://freemarker.apache.org) template.  On MS Teams this means an [Adaptive Card](https://adaptivecards.io).  The `SymphonyResponseHandler` or `TeamsResponseHandler` will load the appropriate template file based on the template name from the `WorkResponse` or `@ChatResponseBody` annotation.
+## Templating `Content` Objects in a `MessageResponse`
 
-If there is no template, one will be constructed.  This is done by reflecting on the fields in the `@Work` POJO's class, and building a static template from the class definition.    This provides you with a quick way to visualize or edit your data on the chat platfrom.
+When you send a `MessageResponse` to a chat, the mesage will get rendered in a chat-platform-specific way. For Symphony this means a rendering to MessageML, whereas Teams has an XML format for this.   This is handled by the `SymphonyMarkupWriter` and `TeamsMarkupWriter` respectively.
+
+## Templating `@Work` Objects in a `WorkResponse`
+
+When you send a POJO with the `@Work` annotation to a chat room, it will get rendered in the room in a platform-specific way.  As discussed before, for Symphony this means a [Freemarker](https://https://freemarker.apache.org) template.  On MS Teams this means an [Adaptive Card](https://adaptivecards.io) or in Teams' XML format.  Adaptive Cards are used when the response has input fields, (i.e. edit-mode) whereas XML format is used when the result is view mode.  XML Format supports lists and tables which make is more flexible for data displays.   
+
+## Naming Templates 
+
+The `SymphonyResponseHandler` or `TeamsResponseHandler` will load the appropriate template file based on the template name from the `WorkResponse` or `@ChatResponseBody` annotation.  To do this, they use `TemplateProviders`, which can provide a template in one of the formats we've mentioned.  
+
+If there is no template, one will be constructed.  This is done by reflecting on the fields in the `@Work` POJO's class, and building a static template from the class definition.    This provides you with a quick way to visualize or edit your data on the chat platform.
 
 ## Customizing Templates
 
 You can take these generated templates, customize them and save them into your project.  This is useful if you want to follow a particular house style, want to provide instructions, or customize the layout of the form.
 
-| Platform           | Location                         | Example                         |
-|--------------------|----------------------------------|---------------------------------|
-|Symphony            |`classpath:/templates/symphony/*.ftl` |  'template-name' -> `classpath:/templates/symphony/template-name.ftl` |
+| Platform                          | Location                         | Example                         |
+|-----------------------------------|----------------------------------|---------------------------------|
+|Symphony   (View and Edit)         |`classpath:/templates/symphony/*.ftl` |  'template-name' -> `classpath:/templates/symphony/template-name.ftl` |
+|Teams      (Edit)                  |`claspspath:/templates/teams/*.json`  |  'template-name' -> `classpath:/templates/teams/template-name.json` |
+|Teams      (View)                  |`claspspath:/templates/teams/*.html`  |  'template-name' -> `classpath:/templates/teams/template-name.html` |
+
 
 ## Validation
 
@@ -567,8 +579,6 @@ If you want to customize the way in which the Freemarker templates are created (
 ## Limitations
 
 At the moment, the forms are displayed by walking the class structure and inspecting the declared types (not instance types).  For that reason, polymorphism won't work: only the fields in declared types will be shown.
-
-
 
 # Help Controller
 

@@ -30,12 +30,26 @@ layout: home
   
 </div></div></section>
 
+<section class="front-page"><div class="inner" markdown="1">
+
+
+# Platform Bindings
+
+Spring Bot is designed to be an _abstraction layer_ on top of other Java bot libraries.  i.e it handles the concerns above, and leaves the connectivity and API logic to lower-level libraries.  
+
+This means that you can build bots in Spring Bot that will work **concurrently** on different chat-platforms.
+
+Currently we have just have bindings for [Symphony](symphony.md) and  [Microsoft Teams](https://www.microsoft.com/en-GB/microsoft-teams/group-chat-software).
+
+</div></section>
+
+
 <section class="front-page"><div class="inner">
 <div class="flex">
 <div class="item" style="flex-basis: 100%"><h1>One Quick Example</h1></div>
 <div class="item" markdown="1">
 
-Here is an excerpt from the [To-Do Tutorial](getting-started.md).  
+Here is an excerpt from the [To-Do Tutorial](symphony.md), with screenshots from Symphony and Microsoft Teams.  
 
 Let's say I have a simple POJO called `ToDoItem` (containing fields like `Description`, `Creator` etc.) and a further POJO called `ToDoList` which looks like this.
 
@@ -79,7 +93,9 @@ This creates a new command for the bot.  When I type `/help`, the bot responds w
 
 </div><div class="item"  markdown="1">
 
-![Help Page](/assets/images/index/help.png)
+![Help Page on Symphony](/assets/images/index/help.png)
+
+![Help Page on Teams](/assets/images/index/help-teams.jpeg)
 
 </div><div class="item"  markdown="1">
 
@@ -88,6 +104,14 @@ When I type `/new` the bot responds with an empty To-Do list like so.
 </div><div class="item"  markdown="1">
 
 ![Empty To-Do list](/assets/images/index/new.png)
+
+</div><div class="item"  markdown="1">
+
+This is the same code running on Microsoft Teams mobile.
+
+</div><div class="item"  markdown="1">
+
+![Empty To-Do list Teams](/assets/images/index/new-teams.png)
 
 </div><div class="item"  markdown="1">
 
@@ -124,7 +148,17 @@ This button will then appear on my To-Do List.
 
 </div><div class="item"  markdown="1">
 
-... and so on. [Tutorial continues here.](getting-started.md)
+Pressing that button gives me a form to fill in, containing the `NewItemDetails` fields.
+
+This is Microsoft Teams Mobile again.
+
+</div><div class="item"  markdown="1">
+
+![Add Button](/assets/images/index/add-teams.jpeg)
+
+</div><div class="item"  markdown="1">
+
+... and so on. [Tutorial continues here.](symphony.md)
 
 </div></div>
 
@@ -158,21 +192,7 @@ This button will then appear on my To-Do List.
  
 </div></div></section>
 
-<section class="front-page"><div class="inner" markdown="1">
-
-
-# Platform Bindings
-
-Spring Bot is designed to be an _abstraction layer_ on top of other Java bot libraries.  i.e it handles the concerns above, and leaves the connectivity and API logic to lower-level libraries.  
-
-This means that you can build bots in Spring Bot that will work concurrently on different chat-platforms.
-
-Currently we have just have bindings for [Symphony](symphony.md) with MS Teams coming next.
-
-</div></section>
-
-
-<section class="front-page-alt"><div class="inner flex"><aside markdown="1">
+<section class="front-page"><div class="inner flex"><aside markdown="1">
 
 Read the [Getting Started](getting-started) tutorial to see how...
 
@@ -200,7 +220,11 @@ Allows you to poll the members of a room, providing a question and a list of ans
 
 </div></div></section>
 
-<section class="footer"><div class="inner footer">
-  <a href="https://www.finos.org"><img id="finosicon" src="assets/images/index/finos_wordmark.svg" height="75px" alt="FINOS" title="FINOS">
+<section class="footer">
+   <a href="https://db.com"><img id="dbicon" src="assets/images/index/Deutsche_Bank-Logo.svg" class="corp-logo" alt="DB" title="Deutsche Bank">
   </a>
-</div></section>
+  <a href="https://www.finos.org"><img id="finosicon" src="assets/images/index/finos_wordmark.svg"  class="corp-logo" alt="FINOS" title="FINOS">
+  </a>
+  <a href="https://kite9.com"><img id="kite9icon" src="assets/images/index/kite9logo.svg"  class="corp-logo" alt="DB" title="Kite9">
+  </a>
+</section>

@@ -18,7 +18,7 @@ body {
 }
 
 
-// WEIRD FRONT-PAGE SECTIONS
+/* WEIRD FRONT-PAGE SECTIONS */
 
 section {
    
@@ -97,7 +97,7 @@ h1 {
 }
 
 
-// LOGO STUFF
+/* LOGO STUFF */
   
 .logo-surround {
   display: flex;
@@ -116,13 +116,20 @@ h1 {
    text-align: center;
  }
  
- .logo-bot {
+.logo-bot {
    color: #0099FF; 
  }
  
- .logo-image img {
+.logo-image img {
    height: 70px;
    background-color: white;
    border-radius: 6px;
    padding: 10px;
  }
+ 
+/* CORP IMAGES */
+ 
+.corp-logo {
+	width: 140px;
+	height: 140px;
+}
