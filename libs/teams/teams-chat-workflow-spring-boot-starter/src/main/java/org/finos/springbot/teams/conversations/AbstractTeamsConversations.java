@@ -3,7 +3,6 @@ package org.finos.springbot.teams.conversations;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
@@ -14,11 +13,8 @@ import org.finos.springbot.teams.content.TeamsChat;
 import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
-import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
@@ -33,15 +29,22 @@ import com.microsoft.bot.schema.ConversationParameters;
 import com.microsoft.bot.schema.ConversationReference;
 import com.microsoft.bot.schema.ResourceResponse;
 
-public class TeamsConversationsImpl implements TeamsConversations {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(TeamsConversationsImpl.class);
+/**
+ * Teams doesn't seem to support lookup of the list of conversations a bot is 
+ * involved in, which makes it impossible to write getAllAddressables().
+ * 
+ * This is left as a problem for the subclass ;)
+ * 
+ * @author rob@kite9.com
+ *
+ */
+public abstract class AbstractTeamsConversations implements TeamsConversations {
 	
 	private MicrosoftAppCredentials mac;
 	private BotFrameworkAdapter bfa;
 	private ChannelAccount botAccount;
 	
-	public TeamsConversationsImpl(BotFrameworkAdapter bfa, MicrosoftAppCredentials mac, ChannelAccount botAccount) {
+	public AbstractTeamsConversations(BotFrameworkAdapter bfa, MicrosoftAppCredentials mac, ChannelAccount botAccount) {
 		super();
 		this.mac = mac;
 		this.bfa = bfa;
@@ -63,29 +66,6 @@ public class TeamsConversationsImpl implements TeamsConversations {
 	@Override
 	public boolean isSupported(User u) {
 		return u instanceof TeamsUser;
-	}
-
-	@Override
-	public Set<Addressable> getAllAddressables() {
-		try {
-			return getConversations().getConversations().get().getConversations().stream()
-					.map(c -> new TeamsMultiwayChat(c.getId(), ""))
-					.collect(Collectors.toSet());
-		} catch (Exception e) {
-			throw new TeamsException("Couldn't do getAllAddressables", e);
-		}
-	}
-
-	@Override
-	public Set<TeamsChat> getAllChats() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public TeamsChat getExistingChat(String name) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -237,8 +217,11 @@ public class TeamsConversationsImpl implements TeamsConversations {
 
 	public CompletableFuture<ResourceResponse> handleActivity(Activity activity, TeamsAddressable to) {
 		TurnContext ctx = getWorkingTurnContext(to);
+		ensureRoomRecorded(to);
 		return ctx.sendActivity(activity);
 	}
+
+	protected abstract void ensureRoomRecorded(TeamsAddressable to);
 
 	private ConversationReference createConversationReference(TeamsAddressable address) {
 		ConversationAccount ca = address == null ? null : getConversationAccount(address);
