@@ -194,3 +194,20 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - Beta version of Spring Bot
  - Microsoft Teams Connectivity
  - Dependency on Symphony BDK
+
+# Mar 3 2022
+ - Alpha version of SpringBot 9.x
+ - #252 - Bean Validation working in Symphony and Teams
+ - #253 - Tutorial For MS Teams
+ - #242 - Code coverage properly checking related modules
+ - #246 - Fixed User resolution in workflow resolvers
+ - #248 - Teams, Symphony starters chosen based on active profiles
+ - #220 - Platform agnostic workflow annotation
+ - #284 - Teams to display buttons in view Mode
+ - #245 - History/Conversations APIs working for teams
+ - #235 - ChatButton visibility determined by room
+ - #286 - Teams Requests not sent multiple times
+ - #254 - Adpative Card templating for Teams
+ - #244 - Conversations API for Teams
+ - #247 - Updated Bots to work with teams (except Poll Bot)
+ - #219 - MessageMLWriter now works with all Content objects
