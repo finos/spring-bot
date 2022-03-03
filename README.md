@@ -4,7 +4,7 @@
 
 |Version          |Number                 |Status                  |
 |-----------------|-----------------------|------------------------|
-|Spring Bot            |(unreleased)      |![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg)
+|Spring Bot            |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.springbot/spring-bot)]      |![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg)
 |Symphony Java Toolkit |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)|![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg?branch=symphony-java-toolkit-master)|
 
 # Main Documentation
@@ -91,11 +91,12 @@ In order to do a release:
 2. On Releaser's machine:
 
 ```
+# on spring-bot-master branch
 mvn clean test -P symphony-ci
 mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
 mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
-# then push to git
+# then push to git (spring-bot-develop branch)
 ```
 
 3.  On `oss.sonatype.org`
