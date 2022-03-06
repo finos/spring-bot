@@ -6,6 +6,7 @@ import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +29,15 @@ public class DemoController {
                 .map(word -> word.getText())
                 .collect(Collectors.joining(" "));
 
+        if(!StringUtils.hasText(strMsg)) {
+            strMsg = "Hello";
+        }
+
         return new MessageResponse(a, "Bot echoing - " + strMsg);
+    }
+
+    @ChatRequest(value = "botEcho", helpOrder = 2, description = "To test help order and expandable cards")
+    public MessageResponse withChatButton(Addressable a) {
+        return new MessageResponse(a, "Echo echo...");
     }
 }
