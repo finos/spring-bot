@@ -42,7 +42,12 @@ public @interface ChatRequest {
 	 * Whether or not to show this command on the help menu
 	 */
 	boolean addToHelp() default true;
-		
+
+	/**
+	 * Position of this command on the help menu
+	 */
+	int helpOrder() default Integer.MAX_VALUE;
+
 	/**
 	 * Whether this command can be exposed as a button Help Page
 	 * @return
