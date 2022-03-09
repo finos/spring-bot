@@ -10,13 +10,15 @@ public class CommandDescription {
 	private String description;
 	private String buttonName;
 	private boolean isButton;
+	private int helpOrder;
 	private List<String> examples;
 
-	public CommandDescription(boolean isButton, String buttonName, String description, List<String> examples) {
+	public CommandDescription(boolean isButton, String buttonName, String description, int helpOrder, List<String> examples) {
 		super();
 		this.isButton = isButton;
 		this.buttonName = buttonName;
 		this.description = description;
+		this.helpOrder = helpOrder;
 		this.examples = examples;
 	}
 
@@ -68,4 +70,17 @@ public class CommandDescription {
 		this.buttonName = buttonName;
 	}
 
+	/**
+	 * @return the position in help menu
+	 */
+	public int getHelpOrder() {
+		return helpOrder;
+	}
+
+	/**
+	 * @param helpOrder the position of command to set in help menu
+	 */
+	public void setHelpOrder(int helpOrder) {
+		this.helpOrder = helpOrder;
+	}
 }

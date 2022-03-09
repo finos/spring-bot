@@ -52,8 +52,11 @@ public class DemoApplication {
 				// reply to the room the message came from
 				Addressable from = in.getAddressable();
 				Message msg = in.getMessage();
-				MessageResponse mr = new MessageResponse(from, msg);
-				rh.accept(mr);
+				//Ignore commands
+				if(!msg.getText().startsWith("/")) {
+					MessageResponse mr = new MessageResponse(from, msg);
+					rh.accept(mr);
+				}
 				
 			}
 		};
