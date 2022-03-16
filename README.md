@@ -21,9 +21,16 @@ Spring Bot is a set of [Spring Boot](https://spring.io/projects/spring-boot) sta
  
 ## Why Is This Important?
 
-- 🧑🏽‍🤝‍🧑🏽 **Multiple Platforms**: Like it or not, most of us find ourselves working in environments with _multiple chat platforms_.  As bot developers, we need to be able to reach users irrespective of which platform they are on.
-- ⛅ **Work at a higher level**: Developers of chat-bots are not well-supported with Open-Source tooling.  Too much effort gets spent on low-level message-handling, which could easily be done by a library.
-- 🔒 **Avoid Lock-In**: Most bot development tools are commercial.  If you build bots with them you are locked into paying license fees forever.  For example, the Microsoft Bot Framework support multiple chat platforms at the expense of locking you into the Azure ecosystem.
+🧑🏽‍🤝‍🧑🏽 **Multiple Platforms**
+
+Like it or not, most of us find ourselves working in environments with _multiple chat platforms_.  As bot developers, we need to be able to reach users irrespective of which platform they are on.
+⛅ **Work at a higher level**
+ 
+Developers of chat-bots are not well-supported with Open-Source tooling.  Too much effort gets spent on low-level message-handling, which could easily be done by a library.
+
+🔒 **Avoid Lock-In**
+
+Most bot development tools are commercial.  If you build bots with them you are locked into paying license fees forever.  For example, the Microsoft Bot Framework support multiple chat platforms at the expense of locking you into the Azure ecosystem.
 
 ## How Does It Work?
  
