@@ -51,7 +51,7 @@ This is best described on our microsite [springbot.finos.org](https://springbot.
 
 > By building bots in a mature ecosystem like Java, you avoid all of the usual issues with no-code and low-code environments.  Java is a mature language with every conceivable library, a wealth of Stack-Overflow QA's and a convincing DevOps/Deployment story (Java runs anywhere).  
 
-### ✔️ Open Source
+### ✔️ Avoid The Lock-In Trap
 
 > Most low-code / no-code platforms are a trap:  they are looking to lock-in customers and revenue streams by persuading you to build your business with them as a dependency.  Spring Bot is open-source so this is literally a non-issue.
 
@@ -60,32 +60,27 @@ This is best described on our microsite [springbot.finos.org](https://springbot.
 
 This project contains various example bots that were (originally) written at Deutsche Bank in response to real use-cases.  However, we felt they were general enough to warrant Open-Sourcing and including as code to work from.  
 
-- 👍 All of these bots work on Microsoft Teams and Symphony, and are deployed into maven central as executable jars.
+👍 All of these bots work on Microsoft Teams and Symphony, and are deployed into maven central as executable jars.
 
 ### 🤖 Poll Bot 
 
+A bot for running polls in a Symphony chat room.  👍 _Production Ready_
 
-A bot for running polls in a Symphony chat room.  
 
  - [View the README](tools/poll-bot/README.md)
- - _ 👍 Production Ready_
  
 
 ### 🤖 News (RSS) Bot 
 
-A bot for feeding news into a Symphony chat room. 
+A bot for feeding news into a Symphony chat room.  👍 _Production Ready_
 
  - [View the README](tools/rss-bot/README.md)
- - _ 👍 Production Ready_
-
 
 ### 🤖 Reminder Bot
 
-Reads the contents of a room and creates reminders based on future events mentioned therein.
+Reads the contents of a room and creates reminders based on future events mentioned therein.  👍 _Production Ready_
 
  - [View the README](tools/reminder-bot/README.md)
- - _ 👍 Production Ready_
-
 
 ## Plenty of Tutorials / Demo Code
 
@@ -95,43 +90,7 @@ Inside the `/demos` directory you can see three example bots:
 - `todo-bot` : Runs a simple todo-list inside a chat room on Teams or Symphony.
 - `claim-bot`: An example of an expense-claim workflow running across Teams and Symphony concurrently.
 
-Tutorials for building these are found here:  [Spring Bot](https://springbot.finos.org)
-
-# Libraries
-
-## Chat Workflow
-
-Chat Workflow provides interfaces, annotations and utilities for expressing bot workflows in Spring.
-
-The Chat Workflow Symphony Starter implements this for symphony.  It is intended that beyond _configuration_ the developer will not have to understand _any_ Symphony APIs to build work-flows and have them run in Symphony.
-
- - [View the README](libs/chat-workflow/README.md)
- - [View the Documentation Site](https://finos.github.io/spring-bot) 
- 
-## Chat Workflow Testing
-
-Some useful functionality for testing your bots without having to integrate with Teams / Symphony. 
-
-## Entity JSON 
-
-This is a utility that helps you serialize/deserialize JSON in a JSON format which contains enough information about java types to reconstruct objects.
-
- - [View the README](libs/entity-json/README.md)
-
-## Symphony BDK Chat Workflow Spring Boot Starter
-
-- Allows Spring Bot to expose bots on Symphony.  (see tutorial)
-
-## Teams Chat Workflow Spring Boot Starter
-
-- Allows Spring Bot to expose bots on Microsoft Teams.  (see tutorial)
-
-## Symphony Entities
-
-- Java classes that can reconstruct Symphony classes such as HashTags, CashTags, Users etc.
-
-# Tools
-
+Tutorials for building these and the reference guide are found here:  [Spring Bot](https://springbot.finos.org)
 
 # License
 
@@ -141,15 +100,16 @@ Distributed under the Apache License, Version 2.0.
 
 SPDX-License-Identifier: Apache-2.0
 
+# For Maintainers
 
-# Branches
+## Branches
 
 There are two main branches:
 
-`spring-bot-master`:  new code for the multi-platform Symphony / Microsoft Teams bot builder
-`symphony-java-toolkit-master`: legacy code for when this project only supported symphony.
+- `spring-bot-master`:  new code for the multi-platform Symphony / Microsoft Teams bot builder
+- `symphony-java-toolkit-master`: legacy code for when this project only supported symphony.
 
-# Releasing This Project (For Maintainers)
+## Releasing This Project
 
 In order to do a release:
 
