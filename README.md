@@ -24,6 +24,7 @@ Spring Bot is a set of [Spring Boot](https://spring.io/projects/spring-boot) sta
 🧑🏽‍🤝‍🧑🏽 **Multiple Platforms**
 
 Like it or not, most of us find ourselves working in environments with _multiple chat platforms_.  As bot developers, we need to be able to reach users irrespective of which platform they are on.
+
 ⛅ **Work at a higher level**
  
 Developers of chat-bots are not well-supported with Open-Source tooling.  Too much effort gets spent on low-level message-handling, which could easily be done by a library.
