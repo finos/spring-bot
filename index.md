@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Welcome
+title: Spring Bot
 nav_order: 1
 layout: home
 ---
@@ -8,9 +8,8 @@ layout: home
 <section class="front-page-top">
   <div class="logo-surround">
     <div class="logo-image">
-      <img src="assets/images/logo.svg" title="Bot Logo" />
+      <img src="assets/images/2022_SpringBot_Horizontal.svg" title="Bot Logo" />
     </div>
-    <div class="logo-title"><span class="logo-spring">SPRING</span><span class="logo-bot"> BOT</span></div>
   </div>
 </section>
 
@@ -31,9 +30,7 @@ layout: home
 </div></div></section>
 
 <section class="front-page"><div class="inner" markdown="1">
-
-
-# Platform Bindings
+<h1>Platform Bindings</h1>
 
 Spring Bot is designed to be an _abstraction layer_ on top of other Java bot libraries.  i.e it handles the concerns above, and leaves the connectivity and API logic to lower-level libraries.  
 

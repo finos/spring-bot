@@ -4,9 +4,9 @@ name: Spring Bot
 subtitle: Platform agnostic, annotation-driven bot creation framework.
 description: Platform agnostic, annotation-driven bot creation framework.
 email: rob@kite9.com
-baseurl: "/symphony-java-toolkit" # the subpath of your site, e.g. /blog
+baseurl: "/" # the subpath of your site, e.g. /blog
 include: ['_pages']
-url: https://finos.github.io/symphony-java-toolkit
+url: https://springbot.finos.org
 author: Finos
 
 plugins:
