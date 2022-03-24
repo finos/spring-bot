@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{{site.name}}</title>
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,600" rel="stylesheet" type="text/css">
+  <link href="{{ '/assets/css/bot-jekyll-theme-default.css' | relative_url }}" rel="stylesheet" type="text/css" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/favicon_io/apple-touch-icon.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/favicon_io/favicon-32x32.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/favicon_io/favicon-16x16.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/assets/favicon_io/site.webmanifest' | relative_url }}">
+  
+  <!-- SEO Plugin Stuff - But no-longer using that -->
+  <meta property="og:title" content="Spring-Bot">
+  <meta name="author" content="FINOS">
+  <meta property="og:locale" content="en_US">
+  <meta name="description" content="An Open-Source Spring-Boot based framework for building chat bots on Symphony and Microsoft Teams.  Spring Bot uses a simple, annotation-based approach (like Spring Web) in order to expose java methods as commands in chat rooms.  ">
+  <meta property="og:description" content="An Open-Source Spring-Boot based framework for building chat bots on Symphony and Microsoft Teams.  Spring Bot uses a simple, annotation-based approach (like Spring Web) in order to expose java methods as commands in chat rooms.  ">
+  <link rel="canonical" href="https://springbot.finos.org{{ page.url }}">
+  <meta property="og:url" content="https://springbot.finos.org{{ page.url }}">
+  <meta property="og:site_name" content="Spring Bot by FINOS">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="SpringBot - {{ page.title }}">
+  <meta name="twitter:site" content="@FINOSFoundation">
+  
+  <meta property="twitter:image" content="https://springbot.finos.org/assets/images/cards/SpringBot.png">
+  <meta property="og:image" content="https://springbot.finos.org/assets/images/cards/SpringBot.png">
+  
+  <!--  end SEO -->
+  
+ </head>
+<body>
+
+
+
+	<!-- Begin Menu Navigation
+	================================================== -->
+	<nav>
+		<div class="left"><a href="{{ '/' | relative_url }}">{{site.name}}</a>
+		</div>
+		<div class="right">
+		
+			{% for post in site.pages  %} 
+			 	{% if (post.nav-menu) %}
+				 	{% if (page.url == post.url) %}
+			        <a href="{{ site.baseurl }}{{ post.url }}" class="current">
+		            	{{ post.title }}   
+					</a>		 	
+				 	{% else %}
+			        <a href="{{ site.baseurl }}{{ post.url }}" >
+		            	{{ post.title }}   
+			        </a>
+		       		{% endif %}
+	       		{% endif %}
+			{% endfor %}
+	
+		</div>
+	</nav>
+
+	{{ content }}
+	
+	<footer>Copyright © {{ site.time | date: "%Y" }} {{ site.footer }} </footer>
+ 
+</body>
+</html>
