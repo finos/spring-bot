@@ -13,7 +13,7 @@ name: "CodeQL"
 
 on:
   push:
-    branches: [ spring-bot-master, *master ]
+    branches: [ spring-bot-master, *master, develop, spring-bot-develop ]
   pull_request:
     # The branches below must be a subset of the branches above
     branches: [ spring-bot-master ]
