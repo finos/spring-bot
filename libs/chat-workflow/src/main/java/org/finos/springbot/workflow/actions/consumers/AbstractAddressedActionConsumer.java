@@ -34,12 +34,23 @@ public abstract class AbstractAddressedActionConsumer extends AbstractActionCons
 		}
 	}
 
-	protected Action performFilters(Action t) {
+	protected Action performFilters(Action in) {
+		return addressCheckingFilters(in);
+	}
+	
+	/**
+	 * Makes sure at least one address checking filter permits the action
+	 */
+	protected Action addressCheckingFilters(Action in) {
 		for (AddressingChecker addressingChecker : ac) {
-			t = addressingChecker.filter(t);
+			Action out = addressingChecker.filter(in);
+			if (out != null) {
+				return out;
+			}
 		}
 		
-		return t;
+		return null;
+
 	}
 
 	protected abstract void acceptInner(Action t);

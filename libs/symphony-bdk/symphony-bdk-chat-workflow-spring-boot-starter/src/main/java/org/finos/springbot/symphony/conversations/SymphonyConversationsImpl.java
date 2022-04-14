@@ -341,14 +341,4 @@ public class SymphonyConversationsImpl implements SymphonyConversations, Initial
 	public boolean isSupported(User u) {
 		return u instanceof SymphonyUser;
 	}
-
-
-	@Override
-	public boolean isThisBot(User u) {
-		if (u instanceof SymphonyUser) {
-			return ((SymphonyUser) u).getUserId().equals(""+botUserId);
-		} else {
-			return false;
-		}
-	}
 }
