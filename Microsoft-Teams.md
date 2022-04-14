@@ -37,120 +37,166 @@ You can apply for a 90-day developer account that allows you to set up an instan
 
 - From here, you can explore the delights of Microsoft Teams, and talk to any friends you invited.
 
-## Create an App Manifest on The Teams Developer Portal
+## Create a Bot
 
-You can access the Teams Developer Portal [here](https://dev.teams.microsoft.com/home).
+- Access the Teams Developer Portal [here](https://dev.teams.microsoft.com/home).
+
+- Then go to `Tools -> Bot Management -> New Bot` and create your bot.
+
+![New Bot Screen](assets/images/teams/1.NewBot.png)
+
+- Your bot will be given an **App ID** as shown below - you'll need this in your Spring Bot `application.yml` file later so keep a track of it.
+
+![Bot App Id](assets/images/teams/2.CreatedBot.png)
+
+## `ngrok` Port Forwarding
+
+Since your bot is running on `localhost`, Microsoft Teams can't access it.  However, we can use `ngrok` to tunnel onto the public internet, running in HTTPS with a proper certificate.  From there, we can get Microsoft Teams to talk to it.  
+
+- Install `ngrok` from [here](https://ngrok.com/)
+
+-  Start ngrok so that it forward traffic to `http` port `8080` on your localhost, like so:  
+
+`ngrok http 8080`
+
+![ngrok](assets/images/teams/ngrok.png)
+
+## Configuring the Bot
+
+- Back in the developer portal, use the hostname provided by `ngrok` to specify the bot's endpoint.  Note this is the `ngrok` `HTTPS` address, but with `/api/messages` added to the end as a path.
+
+![Bot Endpoint](assets/images/teams/4.ConfigureEndpoint.png)
+
+-  Next, the bot needs a secret.  Set one of these up and keep it for later to add to your `appplication.yml` file.
+
+![Bot Secret](assets/images/teams/5.ConfigureSecret.png)
+
+
+## Create an App Manifest on The Teams Developer Portal
 
 We are going to create an `App`, which is something that is available in the Teams App Store, and can be installed into your Teams chats.   An `App` can contain a number of `bot`s.  Here, we'll just create one. 
 
-- Click `New App`
+- Click `New App` in the Teams Developer Portal:
 
-- Name The App
+![Create App](assets/images/teams/7.CreateApp.png)
 
-![](assets/images/teams/app-name.png)
+-  Enter Some Basic Details
 
-- Select App Features
+![App Features](assets/images/teams/8.AppBasicInfo.png)
 
-![App Features](assets/images/teams/app-features.png)
+-  Associate The Bot With Your App
 
-- Click "Bot"
+![Identify Bot](assets/images/teams/9.AppBot1.png)
 
-![Identify Bot](assets/images/teams/identify-bot.png)
-
-- Create a new bot and give the bot a name
-
-![](assets/images/teams/name-bot.png)
-
-- Create a Client Secret, and keep this somewhere
-
-- Fill out the privacy policy, terms of use:
-
-![Privacy Policy and Terms Of Use](assets/images/teams/pp.png)
+![Identify Bot](assets/images/teams/10.AppBot2.png)
 
 - Give The App Some permissions
 
-![Teams Perms](assets/images/teams/perms1.png)
+![Teams Perms](assets/images/teams/11.AppBotPermissions.png)
 
-Note, we are going crazy here and giving _all_ the permissions.  You might well want to reduce the number available.  But, start with this as it might otherwise lead to problems later.
+- Download the created App Manifest to your local machine: 
 
-![Chat Perms](assets/images/teams/perms2.png)
+![Download App](assets/images/teams/12.DownloadAppPackage.png)
 
-- Publish The App To Your Organisation
-
-![Publish App](assets/images/teams/publish.png)
-
-## Approve The App In The Teams Admin Console
+## Add The App To Your Teams Installation
 
 Before you can see the App in the Teams App Store, it needs to be approved (published) by your Teams administrators.
 
 The Admin Console has a "Manage Apps" section [here](https://admin.teams.microsoft.com/policies/manage-apps).
 
-- Approve your new app by searching for it in the list  
+-  Upload Your App
 
-![](assets/images/teams/find.png)
+![Upload App](assets/images/teams/14.UploadApp.png)
 
 - Change Publishing Status to "Published"
 
-![Moving App To Published](assets/images/teams/approve.png)
+![Moving App To Published](assets/images/teams/15.PublishedApp.png)
 
-## Configuring The Bot
+## Configure Your App On Teams
 
-We're going to set up a bot running on the localhost, and then use [ngrok]() to port-forward the bot onto the internet, running in HTTPS with a proper certificate.  From there, we can get Microsoft Teams to talk to it.  
+Now, we're going to create a chat on Teams and add the App to it.
 
-## A Simple Bot
+- Restart Teams on your local PC.  This ensures the App-Store cache is wiped.  
 
-- Set up the bot, TBC.
+- Create a new chat with some friends to try the bot out
 
-- Add AppId, Password to the config
+![New Chat](assets/images/teams/16.RestartTeamsNewChat.png)
 
-- Start the bot:
+- Head over to the App Store and find your app:
 
-![Spring Startup](assets/images/teams/startup.png)
+![App Store](assets/images/teams/17.TeamsAppStore.png)
 
-## NGrok port Forwarding
+- Add the App to your new chat:
 
-Since your bot is running on `localhost`, Microsoft Teams can't access it.  However, we can use `ngrok` to tunnel onto the public internet.  
+![Adding The App 1](assets/images/teams/18.AddAppToChat1.png)
 
-- Install `ngrok` from [here](https://ngrok.com/)
+![Adding The App 2](assets/images/teams/19.AddAppToChat2.png)
 
-- Start like this:
 
-`ngrok http 8080`
+## Configuring `application.yml`
 
-- It will start a process like so:
+Your bot will need an `application.yml` file containing the details of your teams installation:
 
-![ngrok](assets/images/teams/ngrok.png)
+```
+teams:
+  app:
+    tennantId: 
+  bot:
+    MicrosoftAppId: 
+    MicrosoftAppPassword: 
+  storage:
+    type: blob
+    connection-string: 
+    
+spring:
+  profiles:
+    active: teams  # put teams, symphony if you want both
+```
 
-## Configure Teams Bot Endpoint
+Let's go through these settings in turn:
 
-Now, we need to configure our Bot in Microsoft Teams to send messages to this endpoint.  For that, we go back into the Developer Portal, and find the Bot:
+### `tennantId`
 
-![Bot Properties](assets/images/teams/bot-properties.png)
+Here I am getting the Tennant ID from my Teams Instance.  This is from the [Azure Admin Portal](https://portal.azure.com/)
+![TennantID](/assets/images/teams/tennantId.png)
 
-- Set the bot endpoint to use your `https` ngrok endpoint, with the path `/api/messages`.  
+### `MicrosoftAppId`
 
-![Bot Endpoint](assets/images/teams/bot-endpoint.png)
+This is the bot's AppId, which you can get from the Teams Developer Console:
 
-- At this point, you will probably need to restart teams, to clear the cache of the App Store.
+![Bot App Id](assets/images/teams/2.CreatedBot.png)
 
-- Go back to Teams and find the App in the App Store.  
+### `MicrosoftAppPassword`
 
-![App In AppStore](assets/images/teams/adding-app.png)
+This is the bot client secret, that you generated earlier on.
 
-- Add it to a team
+### Storage Account
 
-![Open Options](assets/images/teams/open-options.png)
+Unlike Symphony, Teams cannot store app-data inside chat messages, so we need to set up a separate Azure Blob storage.  
+This allows the bot to keep track of the messages it has sent, and the conversations it is involved in.
 
-- Choose Your Team
+- Head over to [https://portal.azure.com/](https://portal.azure.com/)
 
-![Choose Team](assets/images/teams/choose-team.png)
+- Create The Blob Storage On This Screen
+
+![New Blob Storage](assets/images/teams/blobStorage1.png)
+
+- You should end up with something like this:
+
+![Created Blob Storage](assets/images/teams/blobStorage2.png)
+
+- Get the access key from this screen here and add it to `application.yml`:
+
+![Access Key](assets/images/teams/blobStorage3.png)
+
+### Start the bot
+
+![Spring Startup](assets/images/teams/21.StartTheBot.png)
 
 ## Talk With Your Bot
 
-![Talk To The Bot](assets/images/teams/talk-to-bot.png)
+For example, try asking your bot for help:
 
+![Talk To The Bot](assets/images/teams/22.TryHelp.png)
 
-
-  
-
-
+From then on, you can follow one of the other tutorials for building a bot with custom functionality.
