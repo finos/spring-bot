@@ -1,4 +1,3 @@
-name: "CodeQL"
 on:
   push:
     branches: [ spring-bot-master, *master, develop, spring-bot-develop ]
