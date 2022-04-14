@@ -1,9 +1,14 @@
 on:
   push:
-    branches: [ spring-bot-master, *master, develop, spring-bot-develop ]
+    branches:
+    - spring-bot-master
+    - develop, 
+    - spring-bot-develop
+    - master
   pull_request:
     # The branches below must be a subset of the branches above
-    branches: [ spring-bot-master ]
+    branches: 
+    - spring-bot-master 
   schedule:
     - cron: '18 7 * * 5'
 
