@@ -1,0 +1,19 @@
+name: checklinks
+
+on:
+  push:
+   branches:
+     - master
+     - develop
+     - spring-bot-develop
+     - spring-bot-master
+     - symphony-java-toolkit-master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2
+    - uses: gaurav-nelson/github-action-markdown-link-check@v1
+       
