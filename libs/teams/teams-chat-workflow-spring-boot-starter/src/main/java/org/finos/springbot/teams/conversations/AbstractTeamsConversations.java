@@ -238,8 +238,4 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 		return cr;
 	}
 
-	@Override
-	public boolean isThisBot(User u) {
-		return u.getKey().equals(botAccount.getId());
-	}
 }

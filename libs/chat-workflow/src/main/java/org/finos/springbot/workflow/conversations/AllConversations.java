@@ -1,7 +1,6 @@
 package org.finos.springbot.workflow.conversations;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,13 +83,4 @@ public class AllConversations implements Conversations<Chat, User>, ApplicationC
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.ctx = applicationContext;
 	}
-
-
-	@Override
-	public boolean isThisBot(User u) {
-		return getDelegates().stream()
-			.filter(d -> d.isThisBot(u))
-			.count() > 0;
-	}
-
 }

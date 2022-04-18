@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * Example of overriding framework functionality
  * - Extend framework provided HelpController to override template used for rendering response
  */
-@Controller
+//@Controller
 @Profile(value = "symphony")
 public class CustomHelpController extends HelpController {
 

@@ -43,7 +43,8 @@ public class PollController {
 	TaskScheduler taskScheduler;
 	
 	public boolean isMe(User u) {
-		return rooms.isThisBot(u);
+		throw new UnsupportedOperationException("This method no longer exists - figure out another way");
+	//	return rooms.isThisBot(u);
 	}
 	
 	
