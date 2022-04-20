@@ -16,7 +16,6 @@
 	<description>Sends RSS Feeds to Symphony Rooms</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.springbot.tool.rssbot.RSSBot</spring-boot.run.main-class>
 	</properties>
 
