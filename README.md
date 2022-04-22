@@ -111,9 +111,9 @@ Distributed under the Apache License, Version 2.0.
 
 SPDX-License-Identifier: Apache-2.0
 
-# Vulnerabilities
+# Vulnerabilities / Security
 
-If you uncover vulnerabilities in this software, please contact `help@finos.org` privately 
+Please see our [Security Policy](SECURITY.md).
 
 # For Maintainers
 
@@ -143,11 +143,15 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 # then push to git (spring-bot-develop branch)
 ```
 
-3.  On `oss.sonatype.org`
+3. SECURITY.md
+
+- Update this with new version numbers if needed.
+
+4.  On `oss.sonatype.org`
 
 - Close the Staging Repository
 - Release it.
 
-4.  Perform release on github with same number
+5.  Perform release on github with same number
 
 
