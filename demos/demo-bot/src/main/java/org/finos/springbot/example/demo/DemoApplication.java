@@ -42,26 +42,26 @@ public class DemoApplication {
 	    Addressable a = convs.getExistingChat(roomName);
 	    rh.accept(new MessageResponse(a, Message.of("Demo Bot Started!")));
 	}
-	 
-	@Bean
-	public ActionConsumer consumer() {
-		return event -> {
-			if (event instanceof SimpleMessageAction) {
-				// reply with original content
-				SimpleMessageAction in = (SimpleMessageAction) event;
-				// reply to the room the message came from
-				Addressable from = in.getAddressable();
-				Message msg = in.getMessage();
-				//Ignore commands
-				if(!msg.getText().startsWith("/")) {
-					MessageResponse mr = new MessageResponse(from, msg);
-					rh.accept(mr);
-				}
-				
-			}
-		};
-	}
-	
+//	 
+//	@Bean
+//	public ActionConsumer consumer() {
+//		return event -> {
+//			if (event instanceof SimpleMessageAction) {
+//				// reply with original content
+//				SimpleMessageAction in = (SimpleMessageAction) event;
+//				// reply to the room the message came from
+//				Addressable from = in.getAddressable();
+//				Message msg = in.getMessage();
+//				//Ignore commands
+//				if(!msg.getText().startsWith("/")) {
+//					MessageResponse mr = new MessageResponse(from, msg);
+//					rh.accept(mr);
+//				}
+//				
+//			}
+//		};
+//	}
+//	
 	@Bean
 	public RoomWelcomeEventConsumer welcomeMessages() {
 		return new RoomWelcomeEventConsumer(rh);

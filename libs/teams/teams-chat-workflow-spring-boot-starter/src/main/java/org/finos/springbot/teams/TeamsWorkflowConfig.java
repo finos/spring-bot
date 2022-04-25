@@ -188,7 +188,6 @@ public class TeamsWorkflowConfig {
     }
 	
 	@Bean
-	@ConditionalOnMissingBean
 	public AddressingChecker teamsAddressingChecker(TeamsConversations conv) {
 		return new InRoomAddressingChecker(() -> {
 			TurnContext tc = CurrentTurnContext.CURRENT_CONTEXT.get();

@@ -3,7 +3,7 @@
 
 	<groupId>org.finos.springbot</groupId>
 	<artifactId>spring-bot</artifactId>
-	<version>9.0.0-SNAPSHOT</version>
+	<version>9.0.1-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 	<name>Spring Bot</name>
@@ -33,7 +33,7 @@
 		<module>libs/teams/teams-chat-workflow-spring-boot-starter</module>
 
 		<!-- tools -->
-		<!-- <module>tools/rss-bot</</module> -->
+		<module>tools/rss-bot</module>
 		<module>tools/poll-bot</module>
 		<module>tools/reminder-bot</module>
 

@@ -59,7 +59,7 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 	@Override
 	public TeamsChat getExistingChat(String name) {
 		return getAllChats().stream()
-			.filter(tc -> tc.getName().equals(name))
+			.filter(tc -> name.equals(tc.getName()))
 			.findFirst()
 			.orElse(null);
 	}

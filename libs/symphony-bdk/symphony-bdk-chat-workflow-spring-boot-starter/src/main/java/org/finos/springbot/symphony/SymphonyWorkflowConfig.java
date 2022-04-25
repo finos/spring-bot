@@ -154,7 +154,6 @@ public class SymphonyWorkflowConfig {
 	}
 	
 	@Bean
-	@ConditionalOnMissingBean
 	public AddressingChecker symphonyDefaultAddressingChecker(SessionService ss, SymphonyConversations sc) {
 		SymphonyUser su = sc.loadUserById(ss.getSession().getId());
 		return new InRoomAddressingChecker(() -> su, true);
