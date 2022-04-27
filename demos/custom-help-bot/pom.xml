@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>9.0.1-SNAPSHOT</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<groupId>org.finos.springbot.demos</groupId>
+	<artifactId>custom-help-bot</artifactId>
+	<name>Custom Help Demo Bot</name>
+	<description>Demo Bot with Custom Help page</description>
+
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<spring-boot.run.main-class>org.finos.springbot.example.CustomHelpApplication</spring-boot.run.main-class>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.1-SNAPSHOT</version>
+			<scope>compile</scope>
+		</dependency>
+<!-- 		Currently designed to work with Symphony alone, later will add support for MS Teams -->
+<!--		<dependency>-->
+<!--			<groupId>org.finos.springbot</groupId>-->
+<!--			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>-->
+<!--			<version>9.0.1-SNAPSHOT</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<mainClass>${spring-boot.run.main-class}</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
