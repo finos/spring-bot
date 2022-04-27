@@ -9,8 +9,6 @@ import org.finos.springbot.workflow.templating.TableRendering;
 import org.finos.springbot.workflow.templating.Variable;
 import org.springframework.util.StringUtils;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
 
 public class ThymeleafRendering implements TableRendering<String> {
 

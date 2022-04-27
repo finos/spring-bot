@@ -16,7 +16,6 @@
 	<description>Demo Bot for Managing a Todo List</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.springbot.example.todo.ToDoWorkflowApp</spring-boot.run.main-class>
 	</properties>
 

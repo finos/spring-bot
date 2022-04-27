@@ -16,7 +16,6 @@
 	<description>Chat workflow demo for expense claim processing</description>
 
 	<properties>
-		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.springbot.example.claim.ClaimWorkflowApp</spring-boot.run.main-class>
 	</properties>
 
