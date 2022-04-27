@@ -1,17 +1,12 @@
 package org.finos.springbot.example.demo.controller;
 
-import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
-import org.finos.springbot.workflow.annotations.ChatResponseBody;
 import org.finos.springbot.workflow.annotations.ChatVariable;
-import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,7 +36,7 @@ public class DemoController {
         return new MessageResponse(a, "Bot echoing - " + strMsg);
     }
 
-    @ChatRequest(value = "botEcho", helpOrder = 2, description = "To test help order and expandable cards")
+    @ChatRequest(value = "botEcho", helpOrder = 2, description = "To test help order")
     public MessageResponse withChatButton(Addressable a) {
         return new MessageResponse(a, "Echo echo...");
     }
