@@ -211,3 +211,9 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - #244 - Conversations API for Teams
  - #247 - Updated Bots to work with teams (except Poll Bot)
  - #219 - MessageMLWriter now works with all Content objects
+ 
+# Apr 27 2022 
+ - Fixing Whitesource-reported vulnerabilities
+ - #300 - Deploy tools/demos to maven central
+ - #313 - Fixing Help Controller in Demo Bot not working in teams
+ - Release of Beta 2.
