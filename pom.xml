@@ -39,6 +39,7 @@
 
 		<!-- demos -->
 		<module>demos/demo-bot</module>
+		<module>demos/custom-help-bot</module>
 		<module>demos/todo-bot</module>
 		<module>demos/claim-bot</module>
 		
