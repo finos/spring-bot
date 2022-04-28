@@ -1,5 +1,5 @@
 #set the room for the bot to post in.  Bot (and you) should be members of this room
-room: y3EJYqKMwG7Jn7_YqyYdiX___pR3YrnTdA==  # this is a symphony room here.
+room: Public Room Name  # name of some room here on symphony or teams.
 server:
   port: 8080
 
