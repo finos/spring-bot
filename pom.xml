@@ -47,35 +47,21 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>2.5.5</spring-boot.version>
-		<spring-boot-oauth.version>2.5.5</spring-boot-oauth.version>
+		<spring-boot.version>2.6.7</spring-boot.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
 
 		<!-- this must match the version from the spring boot pom -->
-		<jackson-databind.version>2.13.0</jackson-databind.version>
-		<jackson.version>2.13.0</jackson.version>
-		<cxf.version>3.3.4</cxf.version>
-		<commons-logging.version>1.2</commons-logging.version>
-		<wiremock.version>2.25.1</wiremock.version>
-		<bouncy-castle.version>1.67</bouncy-castle.version>
-		<commonmark.version>0.15.2</commonmark.version>
-		<corenlp.version>3.9.2</corenlp.version>
+		<jackson-databind.version>2.13.2</jackson-databind.version>
+		<jackson.version>2.13.2</jackson.version>
+		<corenlp.version>4.4.0</corenlp.version>
 		<sutime-models.version>1.3.5</sutime-models.version>
 		<rometools.version>1.15.0</rometools.version>
 		<teams.version>4.14.2</teams.version>
 		<jsoup.version>1.14.3</jsoup.version>
 		<graalvm.version>21.2.0</graalvm.version>
 		<symphony-bdk.version>2.5.0</symphony-bdk.version>
-
-		<!-- this configures the build reporter -->
-		<symphony.reporter.identity>${symphony-test-identity}</symphony.reporter.identity>
-		<symphony.reporter.recipients>y3EJYqKMwG7Jn7/YqyYdiX///pR3YrnTdA==</symphony.reporter.recipients>
-		<symphony.reporter.agent.url>https://develop.symphony.com/agent</symphony.reporter.agent.url>
-		<symphony.reporter.pod.url>https://develop.symphony.com/pod</symphony.reporter.pod.url>
-		<symphony.reporter.login.url>https://develop.symphony.com/login</symphony.reporter.login.url>
-		<symphony.reporter.relay.url>https://develop.symphony.com/relay</symphony.reporter.relay.url>
 	</properties>
 
 	<licenses>

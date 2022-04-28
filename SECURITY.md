@@ -15,3 +15,6 @@ currently being supported with security updates.
 
 If you uncover vulnerabilities in this software, please contact `help@finos.org` privately.  We aim to respond within 3 working days.
 
+## Whitesource
+
+All project maintainers should be able to view vulnerabilities on [Whitesource](https://whitesourcesoftware.com).  If you can't access this, please contact [FINOS Help](mailto:help@finos.org).
