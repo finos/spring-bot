@@ -18,7 +18,7 @@
 
 	<properties>
 		<maven.deploy.skip>true</maven.deploy.skip>
-		<spring-boot.run.main-class>org.finos.springbot.example.CustomHelpApplication</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.springbot.example.demo.CustomHelpApplication</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>

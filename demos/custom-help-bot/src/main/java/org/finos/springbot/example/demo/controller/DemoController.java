@@ -18,24 +18,6 @@ public class DemoController {
     public MessageResponse pingTest(Addressable a) {
         return new MessageResponse(a, "Hello from the other side");
     }
-
-    @ChatRequest(value = "echo {echoMessage}", helpOrder = 2, description = "Echo back your message")
-    public MessageResponse missingChatButton(@ChatVariable(name = "echoMessage") List<Word> msg, Addressable a) {
-        String strMsg = msg.stream()
-                .map(word -> word.getText())
-                .collect(Collectors.joining(" "));
-
-        if(!StringUtils.hasText(strMsg)) {
-            strMsg = "Hello";
-        }
-
-        return new MessageResponse(a, "Bot echoing - " + strMsg);
-    }
-
-    @ChatRequest(value = "botEcho", helpOrder = 2, description = "To demo expandable cards")
-    public MessageResponse withChatButton(Addressable a) {
-        return new MessageResponse(a, "Echo echo...");
-    }
     
 }
 

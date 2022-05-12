@@ -21,50 +21,8 @@ import org.springframework.context.event.EventListener;
 @Configuration
 public class CustomHelpApplication {
 	
-	@Autowired
-	private ResponseHandlers rh;
-	
-	@Autowired
-	AllConversations convs;
-	
-	// NB: Bot must belong to the named room
-	@Value("${room}")
-	private String roomName;
-	
-	
 	public static void main(String[] args) {
 		SpringApplication.run(CustomHelpApplication.class, args);
-	}
-
-	@EventListener(ApplicationReadyEvent.class)
-	public void doSomethingAfterStartup() {
-	    System.out.println("hello world, I have just started up");
-	    Addressable a = convs.getExistingChat(roomName);
-	    rh.accept(new MessageResponse(a, Message.of("Custom Help - Demo Bot Started!")));
-	}
-//	 
-//	@Bean
-//	public ActionConsumer consumer() {
-//		return event -> {
-//			if (event instanceof SimpleMessageAction) {
-//				// reply with original content
-//				SimpleMessageAction in = (SimpleMessageAction) event;
-//				// reply to the room the message came from
-//				Addressable from = in.getAddressable();
-//				Message msg = in.getMessage();
-//				//Ignore commands
-//				if(!msg.getText().startsWith("/")) {
-//					MessageResponse mr = new MessageResponse(from, msg);
-//					rh.accept(mr);
-//				}
-//				
-//			}
-//		};
-//	}
-//	
-	@Bean
-	public RoomWelcomeEventConsumer welcomeMessages() {
-		return new RoomWelcomeEventConsumer(rh);
 	}
 
 }
