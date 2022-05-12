@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @Configuration
-public class WeclomeMessageConfig {
+public class WelcomeMessageConfig {
 
 	@Autowired
 	ResponseHandlers rh;
