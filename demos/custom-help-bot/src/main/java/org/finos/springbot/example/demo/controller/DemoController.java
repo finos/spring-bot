@@ -14,16 +14,12 @@ import java.util.stream.Collectors;
 @Controller
 public class DemoController {
 
-    @ChatRequest(value = "test", helpOrder = 1, description = "Ping test your bot!")
-    public MessageResponse testBot(Addressable a) {
+    @ChatRequest(value = "ping", helpOrder = 1, description = "Ping test your bot!")
+    public MessageResponse pingTest(Addressable a) {
         return new MessageResponse(a, "Hello from the other side");
     }
 
-    /*
-     * Framework recognizes that you forgot to mention "isButtonOnHelpPage = false" in @ChatRequest mapping for below case
-     * Since you are expecting parameter as part of command input, it turns off display of button for this mapping in help menu
-     */
-    @ChatRequest(value = "echo {echoMessage}", helpOrder = 2, description = "Button display suppressed as this command requires parameter")
+    @ChatRequest(value = "echo {echoMessage}", helpOrder = 2, description = "Echo back your message")
     public MessageResponse missingChatButton(@ChatVariable(name = "echoMessage") List<Word> msg, Addressable a) {
         String strMsg = msg.stream()
                 .map(word -> word.getText())
@@ -36,11 +32,10 @@ public class DemoController {
         return new MessageResponse(a, "Bot echoing - " + strMsg);
     }
 
-    @ChatRequest(value = "botEcho", helpOrder = 2, description = "To test help order")
+    @ChatRequest(value = "botEcho", helpOrder = 2, description = "To demo expandable cards")
     public MessageResponse withChatButton(Addressable a) {
         return new MessageResponse(a, "Echo echo...");
     }
     
- 
 }
 

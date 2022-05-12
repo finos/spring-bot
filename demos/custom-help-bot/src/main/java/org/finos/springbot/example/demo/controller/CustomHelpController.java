@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 /*
  * Example of overriding framework functionality
  * - Extend framework provided HelpController to override template used for rendering response
+ * - Here, we are specifying Profiles to make is available only when running in Symphony alone
+ * - Else, remove profile and provide custom-help-template for MS Teams as well
  */
-//@Controller
-@Profile(value = "symphony")
+@Controller
+@Profile({"symphony & !teams"}) //To show custom help page when running Bot in Symphony alone
 public class CustomHelpController extends HelpController {
 
     private static final String DEFAULT_FORMATTER_PATTERN = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])";
