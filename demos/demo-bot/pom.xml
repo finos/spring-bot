@@ -13,7 +13,7 @@
 
 	<groupId>org.finos.springbot.demos</groupId>
 	<artifactId>demo-bot</artifactId>
-	<name>Echo Bot (Demo)</name>
+	<name>Demo Bot</name>
 	<description>Demo Bot Using Spring Boot Starter</description>
 
 	<properties>
