@@ -48,8 +48,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- downgrading to see if we get a vulnerability warning -->
-		<spring-boot.version>2.5.5</spring-boot.version>
+		<spring-boot.version>2.6.7</spring-boot.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
