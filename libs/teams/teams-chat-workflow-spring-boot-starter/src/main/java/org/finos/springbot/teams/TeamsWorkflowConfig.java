@@ -18,6 +18,7 @@ import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.state.AzureBlobStateStorage;
+import org.finos.springbot.teams.state.MemoryStateStorage;
 import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterConfig;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
@@ -151,6 +152,14 @@ public class TeamsWorkflowConfig {
 				.buildClient();
 			
 		return new AzureBlobStateStorage(c, ejc, container);
+	}
+	
+	@Bean
+	@ConditionalOnProperty(matchIfMissing = true, name = "teams.storage.type", havingValue = "memory")
+	@ConditionalOnMissingBean
+	public TeamsStateStorage teamsAzureBlobStateStorage() {
+		LOG.warn("Using Memory storage for Azure data - NOT FOR PRODUCTION");
+		return new MemoryStateStorage();
 	}
 	
 	@Bean
