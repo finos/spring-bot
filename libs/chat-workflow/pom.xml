@@ -39,6 +39,14 @@
 		<artifactId>entity-json</artifactId>
 		<version>9.0.1-SNAPSHOT</version>
 	</dependency>
+	    <dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-aop</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
 
     <!-- for testing -->
     <dependency>
