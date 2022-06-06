@@ -12,15 +12,8 @@ import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatResponseBody;
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.annotations.WorkMode;
-import org.finos.springbot.workflow.content.BlockQuote;
-import org.finos.springbot.workflow.content.Chat;
-import org.finos.springbot.workflow.content.CodeBlock;
-import org.finos.springbot.workflow.content.Message;
-import org.finos.springbot.workflow.content.Paragraph;
-import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
-import org.finos.springbot.workflow.conversations.AllConversations;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -136,25 +129,4 @@ public class ToDoController {
 		changeStatus(out, words, u, Status.OPEN);
 		return out;
 	}
-	
-	@ChatRequest(value="test", description = "Prints a  test message on the screen") 
-	public Message testMessage(User from) {
-		Message out = Message.of(
-			Paragraph.of("Some first paragraph"),
-			UnorderedList.of(
-				Paragraph.of("item 1"),
-				Paragraph.of("item 2"),
-				Paragraph.of("item 3")),
-			BlockQuote.of("This one goes out to the one I love\nThis one goes out to the one I left behind"),
-			CodeBlock.of("Some preformatted text"),
-			Paragraph.of(Word.of("Thanks!"), from));
-		
-		return out;
-	}
-
-	@ChatRequest(value="members", description="list the members of the chat" )
-	public Message listMembers(AllConversations ac, Chat mine) {
-		return Message.of(ac.getChatMembers(mine));
-	}
-
 }
