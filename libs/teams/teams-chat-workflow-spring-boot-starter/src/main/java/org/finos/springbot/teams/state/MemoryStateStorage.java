@@ -9,22 +9,26 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.finos.springbot.teams.TeamsException;
 import org.javatuples.Pair;
 
 public class MemoryStateStorage extends AbstractStateStorage {
 	
-	Map<String, Object> store = new HashMap<>();
+	Map<String, Map<String, Object>> store = new HashMap<>();
 	Map<String, List<Pair<String, String>>> tagIndex = new HashMap<>();
 	
 
 	@Override
 	public void store(String file, Map<String, String> tags, Map<String, Object> data) {
 		store.put(file, data);
-		if (tags != null) {
+		if ((tags != null) && (tags.size() > 0)){
 			List<Pair<String, String>> pairtags = tags.entrySet().stream()
 				.map(e -> new Pair<String, String>(e.getKey(), e.getValue()))
 				.collect(Collectors.toList());
 			tagIndex.put(file, pairtags);
+		} else {
+			throw new TeamsException("Cannot persist data to "+file+" - no tags");
+
 		}
 		
 	}
@@ -33,7 +37,7 @@ public class MemoryStateStorage extends AbstractStateStorage {
 	public Iterable<Map<String, Object>> retrieve(List<Filter> tags, boolean singleResultOnly) {
 		List<Map<String, Object>> out = tagIndex.entrySet().stream()
 			.filter(e -> matchEntry(e, tags))
-			.map(e -> createMapEntry(e))
+			.map(e -> store.get(e.getKey()))
 			.collect(Collectors.toList());
 			
 		if (singleResultOnly) {
@@ -41,10 +45,6 @@ public class MemoryStateStorage extends AbstractStateStorage {
 		}
 		
 		return out;
-	}
-
-	private Map<String, Object> createMapEntry(Entry<String, List<Pair<String, String>>> e) {
-		return Collections.singletonMap((String) e.getKey(), (Object) store.get(e.getKey()));
 	}
 
 	private boolean matchEntry(Entry<String, List<Pair<String, String>>> e, List<Filter> tags) {

@@ -1,5 +1,8 @@
 package org.finos.springbot.teams.state;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,35 +14,35 @@ import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.state.TeamsStateStorage.*;
 
 
-public class AbstractStateStorageTest {
+public abstract class AbstractStateStorageTest {
 
 	protected TeamsStateStorage tss;
 	
 	@Test
-	public void testStoreAndRetrieve() {
+	public void testStoreAndRetrieveNoTags() {
 		Map<String, Object> somedata = Collections.singletonMap("a", "b");
-		tss.store("thefile", Collections.emptyMap(), somedata);
-		Assertions.assertEquals(Optional.of(somedata), tss.retrieve("thefile"));
+		assertThrows(TeamsException.class, () -> tss.store("thefile", Collections.emptyMap(), somedata));
 		Assertions.assertEquals(Optional.empty(), tss.retrieve("nonfile"));
 	}
 	
 	@Test
-	public void testStoreWithTags() {
+	public void testStoreWithTags() throws IOException {
 		Map<String, Object> somedata = Collections.singletonMap("a", "b");
 		Map<String, String> tags = Collections.singletonMap("tag", "rob");
 		List<TeamsStateStorage.Filter> tagList = Collections.singletonList(new Filter("tag", "rob", "="));
 		List<TeamsStateStorage.Filter> otherTagList = Collections.singletonList(new Filter("lag", "rob", "="));
 		
 		tss.store("thefile", tags, somedata);
-		Assertions.assertEquals(Collections.singletonList(Collections.singletonMap("thefile", somedata)), hoover(tss.retrieve(tagList, false)));
+		Assertions.assertEquals(Collections.singletonList(somedata), hoover(tss.retrieve(tagList, false)));
 		Assertions.assertEquals(Collections.emptyList(), hoover(tss.retrieve(otherTagList, false)));
 	}
 	
 	@Test
-	public void testStoreWithTagDates() {
+	public void testStoreWithTagDates() throws IOException {
 		Map<String, Object> somedata = Collections.singletonMap("a", "b");
 		Map<String, String> tags = new HashMap<String, String>();
 		tags.put("date", "20220513");
