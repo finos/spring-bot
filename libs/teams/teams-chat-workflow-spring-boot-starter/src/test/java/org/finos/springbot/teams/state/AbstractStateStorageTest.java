@@ -25,8 +25,8 @@ public abstract class AbstractStateStorageTest {
 	@Test
 	public void testStoreAndRetrieveNoTags() {
 		Map<String, Object> somedata = Collections.singletonMap("a", "b");
-		assertThrows(TeamsException.class, () -> tss.store("thefile", Collections.emptyMap(), somedata));
 		Assertions.assertEquals(Optional.empty(), tss.retrieve("nonfile"));
+		assertThrows(TeamsException.class, () -> tss.store("thefile", Collections.emptyMap(), somedata));
 	}
 	
 	@Test
@@ -37,6 +37,7 @@ public abstract class AbstractStateStorageTest {
 		List<TeamsStateStorage.Filter> otherTagList = Collections.singletonList(new Filter("lag", "rob", "="));
 		
 		tss.store("thefile", tags, somedata);
+		Assertions.assertEquals(somedata, tss.retrieve("thefile").get());
 		Assertions.assertEquals(Collections.singletonList(somedata), hoover(tss.retrieve(tagList, false)));
 		Assertions.assertEquals(Collections.emptyList(), hoover(tss.retrieve(otherTagList, false)));
 	}
