@@ -80,6 +80,12 @@ public class ResolverConfig {
 	public FormDataArgumentWorkflowResolverFactory formDataArgumentWorkflowResolverFactory() {
 		return new FormDataArgumentWorkflowResolverFactory();
 	}
+	
+	@Bean
+	@ConditionalOnMissingBean
+	public ActionArgumentWorkflowResolverFactory actionArgumentWorkflowResolverFactory() {
+		return new ActionArgumentWorkflowResolverFactory();
+	}
 
 	@Bean
 	@ConditionalOnMissingBean

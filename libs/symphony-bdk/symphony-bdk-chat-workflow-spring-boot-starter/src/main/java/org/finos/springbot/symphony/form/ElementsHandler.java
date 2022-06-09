@@ -65,7 +65,8 @@ public class ElementsHandler {
 				currentForm = null;
 			}
 			
-			EntityJson data = retrieveData(action.getFormMessageId());
+			String formMessageId = action.getFormMessageId();
+			EntityJson data = retrieveData(formMessageId);
 			Addressable rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
 			User u = ruBuilder.loadUserById(event.getInitiator().getUser().getUserId());
 			
@@ -73,7 +74,7 @@ public class ElementsHandler {
 			Addressable from = rr == null ? u : rr;
 			
 			FormAction ea = validationProcessor.validationCheck(verb, rr, currentForm, () -> {
-				return new FormAction(from, u, currentForm, verb, data);
+				return new FormAction(from, u, currentForm, verb, data, formMessageId);
 			});
 			
 			if (ea != null) {

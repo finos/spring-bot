@@ -17,6 +17,7 @@ import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplatePro
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.response.AttachmentResponse;
+import org.finos.springbot.workflow.response.DataResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
@@ -151,9 +152,15 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			try {
 				if (e == null) {
 					if (tt == TemplateType.BOTH) {
-						// we also need to send the buttons.  
+						// we also need to send the buttons, so clear out the form name
+						WorkResponse justButtons = new WorkResponse(
+								wr.getAddress(), 
+								wr.getData(), 
+								wr.getTemplateName(),
+								wr.getMode(),
+								null);
 						JsonNode buttonsJson = workTemplater.template(null);
-						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, wr);
+						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, justButtons);
 						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
 					} else {
 						return null;

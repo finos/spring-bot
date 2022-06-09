@@ -70,6 +70,7 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 			String data = null;
 			String template = null;
 			String filename = null;
+			String messageId = null;
 			
 			if (t instanceof AttachmentResponse) {
 				AttachmentResponse ar = (AttachmentResponse) t;
@@ -81,6 +82,8 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 			if (t instanceof DataResponse) {
 				template = buildTemplate((DataResponse) t);
 				
+				messageId = (String) ((DataResponse)t).getData().get(DataResponse.MESSAGE_UPDATE_ID_KEY);
+				
 				if (template == null) {
 					LOG.error("Cannot determine/create template for response {}", t);
 					return;
@@ -89,7 +92,7 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 				data = dataHandler.formatData((DataResponse) t);
 				LOG.info("JSON: \n"+ data);
 
-				sendResponse(template, attachment, data, t.getAddress(), filename);
+				sendResponse(template, attachment, data, t.getAddress(), filename, messageId);
 			}
 		}
 	}
@@ -104,7 +107,7 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 		}
 	}
 
-	protected void sendResponse(String template, byte[] attachment, String data, Addressable address, String filename) {
+	protected void sendResponse(String template, byte[] attachment, String data, Addressable address, String filename, String messageId) {
 		try {
 			if (address instanceof SymphonyAddressable) {
 				String streamId = sr.getStreamFor((SymphonyAddressable) address);
@@ -120,7 +123,12 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 				setPrivateField("data", out, data);
 				setPrivateField("content", out, template);
 				
-				messagesApi.send(streamId, out);
+				if (messageId != null) {
+					messagesApi.update(streamId, messageId, out);
+				} else {
+					messagesApi.send(streamId, out);
+				}
+				
 			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage());

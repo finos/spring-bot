@@ -171,7 +171,7 @@ public class SymphonyHandlerMappingTest extends AbstractHandlerMappingTest {
 		System.out.println(data);
 		
 		
-		Assertions.assertEquals(14, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
+		Assertions.assertEquals(15, node.get(WorkResponse.OBJECT_KEY).get("commands").size());
 
 		String desc = null;
 		for(JsonNode commandNode : node.get(WorkResponse.OBJECT_KEY).get("commands")) {

@@ -27,6 +27,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, JsonNode, WorkResponse> {
 
+	public static final String JUST_BUTTONS_FORM = "just-buttons-form";
+	
 	private final WorkTemplater<JsonNode> formConverter;
 	
 	protected ObjectMapper om;
@@ -162,6 +164,8 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 		 Map<String, Object> out = t.getData();
 		 if (t.getFormClass() != null) {
 			 out.put("formid", t.getFormClass().getCanonicalName());
+		 } else {
+			 out.put("formid", JUST_BUTTONS_FORM);
 		 }
 		 return out;
 	}

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.annotations.ChatButton;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatVariable;
@@ -179,6 +180,12 @@ public class OurController {
 	public void doList(@ChatVariable("thing") List<Word> word, @ChatVariable("user") Optional<User> u, @ChatVariable(value="lastword", required = false) Word w) {
 		lastArguments = Arrays.asList(word, u, w);
 		lastMethod = "doList";
+	}
+	
+	@ChatRequest(value="action")
+	public void doWithAction(Action a) {
+		lastArguments = Arrays.asList(a);
+		lastMethod = "action";
 	}
 
 }

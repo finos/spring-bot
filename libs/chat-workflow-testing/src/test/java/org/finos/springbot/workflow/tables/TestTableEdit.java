@@ -81,7 +81,7 @@ public class TestTableEdit {
 	
 	@Test
 	public void testAddRow() {
-		FormAction ea = new FormAction(room, u, null, "items."+TableAddRow.ACTION_SUFFIX, toWrapper);
+		FormAction ea = new FormAction(room, u, null, "items."+TableAddRow.ACTION_SUFFIX, toWrapper, null);
 		WorkResponse fr = postAndGetResponse(ea, addRows);
 		Map<String, Object> returnedData = fr.getData();
 		
@@ -93,7 +93,7 @@ public class TestTableEdit {
 		newTo.setIsin("isiny");
 		newTo.setBidAxed(true);
 		newTo.setBidQty(324);
-		ea = new FormAction(room, u, newTo, "items."+TableAddRow.DO_SUFFIX, returnedData);
+		ea = new FormAction(room, u, newTo, "items."+TableAddRow.DO_SUFFIX, returnedData, null);
 		
 		fr = postAndGetResponse(ea, addRows);
 
@@ -114,7 +114,7 @@ public class TestTableEdit {
 	
 	@Test
 	public void testEditRow() {
-		FormAction ea = new FormAction(room, u, null, "items.[0]."+TableEditRow.EDIT_SUFFIX, toWrapper);
+		FormAction ea = new FormAction(room, u, null, "items.[0]."+TableEditRow.EDIT_SUFFIX, toWrapper, null);
 		WorkResponse fr = postAndGetResponse(ea, editRow);
 		Assertions.assertEquals(TestObject.class, fr.getFormClass());
 		TestObject formObject2 = (TestObject) fr.getFormObject();
@@ -128,7 +128,7 @@ public class TestTableEdit {
 		newTo.setBidAxed(true);
 		newTo.setBidQty(324);
 		
-		ea = new FormAction(room, u, newTo, "items.[0]."+TableEditRow.UPDATE_SUFFIX, returnedData);
+		ea = new FormAction(room, u, newTo, "items.[0]."+TableEditRow.UPDATE_SUFFIX, returnedData, null);
 		fr = postAndGetResponse(ea, editRow);
 		Assertions.assertEquals(TestObjects.class, fr.getFormClass());
 		TestObjects out = (TestObjects) fr.getFormObject();
@@ -139,7 +139,7 @@ public class TestTableEdit {
 	public void testDeleteRows() {
 		Map<String, Object> selects = Collections.singletonMap("items", Collections.singletonList(Collections.singletonMap("selected", "true")));
 		FormSubmission uc = new FormSubmission("?", selects);
-		FormAction ea = new FormAction(room, u, uc, "items."+TableDeleteRows.ACTION_SUFFIX, toWrapper);
+		FormAction ea = new FormAction(room, u, uc, "items."+TableDeleteRows.ACTION_SUFFIX, toWrapper, null);
 		WorkResponse fr = postAndGetResponse(ea, deleteRows);
 		Assertions.assertEquals(TestObjects.class, fr.getFormClass());
 		TestObjects formObject2 = (TestObjects) fr.getFormObject();

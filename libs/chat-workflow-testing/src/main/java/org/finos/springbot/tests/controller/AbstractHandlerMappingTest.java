@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.finos.springbot.workflow.actions.SimpleMessageAction;
 import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.CodeBlock;
@@ -48,7 +49,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	@Test
 	public void checkMappings() throws Exception {
-		Assertions.assertEquals(17, hm.getHandlerMethods().size());
+		Assertions.assertEquals(18, hm.getHandlerMethods().size());
 		getMappingsFor(Message.of("list"));
 	}
 
@@ -196,6 +197,13 @@ public abstract class AbstractHandlerMappingTest {
 	}
 	
 	@Test
+	public void testActionResolution() throws Exception {
+		execute("action");
+		Assertions.assertEquals("action", oc.lastMethod);
+		Assertions.assertTrue(oc.lastArguments.get(0) instanceof SimpleMessageAction);
+	}
+	
+	@Test
 	public void testFormResponse1() throws Exception {
 		execute("form1");
 		String data = getMessageData();
@@ -218,6 +226,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	protected abstract void assertThrowsResponse();
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testOptionalPresent() throws Exception {
 		execute("optionals zib zab zob @gaurav pingu");

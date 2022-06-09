@@ -18,14 +18,16 @@ public class FormAction implements Action {
 	private final Map<String, Object> entityMap;
 	private final Addressable a;
 	private final User u;
-	
-	public FormAction(Addressable a, User u, Object formData, String action, Map<String, Object> entityMap) {
+	private final String originatingMessageId;
+
+	public FormAction(Addressable a, User u, Object formData, String action, Map<String, Object> entityMap, String originatingMessageId) {
 		super();
 		this.formData = formData;
 		this.action = action;
 		this.entityMap = entityMap;
 		this.a = a;
 		this.u = u;
+		this.originatingMessageId = originatingMessageId;
 	}
 
 	public Object getFormData() {
@@ -56,6 +58,9 @@ public class FormAction implements Action {
 	public User getUser() {
 		return u;
 	}
-
+	
+	public String getOriginatingMessageId() {
+		return originatingMessageId;
+	}
 	
 }

@@ -101,7 +101,7 @@ public class MessageActivityHandler extends ActivityHandler {
 		TeamsAddressable from = takeUser(rr) ? u : rr;
 		Map<String, Object> data = retrieveData(messageId, from);
 		return validationProcessor.validationCheck(action, from, form, () -> {
-			return new FormAction(from, u, form, action, data);
+			return new FormAction(from, u, form, action, data, a.getId());
 		});
 	}
 

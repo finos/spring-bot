@@ -13,9 +13,16 @@ import org.finos.springbot.workflow.response.handlers.ResponseHandler;
  */
 public class DataResponse implements Response {
 
+	/**
+	 * Set this value in the data if you want to overwrite a message on the 
+	 * underlying chat platform.  Supported by teams and symphony.
+	 */
+	public static final String MESSAGE_UPDATE_ID_KEY = "message.id";
+	
 	private final Map<String, Object> data;
 	private final String templateName;
 	private final Addressable to;
+	
 
 	public DataResponse(Addressable to, Map<String, Object> data, String templateName) {
 		super();
