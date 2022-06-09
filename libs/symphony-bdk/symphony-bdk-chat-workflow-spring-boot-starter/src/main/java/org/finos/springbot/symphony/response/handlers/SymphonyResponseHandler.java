@@ -3,6 +3,7 @@ package org.finos.springbot.symphony.response.handlers;
 import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.util.Collections;
+import java.util.Map;
 
 import org.finos.springbot.symphony.SymphonyException;
 import org.finos.springbot.symphony.content.SymphonyAddressable;
@@ -82,7 +83,11 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 			if (t instanceof DataResponse) {
 				template = buildTemplate((DataResponse) t);
 				
-				messageId = (String) ((DataResponse)t).getData().get(DataResponse.MESSAGE_UPDATE_ID_KEY);
+				Map<String, Object> drData = ((DataResponse) t).getData();
+				if (drData != null) {
+					messageId = (String) drData.get(DataResponse.MESSAGE_UPDATE_ID_KEY);
+				}
+				
 				
 				if (template == null) {
 					LOG.error("Cannot determine/create template for response {}", t);
