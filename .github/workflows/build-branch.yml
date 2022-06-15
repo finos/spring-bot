@@ -43,4 +43,9 @@ jobs:
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
     - name: Build 
       run: mvn install 
+    - name: Test Summary
+      uses: test-summary/action@v1
+      with:
+        paths: "**/TEST-*.xml"
+      if: always()
        
