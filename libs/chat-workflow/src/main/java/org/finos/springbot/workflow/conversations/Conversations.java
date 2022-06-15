@@ -29,4 +29,14 @@ public interface Conversations<C extends Chat, U extends User> {
 	
 	public List<U> getChatAdmins(C r);
 		
+	/**
+	 * Returns the user matching this Id, or null if no user found
+	 */
+	public U getUserById(String id);
+	
+	/**
+	 * Returns the chat matching this Id, or null if no group chat/room found
+	 */
+	public C getChatById(String id);
+
 }

@@ -32,6 +32,7 @@ import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.slf4j.Logger;
@@ -171,7 +172,7 @@ public class TeamsWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsFormConverter teamsFormConverter(TeamsConversations tc) {
+	public TeamsFormConverter teamsFormConverter(AllConversations tc) {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
 		om.registerModule(new TeamsFormDeserializerModule(tc));

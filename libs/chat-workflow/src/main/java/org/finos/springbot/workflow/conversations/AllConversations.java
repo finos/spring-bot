@@ -83,4 +83,25 @@ public class AllConversations implements Conversations<Chat, User>, ApplicationC
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.ctx = applicationContext;
 	}
+
+
+	@Override
+	public User getUserById(String id) {
+		return getDelegates().stream()
+			.map(p -> p.getUserById(id))
+			.filter(u -> u != null)
+			.findFirst()
+			.orElse(null);
+	}
+	
+	@Override
+	public Chat getChatById(String id) {
+		return getDelegates().stream()
+			.map(p -> p.getChatById(id))
+			.filter(c -> c != null)
+			.findFirst()
+			.orElse(null);
+	}
+	
+	
 }
