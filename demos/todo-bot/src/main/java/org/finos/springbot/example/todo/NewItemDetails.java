@@ -19,14 +19,7 @@ public class NewItemDetails {
 
 	String description;
 	User assignTo;
-	Chat room;
-	
-	public Chat getRoom() {
-		return room;
-	}
-	public void setRoom(Chat room) {
-		this.room = room;
-	}
+
 	public NewItemDetails() {
 		super();
 	}
