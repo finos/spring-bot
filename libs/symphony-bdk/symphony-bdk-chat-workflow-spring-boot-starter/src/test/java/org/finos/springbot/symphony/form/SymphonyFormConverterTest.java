@@ -1,13 +1,19 @@
 package org.finos.springbot.symphony.form;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.finos.springbot.symphony.content.CashTag;
 import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
+import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.tests.form.AbstractFormConverterTest;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.conversations.AllConversations;
+import org.finos.springbot.workflow.conversations.PlatformConversations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,11 +23,21 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class SymphonyFormConverterTest extends AbstractFormConverterTest {
 	
-	AllConversations ac;
+	SymphonyConversations sc;
+	
+	AllConversations ac = new AllConversations() {
+
+		@SuppressWarnings("rawtypes")
+		@Override
+		protected List<PlatformConversations<Chat, User>> getDelegates() {
+			return Collections.singletonList((PlatformConversations) sc);
+		}
+		
+	};
 	
 	@Override
 	protected void before() {
-		ac = Mockito.mock(AllConversations.class);
+		sc = Mockito.mock(SymphonyConversations.class);
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new SymphonyFormDeserializerModule(ac));
 		om.registerModule(new JavaTimeModule());
@@ -34,8 +50,8 @@ public class SymphonyFormConverterTest extends AbstractFormConverterTest {
 		before();
 		
 		// set up the user mapping
-		Mockito.when(ac.getUserById("345315370602462")).thenReturn(new SymphonyUser(345315370602462l));
-		Mockito.when(ac.getChatById("abc1234")).thenReturn(new SymphonyRoom("Some room", "abc1234"));
+		Mockito.when(sc.getUserById("345315370602462")).thenReturn(new SymphonyUser(345315370602462l));
+		Mockito.when(sc.getChatById("abc1234")).thenReturn(new SymphonyRoom("Some room", "abc1234"));
 
 		
 		Object o = new ObjectMapper().readValue("{\"action\": \"ob4+0\", \"hashTag.\": \"some-hashtag-value\", \"cashTag.\": \"tsla\", \"someUser.\": 345315370602462, \"chat\": \"abc1234\"}", Map.class);

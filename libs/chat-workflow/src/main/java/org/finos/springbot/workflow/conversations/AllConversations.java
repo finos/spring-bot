@@ -20,7 +20,7 @@ public class AllConversations implements Conversations<Chat, User>, ApplicationC
 	private List<PlatformConversations<Chat, User>> delegates;
 	
 	@SuppressWarnings("unchecked")
-	private List<PlatformConversations<Chat, User>> getDelegates() {
+	protected List<PlatformConversations<Chat, User>> getDelegates() {
 		if (delegates == null) {
 			delegates = Arrays.stream(ctx.getBeanNamesForType(PlatformConversations.class))
 				.map(s -> (PlatformConversations<Chat,User>) ctx.getBean(s))
