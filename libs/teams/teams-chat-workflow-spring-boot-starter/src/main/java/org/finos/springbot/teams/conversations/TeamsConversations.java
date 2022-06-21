@@ -36,6 +36,6 @@ public interface TeamsConversations extends PlatformConversations<TeamsChat, Tea
 	public boolean isChannel(ChannelAccount ca);
 	
 	public TeamsUser lookupUser(String userId);
-		
+	
 	public CompletableFuture<ResourceResponse> handleActivity(Activity a, TeamsAddressable ta);
 }

@@ -8,6 +8,8 @@ public interface TeamsStateStorage {
 
 	public static final String PRESENT = "tag";
 	public static final String ADDRESSABLE_KEY = "addressable";
+	public static final String ACTIVITY_KEY = "activity";
+	
 
 	public class Filter {
 		

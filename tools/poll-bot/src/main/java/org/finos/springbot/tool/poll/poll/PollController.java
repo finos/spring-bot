@@ -96,6 +96,7 @@ public class PollController {
 		ButtonList buttons = buildButtons(results);
 
 		WorkResponse wr = new WorkResponse(r, results, WorkMode.VIEW, buttons, new ErrorMap());
+				
 		wr.getData().put(DataResponse.MESSAGE_UPDATE_ID_KEY, originatingMessageId);
 		rh.accept(wr);
 	}

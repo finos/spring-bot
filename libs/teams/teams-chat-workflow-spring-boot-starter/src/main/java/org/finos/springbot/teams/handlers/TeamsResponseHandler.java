@@ -98,7 +98,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					messageId = getOptionalMessageID(t);
 					
 					sendXMLResponse(content, attachment, ta, entities, mr.getData(), messageId)
-						.handle(handleErrorAndStorage(content, ta, mr.getData()));
+						.handle(handleErrorAndStorage(content, ta, mr.getData(), messageId));
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
@@ -109,7 +109,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
 						sendCardResponse(cardJson, ta, wr.getData(), messageId)
-							.handle(handleErrorAndStorage(cardJson, ta, wr.getData()));
+							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), messageId));
 						;
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
@@ -117,7 +117,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						List<Entity> entities = mae.getEntities();
 						sendXMLResponse(content, null, ta, entities, wr.getData(), messageId)
 							.handle(handleButtonsIfNeeded(tt, wr, messageId))
-							.handle(handleErrorAndStorage(content, ta, wr.getData()));
+							.handle(handleErrorAndStorage(content, ta, wr.getData(), messageId));
 						
 					}
 				}
@@ -200,7 +200,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		};
 	}
 	
-	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data) {
+	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, String messageId) {
 		return (rr, e) -> {
 				if (e != null) {
 					LOG.error(e.getMessage());
@@ -216,7 +216,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					initErrorHandler();
 					eh.handleError(e);	
 				} else {
-					performStorage(address, data);
+					String localMessageId = messageId == null ? rr.getId() : messageId;
+					performStorage(address, data, localMessageId);
 				}
 				
 				return null;
@@ -232,10 +233,15 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		return teamsConversations.handleActivity(out, address);
 	}
 
-	protected void performStorage(TeamsAddressable address, Map<String, Object> data) {
+	protected void performStorage(TeamsAddressable address, Map<String, Object> data, String activityId) {
 		String dataKey = (String) data.get(StorageIDResponseHandler.STORAGE_ID_KEY);
 		if (dataKey != null) {
-			// first, store data for message
+			// first, ensure we store the message id.
+			if (activityId != null) {
+				data.put(TeamsStateStorage.ACTIVITY_KEY, activityId);
+			}
+			
+			// store data for message
 			Map<String, String> tags = createStorageTags(data, address);
 			String file = address.getKey()+"/"+dataKey;
 			teamsState.store(file, tags, data);			

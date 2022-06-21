@@ -241,7 +241,12 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 	public CompletableFuture<ResourceResponse> handleActivity(Activity activity, TeamsAddressable to) {
 		TurnContext ctx = getWorkingTurnContext(to);
 		ensureRoomRecorded(to);
-		return ctx.sendActivity(activity);
+		
+		if (activity.getId() != null) {
+			return ctx.updateActivity(activity);
+		} else {
+			return ctx.sendActivity(activity);
+		}
 	}
 
 	protected abstract void ensureRoomRecorded(TeamsAddressable to);
