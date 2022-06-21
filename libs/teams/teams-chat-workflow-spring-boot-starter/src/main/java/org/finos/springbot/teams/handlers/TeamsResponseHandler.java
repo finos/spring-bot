@@ -81,6 +81,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		
 		if (t.getAddress() instanceof TeamsAddressable) {		
 			TeamsAddressable ta = (TeamsAddressable) t.getAddress();
+			String messageId = null;
 
 			try {
 				if (t instanceof MessageResponse) {
@@ -94,24 +95,28 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						attachment = attachmentHandler.formatAttachment((AttachmentResponse) mr);
 					}
 					
-					sendXMLResponse(content, attachment, ta, entities, mr.getData())
+					messageId = getOptionalMessageID(t);
+					
+					sendXMLResponse(content, attachment, ta, entities, mr.getData(), messageId)
 						.handle(handleErrorAndStorage(content, ta, mr.getData()));
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
 					TemplateType tt = getTemplateType(wr);
+					messageId = getOptionalMessageID(t);
+
  					 
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
-						sendCardResponse(cardJson, ta, wr.getData())
+						sendCardResponse(cardJson, ta, wr.getData(), messageId)
 							.handle(handleErrorAndStorage(cardJson, ta, wr.getData()));
 						;
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
 						String content = mae.getContents();
 						List<Entity> entities = mae.getEntities();
-						sendXMLResponse(content, null, ta, entities, wr.getData())
-							.handle(handleButtonsIfNeeded(tt, wr))
+						sendXMLResponse(content, null, ta, entities, wr.getData(), messageId)
+							.handle(handleButtonsIfNeeded(tt, wr, messageId))
 							.handle(handleErrorAndStorage(content, ta, wr.getData()));
 						
 					}
@@ -120,6 +125,16 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				throw new TeamsException("Couldn't handle response " +t, e);
 			}
 		}
+	}
+
+	private String getOptionalMessageID(Response t) {
+		String messageId = null;
+		Map<String, Object> drData = ((DataResponse) t).getData();
+		if (drData != null) {
+			messageId = (String) drData.get(DataResponse.MESSAGE_UPDATE_ID_KEY);
+		}
+		
+		return messageId;
 	}
 
 	protected TemplateType getTemplateType(WorkResponse wr) {
@@ -139,15 +154,25 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		return tt;
 	}
 
-	protected CompletableFuture<ResourceResponse> sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, Map<String, Object> data) throws Exception {		
-		Activity out = Activity.createMessageActivity();
+	protected CompletableFuture<ResourceResponse> sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, Map<String, Object> data, String id) throws Exception {		
+		Activity out = createActivity(id);
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
 		out.setText(xml);
 		return teamsConversations.handleActivity(out, address);
 	}
 
-	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleButtonsIfNeeded(TemplateType tt, WorkResponse wr) {
+	private Activity createActivity(String id) {
+		Activity out = Activity.createMessageActivity();
+		out.setId(id);
+		return out;
+	}
+
+	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleButtonsIfNeeded(TemplateType tt, WorkResponse wr, String messageId) {
+		if (messageId != null) {
+			// we're updating - don't write the buttons again
+			return (rr, e) -> null;
+		}
 		return (rr, e) -> {
 			try {
 				if (e == null) {
@@ -161,7 +186,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 								null);
 						JsonNode buttonsJson = workTemplater.template(null);
 						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, justButtons);
-						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
+						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData(), messageId).get();
 					} else {
 						return null;
 					}
@@ -198,8 +223,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			};
 	}
 
-	protected CompletableFuture<ResourceResponse> sendCardResponse(JsonNode json, TeamsAddressable address, Map<String, Object> data) throws Exception {		
-		Activity out = Activity.createMessageActivity();
+	protected CompletableFuture<ResourceResponse> sendCardResponse(JsonNode json, TeamsAddressable address, Map<String, Object> data, String messageId) throws Exception {		
+		Activity out = createActivity(messageId);
 		Attachment body = new Attachment();
 		body.setContentType("application/vnd.microsoft.card.adaptive");
 		body.setContent(json);
