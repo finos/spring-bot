@@ -5,7 +5,6 @@ package org.finos.springbot.example.todo;
 
 import org.finos.springbot.workflow.annotations.RequiresUserList;
 import org.finos.springbot.workflow.annotations.Work;
-import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
 
 /**
