@@ -4,34 +4,46 @@ import java.util.Map;
 
 import org.finos.springbot.symphony.content.CashTag;
 import org.finos.springbot.symphony.content.HashTag;
+import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.tests.form.AbstractFormConverterTest;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class SymphonyFormConverterTest extends AbstractFormConverterTest {
-
+	
+	AllConversations ac;
+	
 	@Override
 	protected void before() {
+		ac = Mockito.mock(AllConversations.class);
 		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new SymphonyFormDeserializerModule());
+		om.registerModule(new SymphonyFormDeserializerModule(ac));
 		om.registerModule(new JavaTimeModule());
 		fc = new SymphonyFormConverter(om);
-
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testPlatform() throws Exception {
 		before();
-		Object o = new ObjectMapper().readValue("{\"action\": \"ob4+0\", \"hashTag.\": \"some-hashtag-value\", \"cashTag.\": \"tsla\", \"someUser.\": 345315370602462}", Map.class);
+		
+		// set up the user mapping
+		Mockito.when(ac.getUserById("345315370602462")).thenReturn(new SymphonyUser(345315370602462l));
+		Mockito.when(ac.getChatById("abc1234")).thenReturn(new SymphonyRoom("Some room", "abc1234"));
+
+		
+		Object o = new ObjectMapper().readValue("{\"action\": \"ob4+0\", \"hashTag.\": \"some-hashtag-value\", \"cashTag.\": \"tsla\", \"someUser.\": 345315370602462, \"chat\": \"abc1234\"}", Map.class);
 		Platform to = (Platform) fc.convert((Map<String, Object>) o, Platform.class.getCanonicalName());
 		Assertions.assertEquals("tsla", ((CashTag) to.getCashTag()).getName());
 		Assertions.assertEquals("345315370602462", ((SymphonyUser) to.getSomeUser()).getUserId());
 		Assertions.assertEquals("some-hashtag-value", ((HashTag) to.getHashTag()).getName());
+		Assertions.assertEquals("Some room", ((SymphonyRoom) to.getChat()).getName());
 	}
 	
 	@Test
