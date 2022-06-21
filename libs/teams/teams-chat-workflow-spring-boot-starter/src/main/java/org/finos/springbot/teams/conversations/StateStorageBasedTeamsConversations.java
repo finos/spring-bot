@@ -72,7 +72,7 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 	public TeamsChat getChatById(String id) {
 		String file = id+"/addressable";
 		Optional<Map<String, Object>> data = tss.retrieve(file);
-		if (data.isEmpty()) {
+		if (!data.isPresent()) {
 			return null;
 		} else {
 			List<Map<String, Object>> list = Collections.singletonList(data.get());
