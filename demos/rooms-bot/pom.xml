@@ -11,12 +11,12 @@
 	</parent>
 
 	<groupId>org.finos.springbot.demos</groupId>
-	<artifactId>todo-bot</artifactId>
-	<name>To-Do Bot (Demo)</name>
-	<description>Demo Bot for Managing a Todo List</description>
+	<artifactId>rooms-bot</artifactId>
+	<name>Rooms Bot (Demo)</name>
+	<description>Allows you to send a message to any room the bot is in</description>
 
 	<properties>
-		<spring-boot.run.main-class>org.finos.springbot.example.todo.ToDoWorkflowApp</spring-boot.run.main-class>
+		<spring-boot.run.main-class>org.finos.springbot.example.rooms.RoomsApp</spring-boot.run.main-class>
 	</properties>
 
 	<dependencies>
@@ -30,14 +30,8 @@
 			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
 			<version>9.0.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-		</dependency>
-
-	
-
 	</dependencies>
+
 
 	<build>
 		<plugins>

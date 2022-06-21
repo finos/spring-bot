@@ -1,5 +1,6 @@
 package org.finos.springbot.example.todo;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -12,8 +13,13 @@ import org.finos.springbot.workflow.annotations.ChatRequest;
 import org.finos.springbot.workflow.annotations.ChatResponseBody;
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Chat;
+import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.content.Word;
+import org.finos.springbot.workflow.response.MessageResponse;
+import org.finos.springbot.workflow.response.Response;
+import org.finos.springbot.workflow.response.WorkResponse;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -101,7 +107,8 @@ public class ToDoController {
 		return out;
 	}
 
-	private void changeStatus(ToDoList on, List<Word> words, User u, Status s) {
+	private List<Response> changeStatus(ToDoList on, List<Word> words, User u, Status s) {
+		List<Response> out = new ArrayList<Response>();
 		Set<Integer> toUpdate = numbers(words);
 
 		on.getItems().stream()
@@ -109,17 +116,25 @@ public class ToDoController {
 			.forEach(i -> {
 				i.setAssignTo(u);	
 				i.setStatus(s);
+				out.add(createNotification(i));
 		});
 		
 		reNumber(on);
+		
+		return out;
 	}
 	
+	private Response createNotification(ToDoItem i) {
+		return new MessageResponse(i.getCreator(), Message.of("Updated '"+i.getDescription()+"' to status"+i.getStatus()));
+	}
+
 	@ChatRequest(value="complete {items} {by}", description = "Complete items, e.g. \"/complete 1 3 5 @Suresh Rupnar\"")
-	public ToDoList complete(@ChatVariable("items") List<Word> words, @ChatVariable("by") Optional<User> by, User a, Optional<ToDoList> toDo) {
+	public List<Response> complete(@ChatVariable("items") List<Word> words, @ChatVariable("by") Optional<User> by, User a, Optional<ToDoList> toDo, Chat theRoom) {
 		ToDoList out = toDo.orElse(init());
 		User u = by.orElse(a);
-		changeStatus(out, words, u, Status.COMPLETE);
-		return out;
+		List<Response> responses = changeStatus(out, words, u, Status.COMPLETE);
+		responses.add(new WorkResponse(theRoom, out, WorkMode.VIEW));
+		return responses;
 	}
 	
 	@ChatRequest(value="assign {items} {by}", description = "Assign items, e.g. \"/assign 1 3 5 @Suresh Rupnar\"")
@@ -129,4 +144,17 @@ public class ToDoController {
 		changeStatus(out, words, u, Status.OPEN);
 		return out;
 	}
+	
+	@ChatRequest(value="send")
+	@ChatResponseBody(workMode = WorkMode.EDIT)
+	public SendToRoom sendToRoom() {
+		return new SendToRoom();
+	}
+	
+	@ChatButton(value=SendToRoom.class, buttonText="Send")
+	public WorkResponse sendToRoom(SendToRoom theForm, ToDoList tdl) {
+		return new WorkResponse(theForm.room, tdl, WorkMode.VIEW);
+		
+	}
+	
 }

@@ -3,6 +3,7 @@ package org.finos.springbot.teams.conversations;
 import static org.finos.springbot.teams.state.TeamsStateStorage.ADDRESSABLE_KEY;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -53,7 +54,8 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 		filters.add(new Filter(ADDRESSABLE_INFO));
 		filters.add(new Filter(ADDRESSABLE_TYPE, CHAT, "="));
 		Iterable<Map<String, Object>> it = tss.retrieve(filters, false);
-		return new HashSet<>(StateStorageBasedTeamsHistory.findObjectsFromItems(TeamsChat.class, it));
+		Set<TeamsChat> out = new HashSet<>(StateStorageBasedTeamsHistory.findObjectsFromItems(TeamsChat.class, it));
+		return out;
 	}
 
 	@Override
@@ -62,6 +64,25 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 			.filter(tc -> name.equals(tc.getName()))
 			.findFirst()
 			.orElse(null);
+	}
+	
+	
+
+	@Override
+	public TeamsChat getChatById(String id) {
+		String file = id+"/addressable";
+		Optional<Map<String, Object>> data = tss.retrieve(file);
+		if (data.isEmpty()) {
+			return null;
+		} else {
+			List<Map<String, Object>> list = Collections.singletonList(data.get());
+			List<TeamsChat> out =  StateStorageBasedTeamsHistory.findObjectsFromItems(TeamsChat.class, list);
+			if (out.size() > 0) {
+				return out.get(0);
+			} else {
+				return null;
+			}
+		}
 	}
 
 	@Override

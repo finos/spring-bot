@@ -6,6 +6,7 @@ import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.AllConversations;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,9 +46,11 @@ public class SymphonyFormDeserializerModule extends Module {
 	public Version version() {
 		return VERSION;
 	}
+	
+	private AllConversations ac;
 		
-	public SymphonyFormDeserializerModule() {
-		super();
+	public SymphonyFormDeserializerModule(AllConversations ac) {
+		this.ac = ac;
 	}
 
 	@Override
@@ -68,13 +71,13 @@ public class SymphonyFormDeserializerModule extends Module {
 							TreeNode tn = p.readValueAsTree();
 							if (tn.isArray() && (tn.size() > 0)) {
 								long ul = ((LongNode) tn.get(0)).asLong();
-								return new SymphonyUser(ul);
+								return ac.getUserById(""+ul);
 							}else if (tn instanceof LongNode) {
 								long ul = ((LongNode) tn).asLong();
-								return new SymphonyUser(ul);
+								return ac.getUserById(""+ul);
 							}else if (tn instanceof TextNode) {
 								long ul = ((TextNode)tn).asLong();
-								return new SymphonyUser(ul);
+								return ac.getUserById(""+ul);
 							} else {
 								return null;
 							}
@@ -87,7 +90,7 @@ public class SymphonyFormDeserializerModule extends Module {
 						@Override
 						public Chat deserialize(JsonParser p, DeserializationContext ctxt)
 								throws IOException, JsonProcessingException {
-							return new SymphonyRoom(null, p.getValueAsString());
+							return ac.getChatById(p.getValueAsString());
 						}
 					};
 					

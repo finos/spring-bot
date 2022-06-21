@@ -28,6 +28,7 @@ import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.Content;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.finos.springbot.workflow.response.templating.AbstractMarkupTemplateProvider;
@@ -89,6 +90,9 @@ public class SymphonyWorkflowConfig {
 	@Autowired 
 	MessageMLParser messageMLParser;
 	
+	@Autowired
+	AllConversations allConversations;
+	
 	@Bean 
 	@ConditionalOnMissingBean
 	public SymphonyMarkupTemplateProvider symphonyMarkupTemplater(
@@ -148,7 +152,7 @@ public class SymphonyWorkflowConfig {
 	@ConditionalOnMissingBean
 	public SymphonyFormConverter symphonyFormConverter() {
 		ObjectMapper om = new ObjectMapper();
-		om.registerModule(new SymphonyFormDeserializerModule());
+		om.registerModule(new SymphonyFormDeserializerModule(allConversations));
 		om.registerModule(new JavaTimeModule());
 		return new SymphonyFormConverter(om);
 	}
