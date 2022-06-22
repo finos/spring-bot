@@ -217,3 +217,7 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - #300 - Deploy tools/demos to maven central
  - #313 - Fixing Help Controller in Demo Bot not working in teams
  - Release of Beta 2.
+
+# Jun 22 2022
+ - #339 - MS Teams test failures on Windows machine fix
+ - Release 9.0.0
