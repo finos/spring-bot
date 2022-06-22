@@ -1,0 +1,54 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>9.0.1-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
+	</parent>
+
+	<groupId>org.finos.springbot.demos</groupId>
+	<artifactId>rooms-bot</artifactId>
+	<name>Rooms Bot (Demo)</name>
+	<description>Allows you to send a message to any room the bot is in</description>
+
+	<properties>
+		<spring-boot.run.main-class>org.finos.springbot.example.rooms.RoomsApp</spring-boot.run.main-class>
+	</properties>
+
+	<dependencies>
+	    <dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.1-SNAPSHOT</version>
+		</dependency>
+	    <dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
+			<version>9.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<mainClass>${spring-boot.run.main-class}</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

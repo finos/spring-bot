@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 
-import com.symphony.bdk.gen.api.model.V4Event;
 import com.symphony.bdk.gen.api.model.V4MessageSent;
 import com.symphony.bdk.spring.events.RealTimeEvent;
 

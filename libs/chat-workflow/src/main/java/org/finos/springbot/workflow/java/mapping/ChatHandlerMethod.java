@@ -18,7 +18,6 @@ package org.finos.springbot.workflow.java.mapping;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
-import java.util.List;
 import java.util.StringJoiner;
 
 import org.apache.commons.logging.Log;

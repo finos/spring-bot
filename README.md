@@ -99,6 +99,7 @@ Inside the `/demos` directory you can see three example bots:
 
 - `demo-bot` : The "Hello World" of Spring Bot 
 - `todo-bot` : Runs a simple todo-list inside a chat room on Teams or Symphony.
+- `room-bot` : A room broadcasting bot, that shows how to use the chat dropdown, and address messages across Teams and Symphony.
 - `claim-bot`: An example of an expense-claim workflow running across Teams and Symphony concurrently.
 - `custom-help-bot`: Shows you how you can override built-in beans (like the `HelpController`) to change the functionality of Spring Bot.
 

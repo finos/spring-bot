@@ -104,13 +104,15 @@ public class AzureBlobStateStorage extends AbstractStateStorage {
 	public void store(String file, Map<String, String> tags, Map<String, Object> data) {
 		file = getAzurePath(file);
 		try {
-			if (tags.size() > 0) { 
+			if ((tags != null) && (tags.size() > 0)) { 
 				BlobClient bc = bcc.getBlobClient(file);
 				
 				String out = ejc.writeValue(data);
 				byte[] dataBytes = out.getBytes();
 				bc.upload(new ByteArrayInputStream(dataBytes), dataBytes.length);
 				bc.setTags(getAzureTags(tags));
+			} else {
+				throw new TeamsException("Couldn't persist - no tags");
 			}
 		} catch (Exception e) {
 			throw new TeamsException("Cannot persist data to "+file, e);

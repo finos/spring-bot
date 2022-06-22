@@ -1,40 +1,37 @@
 package org.finos.springbot.example.demo.controller;
 
 import org.finos.springbot.workflow.annotations.ChatRequest;
-import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+/**
+ * The custom help controller shows the first three options, and the others are on
+ * a "more..." expander
+ * @author rob@kite9.com
+ *
+ */
 @Controller
 public class DemoController {
 
-    @ChatRequest(value = "ping", helpOrder = 1, description = "Ping test your bot!")
-    public MessageResponse pingTest(Addressable a) {
-        return new MessageResponse(a, "Hello from the other side");
+    @ChatRequest(value = "ping", helpOrder = 1, description = "Help Option 1")
+    public MessageResponse pingTest1(Addressable a) {
+        return new MessageResponse(a, "Ping!");
     }
-
-    @ChatRequest(value = "echo {echoMessage}", helpOrder = 2, description = "Echo back your message")
-    public MessageResponse missingChatButton(@ChatVariable(name = "echoMessage") List<Word> msg, Addressable a) {
-        String strMsg = msg.stream()
-                .map(word -> word.getText())
-                .collect(Collectors.joining(" "));
-
-        if(!StringUtils.hasText(strMsg)) {
-            strMsg = "Hello";
-        }
-
-        return new MessageResponse(a, "Bot echoing - " + strMsg);
+    
+    @ChatRequest(value = "pong", helpOrder = 1, description = "Help Option 2")
+    public MessageResponse pingTest2(Addressable a) {
+        return new MessageResponse(a, "Pong!");
     }
-
-    @ChatRequest(value = "botEcho", helpOrder = 2, description = "To demo expandable cards")
-    public MessageResponse withChatButton(Addressable a) {
-        return new MessageResponse(a, "Echo echo...");
+    
+    @ChatRequest(value = "thing", helpOrder = 1, description = "Help Option 3")
+    public MessageResponse pingTest3(Addressable a) {
+        return new MessageResponse(a, "You asked for a thing");
+    }
+    
+    @ChatRequest(value = "bling", helpOrder = 1, description = "Help Option 4")
+    public MessageResponse pingTest4(Addressable a) {
+        return new MessageResponse(a, "You asked for a bling");
     }
     
 }

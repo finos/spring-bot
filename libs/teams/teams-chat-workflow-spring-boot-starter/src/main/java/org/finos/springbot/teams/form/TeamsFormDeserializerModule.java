@@ -2,11 +2,9 @@ package org.finos.springbot.teams.form;
 
 import java.io.IOException;
 
-import org.finos.springbot.teams.content.TeamsMultiwayChat;
-import org.finos.springbot.teams.content.TeamsUser;
-import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.AllConversations;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -35,7 +33,7 @@ public class TeamsFormDeserializerModule extends Module {
 			TeamsFormDeserializerModule.class.getPackage().getName().toLowerCase(), 
 			"teams-form-deserializer-module");
 
-	private TeamsConversations tc;
+	private AllConversations tc;
 	
 
 	@Override
@@ -48,7 +46,7 @@ public class TeamsFormDeserializerModule extends Module {
 		return VERSION;
 	}
 		
-	public TeamsFormDeserializerModule(TeamsConversations tc) {
+	public TeamsFormDeserializerModule(AllConversations tc) {
 		super();
 		this.tc = tc;
 	}
@@ -70,7 +68,7 @@ public class TeamsFormDeserializerModule extends Module {
 							
 							TreeNode tn = p.readValueAsTree();
 							if (tn instanceof TextNode) {
-								return tc.lookupUser(((TextNode)tn).asText());
+								return tc.getUserById(((TextNode)tn).asText());
 							} else {
 								return null;
 							}
@@ -83,7 +81,7 @@ public class TeamsFormDeserializerModule extends Module {
 						@Override
 						public Chat deserialize(JsonParser p, DeserializationContext ctxt)
 								throws IOException, JsonProcessingException {
-							return new TeamsMultiwayChat(p.getValueAsString(), null);
+							return tc.getChatById(p.getValueAsString());
 						}
 					};
 					

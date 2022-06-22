@@ -218,6 +218,7 @@ public abstract class AbstractHandlerMappingTest {
 	
 	protected abstract void assertThrowsResponse();
 	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testOptionalPresent() throws Exception {
 		execute("optionals zib zab zob @gaurav pingu");

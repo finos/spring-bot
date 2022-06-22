@@ -14,3 +14,4 @@ Here are clues to solving common issues:
  
  - `No message body reader has been found for class ...` : Check your stream Id doesn't have spaces/new lines in it.
  
+ - `The bean 'templateEngine',... could not be registered. `: This happens when you have included the Teams Spring Boot Starter but have disabled it with `spring.profiles.active`.  This is because the Teams starter brings in Thymeleaf, as does the Symphony starter, and they collide.  When Teams Spring Boot Starter is enabled, it renames the Teams Thymeleaf `templateEngine` to avoid this happening.  Don't include the Teams Spring Boot Starter unless you're going to enable it.

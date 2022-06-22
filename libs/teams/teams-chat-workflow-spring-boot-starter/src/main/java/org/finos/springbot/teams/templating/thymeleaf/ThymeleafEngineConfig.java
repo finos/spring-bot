@@ -14,7 +14,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @EnableConfigurationProperties(ThymeleafProperties.class)
-public class ThymleafEngineConfig {
+public class ThymeleafEngineConfig {
 
 	/**
 	 * this prevents thymleaf trying to auto-configure a template-engine, which clashes with bdk.

@@ -47,6 +47,11 @@ jobs:
       run: mvn de.qaware.maven:go-offline-maven-plugin:resolve-dependencies
     - name: Build + Test
       run: mvn verify --settings .github/workflows/settings.xml 
+    - name: Test Summary
+      uses: test-summary/action@v1
+      with:
+        paths: "**/TEST-*.xml"
+      if: always()
     - name: Coverage 
       uses: codecov/codecov-action@v2
       with:

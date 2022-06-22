@@ -18,6 +18,7 @@ import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.state.AzureBlobStateStorage;
+import org.finos.springbot.teams.state.MemoryStateStorage;
 import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterConfig;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
@@ -25,12 +26,13 @@ import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplater;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafConverterConfig;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplater;
-import org.finos.springbot.teams.templating.thymeleaf.ThymleafEngineConfig;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafEngineConfig;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
 import org.finos.springbot.workflow.actions.consumers.InRoomAddressingChecker;
 import org.finos.springbot.workflow.content.User;
+import org.finos.springbot.workflow.conversations.AllConversations;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.slf4j.Logger;
@@ -65,7 +67,7 @@ import com.microsoft.bot.schema.ChannelAccount;
 @Import({
 	ChatWorkflowConfig.class, 
 	TeamsContentConfig.class,
-	ThymleafEngineConfig.class,
+	ThymeleafEngineConfig.class,
 	AdaptiveCardConverterConfig.class,
 	ThymeleafConverterConfig.class,
 	TeamsConversationsConfig.class,
@@ -154,6 +156,14 @@ public class TeamsWorkflowConfig {
 	}
 	
 	@Bean
+	@ConditionalOnProperty(matchIfMissing = true, name = "teams.storage.type", havingValue = "memory")
+	@ConditionalOnMissingBean
+	public TeamsStateStorage teamsAzureBlobStateStorage() {
+		LOG.warn("Using Memory storage for Azure data - NOT FOR PRODUCTION");
+		return new MemoryStateStorage();
+	}
+	
+	@Bean
 	@ConditionalOnMissingBean
 	public TeamsHistory teamsHistory(TeamsStateStorage tss) {
 		return new StateStorageBasedTeamsHistory(tss);
@@ -162,7 +172,7 @@ public class TeamsWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public TeamsFormConverter teamsFormConverter(TeamsConversations tc) {
+	public TeamsFormConverter teamsFormConverter(AllConversations tc) {
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new JavaTimeModule());
 		om.registerModule(new TeamsFormDeserializerModule(tc));

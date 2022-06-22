@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import org.finos.springbot.entityjson.EntityJson;
-import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;

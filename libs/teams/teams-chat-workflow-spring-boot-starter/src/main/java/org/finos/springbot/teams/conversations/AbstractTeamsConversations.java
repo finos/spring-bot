@@ -70,8 +70,7 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 
 	@Override
 	public TeamsChat ensureChat(TeamsChat r, List<TeamsUser> users, Map<String, Object> meta) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 	@Override
@@ -181,9 +180,9 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 	@Override
 	public TeamsAddressable getTeamsAddressable(ConversationAccount tcd) {
 		if ("groupChat".equals(tcd.getConversationType())) {
-			return new TeamsMultiwayChat(tcd.getId(), "Group Chat");
+			return new TeamsMultiwayChat(tcd.getId(), createChatName(null, tcd));
 		} else if ("channel".equals(tcd.getConversationType())){
-			return new TeamsChannel(tcd.getId(), tcd.getName());
+			return new TeamsChannel(tcd.getId(), createChatName(tcd.getName(), tcd));
 		} else if ("personal".equals(tcd.getConversationType())) {
 			return new TeamsUser(tcd.getId(), tcd.getName(), tcd.getAadObjectId());
 		} else {
@@ -192,6 +191,30 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 	}
 	
 	
+
+	private String createChatName(String d, ConversationAccount tcd) {
+		if (d!=null) {
+			return d;
+		} else {
+			try {
+				// construct a name
+				List<ChannelAccount> participants = getConversations().getConversationMembers(tcd.getId()).get().stream().collect(Collectors.toList());
+				
+				String out = "Chat With "+participants.stream()
+						.limit(5)
+						.map(cm -> cm.getName())
+						.collect(Collectors.joining(", "));
+				
+				if (participants.size() > 5) {
+					out = out + " ("+(participants.size()-5)+" more)";
+				}
+				
+				return out;
+			} catch (Exception e) {
+				return "Group Chat (Unknown Participants)";
+			}
+		}
+	}
 
 	private TurnContext getWorkingTurnContext(TeamsAddressable ta) {
 		try {
@@ -238,4 +261,13 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 		return cr;
 	}
 
+	@Override
+	public TeamsUser getUserById(String id) {
+		try {
+			return lookupUser(id);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+	
 }

@@ -2,20 +2,6 @@
 
 This provides a Poll bot, to demonstrate the [Chat Workflow](../../libs/chat-workflow/README.md) module.
 
-Here are some images of it working:
+## NB: Not currently working
 
-![Poll Form](images/poll1.png)
-
-Enter a question and some options...
-
-![Poll Start](images/poll2.png)
-
-The poll has started.  
-
-![Poll Questions](images/poll3.png)
-
-Members of the room receive private messages asking them to vote...
-
-![Poll Results](images/poll4.png)
-
-After the poll closes, a chart is displayed of the results.
+This is being updated to use Symphony's new updating messages feature, so that the results of the poll are always updated.  However, there are bugs in the `updateMessage` functionality which are preventing us from having a working 9.0.0 Poll Bot.   

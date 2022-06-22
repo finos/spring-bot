@@ -20,7 +20,7 @@ public class AllConversations implements Conversations<Chat, User>, ApplicationC
 	private List<PlatformConversations<Chat, User>> delegates;
 	
 	@SuppressWarnings("unchecked")
-	private List<PlatformConversations<Chat, User>> getDelegates() {
+	protected List<PlatformConversations<Chat, User>> getDelegates() {
 		if (delegates == null) {
 			delegates = Arrays.stream(ctx.getBeanNamesForType(PlatformConversations.class))
 				.map(s -> (PlatformConversations<Chat,User>) ctx.getBean(s))
@@ -83,4 +83,25 @@ public class AllConversations implements Conversations<Chat, User>, ApplicationC
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.ctx = applicationContext;
 	}
+
+
+	@Override
+	public User getUserById(String id) {
+		return getDelegates().stream()
+			.map(p -> p.getUserById(id))
+			.filter(u -> u != null)
+			.findFirst()
+			.orElse(null);
+	}
+	
+	@Override
+	public Chat getChatById(String id) {
+		return getDelegates().stream()
+			.map(p -> p.getChatById(id))
+			.filter(c -> c != null)
+			.findFirst()
+			.orElse(null);
+	}
+	
+	
 }

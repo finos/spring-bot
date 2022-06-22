@@ -31,6 +31,7 @@ import com.symphony.bdk.gen.api.model.StreamType;
 import com.symphony.bdk.gen.api.model.StreamType.TypeEnum;
 import com.symphony.bdk.gen.api.model.UserV2;
 import com.symphony.bdk.gen.api.model.V2RoomSearchCriteria;
+import com.symphony.bdk.gen.api.model.V2StreamAttributes;
 import com.symphony.bdk.gen.api.model.V3RoomAttributes;
 import com.symphony.bdk.gen.api.model.V3RoomDetail;
 import com.symphony.bdk.gen.api.model.V3RoomSearchResults;
@@ -133,6 +134,10 @@ public class SymphonyConversationsImpl implements SymphonyConversations, Initial
 	}
 	
 	protected SymphonyRoom loadRoomByStreamAttributes(StreamAttributes si) {
+		return new SymphonyRoom(si.getRoomAttributes().getName(), si.getId());
+	}
+	
+	protected SymphonyRoom loadRoomByStreamAttributes(V2StreamAttributes si) {
 		return new SymphonyRoom(si.getRoomAttributes().getName(), si.getId());
 	}
 
@@ -341,4 +346,34 @@ public class SymphonyConversationsImpl implements SymphonyConversations, Initial
 	public boolean isSupported(User u) {
 		return u instanceof SymphonyUser;
 	}
+
+
+	@Override
+	public SymphonyUser getUserById(String id) {
+		try {
+			Long l = Long.parseLong(id);
+			return loadUserById(l);
+		} catch (NumberFormatException e) {
+			// might not be a symphony id.
+			return null;
+		}
+	}
+
+
+	@Override
+	public SymphonyRoom getChatById(String id) {
+		try {
+			V2StreamAttributes sa = streamsApi.getStream(id);
+			if (sa == null) {
+				return null;
+			} else {
+				return loadRoomByStreamAttributes(sa);
+			}
+		} catch (Exception e) {
+			// could be something non-symphony
+			return null;
+		}
+	}
+	
+	
 }

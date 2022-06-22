@@ -1,0 +1,15 @@
+# To validate:
+#   cat codecov.yml | curl --data-binary @- https://codecov.io/validate
+
+codecov:
+  notify:
+    require_ci_to_pass: yes
+
+coverage:
+  status:
+    patch:
+      default:
+        enabled: no # disable patch since it is noisy and not correct
+        if_not_found: success
+
+comment: false 
