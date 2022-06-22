@@ -38,4 +38,5 @@ public interface TeamsConversations extends PlatformConversations<TeamsChat, Tea
 	public TeamsUser lookupUser(String userId);
 		
 	public CompletableFuture<ResourceResponse> handleActivity(Activity a, TeamsAddressable ta);
+
 }

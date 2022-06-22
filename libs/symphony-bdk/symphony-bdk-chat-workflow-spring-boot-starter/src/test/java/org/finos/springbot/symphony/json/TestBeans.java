@@ -1,13 +1,11 @@
 package org.finos.springbot.symphony.json;
 
-import javax.validation.Valid;
-
-import org.finos.springbot.workflow.annotations.ChatRequest;
-import org.finos.springbot.workflow.annotations.Work;
-import org.finos.springbot.workflow.content.Word;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.validation.Valid;
+
+import org.finos.springbot.workflow.annotations.Work;
 
 @Work()
 public class TestBeans {

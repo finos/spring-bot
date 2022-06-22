@@ -27,7 +27,7 @@ public class SymphonyFormConverterTest extends AbstractFormConverterTest {
 	
 	AllConversations ac = new AllConversations() {
 
-		@SuppressWarnings("rawtypes")
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		@Override
 		protected List<PlatformConversations<Chat, User>> getDelegates() {
 			return Collections.singletonList((PlatformConversations) sc);
