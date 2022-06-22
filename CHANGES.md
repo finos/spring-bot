@@ -220,4 +220,8 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
 
 # Jun 22 2022
  - #339 - MS Teams test failures on Windows machine fix
+ - #350 - Rooms passed from Teams to Symphony or Vice-versa don't resolve correctly
+ - Added rooms-bot demo
+ - Removed room list from Todo bot
+ - Spring version upgrade
  - Release 9.0.0
