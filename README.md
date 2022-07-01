@@ -66,6 +66,9 @@ This is best described at [springbot.finos.org](https://springbot.finos.org).  T
 
 > Most low-code / no-code platforms are a trap:  they are looking to lock-in customers and revenue streams by persuading you to build your business with them as a dependency.  Spring Bot is open-source so this is literally a non-issue.
 
+## Watch It In Action
+
+[![Short 3 minute intro](https://img.youtube.com/vi/TyaGdGmqeGo/hqdefault.jpg)](https://youtu.be/TyaGdGmqeGo)
 
 ## Plenty Of Example Bots To Learn From
 
