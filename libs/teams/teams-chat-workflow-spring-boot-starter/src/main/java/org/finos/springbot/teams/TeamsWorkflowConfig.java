@@ -3,6 +3,8 @@ package org.finos.springbot.teams;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.finos.springbot.ChatWorkflowConfig;
 import org.finos.springbot.teams.content.TeamsContentConfig;
 import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
@@ -24,9 +26,9 @@ import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterCo
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplater;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafConverterConfig;
+import org.finos.springbot.teams.templating.thymeleaf.ThymeleafEngineConfig;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplater;
-import org.finos.springbot.teams.templating.thymeleaf.ThymeleafEngineConfig;
 import org.finos.springbot.teams.turns.CurrentTurnContext;
 import org.finos.springbot.workflow.actions.consumers.ActionConsumer;
 import org.finos.springbot.workflow.actions.consumers.AddressingChecker;
@@ -45,6 +47,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
@@ -70,10 +73,7 @@ import com.microsoft.bot.schema.ChannelAccount;
 	ThymeleafEngineConfig.class,
 	AdaptiveCardConverterConfig.class,
 	ThymeleafConverterConfig.class,
-	TeamsConversationsConfig.class,
-})
-
-
+	TeamsConversationsConfig.class})
 @Profile("teams")
 public class TeamsWorkflowConfig {
 		
@@ -83,7 +83,7 @@ public class TeamsWorkflowConfig {
 	Validator validator;
 	
 	@Autowired
-	ResourceLoader resourceLoader;
+	DefaultResourceLoader resourceLoader;
 	
 	@Autowired
 	EntityJsonConverter ejc;
@@ -206,5 +206,15 @@ public class TeamsWorkflowConfig {
 			return u;
 		}, true);
 	}
+	
+	/**
+     * Templates don't load properly with a fat jar.  
+     * @see https://github.com/finos/spring-bot/issues/340
+     */
+    @PostConstruct
+    public void setResourceLoaderClassLoader() {
+        resourceLoader.setClassLoader(this.getClass().getClassLoader());
+    }
+
 
 }
