@@ -7,7 +7,6 @@ import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.help.CommandDescription;
 import org.finos.springbot.workflow.help.HelpController;
 import org.finos.springbot.workflow.help.HelpPage;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 
 import java.util.Arrays;
@@ -17,11 +16,8 @@ import java.util.stream.Collectors;
 /*
  * Example of overriding framework functionality
  * - Extend framework provided HelpController to override template used for rendering response
- * - Here, we are specifying Profiles to make is available only when running in Symphony alone
- * - Else, remove profile and provide custom-help-template for MS Teams as well
  */
 @Controller
-@Profile({"symphony & !teams"}) //To show custom help page when running Bot in Symphony alone
 public class CustomHelpController extends HelpController {
 
     private static final String DEFAULT_FORMATTER_PATTERN = "(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])";

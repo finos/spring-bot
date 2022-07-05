@@ -6,8 +6,9 @@ import org.finos.springbot.workflow.response.MessageResponse;
 import org.springframework.stereotype.Controller;
 
 /**
- * The custom help controller shows the first three options, and the others are on
+ * Symphony - The custom help controller shows the first three options, and the others are on
  * a "more..." expander
+ * Teams - Usage of custom help page using AdaptiveCards
  * @author rob@kite9.com
  *
  */
