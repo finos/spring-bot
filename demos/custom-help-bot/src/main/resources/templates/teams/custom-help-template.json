@@ -1,0 +1,75 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.5",
+  "type": "AdaptiveCard",
+  "body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Description",
+                  "weight": "Bolder",
+                  "wrap": true
+                }
+              ],
+              "width": 50
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "Type In Chat",
+                  "weight": "Bolder",
+                  "wrap": true
+                }
+              ],
+              "width": 50
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "ColumnSet",
+          "columns": [
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${description}",
+                  "wrap": true
+                }
+              ],
+              "width": 50
+            },
+            {
+              "type": "Column",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "text": "${join(foreach(examples,e, ' - ' + e), '\n')}",
+                  "fontType": "Monospace",
+                  "wrap": true
+                }
+              ],
+              "width": 50
+            }
+          ]
+        }
+      ],
+      "$data": "${form.commands}"
+    }
+  ]
+}
