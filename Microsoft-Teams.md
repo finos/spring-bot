@@ -83,6 +83,8 @@ We are going to create an `App`, which is something that is available in the Tea
 -  Enter Some Basic Details
 
 ![App Features](assets/images/teams/8.AppBasicInfo.png)
+![App Features](assets/images/teams/23.Add-app.png)
+![App Features](assets/images/teams/24.Add-app.png)
 
 -  Associate The Bot With Your App
 
