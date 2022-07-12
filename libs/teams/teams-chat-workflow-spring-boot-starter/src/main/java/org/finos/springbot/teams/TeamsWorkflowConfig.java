@@ -158,7 +158,7 @@ public class TeamsWorkflowConfig {
 	@Bean
 	@ConditionalOnProperty(matchIfMissing = true, name = "teams.storage.type", havingValue = "memory")
 	@ConditionalOnMissingBean
-	public TeamsStateStorage teamsAzureBlobStateStorage() {
+	public TeamsStateStorage teamsInMemoryStateStorage() {
 		LOG.warn("Using Memory storage for Azure data - NOT FOR PRODUCTION");
 		return new MemoryStateStorage();
 	}
