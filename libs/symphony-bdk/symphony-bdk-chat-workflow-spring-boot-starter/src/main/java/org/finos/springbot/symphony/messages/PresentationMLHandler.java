@@ -45,7 +45,7 @@ public class PresentationMLHandler implements ApplicationListener<RealTimeEvent<
 	public void onApplicationEvent(RealTimeEvent<V4MessageSent> t) {
 		try {
 			V4MessageSent ms = t.getSource();
-			if ((ms != null) && (!ms.getMessage().getUser().getUsername().equals(botUsername))) {
+			if ((ms != null) && (!botUsername.equals(ms.getMessage().getUser().getUsername()))) {
 				
 				// ok, this is a message, and it's from a third party.  Parse it.
 				
