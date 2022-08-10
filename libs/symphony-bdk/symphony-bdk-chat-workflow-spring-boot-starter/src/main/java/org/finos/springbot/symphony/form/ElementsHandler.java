@@ -3,6 +3,7 @@ package org.finos.springbot.symphony.form;
 import java.util.List;
 import java.util.Map;
 
+import com.symphony.bdk.gen.api.model.StreamType;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.workflow.actions.Action;
@@ -66,7 +67,10 @@ public class ElementsHandler {
 			}
 			
 			EntityJson data = retrieveData(action.getFormMessageId());
-			Addressable rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
+			Addressable rr = null;
+			if(action.getStream().getStreamType().equals(StreamType.TypeEnum.ROOM)) {
+				rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
+			}
 			User u = ruBuilder.loadUserById(event.getInitiator().getUser().getUserId());
 			
 			// if we're not in a room, address the user directly.

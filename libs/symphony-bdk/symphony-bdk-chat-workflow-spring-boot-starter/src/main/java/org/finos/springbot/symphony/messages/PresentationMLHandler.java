@@ -2,6 +2,7 @@ package org.finos.springbot.symphony.messages;
 
 import java.util.List;
 
+import com.symphony.bdk.gen.api.model.StreamType;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
@@ -51,7 +52,10 @@ public class PresentationMLHandler implements ApplicationListener<RealTimeEvent<
 				
 				EntityJson ej = jsonConverter.readValue(ms.getMessage().getData());
 				Message words = messageParser.apply(ms.getMessage().getMessage(), ej);
-				Addressable rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
+				Addressable rr = null;
+				if(ms.getMessage().getStream().getStreamType().equals(StreamType.TypeEnum.ROOM)) {
+					rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
+				}
 				User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());
 				
 				// TODO: multi-user chat (not room)
