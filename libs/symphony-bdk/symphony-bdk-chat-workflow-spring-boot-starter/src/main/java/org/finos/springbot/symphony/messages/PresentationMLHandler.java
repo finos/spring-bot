@@ -53,7 +53,7 @@ public class PresentationMLHandler implements ApplicationListener<RealTimeEvent<
 				EntityJson ej = jsonConverter.readValue(ms.getMessage().getData());
 				Message words = messageParser.apply(ms.getMessage().getMessage(), ej);
 				Addressable rr = null;
-				if(ms.getMessage().getStream().getStreamType().equals(StreamType.TypeEnum.ROOM)) {
+				if(ms.getMessage().getStream().getStreamType().equals(StreamType.TypeEnum.ROOM.name())) {
 					rr = ruBuilder.loadRoomById(ms.getMessage().getStream().getStreamId());
 				}
 				User u = ruBuilder.loadUserById(ms.getMessage().getUser().getUserId());

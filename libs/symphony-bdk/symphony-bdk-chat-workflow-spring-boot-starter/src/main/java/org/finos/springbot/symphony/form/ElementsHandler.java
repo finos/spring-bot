@@ -68,7 +68,7 @@ public class ElementsHandler {
 			
 			EntityJson data = retrieveData(action.getFormMessageId());
 			Addressable rr = null;
-			if(action.getStream().getStreamType().equals(StreamType.TypeEnum.ROOM)) {
+			if(action.getStream().getStreamType().equals(StreamType.TypeEnum.ROOM.name())) {
 				rr = ruBuilder.loadRoomById(action.getStream().getStreamId());
 			}
 			User u = ruBuilder.loadUserById(event.getInitiator().getUser().getUserId());
