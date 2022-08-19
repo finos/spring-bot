@@ -1,22 +1,30 @@
 package org.finos.springbot.tool.poll.poll;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.finos.springbot.symphony.content.HashTag;
-import org.finos.springbot.workflow.annotations.Template;
+import org.finos.springbot.workflow.annotations.Display;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.User;
 
 @Work
-@Template(view = "question")
+//@Template(view = "question")
 public class Question {
 
 	public String question;
+	
+	@Display(visible = false)
 	public List<String> options;
-	public HashTag id;
+	
+	@Display(visible = false)
+	public String id;
 	public User poller;
+	
+	@Display(visible = false)
+	private Instant endTime;
 
-	public Question(String question, List<String> options, HashTag id, User poller) {
+	public Question(String question, List<String> options, String id, User poller) {
 		super();
 		this.question = question;
 		this.options = options;
@@ -44,11 +52,11 @@ public class Question {
 		this.options = options;
 	}
 
-	public HashTag getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(HashTag id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -59,4 +67,14 @@ public class Question {
 	public void setPoller(User poller) {
 		this.poller = poller;
 	}
+	
+
+	public Instant getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Instant t) {
+		this.endTime = t;
+	}
+
 }

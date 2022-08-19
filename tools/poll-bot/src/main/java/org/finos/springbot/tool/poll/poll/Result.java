@@ -11,7 +11,6 @@ import org.finos.springbot.workflow.content.User;
 @Template(view="result")
 public class Result {
 
-	private HashTag pollID;
 	private List<Integer> counts;
 	private List<String> options;
 	private String question;
@@ -23,18 +22,15 @@ public class Result {
 		super();
 	}
 
-	public Result(HashTag pollID, List<Integer> counts, List<String> options, String question, User poller,
+	public Result(List<Integer> counts, List<String> options, String question, User poller,
 			Integer totalResponses) {
 		super();
-		this.pollID = pollID;
 		this.counts = counts;
 		this.options = options;
 		this.question = question;
 		this.poller = poller;
 		this.totalResponses = totalResponses;
 	}
-
-
 
 	public Integer getTotalResponses() {
 		return totalResponses;
@@ -50,14 +46,6 @@ public class Result {
 
 	public void setCounts(List<Integer> counts) {
 		this.counts = counts;
-	}
-
-	public HashTag getPollID() {
-		return pollID;
-	}
-
-	public void setPollID(HashTag pollID) {
-		this.pollID = pollID;
 	}
 
 	public List<String> getOptions() {

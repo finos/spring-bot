@@ -26,7 +26,7 @@ public class EnumConverter<X> extends AbstractSimpleTypeConverter<X> {
 
 	protected Map<String, String> generateEnumOptions(Class<Enum<?>> t) {
 		return Arrays.stream(t.getEnumConstants())
-				.collect(Collectors.toMap(e -> e.toString(), e -> e.toString()));
+				.collect(Collectors.toMap(e -> e.name(), e -> e.toString()));
 		
 	}
 

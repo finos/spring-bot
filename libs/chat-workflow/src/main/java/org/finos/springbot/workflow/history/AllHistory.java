@@ -7,7 +7,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Tag;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -40,7 +39,7 @@ public class AllHistory implements History<Addressable>, ApplicationContextAware
 
 
 	@Override
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, Addressable address) {
+	public <X> Optional<X> getLastFromHistory(Class<X> type, String t, Addressable address) {
 		return getDelegates().stream()
 				.filter(p -> p.isSupported(address))
 				.map(p -> p.getLastFromHistory(type, t, address))
@@ -58,7 +57,7 @@ public class AllHistory implements History<Addressable>, ApplicationContextAware
 
 
 	@Override
-	public <X> List<X> getFromHistory(Class<X> type, Tag t, Addressable address, Instant since) {
+	public <X> List<X> getFromHistory(Class<X> type, String t, Addressable address, Instant since) {
 		return getDelegates().stream()
 				.filter(p -> p.isSupported(address))
 				.flatMap(p -> p.getFromHistory(type, t, address, since).stream())
