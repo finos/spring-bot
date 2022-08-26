@@ -48,7 +48,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.validation.Validator;
 
 import com.azure.storage.blob.BlobServiceClient;
@@ -160,7 +159,7 @@ public class TeamsWorkflowConfig {
 	@ConditionalOnMissingBean
 	public TeamsStateStorage teamsAzureBlobStateStorage() {
 		LOG.warn("Using Memory storage for Azure data - NOT FOR PRODUCTION");
-		return new MemoryStateStorage();
+		return new MemoryStateStorage(ejc);
 	}
 	
 	@Bean

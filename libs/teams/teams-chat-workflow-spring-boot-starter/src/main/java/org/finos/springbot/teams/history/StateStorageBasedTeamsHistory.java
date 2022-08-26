@@ -26,8 +26,6 @@ import org.slf4j.LoggerFactory;
  */
 public class StateStorageBasedTeamsHistory implements TeamsHistory {
 	
-	private static final String TIMESTAMP_KEY = "timestamp";
-
 	private static final Logger LOG = LoggerFactory.getLogger(MessageActivityHandler.class);
 	
 	public final TeamsStateStorage tss;
