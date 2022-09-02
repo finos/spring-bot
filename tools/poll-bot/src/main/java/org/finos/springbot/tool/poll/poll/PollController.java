@@ -80,7 +80,7 @@ public class PollController {
 			.collect(Collectors.toList()));
 		
 		String id = UUID.randomUUID().toString();
-		id = id.substring(id.lastIndexOf("-")+1);
+		id = "p"+id.substring(id.length()-6);
 	
 		Question p = new Question(cf.getQuestion(), options, id, a);	
 		doScheduling(p, cf, r);
@@ -124,6 +124,7 @@ public class PollController {
 		
 		Question q = h.getLastFromHistory(Question.class, pollId.getText()+QUESTION_SUFFIX, r)
 				.orElseThrow(() -> new RuntimeException("Couldn't find poll with that tag"));
+		
 		List<Answer> responses = h.getFromHistory(Answer.class, pollId.getText()+ANSWER_SUFFIX, r, null);
 		
 		// make sure people only vote once

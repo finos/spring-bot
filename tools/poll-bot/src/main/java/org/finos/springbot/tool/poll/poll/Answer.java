@@ -12,7 +12,7 @@ import org.finos.springbot.workflow.content.User;
 @Template(view="answer")
 public class Answer {
 	
-	private User User;
+	private User user;
 
 	@Display(visible = false)
 	private Instant time;
@@ -32,7 +32,7 @@ public class Answer {
 
 	public Answer(User User, Instant time, Integer choice, String questionText, String choiceText) {
 		super();
-		this.User = User;
+		this.user = User;
 		this.time = time;
 		this.choice = choice;
 		this.choiceText = choiceText;
@@ -40,11 +40,11 @@ public class Answer {
 	}
 	
 	public User getUser() {
-		return User;
+		return user;
 	}
 
 	public void setUser(User User) {
-		this.User = User;
+		this.user = User;
 	}
 
 	public Instant getTime() {

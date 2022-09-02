@@ -3,13 +3,13 @@ package org.finos.springbot.tool.poll.poll;
 import java.time.Instant;
 import java.util.List;
 
-import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.workflow.annotations.Display;
+import org.finos.springbot.workflow.annotations.Template;
 import org.finos.springbot.workflow.annotations.Work;
 import org.finos.springbot.workflow.content.User;
 
 @Work
-//@Template(view = "question")
+@Template(view = "question")
 public class Question {
 
 	public String question;

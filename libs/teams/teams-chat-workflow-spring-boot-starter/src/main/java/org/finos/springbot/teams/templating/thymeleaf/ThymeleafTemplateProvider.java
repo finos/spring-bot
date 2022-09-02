@@ -48,14 +48,14 @@ public class ThymeleafTemplateProvider extends AbstractResourceTemplateProvider<
 	@Override
 	protected String getDefaultTemplate(WorkResponse r) {
 		String insert;
+		Class<?> c = r.getFormClass();
 		if (WorkResponse.DEFAULT_FORM_TEMPLATE_EDIT.equals(r.getTemplateName())) {
-			Class<?> c = ((WorkResponse) r).getFormClass();
 			insert = converter.convert(c, Mode.FORM);
 		} else if (WorkResponse.DEFAULT_FORM_TEMPLATE_VIEW.equals(r.getTemplateName())) {
-			Class<?> c = ((WorkResponse) r).getFormClass();
 			insert = converter.convert(c, Mode.DISPLAY);
 		} else {
-			throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
+			insert = converter.convert(c, Mode.DISPLAY);
+			//throw new UnsupportedOperationException("Don't know how to construct default template for "+r);
 		}
 		
 		String defaultTemplate = getTemplateForName(getDefaultTemplateName());

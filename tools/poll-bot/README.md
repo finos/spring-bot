@@ -2,6 +2,20 @@
 
 This provides a Poll bot, to demonstrate the [Chat Workflow](../../libs/chat-workflow/README.md) module.
 
-## NB: Not currently working
+This module demonstrates nicely how you can set up separate templates for Teams and Symphony.
 
-This is being updated to use Symphony's new updating messages feature, so that the results of the poll are always updated.  However, there are bugs in the `updateMessage` functionality which are preventing us from having a working 9.0.0 Poll Bot.   
+## Images of Poll Bot Running On Symphony
+
+![Poll 1](images/poll1.png)
+
+![Poll 3](images/poll3.png)
+
+![Poll 4](images/poll4.png)
+
+## Images of Poll Bot Running On Teams
+
+![Poll 5](images/poll5.png)
+
+![Poll 6](images/poll6.png)
+
+![Poll 7](images/poll7.png)

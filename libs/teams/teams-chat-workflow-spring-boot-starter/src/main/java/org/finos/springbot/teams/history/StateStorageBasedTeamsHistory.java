@@ -92,23 +92,25 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		return out;
 	}
 
-	protected <X> List<X> getList(Class<X> type, String expectedTag, String directory, long sinceTimestamp) {
+	protected <X> List<X> getList(Class<X> type, String expectedTag, String directory, Instant sinceTimestamp) {
 		List<Filter> tags = new ArrayList<>();
 		tags.add(new Filter(expectedTag));
 		tags.add(new Filter(ADDRESSABLE_KEY, directory, "="));
-		tags.add(new Filter(TIMESTAMP_KEY, ""+sinceTimestamp , ">="));
+		if (sinceTimestamp != null) {
+			tags.add(new Filter(TIMESTAMP_KEY, ""+sinceTimestamp.getEpochSecond() , ">="));
+		}
 		return findObjectsFromItems(type, tss.retrieve(tags, false));
 	}
 
 	@Override
 	public <X> List<X> getFromHistory(Class<X> type, TeamsAddressable address, Instant since) {
-		return getList(type, TagSupport.formatTag(type), address.getKey(), since.getEpochSecond());
+		return getList(type, TagSupport.formatTag(type), address.getKey(), since);
 	}
 
 
 	@Override
 	public <X> List<X> getFromHistory(Class<X> type, String t, TeamsAddressable address, Instant since) {
-		return getList(type, t, address.getKey(), since.getEpochSecond());
+		return getList(type, t, address.getKey(), since);
 	}
 
 	

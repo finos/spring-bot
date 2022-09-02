@@ -24,6 +24,7 @@ import org.springframework.util.StringUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class DataHandlerConfig {
@@ -43,6 +44,9 @@ public class DataHandlerConfig {
 		List<VersionSpace> workAnnotatedversionSpaces = scanForWorkClasses();
 		
 		ObjectMapper om = new ObjectMapper();
+		TypeFactory tf = TypeFactory.defaultInstance()
+                .withClassLoader(ac.getClassLoader());
+		om.setTypeFactory(tf);
 		om.enable(SerializationFeature.INDENT_OUTPUT);
 		om.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
 		om.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

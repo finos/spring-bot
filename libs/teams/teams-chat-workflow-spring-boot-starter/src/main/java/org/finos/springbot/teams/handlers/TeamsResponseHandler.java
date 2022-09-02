@@ -154,6 +154,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					if (tt == TemplateType.BOTH) {
 						// we also need to send the buttons.  
 						JsonNode buttonsJson = workTemplater.template(null);
+						wr.getData().put(AdaptiveCardTemplateProvider.FORMID_KEY, "just-buttons");
 						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, wr);
 						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
 					} else {
