@@ -49,7 +49,7 @@ public class HistoryTest {
 	@Test
 	public void testGetNothing() {
 		TeamsAddressable a = new TeamsChannel("id123", "Geoff Z");
-		Assertions.assertTrue(teamsHistory.getLastFromHistory(TestObject.class, a).isEmpty());
+		Assertions.assertFalse(teamsHistory.getLastFromHistory(TestObject.class, a).isPresent());
 	}
 
 	private void putSomeDataInHistory(TeamsAddressable a, TeamsUser in) {
