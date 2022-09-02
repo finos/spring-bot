@@ -94,9 +94,9 @@ public class HistoryTest {
 		List<TeamsUser> allUsers = teamsHistory.getFromHistory(TeamsUser.class, a, Instant.now().minus(5l, ChronoUnit.MINUTES));
 		
 		Assertions.assertEquals(3, allUsers.size());
-		Assertions.assertEquals(in, allUsers.get(0));
-		Assertions.assertEquals(in2, allUsers.get(1));
-		Assertions.assertEquals(in3, allUsers.get(2));
+		Assertions.assertTrue(allUsers.contains(in3));
+		Assertions.assertTrue(allUsers.contains(in2));
+		Assertions.assertTrue(allUsers.contains(in));
 		
 	}
 		

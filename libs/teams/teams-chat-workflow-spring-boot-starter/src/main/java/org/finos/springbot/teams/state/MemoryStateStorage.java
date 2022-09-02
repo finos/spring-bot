@@ -77,11 +77,11 @@ public class MemoryStateStorage extends AbstractStateStorage {
 			return true;
 		}
 			
-		if (filter.operator.contains(">") && (cmp == -1)) {
+		if (filter.operator.contains(">") && (cmp < 0)) {
 			return true;
 		}
 		
-		if (filter.operator.contains("<") && (cmp == 1)) {
+		if (filter.operator.contains("<") && (cmp > 0)) {
 			return true;
 		}
 		

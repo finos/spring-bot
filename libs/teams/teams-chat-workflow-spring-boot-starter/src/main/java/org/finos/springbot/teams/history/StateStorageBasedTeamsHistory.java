@@ -97,7 +97,7 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		tags.add(new Filter(expectedTag));
 		tags.add(new Filter(ADDRESSABLE_KEY, directory, "="));
 		if (sinceTimestamp != null) {
-			tags.add(new Filter(TIMESTAMP_KEY, ""+sinceTimestamp.getEpochSecond() , ">="));
+			tags.add(new Filter(TIMESTAMP_KEY, ""+sinceTimestamp.toEpochMilli() , ">="));
 		}
 		return findObjectsFromItems(type, tss.retrieve(tags, false));
 	}
