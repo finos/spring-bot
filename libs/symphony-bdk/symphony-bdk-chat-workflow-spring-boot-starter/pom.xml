@@ -46,7 +46,6 @@
 			<version>9.0.1-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
-
 	</dependencies>
 
 </project>

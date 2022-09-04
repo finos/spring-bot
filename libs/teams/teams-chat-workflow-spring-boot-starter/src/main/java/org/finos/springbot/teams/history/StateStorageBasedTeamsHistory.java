@@ -14,7 +14,6 @@ import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.state.TeamsStateStorage.Filter;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.tags.TagSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +26,6 @@ import org.slf4j.LoggerFactory;
  */
 public class StateStorageBasedTeamsHistory implements TeamsHistory {
 	
-	private static final String TIMESTAMP_KEY = "timestamp";
-
 	private static final Logger LOG = LoggerFactory.getLogger(MessageActivityHandler.class);
 	
 	public final TeamsStateStorage tss;
@@ -51,9 +48,9 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 
 	}
 
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag expectedTag, TeamsAddressable address) {
+	public <X> Optional<X> getLastFromHistory(Class<X> type, String expectedTag, TeamsAddressable address) {
 		List<Filter> tags = new ArrayList<>();
-		tags.add(new Filter(expectedTag.getName()));
+		tags.add(new Filter(expectedTag));
 		tags.add(new Filter(ADDRESSABLE_KEY,address.getKey(), "="));
 		return findObjectFromItem(type, tss.retrieve(tags, true), true);
 	}
@@ -95,23 +92,25 @@ public class StateStorageBasedTeamsHistory implements TeamsHistory {
 		return out;
 	}
 
-	protected <X> List<X> getList(Class<X> type, String expectedTag, String directory, long sinceTimestamp) {
+	protected <X> List<X> getList(Class<X> type, String expectedTag, String directory, Instant sinceTimestamp) {
 		List<Filter> tags = new ArrayList<>();
 		tags.add(new Filter(expectedTag));
 		tags.add(new Filter(ADDRESSABLE_KEY, directory, "="));
-		tags.add(new Filter(TIMESTAMP_KEY, ""+sinceTimestamp , ">="));
+		if (sinceTimestamp != null) {
+			tags.add(new Filter(TIMESTAMP_KEY, ""+sinceTimestamp.toEpochMilli() , ">="));
+		}
 		return findObjectsFromItems(type, tss.retrieve(tags, false));
 	}
 
 	@Override
 	public <X> List<X> getFromHistory(Class<X> type, TeamsAddressable address, Instant since) {
-		return getList(type, TagSupport.formatTag(type), address.getKey(), since.getEpochSecond());
+		return getList(type, TagSupport.formatTag(type), address.getKey(), since);
 	}
 
 
 	@Override
-	public <X> List<X> getFromHistory(Class<X> type, Tag t, TeamsAddressable address, Instant since) {
-		return getList(type, t.getName(), address.getKey(), since.getEpochSecond());
+	public <X> List<X> getFromHistory(Class<X> type, String t, TeamsAddressable address, Instant since) {
+		return getList(type, t, address.getKey(), since);
 	}
 
 	

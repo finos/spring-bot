@@ -78,15 +78,13 @@ This project contains various example bots that were (originally) written at Deu
 
 ### 🤖 Poll Bot 
 
-A bot for running polls in a Symphony chat room.  👍 _Production Ready_
+A bot for running polls in a Symphony/Teams chat room.  👍 _Production Ready_
 
-
- - [View the README](tools/poll-bot/README.md)
- 
+ - [View the README](tools/poll-bot/README.md) 
 
 ### 🤖 News (RSS) Bot 
 
-A bot for feeding news into a Symphony chat room.  👍 _Production Ready_
+A bot for feeding news into a Symphony/Teams chat room.  👍 _Production Ready_
 
  - [View the README](tools/rss-bot/README.md)
 

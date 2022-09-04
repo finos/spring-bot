@@ -3,8 +3,8 @@
     accent="tempo-bg-color--blue">
     <header>
       <div style='padding-top:1px;padding-left:5px;'>
-        <h3>${entity.form.question}</h3>
-        <p><span class="tempo-text-color--secondary"> by <mention uid="${entity.form.poller.id[0].value}" />, poll id <hash tag="${entity.form.id.value!''}" /></span></p>
+        <h3>Poll: ${entity.form.question}</h3>
+        <p><span class="tempo-text-color--secondary"> by <mention uid="${entity.form.poller.id[0].value}" /></span></p>
         <br />
       </div>  
       
@@ -24,7 +24,7 @@
       <#if entity.header.tags?size != 0>
         <ul>
           <#list entity.header.tags as tag>
-            <li><hash tag="${tag.value}" /></li>
+            <li><hash tag="${tag}" /></li>
           </#list>
         </ul>
       </#if>

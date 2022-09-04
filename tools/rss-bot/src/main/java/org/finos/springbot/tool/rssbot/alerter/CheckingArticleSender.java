@@ -29,7 +29,7 @@ public class CheckingArticleSender extends BasicArticleSender {
 	}
 
 	protected boolean alreadyPosted(Addressable a, Article article) {
-		Optional<Article> existing = h.getLastFromHistory(Article.class, article.getArticleHashTag(), a);
+		Optional<Article> existing = h.getLastFromHistory(Article.class, article.getArticleHashTag().getName(), a);
 		return (existing.isPresent() && existing.get().getUri().equals(article.getUri()));
 	}
 

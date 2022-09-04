@@ -1,6 +1,5 @@
 package org.finos.springbot.teams.state;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -10,17 +9,24 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.teams.TeamsException;
+import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.javatuples.Pair;
 
 public class MemoryStateStorage extends AbstractStateStorage {
 	
-	Map<String, Map<String, Object>> store = new HashMap<>();
+	Map<String, String> store = new HashMap<>();
 	Map<String, List<Pair<String, String>>> tagIndex = new HashMap<>();
 	
+	private EntityJsonConverter ejc;
+
+	public MemoryStateStorage(EntityJsonConverter ejc) {
+		super();
+		this.ejc = ejc;
+	}
 
 	@Override
 	public void store(String file, Map<String, String> tags, Map<String, Object> data) {
-		store.put(file, data);
+		store.put(file, ejc.writeValue(data));
 		if ((tags != null) && (tags.size() > 0)){
 			List<Pair<String, String>> pairtags = tags.entrySet().stream()
 				.map(e -> new Pair<String, String>(e.getKey(), e.getValue()))
@@ -37,10 +43,10 @@ public class MemoryStateStorage extends AbstractStateStorage {
 	public Iterable<Map<String, Object>> retrieve(List<Filter> tags, boolean singleResultOnly) {
 		List<Map<String, Object>> out = tagIndex.entrySet().stream()
 			.filter(e -> matchEntry(e, tags))
-			.map(e -> store.get(e.getKey()))
+			.map(e -> ejc.readValue(store.get(e.getKey())))
 			.collect(Collectors.toList());
 			
-		if (singleResultOnly) {
+		if ((singleResultOnly) && (out.size() > 0)) {
 			out = out.subList(0, 1);
 		}
 		
@@ -71,11 +77,11 @@ public class MemoryStateStorage extends AbstractStateStorage {
 			return true;
 		}
 			
-		if (filter.operator.contains(">") && (cmp == -1)) {
+		if (filter.operator.contains(">") && (cmp < 0)) {
 			return true;
 		}
 		
-		if (filter.operator.contains("<") && (cmp == 1)) {
+		if (filter.operator.contains("<") && (cmp > 0)) {
 			return true;
 		}
 		
@@ -92,10 +98,9 @@ public class MemoryStateStorage extends AbstractStateStorage {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Optional<Map<String, Object>> retrieve(String file) {
-		return Optional.ofNullable((Map<String, Object>) store.get(file));
+		return Optional.ofNullable((Map<String, Object>) ejc.readValue(store.get(file)));
 	}
 
 }

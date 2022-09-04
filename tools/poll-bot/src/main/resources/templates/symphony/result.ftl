@@ -22,13 +22,13 @@
       </table>
       <div style='height:2px;background:#0098ff;margin-top:10px;margin-bottom:10px'> </div>
       
-      <p>Total Responses:<b><span class="tempo-text-color--theme-accent"> ${entity.form.totalResponses!''} </span></b>  <hash tag="${entity.form.pollID.value!''}" /></p> 
+      <p>Total Responses:<b><span class="tempo-text-color--theme-accent"> ${entity.form.totalResponses!''} </span></b> </p> 
     </header> 
     <body>
       <#if entity.header.tags?size != 0>
         <ul>
           <#list entity.header.tags as tag>
-            <li><hash tag="${tag.value}" /></li>
+            <li><hash tag="${tag}" /></li>
           </#list>
         </ul>
       </#if>

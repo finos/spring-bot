@@ -1,0 +1,35 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.5",
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Poll: ${$root.form.question}",
+                    "wrap": true,
+                    "size": "Large"
+                }
+            ]
+        },
+        {
+            "type": "ActionSet",
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "${text}",
+                    "id": "${name}",
+                    "associatedInputs": "auto",
+                    "data": {
+                        "action": "${name}",
+                        "form": "buttons-only",
+                        "storageId": "${$root.storageId}"
+                    },
+                    "$data": "${buttons.contents}"
+                }
+            ]
+        }
+    ]
+}
