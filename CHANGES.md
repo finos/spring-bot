@@ -225,3 +225,13 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - Removed room list from Todo bot
  - Spring version upgrade
  - Release 9.0.0
+
+# Sept 20 2022
+ - #363 Error message through in 9.x if you send IM message
+ - #357 PresentationMLHandler NPE for Federation POD/Whatsapp users
+ - #350 Rooms passed from Teams to Symphony or Vice-versa don't resolve correctly
+ - #340 Running selfcontained spring boot jar (fat jar) fails on help command
+ - #282 Fix The PollBot
+ - Release 9.0.1
+ 
+ 
