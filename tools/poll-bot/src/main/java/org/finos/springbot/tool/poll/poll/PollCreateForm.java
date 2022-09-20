@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import org.apache.commons.lang3.StringUtils;
 import org.finos.springbot.workflow.annotations.Template;
 import org.finos.springbot.workflow.annotations.Work;
 
@@ -14,7 +15,23 @@ import org.finos.springbot.workflow.annotations.Work;
 public class PollCreateForm {
 
 	enum TimeUnit {
-		MINUTES, HOURS, DAYS
+		MINUTES, HOURS, DAYS;
+		
+		public ChronoUnit getChronoUnit() {
+			switch (this) {
+			case MINUTES:
+				return ChronoUnit.MINUTES;
+			case HOURS:
+				return ChronoUnit.HOURS;
+			case DAYS:
+			default:
+				return ChronoUnit.DAYS;
+			}
+		}
+
+		public String toString() {
+			return StringUtils.capitalize(this.name().toLowerCase());
+		}
 	};
 
 	public String question;
@@ -29,7 +46,7 @@ public class PollCreateForm {
 	@Min(0)
 	@Max(60)
 	private Integer time = 15;
-	private ChronoUnit timeUnit = ChronoUnit.MINUTES;
+	private TimeUnit timeUnit = TimeUnit.MINUTES;
 	
 	private boolean endAutomatically = true;
 
@@ -97,11 +114,11 @@ public class PollCreateForm {
 		this.time = time;
 	}
 
-	public ChronoUnit getTimeUnit() {
+	public TimeUnit getTimeUnit() {
 		return timeUnit;
 	}
 
-	public void setTimeUnit(ChronoUnit timeUnit) {
+	public void setTimeUnit(TimeUnit timeUnit) {
 		this.timeUnit = timeUnit;
 	}
 

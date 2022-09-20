@@ -1,0 +1,18 @@
+<div xmlns:th="http://www.thymeleaf.org">
+  <h1 th:text="${form?.question}">Question</h1>
+  
+  <table>
+    <thead>
+      <tr>
+        <td>Index</td><td>Option</td><td>Votes</td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="o, iter : ${form?.options}">
+        <td th:text="${iter.index}">1</td>
+        <td th:text="${form?.options.get(iter.index)}">Option Name</td>
+        <td th:text="${form?.counts.get(iter.index)}">5</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

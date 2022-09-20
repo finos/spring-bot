@@ -48,6 +48,11 @@ public class HeaderDetails {
 		super();
 	}
 	
+	public HeaderDetails(List<String> tags) {
+		super();
+		this.tags = tags;
+	}
+	
 	public HeaderDetails(String name, String description, List<String> tags) {
 		super();
 		this.name = name;

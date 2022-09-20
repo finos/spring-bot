@@ -13,6 +13,6 @@ import org.finos.springbot.workflow.history.PlatformHistory;
  */
 public interface TeamsHistory extends PlatformHistory<TeamsAddressable> {
 	
-
+	public static final String TIMESTAMP_KEY = "timestamp";
 	
 }

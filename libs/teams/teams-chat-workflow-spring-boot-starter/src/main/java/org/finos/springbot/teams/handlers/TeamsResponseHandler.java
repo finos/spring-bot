@@ -10,6 +10,7 @@ import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
+import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.teams.state.TeamsStateStorage;
@@ -153,6 +154,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					if (tt == TemplateType.BOTH) {
 						// we also need to send the buttons.  
 						JsonNode buttonsJson = workTemplater.template(null);
+						wr.getData().put(AdaptiveCardTemplateProvider.FORMID_KEY, "just-buttons");
 						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, wr);
 						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
 					} else {
@@ -184,7 +186,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					initErrorHandler();
 					eh.handleError(e);	
 				} else {
-					performStorage(address, data);
+					performStorage(address, data, teamsState);
 				}
 				
 				return null;
@@ -200,7 +202,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		return teamsConversations.handleActivity(out, address);
 	}
 
-	protected void performStorage(TeamsAddressable address, Map<String, Object> data) {
+	public static void performStorage(TeamsAddressable address, Map<String, Object> data, TeamsStateStorage teamsState) {
 		String dataKey = (String) data.get(StorageIDResponseHandler.STORAGE_ID_KEY);
 		if (dataKey != null) {
 			// first, store data for message
@@ -210,7 +212,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		}
 	}
 	
-	protected Map<String, String> createStorageTags(Map<String, Object> data, TeamsAddressable address) {
+	public static Map<String, String> createStorageTags(Map<String, Object> data, TeamsAddressable address) {
 		Map<String, String> out = new HashMap<String, String>();
 		HeaderDetails h = (HeaderDetails) data.get(HeaderDetails.KEY);
 		if (h != null) {
@@ -218,6 +220,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		}
 		
 		out.put(TeamsStateStorage.ADDRESSABLE_KEY, address.getKey());
+		out.put(TeamsHistory.TIMESTAMP_KEY, ""+System.currentTimeMillis());
 		return out;
 	}
 

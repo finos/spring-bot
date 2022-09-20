@@ -1,15 +1,8 @@
 package org.finos.springbot.teams.templating.thymeleaf;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.finos.springbot.teams.content.TeamsMultiwayChat;
 import org.finos.springbot.teams.content.TeamsUser;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
@@ -30,9 +23,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.StreamUtils;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @SpringBootTest(classes = { 
 		ThymeleafConverterConfig.class
@@ -113,7 +112,7 @@ public class TeamsThymeleafTemplatingTest extends AbstractTemplatingTest {
 			System.out.println("COMBINED: "+combined.getContents());
 			
 			// do comparison
-			Assertions.assertEquals(expectedHtml, actualHtml);
+			Assertions.assertEquals(expectedHtml.replaceAll("\\R", System.lineSeparator()), actualHtml.replaceAll("\\R", System.lineSeparator()));
 			
 		} catch (Exception e) {
 			throw new RuntimeException(e);

@@ -198,14 +198,14 @@ public class AzureBlobStateStorage extends AbstractStateStorage {
 					Iterator<TaggedBlobItem> underlying = pi.iterator();		
 					return new DuplicateCheckingIterator(underlying);
 				} catch (Exception e) {
-					LOG.error("Couldn't retrieve from AzureBlobStorage with tags "+tags) ;
+					LOG.error("Couldn't retrieve from AzureBlobStorage with tags "+tags, e) ;
 					return Collections.emptyIterator();
 				}
 			}
 		};
 		
-	}
-
+	}	
+	
 	@Override
 	public Optional<Map<String, Object>> retrieve(String file) {
 		try {

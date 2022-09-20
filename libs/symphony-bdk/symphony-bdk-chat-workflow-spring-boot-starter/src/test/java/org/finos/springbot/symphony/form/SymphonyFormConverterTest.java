@@ -25,19 +25,18 @@ public class SymphonyFormConverterTest extends AbstractFormConverterTest {
 	
 	SymphonyConversations sc;
 	
-	AllConversations ac = new AllConversations() {
-
-		@SuppressWarnings({ "rawtypes", "unchecked" })
-		@Override
-		protected List<PlatformConversations<Chat, User>> getDelegates() {
-			return Collections.singletonList((PlatformConversations) sc);
-		}
-		
-	};
-	
 	@Override
 	protected void before() {
 		sc = Mockito.mock(SymphonyConversations.class);
+		AllConversations ac = new AllConversations() {
+
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			@Override
+			protected List<PlatformConversations<Chat, User>> getDelegates() {
+				return Collections.singletonList((PlatformConversations) sc);
+			}
+			
+		};
 		ObjectMapper om = new ObjectMapper();
 		om.registerModule(new SymphonyFormDeserializerModule(ac));
 		om.registerModule(new JavaTimeModule());

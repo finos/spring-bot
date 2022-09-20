@@ -44,7 +44,7 @@ public class TeamsContentTest extends AbstractContentTest {
 		
 		String jsonOut = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(mae.getEntities());
 		System.out.println(jsonOut);
-		Assertions.assertEquals(load("testTeamsContents.json"), jsonOut);		
+		Assertions.assertEquals(load("testTeamsContents.json").replaceAll("\\R", System.lineSeparator()), jsonOut.replaceAll("\\R", System.lineSeparator()));
 		
 	}
 

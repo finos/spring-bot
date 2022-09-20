@@ -66,6 +66,9 @@ This is best described at [springbot.finos.org](https://springbot.finos.org).  T
 
 > Most low-code / no-code platforms are a trap:  they are looking to lock-in customers and revenue streams by persuading you to build your business with them as a dependency.  Spring Bot is open-source so this is literally a non-issue.
 
+## Watch It In Action
+
+[![Short 3 minute intro](https://img.youtube.com/vi/TyaGdGmqeGo/hqdefault.jpg)](https://youtu.be/TyaGdGmqeGo)
 
 ## Plenty Of Example Bots To Learn From
 
@@ -75,15 +78,13 @@ This project contains various example bots that were (originally) written at Deu
 
 ### 🤖 Poll Bot 
 
-A bot for running polls in a Symphony chat room.  👍 _Production Ready_
+A bot for running polls in a Symphony/Teams chat room.  👍 _Production Ready_
 
-
- - [View the README](tools/poll-bot/README.md)
- 
+ - [View the README](tools/poll-bot/README.md) 
 
 ### 🤖 News (RSS) Bot 
 
-A bot for feeding news into a Symphony chat room.  👍 _Production Ready_
+A bot for feeding news into a Symphony/Teams chat room.  👍 _Production Ready_
 
  - [View the README](tools/rss-bot/README.md)
 
@@ -101,6 +102,7 @@ Inside the `/demos` directory you can see three example bots:
 - `todo-bot` : Runs a simple todo-list inside a chat room on Teams or Symphony.
 - `room-bot` : A room broadcasting bot, that shows how to use the chat dropdown, and address messages across Teams and Symphony.
 - `claim-bot`: An example of an expense-claim workflow running across Teams and Symphony concurrently.
+- `custom-help-bot`: Shows you how you can override built-in beans (like the `HelpController`) to change the functionality of Spring Bot.
 
 Tutorials for building these and the reference guide are found here:  [Spring Bot](https://springbot.finos.org)
 

@@ -44,7 +44,8 @@ import org.springframework.validation.Validator;
 @Import(value =  { 
 		ResolverConfig.class, 
 		FormEditConfig.class,
-		DataHandlerConfig.class })
+		DataHandlerConfig.class,
+		MeterRegistryConfig.class})
 public class ChatWorkflowConfig {
 	
 	@Bean
@@ -169,6 +170,5 @@ public class ChatWorkflowConfig {
 	public HeaderTagResponseHandler headerTagResponsehandler() {
 		return new HeaderTagResponseHandler();
 	} 
-	
-	
+
 }
