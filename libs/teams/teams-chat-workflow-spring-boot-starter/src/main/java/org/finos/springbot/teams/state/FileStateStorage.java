@@ -1,16 +1,19 @@
 package org.finos.springbot.teams.state;
 
+import static org.finos.springbot.teams.state.FileStateStorageUtility.checkAndCreateFile;
+import static org.finos.springbot.teams.state.FileStateStorageUtility.checkAndCreateFolder;
+import static org.finos.springbot.teams.state.FileStateStorageUtility.getAllTagIndexFiles;
+import static org.finos.springbot.teams.state.FileStateStorageUtility.readFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -32,9 +35,9 @@ import org.javatuples.Pair;
 
 public class FileStateStorage extends AbstractStateStorage {
 
-	final private static String DATA_FOLDER = "data";
-	final private static String TAG_INDEX_FOLDER = "tag_index";
-	final private static String FILE_EXT = ".txt";
+	final static String DATA_FOLDER = "data";
+	final static String TAG_INDEX_FOLDER = "tag_index";
+	final static String FILE_EXT = ".txt";
 
 	protected Map<String, String> store = new HashMap<>();
 	protected Map<String, List<Pair<String, String>>> tagIndex = new HashMap<>();
@@ -50,28 +53,34 @@ public class FileStateStorage extends AbstractStateStorage {
 
 	@Override
 	public void store(String file, Map<String, String> tags, Map<String, Object> data) {
-		String addressable = getAddressable(file);
-		String storageId = getStoragePath(file);
-		try {
-			Path path = checkAndCreateFolder(this.filePath + addressable);
-			Path dataPath = checkAndCreateFolder(path.toString() + File.separator + DATA_FOLDER);
-			Path tagPath = checkAndCreateFolder(path.toString() + File.separator + TAG_INDEX_FOLDER);
+		if ((tags != null) && (tags.size() > 0)) {
+			String addressable = getAddressable(file);
+			String storageId = getStorage(file);
+			try {
+				Path path = checkAndCreateFolder(this.filePath + addressable);
+				Path dataPath = checkAndCreateFolder(path.toString() + File.separator + DATA_FOLDER);
+				Path tagPath = checkAndCreateFolder(path.toString() + File.separator + TAG_INDEX_FOLDER);
 
-			createStorageFile(dataPath, storageId, data);
+				createStorageFile(dataPath, storageId, data);
 
-			createTagIndexFile(tags, storageId, tagPath);
-		} catch (IOException e) {
-			throw new TeamsException("Error while creating or getting folder " + e);
+				createTagIndexFile(tags, storageId, tagPath);
+			} catch (IOException e) {
+				throw new TeamsException("Error while creating or getting folder " + e);
+			}
+		} else {
+			throw new TeamsException("Cannot persist data to " + file + " - no tags");
+
 		}
 	}
 
 	@Override
 	public Optional<Map<String, Object>> retrieve(String file) {
 		String addressable = getAddressable(file);
-		String storageId = getStoragePath(file);
+		String storageId = getStorage(file);
+		
 		Optional<String> optData = readFile(
 				this.filePath + addressable + File.separator + DATA_FOLDER + File.separator + storageId + FILE_EXT);
-
+		
 		if (optData.isPresent()) {
 			return Optional.ofNullable(ejc.readValue(optData.get()));
 		} else {
@@ -81,26 +90,24 @@ public class FileStateStorage extends AbstractStateStorage {
 
 	private void createTagIndexFile(Map<String, String> tags, String storageId, Path tagPath) throws IOException {
 		for (Entry<String, String> e : tags.entrySet()) {
-			if (Objects.nonNull(e.getValue()) && e.getValue().equals(TeamsStateStorage.PRESENT)) {
+			//if (Objects.nonNull(e.getValue()) && e.getValue().equals(TeamsStateStorage.PRESENT)) {
 				String tagName = getAzureTag(e.getKey());
 				Path tagIndexPath = checkAndCreateFolder(tagPath + File.separator + tagName);
 				checkAndCreateFile(tagIndexPath + File.separator + storageId + FILE_EXT);
-			}
+			//}
 		}
 	}
 
-	private Optional<String> readFile(String filePath) {
-		try {
-			Path path = Paths.get(filePath);
-			if (Files.exists(path)) {
-				List<String> lines = Files.readAllLines(path);
-				return Optional.of(String.join("", lines));
-			} else {
-				return Optional.empty();
-			}
-		} catch (IOException e1) {
-			throw new TeamsException("Error while retrieve data " + e1);
+	private String getAzureTag(String s) {
+		return s.replaceAll("[^0-9a-zA-Z]", "_");
+	}
+
+	private String getAzurePath(String s) {
+		String path = s.replaceAll("[^0-9a-zA-Z/]", "_");
+		if (path.contains("messageid")) {//remove the room conversation id
+			return path.substring(0, path.indexOf("messageid"));
 		}
+		return path;
 	}
 
 	private void createStorageFile(Path dataPath, String storageId, Map<String, Object> data) throws IOException {
@@ -109,23 +116,7 @@ public class FileStateStorage extends AbstractStateStorage {
 		Files.write(storageFile, dataToByte);
 	}
 
-	private Path checkAndCreateFile(String file) throws IOException {
-		Path path = Paths.get(file);
-		if (Files.notExists(path)) {
-			Files.createFile(path);
-		}
-		return path;
-	}
-
-	private Path checkAndCreateFolder(String pathStr) throws IOException {
-		Path path = Paths.get(pathStr);
-		if (Files.notExists(path)) {
-			path = Files.createDirectory(path);
-		}
-
-		return path;
-	}
-
+	
 	private String getAddressable(String file) {
 		Optional<List<String>> split = splitString(file);
 		if (split.isPresent()) {
@@ -134,7 +125,7 @@ public class FileStateStorage extends AbstractStateStorage {
 		return file;
 	}
 
-	private String getStoragePath(String file) {
+	private String getStorage(String file) {
 		Optional<List<String>> split = splitString(file);
 		if (split.isPresent()) {
 			return split.get().get(1);
@@ -154,119 +145,94 @@ public class FileStateStorage extends AbstractStateStorage {
 
 	@Override
 	public Iterable<Map<String, Object>> retrieve(List<Filter> tags, boolean singleResultOnly) {
-		try {
+		Map<String, Filter> tagKeyMap = tags.stream().collect(Collectors.toMap(x -> x.key, x -> x));
 
-			Map<String, Filter> filterMap = tags.stream().collect(Collectors.toMap(x -> x.key, x -> x));
+		List<String> tagList = tags.stream().map(e -> getAzureTag(e.key)).collect(Collectors.toList());
 
-			Filter addressFilter = null;
-			if (filterMap.containsKey(TeamsStateStorage.ADDRESSABLE_KEY)) {
-				addressFilter = filterMap.remove(TeamsStateStorage.ADDRESSABLE_KEY);
+		Map<String, List<File>> tagFolders = Collections.emptyMap();
 
-				String tagIndexFolder = getTagIndexFolder(filterMap, addressFilter);
-
-				Path tagPath = Paths.get(tagIndexFolder);
-				if (Files.isDirectory(tagPath)) {
-					List<File> files = getDataFiles(addressFilter, filterMap, tagPath);
-					if ((singleResultOnly) && (files.size() > 0)) {
-						files = files.subList(0, 1);
-					}
-
-					Iterable<Map<String, Object>> list = files.stream()
-							.map(f -> ejc.readValue(readFile(f.getAbsolutePath()).orElse("")))
-							.collect(Collectors.toList());
-
-					return list;
-				}
-			} else if (filterMap.containsKey(StateStorageBasedTeamsConversations.ADDRESSABLE_INFO)
-					|| filterMap.containsKey(StateStorageBasedTeamsConversations.ADDRESSABLE_TYPE)) {
-				Set<File> files = getAllDataFiles();
-				List<Map<String, Object>> out = files.stream()
-						.map(f -> ejc.readValue(readFile(f.getAbsolutePath()).orElse("")))
-						.filter(filterAllDataFiles(filterMap)).collect(Collectors.toList());
-				return out;
-			}
-		} catch (IOException e) {
-			throw new TeamsException("Error while retrieve data " + e);
+		Filter addressFilter = tagKeyMap.remove(TeamsStateStorage.ADDRESSABLE_KEY);
+		if (Objects.isNull(addressFilter)) {
+			tagFolders = getAllTagIndexFiles(filePath, tagList);
+		} else {
+			tagFolders = getAllTagIndexFiles(filePath, tagList, getAzurePath(addressFilter.value));
 		}
-		return Collections.emptyList();
+
+		List<File> files = extractDataFileName(tagKeyMap, tagFolders);
+
+		if (tagKeyMap.containsKey(StateStorageBasedTeamsConversations.ADDRESSABLE_INFO)
+				|| tagKeyMap.containsKey(StateStorageBasedTeamsConversations.ADDRESSABLE_TYPE)) {
+
+			List<Map<String, Object>> out = files.stream().map(f -> ejc.readValue(readFile(f.getAbsolutePath()).orElse("")))
+					.filter(filterAddressableTypeFiles()).collect(Collectors.toList());
+
+			if ((singleResultOnly) && (files.size() > 0)) {
+				out = out.subList(0, 1);
+			}
+			return out;
+		} else {
+			if ((singleResultOnly) && (files.size() > 0)) {
+				files = files.subList(0, 1);
+			}
+			return files.stream().map(f -> ejc.readValue(readFile(f.getAbsolutePath()).orElse("")))
+					.collect(Collectors.toList());
+		}
 	}
 
-	private Predicate<? super EntityJson> filterAllDataFiles(Map<String, Filter> filterMap) {
+	private List<File> extractDataFileName(Map<String, Filter> filterMap, Map<String, List<File>> tagMap) {
+		return tagMap.entrySet().stream().map(t -> {
+
+			return t.getValue().stream().map(tg -> {
+				if (tg.isDirectory()) {
+					List<File> files = getDataFiles(t.getKey(), filterMap, tg);
+					return files;
+				}
+				return new ArrayList<File>();
+			}).flatMap(f -> f.stream()).collect(Collectors.toList());
+
+		}).flatMap(f -> f.stream()).collect(Collectors.toList());
+		
+	}
+
+	private Predicate<? super EntityJson> filterAddressableTypeFiles() {
 		return e -> e.entrySet().stream().map(s -> {
-			if (s.getValue() instanceof TeamsChannel && filterAddressableType(filterMap, "chat")) {
+			if (s.getValue() instanceof TeamsChannel) {
 				return true;
-			} else if (s.getValue() instanceof TeamsUser && filterAddressableType(filterMap, "user")) {
+			} else if (s.getValue() instanceof TeamsUser) {
 				return true;
 			}
 			return false;
 		}).findAny().orElse(false);
 	}
 
-	private boolean filterAddressableType(Map<String, Filter> filterMap, String type) {
+	private List<File> getDataFiles(String addressableId, Map<String, Filter> filterMap, File tagPath) {
 
-		if (filterMap.containsKey(StateStorageBasedTeamsConversations.ADDRESSABLE_TYPE)) {
-			Filter filter = filterMap.get(StateStorageBasedTeamsConversations.ADDRESSABLE_TYPE);
-			if (filter.value.equals(type))
-				return true;
-		} else {
-			return true;
-		}
-		return false;
+		try (Stream<Path> stream = Files.list(tagPath.toPath())) {
 
-	}
-
-	private Set<File> getAllDataFiles() {
-		Set<File> fileList = new HashSet<>();
-		getAllAddressableFiles(new File(this.filePath), fileList);
-		return fileList;
-	}
-
-	private void getAllAddressableFiles(File node, Set<File> fileList) {
-		if (node.isDirectory()) {
-			String[] subNote = node.list();
-			for (String fileName : subNote) {
-				File dir = new File(node, fileName);
-				if (dir.isDirectory()) {
-					getAllAddressableFiles(dir, fileList);
-				} else {
-					if (dir.getParentFile().getName().equals(DATA_FOLDER)
-							&& dir.getName().equals(TeamsStateStorage.ADDRESSABLE_KEY + FILE_EXT)) {
-						fileList.add(dir);
-					}
-				}
-			}
-		}
-
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private List<File> getDataFiles(Filter addressFilter, Map<String, Filter> filterMap, Path tagPath)
-			throws IOException {
-		List<File> l;
-
-		try (Stream<Path> stream = Files.list(tagPath)) {
 			Set<Path> paths = stream.filter(file -> !Files.isDirectory(file)).collect(Collectors.toSet());
-			String address = getAzurePath(addressFilter.value);
-			Map<Object, Long> files = paths.stream()
-					.map(p -> Paths.get(this.filePath + File.separator + address + File.separator + DATA_FOLDER
-							+ File.separator + p.getFileName().toString()))
-					.map(f -> new File(f.toString())).filter(fileFilter(filterMap))
+
+			List<File> files = paths.stream().map(f -> new File(f.toString())).filter(fileFilter(filterMap))
 					.sorted(Collections.reverseOrder(Comparator.comparingLong(File::lastModified)))
-					.collect(Collectors.toMap(k -> k, File::lastModified));
-			l = new ArrayList(files.keySet());
-			Collections.sort(l, Collections.reverseOrder(Comparator.comparingLong(File::lastModified)));
+					.collect(Collectors.toList());
+
+			return files.stream().map(f -> new File(this.filePath + File.separator + addressableId + File.separator
+					+ DATA_FOLDER + File.separator + f.getName())).collect(Collectors.toList());
+		} catch (IOException e) {
+			throw new TeamsException("Error while retriving data files " + e);
 		}
-		return l;
 	}
 
 	private Predicate<? super File> fileFilter(Map<String, Filter> filterMap) {
 		return p -> filterMap.entrySet().stream().filter(f -> f.getKey().equals(TeamsHistory.TIMESTAMP_KEY)).map(e -> {
+			int cmp = e.getValue().value.compareTo(String.valueOf(p.lastModified()));
 
-			if (e.getValue().operator.contains("==") && e.getValue().value.equals(String.valueOf(p.lastModified()))) {
+			if (e.getValue().operator.contains("=") && (cmp == 0)) {
 				return true;
-			} else if (e.getValue().operator.contains(">") && Long.valueOf(e.getValue().value) < p.lastModified()) {
+			}
+			if (e.getValue().operator.contains(">") && (cmp < 0)) {
 				return true;
-			} else if (e.getValue().operator.contains("<") && Long.valueOf(e.getValue().value) > p.lastModified()) {
+			}
+			if (e.getValue().operator.contains("<") && (cmp > 0)) {
 				return true;
 			}
 			{
@@ -274,29 +240,6 @@ public class FileStateStorage extends AbstractStateStorage {
 			}
 		}).findFirst().orElse(true);
 
-	}
-
-	private String getTagIndexFolder(Map<String, Filter> map, Filter addressFilter) {
-		StringBuffer tagIndexFolder = new StringBuffer(
-				this.filePath + File.separator + getAzurePath(addressFilter.value) + File.separator + TAG_INDEX_FOLDER);
-
-		map.entrySet().stream().filter(m -> m.getValue().value.equals(TeamsStateStorage.PRESENT)).forEach((e) -> {
-			tagIndexFolder.append(File.separator);
-			tagIndexFolder.append(getAzureTag(e.getKey()));
-		});
-		return tagIndexFolder.toString();
-	}
-
-	private String getAzureTag(String s) {
-		return s.replaceAll("[^0-9a-zA-Z]", "_");
-	}
-
-	private String getAzurePath(String s) {
-		String path = s.replaceAll("[^0-9a-zA-Z/]", "_");
-		if (path.contains("messageid")) {// remove the room conversation id
-			return path.substring(0, path.indexOf("messageid"));
-		}
-		return path;
 	}
 
 }
