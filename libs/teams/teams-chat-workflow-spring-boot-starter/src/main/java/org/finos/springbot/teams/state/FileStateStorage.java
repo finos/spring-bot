@@ -62,7 +62,7 @@ public class FileStateStorage extends AbstractStateStorage {
 				Path tagPath = checkAndCreateFolder(path.toString() + File.separator + TAG_INDEX_FOLDER);
 
 				createStorageFile(dataPath, storageId, data);
-
+				
 				createTagIndexFile(tags, storageId, tagPath);
 			} catch (IOException e) {
 				throw new TeamsException("Error while creating or getting folder " + e);
@@ -88,13 +88,20 @@ public class FileStateStorage extends AbstractStateStorage {
 		}
 	}
 
+	/**
+	 * create tag index file only if tags map contain tag key
+	 * @param tags
+	 * @param storageId
+	 * @param tagPath
+	 * @throws IOException
+	 */
 	private void createTagIndexFile(Map<String, String> tags, String storageId, Path tagPath) throws IOException {
 		for (Entry<String, String> e : tags.entrySet()) {
-			//if (Objects.nonNull(e.getValue()) && e.getValue().equals(TeamsStateStorage.PRESENT)) {
+			if (Objects.nonNull(e.getValue()) && e.getValue().equals(TeamsStateStorage.PRESENT)) {
 				String tagName = getAzureTag(e.getKey());
 				Path tagIndexPath = checkAndCreateFolder(tagPath + File.separator + tagName);
 				checkAndCreateFile(tagIndexPath + File.separator + storageId + FILE_EXT);
-			//}
+			}
 		}
 	}
 
@@ -102,10 +109,16 @@ public class FileStateStorage extends AbstractStateStorage {
 		return s.replaceAll("[^0-9a-zA-Z]", "_");
 	}
 
+	/**
+	 * Get file path, replaced all special character with _
+	 * and removed conversation id
+	 * @param path
+	 * @return
+	 */
 	private String getAzurePath(String s) {
 		String path = s.replaceAll("[^0-9a-zA-Z/]", "_");
-		if (path.contains("messageid")) {//remove the room conversation id
-			return path.substring(0, path.indexOf("messageid"));
+		if (path.contains("_messageid")) {//remove the room conversation id
+			return path.substring(0, path.indexOf("_messageid"));
 		}
 		return path;
 	}
@@ -152,14 +165,15 @@ public class FileStateStorage extends AbstractStateStorage {
 		Map<String, List<File>> tagFolders = Collections.emptyMap();
 
 		Filter addressFilter = tagKeyMap.remove(TeamsStateStorage.ADDRESSABLE_KEY);
-		if (Objects.isNull(addressFilter)) {
+		if (Objects.isNull(addressFilter)) {//search tags in all tag files
 			tagFolders = getAllTagIndexFiles(filePath, tagList);
-		} else {
+		} else {//search tags in given addressable tag files
 			tagFolders = getAllTagIndexFiles(filePath, tagList, getAzurePath(addressFilter.value));
 		}
 
 		List<File> files = extractDataFileName(tagKeyMap, tagFolders);
 
+		//if search for addressable-info like room information or user information
 		if (tagKeyMap.containsKey(StateStorageBasedTeamsConversations.ADDRESSABLE_INFO)
 				|| tagKeyMap.containsKey(StateStorageBasedTeamsConversations.ADDRESSABLE_TYPE)) {
 
@@ -205,6 +219,16 @@ public class FileStateStorage extends AbstractStateStorage {
 		}).findAny().orElse(false);
 	}
 
+	/**
+	 * Get data files from tag index
+	 * Filter files if timestamp tag is provided
+	 * 
+	 * @param addressableId
+	 * @param filterMap
+	 * @param tagPath
+	 * @return
+	 */
+	
 	private List<File> getDataFiles(String addressableId, Map<String, Filter> filterMap, File tagPath) {
 
 		try (Stream<Path> stream = Files.list(tagPath.toPath())) {

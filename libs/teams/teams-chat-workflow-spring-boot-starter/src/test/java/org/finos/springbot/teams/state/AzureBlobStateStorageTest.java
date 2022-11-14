@@ -85,7 +85,7 @@ public class AzureBlobStateStorageTest extends AbstractStateStorageTest {
 	public void testStoreWithTags() throws IOException {
 		allowWritingToTheFile();
 		allowReadingFromTheFile();
-		setupBlobSearch(Collections.singletonMap("@container='test' AND tag='rob'", Collections.singletonList("thefile")));
+		setupBlobSearch(Collections.singletonMap("@container='test' AND rob='tag'", Collections.singletonList("thefile")));
 		super.testStoreWithTags();
 	}
 
