@@ -143,10 +143,6 @@ public class FileStateStorage extends AbstractStateStorage {
 
 	private List<File> extractDataFileName(List<File> tagFolders) {
 		return tagFolders.stream().map(t -> getDataFiles(t)).flatMap(f -> f.stream()).distinct().collect(Collectors.toList());
-//		return list
-//		        .stream()
-//		        .distinct()
-//		        .collect(Collectors.toList());
 	}
 
 	private List<File> getAllTagIndex(List<Filter> filter) {
