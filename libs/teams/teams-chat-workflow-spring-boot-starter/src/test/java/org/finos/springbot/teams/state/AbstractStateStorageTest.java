@@ -32,8 +32,8 @@ public abstract class AbstractStateStorageTest {
 	@Test
 	public void testStoreWithTags() throws IOException {
 		Map<String, Object> somedata = Collections.singletonMap("a", "b");
-		Map<String, String> tags = Collections.singletonMap("rob", "tag");
-		List<TeamsStateStorage.Filter> tagList = Collections.singletonList(new Filter("rob", "tag", "="));
+		Map<String, String> tags = Collections.singletonMap("tag", "rob");
+		List<TeamsStateStorage.Filter> tagList = Collections.singletonList(new Filter("tag", "rob", "="));
 		List<TeamsStateStorage.Filter> otherTagList = Collections.singletonList(new Filter("lag", "rob", "="));
 		
 		tss.store("thefile", tags, somedata);

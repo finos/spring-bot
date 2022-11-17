@@ -5,19 +5,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.finos.springbot.teams.MockTeamsConfiguration;
-import org.finos.springbot.teams.state.TeamsStateStorage.Filter;
 import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -48,32 +41,7 @@ public class FileStateStorageTest extends AbstractStateStorageTest {
 	@Override
 	@Test
 	public void testStoreWithTagDates() throws IOException {
-		Map<String, Object> somedata = Collections.singletonMap("a", "b");
-		Map<String, String> tags = new HashMap<String, String>();
-		tags.put("rob", "tag");
-
-		File f = new File("");
-
-		List<TeamsStateStorage.Filter> tagList1 = Arrays
-				.asList(new Filter("timestamp", String.valueOf(f.lastModified()), ">="), new Filter("rob", "tag", "="));
-
-		List<TeamsStateStorage.Filter> tagList2 = Arrays
-				.asList(new Filter("timestamp", String.valueOf(f.lastModified()), ">="), new Filter("rob", "tag", "="));
-
-		List<TeamsStateStorage.Filter> tagList3 = Arrays
-				.asList(new Filter("timestamp", String.valueOf(f.lastModified()), "<"), new Filter("rob", "tag", "="));
-
-		List<TeamsStateStorage.Filter> tagList4 = Arrays.asList(
-				new Filter("timestamp", String.valueOf(f.lastModified() + (1000 * 24)), "<"),
-				new Filter("rob", "tag", "="));
-
-		tss.store("thefile", tags, somedata);
-		tss.store("theotherfile", tags, somedata);
-
-		Assertions.assertEquals(2, hoover(tss.retrieve(tagList1, false)).size());
-		Assertions.assertEquals(2, hoover(tss.retrieve(tagList2, false)).size());
-		Assertions.assertEquals(0, hoover(tss.retrieve(tagList3, false)).size());
-		Assertions.assertEquals(2, hoover(tss.retrieve(tagList4, false)).size());
+		super.testStoreWithTagDates();
 	}
 
 	@AfterEach
