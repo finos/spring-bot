@@ -35,7 +35,6 @@ public class FileStateStorageUtility {
 				}
 			}
 		}
-
 	}
 
 	public static Optional<String> readFile(String filePath) {
