@@ -12,7 +12,6 @@ import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,12 +35,6 @@ public class FileStateStorageTest extends AbstractStateStorageTest {
 			Files.createDirectory(Paths.get(tmpdir));
 		}
 		this.tss = new FileStateStorage(ejc, tmpdir);
-	}
-
-	@Override
-	@Test
-	public void testStoreWithTagDates() throws IOException {
-		super.testStoreWithTagDates();
 	}
 
 	@AfterEach
