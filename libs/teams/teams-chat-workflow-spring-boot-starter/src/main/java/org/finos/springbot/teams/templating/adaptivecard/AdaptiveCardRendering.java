@@ -200,8 +200,8 @@ public class AdaptiveCardRendering implements Rendering<JsonNode> {
 			
 			options.forEach((k, v) -> {
 				ObjectNode choice = f.objectNode();
-				choice.put("title", k);
-				choice.put("value", prettyPrint(v));
+				choice.put("title", prettyPrint(v));
+				choice.put("value", k);
 				an.add(choice);
 			});
 			

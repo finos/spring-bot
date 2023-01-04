@@ -10,14 +10,14 @@
       "value" : "${form.s}",
       "id" : "form-field:s",
       "choices" : [ {
-        "title" : "RED",
-        "value" : "Red"
+        "title" : "Red",
+        "value" : "RED"
       }, {
-        "title" : "AMBER",
-        "value" : "Amber"
+        "title" : "Amber",
+        "value" : "AMBER"
       }, {
-        "title" : "GREEN",
-        "value" : "Green"
+        "title" : "Green",
+        "value" : "GREEN"
       } ],
       "label" : "S"
     } ]

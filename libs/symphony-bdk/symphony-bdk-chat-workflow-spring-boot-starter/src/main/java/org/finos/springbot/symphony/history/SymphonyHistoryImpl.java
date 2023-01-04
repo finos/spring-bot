@@ -7,14 +7,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.finos.springbot.entityjson.EntityJson;
-import org.finos.springbot.symphony.content.CashTag;
-import org.finos.springbot.symphony.content.HashTag;
 import org.finos.springbot.symphony.content.SymphonyAddressable;
-import org.finos.springbot.symphony.content.SymphonyUser;
 import org.finos.springbot.symphony.conversations.StreamResolver;
 import org.finos.springbot.symphony.tags.SymphonyTagSupport;
 import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.Tag;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 
 import com.symphony.bdk.core.service.message.MessageService;
@@ -70,12 +66,12 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 	}
 
 	@Override
-	public <X> Optional<X> getLastFromHistory(Class<X> type, Tag t, SymphonyAddressable address) {
+	public <X> Optional<X> getLastFromHistory(Class<X> type, String t, SymphonyAddressable address) {
 		return getRelevantObject(getLastEntityJsonFromHistory(type, t, address), type);
 	}
 
 	@Override
-	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Tag t, SymphonyAddressable address) {
+	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, String t, SymphonyAddressable address) {
 		MessageSearchQuery msq = createMessageSearchQuery(null, address, null, t);
 		PaginationAttribute pa = new PaginationAttribute(0, 1);
 		List<V4Message> out = messageApi.searchMessages(msq, pa);
@@ -83,7 +79,7 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 	}
 
 	@Override
-	public <X> List<X> getFromHistory(Class<X> type, Tag t, SymphonyAddressable address, Instant since) {
+	public <X> List<X> getFromHistory(Class<X> type, String t, SymphonyAddressable address, Instant since) {
 		return getFromEntityJson(getEntityJsonFromHistory(t, address, since), type);
 	}
 
@@ -94,7 +90,7 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 	}
 
 	@Override
-	public List<EntityJson> getEntityJsonFromHistory(Tag t, SymphonyAddressable address, Instant since) {
+	public List<EntityJson> getEntityJsonFromHistory(String t, SymphonyAddressable address, Instant since) {
 		MessageSearchQuery msq = createMessageSearchQuery(null, address, since, t);
 		PaginationAttribute pa = new PaginationAttribute(0, 50);
 		List<V4Message> out = messageApi.searchMessages(msq, pa);
@@ -150,7 +146,7 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 		return out.stream().map(msg -> getEntityJson(msg)).filter(e -> e != null).collect(Collectors.toList());
 	}
 
-	private <X> MessageSearchQuery createMessageSearchQuery(Class<X> type, Addressable address, Instant since, Tag t) {
+	private <X> MessageSearchQuery createMessageSearchQuery(Class<X> type, Addressable address, Instant since, String t) {
 		MessageSearchQuery msq = new MessageSearchQuery();
 		if (address instanceof SymphonyAddressable) {
 			msq.setStreamId(sr.getStreamFor((SymphonyAddressable) address));
@@ -163,13 +159,7 @@ public class SymphonyHistoryImpl implements SymphonyHistory {
 		if (type != null) {
 			msq.setHashtag(SymphonyTagSupport.formatTag(type));
 		} else if (t != null) {
-			if (t instanceof CashTag) {
-				msq.setCashtag(t.getName());
-			} else if (t instanceof HashTag) {
-				msq.setHashtag(t.getName());
-			} else if (t instanceof SymphonyUser) {
-				msq.setMention(Long.parseLong(((SymphonyUser) t).getUserId()));
-			}
+			msq.setHashtag(t);
 		}
 
 		return msq;

@@ -44,6 +44,7 @@ import reactor.core.publisher.Mono;
 public class AzureBlobStateStorageTest extends AbstractStateStorageTest {
 
 	private static final String THE_FILE_CONTENTS = "{\"a\": \"b\"}";
+	
 	@Autowired
 	EntityJsonConverter ejc;
 	

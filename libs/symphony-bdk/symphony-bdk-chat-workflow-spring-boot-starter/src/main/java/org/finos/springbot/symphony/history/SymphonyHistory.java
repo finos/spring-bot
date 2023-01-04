@@ -13,11 +13,19 @@ public interface SymphonyHistory extends PlatformHistory<SymphonyAddressable> {
 
 	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, SymphonyAddressable address);
 	
-	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Tag t, SymphonyAddressable address);
+	public default <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, Tag t, SymphonyAddressable address) {
+		return getLastEntityJsonFromHistory(type, t.getName(), address);
+	}
+	
+	public <X> Optional<EntityJson> getLastEntityJsonFromHistory(Class<X> type, String t, SymphonyAddressable address);
 	
 	public <X> List<EntityJson> getEntityJsonFromHistory(Class<X> type, SymphonyAddressable address, Instant since);
 
-	public List<EntityJson> getEntityJsonFromHistory(Tag t, SymphonyAddressable address, Instant since);	
+	public default List<EntityJson> getEntityJsonFromHistory(Tag t, SymphonyAddressable address, Instant since) {
+		return getEntityJsonFromHistory(t.getName(), address, since);
+	}
+	
+	public List<EntityJson> getEntityJsonFromHistory(String t, SymphonyAddressable address, Instant since);	
 	
 	public <X> Optional<X> getFromEntityJson(EntityJson ej, Class<X> c);
 	

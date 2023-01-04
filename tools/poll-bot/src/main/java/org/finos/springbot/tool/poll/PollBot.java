@@ -2,6 +2,9 @@ package org.finos.springbot.tool.poll;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 
 @SpringBootApplication
 public class PollBot 
@@ -11,9 +14,8 @@ public class PollBot
     	SpringApplication.run(new Class[] {PollBot.class}, args);
     }
     
-    @Override
     @Bean
-    public MessageActivityHandler overrideMessageActivityHandler() {
-    	return SingleTennantMessageActivityHandler();
+    public TaskScheduler taskScheduler() {
+    	return new ConcurrentTaskScheduler();
     }
 }
