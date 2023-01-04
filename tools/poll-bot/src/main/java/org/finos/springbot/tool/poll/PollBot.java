@@ -10,4 +10,10 @@ public class PollBot
     {
     	SpringApplication.run(new Class[] {PollBot.class}, args);
     }
+    
+    @Override
+    @Bean
+    public MessageActivityHandler overrideMessageActivityHandler() {
+    	return SingleTennantMessageActivityHandler();
+    }
 }
