@@ -17,4 +17,4 @@ If you uncover vulnerabilities in this software, please contact `help@finos.org`
 
 ## Whitesource
 
-All project maintainers should be able to view vulnerabilities on [Whitesource](https://whitesourcesoftware.com).  If you can't access this, please contact [FINOS Help](mailto:help@finos.org).
+All project maintainers should be able to view vulnerabilities on [Mend](https://www.mend.io).  If you can't access this, please contact [FINOS Help](mailto:help@finos.org).
