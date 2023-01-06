@@ -20,6 +20,7 @@ import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.messages.MessageActivityHandler;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.state.AzureBlobStateStorage;
+import org.finos.springbot.teams.state.FileStateStorage;
 import org.finos.springbot.teams.state.MemoryStateStorage;
 import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardConverterConfig;
@@ -160,6 +161,14 @@ public class TeamsWorkflowConfig {
 	public TeamsStateStorage teamsInMemoryStateStorage() {
 		LOG.warn("Using Memory storage for Azure data - NOT FOR PRODUCTION");
 		return new MemoryStateStorage(ejc);
+	}
+	
+	@Bean
+	@ConditionalOnProperty(matchIfMissing = true, name = "teams.storage.type", havingValue = "file")
+	@ConditionalOnMissingBean
+	public TeamsStateStorage teamsInFileStateStorage(@Value("${teams.storage.file-path:}") String filePath) {
+		LOG.info("Using file storage for Azure data");
+		return new FileStateStorage(ejc, filePath);
 	}
 	
 	@Bean
