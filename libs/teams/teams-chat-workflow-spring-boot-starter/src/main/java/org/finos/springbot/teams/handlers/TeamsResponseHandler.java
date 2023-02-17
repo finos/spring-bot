@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.http.HttpStatus;
 import org.springframework.util.ErrorHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -190,7 +191,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				&& ((CompletionException) e).getCause() instanceof ErrorResponseException) {
 			ErrorResponseException ere = (ErrorResponseException) ((CompletionException) e).getCause();
 			retrofit2.Response<ResponseBody> response = ere.response();
-			if (response.code() == 429 && retryCount <= RETRY_COUNT) {
+			if (response.code() == HttpStatus.TOO_MANY_REQUESTS.value() && retryCount <= RETRY_COUNT) {
 				String retryAfter = response.headers().get("Retry-After");
 				try {
 					Thread.sleep(Long.parseLong(retryAfter) * 1000);
