@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.TeamsException;
@@ -34,15 +35,21 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.microsoft.bot.connector.rest.ErrorResponseException;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
 import com.microsoft.bot.schema.Entity;
 import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.TextFormatTypes;
 
+import okhttp3.ResponseBody;
+
 public class TeamsResponseHandler implements ResponseHandler, ApplicationContextAware {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsResponseHandler.class);
+	
+	private static final int RETRY_COUNT = 3;
+	private static final int INT_RETRY_COUNT = 0;
 	
 	protected AttachmentHandler attachmentHandler;
 	protected ApplicationContext ctx;
@@ -78,7 +85,10 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 
 	@Override
 	public void accept(Response t) {
-		
+		sendResponse(t, INT_RETRY_COUNT);
+	}
+
+	private void sendResponse(Response t, int retryCount) {
 		if (t.getAddress() instanceof TeamsAddressable) {		
 			TeamsAddressable ta = (TeamsAddressable) t.getAddress();
 
@@ -95,7 +105,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					}
 					
 					sendXMLResponse(content, attachment, ta, entities, mr.getData())
-						.handle(handleErrorAndStorage(content, ta, mr.getData()));
+						.handle(handleErrorAndStorage(content, ta, mr.getData(), t, ++retryCount));
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
@@ -104,7 +114,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
 						sendCardResponse(cardJson, ta, wr.getData())
-							.handle(handleErrorAndStorage(cardJson, ta, wr.getData()));
+							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t, ++retryCount));
 						;
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
@@ -112,7 +122,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						List<Entity> entities = mae.getEntities();
 						sendXMLResponse(content, null, ta, entities, wr.getData())
 							.handle(handleButtonsIfNeeded(tt, wr))
-							.handle(handleErrorAndStorage(content, ta, wr.getData()));
+							.handle(handleErrorAndStorage(content, ta, wr.getData(), t, ++retryCount));
 						
 					}
 				}
@@ -139,7 +149,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		return tt;
 	}
 
-	protected CompletableFuture<ResourceResponse> sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, Map<String, Object> data) throws Exception {		
+	protected CompletableFuture<ResourceResponse> sendXMLResponse(String xml, Object attachment, TeamsAddressable address, List<Entity> entities, Map<String, Object> data) throws Exception {
 		Activity out = Activity.createMessageActivity();
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
@@ -157,7 +167,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						wr.getData().put(AdaptiveCardTemplateProvider.FORMID_KEY, "just-buttons");
 						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, wr);
 						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
-					} else {
+					} else {						
 						return null;
 					}
 
@@ -165,14 +175,41 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					throw e;
 				}
 			} catch (Throwable e1) {
-				throw new RuntimeException("Passing on exception", e);
+				if (e instanceof CompletionException
+						&& ((CompletionException) e1).getCause() instanceof ErrorResponseException) {
+					ErrorResponseException ere = (ErrorResponseException) ((CompletionException) e1).getCause();
+					throw ere;
+				}
+				throw new RuntimeException("Passing on exception", e1);
 			}
 		};
 	}
-	
-	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data) {
+
+	private boolean retryMessage(Response t, int retryCount, Throwable e)  {
+		if (e instanceof CompletionException
+				&& ((CompletionException) e).getCause() instanceof ErrorResponseException) {
+			ErrorResponseException ere = (ErrorResponseException) ((CompletionException) e).getCause();
+			retrofit2.Response<ResponseBody> response = ere.response();
+			if (response.code() == 429 && retryCount <= RETRY_COUNT) {
+				String retryAfter = response.headers().get("Retry-After");
+				try {
+					Thread.sleep(Long.parseLong(retryAfter) * 1000);
+				} catch (NumberFormatException | InterruptedException e1) {
+					throw new RuntimeException("Retry message on exception", e1);
+				}
+				this.sendResponse(t, retryCount);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
+	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t, int retryCount) {
 		return (rr, e) -> {
 				if (e != null) {
+					boolean retrySuccess = retryMessage(t, retryCount, e);
+					if(!retrySuccess) {
 					LOG.error(e.getMessage());
 					if (out instanceof ObjectNode){
 						try {
@@ -184,7 +221,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					} 
 					
 					initErrorHandler();
-					eh.handleError(e);	
+					eh.handleError(e);
+					}
 				} else {
 					performStorage(address, data, teamsState);
 				}
