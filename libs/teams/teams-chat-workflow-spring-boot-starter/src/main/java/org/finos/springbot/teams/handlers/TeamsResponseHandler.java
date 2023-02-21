@@ -4,12 +4,13 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
+import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiFunction;
 
+import org.apache.commons.lang3.StringUtils;
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.conversations.TeamsConversations;
@@ -64,7 +65,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected TeamsStateStorage teamsState;
 	protected TeamsConversations teamsConversations;
 	
-	private BlockingQueue<RetryMessageConfig> queue = new LinkedBlockingQueue<>();
+	private Queue<MessageRetry> queue = new ConcurrentLinkedQueue<>();
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
@@ -190,19 +191,22 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			}
 		};
 	}
-
-	private boolean retryMessage(Response t, int retryCount, Throwable e)  {
+ 
+	private boolean insertIntoQueue(Response t, int retryCount, Throwable e)  {
 		if (e instanceof CompletionException
 				&& ((CompletionException) e).getCause() instanceof ErrorResponseException) {
 			ErrorResponseException ere = (ErrorResponseException) ((CompletionException) e).getCause();
 			retrofit2.Response<ResponseBody> response = ere.response();
 			if (response.code() == HttpStatus.TOO_MANY_REQUESTS.value() && retryCount <= RETRY_COUNT) {
 				String retryAfter = response.headers().get("Retry-After");
-				try {
-					queue.put(new RetryMessageConfig(t, retryCount, Integer.parseInt(retryAfter)));
-				} catch (NumberFormatException | InterruptedException e1) {
-					throw new RuntimeException("Exception on retry message", e1);
-				}
+				
+				int retryAfterInt = 1;//initiate to 1 sec
+				if(StringUtils.isNumeric(retryAfter)) {
+					retryAfterInt = Integer.parseInt(retryAfter);
+				}				
+				
+				queue.add(new MessageRetry(t, retryCount, retryAfterInt));
+				
 				return true;
 			}
 		}
@@ -213,8 +217,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t, int retryCount) {
 		return (rr, e) -> {
 				if (e != null) {
-					boolean retrySuccess = retryMessage(t, retryCount, e);
-					if(!retrySuccess) {
+					boolean success = insertIntoQueue(t, retryCount, e);
+					if(!success) {
 					LOG.error(e.getMessage());
 					if (out instanceof ObjectNode){
 						try {
@@ -268,17 +272,12 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	}
 	
 	public void retryMessage() {
-		RetryMessageConfig q;
-		while((q = queue.poll()) != null) {
+		MessageRetry q;
+		while ((q = queue.peek()) != null) {
 			LocalDateTime time = q.getCurrentTime().plusSeconds(q.getRetryAfter());
-			if(LocalDateTime.now().isAfter(time)) { //retry now
-				this.sendResponse(q.getResponse(), q.getRetryCount());	
-			}else {//wait for retry
-				try {
-					queue.put(q);
-				} catch (InterruptedException e) {
-					throw new RuntimeException("Exception on retry message", e);
-				}
+			if (LocalDateTime.now().isAfter(time)) { // retry now
+				queue.remove(q);
+				this.sendResponse(q.getResponse(), q.getRetryCount());
 			}
 		}
 	}

@@ -14,7 +14,7 @@ public class TeamsScheduledConfig {
 	@Autowired
 	private TeamsResponseHandler handler;
 	
-	@Scheduled(fixedDelay = 30, timeUnit = TimeUnit.MILLISECONDS)
+	@Scheduled(fixedDelay = 30, timeUnit = TimeUnit.SECONDS)
 	//Task to run after a fixed delay. 
 	//the duration between the end of last execution and the start of next execution is fixed
 	public void scheduleRetryMessage() {
