@@ -272,12 +272,16 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	}
 	
 	public void retryMessage() {
+		LOG.info("Retry message queue size {}.", queue.size());
+		
 		MessageRetry q;
 		while ((q = queue.peek()) != null) {
 			LocalDateTime time = q.getCurrentTime().plusSeconds(q.getRetryAfter());
 			if (LocalDateTime.now().isAfter(time)) { // retry now
 				queue.remove(q);
 				this.sendResponse(q.getResponse(), q.getRetryCount());
+			}else {
+				break;//to pass the pick time... Retry the messages in next cycle
 			}
 		}
 	}
