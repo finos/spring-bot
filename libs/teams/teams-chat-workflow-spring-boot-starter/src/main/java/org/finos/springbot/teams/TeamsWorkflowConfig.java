@@ -73,7 +73,9 @@ import com.microsoft.bot.schema.ChannelAccount;
 	ThymeleafEngineConfig.class,
 	AdaptiveCardConverterConfig.class,
 	ThymeleafConverterConfig.class,
-	TeamsConversationsConfig.class})
+	TeamsConversationsConfig.class,
+	TeamsScheduledConfig.class
+	})
 @Profile("teams")
 public class TeamsWorkflowConfig {
 		

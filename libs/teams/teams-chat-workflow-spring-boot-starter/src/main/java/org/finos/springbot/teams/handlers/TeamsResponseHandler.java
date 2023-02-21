@@ -1,10 +1,13 @@
 package org.finos.springbot.teams.handlers;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.TeamsException;
@@ -50,7 +53,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsResponseHandler.class);
 	
 	private static final int RETRY_COUNT = 3;
-	private static final int INT_RETRY_COUNT = 0;
+	private static final int INIT_RETRY_COUNT = 0;
 	
 	protected AttachmentHandler attachmentHandler;
 	protected ApplicationContext ctx;
@@ -60,6 +63,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected ThymeleafTemplateProvider displayTemplater;
 	protected TeamsStateStorage teamsState;
 	protected TeamsConversations teamsConversations;
+	
+	private BlockingQueue<RetryMessageConfig> queue = new LinkedBlockingQueue<>();
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
@@ -86,7 +91,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 
 	@Override
 	public void accept(Response t) {
-		sendResponse(t, INT_RETRY_COUNT);
+		sendResponse(t, INIT_RETRY_COUNT);
 	}
 
 	private void sendResponse(Response t, int retryCount) {
@@ -194,11 +199,10 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			if (response.code() == HttpStatus.TOO_MANY_REQUESTS.value() && retryCount <= RETRY_COUNT) {
 				String retryAfter = response.headers().get("Retry-After");
 				try {
-					Thread.sleep(Long.parseLong(retryAfter) * 1000);
+					queue.put(new RetryMessageConfig(t, retryCount, Integer.parseInt(retryAfter)));
 				} catch (NumberFormatException | InterruptedException e1) {
-					throw new RuntimeException("Retry message on exception", e1);
+					throw new RuntimeException("Exception on retry message", e1);
 				}
-				this.sendResponse(t, retryCount);
 				return true;
 			}
 		}
@@ -262,6 +266,23 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		out.put(TeamsHistory.TIMESTAMP_KEY, ""+System.currentTimeMillis());
 		return out;
 	}
+	
+	public void retryMessage() {
+		RetryMessageConfig q;
+		while((q = queue.poll()) != null) {
+			LocalDateTime time = q.getCurrentTime().plusSeconds(q.getRetryAfter());
+			if(LocalDateTime.now().isAfter(time)) { //retry now
+				this.sendResponse(q.getResponse(), q.getRetryCount());	
+			}else {//wait for retry
+				try {
+					queue.put(q);
+				} catch (InterruptedException e) {
+					throw new RuntimeException("Exception on retry message", e);
+				}
+			}
+		}
+	}
+	
 
 	@Override
 	public int getOrder() {
