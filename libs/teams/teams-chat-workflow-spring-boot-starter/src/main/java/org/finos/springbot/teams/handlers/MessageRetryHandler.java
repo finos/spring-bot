@@ -1,11 +1,12 @@
 package org.finos.springbot.teams.handlers;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface MessageRetryHandler {		
 	
 	public void add(MessageRetry t);
 	
-	public List<MessageRetry> get();
+	public Optional<MessageRetry> get();
 	
+	public int queueSize();
 }

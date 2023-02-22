@@ -3,6 +3,7 @@ package org.finos.springbot.teams.handlers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
@@ -270,11 +271,13 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	}
 	
 	public void retryMessage() {
-		List<MessageRetry> list = messageRetryHandler.get();
 		
-		list.forEach(m -> {
-			this.sendResponse(m.getResponse(), m.getRetryCount());
-		});
+		LOG.info("Retry message queue size - {}", messageRetryHandler.queueSize());
+		
+		Optional<MessageRetry> opt;
+		while((opt = messageRetryHandler.get()).isPresent()) {
+			this.sendResponse(opt.get().getResponse(), opt.get().getRetryCount());
+		}
 	}
 	
 
