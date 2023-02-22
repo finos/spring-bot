@@ -1,13 +1,10 @@
 package org.finos.springbot.teams.handlers;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.function.BiFunction;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,8 +61,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected ThymeleafTemplateProvider displayTemplater;
 	protected TeamsStateStorage teamsState;
 	protected TeamsConversations teamsConversations;
-	
-	private Queue<MessageRetry> queue = new ConcurrentLinkedQueue<>();
+	protected MessageRetryHandler messageRetryHandler;
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
@@ -73,13 +69,15 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			AdaptiveCardTemplateProvider workTemplater,
 			ThymeleafTemplateProvider displayTemplater, 
 			TeamsStateStorage th, 
-			TeamsConversations tc) {
+			TeamsConversations tc,
+			MessageRetryHandler mr) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;
 		this.displayTemplater = displayTemplater;
 		this.teamsState = th;
 		this.teamsConversations = tc;
+		this.messageRetryHandler = mr;
 	}
 	
 	protected void initErrorHandler() {
@@ -205,7 +203,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					retryAfterInt = Integer.parseInt(retryAfter);
 				}				
 				
-				queue.add(new MessageRetry(t, retryCount, retryAfterInt));
+				messageRetryHandler.add(new MessageRetry(t, retryCount, retryAfterInt));
 				
 				return true;
 			}
@@ -272,18 +270,11 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	}
 	
 	public void retryMessage() {
-		LOG.info("Retry message queue size {}.", queue.size());
+		List<MessageRetry> list = messageRetryHandler.get();
 		
-		MessageRetry q;
-		while ((q = queue.peek()) != null) {
-			LocalDateTime time = q.getCurrentTime().plusSeconds(q.getRetryAfter());
-			if (LocalDateTime.now().isAfter(time)) { // retry now
-				queue.remove(q);
-				this.sendResponse(q.getResponse(), q.getRetryCount());
-			}else {
-				break;//to pass the pick time... Retry the messages in next cycle
-			}
-		}
+		list.forEach(m -> {
+			this.sendResponse(m.getResponse(), m.getRetryCount());
+		});
 	}
 	
 

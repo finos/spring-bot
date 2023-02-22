@@ -13,6 +13,8 @@ import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
+import org.finos.springbot.teams.handlers.InMemoryMessageRetryHandler;
+import org.finos.springbot.teams.handlers.MessageRetryHandler;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.history.StateStorageBasedTeamsHistory;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
@@ -127,14 +129,16 @@ public class TeamsWorkflowConfig {
 			AdaptiveCardTemplateProvider formTemplater,
 			ThymeleafTemplateProvider displayTemplater,
 			TeamsStateStorage th,
-			TeamsConversations tc) {
+			TeamsConversations tc,
+			MessageRetryHandler mr) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
 				markupTemplater,
 				formTemplater,
 				displayTemplater,
 				th,
-				tc);
+				tc,
+				mr);
 	}
 	
 	@Bean
@@ -226,5 +230,10 @@ public class TeamsWorkflowConfig {
         resourceLoader.setClassLoader(this.getClass().getClassLoader());
     }
 
+    @Bean
+    @ConditionalOnMissingBean
+    public MessageRetryHandler messageRetryHandler() {
+    	return new InMemoryMessageRetryHandler();
+    }
 
 }
