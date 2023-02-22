@@ -8,5 +8,4 @@ public interface MessageRetryHandler {
 	
 	public Optional<MessageRetry> get();
 	
-	public int queueSize();
 }

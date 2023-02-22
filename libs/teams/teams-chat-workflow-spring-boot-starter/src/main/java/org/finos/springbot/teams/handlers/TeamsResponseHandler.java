@@ -271,13 +271,15 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	}
 	
 	public void retryMessage() {
-		
-		LOG.info("Retry message queue size - {}", messageRetryHandler.queueSize());
-		
+		int messageCount = 0;
+
 		Optional<MessageRetry> opt;
-		while((opt = messageRetryHandler.get()).isPresent()) {
+		while ((opt = messageRetryHandler.get()).isPresent()) {
+			messageCount++;
 			this.sendResponse(opt.get().getResponse(), opt.get().getRetryCount());
 		}
+
+		LOG.info("{} messages retried" , messageCount);
 	}
 	
 
