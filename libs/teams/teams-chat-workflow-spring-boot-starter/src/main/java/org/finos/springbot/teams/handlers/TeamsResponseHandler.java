@@ -279,6 +279,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			this.sendResponse(opt.get().getResponse(), opt.get().getRetryCount());
 		}
 
+		LOG.info("Retry message queue {}" , messageCount == 0 ? "is empty" : "has messages.");
 		LOG.info("{} messages retried" , messageCount);
 	}
 	
