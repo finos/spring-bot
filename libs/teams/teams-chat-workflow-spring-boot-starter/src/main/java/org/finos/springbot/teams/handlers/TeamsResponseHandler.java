@@ -17,6 +17,7 @@ import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
 import org.finos.springbot.teams.response.templating.MarkupAndEntities;
 import org.finos.springbot.teams.state.TeamsStateStorage;
+import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardPassthrough;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.workflow.annotations.WorkMode;
@@ -142,7 +143,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		TemplateType tt;
 		if (displayTemplater.hasTemplate(wr)) {
 			tt = TemplateType.THYMELEAF;
-		} else if (workTemplater.hasTemplate(wr)) {
+		} else if (workTemplater.hasTemplate(wr) || AdaptiveCardPassthrough.isAdaptiveCard(wr)) {
 			tt = TemplateType.ADAPTIVE_CARD;
 		} else if (wr.getMode() == WorkMode.EDIT) {
 			tt = TemplateType.ADAPTIVE_CARD;
