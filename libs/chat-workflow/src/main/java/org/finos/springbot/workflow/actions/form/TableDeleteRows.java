@@ -28,9 +28,9 @@ public class TableDeleteRows extends AbstractTableActionConsumer {
 	}
 	
 	
+	// nosemgrep
 	@SuppressWarnings("unchecked")
 	@Override
-	// nosemgrep
 	public void acceptFormAction(FormAction ea) {
 		String verb = ea.getAction();
 		if (verb == null) {

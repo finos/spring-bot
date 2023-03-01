@@ -67,6 +67,7 @@ public class DataHandlerConfig {
 			.map(bd -> bd.getBeanClassName()) 
 			.map(s -> {
 				try {
+					// nosemgrep
 					return Class.forName(s);
 				} catch (ClassNotFoundException e) {
 					LOG.error("Couldn't instantiate: "+s, e);

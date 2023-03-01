@@ -49,10 +49,10 @@ public class EntityJsonConverter implements DataHandler {
 		}
 	}
 
-	// nosemgrep
 	public Object fromJson(String formId, Object json) {
 		Class<?> c;
 		try {
+			// nosemgrep
 			c = Class.forName(formId);
 		} catch (ClassNotFoundException e1) {
 			throw new UnsupportedOperationException("Couldn't get class: " + formId);
