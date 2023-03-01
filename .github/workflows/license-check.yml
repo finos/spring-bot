@@ -20,6 +20,8 @@ jobs:
         java-version: 11
         cache: maven
         distribution: 'adopt'
+    - name: Build 
+      run: mvn install -DskipTests
     - name: License XML report
       run: mvn org.codehaus.mojo:license-maven-plugin:2.0.0:download-licenses
     - name: Validate XML report
