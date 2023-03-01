@@ -94,3 +94,7 @@ symphony:
   reminder:
     defaultRemindBefore:  30  # 30 minutes before.
 ```
+
+## License Warning
+
+Reminder Bot uses Stanford NLP library, which is licensed under **GNU General Public License Version 3**.  If you make derivative works of this code you will need to license them under a similar license.
