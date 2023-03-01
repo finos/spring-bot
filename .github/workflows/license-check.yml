@@ -22,7 +22,6 @@ jobs:
         distribution: 'adopt'
     - name: License XML report
       run: mvn org.codehaus.mojo:license-maven-plugin:2.0.0:download-licenses
-      working-directory: maven
     - name: Validate XML report
       run: |
         find libs | grep licenses.xml | awk '{print "cat " $1}' | sh | grep "<name>" | sed 's/^\ *//' | sort | uniq > target/complete-licenses.txt
