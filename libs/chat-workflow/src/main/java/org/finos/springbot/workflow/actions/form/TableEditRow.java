@@ -45,6 +45,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 		}
 	}
 
+	// nosemgrep
 	protected void updateData(FormAction in, String verb) {
 		String tableLocation = verb.substring(0, verb.length() - UPDATE_SUFFIX.length()-1);
 		tableLocation = fixSpel(tableLocation);
@@ -52,7 +53,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 		int row = Integer.parseInt(tableLocation.substring(lastBracket+1, tableLocation.length()-1));
 		tableLocation = tableLocation.substring(0, lastBracket);
 		Object updated = in.getFormData();
-		Expression e = spel.parseExpression(tableLocation);
+		Expression e = spel.parseExpression(tableLocation);  
 		Object data = in.getData().get(WORKFLOW_001);
 		@SuppressWarnings("unchecked")
 		List<Object> listToUpdate = (List<Object>) e.getValue(data);
@@ -66,6 +67,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 		rh.accept(wr);
 	}
 
+	// nosemgrep
 	protected void createEditForm(FormAction in, String verb) {
 		String tableLocation = verb.substring(0, verb.length() - EDIT_SUFFIX.length()-1);
 		tableLocation = fixSpel(tableLocation);

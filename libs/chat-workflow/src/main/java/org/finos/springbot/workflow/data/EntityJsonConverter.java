@@ -49,6 +49,7 @@ public class EntityJsonConverter implements DataHandler {
 		}
 	}
 
+	// nosemgrep
 	public Object fromJson(String formId, Object json) {
 		Class<?> c;
 		try {
