@@ -1,0 +1,49 @@
+<name>3-Clause BSD License</name>
+<name>Apache 2.0</name>
+<name>Apache 2</name>
+<name>Apache License 2.0</name>
+<name>Apache License, 2.0</name>
+<name>Apache License, Version 2.0</name>
+<name>Apache License, version 2.0</name>
+<name>Apache-2.0</name>
+<name>Apple License</name>
+<name>BSD 2-Clause</name>
+<name>BSD License 3</name>
+<name>BSD-2-Clause</name>
+<name>BSD-3-Clause</name>
+<name>Bouncy Castle Licence</name>
+<name>CC0</name>
+<name>CDDL + GPLv2 with classpath exception</name>
+<name>CDDL 1.1</name>
+<name>CDDL+GPL License</name>
+<name>CDDL/GPLv2+CE</name>
+<name>COMMON DEVELOPMENT AND DISTRIBUTION LICENSE (CDDL) Version 1.0</name>
+<name>Dual license consisting of the CDDL v1.1 and GPL v2</name>
+<name>EDL 1.0</name>
+<name>EPL 2.0</name>
+<name>Eclipse Distribution License - v 1.0</name>
+<name>Eclipse Public License - v 1.0</name>
+<name>Eclipse Public License - v 2.0</name>
+<name>Eclipse Public License v2.0</name>
+<name>GNU Lesser General Public License</name>
+<name>GPL2 w/ CPE</name>
+<name>LGPL 2.1</name>
+<name>MIT License</name>
+<name>MIT license</name>
+<name>MPL 1.1</name>
+<name>Modified BSD</name>
+<name>Prior BSD License</name>
+<name>Public Domain, per Creative Commons CC0</name>
+<name>Public Domain</name>
+<name>Similar to Apache License but with the acknowledgment clause removed</name>
+<name>The Apache License, Version 2.0</name>
+<name>The Apache Software License, Version 2.0</name>
+<name>The BSD License</name>
+<name>The GNU General Public License (GPL), Version 2, With Classpath Exception</name>
+<name>The GNU Lesser General Public License, Version 2.1</name>
+<name>The MIT License (MIT)</name>
+<name>The MIT License</name>
+<name>Unicode/ICU License</name>
+<name>Universal Permissive License, Version 1.0</name>
+<name>W3C license</name>
+<name>jQuery license</name>
