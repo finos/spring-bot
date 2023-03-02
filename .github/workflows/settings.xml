@@ -21,31 +21,6 @@
            "chain": [ "${env.BOT2CERTIFICATE}" ]
          }
        </symphony-develop-bot2-identity>
-       <symphony-develop-bot3-identity>
-         {  
-           "chain": [ "${env.BOT3CERTCHAIN}" ],
-           "privateKey": "${env.BOT3PRIVATEKEY}",
-           "publicKey": "${env.BOT3PUBLICKEY}",
-           "email":"symphony.practice.bot3@list.db.com",
-           "commonName":"bob",
-           "password" : "${env.BOT3P12PASSWORD}"
-         }
-       </symphony-develop-bot3-identity>
-       <symphony-develop-bot4-identity>
-         {  
-           "chain": [ "${env.BOT4CERTCHAIN}" ],
-           "email":"symphony.practice.bot4@list.db.com",
-           "commonName":"symphony.practice.bot4"
-         }
-       </symphony-develop-bot4-identity>
-       <symphony-develop-bot5-inline-pem>${env.BOT5CERTIFICATE}</symphony-develop-bot5-inline-pem>
-       <symphony-develop-bot6-private-key>${env.BOT6PRIVATEKEY}</symphony-develop-bot6-private-key>
-       <symphony-develop-bot7-certificate>${env.BOT7CERTIFICATE}</symphony-develop-bot7-certificate>
-       <symphony-develop-bot8-no-app-id>
-         {  
-           "privateKey": "${env.BOT8PRIVATEKEY}"
-         }
-       </symphony-develop-bot8-no-app-id>
        <symphony-test-identity>
          {
            "privateKey": "${env.BOT1PRIVATEKEY}",
