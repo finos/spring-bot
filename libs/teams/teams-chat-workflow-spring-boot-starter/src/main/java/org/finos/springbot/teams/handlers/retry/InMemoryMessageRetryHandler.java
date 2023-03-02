@@ -1,4 +1,4 @@
-package org.finos.springbot.teams.handlers;
+package org.finos.springbot.teams.handlers.retry;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InMemoryMessageRetryHandler implements MessageRetryHandler {
+public class InMemoryMessageRetryHandler extends MessageRetryHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(InMemoryMessageRetryHandler.class);
 	
@@ -34,5 +34,6 @@ public class InMemoryMessageRetryHandler implements MessageRetryHandler {
 	
 		return Optional.empty();
 	}
+	
 
 }

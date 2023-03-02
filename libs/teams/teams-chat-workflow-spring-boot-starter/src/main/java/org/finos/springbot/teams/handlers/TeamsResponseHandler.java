@@ -8,10 +8,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
 
-import org.apache.commons.lang3.StringUtils;
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.conversations.TeamsConversations;
+import org.finos.springbot.teams.handlers.retry.MessageRetry;
+import org.finos.springbot.teams.handlers.retry.RetryHandler;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
@@ -32,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.ErrorHandler;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -46,13 +46,11 @@ import com.microsoft.bot.schema.Entity;
 import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.TextFormatTypes;
 
-import okhttp3.ResponseBody;
-
 public class TeamsResponseHandler implements ResponseHandler, ApplicationContextAware {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsResponseHandler.class);
 	
-	private static final int RETRY_COUNT = 3;
+	
 	private static final int INIT_RETRY_COUNT = 0;
 	
 	protected AttachmentHandler attachmentHandler;
@@ -63,7 +61,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected ThymeleafTemplateProvider displayTemplater;
 	protected TeamsStateStorage teamsState;
 	protected TeamsConversations teamsConversations;
-	protected MessageRetryHandler messageRetryHandler;
+	protected RetryHandler retryHandler;
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
@@ -72,14 +70,14 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			ThymeleafTemplateProvider displayTemplater, 
 			TeamsStateStorage th, 
 			TeamsConversations tc,
-			MessageRetryHandler mr) {
+			RetryHandler mr) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;
 		this.displayTemplater = displayTemplater;
 		this.teamsState = th;
 		this.teamsConversations = tc;
-		this.messageRetryHandler = mr;
+		this.retryHandler = mr;
 	}
 	
 	protected void initErrorHandler() {
@@ -95,7 +93,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		sendResponse(t, INIT_RETRY_COUNT);
 	}
 
-	private void sendResponse(Response t, int retryCount) {
+	public void sendResponse(Response t, int retryCount) {
 		if (t.getAddress() instanceof TeamsAddressable) {		
 			TeamsAddressable ta = (TeamsAddressable) t.getAddress();
 
@@ -192,32 +190,10 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		};
 	}
  
-	private boolean insertIntoQueue(Response t, int retryCount, Throwable e)  {
-		if (e instanceof CompletionException
-				&& ((CompletionException) e).getCause() instanceof ErrorResponseException) {
-			ErrorResponseException ere = (ErrorResponseException) ((CompletionException) e).getCause();
-			retrofit2.Response<ResponseBody> response = ere.response();
-			if (response.code() == HttpStatus.TOO_MANY_REQUESTS.value() && retryCount <= RETRY_COUNT) {
-				String retryAfter = response.headers().get("Retry-After");
-				
-				int retryAfterInt = 1;//initiate to 1 sec
-				if(StringUtils.isNumeric(retryAfter)) {
-					retryAfterInt = Integer.parseInt(retryAfter);
-				}				
-				
-				messageRetryHandler.add(new MessageRetry(t, retryCount, retryAfterInt));
-				
-				return true;
-			}
-		}
-		
-		return false;
-	}
-
 	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t, int retryCount) {
 		return (rr, e) -> {
 				if (e != null) {
-					boolean success = insertIntoQueue(t, retryCount, e);
+					boolean success = retryHandler.handleException(t, retryCount, e);
 					if(!success) {
 					LOG.error(e.getMessage());
 					if (out instanceof ObjectNode){
@@ -239,7 +215,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				return null;
 			};
 	}
-
+	
 	protected CompletableFuture<ResourceResponse> sendCardResponse(JsonNode json, TeamsAddressable address, Map<String, Object> data) throws Exception {		
 		Activity out = Activity.createMessageActivity();
 		Attachment body = new Attachment();
@@ -275,7 +251,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		int messageCount = 0;
 
 		Optional<MessageRetry> opt;
-		while ((opt = messageRetryHandler.get()).isPresent()) {
+		while ((opt = retryHandler.get()).isPresent()) {
 			messageCount++;
 			this.sendResponse(opt.get().getResponse(), opt.get().getRetryCount());
 		}

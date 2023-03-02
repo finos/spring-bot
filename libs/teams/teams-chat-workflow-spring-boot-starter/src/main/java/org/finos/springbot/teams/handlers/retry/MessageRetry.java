@@ -1,4 +1,4 @@
-package org.finos.springbot.teams.handlers;
+package org.finos.springbot.teams.handlers.retry;
 
 import java.time.LocalDateTime;
 
