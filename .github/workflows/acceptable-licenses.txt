@@ -46,3 +46,4 @@
 <name>Universal Permissive License, Version 1.0</name>
 <name>W3C license</name>
 <name>jQuery license</name>
+<name>MIT</name>
