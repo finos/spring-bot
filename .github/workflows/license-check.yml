@@ -44,14 +44,8 @@ jobs:
         find . -name licenses.xml -exec  xq "//dependency[count(licenses/license[${ALLOW_LICENSES}])=0]" {} \; > target/license-issues.xml       
         LINES_FOUND=`cat target/license-issues.xml | wc -l`
         if [ $LINES_FOUND -gt 3 ]; then cat target/license-report.txt ; exit -1; fi
-      working-directory: maven
-    - name: Upload license reports
-      uses: actions/upload-artifact@v3
-      with:
-        name: license-reports
-        path: 'maven/**/dependencies.html'
-    - name: Upload license XML reports
+    - name: Upload license XML Issues
       uses: actions/upload-artifact@v3
       with:
         name: license-xml-report
-        path: 'maven/**/${{ env.REPORT_PATH }}' 
+        path: 'target/license-issues.xml' 
