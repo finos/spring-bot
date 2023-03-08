@@ -40,12 +40,10 @@ jobs:
       run: mvn org.codehaus.mojo:license-maven-plugin:2.0.0:download-licenses
     - name: Validate XML report
       run: |
-        ALLOW_LICENSES=`cat .github/workflows/acceptable-licenses.txt`
-        find . -name licenses.xml | awk '{print "cat " $1}' | sh | xq "//dependency[licenses/license/name!=${{ env.ALLOW_LICENSES }}] | sort | uniq > target/complete-licenses.txt
-        comm -23 target/complete-licenses.txt .github/workflows/acceptable-licenses.txt > target/license-report.txt
-        LINES_FOUND=`cat target/license-report.txt | wc -l`
-        echo "License issues found ..."
-        if [ $LINES_FOUND -gt 1 ]; then cat target/license-report.txt ; exit -1; fi
+        ALLOW_LICENSES=`cat .github/workflows/acceptable-licenses.txt | sed "s/<name>/license/license/name!='/" | sed "s/</name>/' | tr -s '\n' '!' | sed 's/\!/ or /g' `
+		find . -name licenses.xml -exec  xq "//dependency[count(licenses/license[${ALLOW_LICENSES}])=0]" {} \; > target/license-issues.xml       
+        LINES_FOUND=`cat target/license-issues.xml | wc -l`
+        if [ $LINES_FOUND -gt 3 ]; then cat target/license-report.txt ; exit -1; fi
       working-directory: maven
     - name: Upload license reports
       uses: actions/upload-artifact@v3
