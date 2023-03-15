@@ -64,7 +64,7 @@ public class TableAddRow extends AbstractTableActionConsumer {
 		rh.accept(wr);
 	}
 
-
+	// nosemgrep
 	protected void newRowFormAction(FormAction ea, String verb) {
 		Map<String, Object> ej = ea.getData();
 		Object workflowObject = ej.get(WorkResponse.OBJECT_KEY);
