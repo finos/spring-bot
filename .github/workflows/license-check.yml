@@ -42,7 +42,7 @@ jobs:
       run: |
         ALLOW_LICENSES=`cat .github/workflows/acceptable-licenses.txt | sed "s|<name>|name='|" | sed "s|</name>|' |" | tr -s '\n' '~' | sed 's/\~/or /g' `
         find . -name licenses.xml -exec  xq "//dependency[count(licenses/license[${ALLOW_LICENSES}])=0]" {} \; > target/license-issues.xml       
-        LINES_FOUND=`cat target/license-issues.xml | wc -l`
+        LINES_FOUND=`cat target/license-issues.xml | grep "<result>" | wc -l`
         if [ $LINES_FOUND -gt 3 ]; then cat target/license-issues.xml ; exit -1; fi
     - name: Upload license XML Issues
       uses: actions/upload-artifact@v3
