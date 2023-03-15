@@ -12,6 +12,7 @@ import org.finos.springbot.workflow.content.Paragraph;
 import org.finos.springbot.workflow.content.UnorderedList;
 import org.finos.springbot.workflow.content.Word;
 import org.finos.springbot.workflow.history.AllHistory;
+import org.finos.springbot.workflow.java.mapping.ChatHandlerExecutor;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,33 +33,46 @@ public class ResolverConfig {
 	 */
 	@Bean
 	public WorkflowResolverFactory springBeanResolver() {
-		return action -> {
-			return new WorkflowResolver() {
+		return new WorkflowResolverFactory() {
+			
+			@Override
+			public int getOrder() {
+				return LOW_PRIORITY;
+			}
 
-				@Override
-				public boolean canResolve(MethodParameter mp) {
-					try {
-						Class<?> c = mp.getParameterType();
-						context.getBean(c);
-						return true;
-					} catch (NoSuchBeanDefinitionException e) {
-						return false;
+			@Override
+			public WorkflowResolver createResolver(ChatHandlerExecutor che) {
+				return new WorkflowResolver() {
+
+					@Override
+					public boolean canResolve(MethodParameter mp) {
+						try {
+							Class<?> c = mp.getParameterType();
+							context.getBean(c);
+							return true;
+						} catch (NoSuchBeanDefinitionException e) {
+							return false;
+						}
 					}
-				}
 
-				@Override
-				public Optional<Object> resolve(MethodParameter mp) {
-					try {
+					@Override
+					public Optional<Object> resolve(MethodParameter mp) {
+						try {
+						
+							Class<?> c = mp.getParameterType();
+							Object bean = context.getBean(c);
+							return Optional.of(bean);
+						} catch (NoSuchBeanDefinitionException e) {
+							return Optional.empty();
+						}
+					}
 					
-						Class<?> c = mp.getParameterType();
-						Object bean = context.getBean(c);
-						return Optional.of(bean);
-					} catch (NoSuchBeanDefinitionException e) {
-						return Optional.empty();
-					}
-				}
-			};
+					
+				};
+			}
 		};
+
+		
 	}
 
 	@Bean
