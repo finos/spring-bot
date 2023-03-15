@@ -49,21 +49,21 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>2.7.0</spring-boot.version>
+		<spring-boot.version>2.7.9</spring-boot.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
 
 		<!-- this must match the version from the spring boot pom -->
-		<jackson-databind.version>2.13.2</jackson-databind.version>
-		<jackson.version>2.13.2</jackson.version>
+		<jackson-databind.version>2.14.2</jackson-databind.version>
+		<jackson.version>2.14.2</jackson.version>
 		<corenlp.version>4.4.0</corenlp.version>
 		<sutime-models.version>1.3.5</sutime-models.version>
 		<rometools.version>1.15.0</rometools.version>
 		<teams.version>4.14.3</teams.version>
 		<jsoup.version>1.14.3</jsoup.version>
 		<graalvm.version>21.2.0</graalvm.version>
-		<symphony-bdk.version>2.5.0</symphony-bdk.version>
+		<symphony-bdk.version>2.12.0</symphony-bdk.version>
 		<mimepull.version>1.9.15</mimepull.version>
 	</properties>
 
@@ -187,15 +187,6 @@
 								<include>**/*IT.java</include>
 								<include>**/Test*.java</include>
 							</includes>
-							<systemPropertyVariable>
-								<symphony-test-identity>${symphony-test-identity}</symphony-test-identity>
-								<symphony-develop-bot1-identity>${symphony-develop-bot1-identity}</symphony-develop-bot1-identity>
-								<symphony-develop-bot2-identity>${symphony-develop-bot2-identity}</symphony-develop-bot2-identity>
-								<proxy>${symphony-proxy}</proxy>
-								<microsoft-app-id>${microsoft-app-id}</microsoft-app-id>
-								<microsoft-app-password>${microsoft-app-id}</microsoft-app-password>
-								<microsoft-tennant-id>${microsoft-tennnant-id}</microsoft-tennant-id>
-							</systemPropertyVariable>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -241,6 +232,15 @@
 			    <artifactId>protonpack</artifactId>
 			    <version>1.16</version>
 			</dependency>
+			
+			<!-- fixing CVE-2022-1471.  If we upgrade to a new version of spring-boot-dependencies this 
+			  may no longer be needed -->
+			<dependency>
+			    <groupId>org.yaml</groupId>
+			    <artifactId>snakeyaml</artifactId>
+			    <version>2.0</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 </project>
