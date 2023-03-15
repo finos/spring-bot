@@ -9,14 +9,14 @@ public class MessageRetry {
 	private Response response;
 	private int retryCount;
 	private int retryAfter;
-	private LocalDateTime currentTime; 
+	private LocalDateTime retryTime; 
 	
-	public MessageRetry(Response response, int retryCount, int retryAfter) {
+	public MessageRetry(Response response, int retryCount, int retryAfter, LocalDateTime retryTime) {
 		super();
 		this.response = response;
 		this.retryCount = retryCount;
 		this.retryAfter = retryAfter;
-		currentTime = LocalDateTime.now();
+		this.retryTime = retryTime;
 	}
 
 	public Response getResponse() {
@@ -44,25 +44,25 @@ public class MessageRetry {
 	}
 
 	
-	public LocalDateTime getCurrentTime() {
-		return currentTime;
+	public LocalDateTime getRetryTime() {
+		return retryTime;
 	}
 
-	public void setCurrentTime(LocalDateTime currentTime) {
-		this.currentTime = currentTime;
+	public void setRetryTime(LocalDateTime retryTime) {
+		this.retryTime = retryTime;
 	}
 
 	@Override
 	public String toString() {
 		return "MessageRetry [response=" + response + ", retryCount=" + retryCount + ", retryAfter=" + retryAfter
-				+ ", localDate=" + currentTime + "]";
+				+ ", localDate=" + retryTime + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((currentTime == null) ? 0 : currentTime.hashCode());
+		result = prime * result + ((retryTime == null) ? 0 : retryTime.hashCode());
 		result = prime * result + ((response == null) ? 0 : response.hashCode());
 		result = prime * result + retryAfter;
 		result = prime * result + retryCount;
@@ -78,10 +78,10 @@ public class MessageRetry {
 		if (getClass() != obj.getClass())
 			return false;
 		MessageRetry other = (MessageRetry) obj;
-		if (currentTime == null) {
-			if (other.currentTime != null)
+		if (retryTime == null) {
+			if (other.retryTime != null)
 				return false;
-		} else if (!currentTime.equals(other.currentTime))
+		} else if (!retryTime.equals(other.retryTime))
 			return false;
 		if (response == null) {
 			if (other.response != null)

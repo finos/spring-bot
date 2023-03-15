@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class InMemoryMessageRetryHandler extends MessageRetryHandler {
+public class InMemoryMessageRetryHandler extends BasicMessageRetryHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(InMemoryMessageRetryHandler.class);
 	
@@ -23,12 +23,11 @@ public class InMemoryMessageRetryHandler extends MessageRetryHandler {
 	public Optional<MessageRetry> get() {		
 		MessageRetry q;
 		if ((q = queue.peek()) != null) {
-			LocalDateTime time = q.getCurrentTime().plusSeconds(q.getRetryAfter());
-			if (LocalDateTime.now().isAfter(time)) { // retry now
+			if (LocalDateTime.now().isAfter(q.getRetryTime())) { // retry now
 				queue.remove(q);
 				return Optional.of(q);
 			}else {
-				LOG.info("Message not retied, as retry after time {} is not getter than or equal to current time {}", time, LocalDateTime.now());
+				LOG.info("Message not retried, as retry time {} for message has not passed the current time {}", q.getRetryTime(), LocalDateTime.now());
 			}
 		}
 	

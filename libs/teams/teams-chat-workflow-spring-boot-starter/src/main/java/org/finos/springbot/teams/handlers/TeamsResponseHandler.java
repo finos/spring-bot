@@ -12,7 +12,7 @@ import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.handlers.retry.MessageRetry;
-import org.finos.springbot.teams.handlers.retry.RetryHandler;
+import org.finos.springbot.teams.handlers.retry.MessageRetryHandler;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
@@ -61,7 +61,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected ThymeleafTemplateProvider displayTemplater;
 	protected TeamsStateStorage teamsState;
 	protected TeamsConversations teamsConversations;
-	protected RetryHandler retryHandler;
+	protected MessageRetryHandler retryHandler;
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
@@ -70,7 +70,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			ThymeleafTemplateProvider displayTemplater, 
 			TeamsStateStorage th, 
 			TeamsConversations tc,
-			RetryHandler mr) {
+			MessageRetryHandler mr) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;

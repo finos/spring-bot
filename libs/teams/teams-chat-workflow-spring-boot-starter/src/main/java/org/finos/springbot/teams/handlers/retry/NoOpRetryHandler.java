@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.finos.springbot.workflow.response.Response;
 
-public class NoOpRetryHandler implements RetryHandler {
+public class NoOpRetryHandler implements MessageRetryHandler {
 
 	@Override
 	public Optional<MessageRetry> get() {
