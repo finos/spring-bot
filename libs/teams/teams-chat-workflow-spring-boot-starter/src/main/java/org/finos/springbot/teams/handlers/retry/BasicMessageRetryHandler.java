@@ -43,8 +43,6 @@ public abstract class BasicMessageRetryHandler implements MessageRetryHandler {
 		
 		return false;
 	}
-	
-	protected abstract void add(MessageRetry messageRetry);
 
 
 }

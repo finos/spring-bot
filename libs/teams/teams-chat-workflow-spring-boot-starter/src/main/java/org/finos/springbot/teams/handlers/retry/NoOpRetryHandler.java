@@ -17,4 +17,14 @@ public class NoOpRetryHandler implements MessageRetryHandler {
 		return false;
 	}
 
+	@Override
+	public void add(MessageRetry messageRetry) {
+		//Do-Nothing
+	}
+
+	@Override
+	public void clearAll() {
+		//Do-Nothing
+	}
+
 }

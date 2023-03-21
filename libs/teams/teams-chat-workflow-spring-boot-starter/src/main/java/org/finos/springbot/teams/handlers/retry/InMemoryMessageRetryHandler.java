@@ -12,11 +12,16 @@ public class InMemoryMessageRetryHandler extends BasicMessageRetryHandler {
 
 	private static final Logger LOG = LoggerFactory.getLogger(InMemoryMessageRetryHandler.class);
 	
-	Queue<MessageRetry> queue = new ConcurrentLinkedQueue<>();
+	private Queue<MessageRetry> queue = new ConcurrentLinkedQueue<>();
 	
 	@Override
 	public void add(MessageRetry t) {
 		queue.add(t);
+	}
+	
+	@Override 
+	public void clearAll() {
+		while(queue.poll()!=null);
 	}
 
 	@Override

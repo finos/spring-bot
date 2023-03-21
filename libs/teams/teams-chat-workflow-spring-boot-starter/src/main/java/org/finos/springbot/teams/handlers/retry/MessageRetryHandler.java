@@ -10,4 +10,8 @@ public interface MessageRetryHandler {
 	
 	public Optional<MessageRetry> get();
 	
+	public void add(MessageRetry messageRetry);
+
+	public void clearAll();
+	
 }
