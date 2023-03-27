@@ -13,9 +13,9 @@ import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
-import org.finos.springbot.teams.handlers.InMemoryMessageRetryHandler;
-import org.finos.springbot.teams.handlers.MessageRetryHandler;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
+import org.finos.springbot.teams.handlers.retry.MessageRetryHandler;
+import org.finos.springbot.teams.handlers.retry.NoOpRetryHandler;
 import org.finos.springbot.teams.history.StateStorageBasedTeamsHistory;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
@@ -230,10 +230,14 @@ public class TeamsWorkflowConfig {
         resourceLoader.setClassLoader(this.getClass().getClassLoader());
     }
 
+    /**
+     * set InMemoryMessageRetryHandler() if you want retry 
+     * @return
+     */
     @Bean
     @ConditionalOnMissingBean
     public MessageRetryHandler messageRetryHandler() {
-    	return new InMemoryMessageRetryHandler();
+    	return new NoOpRetryHandler();
     }
 
 }
