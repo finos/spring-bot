@@ -22,12 +22,12 @@ public class InMemoryRetryingActivityHandler extends AbstractRetryingActivityHan
 	public Optional<MessageRetry> get() {
 		MessageRetry q;
 		if ((q = queue.peek()) != null) {
-			if (LocalDateTime.now().isAfter(q.getRetryTime())) { // retry now
+			if (LocalDateTime.now().isAfter(q.getRetryAfterTime())) { // retry now
 				queue.remove(q);
 				return Optional.of(q);
 			} else {
 				LOG.info("Message not retried, as retry time {} for message has not passed the current time {}",
-						q.getRetryTime(), LocalDateTime.now());
+						q.getRetryAfterTime(), LocalDateTime.now());
 			}
 		}
 

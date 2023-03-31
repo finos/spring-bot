@@ -16,7 +16,7 @@ public class InMemoryRetryingActivityHandlerTest {
 	TeamsChannel dummyChat2 = new TeamsChannel("dummy_id_2", "dummy_name");
 	
 	private void setUp(LocalDateTime retryTime) {
-		MessageRetry mr = inhandler.new MessageRetry(null,dummyChat1,3, 45, retryTime, null);
+		MessageRetry mr = inhandler.new MessageRetry(null,dummyChat1,3, retryTime);
 		inhandler.add(mr);
 	}
 	
@@ -25,7 +25,7 @@ public class InMemoryRetryingActivityHandlerTest {
 		setUp(LocalDateTime.now().minusSeconds(100));
 		setUp(LocalDateTime.now().plusSeconds(100));
 		
-		TeamsAddressable address = inhandler.get().get().getTo();
+		TeamsAddressable address = inhandler.get().get().getAddressable();
 		Assertions.assertTrue(address.getKey().equals(dummyChat1.getKey()));
 	}
 	

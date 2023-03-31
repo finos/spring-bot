@@ -47,7 +47,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsResponseHandler.class);
 	
 	
-	private static final int INIT_RETRY_COUNT = 0;
+	
 	
 	protected AttachmentHandler attachmentHandler;
 	protected ApplicationContext ctx;
@@ -83,10 +83,6 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 
 	@Override
 	public void accept(Response t) {
-		sendResponse(t, INIT_RETRY_COUNT);
-	}
-
-	public void sendResponse(Response t, int retryCount) {
 		if (t.getAddress() instanceof TeamsAddressable) {		
 			TeamsAddressable ta = (TeamsAddressable) t.getAddress();
 
@@ -103,7 +99,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					}
 					
 					sendXMLResponse(content, attachment, ta, entities, mr.getData())
-						.handle(handleErrorAndStorage(content, ta, mr.getData(), t, ++retryCount));
+						.handle(handleErrorAndStorage(content, ta, mr.getData(), t));
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
@@ -112,7 +108,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
 						sendCardResponse(cardJson, ta, wr.getData())
-							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t, ++retryCount));
+							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t));
 						;
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
@@ -120,7 +116,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						List<Entity> entities = mae.getEntities();
 						sendXMLResponse(content, null, ta, entities, wr.getData())
 							.handle(handleButtonsIfNeeded(tt, wr))
-							.handle(handleErrorAndStorage(content, ta, wr.getData(), t, ++retryCount));
+							.handle(handleErrorAndStorage(content, ta, wr.getData(), t));
 						
 					}
 				}
@@ -129,6 +125,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			}
 		}
 	}
+
 
 	protected TemplateType getTemplateType(WorkResponse wr) {
 		TemplateType tt;
@@ -183,7 +180,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		};
 	}
  
-	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t, int retryCount) {
+	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t) {
 		return (rr, e) -> {
 				if (e != null) {					
 					LOG.error(e.getMessage());

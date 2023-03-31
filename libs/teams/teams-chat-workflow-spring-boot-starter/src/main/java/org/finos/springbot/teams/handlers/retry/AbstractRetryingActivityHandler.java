@@ -6,6 +6,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.handlers.ActivityHandler;
@@ -29,6 +30,8 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 	@Value("${teams.retry.count:3}")
 	private long teamsRetryCount;
 
+	private static final int INIT_RETRY_COUNT = 0;
+	
 	public AbstractRetryingActivityHandler(TeamsConversations tc) {
 		this.tc = tc;
 	}
@@ -44,12 +47,11 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 		}
 	}
 
-	public long getRetryAfter(Exception e) {
+	public long getRetryAfter(CompletionException e) {
 		ErrorResponseException ere = (ErrorResponseException) ((CompletionException) e).getCause();
 		retrofit2.Response<ResponseBody> response = ere.response();
 		String retryAfter = response.headers().get("Retry-After");
 
-		LOG.info("MessageRetryHandler request retryAfter {}", retryAfter);
 		long retryAfterInt = 1;// initiate to 1 sec
 		if (StringUtils.isNumeric(retryAfter)) {
 			retryAfterInt = Long.parseLong(retryAfter);
@@ -60,15 +62,22 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 
 	@Override
 	public CompletableFuture<ResourceResponse> handleActivity(Activity activity, TeamsAddressable to) {
-		return handleActivity(activity, to, 0);
+		return handleActivity(activity, to, INIT_RETRY_COUNT);
 	}
 
 	public CompletableFuture<ResourceResponse> handleActivity(Activity activity, TeamsAddressable to, Integer retryCount) {
 		return tc.handleActivity(activity, to).handle((rr, ex) -> {
 			if (ex != null) {
-				handleException(activity, to, retryCount, ex);
+				Boolean success = handleException(activity, to, retryCount, ex);
+				if(!success) {
+					throw new TeamsException("Couldn't handle response ", ex);
+				}else {
+					return null;
+				}
+			}else {
+				return rr;
 			}
-			return rr;
+			
 		});
 	}
 
@@ -77,9 +86,9 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 			long retryAfter = getRetryAfter((CompletionException) e);
 			retryCount++;
 			if (retryCount <= teamsRetryCount) {
-				LOG.info("MessageRetryHandler request retryAfter {}", retryAfter);
-				LocalDateTime time = LocalDateTime.now().plusSeconds(retryAfter);
-				add(new MessageRetry(activity, to, retryCount, retryAfter, time, e));
+				LOG.info("AbstractRetryingActivityHandler request retryAfter {}", retryAfter);
+				LocalDateTime retryAfterTime = LocalDateTime.now().plusSeconds(retryAfter);
+				add(new MessageRetry(activity, to, retryCount, retryAfterTime));
 				return true;
 			}
 		}
@@ -92,7 +101,7 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 		while ((opt = get()).isPresent()) {
 			messageCount++;
 			MessageRetry msg = opt.get();
-			this.handleActivity(msg.getActivity(), msg.getTo(), msg.getRetryCount());
+			this.handleActivity(msg.getActivity(), msg.getAddressable(), msg.getRetryCount());
 		}
 
 		LOG.info("Retry message queue {}", messageCount == 0 ? "is empty" : "has messages, count: " + messageCount);
@@ -106,22 +115,17 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 	class MessageRetry {
 
 		private Activity activity;
-		private TeamsAddressable to;
+		private TeamsAddressable addressable;
 		private int retryCount;
-		private long retryAfter;
-		private LocalDateTime retryTime;
-		private Throwable e;
+		private LocalDateTime retryAfterTime;
 		
 		
-		public MessageRetry(Activity activity, TeamsAddressable to, int retryCount, long retryAfter,
-				LocalDateTime retryTime, Throwable e) {
+		public MessageRetry(Activity activity, TeamsAddressable addressable, int retryCount, LocalDateTime retryAfterTime) {
 			super();
 			this.activity = activity;
-			this.to = to;
+			this.addressable = addressable;
 			this.retryCount = retryCount;
-			this.retryAfter = retryAfter;
-			this.retryTime = retryTime;
-			this.e= e; 
+			this.retryAfterTime = retryAfterTime;
 		}
 
 		public Activity getActivity() {
@@ -132,12 +136,12 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 			this.activity = activity;
 		}
 
-		public TeamsAddressable getTo() {
-			return to;
+		public TeamsAddressable getAddressable() {
+			return addressable;
 		}
 
-		public void setTo(TeamsAddressable to) {
-			this.to = to;
+		public void setAddressable(TeamsAddressable addressable) {
+			this.addressable = addressable;
 		}
 
 		public int getRetryCount() {
@@ -148,29 +152,14 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 			this.retryCount = retryCount;
 		}
 
-		public long getRetryAfter() {
-			return retryAfter;
+		public LocalDateTime getRetryAfterTime() {
+			return retryAfterTime;
 		}
 
-		public void setRetryAfter(long retryAfter) {
-			this.retryAfter = retryAfter;
+		public void setRetryAfterTime(LocalDateTime retryAfterTime) {
+			this.retryAfterTime = retryAfterTime;
 		}
 
-		public LocalDateTime getRetryTime() {
-			return retryTime;
-		}
-
-		public void setRetryTime(LocalDateTime retryTime) {
-			this.retryTime = retryTime;
-		}
-
-		public Throwable getE() {
-			return e;
-		}
-
-		public void setE(Throwable e) {
-			this.e = e;
-		}
 		
 	}
 }
