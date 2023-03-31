@@ -1,8 +1,8 @@
 package org.finos.springbot.teams;
 
-import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.handlers.retry.NoOpRetryHandler;
-import org.finos.springbot.teams.handlers.retry.MessageRetryHandler;
+import org.finos.springbot.teams.handlers.ActivityHandler;
+import org.finos.springbot.teams.handlers.SimpleActivityHandler;
+import org.finos.springbot.teams.handlers.retry.AbstractRetryingActivityHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +17,14 @@ public class TeamsScheduledConfig implements SchedulingConfigurer {
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsScheduledConfig.class);
 
 	@Autowired
-	private TeamsResponseHandler handler;
-
-	@Autowired
-	private MessageRetryHandler retryHandler;
+	private ActivityHandler retryHandler;
 
 	@Value("${teams.retry.time:30000}")
 	private long teamsRetrySchedulerCron;
 
 	@Override
 	public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
-		if (retryHandler instanceof NoOpRetryHandler) {
+		if (retryHandler instanceof SimpleActivityHandler) {
 			LOG.info("No-operation retry handler is configured.");
 		} else {
 			Runnable runnable = () -> scheduleRetryMessage();
@@ -36,6 +33,10 @@ public class TeamsScheduledConfig implements SchedulingConfigurer {
 	}
 
 	private void scheduleRetryMessage() {
-		handler.retryMessage();
+		try {
+			((AbstractRetryingActivityHandler) retryHandler).retryMessage();
+		} catch (Throwable e) {
+
+		}
 	}
 }
