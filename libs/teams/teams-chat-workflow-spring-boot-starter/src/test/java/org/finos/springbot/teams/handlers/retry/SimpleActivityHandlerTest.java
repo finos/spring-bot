@@ -15,7 +15,7 @@ import com.microsoft.bot.schema.Activity;
 @SpringBootTest(classes = { 
 		DataHandlerConfig.class, 
 	})
-public class NoOpRetryHandlerTest {
+public class SimpleActivityHandlerTest {
 	
 	@Mock
 	TeamsConversations tc;

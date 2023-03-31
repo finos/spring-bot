@@ -14,8 +14,8 @@ import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.ActivityHandler;
+import org.finos.springbot.teams.handlers.SimpleActivityHandler;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.handlers.retry.InMemoryRetryingActivityHandler;
 import org.finos.springbot.teams.history.StateStorageBasedTeamsHistory;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
@@ -142,7 +142,7 @@ public class TeamsWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public ActivityHandler activityHandler(TeamsConversations tc) {
-		return new InMemoryRetryingActivityHandler(tc);
+		return new SimpleActivityHandler(tc);
 	}
 	
 	@Bean
