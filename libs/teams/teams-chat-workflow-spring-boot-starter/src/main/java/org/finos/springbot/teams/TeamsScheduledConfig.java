@@ -33,10 +33,7 @@ public class TeamsScheduledConfig implements SchedulingConfigurer {
 	}
 
 	private void scheduleRetryMessage() {
-		try {
-			((AbstractRetryingActivityHandler) retryHandler).retryMessage();
-		} catch (Throwable e) {
 
-		}
+		((AbstractRetryingActivityHandler) retryHandler).retryMessage();
 	}
 }

@@ -31,7 +31,7 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 	private long teamsRetryCount;
 
 	private static final int INIT_RETRY_COUNT = 0;
-	
+
 	public AbstractRetryingActivityHandler(TeamsConversations tc) {
 		this.tc = tc;
 	}
@@ -65,23 +65,24 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 		return handleActivity(activity, to, INIT_RETRY_COUNT);
 	}
 
-	public CompletableFuture<ResourceResponse> handleActivity(Activity activity, TeamsAddressable to, Integer retryCount) {
+	public CompletableFuture<ResourceResponse> handleActivity(Activity activity, TeamsAddressable to,
+			Integer retryCount) {
 		return tc.handleActivity(activity, to).handle((rr, ex) -> {
 			if (ex != null) {
-				Boolean success = handleException(activity, to, retryCount, ex);
-				if(!success) {
+				Boolean success = handleToManyRequestException(activity, to, retryCount, ex);
+				if (!success) {
 					throw new TeamsException("Couldn't handle response ", ex);
-				}else {
-					return null;
+				} else {
+					return null;//don't do any think, error response is inserted into queue 
 				}
-			}else {
+			} else {
 				return rr;
 			}
-			
+
 		});
 	}
 
-	public Boolean handleException(Activity activity, TeamsAddressable to, int retryCount, Throwable e) {
+	public Boolean handleToManyRequestException(Activity activity, TeamsAddressable to, int retryCount, Throwable e) {
 		if (isTooManyRequest(e)) {
 			long retryAfter = getRetryAfter((CompletionException) e);
 			retryCount++;
@@ -94,8 +95,8 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 		}
 		return false;
 	}
-	
-	public void retryMessage() throws Throwable {
+
+	public void retryMessage() {
 		int messageCount = 0;
 		Optional<MessageRetry> opt;
 		while ((opt = get()).isPresent()) {
@@ -107,20 +108,19 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 		LOG.info("Retry message queue {}", messageCount == 0 ? "is empty" : "has messages, count: " + messageCount);
 	}
 
-	
-	protected abstract void add(MessageRetry retry) ;
-	
-	protected abstract Optional<MessageRetry> get() ;
-	
+	protected abstract void add(MessageRetry retry);
+
+	protected abstract Optional<MessageRetry> get();
+
 	class MessageRetry {
 
 		private Activity activity;
 		private TeamsAddressable addressable;
 		private int retryCount;
 		private LocalDateTime retryAfterTime;
-		
-		
-		public MessageRetry(Activity activity, TeamsAddressable addressable, int retryCount, LocalDateTime retryAfterTime) {
+
+		public MessageRetry(Activity activity, TeamsAddressable addressable, int retryCount,
+				LocalDateTime retryAfterTime) {
 			super();
 			this.activity = activity;
 			this.addressable = addressable;
@@ -160,6 +160,5 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 			this.retryAfterTime = retryAfterTime;
 		}
 
-		
 	}
 }

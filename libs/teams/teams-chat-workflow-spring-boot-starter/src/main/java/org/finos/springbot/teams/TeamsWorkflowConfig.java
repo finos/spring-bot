@@ -144,7 +144,7 @@ public class TeamsWorkflowConfig {
 	@Bean
 	@ConditionalOnMissingBean
 	public ActivityHandler activityHandler(TeamsConversations tc) {
-		return new InMemoryRetryingActivityHandler(tc);
+		return new SimpleActivityHandler(tc);
 	}
 	
 	@Bean

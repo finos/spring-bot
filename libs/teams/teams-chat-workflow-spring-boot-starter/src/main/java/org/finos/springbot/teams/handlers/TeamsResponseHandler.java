@@ -109,7 +109,6 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						JsonNode cardJson = workTemplater.template(wr);
 						sendCardResponse(cardJson, ta, wr.getData())
 							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t));
-						;
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
 						String content = mae.getContents();
@@ -163,7 +162,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, wr);
 						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
 					} else {						
-						return null;
+						return rr;
 					}
 
 				} else {
@@ -195,7 +194,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					
 					initErrorHandler();
 					eh.handleError(e);					
-				} else {
+				} else if(rr != null) {
 					performStorage(address, data, teamsState);
 				}
 				
