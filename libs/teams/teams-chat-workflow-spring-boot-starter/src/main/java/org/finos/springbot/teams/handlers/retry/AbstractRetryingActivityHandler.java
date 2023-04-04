@@ -73,7 +73,7 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 				if (!success) {
 					throw new TeamsException("Couldn't handle response ", ex);
 				} else {
-					return null;//don't do any think, error response is inserted into queue 
+					return null; 
 				}
 			} else {
 				return rr;
