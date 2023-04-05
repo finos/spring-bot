@@ -13,9 +13,10 @@ import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
+import org.finos.springbot.teams.handlers.ActivityHandler;
+import org.finos.springbot.teams.handlers.SimpleActivityHandler;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.handlers.retry.MessageRetryHandler;
-import org.finos.springbot.teams.handlers.retry.NoOpRetryHandler;
+import org.finos.springbot.teams.handlers.retry.InMemoryRetryingActivityHandler;
 import org.finos.springbot.teams.history.StateStorageBasedTeamsHistory;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
@@ -129,16 +130,23 @@ public class TeamsWorkflowConfig {
 			AdaptiveCardTemplateProvider formTemplater,
 			ThymeleafTemplateProvider displayTemplater,
 			TeamsStateStorage th,
-			TeamsConversations tc,
-			MessageRetryHandler mr) {
+			ActivityHandler ah) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
 				markupTemplater,
 				formTemplater,
 				displayTemplater,
 				th,
-				tc,
-				mr);
+				ah);
+	}
+	
+	/**
+	If you want to include retry logic for activities, override this bean and return an instance of InMemoryRetryingActivityHandler
+	*/
+	@Bean
+	@ConditionalOnMissingBean
+	public ActivityHandler activityHandler(TeamsConversations tc) {
+		return new SimpleActivityHandler(tc);
 	}
 	
 	@Bean
@@ -230,14 +238,5 @@ public class TeamsWorkflowConfig {
         resourceLoader.setClassLoader(this.getClass().getClassLoader());
     }
 
-    /**
-     * set InMemoryMessageRetryHandler() if you want retry 
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    public MessageRetryHandler messageRetryHandler() {
-    	return new NoOpRetryHandler();
-    }
 
 }

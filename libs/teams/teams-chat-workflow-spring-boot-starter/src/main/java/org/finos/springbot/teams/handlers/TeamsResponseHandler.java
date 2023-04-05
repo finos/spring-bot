@@ -3,16 +3,12 @@ package org.finos.springbot.teams.handlers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
-import org.finos.springbot.teams.conversations.TeamsConversations;
-import org.finos.springbot.teams.handlers.retry.MessageRetry;
-import org.finos.springbot.teams.handlers.retry.MessageRetryHandler;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
@@ -51,7 +47,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsResponseHandler.class);
 	
 	
-	private static final int INIT_RETRY_COUNT = 0;
+	
 	
 	protected AttachmentHandler attachmentHandler;
 	protected ApplicationContext ctx;
@@ -60,8 +56,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	protected AdaptiveCardTemplateProvider workTemplater;
 	protected ThymeleafTemplateProvider displayTemplater;
 	protected TeamsStateStorage teamsState;
-	protected TeamsConversations teamsConversations;
-	protected MessageRetryHandler retryHandler;
+	protected ActivityHandler ah;
 	
 	public TeamsResponseHandler( 
 			AttachmentHandler attachmentHandler,
@@ -69,15 +64,13 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			AdaptiveCardTemplateProvider workTemplater,
 			ThymeleafTemplateProvider displayTemplater, 
 			TeamsStateStorage th, 
-			TeamsConversations tc,
-			MessageRetryHandler mr) {
+			ActivityHandler ah) {
 		this.attachmentHandler = attachmentHandler;
 		this.messageTemplater = messageTemplater;
 		this.workTemplater = workTemplater;
 		this.displayTemplater = displayTemplater;
 		this.teamsState = th;
-		this.teamsConversations = tc;
-		this.retryHandler = mr;
+		this.ah = ah;
 	}
 	
 	protected void initErrorHandler() {
@@ -90,10 +83,6 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 
 	@Override
 	public void accept(Response t) {
-		sendResponse(t, INIT_RETRY_COUNT);
-	}
-
-	public void sendResponse(Response t, int retryCount) {
 		if (t.getAddress() instanceof TeamsAddressable) {		
 			TeamsAddressable ta = (TeamsAddressable) t.getAddress();
 
@@ -110,7 +99,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					}
 					
 					sendXMLResponse(content, attachment, ta, entities, mr.getData())
-						.handle(handleErrorAndStorage(content, ta, mr.getData(), t, ++retryCount));
+						.handle(handleErrorAndStorage(content, ta, mr.getData(), t));
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
@@ -119,15 +108,14 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
 						sendCardResponse(cardJson, ta, wr.getData())
-							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t, ++retryCount));
-						;
+							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t));
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
 						String content = mae.getContents();
 						List<Entity> entities = mae.getEntities();
 						sendXMLResponse(content, null, ta, entities, wr.getData())
 							.handle(handleButtonsIfNeeded(tt, wr))
-							.handle(handleErrorAndStorage(content, ta, wr.getData(), t, ++retryCount));
+							.handle(handleErrorAndStorage(content, ta, wr.getData(), t));
 						
 					}
 				}
@@ -136,6 +124,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 			}
 		}
 	}
+
 
 	protected TemplateType getTemplateType(WorkResponse wr) {
 		TemplateType tt;
@@ -159,7 +148,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		out.setEntities(entities);
 		out.setTextFormat(TextFormatTypes.XML);
 		out.setText(xml);
-		return teamsConversations.handleActivity(out, address);
+		return ah.handleActivity(out, address);
 	}
 
 	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleButtonsIfNeeded(TemplateType tt, WorkResponse wr) {
@@ -173,7 +162,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						JsonNode expandedJson = workTemplater.applyTemplate(buttonsJson, wr);
 						return sendCardResponse(expandedJson, (TeamsAddressable) wr.getAddress(), wr.getData()).get();
 					} else {						
-						return null;
+						return rr;
 					}
 
 				} else {
@@ -190,11 +179,9 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		};
 	}
  
-	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t, int retryCount) {
+	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t) {
 		return (rr, e) -> {
-				if (e != null) {
-					boolean success = retryHandler.handleException(t, retryCount, e);
-					if(!success) {
+				if (e != null) {					
 					LOG.error(e.getMessage());
 					if (out instanceof ObjectNode){
 						try {
@@ -206,9 +193,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					} 
 					
 					initErrorHandler();
-					eh.handleError(e);
-					}
-				} else {
+					eh.handleError(e);					
+				} else if(rr != null) {
 					performStorage(address, data, teamsState);
 				}
 				
@@ -222,7 +208,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		body.setContentType("application/vnd.microsoft.card.adaptive");
 		body.setContent(json);
 		out.getAttachments().add(body);
-		return teamsConversations.handleActivity(out, address);
+		return ah.handleActivity(out, address);
 	}
 
 	public static void performStorage(TeamsAddressable address, Map<String, Object> data, TeamsStateStorage teamsState) {
@@ -247,17 +233,6 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 		return out;
 	}
 	
-	public void retryMessage() {
-		int messageCount = 0;
-
-		Optional<MessageRetry> opt;
-		while ((opt = retryHandler.get()).isPresent()) {
-			messageCount++;
-			this.sendResponse(opt.get().getResponse(), opt.get().getRetryCount());
-		}
-
-		LOG.info("Retry message queue {}" , messageCount == 0 ? "is empty" : "has messages, count: " + messageCount);
-	}
 	
 
 	@Override
