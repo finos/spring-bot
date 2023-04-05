@@ -140,7 +140,9 @@ public class TeamsWorkflowConfig {
 				ah);
 	}
 	
-	//For retry message on TOO_MANY_REQUESTS exception used  InMemoryRetryingActivityHandler
+	/**
+	If you want to include retry logic for activities, override this bean and return an instance of InMemoryRetryingActivityHandler
+	*/
 	@Bean
 	@ConditionalOnMissingBean
 	public ActivityHandler activityHandler(TeamsConversations tc) {
