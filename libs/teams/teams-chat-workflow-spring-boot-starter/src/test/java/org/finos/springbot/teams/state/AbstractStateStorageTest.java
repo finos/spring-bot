@@ -72,6 +72,28 @@ public abstract class AbstractStateStorageTest {
 		Assertions.assertEquals(2, hoover(tss.retrieve(tagList4, false)).size());
 	}
 	
+	@Test
+	public void testSlashStoreWithMultTags() throws IOException {
+		Map<String, Object> somedata = Collections.singletonMap("a", "b");
+		Map<String, String> tags1 = new HashMap<String, String>();
+		tags1.put("addressable", "thefile");
+		tags1.put("object1", "tag");
+
+		Map<String, String> tags2 = new HashMap<String, String>();
+		tags2.put("addressable", "thefile");
+		tags2.put("object2", "tag");
+		
+		List<TeamsStateStorage.Filter> tagList1 = Arrays.asList(
+				new Filter("addressable", "thefile", "="),
+				new Filter("object1", "tag", "=")
+		);
+		
+		tss.store("thefile/thefile", tags1, somedata);
+		tss.store("thefile/theotherfile", tags2, somedata);
+	
+		Assertions.assertEquals(1, hoover(tss.retrieve(tagList1, false)).size());	
+	}
+	
 	public List<Map<String, Object>> hoover(Iterable<Map<String, Object>> iterable) {
 		List<Map<String, Object>> result =  StreamSupport.stream(iterable.spliterator(), false)
 			    .collect(Collectors.toList());
