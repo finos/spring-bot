@@ -54,6 +54,7 @@
 			<groupId>edu.washington.cs.knowitall.stanford-corenlp</groupId>
 			<artifactId>stanford-sutime-models</artifactId>
 			<version>${sutime-models.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
