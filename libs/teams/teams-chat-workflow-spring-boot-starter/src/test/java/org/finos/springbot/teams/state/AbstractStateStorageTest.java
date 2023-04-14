@@ -88,10 +88,16 @@ public abstract class AbstractStateStorageTest {
 				new Filter("object1", "tag", "=")
 		);
 		
+		List<TeamsStateStorage.Filter> tagList2 = Arrays.asList(
+				new Filter("addressable", "theotherfile", "="),
+				new Filter("object2", "tag", "=")
+		);
+		
 		tss.store("thefile/thefile", tags1, somedata);
 		tss.store("thefile/theotherfile", tags2, somedata);
 	
-		Assertions.assertEquals(1, hoover(tss.retrieve(tagList1, false)).size());	
+		Assertions.assertEquals(1, hoover(tss.retrieve(tagList1, false)).size());
+		Assertions.assertEquals(0, hoover(tss.retrieve(tagList2, false)).size());
 	}
 	
 	public List<Map<String, Object>> hoover(Iterable<Map<String, Object>> iterable) {
