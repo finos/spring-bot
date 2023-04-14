@@ -47,3 +47,4 @@
 <name>W3C license</name>
 <name>jQuery license</name>
 <name>MIT</name>
+<name>MIT-0</name>
