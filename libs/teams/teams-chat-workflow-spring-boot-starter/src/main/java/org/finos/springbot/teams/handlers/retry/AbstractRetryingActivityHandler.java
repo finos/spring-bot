@@ -81,6 +81,20 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 
 		});
 	}
+	
+	private CompletableFuture<ResourceResponse> executeMycustomActionHere(Activity activity, TeamsAddressable to) {
+		return tc.handleActivity(activity, to);
+	}
+	
+	public CompletableFuture<ResourceResponse> executeActionAsync(Activity activity, TeamsAddressable to) {
+	    CompletableFuture<ResourceResponse> f=executeMycustomActionHere(activity, to);
+	    for(int i=0; i<teamsRetryCount; i++) {
+	        f=f.thenApply(CompletableFuture::completedFuture)
+	           .exceptionally(t -> executeMycustomActionHere())
+	           .thenCompose(Function.identity());
+	    }
+	    return f;
+	}å
 
 	public Boolean handleToManyRequestException(Activity activity, TeamsAddressable to, int retryCount, Throwable e) {
 		if (isTooManyRequest(e)) {
