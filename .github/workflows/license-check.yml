@@ -38,11 +38,11 @@ jobs:
       run: mvn install -DskipTests
     - name: License XML report
       run: |
-        mvn org.codehaus.mojo:license-maven-plugin:2.0.0:download-licenses -Dlicense.excludedScopes=system,provided -DlicensesConfigFile=.github/workflows/licenses-config-file.xml
+        mvn org.codehaus.mojo:license-maven-plugin:2.0.0:aggregate-download-licenses
     - name: Validate XML report
       run: |
         ALLOW_LICENSES=`cat .github/workflows/acceptable-licenses.txt | sed "s|<name>|name='|" | sed "s|</name>|' |" | tr -s '\n' '~' | sed 's/\~/or /g' `
-        find . -name licenses.xml -exec  xq "//dependency[count(licenses/license[${ALLOW_LICENSES}])=0]" {} \; > target/license-issues.xml
+        xq "//dependency[count(licenses/license[${ALLOW_LICENSES}])=0]" target/generated-resources/aggregate-licenses.xml  > target/license-issues.xml
         LINES_FOUND=`cat target/license-issues.xml | grep "<result>" | wc -l`
         if [ $LINES_FOUND -gt 0 ]; then cat target/license-issues.xml ; exit -1; fi
     - name: Upload license XML Issues

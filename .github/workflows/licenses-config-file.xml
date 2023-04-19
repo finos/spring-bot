@@ -2,8 +2,8 @@
 <licenseSummary>
   <dependencies>
     <dependency>
-      <groupId>\Qorg.openapitool\E</groupId>
-      <artifactId>\Qjackson-databind-nullable\E</artifactId>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
       <matchLicenses>
         <!-- Match an empty list of licenses -->
       </matchLicenses>
