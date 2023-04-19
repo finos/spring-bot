@@ -78,8 +78,8 @@ public class AzureBlobStateStorageTest extends AbstractStateStorageTest {
 		Mockito.when(bcc.getBlobClient("thefile")).thenReturn(theFileBlobClient);
 		Mockito.when(bcc.getBlobClient("theotherfile")).thenReturn(theOtherFileBlobClient);
 		Mockito.when(bcc.getBlobClient("nonfile")).thenReturn(nonFileBlobClient);
-		Mockito.when(bcc.getBlobClient("thefile/thefile")).thenReturn(theFileWithSlashBlobClient);
-		Mockito.when(bcc.getBlobClient("thefile/theotherfile")).thenReturn(theOtherFileWithSlashBlobClient);
+		Mockito.when(bcc.getBlobClient("thefile/a")).thenReturn(theFileWithSlashBlobClient);
+		Mockito.when(bcc.getBlobClient("thefile/b")).thenReturn(theOtherFileWithSlashBlobClient);
 		
 		return bsc;
 	}
@@ -202,17 +202,18 @@ public class AzureBlobStateStorageTest extends AbstractStateStorageTest {
 	
 	@Override
 	@Test
-	public void testSlashStoreWithMultTags() throws IOException {
+	public void testSlashStoreWithMultipleDirectories() throws IOException {
 		allowWritingToTheSlashFile();
 		allowWritingToTheOtherSlashFile();
 		allowReadingFromTheSlashFile();
 		allowReadingFromTheOtherSlashFile();
 		
 		Map<String, List<String>> queries = new HashMap<>();
-		queries.put("@container='test' AND addressable='thefile' AND object1='tag'", Arrays.asList("thefile/thefile"));
+		queries.put("@container='test' AND addressable='one' AND object1='tag'", Arrays.asList("thefile/a"));
+		queries.put("@container='test' AND addressable='two' AND object2='tag'", Arrays.asList("thefile/b"));
 		
 		setupBlobSearch(queries);
 		
-		super.testSlashStoreWithMultTags();
+		super.testSlashStoreWithMultipleDirectories();
 	}
 }

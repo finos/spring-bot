@@ -304,8 +304,12 @@ public class FileStateStorage extends AbstractStateStorage {
 	private Optional<List<String>> splitString(String s) {
 		if (s.contains("/")) {
 			String[] data = s.split("/");
-			if (data.length > 1) {
+			if (data.length == 0) {
+				return Optional.empty();
+			} else if (data.length == 2) {
 				return Optional.of(Arrays.asList(data));
+			} else {
+				throw new UnsupportedOperationException("Can't handle multiple paths with file state storage: "+s);
 			}
 		}
 		return Optional.empty();

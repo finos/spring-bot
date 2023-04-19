@@ -73,25 +73,37 @@ public abstract class AbstractStateStorageTest {
 	}
 	
 	@Test
-	public void testSlashStoreWithMultTags() throws IOException {
+	public void testSlashStoreWithMultipleDirectories() throws IOException {
 		Map<String, Object> somedata = Collections.singletonMap("a", "b");
-		Map<String, String> tags1 = new HashMap<String, String>();
-		tags1.put("addressable", "thefile");
-		tags1.put("object1", "tag");
+		Map<String, String> tagsForTheFile = new HashMap<String, String>();
+		tagsForTheFile.put("addressable", "one");
+		tagsForTheFile.put("object1", "tag");
 
-		Map<String, String> tags2 = new HashMap<String, String>();
-		tags2.put("addressable", "thefile");
-		tags2.put("object2", "tag");
+		Map<String, String> tagsForTheFileA = new HashMap<String, String>();
+		tagsForTheFileA.put("addressable", "one");
+		tagsForTheFileA.put("object2", "tag");
+		
+		Map<String, String> tagsForTheFileB = new HashMap<String, String>();
+		tagsForTheFileB.put("addressable", "two");
+		tagsForTheFileB.put("object2", "tag");
 		
 		List<TeamsStateStorage.Filter> tagList1 = Arrays.asList(
-				new Filter("addressable", "thefile", "="),
+				new Filter("addressable", "one", "="),
 				new Filter("object1", "tag", "=")
 		);
 		
-		tss.store("thefile/thefile", tags1, somedata);
-		tss.store("thefile/theotherfile", tags2, somedata);
+		List<TeamsStateStorage.Filter> tagList2 = Arrays.asList(
+				new Filter("addressable", "two", "="),
+				new Filter("object2", "tag", "=")
+		);
+		
+		tss.store("thefile", tagsForTheFile, somedata);
+		//tss.store("thefile/thefile", tagsForTheFile, somedata); // this won't work
+		tss.store("thefile/a", tagsForTheFileA, somedata);
+		tss.store("thefile/b", tagsForTheFileB, somedata);
 	
 		Assertions.assertEquals(1, hoover(tss.retrieve(tagList1, false)).size());	
+		Assertions.assertEquals(1, hoover(tss.retrieve(tagList2, false)).size());	
 	}
 	
 	public List<Map<String, Object>> hoover(Iterable<Map<String, Object>> iterable) {
