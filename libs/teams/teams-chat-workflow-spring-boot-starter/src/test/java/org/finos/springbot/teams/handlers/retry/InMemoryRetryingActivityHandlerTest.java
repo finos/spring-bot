@@ -52,12 +52,18 @@ public class InMemoryRetryingActivityHandlerTest {
 								.protocol(Protocol.HTTP_1_1)
 								.request(new Request.Builder().url("http://localhost/").build()).build());
 				go++;
-				return CompletableFuture.failedFuture(new ErrorResponseException("Failed", r));
+				return failed(new ErrorResponseException("Failed", r));
 			} else {
 				go++;
 				return CompletableFuture.completedFuture(arg1);
 			}
 		});
+	}
+	
+	public static <R> CompletableFuture<R> failed(Throwable error) {
+	    CompletableFuture<R> future = new CompletableFuture<>();
+	    future.completeExceptionally(error);
+	    return future;
 	}
 
 	TeamsChannel dummyChat1 = new TeamsChannel("dummy_id_1", "dummy_name");

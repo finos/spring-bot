@@ -3,10 +3,14 @@ package org.finos.springbot.teams.handlers.retry;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.concurrent.ConcurrentUtils;
 import org.finos.springbot.teams.content.TeamsAddressable;
 import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.handlers.ActivityHandler;
@@ -66,18 +70,30 @@ public class RetryingActivityHandler implements ActivityHandler {
 				if (isTooManyRequest(t)) {
 					long ra = getRetryAfter((CompletionException) t);
 					
-					Executor afterRetryTime = CompletableFuture.delayedExecutor(ra, TimeUnit.MILLISECONDS);
+					Executor afterRetryTime = createDelayedExecutor(ra, TimeUnit.MILLISECONDS);
 					
 					return CompletableFuture.supplyAsync(() -> null, afterRetryTime)
 						.thenCompose(m -> tc.handleActivity(activity, to));
 					
 				} else {
-					return CompletableFuture.failedFuture(t);
+					return failed(t);
 				}
 
 			}).thenCompose(Function.identity());
 		}
 		return f;
+	}
+	
+	public static <R> CompletableFuture<R> failed(Throwable error) {
+	    CompletableFuture<R> future = new CompletableFuture<>();
+	    future.completeExceptionally(error);
+	    return future;
+	}
+
+	static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(0);
+
+	private Executor createDelayedExecutor(long delay, TimeUnit unit) {
+		return r -> SCHEDULER.schedule(() -> ForkJoinPool.commonPool().execute(r), delay, unit);
 	}
 
 }

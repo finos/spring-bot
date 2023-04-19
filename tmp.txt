@@ -1,0 +1,2512 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] Spring Bot                                                         [pom]
+[INFO] Symphony Entity Json                                               [jar]
+[INFO] Chat Workflow                                                      [jar]
+[INFO] Chat Workflow Testing                                              [jar]
+[INFO] Symphony Java Client Entities                                      [jar]
+[INFO] Spring Boot Starter For Chat Workflow Symphony BDK Adapter         [jar]
+[INFO] Spring Boot Starter For Chat Workflow Microsoft Teams Adapter      [jar]
+[INFO] RSS Publications Bot                                               [jar]
+[INFO] Poll Bot                                                           [jar]
+[INFO] Reminder Bot                                                       [jar]
+[INFO] Demo Bot                                                           [jar]
+[INFO] Custom Help Demo Bot                                               [jar]
+[INFO] To-Do Bot (Demo)                                                   [jar]
+[INFO] Expense Claim Bot (Demo)                                           [jar]
+[INFO] Rooms Bot (Demo)                                                   [jar]
+[INFO] Chat Workflow Coverage Report                                      [pom]
+[INFO] 
+[INFO] -------------------< org.finos.springbot:spring-bot >-------------------
+[INFO] Building Spring Bot 9.0.2-SNAPSHOT                                [1/16]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ spring-bot ---
+[INFO] org.finos.springbot:spring-bot:pom:9.0.2-SNAPSHOT
+[INFO] 
+[INFO] ------------------< org.finos.springbot:entity-json >-------------------
+[INFO] Building Symphony Entity Json 9.0.2-SNAPSHOT                      [2/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ entity-json ---
+[INFO] org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] \- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO]    +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO]    |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO]    |  +- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO]    |  \- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO]    +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO]    \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO]       \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO] 
+[INFO] -----------------< org.finos.springbot:chat-workflow >------------------
+[INFO] Building Chat Workflow 9.0.2-SNAPSHOT                             [3/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/finos/springbot/entity-json/9.0.2-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ chat-workflow ---
+[INFO] org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT
+[INFO] +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  +- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |     +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |     \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] \- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:test
+[INFO]    +- org.springframework.boot:spring-boot-test:jar:2.7.0:test
+[INFO]    +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:test
+[INFO]    +- com.jayway.jsonpath:json-path:jar:2.7.0:test
+[INFO]    |  +- net.minidev:json-smart:jar:2.4.8:test
+[INFO]    |  |  \- net.minidev:accessors-smart:jar:2.4.8:test
+[INFO]    |  |     \- org.ow2.asm:asm:jar:9.1:test
+[INFO]    |  \- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO]    +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:test
+[INFO]    |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:test
+[INFO]    +- org.assertj:assertj-core:jar:3.22.0:test
+[INFO]    +- org.hamcrest:hamcrest:jar:2.2:test
+[INFO]    +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO]    |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO]    |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO]    |  |  +- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO]    |  |  \- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO]    |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO]    |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO]    |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO]    +- org.mockito:mockito-core:jar:4.5.1:test
+[INFO]    |  +- net.bytebuddy:byte-buddy:jar:1.12.10:test
+[INFO]    |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:test
+[INFO]    |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO]    +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test
+[INFO]    +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO]    |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO]    +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO]    |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO]    +- org.springframework:spring-test:jar:5.3.20:test
+[INFO]    \- org.xmlunit:xmlunit-core:jar:2.9.0:test
+[INFO] 
+[INFO] -------------< org.finos.springbot:chat-workflow-testing >--------------
+[INFO] Building Chat Workflow Testing 9.0.2-SNAPSHOT                     [4/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/finos/springbot/chat-workflow/9.0.2-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ chat-workflow-testing ---
+[INFO] org.finos.springbot:chat-workflow-testing:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  |  \- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] \- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:compile
+[INFO]    +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO]    |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO]    |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO]    |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO]    |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO]    |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO]    |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO]    |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO]    |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO]    |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO]    |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO]    |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO]    |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO]    +- org.springframework.boot:spring-boot-test:jar:2.7.0:compile
+[INFO]    +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:compile
+[INFO]    +- com.jayway.jsonpath:json-path:jar:2.7.0:compile
+[INFO]    |  +- net.minidev:json-smart:jar:2.4.8:compile
+[INFO]    |  |  \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO]    |  |     \- org.ow2.asm:asm:jar:9.1:compile
+[INFO]    |  \- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO]    +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:compile
+[INFO]    |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:compile
+[INFO]    +- org.assertj:assertj-core:jar:3.22.0:compile
+[INFO]    +- org.hamcrest:hamcrest:jar:2.2:compile
+[INFO]    +- org.junit.jupiter:junit-jupiter:jar:5.8.2:compile
+[INFO]    |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:compile
+[INFO]    |  |  +- org.opentest4j:opentest4j:jar:1.2.0:compile
+[INFO]    |  |  +- org.junit.platform:junit-platform-commons:jar:1.8.2:compile
+[INFO]    |  |  \- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO]    |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:compile
+[INFO]    |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:runtime
+[INFO]    |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:runtime
+[INFO]    +- org.mockito:mockito-core:jar:4.5.1:compile
+[INFO]    |  +- net.bytebuddy:byte-buddy:jar:1.12.10:compile
+[INFO]    |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:compile
+[INFO]    |  \- org.objenesis:objenesis:jar:3.2:runtime
+[INFO]    +- org.mockito:mockito-junit-jupiter:jar:4.5.1:compile
+[INFO]    +- org.skyscreamer:jsonassert:jar:1.5.0:compile
+[INFO]    |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:compile
+[INFO]    +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO]    |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO]    +- org.springframework:spring-test:jar:5.3.20:compile
+[INFO]    \- org.xmlunit:xmlunit-core:jar:2.9.0:compile
+[INFO] 
+[INFO] --------------------< org.finos.springbot:entities >--------------------
+[INFO] Building Symphony Java Client Entities 9.0.2-SNAPSHOT             [5/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ entities ---
+[INFO] org.finos.springbot:entities:jar:9.0.2-SNAPSHOT
+[INFO] \- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO]    +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO]    \- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO]       \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] 
+[INFO] --< org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter >--
+[INFO] Building Spring Boot Starter For Chat Workflow Symphony BDK Adapter 9.0.2-SNAPSHOT [6/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/finos/springbot/entities/9.0.2-SNAPSHOT/maven-metadata.xml
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/finos/springbot/chat-workflow-testing/9.0.2-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ symphony-bdk-chat-workflow-spring-boot-starter ---
+[INFO] org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  |  \- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] +- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |  +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |  |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] |  |  +- commons-io:commons-io:jar:2.11.0:runtime
+[INFO] |  |  +- org.apache.commons:commons-lang3:jar:3.12.0:runtime
+[INFO] |  |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |  |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |  |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |  |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |  |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |  |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |  |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |  |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |  |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |  |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |  |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |  |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |  +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |  +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |  +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |  |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |  |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |  |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.35:runtime
+[INFO] |  |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:runtime
+[INFO] |  |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |  |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |  |  +- org.glassfish.jersey.core:jersey-client:jar:2.35:runtime
+[INFO] |  |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:runtime
+[INFO] |  |  |  \- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:runtime
+[INFO] |  |  +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:runtime
+[INFO] |  |  |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:runtime
+[INFO] |  |  |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:runtime
+[INFO] |  |  |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:runtime
+[INFO] |  |  |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:runtime
+[INFO] |  |  |  \- org.javassist:javassist:jar:3.25.0-GA:runtime
+[INFO] |  |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:runtime
+[INFO] |  |  |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:runtime
+[INFO] |  |  +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:runtime
+[INFO] |  |  |  \- org.apache.httpcomponents:httpclient:jar:4.5.13:runtime
+[INFO] |  |  |     +- org.apache.httpcomponents:httpcore:jar:4.4.15:runtime
+[INFO] |  |  |     \- commons-codec:commons-codec:jar:1.15:runtime
+[INFO] |  |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |  +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |  |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |  +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |  \- com.google.code.findbugs:jsr305:jar:3.0.2:runtime
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:test
+[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.7.0:test
+[INFO] |  |  \- net.minidev:json-smart:jar:2.4.8:test
+[INFO] |  |     \- net.minidev:accessors-smart:jar:2.4.8:test
+[INFO] |  |        \- org.ow2.asm:asm:jar:9.1:test
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO] |  |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO] |  +- org.assertj:assertj-core:jar:3.22.0:test
+[INFO] |  +- org.hamcrest:hamcrest:jar:2.2:test
+[INFO] |  +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  |  \- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO] |  |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO] |  |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO] |  +- org.mockito:mockito-core:jar:4.5.1:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.12.10:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:test
+[INFO] |  |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO] |  +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  +- org.springframework:spring-test:jar:5.3.20:test
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.9.0:test
+[INFO] \- org.finos.springbot:chat-workflow-testing:jar:9.0.2-SNAPSHOT:test
+[INFO] 
+[INFO] ----< org.finos.springbot:teams-chat-workflow-spring-boot-starter >-----
+[INFO] Building Spring Boot Starter For Chat Workflow Microsoft Teams Adapter 9.0.2-SNAPSHOT [7/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ teams-chat-workflow-spring-boot-starter ---
+[INFO] org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO] |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO] |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO] |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO] +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO] |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO] |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO] |  |  +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO] |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO] |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO] |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO] |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  +- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO] |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO] |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  +- org.javatuples:javatuples:jar:1.2:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO] |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO] |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO] |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO] |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO] |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO] |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO] |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO] |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO] |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO] |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO] |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO] |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO] |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO] |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO] |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO] |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO] |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO] |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO] |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO] |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO] |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO] |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO] |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO] |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO] |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO] |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO] |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO] |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO] |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO] |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO] |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO] |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO] |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO] |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO] |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO] |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO] |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO] |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO] |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO] |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO] |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO] |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO] +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO] |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO] |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO] |  |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO] |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO] |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO] |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO] |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO] |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO] |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO] |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO] |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO] |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO] |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO] |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO] |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO] |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO] |     +- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO] |     |  \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO] |     |     +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO] |     |     +- com.nimbusds:content-type:jar:2.1:compile
+[INFO] |     |     +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO] |     |     \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO] |     \- commons-io:commons-io:jar:2.11.0:compile
+[INFO] +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO] +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO] |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO] |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO] |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO] |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  |  \- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO] |  |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO] |  |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO] |  |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO] |  \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:test
+[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.7.0:test
+[INFO] |  |  \- net.minidev:json-smart:jar:2.4.8:compile
+[INFO] |  |     \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO] |  |        \- org.ow2.asm:asm:jar:9.1:compile
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:test
+[INFO] |  |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:test
+[INFO] |  +- org.assertj:assertj-core:jar:3.22.0:test
+[INFO] |  +- org.hamcrest:hamcrest:jar:2.2:test
+[INFO] |  +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  |  +- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO] |  |  |  \- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO] |  |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO] |  |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO] |  +- org.mockito:mockito-core:jar:4.5.1:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.12.10:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:test
+[INFO] |  |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO] |  +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  +- org.springframework:spring-test:jar:5.3.20:test
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.9.0:test
+[INFO] \- org.finos.springbot:chat-workflow-testing:jar:9.0.2-SNAPSHOT:test
+[INFO] 
+[INFO] -----------------< org.finos.springbot.tools:rss-bot >------------------
+[INFO] Building RSS Publications Bot 9.0.2-SNAPSHOT                      [8/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/finos/springbot/symphony-bdk-chat-workflow-spring-boot-starter/9.0.2-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ rss-bot ---
+[INFO] org.finos.springbot.tools:rss-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  |  |  \- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:runtime
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  \- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:runtime
+[INFO] +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] +- com.rometools:rome:jar:1.15.0:compile
+[INFO] |  +- com.rometools:rome-utils:jar:1.15.0:compile
+[INFO] |  +- org.jdom:jdom2:jar:2.0.6.1:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:test
+[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.7.0:test
+[INFO] |  |  \- net.minidev:json-smart:jar:2.4.8:test
+[INFO] |  |     \- net.minidev:accessors-smart:jar:2.4.8:test
+[INFO] |  |        \- org.ow2.asm:asm:jar:9.1:test
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:compile
+[INFO] |  |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:compile
+[INFO] |  +- org.assertj:assertj-core:jar:3.22.0:test
+[INFO] |  +- org.hamcrest:hamcrest:jar:2.2:test
+[INFO] |  +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  |  \- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO] |  |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO] |  |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO] |  +- org.mockito:mockito-core:jar:4.5.1:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.12.10:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:test
+[INFO] |  |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO] |  +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  +- org.springframework:spring-test:jar:5.3.20:test
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.9.0:test
+[INFO] +- org.glassfish.jersey.core:jersey-common:jar:2.35:compile
+[INFO] |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:compile
+[INFO] |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  +- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:compile
+[INFO] |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:compile
+[INFO] +- org.glassfish.jersey.core:jersey-client:jar:2.35:compile
+[INFO] +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:compile
+[INFO] |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:compile
+[INFO] |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:compile
+[INFO] |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:compile
+[INFO] |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:compile
+[INFO] |  \- org.javassist:javassist:jar:3.25.0-GA:compile
+[INFO] +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:compile
+[INFO] |  \- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |     +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO] |     \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:compile
+[INFO] |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:compile
+[INFO] \- com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:jar:2.13.3:compile
+[INFO]    +- com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:jar:2.13.3:compile
+[INFO]    \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:compile
+[INFO] 
+[INFO] -----------------< org.finos.springbot.tools:poll-bot >-----------------
+[INFO] Building Poll Bot 9.0.2-SNAPSHOT                                  [9/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+Downloading from ossrh: https://oss.sonatype.org/content/repositories/snapshots/org/finos/springbot/teams-chat-workflow-spring-boot-starter/9.0.2-SNAPSHOT/maven-metadata.xml
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ poll-bot ---
+[INFO] org.finos.springbot.tools:poll-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] +- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO] |  |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO] |  |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO] |  |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO] |  +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO] |  |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO] |  |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO] |  |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO] |  |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO] |  |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO] |  |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO] |  |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO] |  |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO] |  |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO] |  |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO] |  |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO] |  |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO] |  |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO] |  |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO] |  |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO] |  |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO] |  |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |  |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO] |  |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO] |  |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO] |  |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO] |  |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO] |  |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO] |  |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO] |  |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO] |  |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO] |  |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO] |  |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO] |  |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO] |  |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO] |  +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO] |  |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO] |  |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO] |  |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO] |  |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO] |  |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO] |  |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO] |  |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO] |  |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO] |  |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO] |  |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO] |  |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO] |  |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO] |  |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO] |  |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO] |  +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO] |  +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO] |  |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO] |     +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO] |     |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO] |     |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO] |     |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO] |     \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] +- org.springframework.boot:spring-boot-devtools:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  \- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:test
+[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.7.0:test
+[INFO] |  |  \- net.minidev:json-smart:jar:2.4.8:compile
+[INFO] |  |     \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO] |  |        \- org.ow2.asm:asm:jar:9.1:compile
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO] |  |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO] |  +- org.assertj:assertj-core:jar:3.22.0:test
+[INFO] |  +- org.hamcrest:hamcrest:jar:2.2:test
+[INFO] |  +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  |  \- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO] |  |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO] |  |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO] |  +- org.mockito:mockito-core:jar:4.5.1:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.12.10:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:test
+[INFO] |  |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO] |  +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  +- org.springframework:spring-test:jar:5.3.20:test
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.9.0:test
+[INFO] +- org.glassfish.jersey.core:jersey-common:jar:2.35:compile
+[INFO] |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:compile
+[INFO] |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  +- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:compile
+[INFO] |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:compile
+[INFO] +- org.glassfish.jersey.core:jersey-client:jar:2.35:compile
+[INFO] +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:compile
+[INFO] |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:compile
+[INFO] |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:compile
+[INFO] |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:compile
+[INFO] |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:compile
+[INFO] |  \- org.javassist:javassist:jar:3.25.0-GA:compile
+[INFO] +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:compile
+[INFO] |  \- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |     +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO] |     \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:compile
+[INFO] |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:compile
+[INFO] \- org.projectlombok:lombok:jar:1.18.24:provided
+[INFO] 
+[INFO] ---------------< org.finos.springbot.tools:reminder-bot >---------------
+[INFO] Building Reminder Bot 9.0.2-SNAPSHOT                             [10/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ reminder-bot ---
+[INFO] org.finos.springbot.tools:reminder-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.35:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  +- org.glassfish.jersey.core:jersey-client:jar:2.35:runtime
+[INFO] |     |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:runtime
+[INFO] |     |  |  \- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:runtime
+[INFO] |     |  |  \- org.javassist:javassist:jar:3.25.0-GA:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:runtime
+[INFO] |     |  |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:runtime
+[INFO] |     |  +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |     |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |     |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |     |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |     |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |     |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |     |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |     |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |     |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |     |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |     |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] +- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO] |  |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO] |  |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO] |  |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO] |  |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO] |  +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO] |  |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO] |  |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO] |  |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |  |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO] |  |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO] |  |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO] |  |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO] |  |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO] |  |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO] |  |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO] |  |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO] |  |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO] |  |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO] |  |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO] |  |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO] |  |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO] |  |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |  |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO] |  |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO] |  |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO] |  |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO] |  |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO] |  |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO] |  |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO] |  |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO] |  |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO] |  |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO] |  |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO] |  |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO] |  |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO] |  +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO] |  |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO] |  |  |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] |  |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO] |  |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO] |  |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO] |  |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO] |  |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO] |  |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO] |  |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO] |  |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO] |  |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO] |  |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO] |  |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO] |  |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO] |  |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO] |  +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO] |  +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO] |  |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO] |     +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO] |     |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO] |     |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO] |     |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO] |     \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] +- edu.stanford.nlp:stanford-corenlp:jar:4.4.0:compile
+[INFO] |  +- com.apple:AppleJavaExtensions:jar:1.4:compile
+[INFO] |  +- de.jollyday:jollyday:jar:0.4.9:compile
+[INFO] |  +- org.apache.lucene:lucene-queryparser:jar:7.5.0:compile
+[INFO] |  |  +- org.apache.lucene:lucene-queries:jar:7.5.0:compile
+[INFO] |  |  \- org.apache.lucene:lucene-sandbox:jar:7.5.0:compile
+[INFO] |  +- org.apache.lucene:lucene-analyzers-common:jar:7.5.0:compile
+[INFO] |  +- org.apache.lucene:lucene-core:jar:7.5.0:compile
+[INFO] |  +- javax.servlet:javax.servlet-api:jar:4.0.1:compile
+[INFO] |  +- xom:xom:jar:1.3.7:compile
+[INFO] |  |  +- xerces:xercesImpl:jar:2.8.0:compile
+[INFO] |  |  |  \- xml-apis:xml-apis:jar:1.3.03:compile
+[INFO] |  |  \- xalan:xalan:jar:2.7.2:compile
+[INFO] |  |     \- xalan:serializer:jar:2.7.2:compile
+[INFO] |  +- joda-time:joda-time:jar:2.10.5:compile
+[INFO] |  +- org.ejml:ejml-core:jar:0.39:compile
+[INFO] |  +- org.ejml:ejml-ddense:jar:0.39:compile
+[INFO] |  +- org.ejml:ejml-simple:jar:0.39:compile
+[INFO] |  |  +- org.ejml:ejml-fdense:jar:0.39:compile
+[INFO] |  |  +- org.ejml:ejml-cdense:jar:0.39:compile
+[INFO] |  |  +- org.ejml:ejml-zdense:jar:0.39:compile
+[INFO] |  |  +- org.ejml:ejml-dsparse:jar:0.39:compile
+[INFO] |  |  \- org.ejml:ejml-fsparse:jar:0.39:compile
+[INFO] |  +- org.glassfish:javax.json:jar:1.0.4:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] |  +- com.google.protobuf:protobuf-java:jar:3.11.4:compile
+[INFO] |  +- javax.activation:javax.activation-api:jar:1.2.0:compile
+[INFO] |  +- javax.xml.bind:jaxb-api:jar:2.3.1:compile
+[INFO] |  +- com.sun.xml.bind:jaxb-core:jar:2.3.0.1:compile
+[INFO] |  \- com.sun.xml.bind:jaxb-impl:jar:2.4.0-b180830.0438:compile
+[INFO] +- edu.stanford.nlp:stanford-corenlp:jar:models:4.4.0:compile
+[INFO] +- edu.washington.cs.knowitall.stanford-corenlp:stanford-sutime-models:jar:1.3.5:compile
+[INFO] \- org.finos.springbot:chat-workflow-testing:jar:9.0.2-SNAPSHOT:test
+[INFO]    \- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:test
+[INFO]       +- org.springframework.boot:spring-boot-test:jar:2.7.0:test
+[INFO]       +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:test
+[INFO]       +- com.jayway.jsonpath:json-path:jar:2.7.0:test
+[INFO]       |  \- net.minidev:json-smart:jar:2.4.8:compile
+[INFO]       |     \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO]       |        \- org.ow2.asm:asm:jar:9.1:compile
+[INFO]       +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO]       |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO]       +- org.assertj:assertj-core:jar:3.22.0:test
+[INFO]       +- org.hamcrest:hamcrest:jar:2.2:test
+[INFO]       +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO]       |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO]       |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO]       |  |  \- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO]       |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO]       |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO]       |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO]       +- org.mockito:mockito-core:jar:4.5.1:test
+[INFO]       |  +- net.bytebuddy:byte-buddy:jar:1.12.10:test
+[INFO]       |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:test
+[INFO]       |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO]       +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test
+[INFO]       +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO]       |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO]       +- org.springframework:spring-test:jar:5.3.20:test
+[INFO]       \- org.xmlunit:xmlunit-core:jar:2.9.0:test
+[INFO] 
+[INFO] -----------------< org.finos.springbot.demos:demo-bot >-----------------
+[INFO] Building Demo Bot 9.0.2-SNAPSHOT                                 [11/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ demo-bot ---
+[INFO] org.finos.springbot.demos:demo-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |     +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.35:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO] |     |  |     \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO] |     |  +- org.glassfish.jersey.core:jersey-client:jar:2.35:runtime
+[INFO] |     |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:runtime
+[INFO] |     |  |  \- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:runtime
+[INFO] |     |  |  \- org.javassist:javassist:jar:3.25.0-GA:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:runtime
+[INFO] |     |  |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:runtime
+[INFO] |     |  +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |     |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] \- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO]    +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO]    |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO]    |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO]    |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO]    |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO]    |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO]    |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO]    |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO]    |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO]    +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO]    |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO]    |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO]    |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO]    |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO]    |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO]    |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO]    |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO]    |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO]    |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO]    |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO]    |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO]    |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO]    |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO]    |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO]    |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO]    |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO]    |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO]    |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO]    |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO]    |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO]    |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO]    |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO]    |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO]    |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO]    |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO]    |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO]    |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO]    |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO]    |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO]    |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO]    |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO]    |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO]    |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO]    |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO]    |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO]    |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO]    |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO]    |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO]    |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO]    |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO]    |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO]    |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO]    |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO]    |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO]    +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO]    |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO]    |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO]    |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO]    |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO]    |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO]    |  |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO]    |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO]    |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO]    |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO]    |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO]    |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO]    |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO]    |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO]    |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO]    |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO]    |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO]    |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO]    |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO]    |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO]    |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO]    |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO]    |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO]    |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO]    |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO]    |           +- net.minidev:json-smart:jar:2.4.8:compile
+[INFO]    |           |  \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO]    |           |     \- org.ow2.asm:asm:jar:9.1:compile
+[INFO]    |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO]    |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO]    +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO]    +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO]    |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO]    \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO]       +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO]       |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO]       |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO]       |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO]       \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] 
+[INFO] -------------< org.finos.springbot.demos:custom-help-bot >--------------
+[INFO] Building Custom Help Demo Bot 9.0.2-SNAPSHOT                     [12/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ custom-help-bot ---
+[INFO] org.finos.springbot.demos:custom-help-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |     +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.35:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO] |     |  |     \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO] |     |  +- org.glassfish.jersey.core:jersey-client:jar:2.35:runtime
+[INFO] |     |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:runtime
+[INFO] |     |  |  \- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:runtime
+[INFO] |     |  |  \- org.javassist:javassist:jar:3.25.0-GA:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:runtime
+[INFO] |     |  |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:runtime
+[INFO] |     |  +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |     |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] \- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO]    +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO]    |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO]    |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO]    |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO]    |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO]    |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO]    |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO]    |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO]    |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO]    +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO]    |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO]    |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO]    |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO]    |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO]    |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO]    |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO]    |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO]    |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO]    |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO]    |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO]    |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO]    |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO]    |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO]    |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO]    |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO]    |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO]    |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO]    |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO]    |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO]    |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO]    |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO]    |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO]    |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO]    |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO]    |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO]    |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO]    |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO]    |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO]    |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO]    |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO]    |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO]    |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO]    |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO]    |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO]    |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO]    |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO]    |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO]    |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO]    |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO]    |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO]    |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO]    |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO]    |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO]    |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO]    +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO]    |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO]    |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO]    |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO]    |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO]    |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO]    |  |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO]    |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO]    |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO]    |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO]    |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO]    |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO]    |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO]    |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO]    |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO]    |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO]    |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO]    |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO]    |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO]    |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO]    |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO]    |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO]    |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO]    |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO]    |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO]    |           +- net.minidev:json-smart:jar:2.4.8:compile
+[INFO]    |           |  \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO]    |           |     \- org.ow2.asm:asm:jar:9.1:compile
+[INFO]    |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO]    |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO]    +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO]    +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO]    |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO]    \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO]       +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO]       |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO]       |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO]       |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO]       \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] 
+[INFO] -----------------< org.finos.springbot.demos:todo-bot >-----------------
+[INFO] Building To-Do Bot (Demo) 9.0.2-SNAPSHOT                         [13/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ todo-bot ---
+[INFO] org.finos.springbot.demos:todo-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.35:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO] |     |  |     \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO] |     |  +- org.glassfish.jersey.core:jersey-client:jar:2.35:runtime
+[INFO] |     |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:runtime
+[INFO] |     |  |  \- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:runtime
+[INFO] |     |  |  \- org.javassist:javassist:jar:3.25.0-GA:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:runtime
+[INFO] |     |  |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:runtime
+[INFO] |     |  +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |     |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |     |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |     |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |     |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |     |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |     |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |     |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |     |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |     |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |     |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] +- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO] |  |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO] |  |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO] |  |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO] |  |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO] |  +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO] |  |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO] |  |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO] |  |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO] |  |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO] |  |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO] |  |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO] |  |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO] |  |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO] |  |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO] |  |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO] |  |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO] |  |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO] |  |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO] |  |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO] |  |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO] |  |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO] |  |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |  |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO] |  |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO] |  |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO] |  |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO] |  |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO] |  |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO] |  |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO] |  |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO] |  |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO] |  |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO] |  |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO] |  |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO] |  |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO] |  +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO] |  |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO] |  |  |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] |  |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO] |  |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO] |  |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO] |  |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO] |  |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO] |  |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO] |  |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO] |  |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO] |  |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO] |  |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO] |  |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO] |  |           +- net.minidev:json-smart:jar:2.4.8:compile
+[INFO] |  |           |  \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO] |  |           |     \- org.ow2.asm:asm:jar:9.1:compile
+[INFO] |  |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO] |  |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO] |  +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO] |  +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO] |  |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO] |     +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO] |     |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO] |     |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO] |     |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO] |     \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] \- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] 
+[INFO] ----------------< org.finos.springbot.demos:claim-bot >-----------------
+[INFO] Building Expense Claim Bot (Demo) 9.0.2-SNAPSHOT                 [14/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ claim-bot ---
+[INFO] org.finos.springbot.demos:claim-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] +- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO] |  |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO] |  |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO] |  |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO] |  +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO] |  |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO] |  |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO] |  |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO] |  |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO] |  |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO] |  |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO] |  |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO] |  |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO] |  |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO] |  |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO] |  |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO] |  |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO] |  |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO] |  |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO] |  |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO] |  |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO] |  |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |  |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO] |  |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO] |  |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO] |  |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO] |  |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO] |  |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO] |  |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO] |  |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO] |  |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO] |  |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO] |  |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO] |  |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO] |  |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO] |  +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO] |  |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO] |  |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO] |  |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO] |  |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO] |  |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO] |  |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO] |  |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO] |  |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO] |  |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO] |  |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO] |  |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO] |  |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO] |  |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO] |  |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO] |  |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO] |  +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO] |  +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO] |  |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO] |     +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO] |     |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO] |     |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO] |     |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO] |     \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] +- org.springframework.boot:spring-boot-devtools:jar:2.7.0:compile
+[INFO] |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  \- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.7.0:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:test
+[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.7.0:test
+[INFO] |  |  \- net.minidev:json-smart:jar:2.4.8:compile
+[INFO] |  |     \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO] |  |        \- org.ow2.asm:asm:jar:9.1:compile
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO] |  |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO] |  +- org.assertj:assertj-core:jar:3.22.0:test
+[INFO] |  +- org.hamcrest:hamcrest:jar:2.2:test
+[INFO] |  +- org.junit.jupiter:junit-jupiter:jar:5.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:test
+[INFO] |  |  |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  |  |  \- org.junit.platform:junit-platform-commons:jar:1.8.2:test
+[INFO] |  |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:test
+[INFO] |  |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:test
+[INFO] |  |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:test
+[INFO] |  +- org.mockito:mockito-core:jar:4.5.1:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.12.10:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:test
+[INFO] |  |  \- org.objenesis:objenesis:jar:3.2:test
+[INFO] |  +- org.mockito:mockito-junit-jupiter:jar:4.5.1:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |  +- org.springframework:spring-test:jar:5.3.20:test
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.9.0:test
+[INFO] +- org.glassfish.jersey.core:jersey-common:jar:2.35:compile
+[INFO] |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:compile
+[INFO] |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  +- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:compile
+[INFO] |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:compile
+[INFO] +- org.glassfish.jersey.core:jersey-client:jar:2.35:compile
+[INFO] +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:compile
+[INFO] |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:compile
+[INFO] |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:compile
+[INFO] |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:compile
+[INFO] |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:compile
+[INFO] |  \- org.javassist:javassist:jar:3.25.0-GA:compile
+[INFO] +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:compile
+[INFO] |  \- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |     +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO] |     \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] \- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:compile
+[INFO]    \- org.jvnet.mimepull:mimepull:jar:1.9.15:compile
+[INFO] 
+[INFO] ----------------< org.finos.springbot.demos:rooms-bot >-----------------
+[INFO] Building Rooms Bot (Demo) 9.0.2-SNAPSHOT                         [15/16]
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ rooms-bot ---
+[INFO] org.finos.springbot.demos:rooms-bot:jar:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  |  |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |  |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |  |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |  |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |  |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] |  +- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.35:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:runtime
+[INFO] |     |  |     \- jakarta.activation:jakarta.activation-api:jar:1.2.2:runtime
+[INFO] |     |  +- org.glassfish.jersey.core:jersey-client:jar:2.35:runtime
+[INFO] |     |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:runtime
+[INFO] |     |  |  \- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:runtime
+[INFO] |     |  |  \- org.javassist:javassist:jar:3.25.0-GA:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:runtime
+[INFO] |     |  |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:runtime
+[INFO] |     |  +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |     |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |     |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |     |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |     |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |     |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |     |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |     |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |     |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |     |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     +- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |     |  \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] \- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO]    +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO]    |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO]    |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO]    |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO]    |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO]    |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO]    |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO]    |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO]    |  +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO]    |  |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO]    |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO]    |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO]    |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO]    |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO]    +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO]    |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO]    |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO]    |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO]    |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO]    |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO]    |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO]    |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO]    |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO]    |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO]    |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO]    |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO]    |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO]    |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO]    |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO]    |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO]    |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO]    |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO]    |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO]    |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO]    |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO]    |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO]    |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO]    |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO]    |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO]    |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO]    |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO]    |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO]    |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO]    |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO]    |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO]    |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO]    |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO]    |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO]    |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO]    |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO]    |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO]    |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO]    |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO]    |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO]    |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO]    |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO]    |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO]    |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO]    |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO]    |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO]    |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO]    |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO]    |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO]    +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO]    |  +- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO]    |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO]    |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO]    |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO]    |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO]    |  |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO]    |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO]    |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO]    |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO]    |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO]    |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO]    |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO]    |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO]    |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO]    |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO]    |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO]    |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO]    |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO]    |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO]    |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO]    |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO]    |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO]    |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO]    |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO]    |           +- net.minidev:json-smart:jar:2.4.8:compile
+[INFO]    |           |  \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO]    |           |     \- org.ow2.asm:asm:jar:9.1:compile
+[INFO]    |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO]    |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO]    +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO]    +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO]    |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO]    |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO]    \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO]       +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO]       |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO]       |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO]       |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO]       \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] 
+[INFO] -------------< org.finos.springbot:chat-workflow-coverage >-------------
+[INFO] Building Chat Workflow Coverage Report 9.0.2-SNAPSHOT            [16/16]
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.10:tree (default-cli) @ chat-workflow-coverage ---
+[INFO] org.finos.springbot:chat-workflow-coverage:pom:9.0.2-SNAPSHOT
+[INFO] +- org.finos.springbot:chat-workflow:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-validation:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.7.0:compile
+[INFO] |  |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.11:compile
+[INFO] |  |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.11:compile
+[INFO] |  |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.17.2:compile
+[INFO] |  |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.17.2:compile
+[INFO] |  |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.36:compile
+[INFO] |  |  |  +- jakarta.annotation:jakarta.annotation-api:jar:1.3.5:compile
+[INFO] |  |  |  \- org.yaml:snakeyaml:jar:1.30:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.63:compile
+[INFO] |  |  \- org.hibernate.validator:hibernate-validator:jar:6.2.3.Final:compile
+[INFO] |  |     +- jakarta.validation:jakarta.validation-api:jar:2.0.2:compile
+[INFO] |  |     +- org.jboss.logging:jboss-logging:jar:3.4.3.Final:compile
+[INFO] |  |     \- com.fasterxml:classmate:jar:1.5.1:compile
+[INFO] |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-web:jar:5.3.20:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.13.3:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.13.3:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.13.3:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.7.0:compile
+[INFO] |  |  +- org.springframework:spring-aop:jar:5.3.20:compile
+[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.9.7:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-actuator:jar:2.7.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.7.0:compile
+[INFO] |     |  \- org.springframework.boot:spring-boot-actuator:jar:2.7.0:compile
+[INFO] |     \- io.micrometer:micrometer-core:jar:1.9.0:compile
+[INFO] |        +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |        \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] +- org.finos.springbot:chat-workflow-testing:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-test:jar:2.7.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-test:jar:2.7.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.7.0:compile
+[INFO] |     +- com.jayway.jsonpath:json-path:jar:2.7.0:compile
+[INFO] |     |  \- net.minidev:json-smart:jar:2.4.8:compile
+[INFO] |     |     \- net.minidev:accessors-smart:jar:2.4.8:compile
+[INFO] |     |        \- org.ow2.asm:asm:jar:9.1:compile
+[INFO] |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.3:compile
+[INFO] |     |  \- jakarta.activation:jakarta.activation-api:jar:1.2.2:compile
+[INFO] |     +- org.assertj:assertj-core:jar:3.22.0:compile
+[INFO] |     +- org.hamcrest:hamcrest:jar:2.2:compile
+[INFO] |     +- org.junit.jupiter:junit-jupiter:jar:5.8.2:compile
+[INFO] |     |  +- org.junit.jupiter:junit-jupiter-api:jar:5.8.2:compile
+[INFO] |     |  |  +- org.opentest4j:opentest4j:jar:1.2.0:compile
+[INFO] |     |  |  \- org.junit.platform:junit-platform-commons:jar:1.8.2:compile
+[INFO] |     |  +- org.junit.jupiter:junit-jupiter-params:jar:5.8.2:compile
+[INFO] |     |  \- org.junit.jupiter:junit-jupiter-engine:jar:5.8.2:runtime
+[INFO] |     |     \- org.junit.platform:junit-platform-engine:jar:1.8.2:runtime
+[INFO] |     +- org.mockito:mockito-core:jar:4.5.1:compile
+[INFO] |     |  +- net.bytebuddy:byte-buddy:jar:1.12.10:compile
+[INFO] |     |  +- net.bytebuddy:byte-buddy-agent:jar:1.12.10:compile
+[INFO] |     |  \- org.objenesis:objenesis:jar:3.2:runtime
+[INFO] |     +- org.mockito:mockito-junit-jupiter:jar:4.5.1:compile
+[INFO] |     +- org.skyscreamer:jsonassert:jar:1.5.0:compile
+[INFO] |     |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:compile
+[INFO] |     +- org.springframework:spring-core:jar:5.3.20:compile
+[INFO] |     |  \- org.springframework:spring-jcl:jar:5.3.20:compile
+[INFO] |     +- org.springframework:spring-test:jar:5.3.20:compile
+[INFO] |     \- org.xmlunit:xmlunit-core:jar:2.9.0:compile
+[INFO] +- org.finos.springbot:symphony-bdk-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  \- org.finos.symphony.bdk:symphony-bdk-core-spring-boot-starter:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-core:jar:2.5.0:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.13.3:compile
+[INFO] |     |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-properties:jar:2.13.3:compile
+[INFO] |     |  +- org.mapstruct:mapstruct:jar:1.4.2.Final:runtime
+[INFO] |     |  +- commons-io:commons-io:jar:2.11.0:compile
+[INFO] |     |  +- org.apache.commons:commons-lang3:jar:3.12.0:compile
+[INFO] |     |  +- org.apache.commons:commons-text:jar:1.9:runtime
+[INFO] |     |  +- com.brsanthu:migbase64:jar:2.2:runtime
+[INFO] |     |  +- io.jsonwebtoken:jjwt:jar:0.9.1:runtime
+[INFO] |     |  +- org.bouncycastle:bcpkix-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  +- org.bouncycastle:bcprov-jdk15on:jar:1.70:runtime
+[INFO] |     |  |  \- org.bouncycastle:bcutil-jdk15on:jar:1.70:runtime
+[INFO] |     |  +- io.github.resilience4j:resilience4j-retry:jar:1.7.1:runtime
+[INFO] |     |  |  +- io.vavr:vavr:jar:0.10.2:runtime
+[INFO] |     |  |  |  \- io.vavr:vavr-match:jar:0.10.2:runtime
+[INFO] |     |  |  \- io.github.resilience4j:resilience4j-core:jar:1.7.1:runtime
+[INFO] |     |  +- io.swagger:swagger-annotations:jar:1.6.0:runtime
+[INFO] |     |  \- javax.annotation:jsr250-api:jar:1.0:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-api:jar:2.5.0:compile
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-http-jersey2:jar:2.5.0:runtime
+[INFO] |     |  +- org.openapitools:jackson-databind-nullable:jar:0.2.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-json-jackson:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.core:jersey-common:jar:2.35:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:runtime
+[INFO] |     |  |  +- org.glassfish.jersey.ext:jersey-entity-filtering:jar:2.35:runtime
+[INFO] |     |  |  \- com.fasterxml.jackson.module:jackson-module-jaxb-annotations:jar:2.13.3:runtime
+[INFO] |     |  +- org.glassfish.jersey.core:jersey-client:jar:2.35:runtime
+[INFO] |     |  |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:2.1.6:runtime
+[INFO] |     |  |  \- org.glassfish.hk2.external:jakarta.inject:jar:2.6.1:runtime
+[INFO] |     |  +- org.glassfish.jersey.inject:jersey-hk2:jar:2.35:runtime
+[INFO] |     |  |  +- org.glassfish.hk2:hk2-locator:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:2.6.1:runtime
+[INFO] |     |  |  |  +- org.glassfish.hk2:hk2-api:jar:2.6.1:runtime
+[INFO] |     |  |  |  \- org.glassfish.hk2:hk2-utils:jar:2.6.1:runtime
+[INFO] |     |  |  \- org.javassist:javassist:jar:3.25.0-GA:runtime
+[INFO] |     |  +- org.glassfish.jersey.media:jersey-media-multipart:jar:2.35:runtime
+[INFO] |     |  |  \- org.jvnet.mimepull:mimepull:jar:1.9.15:runtime
+[INFO] |     |  +- org.glassfish.jersey.connectors:jersey-apache-connector:jar:2.35:runtime
+[INFO] |     |  \- commons-logging:commons-logging:jar:1.2:runtime
+[INFO] |     +- org.finos.symphony.bdk:symphony-bdk-template-freemarker:jar:2.5.0:runtime
+[INFO] |     |  \- org.freemarker:freemarker:jar:2.3.31:runtime
+[INFO] |     +- org.apiguardian:apiguardian-api:jar:1.1.0:compile
+[INFO] |     +- org.springframework.boot:spring-boot-configuration-processor:jar:2.7.0:runtime
+[INFO] |     \- com.google.code.findbugs:jsr305:jar:3.0.2:compile
+[INFO] +- org.finos.springbot:teams-chat-workflow-spring-boot-starter:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- com.microsoft.bot:bot-integration-spring:jar:4.14.2:compile
+[INFO] |  |  +- org.slf4j:slf4j-api:jar:1.7.36:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-web:jar:2.7.0:compile
+[INFO] |  |  |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.7.0:compile
+[INFO] |  |  |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.63:compile
+[INFO] |  |  |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.63:compile
+[INFO] |  |  |  \- org.springframework:spring-webmvc:jar:5.3.20:compile
+[INFO] |  |  |     \- org.springframework:spring-expression:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework:spring-beans:jar:5.3.20:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.7.0:compile
+[INFO] |  |  |  \- org.springframework:spring-context:jar:5.3.20:compile
+[INFO] |  |  \- com.microsoft.bot:bot-integration-core:jar:4.14.2:compile
+[INFO] |  +- com.microsoft.bot:bot-azure:jar:4.14.2:compile
+[INFO] |  |  +- com.microsoft.azure:azure-documentdb:jar:2.4.3:compile
+[INFO] |  |  |  +- com.fasterxml.uuid:java-uuid-generator:jar:3.1.4:compile
+[INFO] |  |  |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpclient:jar:4.5.13:compile
+[INFO] |  |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.15:compile
+[INFO] |  |  |  \- joda-time:joda-time:jar:2.9.9:compile
+[INFO] |  |  +- com.microsoft.bot:bot-dialogs:jar:4.14.2:compile
+[INFO] |  |  |  +- com.google.guava:guava:jar:30.1-jre:compile
+[INFO] |  |  |  |  +- com.google.guava:failureaccess:jar:1.0.1:compile
+[INFO] |  |  |  |  +- com.google.guava:listenablefuture:jar:9999.0-empty-to-avoid-conflict-with-guava:compile
+[INFO] |  |  |  |  +- org.checkerframework:checker-qual:jar:3.5.0:compile
+[INFO] |  |  |  |  +- com.google.errorprone:error_prone_annotations:jar:2.3.4:compile
+[INFO] |  |  |  |  \- com.google.j2objc:j2objc-annotations:jar:1.3:compile
+[INFO] |  |  |  \- org.javatuples:javatuples:jar:1.2:compile
+[INFO] |  |  +- com.azure:azure-storage-queue:jar:12.8.0:compile
+[INFO] |  |  |  +- com.azure:azure-core:jar:1.12.0:compile
+[INFO] |  |  |  |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-xml:jar:2.13.3:compile
+[INFO] |  |  |  |  |  +- org.codehaus.woodstox:stax2-api:jar:4.2.1:compile
+[INFO] |  |  |  |  |  \- com.fasterxml.woodstox:woodstox-core:jar:6.2.7:compile
+[INFO] |  |  |  |  +- io.projectreactor:reactor-core:jar:3.4.18:compile
+[INFO] |  |  |  |  |  \- org.reactivestreams:reactive-streams:jar:1.0.3:compile
+[INFO] |  |  |  |  \- io.netty:netty-tcnative-boringssl-static:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-classes:jar:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:linux-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  |     +- io.netty:netty-tcnative-boringssl-static:jar:osx-aarch_64:2.0.52.Final:compile
+[INFO] |  |  |  |     \- io.netty:netty-tcnative-boringssl-static:jar:windows-x86_64:2.0.52.Final:compile
+[INFO] |  |  |  \- com.azure:azure-storage-common:jar:12.10.0:compile
+[INFO] |  |  |     \- com.azure:azure-core-http-netty:jar:1.7.1:compile
+[INFO] |  |  |        +- io.netty:netty-handler:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-resolver:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  +- io.netty:netty-transport:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-handler-proxy:jar:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-codec-socks:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-buffer:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-codec-http2:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-unix-common:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-epoll:jar:4.1.77.Final:compile
+[INFO] |  |  |        +- io.netty:netty-transport-native-kqueue:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |        |  \- io.netty:netty-transport-classes-kqueue:jar:4.1.77.Final:compile
+[INFO] |  |  |        \- io.projectreactor.netty:reactor-netty:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-core:jar:1.0.19:compile
+[INFO] |  |  |           |  +- io.netty:netty-resolver-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  |  \- io.netty:netty-codec-dns:jar:4.1.77.Final:compile
+[INFO] |  |  |           |  \- io.netty:netty-resolver-dns-native-macos:jar:osx-x86_64:4.1.77.Final:compile
+[INFO] |  |  |           |     \- io.netty:netty-resolver-dns-classes-macos:jar:4.1.77.Final:compile
+[INFO] |  |  |           +- io.projectreactor.netty:reactor-netty-http:jar:1.0.19:compile
+[INFO] |  |  |           +- io.projectreactor.netty.incubator:reactor-netty-incubator-quic:jar:0.0.8:runtime
+[INFO] |  |  |           |  \- io.netty.incubator:netty-incubator-codec-native-quic:jar:linux-x86_64:0.0.26.Final:runtime
+[INFO] |  |  |           |     \- io.netty.incubator:netty-incubator-codec-classes-quic:jar:0.0.26.Final:runtime
+[INFO] |  |  |           \- io.projectreactor.netty:reactor-netty-http-brave:jar:1.0.19:runtime
+[INFO] |  |  |              \- io.zipkin.brave:brave-instrumentation-http:jar:5.13.9:runtime
+[INFO] |  |  |                 \- io.zipkin.brave:brave:jar:5.13.9:runtime
+[INFO] |  |  |                    \- io.zipkin.reporter2:zipkin-reporter-brave:jar:2.16.3:runtime
+[INFO] |  |  |                       \- io.zipkin.reporter2:zipkin-reporter:jar:2.16.3:runtime
+[INFO] |  |  |                          \- io.zipkin.zipkin2:zipkin:jar:2.23.2:runtime
+[INFO] |  |  \- com.azure:azure-storage-blob:jar:12.10.0:compile
+[INFO] |  |     \- com.azure:azure-storage-internal-avro:jar:12.0.2:compile
+[INFO] |  +- com.microsoft.bot:bot-builder:jar:4.14.2:compile
+[INFO] |  |  +- com.codepoetics:protonpack:jar:1.13:compile
+[INFO] |  |  +- com.auth0:java-jwt:jar:3.13.0:compile
+[INFO] |  |  |  \- commons-codec:commons-codec:jar:1.15:compile
+[INFO] |  |  +- com.auth0:jwks-rsa:jar:0.15.0:compile
+[INFO] |  |  +- com.microsoft.bot:bot-schema:jar:4.14.2:compile
+[INFO] |  |  \- com.microsoft.bot:bot-connector:jar:4.14.2:compile
+[INFO] |  |     +- com.squareup.retrofit2:retrofit:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.retrofit2:converter-jackson:jar:2.5.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp:jar:4.9.3:compile
+[INFO] |  |     |  +- com.squareup.okio:okio:jar:2.8.0:compile
+[INFO] |  |     |  |  \- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.6.21:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |     +- com.squareup.okhttp3:logging-interceptor:jar:4.9.3:compile
+[INFO] |  |     |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.6.21:compile
+[INFO] |  |     |     \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.6.21:compile
+[INFO] |  |     +- com.squareup.okhttp3:okhttp-urlconnection:jar:4.9.3:compile
+[INFO] |  |     +- com.microsoft.azure:azure-annotations:jar:1.7.0:compile
+[INFO] |  |     \- com.microsoft.azure:msal4j:jar:1.11.0:compile
+[INFO] |  |        \- com.nimbusds:oauth2-oidc-sdk:jar:9.7:compile
+[INFO] |  |           +- com.github.stephenc.jcip:jcip-annotations:jar:1.0-1:compile
+[INFO] |  |           +- com.nimbusds:content-type:jar:2.1:compile
+[INFO] |  |           +- com.nimbusds:lang-tag:jar:1.5:compile
+[INFO] |  |           \- com.nimbusds:nimbus-jose-jwt:jar:9.9.3:compile
+[INFO] |  +- org.jsoup:jsoup:jar:1.14.3:compile
+[INFO] |  +- org.graalvm.js:js:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.regex:regex:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.truffle:truffle-api:jar:21.2.0:compile
+[INFO] |  |  +- org.graalvm.sdk:graal-sdk:jar:21.2.0:compile
+[INFO] |  |  \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO] |  \- org.springframework.boot:spring-boot-starter-thymeleaf:jar:2.7.0:compile
+[INFO] |     +- org.thymeleaf:thymeleaf-spring5:jar:3.0.15.RELEASE:compile
+[INFO] |     |  \- org.thymeleaf:thymeleaf:jar:3.0.15.RELEASE:compile
+[INFO] |     |     +- org.attoparser:attoparser:jar:2.0.5.RELEASE:compile
+[INFO] |     |     \- org.unbescape:unbescape:jar:1.1.6.RELEASE:compile
+[INFO] |     \- org.thymeleaf.extras:thymeleaf-extras-java8time:jar:3.0.4.RELEASE:compile
+[INFO] +- org.finos.springbot:entity-json:jar:9.0.2-SNAPSHOT:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.13.3:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.13.3:compile
+[INFO] |     \- com.fasterxml.jackson.core:jackson-core:jar:2.13.2:compile
+[INFO] \- org.finos.springbot:entities:jar:9.0.2-SNAPSHOT:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for Spring Bot 9.0.2-SNAPSHOT:
+[INFO] 
+[INFO] Spring Bot ......................................... SUCCESS [  1.318 s]
+[INFO] Symphony Entity Json ............................... SUCCESS [  0.170 s]
+[INFO] Chat Workflow ...................................... SUCCESS [  1.622 s]
+[INFO] Chat Workflow Testing .............................. SUCCESS [  4.370 s]
+[INFO] Symphony Java Client Entities ...................... SUCCESS [  0.030 s]
+[INFO] Spring Boot Starter For Chat Workflow Symphony BDK Adapter SUCCESS [  1.496 s]
+[INFO] Spring Boot Starter For Chat Workflow Microsoft Teams Adapter SUCCESS [  0.515 s]
+[INFO] RSS Publications Bot ............................... SUCCESS [  0.621 s]
+[INFO] Poll Bot ........................................... SUCCESS [  0.658 s]
+[INFO] Reminder Bot ....................................... SUCCESS [  0.247 s]
+[INFO] Demo Bot ........................................... SUCCESS [  0.100 s]
+[INFO] Custom Help Demo Bot ............................... SUCCESS [  0.108 s]
+[INFO] To-Do Bot (Demo) ................................... SUCCESS [  0.108 s]
+[INFO] Expense Claim Bot (Demo) ........................... SUCCESS [  0.097 s]
+[INFO] Rooms Bot (Demo) ................................... SUCCESS [  0.086 s]
+[INFO] Chat Workflow Coverage Report ...................... SUCCESS [  0.130 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.881 s
+[INFO] Finished at: 2023-04-14T12:58:52+01:00
+[INFO] ------------------------------------------------------------------------
