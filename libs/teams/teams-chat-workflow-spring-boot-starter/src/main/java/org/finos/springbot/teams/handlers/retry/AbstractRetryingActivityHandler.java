@@ -88,7 +88,7 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 			retryCount++;
 			if (retryCount <= teamsRetryCount) {
 				LOG.info("AbstractRetryingActivityHandler request retryAfter {}", retryAfter);
-				LocalDateTime retryAfterTime = LocalDateTime.now().plusSeconds(retryAfter);
+				LocalDateTime retryAfterTime = LocalDateTime.now().plusSeconds(retryAfter);				
 				add(new MessageRetry(activity, to, retryCount, retryAfterTime));
 				return true;
 			}
@@ -102,63 +102,16 @@ public abstract class AbstractRetryingActivityHandler implements ActivityHandler
 		while ((opt = get()).isPresent()) {
 			messageCount++;
 			MessageRetry msg = opt.get();
-			this.handleActivity(msg.getActivity(), msg.getAddressable(), msg.getRetryCount());
+			this.handleActivity(msg.getActivity(), msg.getTeamsAddressable(), msg.getRetryCount());
 		}
 
 		LOG.info("Retry message queue {}", messageCount == 0 ? "is empty" : "has messages, count: " + messageCount);
 	}
 
+	
 	protected abstract void add(MessageRetry retry);
 
 	protected abstract Optional<MessageRetry> get();
 
-	class MessageRetry {
-
-		private Activity activity;
-		private TeamsAddressable addressable;
-		private int retryCount;
-		private LocalDateTime retryAfterTime;
-
-		public MessageRetry(Activity activity, TeamsAddressable addressable, int retryCount,
-				LocalDateTime retryAfterTime) {
-			super();
-			this.activity = activity;
-			this.addressable = addressable;
-			this.retryCount = retryCount;
-			this.retryAfterTime = retryAfterTime;
-		}
-
-		public Activity getActivity() {
-			return activity;
-		}
-
-		public void setActivity(Activity activity) {
-			this.activity = activity;
-		}
-
-		public TeamsAddressable getAddressable() {
-			return addressable;
-		}
-
-		public void setAddressable(TeamsAddressable addressable) {
-			this.addressable = addressable;
-		}
-
-		public int getRetryCount() {
-			return retryCount;
-		}
-
-		public void setRetryCount(int retryCount) {
-			this.retryCount = retryCount;
-		}
-
-		public LocalDateTime getRetryAfterTime() {
-			return retryAfterTime;
-		}
-
-		public void setRetryAfterTime(LocalDateTime retryAfterTime) {
-			this.retryAfterTime = retryAfterTime;
-		}
-
-	}
+	
 }

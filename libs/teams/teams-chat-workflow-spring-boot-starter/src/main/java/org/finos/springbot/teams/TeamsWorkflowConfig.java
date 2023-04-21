@@ -16,7 +16,6 @@ import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
 import org.finos.springbot.teams.handlers.ActivityHandler;
 import org.finos.springbot.teams.handlers.SimpleActivityHandler;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
-import org.finos.springbot.teams.handlers.retry.InMemoryRetryingActivityHandler;
 import org.finos.springbot.teams.history.StateStorageBasedTeamsHistory;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
