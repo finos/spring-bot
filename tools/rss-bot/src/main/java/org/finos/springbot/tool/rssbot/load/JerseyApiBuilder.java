@@ -69,7 +69,7 @@ public class JerseyApiBuilder extends AbstractApiBuilder {
 	}
 
 	protected SSLContext createSSLContext() throws NoSuchAlgorithmException, KeyManagementException {
-		SSLContext ctx = SSLContext.getInstance("SSL");
+		SSLContext ctx = SSLContext.getInstance("TLSv1.2");
 		ctx.init(keyManagers, trustManagers, null);
 		return ctx;
 	}

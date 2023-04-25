@@ -94,3 +94,9 @@ symphony:
   reminder:
     defaultRemindBefore:  30  # 30 minutes before.
 ```
+
+### Deploying Reminder Bot
+
+**NB:**: ReminderBot uses `stanford-corenlp` (and related jars) which is licensed using GPL.   This is incompatible with the Apache 2.0 license of Spring Bot. Therefore, the dependency is set as `provided` in the pom.  To run this code locally you will either need to change to `runtime` scope, or download the jars and add them to the classpath manually.
+
+

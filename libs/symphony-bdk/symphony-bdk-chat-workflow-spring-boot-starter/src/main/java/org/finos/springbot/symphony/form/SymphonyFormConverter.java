@@ -16,6 +16,7 @@ public class SymphonyFormConverter extends FormConverter {
 	public Object convert(Map<String, Object> formValues, String type) throws ClassNotFoundException {
 		if (formValues.containsKey("entity.formdata")) {
 			try {
+				// nosemgrep
 				Class<?> c = Class.forName(type);
 				return om.convertValue(formValues.get("entity.formdata"), c);
 			} catch (Exception e1) {

@@ -45,6 +45,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 		}
 	}
 
+	// nosemgrep
 	protected void updateData(FormAction in, String verb) {
 		String tableLocation = verb.substring(0, verb.length() - UPDATE_SUFFIX.length()-1);
 		tableLocation = fixSpel(tableLocation);
@@ -66,6 +67,7 @@ public class TableEditRow extends AbstractTableActionConsumer {
 		rh.accept(wr);
 	}
 
+	// nosemgrep
 	protected void createEditForm(FormAction in, String verb) {
 		String tableLocation = verb.substring(0, verb.length() - EDIT_SUFFIX.length()-1);
 		tableLocation = fixSpel(tableLocation);

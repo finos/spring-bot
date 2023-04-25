@@ -16,6 +16,7 @@
 	<description>Reminder Bot for Managing Reminders</description>
 
 	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
 		<spring-boot.run.main-class>org.finos.springbot.tool.reminders.ReminderBotApp</spring-boot.run.main-class>
 	</properties>
 
@@ -40,18 +41,21 @@
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
 			<version>${corenlp.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
 			<artifactId>stanford-corenlp</artifactId>
 			<version>${corenlp.version}</version>
 			<classifier>models</classifier>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>edu.washington.cs.knowitall.stanford-corenlp</groupId>
 			<artifactId>stanford-sutime-models</artifactId>
 			<version>${sutime-models.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>

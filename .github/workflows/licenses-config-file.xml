@@ -1,0 +1,18 @@
+<!-- Checkout docs on https://www.mojohaus.org/license-maven-plugin/download-licenses-mojo.html#licensesConfigFile -->
+<licenseSummary>
+  <dependencies>
+    <dependency>
+      <groupId>org.openapitools</groupId>
+      <artifactId>jackson-databind-nullable</artifactId>
+      <matchLicenses>
+        <!-- Match an empty list of licenses -->
+      </matchLicenses>
+      <licenses>
+        <license>
+          <name>Apache 2.0</name>
+          <url>https://github.com/OpenAPITools/jackson-databind-nullable/blob/master/LICENSE</url>
+        </license>
+      </licenses>
+    </dependency>
+  </dependencies>
+</licenseSummary>

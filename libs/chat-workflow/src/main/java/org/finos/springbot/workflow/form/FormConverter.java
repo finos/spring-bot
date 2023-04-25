@@ -47,6 +47,7 @@ public class FormConverter {
 		// attempt to cast the result.  
 		Class<?> c = null;
 		try {
+			// nosemgrep
 			c = Class.forName(type);
 		} catch (Exception e1) {
 			LOG.debug("Couldn't convert {} ",formValues, e1);

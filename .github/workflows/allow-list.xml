@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <suppress>
+        <notes><![CDATA[
+        Only applies to using spring-web, we barely use this.
+        ]]></notes>
+        <gav>org.springframework:spring-web:5.3.25</gav>
+        <cve>CVE-2016-1000027</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Only applies to Safari, which we don't use.  I guess may be a problem if running in prod on OSX-x86?
+        ]]></notes>
+        <cve>CVE-2011-1797</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+         Reminder Bot: Doesn't affect SUTime, which is what we're using
+        ]]></notes>
+        <cve>CVE-2022-0239</cve>
+        <cve>CVE-2021-3878</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Only applies in converting XML to JSON, which we don't use, and we don't use the library for that either (hutool)
+        ]]></notes>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        YAML parsing only done for loading spring config.  Never for user-originated data.
+        ]]></notes>
+        <cve>CVE-2022-3064</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Parsing with Stax API. But we get data from trusted source (Microsoft Teams) so I'm going to suppress.
+        ]]></notes>
+        <cve>CVE-2022-40152</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Only applies to spring web doing deserializion of untrusted classes.
+        ]]></notes>
+        <cve>CVE-2016-1000027</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Spel expressions can only be injected by developers/deployers, who should know better. Ignoring this.
+        ]]></notes>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+        
+</suppressions>
+

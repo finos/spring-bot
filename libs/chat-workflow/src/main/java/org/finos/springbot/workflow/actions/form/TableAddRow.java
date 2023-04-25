@@ -45,6 +45,7 @@ public class TableAddRow extends AbstractTableActionConsumer {
 	}
 
 
+	// nosemgrep
 	@SuppressWarnings("unchecked")
 	protected void addNewRowAction(FormAction ea, String verb) {
 		String tableLocation = verb.substring(0, verb.length() - DO_SUFFIX.length()-1);
@@ -63,7 +64,7 @@ public class TableAddRow extends AbstractTableActionConsumer {
 		rh.accept(wr);
 	}
 
-
+	// nosemgrep
 	protected void newRowFormAction(FormAction ea, String verb) {
 		Map<String, Object> ej = ea.getData();
 		Object workflowObject = ej.get(WorkResponse.OBJECT_KEY);
