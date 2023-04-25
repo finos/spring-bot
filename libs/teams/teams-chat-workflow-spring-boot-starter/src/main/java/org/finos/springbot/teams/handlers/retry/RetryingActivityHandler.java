@@ -90,10 +90,10 @@ public class RetryingActivityHandler implements ActivityHandler {
 	    return future;
 	}
 
-	static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(0);
-
+	static final ScheduledExecutorService SCHEDULER = new ScheduledThreadPoolExecutor(5);
+	
 	private Executor createDelayedExecutor(long delay, TimeUnit unit) {
-		return r -> SCHEDULER.schedule(() -> ForkJoinPool.commonPool().execute(r), delay, unit);
+		return r -> SCHEDULER.schedule(r, delay, unit);
 	}
 
 }

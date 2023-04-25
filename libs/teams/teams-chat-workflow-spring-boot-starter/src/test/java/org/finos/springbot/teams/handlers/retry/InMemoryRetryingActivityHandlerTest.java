@@ -1,5 +1,8 @@
 package org.finos.springbot.teams.handlers.retry;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -34,12 +37,18 @@ public class InMemoryRetryingActivityHandlerTest {
 	TeamsConversations conv;
 
 	int go = 0;
+	
+	Set<Thread> allUsedThreads = new HashSet<>();
 
 	@BeforeEach
 	public void mockSetup() {
+		go = 0;
+		allUsedThreads.clear();
 		ArgumentCaptor<Activity> msg = ArgumentCaptor.forClass(Activity.class);
 
 		Mockito.when(conv.handleActivity(msg.capture(), Mockito.any())).thenAnswer(a -> {
+			allUsedThreads.add(Thread.currentThread());
+			System.out.println("Trying "+go+" with thread "+Thread.currentThread());
 			ResourceResponse arg1 = new ResourceResponse("done");
 
 			if (go % 3 != 2) {
@@ -48,7 +57,7 @@ public class InMemoryRetryingActivityHandlerTest {
 				Response<ResponseBody> r = Response.error(out,
 						new okhttp3.Response.Builder()
 								.code(HttpStatus.TOO_MANY_REQUESTS.value())
-								.message("Response.error()").addHeader("Retry-After", "1000")
+								.message("Response.error()").addHeader("Retry-After", "50")
 								.protocol(Protocol.HTTP_1_1)
 								.request(new Request.Builder().url("http://localhost/").build()).build());
 				go++;
@@ -81,9 +90,20 @@ public class InMemoryRetryingActivityHandlerTest {
 		Assertions.assertEquals("done", rr.getId());
 		long doneTime = System.currentTimeMillis();
 
-		Assertions.assertTrue(doneTime - now > 2000);
+		Assertions.assertTrue(doneTime - now > 150);
 		Assertions.assertEquals(3, go);
 
+	}
+	
+	@Test
+	public void testMultipleTimes() throws Exception {
+		for (int i = 0; i <100; i++) {
+			RetryingActivityHandler retry = new RetryingActivityHandler(conv);
+			CompletableFuture<ResourceResponse> cf = retry.handleActivity(new Activity("dummy"), dummyChat1);
+			ResourceResponse rr = cf.get();
+		}
+				
+		System.out.println(allUsedThreads.size());
 	}
 
 }
