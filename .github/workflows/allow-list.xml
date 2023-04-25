@@ -38,6 +38,18 @@
         ]]></notes>
         <cve>CVE-2022-40152</cve>
     </suppress>
-    
+    <suppress>
+        <notes><![CDATA[
+        Only applies to spring web doing deserializion of untrusted classes.
+        ]]></notes>
+        <cve>CVE-2016-1000027</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+        Spel expressions can only be injected by developers/deployers, who should know better. Ignoring this.
+        ]]></notes>
+        <cve>CVE-2023-20863</cve>
+    </suppress>
+        
 </suppressions>
 
