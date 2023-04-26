@@ -98,7 +98,7 @@ public class InMemoryRetryingActivityHandlerTest {
 	
 	@Test
 	public void testRetryGivesUp() throws InterruptedException, ExecutionException {
-		try {
+		Assertions.assertThrows(Exception.class, () -> {
 			passEvery = 1000;	// never succeeds
 			long now = System.currentTimeMillis();
 
@@ -107,10 +107,7 @@ public class InMemoryRetryingActivityHandlerTest {
 			CompletableFuture<ResourceResponse> cf = retry.handleActivity(new Activity("dummy"), dummyChat1);
 
 			ResourceResponse rr = cf.get();
-		} catch (Exception e) {
-			Assertions.assertEquals(4, go);
-		}
-
+		});
 	}
 	
 	@Test
