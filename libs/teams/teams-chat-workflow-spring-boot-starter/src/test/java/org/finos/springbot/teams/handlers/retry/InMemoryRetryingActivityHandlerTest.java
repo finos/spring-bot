@@ -37,6 +37,7 @@ public class InMemoryRetryingActivityHandlerTest {
 	TeamsConversations conv;
 
 	int go = 0;
+	int passEvery = 3;
 	
 	Set<Thread> allUsedThreads = new HashSet<>();
 
@@ -51,7 +52,7 @@ public class InMemoryRetryingActivityHandlerTest {
 			System.out.println("Trying "+go+" with thread "+Thread.currentThread());
 			ResourceResponse arg1 = new ResourceResponse("done");
 
-			if (go % 3 != 2) {
+			if (go % passEvery != (passEvery -1)) {
 				// fails
 				ResponseBody out = ResponseBody.create("{}", MediaType.get("application/json"));
 				Response<ResponseBody> r = Response.error(out,
@@ -93,6 +94,36 @@ public class InMemoryRetryingActivityHandlerTest {
 		Assertions.assertTrue(doneTime - now > 150);
 		Assertions.assertEquals(3, go);
 
+	}
+	
+	@Test
+	public void testRetryGivesUp() throws InterruptedException, ExecutionException {
+		try {
+			passEvery = 1000;	// never succeeds
+			long now = System.currentTimeMillis();
+
+			RetryingActivityHandler retry = new RetryingActivityHandler(conv);
+
+			CompletableFuture<ResourceResponse> cf = retry.handleActivity(new Activity("dummy"), dummyChat1);
+
+			ResourceResponse rr = cf.get();
+		} catch (Exception e) {
+			Assertions.assertEquals(4, go);
+		}
+
+	}
+	
+	@Test
+	public void testWorksFirstTime() throws InterruptedException, ExecutionException {
+		passEvery = 1;	// always succeeds
+		long now = System.currentTimeMillis();
+
+		RetryingActivityHandler retry = new RetryingActivityHandler(conv);
+
+		CompletableFuture<ResourceResponse> cf = retry.handleActivity(new Activity("dummy"), dummyChat1);
+
+		ResourceResponse rr = cf.get();
+		Assertions.assertEquals("done", rr.getId());
 	}
 	
 	@Test
