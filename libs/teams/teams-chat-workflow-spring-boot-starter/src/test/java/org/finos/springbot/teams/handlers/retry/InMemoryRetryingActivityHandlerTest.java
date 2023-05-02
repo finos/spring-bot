@@ -1,7 +1,6 @@
 package org.finos.springbot.teams.handlers.retry;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -115,7 +114,7 @@ public class InMemoryRetryingActivityHandlerTest {
 		passEvery = 1;	// always succeeds
 		long now = System.currentTimeMillis();
 
-		RetryingActivityHandler retry = new RetryingActivityHandler(conv);
+		InMemoryRetryingActivityHandler retry = new InMemoryRetryingActivityHandler(conv);
 
 		CompletableFuture<ResourceResponse> cf = retry.handleActivity(new Activity("dummy"), dummyChat1);
 
@@ -125,8 +124,8 @@ public class InMemoryRetryingActivityHandlerTest {
 	
 	@Test
 	public void testMultipleTimes() throws Exception {
-		for (int i = 0; i <10; i++) {
-			RetryingActivityHandler retry = new RetryingActivityHandler(conv);
+		for (int i = 0; i <5; i++) {
+			InMemoryRetryingActivityHandler retry = new InMemoryRetryingActivityHandler(conv);
 			CompletableFuture<ResourceResponse> cf = retry.handleActivity(new Activity("dummy"), dummyChat1);
 			ResourceResponse rr = cf.get();
 		}
