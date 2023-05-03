@@ -182,7 +182,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	private BiFunction<? super ResourceResponse, Throwable, ResourceResponse> handleErrorAndStorage(Object out, TeamsAddressable address, Map<String, Object> data, Response t) {
 		return (rr, e) -> {
 				if (e != null) {					
-					LOG.error(e.getMessage());
+					LOG.error("Error message for stream id {} , message: {} ", address.getKey() , e.getMessage());
 					if (out instanceof ObjectNode){
 						try {
 							LOG.error("json:\n"+new ObjectMapper().writeValueAsString(out));
