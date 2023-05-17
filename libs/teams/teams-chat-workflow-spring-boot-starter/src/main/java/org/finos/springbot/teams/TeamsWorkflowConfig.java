@@ -13,8 +13,8 @@ import org.finos.springbot.teams.conversations.TeamsConversations;
 import org.finos.springbot.teams.conversations.TeamsConversationsConfig;
 import org.finos.springbot.teams.form.TeamsFormConverter;
 import org.finos.springbot.teams.form.TeamsFormDeserializerModule;
-import org.finos.springbot.teams.handlers.InMemoryMessageRetryHandler;
-import org.finos.springbot.teams.handlers.MessageRetryHandler;
+import org.finos.springbot.teams.handlers.ActivityHandler;
+import org.finos.springbot.teams.handlers.SimpleActivityHandler;
 import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.history.StateStorageBasedTeamsHistory;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
@@ -75,8 +75,7 @@ import com.microsoft.bot.schema.ChannelAccount;
 	ThymeleafEngineConfig.class,
 	AdaptiveCardConverterConfig.class,
 	ThymeleafConverterConfig.class,
-	TeamsConversationsConfig.class,
-	TeamsScheduledConfig.class
+	TeamsConversationsConfig.class
 	})
 @Profile("teams")
 public class TeamsWorkflowConfig {
@@ -129,16 +128,23 @@ public class TeamsWorkflowConfig {
 			AdaptiveCardTemplateProvider formTemplater,
 			ThymeleafTemplateProvider displayTemplater,
 			TeamsStateStorage th,
-			TeamsConversations tc,
-			MessageRetryHandler mr) {
+			ActivityHandler ah) {
 		return new TeamsResponseHandler(
 				null,	// attachment handler
 				markupTemplater,
 				formTemplater,
 				displayTemplater,
 				th,
-				tc,
-				mr);
+				ah);
+	}
+	
+	/**
+	If you want to include retry logic for activities, override this bean and return an instance of InMemoryRetryingActivityHandler
+	*/
+	@Bean
+	@ConditionalOnMissingBean
+	public ActivityHandler activityHandler(TeamsConversations tc) {
+		return new SimpleActivityHandler(tc);
 	}
 	
 	@Bean
@@ -230,10 +236,5 @@ public class TeamsWorkflowConfig {
         resourceLoader.setClassLoader(this.getClass().getClassLoader());
     }
 
-    @Bean
-    @ConditionalOnMissingBean
-    public MessageRetryHandler messageRetryHandler() {
-    	return new InMemoryMessageRetryHandler();
-    }
 
 }

@@ -72,6 +72,40 @@ public abstract class AbstractStateStorageTest {
 		Assertions.assertEquals(2, hoover(tss.retrieve(tagList4, false)).size());
 	}
 	
+	@Test
+	public void testSlashStoreWithMultipleDirectories() throws IOException {
+		Map<String, Object> somedata = Collections.singletonMap("a", "b");
+		Map<String, String> tagsForTheFile = new HashMap<String, String>();
+		tagsForTheFile.put("addressable", "one");
+		tagsForTheFile.put("object1", "tag");
+
+		Map<String, String> tagsForTheFileA = new HashMap<String, String>();
+		tagsForTheFileA.put("addressable", "one");
+		tagsForTheFileA.put("object2", "tag");
+		
+		Map<String, String> tagsForTheFileB = new HashMap<String, String>();
+		tagsForTheFileB.put("addressable", "two");
+		tagsForTheFileB.put("object2", "tag");
+		
+		List<TeamsStateStorage.Filter> tagList1 = Arrays.asList(
+				new Filter("addressable", "one", "="),
+				new Filter("object1", "tag", "=")
+		);
+		
+		List<TeamsStateStorage.Filter> tagList2 = Arrays.asList(
+				new Filter("addressable", "two", "="),
+				new Filter("object2", "tag", "=")
+		);
+		
+		tss.store("thefile", tagsForTheFile, somedata);
+		//tss.store("thefile/thefile", tagsForTheFile, somedata); // this won't work
+		tss.store("thefile/a", tagsForTheFileA, somedata);
+		tss.store("thefile/b", tagsForTheFileB, somedata);
+	
+		Assertions.assertEquals(1, hoover(tss.retrieve(tagList1, false)).size());	
+		Assertions.assertEquals(1, hoover(tss.retrieve(tagList2, false)).size());	
+	}
+	
 	public List<Map<String, Object>> hoover(Iterable<Map<String, Object>> iterable) {
 		List<Map<String, Object>> result =  StreamSupport.stream(iterable.spliterator(), false)
 			    .collect(Collectors.toList());

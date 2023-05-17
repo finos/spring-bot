@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.finos.springbot.teams.handlers.TeamsResponseHandler;
 import org.finos.springbot.teams.templating.MatcherUtil;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.form.ButtonList;
@@ -15,6 +16,8 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.templating.AbstractResourceTemplateProvider;
 import org.finos.springbot.workflow.templating.Mode;
 import org.finos.springbot.workflow.templating.WorkTemplater;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ResourceLoader;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -27,6 +30,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvider<JsonNode, JsonNode, WorkResponse> {
 
+	private static final Logger LOG = LoggerFactory.getLogger(AdaptiveCardTemplateProvider.class);
+	
 	public static final String FORMID_KEY = "formid";
 
 	private final WorkTemplater<JsonNode> formConverter;
@@ -58,11 +63,16 @@ public class AdaptiveCardTemplateProvider extends AbstractResourceTemplateProvid
 			// in this case, just provide the button template
 			return formConverter.convert(null, Mode.DISPLAY_WITH_BUTTONS);
 
+		} else if (AdaptiveCardPassthrough.isAdaptiveCard(t)) {
+			AdaptiveCardPassthrough passthrough = (AdaptiveCardPassthrough) t.getFormObject();
+			JsonNode template = passthrough.getJsonNode();
+			LOG.info("JsonNode Template: \n" + template.toPrettyString());
+
+			return template;
 		} else {
 			return super.template(t);
 		}
 	}
-
 
 
 

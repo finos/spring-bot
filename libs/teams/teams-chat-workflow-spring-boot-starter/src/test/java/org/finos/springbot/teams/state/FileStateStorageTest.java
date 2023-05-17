@@ -5,13 +5,18 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.finos.springbot.teams.MockTeamsConfiguration;
 import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +42,17 @@ public class FileStateStorageTest extends AbstractStateStorageTest {
 		this.tss = new FileStateStorage(ejc, tmpdir);
 	}
 
+	@Test
+	public void testCantStoreMultipleNestedDirectories() throws IOException {
+		Map<String, Object> somedata = Collections.singletonMap("a", "b");
+
+		Map<String, String> tagsForTheFileB = new HashMap<String, String>();
+		tagsForTheFileB.put("addressable", "two");
+		tagsForTheFileB.put("object2", "tag");
+
+		Assertions.assertThrows(UnsupportedOperationException.class, () -> tss.store("thefile/c/b", tagsForTheFileB, somedata));
+	}
+	
 	@AfterEach
 	public void cleanUp() throws IOException {
 		Path path = Paths.get(tmpdir);
