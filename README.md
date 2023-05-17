@@ -127,6 +127,12 @@ There are two main branches:
 - `spring-bot-master`:  new code for the multi-platform Symphony / Microsoft Teams bot builder
 - `symphony-java-toolkit-master`: legacy code for when this project only supported symphony.
 
+## How To Contribute
+
+We are always looking for helpful contributors!  
+
+You can check out the [Good First Issues](https://github.com/finos/spring-bot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or our [Contributing Guidelines](CONTRIBUTING) page for more details.
+
 ## Roadmap
 
 The spring bot roadmap is a number of tagged issues that we are working on _next_.  
