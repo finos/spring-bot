@@ -131,7 +131,7 @@ There are two main branches:
 
 We are always looking for helpful contributors!  
 
-You can check out the [Good First Issues](https://github.com/finos/spring-bot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or our [Contributing Guidelines](CONTRIBUTING) page for more details.
+You can check out the [Good First Issues](https://github.com/finos/spring-bot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or our [Contributing Guidelines](CONTRIBUTING.md) page for more details.
 
 ## Roadmap
 
