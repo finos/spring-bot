@@ -1,4 +1,4 @@
-[![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
+[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/active)
 [![codecov](https://codecov.io/gh/finos/spring-bot/branch/spring-bot-develop/graph/badge.svg?token=CSa0aaqYD0)](https://codecov.io/gh/finos/spring-bot)
 ![License](https://img.shields.io/github/license/finos/spring-bot)
 ![build](https://github.com/finos/spring-bot/workflows/sjt-build/badge.svg)
@@ -131,7 +131,7 @@ There are two main branches:
 
 We are always looking for helpful contributors!  
 
-You can check out the [Good First Issues](https://github.com/finos/spring-bot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or our [Contributing Guidelines](CONTRIBUTING) page for more details.
+You can check out the [Good First Issues](https://github.com/finos/spring-bot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or our [Contributing Guidelines](CONTRIBUTING.md) page for more details.
 
 ## Roadmap
 
