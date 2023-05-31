@@ -233,5 +233,12 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - #340 Running selfcontained spring boot jar (fat jar) fails on help command
  - #282 Fix The PollBot
  - Release 9.0.1
- 
+
+# May 31 2023
+
+ - #390 Improved documentation for FINOS Active badge
+ - #387 Fixed CVEs, rolled out FINOS Security Scanning
+ - #386 Fixed Teams File State Storage
+ - #380 Removing GPL-licensed dependency in Reminder Bot
+ - #378 Added retry logic for teams
  
