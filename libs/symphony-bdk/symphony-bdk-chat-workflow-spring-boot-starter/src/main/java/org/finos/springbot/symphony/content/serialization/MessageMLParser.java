@@ -102,6 +102,7 @@ public class MessageMLParser extends AbstractContentParser<String, EntityJson>{
 		Content [] out = { null };
 		
 		try {
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);          
 			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(new InputSource(new StringReader(message)), new DefaultHandler2() {
 
