@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.finos.springbot</groupId>
 		<artifactId>spring-bot</artifactId>
-		<version>9.0.2-SNAPSHOT</version>
+		<version>9.0.3-SNAPSHOT</version>
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
@@ -29,13 +29,13 @@
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
-			<version>9.0.2-SNAPSHOT</version>
+			<version>9.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
-			<version>9.0.2-SNAPSHOT</version>
+			<version>9.0.3-SNAPSHOT</version>
 			<scope>compile</scope>
 		</dependency>
 	</dependencies>
