@@ -155,7 +155,7 @@ mvn clean test -P symphony-ci
 mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
 mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
-# then push to git (spring-bot-develop branch)
+# then PR spring-bot-master branch with the new version number
 ```
 
 3. SECURITY.md
