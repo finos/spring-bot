@@ -6,6 +6,8 @@ import java.io.InputStream;
 import org.finos.springbot.workflow.response.DataResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.StringUtils;
@@ -19,6 +21,9 @@ public abstract class AbstractResourceTemplateProvider<T, F, V extends DataRespo
 	protected final String defaultTemplateName;
 	protected final ResourceLoader rl;
 
+	@Autowired
+	DefaultResourceLoader resourceLoader;
+	   
 	public AbstractResourceTemplateProvider(String templatePrefix, String templateSuffix, String defaultTemplateName, ResourceLoader rl) {
 		super();
 		this.templatePrefix = templatePrefix;
@@ -49,7 +54,7 @@ public abstract class AbstractResourceTemplateProvider<T, F, V extends DataRespo
 		try {
 			return resolveTemplate(name);
 		} catch (Exception e) {
-			LOG.debug("Couldn't find template: "+name);
+			LOG.error("Couldn't find template: "+ e);
 			return null;
 		}
 	}
@@ -59,7 +64,8 @@ public abstract class AbstractResourceTemplateProvider<T, F, V extends DataRespo
 	}
 
 	private Resource getResource(String name) {
-		return rl.getResource(templatePrefix + name + templateSuffix);
+		 resourceLoader.setClassLoader(this.getClass().getClassLoader());
+		return resourceLoader.getResource(templatePrefix + name + templateSuffix);
 	}
 	
 	@Override
