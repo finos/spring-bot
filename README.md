@@ -120,9 +120,9 @@ Please see our [Security Policy](SECURITY.md).
 
 # How To Contribute
 
-We are always looking for helpful contributors!  
+We are always looking for helpful contributors!  You can check out the [Good First Issues](https://github.com/finos/spring-bot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or our [Contributing Guidelines](CONTRIBUTING.md) page for more details.
 
-You can check out the [Good First Issues](https://github.com/finos/spring-bot/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) or our [Contributing Guidelines](CONTRIBUTING.md) page for more details.
+We have a [weekly Spring Bot project meeting](https://calendar.google.com/calendar/u/0/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig@group.calendar.google.com&ctz=America/New_York) which you can attend.  Minutes are [held as issues](https://github.com/finos/spring-bot/issues).
 
 # Roadmap
 
