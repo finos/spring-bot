@@ -34,7 +34,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
+* <p>
+* This class are part of <code>com.microsoft.bot:bot-integration-spring</code>
+* As Microsoft sdk does't support the spring-boot:3x, we have copy the class and made change that are compatible with spring-boot:3x
+* </p>
+* <p>
 * A super.class for a skill controller.
+* </p>
 */
 //Note: this class instanceof marked as abstract to prevent the ASP runtime from registering it as a controller.
 public abstract class ChannelServiceController {

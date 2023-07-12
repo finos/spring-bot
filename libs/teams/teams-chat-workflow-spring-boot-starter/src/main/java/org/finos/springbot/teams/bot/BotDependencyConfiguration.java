@@ -20,8 +20,14 @@ import org.springframework.context.annotation.Bean;
 import java.util.concurrent.ExecutorService;
 
 /**
+* <p>
+* This class are part of <code>com.microsoft.bot:bot-integration-spring</code>
+* As Microsoft sdk does't support the spring-boot:3x, we have copy the class and made change that are compatible with spring-boot:3x
+* </p>
+* 
+* <p>
 * This provides the default dependency creation for a Bot application.
-*
+*</p>
 * <p>
 * This class should be subclassed by a class with the
 * {@link org.springframework.context.annotation.Configuration} annotation (or

@@ -49,7 +49,7 @@ public abstract class AbstractResourceTemplateProvider<T, F, V extends DataRespo
 		try {
 			return resolveTemplate(name);
 		} catch (Exception e) {
-			LOG.error("Couldn't find template: "+e);
+			LOG.debug("Couldn't find template: "+name);
 			return null;
 		}
 	}

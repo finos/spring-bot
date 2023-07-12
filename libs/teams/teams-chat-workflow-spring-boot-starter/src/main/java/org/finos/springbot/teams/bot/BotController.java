@@ -18,9 +18,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
 /**
+* <p>
+* This class are part of <code>com.microsoft.bot:bot-integration-spring</code>
+* As Microsoft sdk does't support the spring-boot:3x, we have copy the class and made change that are compatible with spring-boot:3x
+* </p>
+*
+*<p> 
 * This is the default controller that will receive incoming Channel Activity
 * messages.
-*
+*</p> 
 * <p>
 * This controller is suitable in most cases. Bots that want to use this
 * controller should do so by using the @Import({BotController.class})
