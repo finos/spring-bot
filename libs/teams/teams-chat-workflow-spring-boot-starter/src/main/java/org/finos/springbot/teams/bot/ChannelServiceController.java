@@ -8,18 +8,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-import com.microsoft.bot.builder.ChannelServiceHandler;
-import com.microsoft.bot.connector.authentication.AuthenticationException;
-import com.microsoft.bot.schema.Activity;
-import com.microsoft.bot.schema.AttachmentData;
-import com.microsoft.bot.schema.ChannelAccount;
-import com.microsoft.bot.schema.ConversationParameters;
-import com.microsoft.bot.schema.ConversationResourceResponse;
-import com.microsoft.bot.schema.ConversationsResult;
-import com.microsoft.bot.schema.PagedMembersResult;
-import com.microsoft.bot.schema.ResourceResponse;
-import com.microsoft.bot.schema.Transcript;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,10 +21,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.microsoft.bot.builder.ChannelServiceHandler;
+import com.microsoft.bot.connector.authentication.AuthenticationException;
+import com.microsoft.bot.schema.Activity;
+import com.microsoft.bot.schema.AttachmentData;
+import com.microsoft.bot.schema.ChannelAccount;
+import com.microsoft.bot.schema.ConversationParameters;
+import com.microsoft.bot.schema.ConversationResourceResponse;
+import com.microsoft.bot.schema.ConversationsResult;
+import com.microsoft.bot.schema.PagedMembersResult;
+import com.microsoft.bot.schema.ResourceResponse;
+import com.microsoft.bot.schema.Transcript;
+
 /**
 * <p>
-* This class are part of <code>com.microsoft.bot:bot-integration-spring</code>
-* As Microsoft sdk does't support the spring-boot:3x, we have copy the class and made change that are compatible with spring-boot:3x
+* This class is part of <code>com.microsoft.bot:bot-integration-spring</code>
+* As Microsoft sdk does't support the spring-boot:3x, so we have copied the class and made change that are compatible with spring-boot:3x
 * </p>
 * <p>
 * A super.class for a skill controller.

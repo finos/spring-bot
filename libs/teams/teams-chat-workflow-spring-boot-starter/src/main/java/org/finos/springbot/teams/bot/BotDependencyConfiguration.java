@@ -1,6 +1,10 @@
 package org.finos.springbot.teams.bot;
 
 
+import java.util.concurrent.ExecutorService;
+
+import org.springframework.context.annotation.Bean;
+
 import com.microsoft.bot.builder.ConversationState;
 import com.microsoft.bot.builder.MemoryStorage;
 import com.microsoft.bot.builder.Storage;
@@ -15,14 +19,11 @@ import com.microsoft.bot.integration.ClasspathPropertiesConfiguration;
 import com.microsoft.bot.integration.Configuration;
 import com.microsoft.bot.integration.ConfigurationChannelProvider;
 import com.microsoft.bot.integration.ConfigurationCredentialProvider;
-import org.springframework.context.annotation.Bean;
-
-import java.util.concurrent.ExecutorService;
 
 /**
 * <p>
-* This class are part of <code>com.microsoft.bot:bot-integration-spring</code>
-* As Microsoft sdk does't support the spring-boot:3x, we have copy the class and made change that are compatible with spring-boot:3x
+* This class is part of <code>com.microsoft.bot:bot-integration-spring</code>
+* As Microsoft sdk does't support the spring-boot:3x, so we have copied the class and made change that are compatible with spring-boot:3x
 * </p>
 * 
 * <p>

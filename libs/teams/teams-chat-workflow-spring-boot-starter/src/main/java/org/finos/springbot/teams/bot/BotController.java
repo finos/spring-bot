@@ -19,8 +19,8 @@ import java.util.concurrent.CompletionException;
 
 /**
 * <p>
-* This class are part of <code>com.microsoft.bot:bot-integration-spring</code>
-* As Microsoft sdk does't support the spring-boot:3x, we have copy the class and made change that are compatible with spring-boot:3x
+* This class is part of <code>com.microsoft.bot:bot-integration-spring</code>
+* As Microsoft sdk does't support the spring-boot:3x, so we have copied the class and made change that are compatible with spring-boot:3x
 * </p>
 *
 *<p> 
