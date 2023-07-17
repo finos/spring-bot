@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 
 import org.finos.springbot.ChatWorkflowConfig;
+import org.finos.springbot.teams.bot.BotController;
 import org.finos.springbot.teams.content.TeamsContentConfig;
 import org.finos.springbot.teams.content.serialization.TeamsHTMLParser;
 import org.finos.springbot.teams.content.serialization.TeamsMarkupWriter;
@@ -42,6 +43,7 @@ import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.form.FormValidationProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -59,7 +61,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
-import com.microsoft.bot.integration.spring.BotController;
 import com.microsoft.bot.schema.ChannelAccount;
 
 /**
@@ -78,7 +79,7 @@ import com.microsoft.bot.schema.ChannelAccount;
 	TeamsConversationsConfig.class
 	})
 @Profile("teams")
-public class TeamsWorkflowConfig {
+public class TeamsWorkflowConfig implements InitializingBean {
 		
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsWorkflowConfig.class);
 	
@@ -231,10 +232,22 @@ public class TeamsWorkflowConfig {
      * Templates don't load properly with a fat jar.  
      * @see https://github.com/finos/spring-bot/issues/340
      */
-    @PostConstruct
-    public void setResourceLoaderClassLoader() {
-        resourceLoader.setClassLoader(this.getClass().getClassLoader());
-    }
+//    @PostConstruct
+//    public void setResourceLoaderClassLoader() {
+//        resourceLoader.setClassLoader(this.getClass().getClassLoader());
+//    }
+
+	/**
+	 * Templates don't load properly with a fat jar.  
+     * @see https://github.com/finos/spring-bot/issues/340
+     * and Spring-boot:3x suuport
+	 * https://github.com/finos/spring-bot/issues/405
+	 * 
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		resourceLoader.setClassLoader(this.getClass().getClassLoader());
+	}
 
 
 }

@@ -2,6 +2,7 @@ package org.finos.springbot.teams.conversations;
 
 import java.util.Properties;
 
+import org.finos.springbot.teams.bot.BotDependencyConfiguration;
 import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,6 @@ import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
-import com.microsoft.bot.integration.spring.BotDependencyConfiguration;
 import com.microsoft.bot.schema.ChannelAccount;
 
 public class TeamsConversationsConfig extends BotDependencyConfiguration {
