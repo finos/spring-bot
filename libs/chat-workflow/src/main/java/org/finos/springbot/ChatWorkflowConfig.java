@@ -93,7 +93,7 @@ public class ChatWorkflowConfig {
 	
 	@Bean
 	@ConditionalOnMissingBean
-	public ChatWorkflowErrorHandler chatWorkflowErrorHandler(ResponseHandlers rh) {
+	public ErrorHandler chatWorkflowErrorHandler(ResponseHandlers rh) {
 		return new ChatWorkflowErrorHandler(rh, "default-error");
 	} 
 
