@@ -17,8 +17,11 @@ import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardPassthrough;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
+import org.finos.springbot.workflow.actions.Action;
+import org.finos.springbot.workflow.actions.ErrorAction;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.response.AttachmentResponse;
+import org.finos.springbot.workflow.response.ErrorResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
@@ -192,8 +195,13 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						LOG.error("message:\n"+out);						
 					} 
 					
+					if(!(t  instanceof ErrorResponse)) {
+						Action.CURRENT_ACTION.set(new ErrorAction(address, data));
+					}
+					
 					initErrorHandler();
-					eh.handleError(e);					
+					eh.handleError(e);
+					Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 				} else if(rr != null) {
 					performStorage(address, data, teamsState);
 				}

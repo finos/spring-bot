@@ -102,12 +102,12 @@ public class BotController {
 
              if (exception instanceof CompletionException) {
                  if (exception.getCause() instanceof AuthenticationException) {
-                	 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+                	 return ResponseEntity.status(HttpStatus.UNAUTHORIZED.value()).build();
                  } else {
-                	 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+                	 return ResponseEntity.internalServerError().build();
                  }
              } else {
-            	 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            	 return ResponseEntity.internalServerError().build();
              }
          });
  }
