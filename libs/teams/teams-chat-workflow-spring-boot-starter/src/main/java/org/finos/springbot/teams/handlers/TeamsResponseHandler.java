@@ -20,8 +20,6 @@ import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
 import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.actions.ErrorAction;
 import org.finos.springbot.workflow.annotations.WorkMode;
-import org.finos.springbot.workflow.content.Addressable;
-import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.ErrorResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
@@ -203,25 +201,7 @@ public class TeamsResponseHandler implements ResponseHandler<ResourceResponse>, 
 						Action.CURRENT_ACTION.set(new ErrorAction(address, data));
 					}
 					
-					initErrorHandler();
-					Action.CURRENT_ACTION.set(new Action() {
-
-						@Override
-						public Addressable getAddressable() {
-							return address;
-						}
-
-						@Override
-						public User getUser() {
- 							return null;
-						}
-
-						@Override
-						public Object getData() {
-							return data;
-						}
-						
-					});
+					initErrorHandler();				
 					eh.handleError(e);	
 					Action.CURRENT_ACTION.set(Action.NULL_ACTION);
 				} else if(rr != null) {

@@ -1,5 +1,6 @@
 package org.finos.springbot.workflow.response;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.finos.springbot.workflow.content.Addressable;
@@ -27,13 +28,13 @@ public class MessageResponse extends DataResponse {
 	
 
 	public MessageResponse(Addressable stream, Content m) {
-		super(stream, null, null);
+		super(stream, new HashMap<>(), null);
 		this.m = m;
 	}
 	
 
 	public MessageResponse(Addressable stream, Content m, String template) {
-		super(stream, null, template);
+		super(stream, new HashMap<>(), template);
 		this.m = m;
 	}
 	
