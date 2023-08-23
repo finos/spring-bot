@@ -9,7 +9,7 @@ import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.finos.springbot.workflow.response.handlers.ResponseHandler;
 
-public class HeaderTagResponseHandler implements ResponseHandler {
+public class HeaderTagResponseHandler implements ResponseHandler<Void> {
 
 	/**
 	 * This ensures that the JSON data being sent will contain a HeaderDetails
@@ -17,7 +17,7 @@ public class HeaderTagResponseHandler implements ResponseHandler {
 	 * {@link Work} in the message.
 	 */
 	@Override
-	public void accept(Response t) {
+	public Void apply(Response t) {
 
 		if (t instanceof WorkResponse) {
 			WorkResponse workResponse = (WorkResponse) t;
@@ -44,6 +44,8 @@ public class HeaderTagResponseHandler implements ResponseHandler {
 			hd.setTags(new ArrayList<String>(tags));
 
 		}
+		
+		return null;
 	}
 
 	@Override

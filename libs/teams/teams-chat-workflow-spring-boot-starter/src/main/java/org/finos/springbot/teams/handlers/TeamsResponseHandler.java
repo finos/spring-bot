@@ -17,7 +17,10 @@ import org.finos.springbot.teams.state.TeamsStateStorage;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardPassthrough;
 import org.finos.springbot.teams.templating.adaptivecard.AdaptiveCardTemplateProvider;
 import org.finos.springbot.teams.templating.thymeleaf.ThymeleafTemplateProvider;
+import org.finos.springbot.workflow.actions.Action;
 import org.finos.springbot.workflow.annotations.WorkMode;
+import org.finos.springbot.workflow.content.Addressable;
+import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.response.AttachmentResponse;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.finos.springbot.workflow.response.Response;
@@ -42,7 +45,7 @@ import com.microsoft.bot.schema.Entity;
 import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.TextFormatTypes;
 
-public class TeamsResponseHandler implements ResponseHandler, ApplicationContextAware {
+public class TeamsResponseHandler implements ResponseHandler<ResourceResponse>, ApplicationContextAware {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(TeamsResponseHandler.class);
 	
@@ -82,7 +85,7 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 	enum TemplateType { ADAPTIVE_CARD, THYMELEAF, BOTH };
 
 	@Override
-	public void accept(Response t) {
+	public ResourceResponse apply(Response t) {
 		if (t.getAddress() instanceof TeamsAddressable) {		
 			TeamsAddressable ta = (TeamsAddressable) t.getAddress();
 
@@ -98,8 +101,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 						attachment = attachmentHandler.formatAttachment((AttachmentResponse) mr);
 					}
 					
-					sendXMLResponse(content, attachment, ta, entities, mr.getData())
-						.handle(handleErrorAndStorage(content, ta, mr.getData(), t));
+					return sendXMLResponse(content, attachment, ta, entities, mr.getData())
+						.handle(handleErrorAndStorage(content, ta, mr.getData(), t)).get();
 					
 				} else if (t instanceof WorkResponse) {
 					WorkResponse wr = (WorkResponse) t;
@@ -107,15 +110,15 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
  					 
 					if (tt == TemplateType.ADAPTIVE_CARD) {
 						JsonNode cardJson = workTemplater.template(wr);
-						sendCardResponse(cardJson, ta, wr.getData())
-							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t));
+						return sendCardResponse(cardJson, ta, wr.getData())
+							.handle(handleErrorAndStorage(cardJson, ta, wr.getData(), t)).get();
 					} else {
 						MarkupAndEntities mae = displayTemplater.template(wr);
 						String content = mae.getContents();
 						List<Entity> entities = mae.getEntities();
-						sendXMLResponse(content, null, ta, entities, wr.getData())
+						return sendXMLResponse(content, null, ta, entities, wr.getData())
 							.handle(handleButtonsIfNeeded(tt, wr))
-							.handle(handleErrorAndStorage(content, ta, wr.getData(), t));
+							.handle(handleErrorAndStorage(content, ta, wr.getData(), t)).get();
 						
 					}
 				}
@@ -123,6 +126,8 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 				throw new TeamsException("Couldn't handle response " +t, e);
 			}
 		}
+		
+		return null;
 	}
 
 
@@ -193,12 +198,30 @@ public class TeamsResponseHandler implements ResponseHandler, ApplicationContext
 					} 
 					
 					initErrorHandler();
-					eh.handleError(e);					
+					Action.CURRENT_ACTION.set(new Action() {
+
+						@Override
+						public Addressable getAddressable() {
+							return address;
+						}
+
+						@Override
+						public User getUser() {
+ 							return null;
+						}
+
+						@Override
+						public Object getData() {
+							return data;
+						}
+						
+					});
+					eh.handleError(e);	
 				} else if(rr != null) {
 					performStorage(address, data, teamsState);
 				}
 				
-				return null;
+				return rr;
 			};
 	}
 	

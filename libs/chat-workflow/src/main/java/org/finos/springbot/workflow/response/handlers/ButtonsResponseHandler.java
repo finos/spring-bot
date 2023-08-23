@@ -28,7 +28,7 @@ import org.springframework.util.StringUtils;
  * @author rob@kite9.com
  *
  */
-public class ButtonsResponseHandler implements ResponseHandler, ApplicationContextAware {
+public class ButtonsResponseHandler implements ResponseHandler<Void>, ApplicationContextAware {
 	
 	
 	private List<ChatHandlerMapping<ChatButton>> exposedHandlerMappings;
@@ -46,7 +46,7 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 	
 
 	@Override
-	public void accept(Response t) {
+	public Void apply(Response t) {
 		if (t instanceof WorkResponse) {
 			Object o = ((WorkResponse) t).getFormObject();
 			WorkMode wm = ((WorkResponse) t).getMode();
@@ -54,7 +54,7 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 			ButtonList obl = (ButtonList) ((WorkResponse) t).getData().get(ButtonList.KEY);
 			
 			if ((obl != null) && (obl.getContents().size() > 0)) {
-				return;
+				return null;
 			}
 			
 			obl = new ButtonList();
@@ -82,6 +82,8 @@ public class ButtonsResponseHandler implements ResponseHandler, ApplicationConte
 			
 			Collections.sort((List<Button>) bl.getContents());
 		}
+		
+		return null;
 	}
 
 	@SuppressWarnings("unchecked")
