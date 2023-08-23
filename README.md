@@ -1,14 +1,14 @@
 [![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/active)
 [![codecov](https://codecov.io/gh/finos/spring-bot/branch/spring-bot-develop/graph/badge.svg?token=CSa0aaqYD0)](https://codecov.io/gh/finos/spring-bot)
 ![License](https://img.shields.io/github/license/finos/spring-bot)
-![build](https://github.com/finos/spring-bot/actions/workflows/sjt-build/badge.svg)
+![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)
 [![javadoc](https://javadoc.io/badge2/org.finos.springbot/chat-workflow/javadoc.svg)](https://javadoc.io/doc/org.finos.springbot/chat-workflow)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5948/badge)](https://bestpractices.coreinfrastructure.org/projects/5948)
 
 |Version          |Number                 |Status                  |
 |-----------------|-----------------------|------------------------|
-|Spring Bot       |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.springbot/spring-bot)](https://search.maven.org/search?q=org.finos.springbot)      |![build](https://github.com/finos/spring-bot/actions/workflows/sjt-build/badge.svg)
-|Symphony Java Toolkit |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)|![build](https://github.com/finos/spring-bot/actions/workflows/sjt-build/badge.svg?branch=symphony-java-toolkit-master)|
+|Spring Bot       |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.springbot/spring-bot)](https://search.maven.org/search?q=org.finos.springbot)      |![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)
+|Symphony Java Toolkit |[![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit)|![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg?branch=symphony-java-toolkit-master)|
 
 ![Spring Bot Logo](logo.png)
 
