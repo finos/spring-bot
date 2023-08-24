@@ -18,7 +18,7 @@ import org.finos.springbot.workflow.response.handlers.ResponseHandler;
  * @author rob@kite9.com
  *
  */
-public class StorageIDResponseHandler implements ResponseHandler {
+public class StorageIDResponseHandler implements ResponseHandler<String> {
 	
 	public static final String STORAGE_ID_KEY = "storageId";
 	
@@ -29,13 +29,17 @@ public class StorageIDResponseHandler implements ResponseHandler {
 	}
 
 	@Override
-	public void accept(Response t) {
+	public String apply(Response t) {
 		if (t instanceof WorkResponse) {
 			Map<String, Object> data = ((WorkResponse) t).getData();
 			if ((data != null) && (!data.containsKey(STORAGE_ID_KEY)) && (needsStoring(data))) {
-				data.put(STORAGE_ID_KEY, th.createStorageId());
+				String storageId = th.createStorageId();
+				data.put(STORAGE_ID_KEY, storageId);
+				return storageId;
 			}
 		}
+		
+		return null;
 	}
 
 	private boolean needsStoring(Map<String, Object> data) {

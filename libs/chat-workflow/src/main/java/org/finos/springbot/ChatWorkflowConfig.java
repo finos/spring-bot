@@ -131,14 +131,14 @@ public class ChatWorkflowConfig {
 
 	@Bean
 	@ConditionalOnMissingBean
-	public ResponseHandlers responseHandlers(List<ResponseHandler> rh) {
-		List<ResponseHandler> sorted = new ArrayList<>(rh);
+	public ResponseHandlers responseHandlers(List<ResponseHandler<?>> rh) {
+		List<ResponseHandler<?>> sorted = new ArrayList<>(rh);
 		Collections.sort(sorted, OrderComparator.INSTANCE);
 		return new ResponseHandlers() {
 			
 			@Override
 			public void accept(Response t) {
-				sorted.forEach(rh -> rh.accept(t));
+				sorted.forEach(rh -> rh.apply(t));
 			}
 		};
 	}

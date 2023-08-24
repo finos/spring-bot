@@ -16,7 +16,7 @@ import org.finos.springbot.workflow.response.WorkResponse;
  * @author rob@kite9.com
  *
  */
-public class ChatListResponseHandler implements ResponseHandler {
+public class ChatListResponseHandler implements ResponseHandler<Void> {
 	
 	AllConversations conversations;
 	
@@ -27,7 +27,7 @@ public class ChatListResponseHandler implements ResponseHandler {
 	}
 
 	@Override
-	public void accept(Response t) {
+	public Void apply(Response t) {
 		if (t instanceof WorkResponse) {
 			WorkResponse wr = (WorkResponse) t;
 			Class<?> c = ((WorkResponse) t).getFormClass();
@@ -41,6 +41,8 @@ public class ChatListResponseHandler implements ResponseHandler {
 						.collect(Collectors.toList())));
 			}
 		}
+		
+		return null;
 	}
 
 

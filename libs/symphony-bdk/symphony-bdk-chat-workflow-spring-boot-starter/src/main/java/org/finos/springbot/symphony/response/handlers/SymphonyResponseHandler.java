@@ -29,8 +29,9 @@ import com.symphony.bdk.core.service.message.MessageService;
 import com.symphony.bdk.core.service.message.model.Attachment;
 import com.symphony.bdk.core.service.message.model.Message;
 import com.symphony.bdk.core.service.message.model.Message.MessageBuilder;
+import com.symphony.bdk.gen.api.model.V4Message;
 
-public class SymphonyResponseHandler implements ResponseHandler, ApplicationContextAware {
+public class SymphonyResponseHandler implements ResponseHandler<V4Message>, ApplicationContextAware {
 		
 	private static final Logger LOG = LoggerFactory.getLogger(SymphonyResponseHandler.class);
 	
@@ -63,7 +64,7 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 	}
 
 	@Override
-	public void accept(Response t) {
+	public V4Message apply(Response t) {
 		if (t.getAddress() instanceof SymphonyAddressable) {		
 
 			byte[] attachment = null;
@@ -83,15 +84,17 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 				
 				if (template == null) {
 					LOG.error("Cannot determine/create template for response {}", t);
-					return;
+					return null;
 				}
 
 				data = dataHandler.formatData((DataResponse) t);
 				LOG.info("JSON: \n"+ data);
 
-				sendResponse(template, attachment, data, t.getAddress(), filename);
+				return sendResponse(template, attachment, data, t.getAddress(), filename);
 			}
 		}
+		
+		return null;
 	}
 	
 	protected String buildTemplate(DataResponse t) {
@@ -104,7 +107,7 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 		}
 	}
 
-	protected void sendResponse(String template, byte[] attachment, String data, Addressable address, String filename) {
+	protected V4Message sendResponse(String template, byte[] attachment, String data, Addressable address, String filename) {
 		try {
 			if (address instanceof SymphonyAddressable) {
 				String streamId = sr.getStreamFor((SymphonyAddressable) address);
@@ -120,7 +123,7 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 				setPrivateField("data", out, data);
 				setPrivateField("content", out, template);
 				
-				messagesApi.send(streamId, out);
+				return messagesApi.send(streamId, out);
 			}
 		} catch (Exception e) {
 			LOG.error(e.getMessage());
@@ -129,6 +132,8 @@ public class SymphonyResponseHandler implements ResponseHandler, ApplicationCont
 			initErrorHandler();
 			eh.handleError(e);
 		}
+
+		return null;
 	}
 
 	private void setPrivateField(String string, Message out, String data) throws Exception {
