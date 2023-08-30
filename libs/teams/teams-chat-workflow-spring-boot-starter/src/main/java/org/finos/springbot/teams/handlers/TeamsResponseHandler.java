@@ -9,6 +9,7 @@ import java.util.function.BiFunction;
 
 import org.finos.springbot.teams.TeamsException;
 import org.finos.springbot.teams.content.TeamsAddressable;
+import org.finos.springbot.teams.conversations.TeamsErrorResourceResponse;
 import org.finos.springbot.teams.history.StorageIDResponseHandler;
 import org.finos.springbot.teams.history.TeamsHistory;
 import org.finos.springbot.teams.response.templating.EntityMarkupTemplateProvider;
@@ -194,7 +195,7 @@ public class TeamsResponseHandler implements ResponseHandler<ResourceResponse>, 
 						} catch (JsonProcessingException e1) {
 						}
 					} else {
-						LOG.error("message:\n"+out);						
+						LOG.error("message:\n"+out);
 					} 
 					
 					if(!(t  instanceof ErrorResponse)) {
@@ -204,6 +205,7 @@ public class TeamsResponseHandler implements ResponseHandler<ResourceResponse>, 
 					initErrorHandler();				
 					eh.handleError(e);	
 					Action.CURRENT_ACTION.set(Action.NULL_ACTION);
+					rr = new TeamsErrorResourceResponse(address.getKey(), e);
 				} else if(rr != null) {
 					performStorage(address, data, teamsState);
 				}
