@@ -11,7 +11,7 @@
   <parent>
 	<groupId>org.finos.springbot</groupId>
 	<artifactId>spring-bot</artifactId>
-	<version>9.0.1-SNAPSHOT</version>
+	<version>9.0.3-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent> 
   
@@ -37,7 +37,7 @@
 	<dependency>
 		<groupId>org.finos.springbot</groupId>
 		<artifactId>entity-json</artifactId>
-		<version>9.0.1-SNAPSHOT</version>
+		<version>9.0.3-SNAPSHOT</version>
 	</dependency>
 	    <dependency>
 		<groupId>org.springframework.boot</groupId>
