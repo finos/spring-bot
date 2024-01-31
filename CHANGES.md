@@ -248,4 +248,3 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - #408 Handle exception for Teams 
  - #409 For Teams return conversation id on message sent
  - Release 9.0.3
- - 
