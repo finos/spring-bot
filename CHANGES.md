@@ -241,4 +241,10 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - #386 Fixed Teams File State Storage
  - #380 Removing GPL-licensed dependency in Reminder Bot
  - #378 Added retry logic for teams
- 
+ - Release 9.0.2
+
+ # Sept 11 2023
+ - #405 Can we add SpringBot dependency on project which has parent dependency Sping-Boot:3x
+ - #408 Handle exception for Teams 
+ - #409 For Teams return conversation id on message sent
+ - Release 9.0.3
