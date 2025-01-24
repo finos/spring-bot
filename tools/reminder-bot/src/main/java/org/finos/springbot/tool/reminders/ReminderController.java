@@ -36,11 +36,17 @@ public class ReminderController {
 
 	@ChatButton(buttonText = "Add", value = Reminder.class, showWhen = WorkMode.EDIT)
 	public ReminderList addreminder(Reminder cr, Addressable a, User author) {
-		ReminderList rl = list(a);
-		rl.reminders.add(cr);
-		return rl;
+    if (cr.getLocalTime().isBefore(LocalDateTime.now())) {
 
-	}
+        // You can throw an exception or return an error response
+		
+        throw new IllegalArgumentException("Reminder time must be in the future.");
+    }
+
+    ReminderList rl = list(a);
+    rl.reminders.add(cr);
+    return rl;
+}
 
 	@ChatRequest(value = "list", description = "Show list of Reminders")
 	@ChatResponseBody(workMode = WorkMode.VIEW)
@@ -48,6 +54,8 @@ public class ReminderController {
 		Optional<ReminderList> rl = h.getLastFromHistory(ReminderList.class, a);
 
 		if (rl.isPresent()) {
+			// Filter out past reminders
+			rl.get().getReminders().removeIf(r -> r.getLocalTime().isBefore(LocalDateTime.now()));
 			return rl.get();
 		} else {
 			ReminderList out = new ReminderList();
@@ -55,6 +63,7 @@ public class ReminderController {
 			out.setRemindBefore(rp.getDefaultRemindBefore());
 			return out;
 		}
+	
 	}
 
 	@ChatButton(buttonText = "save", value = ReminderList.class, showWhen = WorkMode.EDIT)
