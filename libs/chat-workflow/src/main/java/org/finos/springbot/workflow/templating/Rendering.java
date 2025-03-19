@@ -38,6 +38,8 @@ public interface Rendering<X> {
 	X textField(Variable variable, boolean editable);
 	
 	X checkBox(Variable variable, boolean editable);
+	
+	X dateField(Variable varialble, boolean editable);
 
 	X collection(Type t, Variable collection, Variable item, X in, boolean editable);
 

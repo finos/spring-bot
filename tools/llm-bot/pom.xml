@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -11,34 +10,50 @@
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<groupId>org.finos.springbot.demos</groupId>
-	<artifactId>demo-bot</artifactId>
-	<name>Demo Bot</name>
-	<description>Demo Bot Using Spring Boot Starter</description>
+	<groupId>org.finos.springbot.tools</groupId>
+	<artifactId>LLM-bot</artifactId>
+	<name>LLM Bot</name>
+	<description>Provides an instruction-based chat with an LLM</description>
 
 	<properties>
-		<spring-boot.run.main-class>org.finos.springbot.example.demo.DemoApplication</spring-boot.run.main-class>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<spring-boot.run.main-class>org.finos.springbot.tool.reminders.ReminderBotApp</spring-boot.run.main-class>
+		<jaxb.version>2.3.1</jaxb.version>
+		<jaxb-core.version>2.3.0.1</jaxb-core.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+		    <groupId>com.unfbx</groupId>
+		    <artifactId>chatgpt-java</artifactId>
+		    <version>1.0.14</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
 			<version>10.0.2</version>
-			<scope>compile</scope>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
 			<version>10.0.2</version>
-			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 
-	</dependencies>
+	
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>chat-workflow-testing</artifactId>
+			<version>10.0.2</version>
+			<scope>test</scope>
+		</dependency> -->
+
+    </dependencies>
+    
+    
 
 	<build>
 		<plugins>
@@ -59,5 +74,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
