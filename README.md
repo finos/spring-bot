@@ -2,6 +2,7 @@
 [![codecov](https://codecov.io/gh/finos/spring-bot/branch/spring-bot-develop/graph/badge.svg?token=CSa0aaqYD0)](https://codecov.io/gh/finos/spring-bot)
 ![License](https://img.shields.io/github/license/finos/spring-bot)
 ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)
+[![libs.tech recommends](https://libs.tech/project/202309300/badge.svg)](https://libs.tech/project/202309300/spring-bot)
 [![javadoc](https://javadoc.io/badge2/org.finos.springbot/chat-workflow/javadoc.svg)](https://javadoc.io/doc/org.finos.springbot/chat-workflow)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/5948/badge)](https://bestpractices.coreinfrastructure.org/projects/5948)
 
