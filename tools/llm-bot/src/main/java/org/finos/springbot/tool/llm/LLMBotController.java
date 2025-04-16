@@ -12,19 +12,18 @@ import org.springframework.stereotype.Controller;
 
 @Controller
 public class LLMBotController {
-	
+
 	@Autowired
-	private LLMService llmService;
-	
+	LLMService llmService;
 
 	@ChatRequest("*")
-	public Response respondInRoom(User author, Message m, Chat r) { 
-	  // take the contents of the message and send in to the LLM for processing.  
-	  // look up instructions for chatRoom.
-	  // template the request
-	  String content = llmService.getResponse(m.getText());
-	  WorkResponse out = new WorkResponse(r, content, WorkMode.VIEW);
-	  return out;
+	public Response respondInRoom(User author, Message m, Chat r) {
+		// take the contents of the message and send in to the LLM for processing.
+		// look up instructions for chatRoom.
+		// template the request
+		String content = llmService.getResponse(m.getText());
+		WorkResponse out = new WorkResponse(r, content, WorkMode.VIEW);
+		return out;
 	}
-	
+
 }
