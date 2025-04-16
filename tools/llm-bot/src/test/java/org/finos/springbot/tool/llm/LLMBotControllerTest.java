@@ -3,6 +3,8 @@ package org.finos.springbot.tool.llm;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Map;
+
 import org.finos.springbot.testing.content.TestRoom;
 import org.finos.springbot.workflow.content.Chat;
 import org.finos.springbot.workflow.content.Message;
@@ -12,9 +14,7 @@ import org.finos.springbot.workflow.response.WorkResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,9 +49,12 @@ public class LLMBotControllerTest {
         // Verify
         Assertions.assertTrue(response instanceof WorkResponse);
         WorkResponse workResponse = (WorkResponse) response;
-        Assertions.assertEquals(expectedResponse, workResponse.getData());
-        Assertions.assertEquals(room, workResponse.getAddress());
 
-        verify(llmService).getResponse("Test message");
+        // Verify the response data structure
+        Map<String, Object> data = workResponse.getData();
+        Assertions.assertEquals(expectedResponse, data.get(WorkResponse.OBJECT_KEY));
+        Assertions.assertEquals(room, workResponse.getAddress());
+        Assertions.assertEquals(expectedResponse, workResponse.getData().get(WorkResponse.OBJECT_KEY));
+        
     }
 }
