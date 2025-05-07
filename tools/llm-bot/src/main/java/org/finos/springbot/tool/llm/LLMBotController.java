@@ -7,14 +7,20 @@ import org.finos.springbot.workflow.content.Message;
 import org.finos.springbot.workflow.content.User;
 import org.finos.springbot.workflow.response.Response;
 import org.finos.springbot.workflow.response.WorkResponse;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class LLMBotController {
 
 	@Autowired
 	LLMService llmService;
+
 
 	@ChatRequest("*")
 	public Response respondInRoom(User author, Message m, Chat r) {
@@ -25,5 +31,6 @@ public class LLMBotController {
 		WorkResponse out = new WorkResponse(r, content, WorkMode.VIEW);
 		return out;
 	}
+
 
 }

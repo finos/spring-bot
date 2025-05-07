@@ -3,15 +3,16 @@ package org.finos.springbot.tool.llm;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import com.unfbx.chatgpt.OpenAiClient;
 import com.unfbx.chatgpt.entity.chat.ChatCompletion;
 import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
 import com.unfbx.chatgpt.entity.chat.Message;
 
-public class ChatGPTLLMService implements LLMService, InitializingBean {
+@Service
+public class ChatGPTLLMService extends AbstractLLMService {
 
 	OpenAiClient openAiClient;
 
@@ -20,6 +21,7 @@ public class ChatGPTLLMService implements LLMService, InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
+		super.afterPropertiesSet();
 		openAiClient = OpenAiClient.builder().apiKey(Arrays.asList(theKey)).build();
 	}
 

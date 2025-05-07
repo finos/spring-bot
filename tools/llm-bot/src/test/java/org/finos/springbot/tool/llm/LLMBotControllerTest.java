@@ -16,6 +16,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ExtendWith(MockitoExtension.class)
 public class LLMBotControllerTest {
@@ -30,6 +35,9 @@ public class LLMBotControllerTest {
     private Message message;
 
     private LLMBotController controller;
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @Test
     public void testRespondInRoom() {
@@ -57,4 +65,5 @@ public class LLMBotControllerTest {
         Assertions.assertEquals(expectedResponse, workResponse.getData().get(WorkResponse.OBJECT_KEY));
         
     }
+
 }
