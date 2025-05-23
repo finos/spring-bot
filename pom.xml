@@ -55,28 +55,16 @@
 		<java.version>17</java.version>
 
 		<!-- this must match the version from the spring boot pom -->
-		<jackson-databind.version>2.16.2</jackson-databind.version>
-		<jackson.version>2.16.2</jackson.version>
-		<jackson-annotations.version>2.16.2</jackson-annotations.version>
-		<corenlp.version>4.4.0</corenlp.version>
-		<sutime-models.version>1.3.5</sutime-models.version>
 		<rometools.version>1.15.0</rometools.version>
+		<sutime-models.version>1.3.5</sutime-models.version>
 		<teams.version>4.14.3</teams.version>
-		<azure-storage-blob.version>12.20.1</azure-storage-blob.version>
-		<okio-jvm.version>3.4.0</okio-jvm.version>
 		<guava.version>32.1.0-jre</guava.version>
 		<jsoup.version>1.17.2</jsoup.version>
 		<graalvm.version>23.0.3</graalvm.version>
 		<symphony-bdk.version>3.0.0</symphony-bdk.version>
-		<!--<mimepull.version>1.9.15</mimepull.version>-->
-		<!--<thymeleaf.version>2.7.0</thymeleaf.version>-->	
 		<azure-core-http-netty.version>1.15.11</azure-core-http-netty.version>	
-		<nimbus-jose-jwt.version>9.9.1</nimbus-jose-jwt.version>	
 		<httpclient.version>4.5.13</httpclient.version>			
 		<corenlp.version>4.5.7</corenlp.version>
-		<azure-storage-blob.version>12.25.3</azure-storage-blob.version>
-		<netty-handler.version>4.1.115.Final</netty-handler.version>
-		<netty-codec.version>4.1.115.Final</netty-codec.version>
 		<azure-msal4j.version>1.16.1</azure-msal4j.version>
 	</properties>
 
@@ -219,31 +207,7 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- SpringBoot 2.7.0 pulls 1.10 version of below lib which is compiled with Java11 and hence causes errors
-			<dependency>
-				<groupId>org.jvnet.mimepull</groupId>
-				<artifactId>mimepull</artifactId>
-				<version>${mimepull.version}</version>
-			</dependency>
- 			-->
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-databind</artifactId>
-				<version>${jackson-databind.version}</version>
-			</dependency>
 			
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-core</artifactId>
-				<version>${jackson.version}</version>
-			</dependency>
-			
-			<dependency>
-				<groupId>com.fasterxml.jackson.core</groupId>
-				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson-annotations.version}</version>
-			</dependency>
-
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-dependencies</artifactId>
@@ -267,14 +231,6 @@
 			    <artifactId>protonpack</artifactId>
 			    <version>1.16</version>
 			</dependency>
-			
-			<!-- fixing CVE-2022-1471.  If we upgrade to a new version of spring-boot-dependencies this 
-			  may no longer be needed -->
-			<dependency>
-			    <groupId>org.yaml</groupId>
-			    <artifactId>snakeyaml</artifactId>
-			    <version>2.2</version>
-			</dependency> 
 				
 				
 		</dependencies>

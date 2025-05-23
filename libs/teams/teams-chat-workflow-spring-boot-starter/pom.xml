@@ -32,110 +32,39 @@
 			<version>${teams.version}</version>
 			<scope>compile</scope>
 		</dependency>
-		
+
 		<dependency>
-	        <groupId>com.microsoft.bot</groupId>
-	        <artifactId>bot-azure</artifactId>
-	        <version>${teams.version}</version>
-	        <scope>compile</scope>
-	        <exclusions>
-	        	<!-- this is already included by spring -->
-	        	<exclusion>
-	        		<groupId>org.json</groupId>
-	        		<artifactId>json</artifactId>
-	        	</exclusion>
-	        	<exclusion>
-	        		<groupId>com.azure</groupId>
-	        		<artifactId>azure-storage-blob</artifactId>
-	        	</exclusion>
-	        	<exclusion>
-	        		<groupId>com.google.guava</groupId>
-	        		<artifactId>guava</artifactId>
-	        	</exclusion>
-	        	<exclusion>
-	        		<groupId>org.apache.httpcomponents</groupId>
-	        		<artifactId>httpclient</artifactId>
-	        	</exclusion>
-	        </exclusions>
-      	</dependency>
-      	
-      	<dependency>
+			<groupId>com.microsoft.bot</groupId>
+			<artifactId>bot-azure</artifactId>
+			<version>${teams.version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>msal4j</artifactId>
 			<version>${azure-msal4j.version}</version>
 		</dependency>
-      	
+
+
 		<dependency>
-			<groupId>com.microsoft.bot</groupId>
-			<artifactId>bot-builder</artifactId>
-			<version>${teams.version}</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>com.squareup.okio</groupId>
-					<artifactId>okio-jvm</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.google.guava</groupId>
-					<artifactId>guava</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.nimbusds</groupId>
-					<artifactId>nimbus-jose-jwt</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-codec-http</artifactId>
-			<version>${netty-codec.version}</version>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-storage-blob</artifactId>
+			<version>12.25.3</version> <!-- Replace with property -->
 		</dependency>
 
 		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-handler</artifactId>
-			<version>${netty-handler.version}</version>
-		</dependency>
-		
-		<dependency>
 			<groupId>com.azure</groupId>
-	  		<artifactId>azure-storage-blob</artifactId>
-	  		<version>12.25.3</version> <!-- Replace with property -->
-	  		<exclusions>	  			
-	  			<exclusion>
-	  				<groupId>com.azure</groupId>
-	  				<artifactId>azure-core-http-netty</artifactId>
-	  			</exclusion>
-	  		</exclusions>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.azure</groupId>
-	  		<artifactId>azure-core-http-netty</artifactId>	
-	  		<version>${azure-core-http-netty.version}</version>
+			<artifactId>azure-core-http-netty</artifactId>
+			<version>${azure-core-http-netty.version}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.nimbusds</groupId>
-			<artifactId>nimbus-jose-jwt</artifactId>	
-	  		<version>9.37.2</version>	<!-- Replace with property -->
-		</dependency>
-		
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
-	    	<artifactId>httpclient</artifactId>
-	    	<version>4.5.13</version> <!-- Replace with property -->
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version> <!-- Replace with property -->
 		</dependency>
-					
-		<!-- removed Vulnerability in bot connector(4.14.3) ->
-		 okttp(3.12.2) -> change version of okio jvm to 3.4.0 -->
-		<dependency>
-			<groupId>com.squareup.okio</groupId>
-			<artifactId>okio-jvm</artifactId>
-			<version>${okio-jvm.version}</version>	
-		</dependency>	
-		
+
 		<!-- for parsing html sent to bot -->
 		<dependency>
 			<groupId>org.jsoup</groupId>
@@ -149,20 +78,20 @@
 			<artifactId>js</artifactId>
 			<version>${graalvm.version}</version>
 		</dependency>
-		
-		<!-- for templating xml/html @work
-		thymeleaf.spring5 doesn't support in spring 3.x.x' -->
+
+		<!-- for templating xml/html @work thymeleaf.spring5 doesn't support in 
+			spring 3.x.x' -->
 		<dependency>
-		    <groupId>org.springframework.boot</groupId>
-		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.google.guava</groupId>
-	        <artifactId>guava</artifactId>
-	        <version>${guava.version}</version>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
 		</dependency>
-		
+
 
 		<!-- for testing -->
 		<dependency>
