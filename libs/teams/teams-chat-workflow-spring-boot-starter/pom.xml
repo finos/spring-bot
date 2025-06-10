@@ -9,13 +9,15 @@
 	<parent>
 		<groupId>org.finos.springbot</groupId>
 		<artifactId>spring-bot</artifactId>
-		<version>10.0.3-SNAPSHOT</version>
+		<version>10.0.2-SNAPSHOT</version>
 		<relativePath>../../..</relativePath>
 	</parent>
 
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
+		<azure-storage-blob.version>12.25.3</azure-storage-blob.version>
+		<httpclient.version>4.5.13</httpclient.version>
 	</properties>
 
 	<dependencies>
@@ -43,7 +45,7 @@
 		<dependency>
 			<groupId>com.azure</groupId>
 			<artifactId>azure-storage-blob</artifactId>
-			<version>12.25.3</version> <!-- Replace with property -->
+			<version>${azure-storage-blob.version}</version>
 		</dependency>
 
 		<dependency>
@@ -55,7 +57,7 @@
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version> <!-- Replace with property -->
+			<version>${httpclient.version}</version> <!-- Replace with property -->
 		</dependency>
 
 		<!-- for parsing html sent to bot -->
