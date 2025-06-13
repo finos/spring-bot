@@ -112,15 +112,15 @@
 	</suppress>
 	<suppress>
 		<notes>
-			We will take this on next release
+			azure-json jar is for json parsing , we dont use it
 		</notes>
-		<cve>CVE-2024-45772</cve>
-	</suppress>	
+		<cve>CVE-2023-5072</cve>
+	</suppress>
 	<suppress>
 		<notes>
-			We will take this on next release
+			javax.json jar is non vulnerable
 		</notes>
-		<cve>CVE-2020-10146</cve>
+		<cve>CVE-2023-5072</cve>
 	</suppress>	
 	
 </suppressions>
