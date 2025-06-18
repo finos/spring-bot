@@ -128,6 +128,13 @@
 		</notes>
 		<cve>CVE-2020-10146</cve>
 	</suppress>
+	<suppress>
+		<notes>
+			Not using file download feature with “Content-Disposition” header with a non-ASCII charset
+		</notes>
+		<cve>CVE-2025-41234</cve>
+	</suppress>
+	
 	
 </suppressions>
 
