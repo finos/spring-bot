@@ -112,16 +112,29 @@
 	</suppress>
 	<suppress>
 		<notes>
-			We will take this on next release
+			azure-json jar is for json parsing , we dont use it
 		</notes>
-		<cve>CVE-2024-45772</cve>
+		<cve>CVE-2023-5072</cve>
+	</suppress>
+	<suppress>
+		<notes>
+			javax.json jar is non vulnerable
+		</notes>
+		<cve>CVE-2023-5072</cve>
 	</suppress>	
 	<suppress>
 		<notes>
-			We will take this on next release
+			we are not using Microsoft Teams online service for display name
 		</notes>
 		<cve>CVE-2020-10146</cve>
-	</suppress>	
+	</suppress>
+	<suppress>
+		<notes>
+			Not using file download feature with “Content-Disposition” header with a non-ASCII charset
+		</notes>
+		<cve>CVE-2025-41234</cve>
+	</suppress>
+	
 	
 </suppressions>
 
