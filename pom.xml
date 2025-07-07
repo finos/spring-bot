@@ -27,6 +27,7 @@
 
 		<!-- symphony support -->
 		<module>libs/symphony/entities</module>
+		
 		<module>libs/symphony-bdk/symphony-bdk-chat-workflow-spring-boot-starter</module>
 
 		<!-- teams support -->
