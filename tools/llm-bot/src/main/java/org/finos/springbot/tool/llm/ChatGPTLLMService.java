@@ -6,34 +6,37 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.unfbx.chatgpt.OpenAiClient;
-import com.unfbx.chatgpt.entity.chat.ChatCompletion;
-import com.unfbx.chatgpt.entity.chat.ChatCompletionResponse;
-import com.unfbx.chatgpt.entity.chat.Message;
+import ai.koog.agents.core.agent.AIAgent;
+import ai.koog.prompt.executor.clients.openai.OpenAIModels;
+import ai.koog.prompt.executor.clients.openai.simpleOpenAIExecutor;
+import ai.koog.prompt.executor.llms.SingleLLMPromptExecutor;
+import ai.koog.prompt.executor.llms.all.SimplePromptExecutorsKt;
+import ai.koog.prompt.llm.LLModel;
+
+import org.finos.springbot.workflow.content.Message;
 
 @Service
 public class ChatGPTLLMService extends AbstractLLMService {
 
-	OpenAiClient openAiClient;
+	@Value("${llm-bot.key}")
+	String apiKey;
 
-	@Value("llm-bot.key")
-	String theKey;
+	AIAgent agent;
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		super.afterPropertiesSet();
-		openAiClient = OpenAiClient.builder().apiKey(Arrays.asList(theKey)).build();
+		SingleLLMPromptExecutor prompt = SimplePromptExecutorsKt.simpleOpenAIExecutor(apiKey);
+		LLModel model = OpenAIModels.Chat.INSTANCE.getGPT4_1();
+
+		agent = new AIAgent<Object, Object>(
+				"You are a helpful assistant. Answer user questions concisely.",
+				prompt, model);
 	}
 
 	@Override
 	public String getResponse(String request) {
-		Message message = Message.builder().role(Message.Role.USER).content(request).build();
-		ChatCompletion chatCompletion = ChatCompletion.builder().messages(Arrays.asList(message)).build();
-		ChatCompletionResponse chatCompletionResponse = openAiClient.chatCompletion(chatCompletion);
-		String out = chatCompletionResponse.getChoices().stream().map(e -> {
-			return e.getMessage().getContent();
-		}).collect(Collectors.joining("\n"));
-		return out;
+		Object result = agent.run(request, null);
+		return result.toString();
 	}
-
 }

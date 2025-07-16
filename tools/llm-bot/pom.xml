@@ -24,17 +24,10 @@
 
 	<dependencies>
 		<dependency>
-		    <groupId>com.unfbx</groupId>
-		    <artifactId>chatgpt-java</artifactId>
-		    <version>1.0.14</version>
-
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-simple</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+			<groupId>ai.koog</groupId>
+			<artifactId>koog-agents-jvm</artifactId>
+			<version>0.3.0</version>
+		</dependency>	
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
