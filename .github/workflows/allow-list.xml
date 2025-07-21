@@ -170,6 +170,12 @@
 	    </notes>
 	    <cve>CVE-2025-49125</cve>
 	</suppress>
+	<suppress>
+	    <notes>
+	        We will take in next release, once we will migrate spring-bot version to 3.5*
+	    </notes>
+	    <cve>CVE-2025-22227</cve>
+	</suppress>
 	
 </suppressions>
 
