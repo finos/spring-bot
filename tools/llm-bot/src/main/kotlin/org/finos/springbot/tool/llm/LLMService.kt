@@ -4,7 +4,7 @@ import org.springframework.beans.factory.InitializingBean
 
 interface LLMService : InitializingBean {
 
-    var apiKey: String?
+    val apiKey: String
 
     fun getResponse(request: String): String
 }

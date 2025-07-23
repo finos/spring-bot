@@ -14,12 +14,13 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.finos.springbot.tool.llm.LLMService;
 
 @Controller
 public class LLMBotController {
 
 	@Autowired
-	ChatGPTLLMService2 llmService;
+	LLMService llmService;
 
 	@ChatRequest("*")
 	public Response respondInRoom(User author, Message m, Chat r) {

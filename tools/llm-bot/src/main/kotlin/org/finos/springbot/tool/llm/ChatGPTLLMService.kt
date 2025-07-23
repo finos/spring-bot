@@ -4,12 +4,10 @@ import ai.koog.agents.core.agent.AIAgent
 import ai.koog.prompt.executor.clients.openai.OpenAIModels
 import ai.koog.prompt.executor.llms.all.simpleOpenAIExecutor
 import kotlinx.coroutines.runBlocking
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class ChatGPTLLMService : AbstractLLMService() {
-    @Value("\${llm-bot.key}") override var apiKey: String? = null
+class ChatGPTLLMService(override val apiKey: String) : AbstractLLMService(apiKey) {
 
     var agent: AIAgent<String, String>? = null
 
