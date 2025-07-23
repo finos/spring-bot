@@ -20,14 +20,17 @@
 		<spring-boot.run.main-class>org.finos.springbot.tool.llm.LLMBotApp</spring-boot.run.main-class>
 		<jaxb.version>2.3.1</jaxb.version>
 		<jaxb-core.version>2.3.0.1</jaxb-core.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
 	</properties>
 
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>ai.koog</groupId>
-			<artifactId>koog-agents-jvm</artifactId>
+			<artifactId>koog-agents</artifactId>
 			<version>0.3.0</version>
-		</dependency>	
+		</dependency>	 -->
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
@@ -66,6 +69,13 @@
 			<scope>test</scope>
 		</dependency>
 
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+
+
     </dependencies>
     
     
@@ -84,6 +94,67 @@
 						<configuration>
 							<mainClass>${spring-boot.run.main-class}</mainClass>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>1.9.23</version>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<jvmTarget>17</jvmTarget>
+					<sourceDirs>
+						<sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+						<sourceDir>${project.basedir}/src/main/java</sourceDir>
+					</sourceDirs>
+					<testSourceDirs>
+						<testSourceDir>${project.basedir}/src/test/kotlin</testSourceDir>
+						<testSourceDir>${project.basedir}/src/test/java</testSourceDir>
+					</testSourceDirs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>java-compile</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>java-test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>testCompile</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

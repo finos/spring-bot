@@ -8,7 +8,8 @@ public class LLMServiceTest {
     @Test
     public void testLLMServiceResponds() throws Exception {
 
-        LLMService llmService = new ChatGPTLLMService();
+        LLMService llmService = new ChatGPTLLMService2();
+
         llmService.setApiKey("");
         llmService.afterPropertiesSet();
         String response = llmService.getResponse("Hello, how are you?");

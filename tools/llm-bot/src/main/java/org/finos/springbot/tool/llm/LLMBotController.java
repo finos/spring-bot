@@ -19,8 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class LLMBotController {
 
 	@Autowired
-	LLMService llmService;
-
+	ChatGPTLLMService2 llmService;
 
 	@ChatRequest("*")
 	public Response respondInRoom(User author, Message m, Chat r) {
@@ -31,6 +30,5 @@ public class LLMBotController {
 		WorkResponse out = new WorkResponse(r, content, WorkMode.VIEW);
 		return out;
 	}
-
 
 }
