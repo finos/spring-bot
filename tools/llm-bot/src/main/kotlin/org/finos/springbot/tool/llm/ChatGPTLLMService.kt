@@ -28,5 +28,6 @@ class ChatGPTLLMService() : AbstractLLMService() {
     override fun getResponse(request: String): String = runBlocking {
         val result = agent?.run(request)
         result?.toString() ?: "No response"
+        // "No response"
     }
 }
