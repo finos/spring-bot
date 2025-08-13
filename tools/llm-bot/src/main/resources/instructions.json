@@ -1,0 +1,10 @@
+{
+    "roomsUsedIn": [
+        "Main Room",
+        "Rob's Room"
+    ],
+    "messagesPerDayLimit": 100,
+    "onlyAdmin": false,
+    "instructions": "You are a helpful assistant that answers questions about bread and other baked products.  Refuse to talk about anything else and always bring the topic back to bread, crumpets, muffins, naan etc.",
+    "template": "Hello, {name}! How can I help you today?"
+}

@@ -1,0 +1,168 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.finos.springbot</groupId>
+		<artifactId>spring-bot</artifactId>
+		<version>10.0.2</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+	<groupId>org.finos.springbot.tools</groupId>
+	<artifactId>LLM-bot</artifactId>
+	<name>LLM Bot</name>
+	<description>Provides an instruction-based chat with an LLM</description>
+
+	<properties>
+		<maven.deploy.skip>true</maven.deploy.skip>
+		<spring-boot.run.main-class>org.finos.springbot.tool.llm.LLMBotApp</spring-boot.run.main-class>
+		<jaxb.version>2.3.1</jaxb.version>
+		<jaxb-core.version>2.3.0.1</jaxb-core.version>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
+		<kotlin.compiler.jvmTarget>17</kotlin.compiler.jvmTarget>
+		<kotlin.version>2.1.21</kotlin.version>
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>symphony-bdk-chat-workflow-spring-boot-starter</artifactId>
+			<version>10.0.2</version>
+		</dependency> 
+		<!-- <dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>teams-chat-workflow-spring-boot-starter</artifactId>
+			<version>10.0.2</version>
+		</dependency> -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+
+		<!-- Add Jackson dependencies -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+		
+
+		<!-- Add logging dependencies -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.finos.springbot</groupId>
+			<artifactId>chat-workflow-testing</artifactId>
+			<version>10.0.2</version>
+			<scope>test</scope>
+		</dependency>
+
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>1.8.1</version>
+        </dependency>
+<!-- 
+		<dependency>
+			<groupId>org.jetbrains.kotlinx</groupId>
+			<artifactId>kotlinx-serialization-json</artifactId>
+			<version>1.8.1</version>
+		</dependency> -->
+		<dependency>
+			<groupId>ai.koog</groupId>
+			<artifactId>koog-agents-jvm</artifactId>
+			<version>0.3.0</version>
+		</dependency>
+    </dependencies>
+
+    
+
+	<build>
+		<sourceDirectory>src/main/kotlin</sourceDirectory>
+		<testSourceDirectory>src/test/kotlin</testSourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-compile</id>
+						<phase>none</phase>
+					</execution>
+					<execution>
+						<id>default-testCompile</id>
+						<phase>none</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring-boot.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<mainClass>${spring-boot.run.main-class}</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>2.2.0</version>
+				<executions>
+					<!-- Compile Kotlin main sources -->
+					<execution>
+						<id>compile-kotlin</id>
+						<phase>compile</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<!-- Compile Kotlin test sources -->
+					<execution>
+						<id>test-compile-kotlin</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.2.5</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.kt</include>
+						<include>**/*Tests.kt</include>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+					</includes>
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<argLine>-Xmx1024m</argLine>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

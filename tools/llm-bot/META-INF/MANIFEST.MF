@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Implementation-Title: agents-core
+Implementation-Version: 0.3.0
+Automatic-Module-Name: agents.core.jvm
+

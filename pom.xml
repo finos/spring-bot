@@ -3,7 +3,7 @@
 
 	<groupId>org.finos.springbot</groupId>
 	<artifactId>spring-bot</artifactId>
-	<version>10.0.2-SNAPSHOT</version>
+	<version>10.0.2</version>
 
 	<packaging>pom</packaging>
 	<name>Spring Bot</name>
@@ -36,6 +36,7 @@
 		<module>tools/rss-bot</module>
 		<module>tools/poll-bot</module>
 		<module>tools/reminder-bot</module>
+		<module>tools/llm-bot</module>
 
 		<!-- demos -->
 		<module>demos/demo-bot</module>
