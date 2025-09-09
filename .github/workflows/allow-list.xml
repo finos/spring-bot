@@ -135,18 +135,6 @@
 		<cve>CVE-2025-41234</cve>
 	</suppress>
 	<suppress>
-		<notes>
-			We will take in next release, once we will migrate spring-bot version to 3.5*
-		</notes>
-		<cve>CVE-2025-46701</cve>
-	</suppress>
-	<suppress>
-		<notes>
-			We will take in next release, once we will migrate spring-bot version to 3.5*
-		</notes>
-		<cve>CVE-2025-48988</cve>
-	</suppress>
-	<suppress>
 	    <notes>
 	        Won't fix - minor issue in library causing stack overflow
 	    </notes>
@@ -157,25 +145,6 @@
 	        Won't fix - minor issue in library causing stack overflow
 	    </notes>
 	    <cve>CVE-2025-53864</cve>
-	</suppress>
-	<suppress>
-	    <notes>
-	        We will take in next release, once we will migrate spring-bot version to 3.5*
-	    </notes>
-	    <cve>CVE-2025-49124</cve>
-	</suppress>
-	<suppress>
-	    <notes>
-	        We will take in next release, once we will migrate spring-bot version to 3.5*
-	    </notes>
-	    <cve>CVE-2025-49125</cve>
-	</suppress>
-	<suppress>
-	    <notes>
-	        We will take in next release, once we will migrate spring-bot version to 3.5*
-	    </notes>
-	    <cve>CVE-2025-22227</cve>
-	</suppress>
-	
+	</suppress>	
 </suppressions>
 

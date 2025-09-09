@@ -50,7 +50,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<spring-boot.version>3.4.5</spring-boot.version>
+		<spring-boot.version>3.5.5</spring-boot.version>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<java.version>17</java.version>
@@ -62,11 +62,11 @@
 		<jsoup.version>1.17.2</jsoup.version>
 		<graalvm.version>23.0.3</graalvm.version>
 		<symphony-bdk.version>3.0.0</symphony-bdk.version>
-		<azure-core-http-netty.version>1.15.11</azure-core-http-netty.version>	
-		<httpclient.version>4.5.13</httpclient.version>			
+		<azure-core-http-netty.version>1.16.0</azure-core-http-netty.version>	
 		<corenlp.version>4.5.7</corenlp.version>
-		<azure-msal4j.version>1.16.1</azure-msal4j.version>
+		<azure-msal4j.version>1.21.0</azure-msal4j.version>
 		<protonpack.version>1.16</protonpack.version>
+		<httpclient.version>4.5.13</httpclient.version>
 	</properties>
 
 	<licenses>
