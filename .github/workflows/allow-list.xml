@@ -122,6 +122,12 @@
 		</notes>
 		<cve>CVE-2020-10146</cve>
 	</suppress>	
+	<suppress>
+		<notes>
+			Suppressing all vulnerabilities in demo directory as it's for demonstration purposes only
+		</notes>
+		<filePath>.*demo.*</filePath>
+	</suppress>
 	
 </suppressions>
 
