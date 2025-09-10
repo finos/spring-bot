@@ -62,11 +62,13 @@
 		<jsoup.version>1.17.2</jsoup.version>
 		<graalvm.version>23.0.3</graalvm.version>
 		<symphony-bdk.version>3.0.0</symphony-bdk.version>
-		<azure-core-http-netty.version>1.16.0</azure-core-http-netty.version>	
+		<azure-core-http-netty.version>1.16.1</azure-core-http-netty.version>	
 		<corenlp.version>4.5.7</corenlp.version>
 		<azure-msal4j.version>1.21.0</azure-msal4j.version>
 		<protonpack.version>1.16</protonpack.version>
 		<httpclient.version>4.5.13</httpclient.version>
+		<icu4j.version>77.1</icu4j.version>
+		<bcpkix-jdk18on.version>1.81</bcpkix-jdk18on.version>
 	</properties>
 
 	<licenses>
