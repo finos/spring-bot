@@ -16,10 +16,29 @@
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<azure-storage-blob.version>12.25.3</azure-storage-blob.version>
+		<azure-storage-blob.version>12.31.2</azure-storage-blob.version>
 	</properties>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec</artifactId>
+			<version>4.1.126.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec-http</artifactId>
+			<version>4.1.126.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.18.0</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow</artifactId>

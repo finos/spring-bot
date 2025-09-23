@@ -53,12 +53,6 @@
 	</suppress>
 	<suppress>
 		<notes>
-			Suppressing all vulnerabilities in demo directory as it's for demonstration purposes only
-		</notes>
-		<filePath>.*demo.*</filePath>
-	</suppress>
-	<suppress>
-		<notes>
 		This vulnerablity is affect to JDK 17.0.11 and we are using JDK 17.13. so no impact to our application.		
 		</notes>
 		<cve>CVE-2024-21138</cve>
