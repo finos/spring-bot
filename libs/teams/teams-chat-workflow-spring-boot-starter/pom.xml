@@ -24,19 +24,19 @@
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-codec</artifactId>
-			<version>4.1.126.Final</version>
+			<version>${netty-codec.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-codec-http</artifactId>
-			<version>4.1.126.Final</version>
+			<version>${netty-codec-http.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.18.0</version>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 		
 		<dependency>
