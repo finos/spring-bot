@@ -17,6 +17,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 		<azure-storage-blob.version>12.25.3</azure-storage-blob.version>
+		<azure-identity.version>1.13.1</azure-identity.version>
 		<httpclient.version>4.5.13</httpclient.version>
 		<tomcat-embed-core.version>10.1.42</tomcat-embed-core.version>
 	</properties>
@@ -66,6 +67,13 @@
 			<artifactId>azure-storage-blob</artifactId>
 			<version>${azure-storage-blob.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-identity</artifactId>
+			<version>${azure-identity.version}</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.azure</groupId>

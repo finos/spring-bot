@@ -21,20 +21,19 @@ import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 
 import com.microsoft.bot.builder.BotFrameworkAdapter;
-import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
 import com.microsoft.bot.schema.ChannelAccount;
 
 public class StateStorageBasedTeamsConversations extends AbstractTeamsConversations {
-	
+
 	public static final String ADDRESSABLE_INFO = "addressable-info";
 	public static final String ADDRESSABLE_TYPE = "addressable-type";
 	public static final String CHAT = "chat";
 	public static final String USER = "user";
-	
-	
+
 	protected final TeamsStateStorage tss;
-	
-	public StateStorageBasedTeamsConversations(BotFrameworkAdapter bfa, MicrosoftAppCredentials mac,
+
+	public StateStorageBasedTeamsConversations(BotFrameworkAdapter bfa,
+			SpringBotMicrosoftAppCredentials mac,
 			ChannelAccount botAccount, TeamsStateStorage tss) {
 		super(bfa, mac, botAccount);
 		this.tss = tss;
@@ -61,22 +60,20 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 	@Override
 	public TeamsChat getExistingChat(String name) {
 		return getAllChats().stream()
-			.filter(tc -> name.equals(tc.getName()))
-			.findFirst()
-			.orElse(null);
+				.filter(tc -> name.equals(tc.getName()))
+				.findFirst()
+				.orElse(null);
 	}
-	
-	
 
 	@Override
 	public TeamsChat getChatById(String id) {
-		String file = id+"/addressable";
+		String file = id + "/addressable";
 		Optional<Map<String, Object>> data = tss.retrieve(file);
 		if (!data.isPresent()) {
 			return null;
 		} else {
 			List<Map<String, Object>> list = Collections.singletonList(data.get());
-			List<TeamsChat> out =  StateStorageBasedTeamsHistory.findObjectsFromItems(TeamsChat.class, list);
+			List<TeamsChat> out = StateStorageBasedTeamsHistory.findObjectsFromItems(TeamsChat.class, list);
 			if (out.size() > 0) {
 				return out.get(0);
 			} else {
@@ -87,10 +84,10 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 
 	@Override
 	protected void ensureRoomRecorded(TeamsAddressable to) {
-		String file = to.getKey()+"/addressable";
-		
+		String file = to.getKey() + "/addressable";
+
 		Optional<Map<String, Object>> data = tss.retrieve(file);
-		
+
 		if (!data.isPresent()) {
 			Map<String, String> tags = new HashMap<>();
 			tags.put(ADDRESSABLE_INFO, TeamsStateStorage.PRESENT);
