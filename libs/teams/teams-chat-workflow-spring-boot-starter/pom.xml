@@ -16,12 +16,29 @@
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
-		<azure-storage-blob.version>12.25.3</azure-storage-blob.version>
-		<httpclient.version>4.5.13</httpclient.version>
-		<tomcat-embed-core.version>10.1.42</tomcat-embed-core.version>
+		<azure-storage-blob.version>12.31.2</azure-storage-blob.version>
 	</properties>
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec</artifactId>
+			<version>${netty-codec.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec-http</artifactId>
+			<version>${netty-codec-http.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow</artifactId>
@@ -32,12 +49,6 @@
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>msal4j</artifactId>
 			<version>${azure-msal4j.version}</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.apache.tomcat.embed</groupId>
-		    <artifactId>tomcat-embed-core</artifactId>
-		    <version>${tomcat-embed-core.version}</version>
 		</dependency>
 
 		<!-- teams -->

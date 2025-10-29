@@ -51,7 +51,6 @@
         ]]></notes>
 		<cve>CVE-2023-20863</cve>
 	</suppress>
-	
 	<suppress>
 		<notes>
 		This vulnerablity is affect to JDK 17.0.11 and we are using JDK 17.13. so no impact to our application.		
@@ -135,18 +134,6 @@
 		<cve>CVE-2025-41234</cve>
 	</suppress>
 	<suppress>
-		<notes>
-			We will take in next release, once we will migrate spring-bot version to 3.5*
-		</notes>
-		<cve>CVE-2025-46701</cve>
-	</suppress>
-	<suppress>
-		<notes>
-			We will take in next release, once we will migrate spring-bot version to 3.5*
-		</notes>
-		<cve>CVE-2025-48988</cve>
-	</suppress>
-	<suppress>
 	    <notes>
 	        Won't fix - minor issue in library causing stack overflow
 	    </notes>
@@ -157,19 +144,103 @@
 	        Won't fix - minor issue in library causing stack overflow
 	    </notes>
 	    <cve>CVE-2025-53864</cve>
+	</suppress>	
+	<suppress>
+	    <notes>
+	        icu4j-77.1.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2025-5222</cve>
 	</suppress>
 	<suppress>
 	    <notes>
-	        We will take in next release, once we will migrate spring-bot version to 3.5*
+	        netty-transport-4.1.124.Final.jar this jar is non vulnerable, checked at maven site
 	    </notes>
-	    <cve>CVE-2025-49124</cve>
+	    <cve>CVE-2025-58056</cve>
+		<cve>CVE-2025-58057</cve>
 	</suppress>
 	<suppress>
 	    <notes>
-	        We will take in next release, once we will migrate spring-bot version to 3.5*
+	        reactor-netty-core-1.2.9.jar this jar is non vulnerable, checked at maven site
 	    </notes>
-	    <cve>CVE-2025-49125</cve>
+	    <cve>CVE-2021-43797</cve>
+		<cve>CVE-2024-29025</cve>
+		<cve>CVE-2019-16869</cve>
+		<cve>CVE-2015-2156</cve>
+		<cve>CVE-2021-37136</cve>
+		<cve>CVE-2021-37137</cve>
+		<cve>CVE-2025-25193</cve>
+		<cve>CVE-2019-20445</cve>
+		<cve>CVE-2019-20444</cve>
+		<cve>CVE-2021-21295</cve>
+		<cve>CVE-2023-34462</cve>
+		<cve>CVE-2024-47535</cve>
+		<cve>CVE-2021-21290</cve>
+		<cve>CVE-2023-44487</cve>
+		<cve>CVE-2014-3488</cve>
+		<cve>CVE-2022-24823</cve>
+		<cve>CVE-2022-41881</cve>
+		<cve>CVE-2021-21409</cve>
+		<cve>CVE-2025-55163</cve>
+		<cve>CVE-2025-58056</cve>
+		<cve>CVE-2025-58057</cve>
+	</suppress>	
+	<suppress>
+	    <notes>
+	        icu4j-72.1.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2025-5222</cve>
 	</suppress>
-	
+	<suppress>
+	    <notes>
+	        netty-transport-classes-epoll-4.1.124.Final.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2025-58056</cve>
+		<cve>CVE-2025-58057</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        reactor-netty-http-1.2.9.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2021-43797</cve>
+		<cve>CVE-2024-29025</cve>
+		<cve>CVE-2019-16869</cve>
+		<cve>CVE-2015-2156</cve>
+		<cve>CVE-2021-37136</cve>
+		<cve>CVE-2021-37137</cve>
+		<cve>CVE-2025-25193</cve>
+		<cve>CVE-2019-20445</cve>
+		<cve>CVE-2019-20444</cve>
+		<cve>CVE-2021-21295</cve>
+		<cve>CVE-2023-34462</cve>
+		<cve>CVE-2021-21290</cve>
+		<cve>CVE-2023-44487</cve>
+		<cve>CVE-2014-3488</cve>
+		<cve>CVE-2022-24823</cve>
+		<cve>CVE-2022-41881</cve>
+		<cve>CVE-2021-21409</cve>
+		<cve>CVE-2025-55163</cve>
+		<cve>CVE-2025-58056</cve>
+		<cve>CVE-2025-58057</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        netty-transport-classes-kqueue-4.1.124.Final.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2025-58056</cve>
+		<cve>CVE-2025-58057</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        netty-transport-native-unix-common-4.1.124.Final.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2025-58056</cve>
+		<cve>CVE-2025-58057</cve>
+	</suppress>	
+	<suppress>
+	    <notes>
+	        microsoft:teams this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2025-53783</cve>
+	</suppress>			
 </suppressions>
 
