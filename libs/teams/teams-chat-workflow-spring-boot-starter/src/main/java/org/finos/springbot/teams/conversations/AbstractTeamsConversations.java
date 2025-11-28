@@ -21,7 +21,6 @@ import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.builder.teams.TeamsInfo;
 import com.microsoft.bot.connector.ConnectorClient;
 import com.microsoft.bot.connector.Conversations;
-import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ChannelAccount;
 import com.microsoft.bot.schema.ConversationAccount;
@@ -40,11 +39,11 @@ import com.microsoft.bot.schema.ResourceResponse;
  */
 public abstract class AbstractTeamsConversations implements TeamsConversations {
 	
-	private MicrosoftAppCredentials mac;
+	private SpringBotMicrosoftAppCredentials mac;
 	private BotFrameworkAdapter bfa;
 	private ChannelAccount botAccount;
 	
-	public AbstractTeamsConversations(BotFrameworkAdapter bfa, MicrosoftAppCredentials mac, ChannelAccount botAccount) {
+	public AbstractTeamsConversations(BotFrameworkAdapter bfa, SpringBotMicrosoftAppCredentials mac, ChannelAccount botAccount) {
 		super();
 		this.mac = mac;
 		this.bfa = bfa;
@@ -145,7 +144,7 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 		try {
 			ConversationParameters cp = new ConversationParameters();
 			cp.setIsGroup(false);
-			cp.setTenantId(mac.getChannelAuthTenant());
+			cp.setTenantId(mac.getTenantId());
 			cp.setMembers(Collections.singletonList(new ChannelAccount(tu.getKey())));
 			
 			return getConversations().createConversation(cp).get().getId();
@@ -159,17 +158,17 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 		if (address instanceof TeamsUser) {
 			String chatForUser = getOneToOneConversationId((TeamsUser) address);
 			ConversationAccount ca = new ConversationAccount(chatForUser);
-			ca.setTenantId(mac.getChannelAuthTenant());
+			ca.setTenantId(mac.getTenantId());
 			ca.setConversationType("personal");
 			return ca;
 		} else if (address instanceof TeamsChannel) {
 			ConversationAccount ca = new ConversationAccount(address.getKey());
-			ca.setTenantId(mac.getChannelAuthTenant());
+			ca.setTenantId(mac.getTenantId());
 			ca.setConversationType("channel");
 			return ca;
 		} else if (address instanceof TeamsMultiwayChat) {
 			ConversationAccount ca = new ConversationAccount(address.getKey());
-			ca.setTenantId(mac.getChannelAuthTenant());
+			ca.setTenantId(mac.getTenantId());
 			ca.setConversationType("groupChat");
 			return ca;
 		} else {
@@ -226,7 +225,7 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 			
 			TurnContext[] holder = new TurnContext[1];
 			
-			bfa.continueConversation(mac.getAppId(), createConversationReference(ta), tc -> {
+			bfa.continueConversation(mac.getClientId(), createConversationReference(ta), tc -> {
 				holder[0] = tc;
 				return CompletableFuture.completedFuture(null);
 			}).get();
