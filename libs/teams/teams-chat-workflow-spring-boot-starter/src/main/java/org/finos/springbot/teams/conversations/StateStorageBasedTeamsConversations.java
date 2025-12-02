@@ -21,7 +21,6 @@ import org.finos.springbot.workflow.content.Addressable;
 import org.finos.springbot.workflow.content.Chat;
 
 import com.microsoft.bot.builder.BotFrameworkAdapter;
-import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
 import com.microsoft.bot.schema.ChannelAccount;
 
 public class StateStorageBasedTeamsConversations extends AbstractTeamsConversations {
@@ -34,7 +33,7 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 	
 	protected final TeamsStateStorage tss;
 	
-	public StateStorageBasedTeamsConversations(BotFrameworkAdapter bfa, MicrosoftAppCredentials mac,
+	public StateStorageBasedTeamsConversations(BotFrameworkAdapter bfa, SpringBotMicrosoftAppCredentials mac,
 			ChannelAccount botAccount, TeamsStateStorage tss) {
 		super(bfa, mac, botAccount);
 		this.tss = tss;
