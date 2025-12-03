@@ -77,6 +77,12 @@
 			<artifactId>azure-storage-blob</artifactId>
 			<version>${azure-storage-blob.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.azure</groupId>
+			<artifactId>azure-identity</artifactId>
+			<version>${azure-identity.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.azure</groupId>
