@@ -63,7 +63,7 @@
 		<graalvm.version>23.0.3</graalvm.version>
 		<symphony-bdk.version>3.0.0</symphony-bdk.version>
 		<azure-core-http-netty.version>1.16.1</azure-core-http-netty.version>
-		<azure-identity-version>1.18.0</azure-identity-version>	
+		<azure-identity.version>1.18.0</azure-identity.version>	
 		<corenlp.version>4.5.7</corenlp.version>
 		<azure-msal4j.version>1.21.0</azure-msal4j.version>
 		<protonpack.version>1.16</protonpack.version>
