@@ -1,5 +1,7 @@
 package org.finos.springbot.teams;
 
+import org.finos.springbot.teams.conversations.MockSpringBotMicrosoftAppCredentials;
+import org.finos.springbot.teams.conversations.SpringBotAppCredentials;
 import org.finos.springbot.tests.controller.OurController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,11 @@ public class MockTeamsConfiguration {
 	@Bean
 	public OurController ourController() {
 		return new OurController();
+	}
+	
+	@Bean
+	public SpringBotAppCredentials  dummyMicrosoftCredentials() {
+		return new MockSpringBotMicrosoftAppCredentials();
 	}
 
 }
