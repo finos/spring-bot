@@ -267,3 +267,13 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
 # Jan 22 2025
  - Migrate to 3.4.0
  - Vulnerability Fixes
+
+# Dec 3 2025
+* Bumped version number by @robmoffat in https://github.com/finos/spring-bot/pull/458
+* Updated plugins for github actions by @robmoffat in https://github.com/finos/spring-bot/pull/462
+* Vulnerability fix by @vaibhav-db in https://github.com/finos/spring-bot/pull/463
+* SYMPHONYP-1356 vulnerability-in-spring-bot-framework by @vaibhav-db in https://github.com/finos/spring-bot/pull/464
+* Update allow-list.xml by @robmoffat in https://github.com/finos/spring-bot/pull/465
+* Added credentials for github action by @robmoffat in https://github.com/finos/spring-bot/pull/470
+* Spring bot master db by @vaibhav-db in https://github.com/finos/spring-bot/pull/467
+
