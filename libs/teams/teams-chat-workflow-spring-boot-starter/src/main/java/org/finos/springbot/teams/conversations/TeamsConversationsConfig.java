@@ -39,7 +39,7 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 	@ConditionalOnMissingBean
 	public TeamsConversations teamsConversations(
 			BotFrameworkAdapter bfa, 
-			SpringBotMicrosoftAppCredentials appCredentials, 
+			SpringBotAppCredentials appCredentials, 
 			@Value("${teams.bot.id:}") String id,
 			TeamsStateStorage teamsState) {
 		ChannelAccount botAccount = new ChannelAccount(id);

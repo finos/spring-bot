@@ -39,11 +39,11 @@ import com.microsoft.bot.schema.ResourceResponse;
  */
 public abstract class AbstractTeamsConversations implements TeamsConversations {
 	
-	private SpringBotMicrosoftAppCredentials mac;
+	private SpringBotAppCredentials mac;
 	private BotFrameworkAdapter bfa;
 	private ChannelAccount botAccount;
 	
-	public AbstractTeamsConversations(BotFrameworkAdapter bfa, SpringBotMicrosoftAppCredentials mac, ChannelAccount botAccount) {
+	public AbstractTeamsConversations(BotFrameworkAdapter bfa, SpringBotAppCredentials mac, ChannelAccount botAccount) {
 		super();
 		this.mac = mac;
 		this.bfa = bfa;
