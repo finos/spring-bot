@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+import com.azure.identity.ClientCertificateCredential;
 import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
@@ -19,41 +20,53 @@ import com.microsoft.bot.schema.ChannelAccount;
 public class TeamsConversationsConfig extends BotDependencyConfiguration {
 
 	@Bean
-	public MicrosoftAppCredentials microsoftCredentials(@Value("${teams.app.tennantId}") String tennantId) {
+	@ConditionalOnMissingBean
+	public SpringBotMicrosoftAppCredentials microsoftCredentials(
+			@Value("${teams.app.tennantId}") String tennantId,
+			@Value("${teams.app.appId}") String appId,
+			@Value("${teams.app.pemCertificate}") String pemCertificate,
+			@Value("${teams.app.pemCertificatePassword}") String pemCertificatePassword) {
 		com.microsoft.bot.integration.Configuration conf = getConfiguration();
-		MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
-				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
-				conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
-				tennantId);
-		return mac;
+
+		String clientId = conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID);
+
+		SpringBotMicrosoftAppCredentials out = new SpringBotMicrosoftAppCredentials(
+				tennantId, clientId, pemCertificate,
+				pemCertificatePassword);
+
+		// MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
+		// conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
+		// conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
+		// tennantId);
+
+		return out;
 	}
-	
-	@Bean 
+
+	@Bean
 	@ConditionalOnMissingBean
 	public TeamsConversations teamsConversations(
-			BotFrameworkAdapter bfa, 
-			MicrosoftAppCredentials mac, 
+			BotFrameworkAdapter bfa,
+			SpringBotMicrosoftAppCredentials appCredentials,
 			@Value("${teams.bot.id:}") String id,
 			TeamsStateStorage teamsState) {
 		ChannelAccount botAccount = new ChannelAccount(id);
-		return new StateStorageBasedTeamsConversations(bfa, mac, botAccount, teamsState);
+		return new StateStorageBasedTeamsConversations(bfa, appCredentials, botAccount, teamsState);
 	}
-	
 
-    @Override
+	@Override
 	public com.microsoft.bot.integration.Configuration getConfiguration() {
-    	return new com.microsoft.bot.integration.Configuration() {
-			
+		return new com.microsoft.bot.integration.Configuration() {
+
 			@Override
 			public String getProperty(String key) {
-				return ac.getEnvironment().getProperty("teams.bot."+key);
+				return ac.getEnvironment().getProperty("teams.bot." + key);
 			}
-			
+
 			@Override
 			public String[] getProperties(String key) {
-				throw new UnsupportedOperationException("Couldn't getProperties for "+key);
+				throw new UnsupportedOperationException("Couldn't getProperties for " + key);
 			}
-			
+
 			@Override
 			public Properties getProperties() {
 				throw new UnsupportedOperationException();
@@ -61,14 +74,12 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 		};
 	}
 
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    public BotFrameworkHttpAdapter getBotFrameworkHttpAdaptor() {
-    	AdapterWithErrorHandler out = new AdapterWithErrorHandler(getConfiguration());
-    	return out;
-    }
+	@Bean
+	@ConditionalOnMissingBean
+	public BotFrameworkHttpAdapter getBotFrameworkHttpAdaptor() {
+		AdapterWithErrorHandler out = new AdapterWithErrorHandler(getConfiguration());
+		return out;
+	}
 
 	@Autowired
 	ApplicationContext ac;
