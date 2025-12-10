@@ -5,6 +5,7 @@ import org.finos.springbot.teams.conversations.SpringBotAppCredentials;
 import org.finos.springbot.tests.controller.OurController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
@@ -22,6 +23,7 @@ public class MockTeamsConfiguration {
 	}
 	
 	@Bean
+	@Primary
 	public SpringBotAppCredentials  dummyMicrosoftCredentials() {
 		return new MockSpringBotMicrosoftAppCredentials();
 	}
