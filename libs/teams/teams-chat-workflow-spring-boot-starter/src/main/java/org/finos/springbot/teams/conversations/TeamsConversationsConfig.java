@@ -10,9 +10,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
-import com.azure.identity.ClientCertificateCredential;
 import com.microsoft.bot.builder.BotFrameworkAdapter;
-import com.microsoft.bot.connector.authentication.MicrosoftAppCredentials;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.schema.ChannelAccount;
@@ -20,19 +18,15 @@ import com.microsoft.bot.schema.ChannelAccount;
 public class TeamsConversationsConfig extends BotDependencyConfiguration {
 
 	@Bean
-	@ConditionalOnMissingBean
-	public SpringBotMicrosoftAppCredentials microsoftCredentials(
-			@Value("${teams.app.tennantId}") String tennantId,
-			@Value("${teams.app.appId}") String appId,
-			@Value("${teams.app.pemCertificate}") String pemCertificate,
-			@Value("${teams.app.pemCertificatePassword}") String pemCertificatePassword) {
+	public SpringBotAppCredentials microsoftCredentials(@Value("${teams.app.tennantId}") String tennantId) {
 		com.microsoft.bot.integration.Configuration conf = getConfiguration();
 
-		String clientId = conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID);
+		String clientId = conf
+				.getProperty(com.microsoft.bot.connector.authentication.MicrosoftAppCredentials.MICROSOFTAPPID);
 
-		SpringBotMicrosoftAppCredentials out = new SpringBotMicrosoftAppCredentials(
-				tennantId, clientId, pemCertificate,
-				pemCertificatePassword);
+		SpringBotAppCredentials out = new SpringBotMicrosoftAppCredentials(tennantId,
+				clientId, conf.getProperty("MicrosoftAppIdPemCertificate"),
+				conf.getProperty("MicrosoftAppIdPemCertificatePassword"));
 
 		// MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
 		// conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
@@ -46,7 +40,7 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 	@ConditionalOnMissingBean
 	public TeamsConversations teamsConversations(
 			BotFrameworkAdapter bfa,
-			SpringBotMicrosoftAppCredentials appCredentials,
+			SpringBotAppCredentials appCredentials,
 			@Value("${teams.bot.id:}") String id,
 			TeamsStateStorage teamsState) {
 		ChannelAccount botAccount = new ChannelAccount(id);

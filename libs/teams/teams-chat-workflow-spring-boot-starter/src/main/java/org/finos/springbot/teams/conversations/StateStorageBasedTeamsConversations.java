@@ -33,7 +33,7 @@ public class StateStorageBasedTeamsConversations extends AbstractTeamsConversati
 	
 	protected final TeamsStateStorage tss;
 	
-	public StateStorageBasedTeamsConversations(BotFrameworkAdapter bfa, SpringBotMicrosoftAppCredentials mac,
+	public StateStorageBasedTeamsConversations(BotFrameworkAdapter bfa, SpringBotAppCredentials mac,
 			ChannelAccount botAccount, TeamsStateStorage tss) {
 		super(bfa, mac, botAccount);
 		this.tss = tss;
