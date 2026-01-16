@@ -9,16 +9,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 
 import com.microsoft.bot.builder.BotFrameworkAdapter;
+import com.microsoft.bot.connector.authentication.AppCredentials;
+import com.microsoft.bot.connector.authentication.AppCredentialsInterceptor;
+import com.microsoft.bot.connector.authentication.AuthenticationConfiguration;
+import com.microsoft.bot.connector.authentication.CertificateAppCredentials;
+import com.microsoft.bot.connector.authentication.ChannelProvider;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
+import com.microsoft.bot.integration.Configuration;
 import com.microsoft.bot.schema.ChannelAccount;
 
 public class TeamsConversationsConfig extends BotDependencyConfiguration {
 
 	@Bean
-	public SpringBotAppCredentials microsoftCredentials(@Value("${teams.app.tennantId}") String tennantId) {
+	public SpringBotAppCredentials springBotAppCredentials(@Value("${teams.app.tennantId}") String tennantId) {
 		com.microsoft.bot.integration.Configuration conf = getConfiguration();
 
 		String clientId = conf
@@ -36,6 +43,47 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 		return out;
 	}
 
+
+//	@Primary
+//	@Bean
+//	CredentialProvider credentialProvider(SpringBotMicrosoftAppCredentials cr) {
+//		return new SimpleCredentialProvider(cr.getClientId(), null) ;
+//	}
+	
+	@Primary
+	@Bean
+	public CertificateAppCredentials certificateCredentials(SpringBotAppCredentials credentials) {
+		return credentials.getAppCredentials();
+	}
+	
+	
+	@Primary
+	@Bean
+	public AppCredentialsInterceptor appCredentialsInterceptor(CertificateAppCredentials credentials) {
+		return new AppCredentialsInterceptor(credentials);
+	}
+	
+	@Primary
+	@Bean
+	public BotFrameworkAdapter botFrameworkAdapter(
+			CertificateAppCredentials withCredentials,
+	        AuthenticationConfiguration withAuthConfig,
+	        ChannelProvider withChannelProvider) {
+		
+		Configuration conf = getConfiguration();
+		
+		String clientId = conf.getProperty("MicrosoftAppId");
+		withCredentials.setAppId(clientId);
+
+		BotFrameworkAdapter adapter = new BotFrameworkAdapter(withCredentials,
+		        withAuthConfig,
+		        withChannelProvider,
+		        null,
+		        null);
+		
+	    return adapter;
+	}
+	
 	@Bean
 	@ConditionalOnMissingBean
 	public TeamsConversations teamsConversations(
