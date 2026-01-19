@@ -1,6 +1,7 @@
 package org.finos.springbot.teams.conversations;
 
 import com.azure.identity.ClientCertificateCredential;
+import com.microsoft.bot.connector.authentication.CertificateAppCredentials;
 
 public interface SpringBotAppCredentials {
 
@@ -11,5 +12,7 @@ public interface SpringBotAppCredentials {
 	ClientCertificateCredential getCredential();
 	
 	String getToken();
+
+	CertificateAppCredentials getAppCredentials();
 
 }
