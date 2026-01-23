@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.bot.builder.MessageFactory;
 import com.microsoft.bot.builder.TurnContext;
+import com.microsoft.bot.connector.teams.TeamsConnectorClient;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
 import com.microsoft.bot.schema.ResultPair;
@@ -38,8 +39,9 @@ public class FileActivityHandler extends MessageActivityHandler {
 
 	public FileActivityHandler(List<ActionConsumer> messageConsumers, TeamsConversations teamsConversations,
 			TeamsStateStorage teamsStateStorage, TeamsHTMLParser parser, FormConverter formConverter,
-			FormValidationProcessor validationProcessor) {
-		super(messageConsumers, teamsConversations, teamsStateStorage, parser, formConverter, validationProcessor);
+			FormValidationProcessor validationProcessor, TeamsConnectorClient teamsConnectorClient) {
+		super(messageConsumers, teamsConversations, teamsStateStorage, parser, formConverter, validationProcessor,
+				teamsConnectorClient);
 	}
 
 	@Override

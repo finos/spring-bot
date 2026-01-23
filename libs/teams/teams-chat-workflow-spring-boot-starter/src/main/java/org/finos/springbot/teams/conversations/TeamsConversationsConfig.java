@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
 import com.microsoft.bot.builder.BotFrameworkAdapter;
-import com.microsoft.bot.connector.authentication.AppCredentials;
-import com.microsoft.bot.connector.authentication.AppCredentialsInterceptor;
 import com.microsoft.bot.connector.authentication.AuthenticationConfiguration;
 import com.microsoft.bot.connector.authentication.CertificateAppCredentials;
 import com.microsoft.bot.connector.authentication.ChannelProvider;
+import com.microsoft.bot.connector.rest.RestTeamsConnectorClient;
+import com.microsoft.bot.connector.teams.TeamsConnectorClient;
 import com.microsoft.bot.integration.AdapterWithErrorHandler;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.integration.Configuration;
@@ -34,21 +34,8 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 		SpringBotAppCredentials out = new SpringBotMicrosoftAppCredentials(tennantId,
 				clientId, conf.getProperty("MicrosoftAppIdPemCertificate"),
 				conf.getProperty("MicrosoftAppIdPemCertificatePassword"));
-
-		// MicrosoftAppCredentials mac = new MicrosoftAppCredentials(
-		// conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPID),
-		// conf.getProperty(MicrosoftAppCredentials.MICROSOFTAPPPASSWORD),
-		// tennantId);
-
 		return out;
 	}
-
-
-//	@Primary
-//	@Bean
-//	CredentialProvider credentialProvider(SpringBotMicrosoftAppCredentials cr) {
-//		return new SimpleCredentialProvider(cr.getClientId(), null) ;
-//	}
 	
 	@Primary
 	@Bean
@@ -56,11 +43,9 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 		return credentials.getAppCredentials();
 	}
 	
-	
-	@Primary
 	@Bean
-	public AppCredentialsInterceptor appCredentialsInterceptor(CertificateAppCredentials credentials) {
-		return new AppCredentialsInterceptor(credentials);
+	public TeamsConnectorClient restTeamsConnectorClient(CertificateAppCredentials credentials) {
+		return new RestTeamsConnectorClient("https://smba.trafficmanager.net/uk/", credentials);
 	}
 	
 	@Primary
@@ -83,6 +68,7 @@ public class TeamsConversationsConfig extends BotDependencyConfiguration {
 		
 	    return adapter;
 	}
+	
 	
 	@Bean
 	@ConditionalOnMissingBean
