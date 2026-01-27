@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import com.microsoft.bot.connector.authentication.CertificateAppCredentials;
+
 @Configuration
 public class MockTeamsConfiguration {
 
@@ -25,6 +27,11 @@ public class MockTeamsConfiguration {
 	@Primary
 	public SpringBotAppCredentials dummyMicrosoftCredentials() {
 		return new MockSpringBotMicrosoftAppCredentials();
+	}
+
+	@Bean
+	public CertificateAppCredentials certificateAppCredentials(SpringBotAppCredentials appCredentials) {
+		return appCredentials.getAppCredentials();
 	}
 
 }
