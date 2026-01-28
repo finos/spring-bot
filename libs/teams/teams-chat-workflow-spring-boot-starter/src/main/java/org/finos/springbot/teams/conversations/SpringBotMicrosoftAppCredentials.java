@@ -3,18 +3,26 @@ package org.finos.springbot.teams.conversations;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.UnrecoverableKeyException;
+import java.security.cert.CertificateException;
 import java.util.Base64;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
+import com.microsoft.bot.connector.authentication.CertificateAppCredentials;
+import com.microsoft.bot.connector.authentication.CertificateAppCredentialsOptions;
 
 public class SpringBotMicrosoftAppCredentials implements SpringBotAppCredentials {
 
 	private String tenantId = null;
 	private String clientId = null;
 	private ClientCertificateCredential credential = null;
-	
+	private CertificateAppCredentials appCredentials = null;
+
 	public SpringBotMicrosoftAppCredentials(String tenantId, String clientId, String certificate,
 			String certificatePassword) {
 		this.tenantId = tenantId;
@@ -37,14 +45,21 @@ public class SpringBotMicrosoftAppCredentials implements SpringBotAppCredentials
 				this.credential = new ClientCertificateCredentialBuilder().tenantId(tenantId).clientId(clientId)
 						.pemCertificate(Files.newInputStream(Paths.get(certificate)))
 						.clientCertificatePassword(certificatePassword).build();
+
+				CertificateAppCredentialsOptions out = new CertificateAppCredentialsOptions(clientId,
+						Files.newInputStream(Paths.get(certificate)), certificatePassword);
+
+				appCredentials = new CertificateAppCredentials(out);
+
 			}
-		} catch (IOException e) {
+		} catch (IOException | UnrecoverableKeyException | CertificateException | NoSuchAlgorithmException
+				| KeyStoreException | NoSuchProviderException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Failed to create certificate", e);
 		}
 
 	}
-	
+
 	@Override
 	public String getTenantId() {
 		return tenantId;
@@ -61,10 +76,22 @@ public class SpringBotMicrosoftAppCredentials implements SpringBotAppCredentials
 	}
 
 	@Override
-	public String getToken() {
-		return credential.getTokenSync(new TokenRequestContext().addScopes("https://graph.microsoft.com/.default"))
-				.getToken();
+	public CertificateAppCredentials getAppCredentials() {
+		return appCredentials;
 	}
-
+    
 	
+	@Override
+    public String getToken() {
+		
+        String token = credential.getTokenSync(
+                new TokenRequestContext().addScopes("https://api.botframework.com/.default")
+        ).getToken();
+        
+        return token;
+        
+    }
+	
+
+
 }

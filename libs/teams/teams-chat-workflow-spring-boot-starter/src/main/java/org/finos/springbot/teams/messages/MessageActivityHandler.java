@@ -26,8 +26,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 
+import com.microsoft.bot.builder.BotFrameworkAdapter;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.builder.teams.TeamsActivityHandler;
+import com.microsoft.bot.connector.teams.TeamsConnectorClient;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.Attachment;
 
@@ -41,6 +43,7 @@ public class MessageActivityHandler extends TeamsActivityHandler {
 	TeamsStateStorage teamsStateStorage;
 	FormConverter formConverter;
 	FormValidationProcessor validationProcessor;
+	TeamsConnectorClient teamsConnectorClient;
 	
 	public MessageActivityHandler(
 			List<ActionConsumer> messageConsumers, 
@@ -48,7 +51,8 @@ public class MessageActivityHandler extends TeamsActivityHandler {
 			TeamsStateStorage teamsStateStorage,
 			TeamsHTMLParser parser,
 			FormConverter formConverter,
-			FormValidationProcessor validationProcessor) {
+			FormValidationProcessor validationProcessor,
+			TeamsConnectorClient teamsConnectorClient) {
 		super();
 		this.messageConsumers = messageConsumers;
 		this.teamsConversations = teamsConversations;
@@ -56,6 +60,7 @@ public class MessageActivityHandler extends TeamsActivityHandler {
 		this.messageParser = parser;
 		this.formConverter = formConverter;
 		this.validationProcessor = validationProcessor;
+		this.teamsConnectorClient = teamsConnectorClient;
 	}
 
 	@Override
@@ -69,6 +74,11 @@ public class MessageActivityHandler extends TeamsActivityHandler {
 			Activity a = turnContext.getActivity();
 			
 			try {
+				 
+			     turnContext.getTurnState().remove(BotFrameworkAdapter.TEAMSCONNECTOR_CLIENT_KEY);
+			     turnContext.getTurnState().add(BotFrameworkAdapter.TEAMSCONNECTOR_CLIENT_KEY, teamsConnectorClient);
+			     
+			     
 				CurrentTurnContext.CURRENT_CONTEXT.set(turnContext);
 				Action action = (a.getValue() != null) ? processForm(turnContext, a) : processMessage(turnContext, a);
 			

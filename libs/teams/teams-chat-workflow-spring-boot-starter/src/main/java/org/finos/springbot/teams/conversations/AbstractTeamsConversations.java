@@ -219,9 +219,9 @@ public abstract class AbstractTeamsConversations implements TeamsConversations {
 		try {
 			TurnContext out = CurrentTurnContext.CURRENT_CONTEXT.get();
 			
-			if (out != null) {
-				return out;
-			}
+//			if (out != null) {
+//				return out;
+//			}
 			
 			TurnContext[] holder = new TurnContext[1];
 			

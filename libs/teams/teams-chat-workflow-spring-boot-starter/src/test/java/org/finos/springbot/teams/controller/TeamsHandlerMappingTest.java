@@ -46,6 +46,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.bot.builder.TurnContext;
+import com.microsoft.bot.builder.TurnContextStateCollection;
 import com.microsoft.bot.schema.Activity;
 import com.microsoft.bot.schema.ActivityTypes;
 import com.microsoft.bot.schema.Attachment;
@@ -219,7 +220,10 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	private void mockTurnContext(String s, Map<String, Object> formData, boolean isAttachement) {
 		tc = Mockito.mock(TurnContext.class);
 		CurrentTurnContext.CURRENT_CONTEXT.set(tc);
-
+		
+		TurnContextStateCollection tcsc  = Mockito.mock(TurnContextStateCollection.class);
+		Mockito.when(tc.getTurnState()).thenReturn(tcsc);
+		
 		msg = ArgumentCaptor.forClass(Activity.class);
 		Mockito.when(tc.sendActivity(msg.capture())).thenReturn(CompletableFuture.completedFuture(null));
 		

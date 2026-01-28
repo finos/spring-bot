@@ -61,6 +61,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.microsoft.bot.builder.TurnContext;
 import com.microsoft.bot.builder.teams.TeamsActivityHandler;
+import com.microsoft.bot.connector.teams.TeamsConnectorClient;
 import com.microsoft.bot.integration.BotFrameworkHttpAdapter;
 import com.microsoft.bot.schema.ChannelAccount;
 
@@ -230,8 +231,9 @@ public class TeamsWorkflowConfig implements InitializingBean {
 			FormValidationProcessor fvp, 
 			TeamsConversations tc,
 			TeamsStateStorage teamsStateStorage,
-			TeamsFormConverter fc) {
-		return new FileActivityHandler(messageConsumers, tc, teamsStateStorage, parser, fc, fvp);
+			TeamsFormConverter fc,
+			TeamsConnectorClient teamsConnectorClient) {
+		return new FileActivityHandler(messageConsumers, tc, teamsStateStorage, parser, fc, fvp, teamsConnectorClient);
 	}
     
 	@Bean

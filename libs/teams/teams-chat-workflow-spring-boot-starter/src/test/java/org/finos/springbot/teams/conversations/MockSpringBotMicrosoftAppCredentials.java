@@ -1,6 +1,9 @@
 package org.finos.springbot.teams.conversations;
 
+import org.mockito.Mockito;
+
 import com.azure.identity.ClientCertificateCredential;
+import com.microsoft.bot.connector.authentication.CertificateAppCredentials;
 
 public class MockSpringBotMicrosoftAppCredentials implements SpringBotAppCredentials {
 
@@ -22,6 +25,11 @@ public class MockSpringBotMicrosoftAppCredentials implements SpringBotAppCredent
 	@Override
 	public String getToken() {
 		return "mock-token";
+	}
+
+	@Override
+	public CertificateAppCredentials getAppCredentials() {
+		return Mockito.mock(CertificateAppCredentials.class);
 	}
 
 }
