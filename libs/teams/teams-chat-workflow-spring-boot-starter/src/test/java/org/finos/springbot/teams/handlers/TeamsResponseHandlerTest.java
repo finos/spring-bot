@@ -17,9 +17,9 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.microsoft.bot.connector.rest.ErrorResponseException;
@@ -38,10 +38,10 @@ import retrofit2.Response;
 @ExtendWith(SpringExtension.class)
 public class TeamsResponseHandlerTest {
 
-	@MockBean
+	@MockitoBean
 	ActivityHandler ah;
 
-	@MockBean
+	@MockitoBean
 	ResponseHandlers eh;
 
 	@Autowired
