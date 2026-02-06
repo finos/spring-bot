@@ -12,8 +12,9 @@ import org.finos.springbot.teams.TeamsWorkflowConfig;
 import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -24,12 +25,11 @@ import com.microsoft.bot.schema.teams.FileUploadInfo;
 
 @SpringBootTest(classes = { MockTeamsConfiguration.class, TeamsWorkflowConfig.class, DataHandlerConfig.class })
 @ActiveProfiles("teams")
-@ExtendWith(SpringExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class FileActivityHandlerTest {
 
 
-	// Use the Spring context to wire the handler and its dependencies instead of Mockito @InjectMocks
-	@Autowired
+	@InjectMocks
 	FileActivityHandler handler;
 
 	TurnContext tc;

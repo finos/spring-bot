@@ -5,17 +5,25 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.finos.springbot.teams.MockTeamsConfiguration;
+import org.finos.springbot.teams.TeamsWorkflowConfig;
 import org.finos.springbot.teams.bot.ChannelServiceController;
 import org.finos.springbot.teams.content.TeamsUser;
+import org.finos.springbot.teams.handlers.TeamsResponseHandler;
+import org.finos.springbot.workflow.data.DataHandlerConfig;
 import org.finos.springbot.workflow.response.MessageResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.microsoft.bot.builder.ChannelServiceHandler;
 import com.microsoft.bot.schema.Activity;
@@ -28,13 +36,19 @@ import com.microsoft.bot.schema.PagedMembersResult;
 import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.Transcript;
 
+@SpringBootTest(classes = { MockTeamsConfiguration.class, TeamsWorkflowConfig.class, DataHandlerConfig.class })
+@ActiveProfiles("teams")
 @ExtendWith(MockitoExtension.class)
 public class ChannelServiceControllerTest {
 
     @Mock
     ChannelServiceHandler handler;
 
-    ChannelServiceController controller;
+    @InjectMocks
+    ChannelServiceController controller = new ChannelServiceController(handler) {};;
+
+    @Mock
+    TeamsResponseHandler teamsResponseHandler;
 
     ResourceResponse rr;
 
@@ -47,6 +61,8 @@ public class ChannelServiceControllerTest {
         TeamsUser tu = new TeamsUser("made", "up", "thing");
         MessageResponse r = new MessageResponse(tu, "Some object");
         rr = Mockito.mock(ResourceResponse.class);
+
+        //Mockito.when(teamsResponseHandler.apply(r)).thenReturn(rr);
     }
 
     @SuppressWarnings({ "deprecation" })
@@ -57,8 +73,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<ResourceResponse>> future = controller.sendToConversation("conversation Id", a, "any text");
         ResponseEntity<ResourceResponse> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -67,8 +82,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<ResourceResponse>> future = controller.replyToActivity("conversation Id", "activityId", a, "any text");
         ResponseEntity<ResourceResponse> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -77,8 +91,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<ResourceResponse>> future = controller.updateActivity("conversation Id", "activityId", a, "any text");
         ResponseEntity<ResourceResponse> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -90,8 +103,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<Void>> future = controller.deleteActivity("conversation Id", "activityId", "any text");
         ResponseEntity<Void> entity = future.get();
 
-        Assertions.assertEquals(202, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(202, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -103,8 +115,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<List<ChannelAccount>>> future = controller.getActivityMembers("conversation Id", "activityId", "any text");
         ResponseEntity<List<ChannelAccount>> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -119,8 +130,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<ConversationResourceResponse>> future = controller.createConversation(parameters, "any text");
         ResponseEntity<ConversationResourceResponse> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -133,8 +143,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<ConversationsResult>> future = controller.getConversations("conversation Id", "activityId", "any text");
         ResponseEntity<ConversationsResult> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -147,8 +156,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<List<ChannelAccount>>> future = controller.getConversationMembers("conversation Id", "any text");
         ResponseEntity<List<ChannelAccount>> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -161,8 +169,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<PagedMembersResult>> future = controller.getConversationPagedMembers("conversation Id", 1, "activityId", "any text");
         ResponseEntity<PagedMembersResult> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -175,8 +182,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<Void>> future = controller.deleteConversationMember("conversation Id",  "Member Id", "any text");
         ResponseEntity<Void> entity = future.get();
 
-        Assertions.assertEquals(202, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(202, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -191,8 +197,7 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<ResourceResponse>> future = controller.sendConversationHistory("conversation Id",history, "any text");
         ResponseEntity<ResourceResponse> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 
     @SuppressWarnings({ "deprecation" })
     @Test
@@ -207,6 +212,5 @@ public class ChannelServiceControllerTest {
         CompletableFuture<ResponseEntity<ResourceResponse>> future = controller.uploadAttachment("conversation Id",attachmentUpload, "any text");
         ResponseEntity<ResourceResponse> entity = future.get();
 
-        Assertions.assertEquals(200, entity.getStatusCode().value());
-    }
+        Assertions.assertEquals(200, entity.getStatusCode().value());    }
 }
