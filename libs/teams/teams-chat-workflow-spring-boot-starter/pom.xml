@@ -22,21 +22,9 @@
 	<dependencies>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${commons-lang3.version}</version>
-		</dependency>
-		
-		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow</artifactId>
 			<version>10.0.4-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.microsoft.azure</groupId>
-			<artifactId>msal4j</artifactId>
-			<version>${azure-msal4j.version}</version>
 		</dependency>
 
 		<!-- teams -->

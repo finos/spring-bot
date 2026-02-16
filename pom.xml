@@ -65,14 +65,10 @@
 		<azure-core-http-netty.version>1.16.1</azure-core-http-netty.version>
 		<azure-identity.version>1.18.0</azure-identity.version>	
 		<corenlp.version>4.5.7</corenlp.version>
-		<azure-msal4j.version>1.21.0</azure-msal4j.version>
 		<protonpack.version>1.16</protonpack.version>
 		<httpclient.version>4.5.13</httpclient.version>
 		<icu4j.version>77.1</icu4j.version>
 		<bcpkix-jdk18on.version>1.81</bcpkix-jdk18on.version>
-		<commons-lang3.version>3.18.0</commons-lang3.version>
-		<netty-codec-http.version>4.1.126.Final</netty-codec-http.version>
-		<netty-codec.version>4.1.126.Final</netty-codec.version>
 
 	</properties>
 
