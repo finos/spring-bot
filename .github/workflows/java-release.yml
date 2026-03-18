@@ -31,15 +31,20 @@ jobs:
 
             - name: Extract version
               id: version
+              env:
+                EVENT_NAME: ${{ github.event_name }}
+                INPUT_VERSION: ${{ inputs.version }}
               run: |
-                if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-                  echo "VERSION=${{ inputs.version }}" >> $GITHUB_OUTPUT
+                if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+                  echo "VERSION=$INPUT_VERSION" >> $GITHUB_OUTPUT
                 else
                   echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
                 fi
 
             - name: Set version in pom.xml
-              run: mvn versions:set -DnewVersion=${{ steps.version.outputs.VERSION }}
+              env:
+                VERSION: ${{ steps.version.outputs.VERSION }}
+              run: mvn versions:set -DnewVersion="$VERSION"
 
             - name: Build and test
               run: mvn clean verify
