@@ -161,7 +161,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-gpg-plugin</artifactId>
-						<version>1.6</version>
+						<version>3.2.8</version>
 						<executions>
 							<execution>
 								<id>sign-artifacts</id>
@@ -172,7 +172,12 @@
 							</execution>
 						</executions>
 						<configuration>
-							<interactive>false</interactive>
+							<!-- CI: passphrase from env, not encrypted settings.xml (avoids settings-security.xml) -->
+							<passphraseEnvName>GPG_PASSPHRASE</passphraseEnvName>
+							<gpgArguments>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
 						</configuration>
 					</plugin>
 				</plugins>
