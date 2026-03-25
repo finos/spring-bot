@@ -52,3 +52,15 @@ jobs:
                   MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
                   MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
                   GPG_PASSPHRASE: ${{ secrets.CI_GPG_PASSPHRASE }}
+
+            # maven-deploy only PUTs files; this hands the staging repo to the Central Portal (same runner IP).
+            # Namespace must match https://central.sonatype.com/publishing/namespaces (often your Maven groupId).
+            - name: Finalize deployment (Central Portal)
+              env:
+                  MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+                  MAVEN_PASSWORD: ${{ secrets.OSSRH_TOKEN }}
+              run: |
+                TOKEN=$(printf '%s:%s' "$MAVEN_USERNAME" "$MAVEN_PASSWORD" | base64 -w0)
+                curl -sfS -X POST \
+                  -H "Authorization: Bearer ${TOKEN}" \
+                  "https://ossrh-staging-api.central.sonatype.com/manual/upload/defaultRepository/org.finos.springbot?publishing_type=user_managed"
