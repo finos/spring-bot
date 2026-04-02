@@ -3,7 +3,7 @@
 
 	<groupId>org.finos.springbot</groupId>
 	<artifactId>spring-bot</artifactId>
-	<version>10.0.4-SNAPSHOT</version>
+	<version>11.0.1-SNAPSHOT</version>
 
 	<packaging>pom</packaging>
 	<name>Spring Bot</name>
