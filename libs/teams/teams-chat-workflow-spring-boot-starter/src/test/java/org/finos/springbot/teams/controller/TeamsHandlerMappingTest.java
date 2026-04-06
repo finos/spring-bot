@@ -34,10 +34,10 @@ import org.finos.springbot.workflow.java.mapping.ChatRequestChatHandlerMapping;
 import org.finos.springbot.workflow.response.WorkResponse;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -58,6 +58,7 @@ import com.microsoft.bot.schema.ResourceResponse;
 import com.microsoft.bot.schema.teams.ChannelInfo;
 import com.microsoft.bot.schema.teams.FileConsentCard;
 import com.microsoft.bot.schema.teams.TeamsChannelData;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 
 @SpringBootTest(classes = {
@@ -79,10 +80,10 @@ public class TeamsHandlerMappingTest extends AbstractHandlerMappingTest {
 	@Autowired
 	ChatRequestChatHandlerMapping hm;
 	
-	@MockBean
+	@MockitoBean
 	TeamsStateStorage th;
-	
-	@MockBean
+
+	@MockitoBean
 	TeamsConversations conv;
 	
 	@Autowired

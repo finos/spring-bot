@@ -11,7 +11,7 @@
   <parent>
 	<groupId>org.finos.springbot</groupId>
 	<artifactId>spring-bot</artifactId>
-	<version>10.0.4-SNAPSHOT</version>
+	<version>11.0.0-SNAPSHOT</version>
     <relativePath>../..</relativePath>
   </parent> 
   
@@ -33,7 +33,7 @@
 	<dependency>
 		<groupId>org.finos.springbot</groupId>
 		<artifactId>entity-json</artifactId>
-		<version>10.0.4-SNAPSHOT</version>
+		<version>11.0.0-SNAPSHOT</version>
 	</dependency>
 	    <dependency>
 		<groupId>org.springframework.boot</groupId>
@@ -49,7 +49,15 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
-    </dependency> 
+    </dependency>
+      <dependency>
+          <groupId>com.fasterxml.jackson.datatype</groupId>
+          <artifactId>jackson-datatype-jsr310</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+      </dependency>
 
   </dependencies>
 
