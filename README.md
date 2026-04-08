@@ -7,7 +7,8 @@
 
 | Version                     | Number                                                                                                                                                                    | Status                                                                                                                  |
 | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Spring Bot (Spring Boot V3) | [![Maven Central](https://img.shields.io/maven-central/v/org.finos.springbot/spring-bot)](https://search.maven.org/search?q=org.finos.springbot)                          | ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)                                     |
+| Spring Bot (Spring Boot V4) | [![Maven Central](https://img.shields.io/maven-central/v/org.finos.springbot/spring-bot)](https://search.maven.org/search?q=org.finos.springbot)                          | ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)                                     |
+| Spring Bot (Spring Boot V3) | [![Maven Central](https://img.shields.io/maven-central/v/org.finos.springbot/spring-bot?versionPrefix=10)](https://search.maven.org/search?q=org.finos.springbot)                          | ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)                                     |
 | Spring Bot (Spring Boot V2) | [![Maven Central](https://img.shields.io/maven-central/v/org.finos.springbot/spring-bot?versionPrefix=9)](https://search.maven.org/search?q=org.finos.springbot)          | ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)                                     |
 | Symphony Java Toolkit       | [![Maven Central](https://img.shields.io/maven-central/v/org.finos.symphony.toolkit/symphony-java-toolkit)](https://search.maven.org/search?q=org.finos.symphony.toolkit) | ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg?branch=symphony-java-toolkit-master) |
 
@@ -158,6 +159,16 @@ mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-p
 mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then PR spring-bot-master branch with the new version number
+```
+##OR
+
+```
+#create your version tag and push that tag. 
+mvn clean test
+mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
+git tag <our breaking change no>.<minor version no>.<our-patch-version-no>
+git push origin <our breaking change no>.<minor version no>.<our-patch-version-no>
+mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=
 ```
 
 3. SECURITY.md
