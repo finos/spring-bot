@@ -160,10 +160,10 @@ mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then PR spring-bot-master branch with the new version number
 ```
-##OR
+OR
 
 ```
-#create your version tag and push that tag. 
+#create your version tag and push that tag on spring-bot-master branch
 mvn clean test
 mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
 git tag <our breaking change no>.<minor version no>.<our-patch-version-no>
