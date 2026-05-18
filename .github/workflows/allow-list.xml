@@ -241,6 +241,34 @@
 	        microsoft:teams this jar is non vulnerable, checked at maven site
 	    </notes>
 	    <cve>CVE-2025-53783</cve>
-	</suppress>			
+	</suppress>
+	<suppress>
+	    <notes>
+	        azure-identity-1.18.0.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2023-36415</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        kotlin-stdlib-common-1.9.22.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2020-29582</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        netty-transport-4.2.12.Final.jar, netty-transport-native-epoll-4.2.12.Final.jar, netty-transport-native-unix-common@4.2.12.Final this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2026-41417</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        reactor-netty-core-1.3.5.jar and reactor-netty-http-1.3.5.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2026-33871</cve>
+		<cve>CVE-2025-67735</cve>
+		<cve>CVE-2026-33870</cve>
+		<cve>CVE-2026-41417</cve>
+	</suppress>
+
 </suppressions>
 
