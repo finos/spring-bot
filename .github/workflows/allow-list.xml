@@ -273,11 +273,11 @@
 		<notes>
 			tomcat-embed-core,tomcat-embeded-websocket, this jar is vulnerable, will solve in next release
 		</notes>
-		<cve>CVE-2026-41293</cve>, 
-		<cve>CVE-2026-41284</cve>, 
-		<cve>CVE-2026-43513</cve>, 
-		<cve>CVE-2026-43512</cve>, 
-		<cve>CVE-2026-42498</cve>, 
+		<cve>CVE-2026-41293</cve> 
+		<cve>CVE-2026-41284</cve> 
+		<cve>CVE-2026-43513</cve> 
+		<cve>CVE-2026-43512</cve> 
+		<cve>CVE-2026-42498</cve> 
 		<cve>CVE-2026-43515</cve>
 	</suppress>
 	<suppress>
