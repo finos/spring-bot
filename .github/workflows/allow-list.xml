@@ -286,5 +286,27 @@
 		</notes>
 		<cve>CVE-2026-33117</cve>
 	</suppress>
+	<suppress>
+		<notes>
+			netty-transport-4.2.12.Final.jar
+			reactor-netty-core-1.3.5.jar 
+			netty-transport-native-epoll-4.2.12.Final.jar 
+			reactor-netty-http-1.3.5.jar 
+			netty-transport-native-unix-common-4.2.12.Final.jar
+		 this jar is non vulnerable, checked at maven site
+		</notes>
+		<cve>CVE-2026-42581</cve> 
+		<cve>CVE-2026-42580</cve> 
+		<cve>CVE-2026-42585</cve> 
+		<cve>CVE-2026-42584</cve> 
+		<cve>CVE-2026-42583</cve> 
+		<cve>CVE-2026-42582</cve>
+		<cve>CVE-2026-42578</cve>
+		<cve>CVE-2026-42577</cve>
+		<cve>CVE-2026-42587</cve>
+		<cve>CVE-2026-42586</cve>
+		<cve>CVE-2026-44248</cve>
+		<cve>CVE-2026-42579</cve>
+		<cve>CVE-2026-49737</cve>
+	</suppress>
 </suppressions>
-
