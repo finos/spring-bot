@@ -6,12 +6,11 @@ This file lists the maintainers of this repository.
 
 | GitHub Username | Name | Organization | Email |
 |----------------|------|--------------|-------|
-
-For information about maintainer responsibilities and resources, see the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
-
 | @abhishek-sinha-db | *please add name* | *please add organization* | *please add email* |
 | @pankaj-a-khandelwal-db | Pankaj Khandelwal | *please add organization* | *please add email* |
 | @vaibhav-db | Vaibhav Mankar | Deutsche bank | *please add email* |
+
+For information about maintainer responsibilities and resources, see the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
 
 ## Updating this file
 
