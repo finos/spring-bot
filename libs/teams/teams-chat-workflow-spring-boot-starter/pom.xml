@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>org.finos.springbot</groupId>
 		<artifactId>spring-bot</artifactId>
-		<version>10.0.4-SNAPSHOT</version>
+		<version>11.0.0-SNAPSHOT</version>
 		<relativePath>../../..</relativePath>
 	</parent>
 
@@ -20,35 +20,35 @@
 	</properties>
 
 	<dependencies>
-		
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-codec</artifactId>
-			<version>${netty-codec.version}</version>
-		</dependency>
 
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-codec-http</artifactId>
-			<version>${netty-codec-http.version}</version>
+			<version>${netty.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>${commons-lang3.version}</version>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec-compression</artifactId>
+			<version>${netty.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-transport-native-epoll</artifactId>
+			<version>${netty.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-transport-native-unix-common</artifactId>
+			<version>${netty.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow</artifactId>
-			<version>10.0.4-SNAPSHOT</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.microsoft.azure</groupId>
-			<artifactId>msal4j</artifactId>
-			<version>${azure-msal4j.version}</version>
+			<version>11.0.0-SNAPSHOT</version>
 		</dependency>
 
 		<!-- teams -->
@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>org.finos.springbot</groupId>
 			<artifactId>chat-workflow-testing</artifactId>
-			<version>10.0.4-SNAPSHOT</version>
+			<version>11.0.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

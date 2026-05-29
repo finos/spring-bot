@@ -19,7 +19,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.symphony.bdk.core.service.message.MessageService;
@@ -35,6 +34,7 @@ import com.symphony.bdk.gen.api.model.StreamType.TypeEnum;
 import com.symphony.bdk.gen.api.model.V3RoomAttributes;
 import com.symphony.bdk.gen.api.model.V3RoomDetail;
 import com.symphony.bdk.gen.api.model.V3RoomSearchResults;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(classes = { 
 	SymphonyMockConfiguration.class, 
@@ -46,10 +46,10 @@ public class SymphonyConversationsTest {
 	@Autowired
 	SymphonyConversationsImpl ruBuilder;
 	
-	@MockBean
+	@MockitoBean
 	StreamService streamsApi;
 
-	@MockBean
+	@MockitoBean
 	MessageService messagesApi;
 	
 	@Test
