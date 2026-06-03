@@ -1,4 +1,4 @@
-[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/active)
+[![FINOS - Graduated](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-graduated.svg)](https://community.finos.org/docs/governance/lifecycle-stages/graduated)
 [![codecov](https://codecov.io/gh/finos/spring-bot/branch/spring-bot-develop/graph/badge.svg?token=CSa0aaqYD0)](https://codecov.io/gh/finos/spring-bot)
 ![License](https://img.shields.io/github/license/finos/spring-bot)
 ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)
@@ -159,16 +159,6 @@ mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-p
 mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
 # then PR spring-bot-master branch with the new version number
-```
-OR
-
-```
-#create your version tag and push that tag on spring-bot-master branch
-mvn clean test
-mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
-git tag <our breaking change no>.<minor version no>.<our-patch-version-no>
-git push origin <our breaking change no>.<minor version no>.<our-patch-version-no>
-mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=
 ```
 
 3. SECURITY.md
