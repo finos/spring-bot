@@ -1,4 +1,4 @@
-[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://community.finos.org/docs/governance/Software-Projects/stages/active)
+[![FINOS - Graduated](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-graduated.svg)](https://community.finos.org/docs/governance/lifecycle-stages/graduated)
 [![codecov](https://codecov.io/gh/finos/spring-bot/branch/spring-bot-develop/graph/badge.svg?token=CSa0aaqYD0)](https://codecov.io/gh/finos/spring-bot)
 ![License](https://img.shields.io/github/license/finos/spring-bot)
 ![build](https://github.com/finos/spring-bot/actions/workflows/build.yml/badge.svg)
