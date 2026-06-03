@@ -161,6 +161,17 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 # then PR spring-bot-master branch with the new version number
 ```
 
+OR
+
+```
+#create your version tag and push that tag on spring-bot-master branch
+mvn clean test
+mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
+git tag <our breaking change no>.<minor version no>.<our-patch-version-no>
+git push origin <our breaking change no>.<minor version no>.<our-patch-version-no>
+mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=
+```
+
 3. SECURITY.md
 
 - Update this with new version numbers if needed.
