@@ -264,16 +264,50 @@ Major release of chat workflow.  Most interfaces for this changed.  See migratio
  - #416 Single Method Invoke on Multiple Chat Button
  - #419 Teams Upload Attachments
 
+# Jan 15 2025
+ - #435 Summary on MS Teams App — `@Work` responses can include a summary field displayed in Teams adaptive cards (SYMPHONYP-1135)
+
 # Jan 22 2025
- - Migrate to 3.4.0
- - Vulnerability Fixes
+ - #455 Migrate to Spring Boot 3.4.0 (merged via #456)
+ - SYMPHONYP-1237 vulnerability fixes in framework dependencies
+ - Release 10.0.3
+
+# Apr 30 2025
+* Updated plugins for github actions by @robmoffat in https://github.com/finos/spring-bot/pull/462
+* Vulnerability fix by @vaibhav-db in https://github.com/finos/spring-bot/pull/463
+
+# Jul 14 2025
+* SYMPHONYP-1356 vulnerability-in-spring-bot-framework by @vaibhav-db in https://github.com/finos/spring-bot/pull/464
+
+# Oct 3 2025
+* Added credentials for github action by @robmoffat in https://github.com/finos/spring-bot/pull/470
+
+# Oct 29 2025
+ - #468 Upgrade Spring Boot version to 3.5.5 (merged via #467, SYMPHONYP-1398)
 
 # Dec 3 2025
 * Bumped version number by @robmoffat in https://github.com/finos/spring-bot/pull/458
-* Updated plugins for github actions by @robmoffat in https://github.com/finos/spring-bot/pull/462
-* Vulnerability fix by @vaibhav-db in https://github.com/finos/spring-bot/pull/463
-* SYMPHONYP-1356 vulnerability-in-spring-bot-framework by @vaibhav-db in https://github.com/finos/spring-bot/pull/464
 * Update allow-list.xml by @robmoffat in https://github.com/finos/spring-bot/pull/465
-* Added credentials for github action by @robmoffat in https://github.com/finos/spring-bot/pull/470
-* Spring bot master db by @vaibhav-db in https://github.com/finos/spring-bot/pull/467
+
+# Dec 10 2025
+* Release 10.0.4 by @robmoffat in https://github.com/finos/spring-bot/pull/475
+
+# Jan 28 2026
+ - #472 Certificate-based authentication for MS Teams bots (SYMPHONYP-1416, merged via #478)
+ - #477 Fix certificate authentication issue in Teams bot startup and test configuration
+
+# Mar 18 2026
+* Added GitHub Actions release workflow by @robmoffat in https://github.com/finos/spring-bot/pull/480
+* GPG signing and Maven Central publishing plugin updates (#481–#483)
+
+# May 29 2026
+ - Migrate to Spring Boot 4.0.x (merged via #485, SYMPHONYP-1450)
+ - Updated Mockito test configuration for Spring Boot 4 / `@MockitoBean` changes
+* Dependency check allow-list fix by @robmoffat in https://github.com/finos/spring-bot/pull/486
+
+# Jun 3 2026
+* Version 11.0.1-SNAPSHOT
+* Moved `maven-surefire-plugin` configuration to `build/pluginManagement` for all modules
+* Updated README release process and SECURITY.md support status
+* Modify git tag commands for versioning clarity by @robmoffat in https://github.com/finos/spring-bot/pull/488
 
