@@ -150,17 +150,7 @@ In order to do a release:
 
 - Update this file to include details of the release.
 
-2. On Releaser's machine:
-
-```
-# on spring-bot-master branch
-mvn clean test
-mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
-mvn -DskipTests clean test source:jar javadoc:javadoc deploy -P symphony-release
-mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=\*
-# then PR spring-bot-master branch with the new version number
-```
-OR
+2.  Add a Tag
 
 ```
 #create your version tag and push that tag on spring-bot-master branch
@@ -175,9 +165,4 @@ mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<o
 
 - Update this with new version numbers if needed.
 
-4.  On `oss.sonatype.org`
-
-- Close the Staging Repository
-- Release it.
-
-5.  Perform release on github with same number
+4.  Perform release on github with same number
