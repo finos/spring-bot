@@ -15,13 +15,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.symphony.bdk.core.service.message.MessageService;
 import com.symphony.bdk.core.service.pagination.model.PaginationAttribute;
 import com.symphony.bdk.gen.api.model.MessageSearchQuery;
 import com.symphony.bdk.gen.api.model.V4Message;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(classes = { 
 	SymphonyMockConfiguration.class, 
@@ -36,7 +36,7 @@ public class HistoryTest {
 	@Autowired
 	EntityJsonConverter ejc;
 	
-	@MockBean
+	@MockitoBean
 	MessageService messagesApi;
 
 	@Test

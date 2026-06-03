@@ -241,6 +241,78 @@
 	        microsoft:teams this jar is non vulnerable, checked at maven site
 	    </notes>
 	    <cve>CVE-2025-53783</cve>
-	</suppress>			
+	</suppress>
+	<suppress>
+	    <notes>
+	        azure-identity-1.18.0.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2023-36415</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        kotlin-stdlib-common-1.9.22.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2020-29582</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        netty-transport-4.2.12.Final.jar, netty-transport-native-epoll-4.2.12.Final.jar, netty-transport-native-unix-common@4.2.12.Final this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2026-41417</cve>
+	</suppress>
+	<suppress>
+	    <notes>
+	        reactor-netty-core-1.3.5.jar and reactor-netty-http-1.3.5.jar this jar is non vulnerable, checked at maven site
+	    </notes>
+	    <cve>CVE-2026-33871</cve>
+		<cve>CVE-2025-67735</cve>
+		<cve>CVE-2026-33870</cve>
+		<cve>CVE-2026-41417</cve>
+	</suppress>
+	<suppress>
+		<notes>
+			tomcat-embed-core,tomcat-embeded-websocket, this jar is vulnerable, will solve in next release
+		</notes>
+		<cve>CVE-2026-41293</cve> 
+		<cve>CVE-2026-41284</cve> 
+		<cve>CVE-2026-43513</cve> 
+		<cve>CVE-2026-43512</cve> 
+		<cve>CVE-2026-42498</cve> 
+		<cve>CVE-2026-43515</cve>
+	</suppress>
+	<suppress>
+		<notes>
+			azure-core,azure-core,azure-core-http-netty,azure-identity this jar is non vulnerable, checked at maven site
+		</notes>
+		<cve>CVE-2026-33117</cve>
+	</suppress>
+	<suppress>
+		<notes>
+			netty-transport-4.2.12.Final.jar
+			reactor-netty-core-1.3.5.jar 
+			netty-transport-native-epoll-4.2.12.Final.jar 
+			reactor-netty-http-1.3.5.jar 
+			netty-transport-native-unix-common-4.2.12.Final.jar
+		 this jar is non vulnerable, checked at maven site
+		</notes>
+		<cve>CVE-2026-42581</cve> 
+		<cve>CVE-2026-42580</cve> 
+		<cve>CVE-2026-42585</cve> 
+		<cve>CVE-2026-42584</cve> 
+		<cve>CVE-2026-42583</cve> 
+		<cve>CVE-2026-42582</cve>
+		<cve>CVE-2026-42578</cve>
+		<cve>CVE-2026-42577</cve>
+		<cve>CVE-2026-42587</cve>
+		<cve>CVE-2026-42586</cve>
+		<cve>CVE-2026-44248</cve>
+		<cve>CVE-2026-42579</cve>
+		<cve>CVE-2026-49737</cve>
+	</suppress>
+	<suppress>
+		<notes>
+			 cpe:2.3:a:microsoft:teams: Currently higher version not available.
+		</notes>
+		<cve>CVE-2025-49737</cve>
+	</suppress>
 </suppressions>
-
