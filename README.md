@@ -167,8 +167,8 @@ OR
 #create your version tag and push that tag on spring-bot-master branch
 mvn clean test
 mvn versions:set -DnewVersion=<our breaking change no>.<minor version no>.<our-patch-version-no> -DartifactId=\*  -DgroupId=\*
-git tag <our breaking change no>.<minor version no>.<our-patch-version-no>
-git push origin <our breaking change no>.<minor version no>.<our-patch-version-no>
+git tag v<our breaking change no>.<minor version no>.<our-patch-version-no>
+git push origin v<our breaking change no>.<minor version no>.<our-patch-version-no>
 mvn versions:set -DnewVersion=<our breaking change no>.<symphony-api-version>.<our-release-no+1>-SNAPSHOT -DartifactId=\*  -DgroupId=
 ```
 
