@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerConfig;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.finos.springbot.workflow.tags.HeaderDetails;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest(classes = { 
-		SymphonyDataHandlerCofig.class, 
+		SymphonyDataHandlerConfig.class, 
 })
 public class TestEntityJsonConversion {
 	
