@@ -12,7 +12,7 @@ import org.finos.springbot.symphony.conversations.RoomMembershipChangeHandler;
 import org.finos.springbot.symphony.conversations.StreamResolver;
 import org.finos.springbot.symphony.conversations.SymphonyConversations;
 import org.finos.springbot.symphony.conversations.SymphonyConversationsImpl;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerConfig;
 import org.finos.springbot.symphony.form.ElementsHandler;
 import org.finos.springbot.symphony.form.SymphonyFormConverter;
 import org.finos.springbot.symphony.form.SymphonyFormDeserializerModule;
@@ -65,7 +65,7 @@ import com.symphony.bdk.spring.SymphonyBdkAutoConfiguration;
 	ChatWorkflowConfig.class, 
 	FreemarkerTypeConverterConfig.class, 
 	SymphonyContentConfig.class,
-	SymphonyDataHandlerCofig.class})
+	SymphonyDataHandlerConfig.class})
 @Profile(value = "symphony")
 public class SymphonyWorkflowConfig {
 	

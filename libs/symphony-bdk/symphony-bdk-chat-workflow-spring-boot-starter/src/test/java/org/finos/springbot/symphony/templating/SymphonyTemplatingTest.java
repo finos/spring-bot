@@ -12,7 +12,7 @@ import java.util.stream.IntStream;
 
 import org.finos.springbot.symphony.content.SymphonyRoom;
 import org.finos.springbot.symphony.content.SymphonyUser;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerConfig;
 import org.finos.springbot.tests.templating.AbstractTemplatingTest;
 import org.finos.springbot.workflow.annotations.WorkMode;
 import org.finos.springbot.workflow.content.Addressable;
@@ -33,7 +33,7 @@ import org.springframework.util.StreamUtils;
 
 @SpringBootTest(classes = { 
 		FreemarkerTypeConverterConfig.class,
-		SymphonyDataHandlerCofig.class,
+		SymphonyDataHandlerConfig.class,
 })
 public class SymphonyTemplatingTest extends AbstractTemplatingTest {
 

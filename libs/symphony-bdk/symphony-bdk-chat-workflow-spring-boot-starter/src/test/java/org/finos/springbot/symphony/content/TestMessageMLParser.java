@@ -5,7 +5,7 @@ import java.util.HashMap;
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.symphony.SymphonyMockConfiguration;
 import org.finos.springbot.symphony.content.serialization.MessageMLParser;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerConfig;
 import org.finos.springbot.workflow.annotations.ChatVariable;
 import org.finos.springbot.workflow.content.Content;
 import org.finos.springbot.workflow.content.Message;
@@ -26,7 +26,7 @@ import org.springframework.test.context.TestPropertySource;
 @SpringBootTest(classes = { 
 	SymphonyMockConfiguration.class, 
 	SymphonyContentConfig.class,
-	SymphonyDataHandlerCofig.class})
+	SymphonyDataHandlerConfig.class})
 public class TestMessageMLParser  {
 
 	@Autowired
