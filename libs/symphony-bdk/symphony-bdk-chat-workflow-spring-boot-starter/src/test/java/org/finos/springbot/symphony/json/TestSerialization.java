@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import org.finos.springbot.entityjson.EntityJson;
 import org.finos.springbot.entityjson.VersionSpace;
-import org.finos.springbot.symphony.data.SymphonyDataHandlerCofig;
+import org.finos.springbot.symphony.data.SymphonyDataHandlerConfig;
 import org.finos.springbot.symphony.json.ClassWithArray.SubClass;
 import org.finos.springbot.workflow.data.EntityJsonConverter;
 import org.junit.jupiter.api.Assertions;
@@ -39,7 +39,7 @@ import com.symphony.integration.jira.event.v2.State;
 import com.symphony.user.Mention;
 
 @SpringBootTest(classes = { 
-		SymphonyDataHandlerCofig.class, 
+		SymphonyDataHandlerConfig.class, 
 })
 public class TestSerialization {
 	

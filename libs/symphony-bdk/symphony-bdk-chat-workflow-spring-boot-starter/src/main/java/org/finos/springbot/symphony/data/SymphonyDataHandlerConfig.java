@@ -18,7 +18,7 @@ import com.symphony.user.StreamID;
 
 @Configuration
 @Import(DataHandlerConfig.class)
-public class SymphonyDataHandlerCofig implements InitializingBean {
+public class SymphonyDataHandlerConfig implements InitializingBean {
 
 	
 	@Autowired
@@ -30,14 +30,14 @@ public class SymphonyDataHandlerCofig implements InitializingBean {
 		VersionSpaceHelp.basicSymphonyVersionSpace().stream()
 			.forEach(vs -> ejc.addVersionSpace(vs));
 		
-		List<VersionSpace> chatWorkflowVersionSpaces = syphonyExtendedVersionSpace();
+		List<VersionSpace> chatWorkflowVersionSpaces = symphonyExtendedVersionSpace();
 		
 		chatWorkflowVersionSpaces.stream().forEach(vs -> ejc.addVersionSpace(vs));
 		
 		ejc.getObjectMapper().registerModule(new LegacyFormatModule());
 	}
 
-	public static List<VersionSpace> syphonyExtendedVersionSpace() {
+	public static List<VersionSpace> symphonyExtendedVersionSpace() {
 		return Arrays.asList(			
 				new VersionSpace(DisplayName.class, "1.0"), 
 				new VersionSpace(StreamID.class, "1.0"), 
